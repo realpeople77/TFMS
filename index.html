@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko">
-<!-- TFMS v33.1.0 | 운영 안정화 기준본 | 2026-07-20 -->
+<!-- TFMS v33.1.1 | 설비 선택·관리자 삭제 긴급수정 | 2026-07-20 -->
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TFMS v33.1.0 - 운영 안정화 버전</title>
+<title>TFMS v33.1.1 - 설비 선택·삭제 안정화</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -309,6 +309,26 @@ nav{gap:0;padding:0 22px;scrollbar-width:thin}
 @media(max-width:1350px){.nav{padding:17px 12px;font-size:13px}.layout{grid-template-columns:235px 1fr;padding:20px}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script id="tfms-v3311-compatibility-bridge">
+/* v33.1.1: 누락 함수·스코프·날짜 입력 호환성 보강 */
+window.renderSampleStatus = window.renderSampleStatus || function(){};
+window.renderEmpStatuses = window.renderEmpStatuses || function(){};
+window.renderEmployeeStatuses = window.renderEmployeeStatuses || function(){};
+window.tfmsNormalizeDate = function(value){
+  const s=String(value ?? '').trim().replaceAll('.','-');
+  return /^\d{4}-\d{2}-\d{2}$/.test(s) ? s : '';
+};
+try{
+  if(!Object.getOwnPropertyDescriptor(window,'cloudProfile')){
+    Object.defineProperty(window,'cloudProfile',{
+      configurable:true,
+      get:function(){
+        try{return window.getTfmsCloudProfile?.() || null}catch(_){return null}
+      }
+    });
+  }
+}catch(_){ window.cloudProfile = window.cloudProfile || null; }
+</script>
 
 <script id="tfms-v3113-safe-init">
 window.renderEmpStatuses = window.renderEmpStatuses || function(){};
@@ -361,7 +381,7 @@ nav .nav[onclick*='"qrCheck"']{
   <div class="top">
     <div class="logo" role="button" tabindex="0" aria-label="대시보드 홈으로 이동" onclick="goHome()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goHome();}">
       <img src="data:image/png;base64,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" alt="태백시시설관리공단 CI">
-      <div class="logo-title">TFMS <span class="v32-classic-note">v33.0.2 Pilot</span><small>시설 유지관리 이력관리 시스템 · v33.0.2 Pilot Enterprise</small></div>
+      <div class="logo-title">TFMS <span class="v32-classic-note">v33.1.1 Hotfix</span><small>시설 유지관리 이력관리 시스템 · v33.1.1 Pilot Enterprise</small></div>
     </div>
     <div class="user">
       <span id="cloudTopBadge" class="current-role-badge" style="background:#fff7ed;color:#9a3412;border-color:#fed7aa">로컬 저장</span><span>🔔</span><button id="topUserLabel" class="link-btn" style="text-decoration:none" onclick="navTo('myPage')">👤 로그인 사용자</button><span id="roleBadge" class="current-role-badge">권한 확인 중</span><button class="logout" id="topLoginBtn" onclick="toggleTopLogin()">로그아웃</button>
@@ -1478,7 +1498,7 @@ function loadAssetForm(key){
   document.getElementById('assetInputYear').value=a.year;
   document.getElementById('assetInputLife').value=a.life;
   document.getElementById('assetInputReplace').value=a.replace;
-  document.getElementById('assetInputCheck').value=String(a.check).replaceAll('.','-');
+  document.getElementById('assetInputCheck').value=window.tfmsNormalizeDate(a.check);
   document.getElementById('assetInputTimeline').value=(a.timeline?.[0]?.[0]||'')+' / '+(a.timeline?.[0]?.[1]||'');
 }
 function clearAssetForm(){
@@ -2329,7 +2349,7 @@ function loadAssetForm(key){
   const val=(id,v)=>{const e=document.getElementById(id); if(e) e.value=v;};
   val('assetInputFacility',a.facility); val('assetInputSpace',a.space); val('assetInputName',a.name); val('assetInputRisk',a.risk); val('assetInputYear',a.year==='-'?'':a.year); val('assetInputLife',a.life);
   val('assetInputCapacity',a.capacity); val('assetInputLocation',a.location); val('assetInputOperation',a.operation); val('assetInputCycle',a.cycle);
-  val('assetInputReplace',a.replace); val('assetInputQrId',a.qrId); val('assetInputCheck',String(a.check||'').replaceAll('.','-'));
+  val('assetInputReplace',a.replace); val('assetInputQrId',a.qrId); val('assetInputCheck',window.tfmsNormalizeDate(a.check));
   val('assetInputTimeline',(a.timeline?.[0]?.[0]||'')+' / '+(a.timeline?.[0]?.[1]||''));
 }
 function clearAssetForm(){
@@ -2444,7 +2464,7 @@ try{
   if(assetData.panel){ assetData.panel.facility='태백국민체육센터'; assetData.panel.space='전기실'; assetData.panel.capacity='분전반 1면'; assetData.panel.operation='전기 분배·차단'; assetData.panel.cycle='월간'; assetData.panel.qrId='TBCC-PANEL-01'; }
 }catch(e){console.warn('v29 asset defaults', e);}
 
-changeDept(); changeSubField(); initTodayDates(); previewNextDue(); renderDailyRows(); renderAssetList(); showAsset('boilerA'); renderAccountTables(); renderSampleStatus(); renderFacilityListStable(); applyMenuByRoleStable(); renderCycleTasks(); renderDashboardData(); renderHistory(); renderExportPreview(); renderDeleteRequests(); renderFacilityList(); renderStatsCharts(); renderTodayTasks(); applyRole(); renderUserFlowNavigator(); renderCycleAssetOptions();
+changeDept(); changeSubField(); initTodayDates(); previewNextDue(); renderDailyRows(); renderAssetList(); showAsset('boilerA'); renderAccountTables(); if(typeof renderSampleStatus==='function')renderSampleStatus(); renderFacilityListStable(); applyMenuByRoleStable(); renderCycleTasks(); renderDashboardData(); renderHistory(); renderExportPreview(); renderDeleteRequests(); renderFacilityList(); renderStatsCharts(); renderTodayTasks(); applyRole(); renderUserFlowNavigator(); renderCycleAssetOptions();
 </script>
 
 
@@ -4158,20 +4178,23 @@ document.addEventListener('DOMContentLoaded',function(){
     }
   };
 
-  // 기존 로그인 완료 함수 뒤에 강제 적용
-  const previousApplyLoginUIV15=applyLoginUI;
-  applyLoginUI=function(p){
-    previousApplyLoginUIV15(p);
-    setTimeout(window.applyUserScopeV15,0);
-    setTimeout(window.applyUserScopeV15,150);
-  };
+  // 로그인·DB 함수는 다른 스크립트의 내부 스코프에 있을 수 있으므로 존재할 때만 감쌉니다.
+  if(typeof window.applyLoginUI==='function'){
+    const previousApplyLoginUIV15=window.applyLoginUI;
+    window.applyLoginUI=function(p){
+      previousApplyLoginUIV15(p);
+      setTimeout(window.applyUserScopeV15,0);
+      setTimeout(window.applyUserScopeV15,150);
+    };
+  }
 
-  // DB 자료를 다 불러온 뒤 강제 적용
-  const previousLoadEnterpriseDataV15=loadEnterpriseData;
-  loadEnterpriseData=async function(){
-    await previousLoadEnterpriseDataV15();
-    window.applyUserScopeV15();
-  };
+  if(typeof window.loadEnterpriseData==='function'){
+    const previousLoadEnterpriseDataV15=window.loadEnterpriseData;
+    window.loadEnterpriseData=async function(){
+      await previousLoadEnterpriseDataV15();
+      window.applyUserScopeV15();
+    };
+  }
 
   // 등록 화면 진입 시 재적용
   const previousShowPageV15=window.showPage;
@@ -6430,7 +6453,7 @@ document.addEventListener('DOMContentLoaded',function(){
     setValue('assetInputModel',a.model);
     setValue('assetInputSerial',a.serial);
     setValue('assetInputManufactureYear',a.manufactureYear);
-    setValue('assetInputInstallDate',String(a.installDate||'').replaceAll('.','-'));
+    setValue('assetInputInstallDate',window.tfmsNormalizeDate(a.installDate));
     setValue('assetInputStatus',a.status||'정상');
     setValue('assetInputImportance',a.importance||'중');
     setValue('assetInputRemarks',a.remarks);
@@ -6699,180 +6722,51 @@ document.addEventListener('DOMContentLoaded',function(){
   document.addEventListener('DOMContentLoaded',()=>setTimeout(updateAssetSaveMode3310,700));
 })();
 </script>
-</body>
-</html>
 
-<!--
-
-TFMS v31.2 작업 메모
-
-이번 파일은 v31.1을 기반으로 다음 기능을 구현할 예정입니다.
-- 로고 클릭 시 홈 이동
-- 내 정보 메뉴
-- 비밀번호 변경 화면
-- 로그인 안정화
-- 관리자 사용자관리
-
-(현재는 베이스 파일 복사본입니다.)
-
--->
-
-<script id="tfms-v3307-admin-equipment-delete-fix">
-/* v33.0.7: 관리자 설비 즉시삭제 + 삭제관리 승인/반려 권한 수정 */
+<script id="tfms-v3311-final-safety">
+/* 설비 카드 선택·관리자 삭제 UI 최종 안전장치 */
 (function(){
-  function sessionV3307(){
-    try{return JSON.parse(sessionStorage.getItem('tfmsSession')||'{}')}catch(e){return {}}
-  }
-  function isAdminV3307(){
-    const s=sessionV3307();
-    return s.role==='admin' || s.role==='관리자' || window.tfmsRole==='admin';
-  }
-  function currentUserNameV3307(){
-    const s=sessionV3307();
-    return s.name || s.userName || s.accountId || '관리자';
-  }
-  function escV3307(v){
-    return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-  }
-  function persistV3307(reason){
+  function role(){
     try{
-      if(typeof syncDB==='function')syncDB(reason||'설비 삭제 처리');
-      else localStorage.setItem('tfms_assetData',JSON.stringify(window.assetData||{}));
-    }catch(e){console.warn('TFMS delete persist',e)}
-    try{if(typeof refreshAllV30==='function')refreshAllV30()}catch(e){}
-    try{if(typeof renderAssetList==='function')renderAssetList()}catch(e){}
-    try{if(typeof renderUfFacilities==='function')renderUfFacilities()}catch(e){}
-    try{if(typeof renderDeleteRequests==='function')renderDeleteRequests()}catch(e){}
+      const p=window.getTfmsCloudProfile?.();
+      return String(p?.role || window.tfmsRole || '').toLowerCase();
+    }catch(_){return String(window.tfmsRole||'').toLowerCase()}
   }
-  function findAssetKeyFromRequestV3307(d){
-    if(d?.assetKey && window.assetData?.[d.assetKey])return d.assetKey;
-    const detail=String(d?.detail||'');
-    const name=detail.includes('/')?detail.split('/').slice(1).join('/').trim():detail.trim();
-    return Object.keys(window.assetData||{}).find(k=>{
-      const a=window.assetData[k]||{};
-      return a.name===name && (!d.facility || d.facility==='-' || a.facility===d.facility);
-    }) || '';
-  }
-  function deleteAssetByKeyV3307(key){
-    if(!key || !window.assetData?.[key])return false;
-    delete window.assetData[key];
-    if(window.selectedAssetKey===key){
-      const next=Object.keys(window.assetData||{})[0]||'';
-      window.selectedAssetKey=next;
-      try{if(next&&typeof showAsset==='function')showAsset(next)}catch(e){}
-    }
-    return true;
-  }
-
-  window.deleteSelectedAsset=function(){
-    const key=window.selectedAssetKey;
-    const a=window.assetData?.[key];
-    if(!key||!a){
-      if(typeof showToast==='function')showToast('삭제할 설비를 먼저 선택하세요.');
-      return;
-    }
-
-    if(isAdminV3307()){
-      const reason=prompt('관리자 즉시삭제 사유를 입력하세요.\n예: 오입력, 중복등록');
-      if(!reason||!reason.trim())return;
-      if(!confirm(`설비 “${a.name||key}”을(를) 즉시 삭제하시겠습니까?\n삭제 후에는 화면에서 복구할 수 없습니다.`))return;
-      deleteAssetByKeyV3307(key);
-      if(Array.isArray(window.deleteRequests)){
-        window.deleteRequests.unshift({
-          time:new Date().toLocaleString('ko-KR'), facility:a.facility||'-',
-          detail:'설비관리 / '+(a.name||key), user:currentUserNameV3307(),
-          reason:reason.trim(), status:'관리자 삭제완료', type:'asset', assetKey:key,
-          reviewer:currentUserNameV3307(), reviewedAt:new Date().toLocaleString('ko-KR')
-        });
-      }
-      persistV3307('관리자 설비 즉시삭제');
-      if(typeof showToast==='function')showToast('관리자 권한으로 설비를 즉시 삭제했습니다.');
-      return;
-    }
-
-    const reason=prompt('삭제요청 사유를 입력하세요. 예: 중복등록, 오입력, 폐기 설비');
-    if(!reason||!reason.trim())return;
-    if(!Array.isArray(window.deleteRequests))window.deleteRequests=[];
-    window.deleteRequests.unshift({
-      time:new Date().toLocaleString('ko-KR'), facility:a.facility||'-',
-      detail:'설비관리 / '+(a.name||key), user:currentUserNameV3307(),
-      reason:reason.trim(), status:'승인대기', type:'asset', assetKey:key
-    });
-    persistV3307('설비 삭제요청 등록');
-    if(typeof showToast==='function')showToast('설비 삭제요청을 등록했습니다.');
-  };
-
-  window.approveDeleteRequestV3307=function(i){
-    if(!isAdminV3307()){
-      if(typeof showToast==='function')showToast('관리자만 삭제요청을 승인할 수 있습니다.');
-      return;
-    }
-    const d=window.deleteRequests?.[i];
-    if(!d||d.status!=='승인대기')return;
-    if(!confirm('이 삭제요청을 승인하고 대상 자료를 삭제하시겠습니까?'))return;
-    let removed=false;
-    if(d.type==='asset'||String(d.detail||'').startsWith('설비관리')){
-      removed=deleteAssetByKeyV3307(findAssetKeyFromRequestV3307(d));
-    }
-    d.status=removed?'승인·삭제완료':'승인완료';
-    d.reviewer=currentUserNameV3307();
-    d.reviewedAt=new Date().toLocaleString('ko-KR');
-    persistV3307('삭제요청 승인');
-    if(typeof showToast==='function')showToast(removed?'삭제요청을 승인하고 설비를 삭제했습니다.':'삭제요청을 승인 처리했습니다.');
-  };
-
-  window.rejectDeleteRequestV3307=function(i){
-    if(!isAdminV3307()){
-      if(typeof showToast==='function')showToast('관리자만 삭제요청을 반려할 수 있습니다.');
-      return;
-    }
-    const d=window.deleteRequests?.[i];
-    if(!d||d.status!=='승인대기')return;
-    const memo=prompt('반려 사유를 입력하세요.');
-    if(!memo||!memo.trim())return;
-    d.status='반려'; d.reviewMemo=memo.trim();
-    d.reviewer=currentUserNameV3307(); d.reviewedAt=new Date().toLocaleString('ko-KR');
-    persistV3307('삭제요청 반려');
-    if(typeof showToast==='function')showToast('삭제요청을 반려했습니다.');
-  };
-
-  window.renderDeleteRequests=function(){
-    const body=document.getElementById('deleteBody');
-    if(!body)return;
-    const list=Array.isArray(window.deleteRequests)?window.deleteRequests:[];
-    const table=body.closest('table');
-    if(table){
-      const tr=table.querySelector('thead tr');
-      if(tr)tr.innerHTML='<th>요청일시</th><th>시설명</th><th>내용</th><th>요청자</th><th>사유</th><th>상태</th><th>처리</th>';
-    }
-    body.innerHTML=list.length?list.map((d,i)=>{
-      const wait=d.status==='승인대기';
-      const cls=wait?'wait':(String(d.status).includes('완료')?'done':'delay');
-      const actions=isAdminV3307()&&wait
-        ? `<button class="small-btn blue" onclick="approveDeleteRequestV3307(${i})">승인·삭제</button> <button class="small-btn red" onclick="rejectDeleteRequestV3307(${i})">반려</button>`
-        : '-';
-      return `<tr><td>${escV3307(d.time)}</td><td>${escV3307(d.facility)}</td><td>${escV3307(d.detail)}</td><td>${escV3307(d.user)}</td><td>${escV3307(d.reason)}</td><td><span class="status ${cls}">${escV3307(d.status)}</span></td><td>${actions}</td></tr>`;
-    }).join(''):'<tr><td colspan="7"><div class="empty-state">삭제 요청된 자료가 없습니다.</div></td></tr>';
-  };
-
-  function applyDeleteUiV3307(){
+  function refreshDeleteButton(){
     const btn=document.querySelector('#equipment button[onclick="deleteSelectedAsset()"]');
-    if(btn)btn.textContent=isAdminV3307()?'즉시삭제':'삭제요청';
-    const note=document.querySelector('#equipment .asset-form-note');
-    if(note){
-      const base='<b>설비명만 필수 입력</b>이며, 제조사·모델명·제조번호·용량·제조년도·설치일 등 해당하지 않는 항목은 공란으로 등록할 수 있습니다.<br>';
-      note.innerHTML=base+(isAdminV3307()?'관리자는 오입력 설비를 즉시삭제할 수 있으며, 삭제 사유는 삭제관리 이력에 남습니다.':'일반담당자의 삭제는 관리자 승인을 위한 삭제요청으로 접수됩니다.');
-    }
-    window.renderDeleteRequests();
+    if(btn) btn.textContent=role()==='admin'?'즉시삭제':'삭제요청';
   }
-
-  const oldShowPageV3307=window.showPage;
+  function clearInvalidDates(){
+    document.querySelectorAll('input[type="date"]').forEach(el=>{
+      if(el.value && !/^\d{4}-\d{2}-\d{2}$/.test(el.value)) el.value='';
+    });
+  }
+  document.addEventListener('click',function(e){
+    const card=e.target.closest('#ufAssetList .uf-item, #assetList .tree-item');
+    if(!card)return;
+    // 인라인 onclick이 정상 처리되면 추가 호출하지 않습니다. 오류로 선택이 바뀌지 않은 경우에만 텍스트·QR로 재탐색합니다.
+    setTimeout(function(){
+      try{
+        const label=(card.textContent||'').trim();
+        const entries=Object.entries(window.assetData||{});
+        const found=entries.find(([,a])=>label.includes(a?.name||'') && (!a?.qrId || label.includes(a.qrId)));
+        if(found && window.selectedAssetKey!==found[0] && typeof window.showAsset==='function') window.showAsset(found[0],card);
+      }catch(err){console.warn('TFMS asset card fallback',err)}
+    },0);
+  },true);
+  document.addEventListener('DOMContentLoaded',function(){
+    clearInvalidDates();
+    setTimeout(refreshDeleteButton,300);
+    setTimeout(clearInvalidDates,600);
+  });
+  window.addEventListener('load',function(){setTimeout(refreshDeleteButton,300);setTimeout(clearInvalidDates,500)});
+  const oldShowPage=window.showPage;
   window.showPage=function(id,btn){
-    const r=oldShowPageV3307?.(id,btn);
-    if(id==='equipment'||id==='deleteManage')setTimeout(applyDeleteUiV3307,30);
+    const r=oldShowPage?.(id,btn);
+    if(id==='equipment') setTimeout(function(){refreshDeleteButton();clearInvalidDates()},50);
     return r;
   };
-  document.addEventListener('DOMContentLoaded',()=>setTimeout(applyDeleteUiV3307,300));
-  window.addEventListener('load',()=>setTimeout(applyDeleteUiV3307,500));
 })();
 </script>
+</body>
+</html>
