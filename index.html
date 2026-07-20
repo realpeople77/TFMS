@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko">
-<!-- TFMS v33.1.5 | 설비 상세·DB 완전 동기화 | 2026-07-20 -->
+<!-- TFMS v33.1.6 | 설비 상세·DB 완전 동기화 | 2026-07-20 -->
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TFMS v33.1.5 - 설비 상세·DB 완전 동기화</title>
+<title>TFMS v33.1.6 - 설비 상세·DB 완전 동기화</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -6699,6 +6699,87 @@ document.addEventListener('DOMContentLoaded',function(){
   document.addEventListener('DOMContentLoaded',()=>setTimeout(updateAssetSaveMode3310,700));
 })();
 </script>
+
+<script id="tfms-v3316-delete-role-fix">
+/* TFMS v33.1.6: 관리자 권한 판정 및 설비 삭제 오류 수정 */
+(function(){
+  function resolvedRole3316(){
+    let role='user';
+    try{
+      if(typeof tfmsRole!=='undefined' && tfmsRole) role=tfmsRole;
+      else if(window.cloudProfile?.role) role=window.cloudProfile.role;
+      else {
+        const s=JSON.parse(sessionStorage.getItem('tfmsSession')||'{}');
+        role=s.role||'user';
+      }
+    }catch(e){}
+    role=String(role||'user').trim().toLowerCase();
+    return (role==='관리자'||role==='administrator')?'admin':role;
+  }
+
+  window.deleteSelectedAsset=async function(){
+    const sb=(typeof sbClient==='function'?sbClient():(typeof getSbClient==='function'?getSbClient():window.sb));
+    const data=(typeof assetData!=='undefined'&&assetData)?assetData:(window.assetData||{});
+    const key=(typeof selectedAssetKey!=='undefined'&&selectedAssetKey)?selectedAssetKey:window.selectedAssetKey;
+    const a=data?.[key];
+    if(!a?.dbId){ window.showToast?.('삭제할 DB 설비를 먼저 선택하세요.'); return; }
+
+    const role=resolvedRole3316();
+    const isAdmin=role==='admin';
+    const reason=prompt(isAdmin?'즉시삭제 사유를 입력하세요.':'삭제요청 사유를 입력하세요.');
+    if(!reason?.trim())return;
+
+    if(isAdmin){
+      if(!confirm(`「${a.name||'선택 설비'}」 설비를 즉시 삭제하시겠습니까?\n삭제 후에는 복구할 수 없습니다.`))return;
+      if(!sb){window.showToast?.('Supabase DB 연결을 확인하세요.');return;}
+      const res=await sb.from('assets').delete().eq('id',a.dbId);
+      if(res.error){window.showToast?.('설비 삭제 실패: '+res.error.message);return;}
+      if(typeof reloadAssets3313==='function') await reloadAssets3313();
+      else {
+        delete data[key];
+        window.assetData=data;
+      }
+      const next=Object.keys((typeof assetData!=='undefined'&&assetData)?assetData:(window.assetData||{}))[0]||'';
+      try{selectedAssetKey=next;}catch(e){}
+      window.selectedAssetKey=next;
+      try{window.renderAssetList?.(); if(next)window.showAsset?.(next);}catch(e){}
+      window.showToast?.('설비를 Supabase DB에서 즉시 삭제했습니다.');
+      return;
+    }
+
+    // 일반담당자: 현재 DB에 audit_logs.action_type 열이 없으므로 화면 내 삭제관리 목록에 안전하게 접수
+    try{
+      const request={
+        time:new Date().toLocaleString('ko-KR'),
+        facility:a.facility||'-',
+        detail:`설비관리 / ${a.name||key}`,
+        user:window.cloudProfile?.name||'현장 담당자',
+        reason:reason.trim(),
+        status:'승인대기',
+        assetKey:key,
+        assetDbId:a.dbId
+      };
+      if(typeof deleteRequests!=='undefined' && Array.isArray(deleteRequests)) deleteRequests.unshift(request);
+      else {
+        if(!Array.isArray(window.deleteRequests))window.deleteRequests=[];
+        window.deleteRequests.unshift(request);
+      }
+      try{if(typeof syncDB==='function')syncDB('설비 삭제요청 등록');}catch(e){}
+      try{window.renderDeleteRequests?.();}catch(e){}
+      window.showToast?.('설비 삭제요청을 등록했습니다. 관리자 승인 전까지 설비는 유지됩니다.');
+    }catch(e){
+      console.error(e);
+      window.showToast?.('삭제요청 처리 실패: '+(e.message||e));
+    }
+  };
+
+  try{
+    const btn=document.querySelector('#equipment button[onclick="deleteSelectedAsset()"]');
+    if(btn)btn.textContent=resolvedRole3316()==='admin'?'즉시삭제':'삭제요청';
+  }catch(e){}
+})();
+</script>
+
 </body>
 </html>
 
