@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko">
-<!-- TFMS v35.1 Stable | 기존 UI 유지 안정화 기준본 | 2026-07-20 -->
+<!-- TFMS v35.2 Stable | 관리자 즉시삭제 권한판별 수정 | 2026-07-20 -->
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TFMS v35.1 Stable</title>
+<title>TFMS v35.2 Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -2998,6 +2998,9 @@ loadDB(); refreshAllV30();
 
   function applyLoginUI(p){
     tfmsRole=p.role||'user';
+    window.tfmsRole=tfmsRole;
+    window.cloudProfile=p||null;
+    window.cloudUser=cloudUser||null;
     const actualDept=p.department?.name||'미지정';
     tfmsUserDept=(tfmsRole==='viewer')?'전체':actualDept;
     currentUserDept=tfmsUserDept;
@@ -6651,651 +6654,81 @@ document.addEventListener('DOMContentLoaded',function(){
   };
 
   window.deleteSelectedAsset=async function(){
-    const sb=client(), user=cloudUser();
-    const key=selectedAssetKey;
-    const a=(assetData||{})[key];
-    if(!a){ showToast('삭제할 설비를 선택하세요.'); return; }
-    if(!a.dbId){ showToast('DB 식별값이 없는 설비입니다. 화면을 새로고침한 뒤 다시 시도하세요.'); return; }
-    const reason=prompt(currentRole()==='admin'?'즉시삭제 사유를 입력하세요.':'삭제요청 사유를 입력하세요.');
-    if(!reason)return;
+    const sb=sbClient();
+    const key=window.selectedAssetKey || (typeof selectedAssetKey!=='undefined' ? selectedAssetKey : '');
+    const data=window.assetData || (typeof assetData!=='undefined' ? assetData : {});
+    const a=data?.[key];
 
-    if(currentRole()==='admin'){
-      if(!confirm(`「${a.name}」 설비를 즉시 삭제하시겠습니까?\n삭제 후에는 화면에서 복구할 수 없습니다.`))return;
-      const res=await sb.from('assets').delete().eq('id',a.dbId);
-      if(res.error){ showToast('설비 삭제 실패: '+res.error.message); return; }
-      delete assetData[key];
-      selectedAssetKey=Object.keys(assetData)[0]||'';
-      try{renderAssetList(); if(selectedAssetKey)showAsset(selectedAssetKey); else if(typeof clearAssetDetailEmpty==='function')clearAssetDetailEmpty(); renderUserFlowNavigator?.();}catch(e){console.warn(e)}
-      showToast('설비를 Supabase DB에서 삭제했습니다.');
-    }else{
-      const detail=`설비관리 / ${a.name} / DB:${a.dbId} / 사유:${reason}`;
-      const audit=await sb.from('audit_logs').insert({
-        actor_id:user?.id||null, action_type:'asset_delete_request', target_table:'assets', target_id:a.dbId,
-        detail, created_at:new Date().toISOString()
-      });
-      if(audit.error){ showToast('삭제요청 저장 실패: '+audit.error.message); return; }
-      showToast('설비 삭제요청을 DB 이력에 등록했습니다. 설비는 관리자 처리 전까지 유지됩니다.');
+    if(!a?.dbId){
+      showToast?.('삭제할 DB 설비를 먼저 선택하세요.');
+      return;
     }
-  };
-})();
-</script>
-
-
-<script id="tfms-v3310-asset-insert-update-separation">
-/* TFMS v33.0.10: 동일 명칭 다중 설비 등록 / 신규·수정 모드 분리 */
-(function(){
-  function updateAssetSaveMode3310(){
-    const btn=[...document.querySelectorAll('button')].find(b=>b.getAttribute('onclick')==='saveAsset()');
-    if(btn) btn.textContent=window.tfmsEditingAssetDbId?'설비 수정 저장':'새 설비 등록';
-  }
-  const prevLoad=window.loadAssetForm;
-  window.loadAssetForm=function(key){
-    const r=prevLoad?.(key);
-    const a=assetData?.[key];
-    window.tfmsEditingAssetDbId=a?.dbId||null;
-    updateAssetSaveMode3310();
-    return r;
-  };
-  const prevClear=window.clearAssetForm;
-  window.clearAssetForm=function(){
-    const r=prevClear?.();
-    window.tfmsEditingAssetDbId=null;
-    updateAssetSaveMode3310();
-    showToast?.('신규 설비 등록 모드입니다. 같은 이름의 설비도 별도로 등록할 수 있습니다.');
-    return r;
-  };
-  document.addEventListener('DOMContentLoaded',()=>setTimeout(updateAssetSaveMode3310,700));
-})();
-</script>
-
-<script id="tfms-v35-final-stable-controller">
-/* TFMS v35.1 Stable
-   기존 UI 유지 / 설비선택·상세보기·저장·삭제를 마지막 단일 컨트롤러로 고정 */
-(function(){
-  'use strict';
-  const $=id=>document.getElementById(id);
-  const clean=v=>{const s=String(v??'').trim();return (!s||s==='undefined'||s==='null')?'':s};
-  const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-  const getData=()=>{
-    try{
-      if(typeof assetData!=='undefined'){
-        window.assetData=assetData;
-        return assetData;
-      }
-    }catch(e){}
-    return window.assetData||{};
-  };
-  const setData=next=>{
-    window.assetData=next||{};
-    try{assetData=window.assetData}catch(e){}
-  };
-  const getSelected=()=>{
-    try{return selectedAssetKey||window.selectedAssetKey||''}catch(e){return window.selectedAssetKey||''}
-  };
-  const setSelected=key=>{
-    window.selectedAssetKey=key||'';
-    try{selectedAssetKey=key||''}catch(e){}
-  };
-  const setText=(id,v,fallback='-')=>{const e=$(id);if(e)e.textContent=clean(v)||fallback};
-  const icon=a=>{try{return typeof assetIcon==='function'?assetIcon(a):'⚙'}catch(e){return '⚙'}};
-  const keyEnc=k=>encodeURIComponent(String(k));
-  const keyDec=k=>decodeURIComponent(String(k||''));
-  const currentRole=()=>{
-    let role='';
-    try{role=cloudProfile?.role||''}catch(e){}
-    try{if(!role)role=tfmsRole||''}catch(e){}
-    try{if(!role)role=JSON.parse(sessionStorage.getItem('tfmsSession')||'{}').role||''}catch(e){}
-    role=String(role).toLowerCase();
-    return role==='관리자'?'admin':role;
-  };
-  const isAdmin=()=>currentRole()==='admin';
-  const currentName=()=>{
-    try{return cloudProfile?.full_name||cloudProfile?.username||''}catch(e){}
-    try{return JSON.parse(sessionStorage.getItem('tfmsSession')||'{}').name||'사용자'}catch(e){return '사용자'}
-  };
-  const sb=()=>window.getTfmsSupabaseClient?.();
-
-  function scopedEntries(){
-    const all=Object.entries(getData()).filter(([,a])=>a&&a.name);
-    let dept='';
-    try{dept=selectedDept||''}catch(e){dept=window.selectedDept||''}
-    if(!dept||dept==='전체')return all;
-    let facilities=[];
-    try{facilities=(facilityMaster||[]).filter(f=>f.dept===dept).map(f=>f.name)}catch(e){}
-    return facilities.length?all.filter(([,a])=>facilities.includes(a.facility)):all;
-  }
-
-  function fillMain(a){
-    setText('assetName',a.name);setText('assetManufacturer',a.manufacturer);setText('assetModel',a.model);
-    setText('assetSerial',a.serial);setText('assetCapacity',a.capacity);setText('assetManufactureYear',a.manufactureYear);
-    setText('assetYear',a.year);setText('assetInstallDate',a.installDate);setText('assetLife',a.life);
-    setText('assetStatus',a.status,'정상');setText('assetImportance',a.importance,'중');setText('assetCheck',a.check);
-    setText('assetHistory',a.history);setText('assetLocation',a.location||a.space);setText('assetOperation',a.operation);
-    setText('assetCycle',a.cycle,'미설정');setText('assetQrId',a.qrId);setText('assetRemarks',a.remarks);
-    setText('lccRepair',a.repair);setText('lccReplace',a.replace);setText('lccRank',a.rank);
-    const risk=$('assetRisk'); if(risk){risk.textContent=clean(a.risk)||'양호';risk.className='risk '+(a.riskClass||'good')}
-    const tl=$('assetTimeline'); if(tl)tl.innerHTML=(a.timeline||[]).map(t=>`<div class="timeline-item"><strong>${esc(t[0])}</strong><span>${esc(t[1])}</span></div>`).join('')||'<div class="empty-state">등록된 이력이 없습니다.</div>';
-  }
-
-  function fillUserCard(a){
-    setText('ufAssetTitle',`${icon(a)} ${a.name}`);
-    const sum=$('ufAssetSummary');if(sum)sum.innerHTML=`<b>${esc(a.facility||'-')} · ${esc(a.space||a.location||'-')}</b><br>위험도 <span class="risk ${esc(a.riskClass||'good')}" style="padding:4px 9px">${esc(a.risk||'양호')}</span> · 최근점검 ${esc(a.check||'-')} · 내용연수 ${esc(a.life||'-')}`;
-    setText('ufYear',a.year);setText('ufCapacity',a.capacity);setText('ufCycle',a.cycle,'미설정');setText('ufQr',a.qrId);
-    const tl=$('ufTimeline');if(tl)tl.innerHTML=(a.timeline||[]).map(t=>`<div class="timeline-item"><strong>${esc(t[0])}</strong><span>${esc(t[1])}</span></div>`).join('')||'<div class="empty-state">등록된 생애주기 이력이 없습니다.</div>';
-  }
-
-  function activate(key){
-    document.querySelectorAll('[data-tfms-asset-key]').forEach(el=>el.classList.toggle('active',keyDec(el.dataset.tfmsAssetKey)===String(key)));
-  }
-
-  window.showAsset=function(key){
-    const data=getData();
-    key=String(key||'');
-    if(!data[key])key=scopedEntries()[0]?.[0]||Object.keys(data)[0]||'';
-    if(!key||!data[key])return;
-    setSelected(key);
-    const a=data[key];
-    fillMain(a);fillUserCard(a);activate(key);
-    window.tfmsEditingAssetDbId=a.dbId||null;
-    try{window.loadAssetForm?.(key)}catch(e){console.warn('TFMS form load',e)}
-  };
-
-  window.renderAssetList=function(){
-    const list=$('assetList');if(!list)return;
-    const items=scopedEntries();
-    if(!items.length){list.innerHTML='<div class="empty-state">등록된 설비가 없습니다.</div>';return}
-    const groups={};
-    items.forEach(([k,a])=>{const g=`${a.facility||'시설 미지정'} · ${a.space||a.location||'공간 미지정'}`;(groups[g]=groups[g]||[]).push([k,a])});
-    list.innerHTML=Object.entries(groups).map(([g,rows])=>`<div style="font-size:12px;color:#667085;font-weight:900;margin:12px 4px 6px">${esc(g)}</div>`+rows.map(([k,a])=>`<button type="button" class="tree-item ${String(k)===String(getSelected())?'active':''}" data-tfms-asset-key="${keyEnc(k)}" style="display:block;width:100%;border:0;background:transparent;text-align:left">${icon(a)} ${esc(a.name)}<br><small style="font-weight:500;color:#667085">${esc(a.risk||'-')} · ${esc(a.cycle||'-')} · ${esc(a.qrId||'-')}</small></button>`).join('')).join('');
-  };
-
-  window.renderUfAssets=function(){
-    const el=$('ufAssetList');if(!el)return;
-    let fac='',space='';try{fac=ufSelectedFacility||'';space=ufSelectedSpace||''}catch(e){}
-    let items=scopedEntries().filter(([,a])=>(!fac||a.facility===fac)&&(!space||(a.space||a.location||'미지정')===space));
-    if(!items.length&&fac)items=scopedEntries().filter(([,a])=>a.facility===fac);
-    el.innerHTML=items.length?items.map(([k,a])=>`<button type="button" class="uf-item ${String(k)===String(getSelected())?'active':''}" data-tfms-asset-key="${keyEnc(k)}">${icon(a)} ${esc(a.name)}<small>${esc(a.risk||'-')} · ${esc(a.cycle||'-')} · ${esc(a.qrId||'-')}</small></button>`).join(''):'<div class="empty-state">해당 공간에 등록된 설비가 없습니다.</div>';
-  };
-
-  const oldNavigator=window.renderUserFlowNavigator;
-  window.renderUserFlowNavigator=function(){
-    try{oldNavigator?.()}catch(e){}
-    try{window.renderUfAssets()}catch(e){}
-    activate(getSelected());
-  };
-
-  document.addEventListener('click',ev=>{
-    const target=ev.target.closest('[data-tfms-asset-key]');
-    if(!target)return;
-    ev.preventDefault();ev.stopPropagation();
-    window.showAsset(keyDec(target.dataset.tfmsAssetKey));
-  },true);
-
-  const legacyReload=window.reloadAssets3313;
-  window.reloadAssets3313=async function(preferredId){
-    if(typeof legacyReload!=='function')return false;
-    const ok=await legacyReload(preferredId);
-    const next=window.assetData||{};
-    setData(next);
-    let key=Object.keys(next).find(k=>next[k]?.dbId===preferredId)||getSelected();
-    if(!next[key])key=Object.keys(next)[0]||'';
-    setSelected(key);
-    try{window.renderAssetList();window.renderUserFlowNavigator()}catch(e){}
-    if(key)window.showAsset(key);
-    return ok;
-  };
-
-  window.deleteSelectedAsset=async function(){
-    const data=getData(), key=getSelected(), a=data[key];
-    if(!a){showToast?.('삭제할 설비를 먼저 선택하세요.');return;}
-    const reason=prompt(isAdmin()?'즉시삭제 사유를 입력하세요.':'삭제요청 사유를 입력하세요.');
-    if(!reason||!reason.trim())return;
-
-    if(isAdmin()){
-      if(!a.dbId){showToast?.('DB 설비가 아니어서 즉시삭제할 수 없습니다.');return;}
-      if(!confirm(`「${a.name}」 설비를 즉시 삭제하시겠습니까?`))return;
-      const client=sb();
-      if(!client){showToast?.('DB 연결 상태를 확인해 주세요.');return;}
-      const res=await client.from('assets').delete().eq('id',a.dbId);
-      if(res.error){console.error('TFMS asset delete',res.error);showToast?.('설비 삭제 실패: '+res.error.message);return;}
-      await window.reloadAssets3313?.();
-      showToast?.('설비를 DB에서 삭제했습니다.');
+    if(!sb){
+      showToast?.('DB 연결 상태를 확인해 주세요.');
       return;
     }
 
+    const profile=window.getTfmsCloudProfile?.() || window.cloudProfile || null;
+    let role=String(profile?.role || '').trim().toLowerCase();
+    if(!role){
+      try{role=String(JSON.parse(sessionStorage.getItem('tfmsSession')||'{}').role||'').trim().toLowerCase();}catch(e){}
+    }
+    if(!role){
+      try{role=String(typeof tfmsRole!=='undefined' ? tfmsRole : '').trim().toLowerCase();}catch(e){}
+    }
+    if(role==='관리자')role='admin';
+
+    const isAdmin=role==='admin';
+    const reason=prompt(isAdmin?'즉시삭제 사유를 입력하세요.':'삭제요청 사유를 입력하세요.');
+    if(!reason||!reason.trim())return;
+
+    if(isAdmin){
+      if(!confirm(`「${a.name}」 설비를 즉시 삭제하시겠습니까?
+삭제 후에는 복구할 수 없습니다.`))return;
+
+      const res=await sb.from('assets').delete().eq('id',a.dbId);
+      if(res.error){
+        console.error('TFMS asset immediate delete',res.error);
+        showToast?.('설비 삭제 실패: '+res.error.message);
+        return;
+      }
+
+      await reloadAssets3313();
+      const firstKey=Object.keys(window.assetData||{})[0]||'';
+      window.selectedAssetKey=firstKey;
+      try{
+        if(typeof selectedAssetKey!=='undefined')selectedAssetKey=firstKey;
+      }catch(e){}
+      if(firstKey)window.showAsset?.(firstKey);
+      else if(document.getElementById('assetDetail'))document.getElementById('assetDetail').innerHTML='<div class="empty-state">등록된 설비가 없습니다.</div>';
+
+      showToast?.('관리자 권한으로 설비를 즉시 삭제했습니다.');
+      return;
+    }
+
+    const request={
+      time:new Date().toLocaleString('ko-KR'),
+      facility:a.facility||'-',
+      detail:`설비관리 / ${a.name}`,
+      user:(profile?.full_name||profile?.username||'현장 담당자'),
+      reason:reason.trim(),
+      status:'승인대기',
+      type:'asset',
+      assetKey:key,
+      assetDbId:a.dbId
+    };
+
     try{
-      const request={
-        time:new Date().toLocaleString('ko-KR'),facility:a.facility||'-',detail:'설비관리 / '+(a.name||key),
-        user:currentName(),reason:reason.trim(),status:'승인대기',assetKey:key,assetDbId:a.dbId||null
-      };
-      if(Array.isArray(window.deleteRequests))window.deleteRequests.unshift(request);
-      else if(typeof deleteRequests!=='undefined'&&Array.isArray(deleteRequests))deleteRequests.unshift(request);
+      if(Array.isArray(deleteRequests))deleteRequests.unshift(request);
+      else if(Array.isArray(window.deleteRequests))window.deleteRequests.unshift(request);
       else window.deleteRequests=[request];
-      try{renderDeleteRequests?.()}catch(e){}
-      try{if(typeof syncDB==='function')syncDB('설비 삭제요청 등록')}catch(e){}
+
+      if(typeof syncDB==='function')syncDB('설비 삭제요청 등록');
+      if(typeof renderDeleteRequests==='function')renderDeleteRequests();
       showToast?.('설비 삭제요청을 등록했습니다.');
     }catch(e){
-      console.error('TFMS delete request',e);
-      showToast?.('삭제요청 등록 중 오류가 발생했습니다.');
-    }
-  };
-
-  const oldShowPage=window.showPage;
-  window.showPage=function(id,btn){
-    const r=oldShowPage?.(id,btn);
-    if(id==='equipment')setTimeout(async()=>{
-      try{await window.reloadAssets3313?.(window.tfmsEditingAssetDbId||null)}catch(e){}
-      const key=getSelected();if(key)window.showAsset(key);
-    },50);
-    return r;
-  };
-
-  function init(){
-    const badge=document.querySelector('.v32-classic-note');if(badge)badge.textContent='v35.1 Stable';
-    const sub=document.querySelector('.logo-title small');if(sub)sub.textContent=sub.textContent.replace(/v33\.0\.2 Pilot Enterprise|v34\.\d+ Stable|v35[^·]*/,'v35.1 Stable');
-    setData(getData());
-    try{window.renderAssetList();window.renderUserFlowNavigator()}catch(e){}
-    const key=getData()[getSelected()]?getSelected():(scopedEntries()[0]?.[0]||Object.keys(getData())[0]);
-    if(key)window.showAsset(key);
-  }
-  window.addEventListener('load',()=>setTimeout(init,400));
-  setTimeout(init,120);
-})();
-</script>
-
-</body>
-</html>
-
-<!--
-
-TFMS v31.2 작업 메모
-
-이번 파일은 v31.1을 기반으로 다음 기능을 구현할 예정입니다.
-- 로고 클릭 시 홈 이동
-- 내 정보 메뉴
-- 비밀번호 변경 화면
-- 로그인 안정화
-- 관리자 사용자관리
-
-(현재는 베이스 파일 복사본입니다.)
-
--->
-
-<script id="tfms-v3307-admin-equipment-delete-fix">
-/* v33.0.7: 관리자 설비 즉시삭제 + 삭제관리 승인/반려 권한 수정 */
-(function(){
-  function sessionV3307(){
-    try{return JSON.parse(sessionStorage.getItem('tfmsSession')||'{}')}catch(e){return {}}
-  }
-  function isAdminV3307(){
-    const s=sessionV3307();
-    return s.role==='admin' || s.role==='관리자' || window.tfmsRole==='admin';
-  }
-  function currentUserNameV3307(){
-    const s=sessionV3307();
-    return s.name || s.userName || s.accountId || '관리자';
-  }
-  function escV3307(v){
-    return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-  }
-  function persistV3307(reason){
-    try{
-      if(typeof syncDB==='function')syncDB(reason||'설비 삭제 처리');
-      else localStorage.setItem('tfms_assetData',JSON.stringify(window.assetData||{}));
-    }catch(e){console.warn('TFMS delete persist',e)}
-    try{if(typeof refreshAllV30==='function')refreshAllV30()}catch(e){}
-    try{if(typeof renderAssetList==='function')renderAssetList()}catch(e){}
-    try{if(typeof renderUfFacilities==='function')renderUfFacilities()}catch(e){}
-    try{if(typeof renderDeleteRequests==='function')renderDeleteRequests()}catch(e){}
-  }
-  function findAssetKeyFromRequestV3307(d){
-    if(d?.assetKey && window.assetData?.[d.assetKey])return d.assetKey;
-    const detail=String(d?.detail||'');
-    const name=detail.includes('/')?detail.split('/').slice(1).join('/').trim():detail.trim();
-    return Object.keys(window.assetData||{}).find(k=>{
-      const a=window.assetData[k]||{};
-      return a.name===name && (!d.facility || d.facility==='-' || a.facility===d.facility);
-    }) || '';
-  }
-  function deleteAssetByKeyV3307(key){
-    if(!key || !window.assetData?.[key])return false;
-    delete window.assetData[key];
-    if(window.selectedAssetKey===key){
-      const next=Object.keys(window.assetData||{})[0]||'';
-      window.selectedAssetKey=next;
-      try{if(next&&typeof showAsset==='function')showAsset(next)}catch(e){}
-    }
-    return true;
-  }
-
-  window.deleteSelectedAsset=function(){
-    const key=window.selectedAssetKey;
-    const a=window.assetData?.[key];
-    if(!key||!a){
-      if(typeof showToast==='function')showToast('삭제할 설비를 먼저 선택하세요.');
-      return;
-    }
-
-    if(isAdminV3307()){
-      const reason=prompt('관리자 즉시삭제 사유를 입력하세요.\n예: 오입력, 중복등록');
-      if(!reason||!reason.trim())return;
-      if(!confirm(`설비 “${a.name||key}”을(를) 즉시 삭제하시겠습니까?\n삭제 후에는 화면에서 복구할 수 없습니다.`))return;
-      deleteAssetByKeyV3307(key);
-      if(Array.isArray(window.deleteRequests)){
-        window.deleteRequests.unshift({
-          time:new Date().toLocaleString('ko-KR'), facility:a.facility||'-',
-          detail:'설비관리 / '+(a.name||key), user:currentUserNameV3307(),
-          reason:reason.trim(), status:'관리자 삭제완료', type:'asset', assetKey:key,
-          reviewer:currentUserNameV3307(), reviewedAt:new Date().toLocaleString('ko-KR')
-        });
-      }
-      persistV3307('관리자 설비 즉시삭제');
-      if(typeof showToast==='function')showToast('관리자 권한으로 설비를 즉시 삭제했습니다.');
-      return;
-    }
-
-    const reason=prompt('삭제요청 사유를 입력하세요. 예: 중복등록, 오입력, 폐기 설비');
-    if(!reason||!reason.trim())return;
-    if(!Array.isArray(window.deleteRequests))window.deleteRequests=[];
-    window.deleteRequests.unshift({
-      time:new Date().toLocaleString('ko-KR'), facility:a.facility||'-',
-      detail:'설비관리 / '+(a.name||key), user:currentUserNameV3307(),
-      reason:reason.trim(), status:'승인대기', type:'asset', assetKey:key
-    });
-    persistV3307('설비 삭제요청 등록');
-    if(typeof showToast==='function')showToast('설비 삭제요청을 등록했습니다.');
-  };
-
-  window.approveDeleteRequestV3307=function(i){
-    if(!isAdminV3307()){
-      if(typeof showToast==='function')showToast('관리자만 삭제요청을 승인할 수 있습니다.');
-      return;
-    }
-    const d=window.deleteRequests?.[i];
-    if(!d||d.status!=='승인대기')return;
-    if(!confirm('이 삭제요청을 승인하고 대상 자료를 삭제하시겠습니까?'))return;
-    let removed=false;
-    if(d.type==='asset'||String(d.detail||'').startsWith('설비관리')){
-      removed=deleteAssetByKeyV3307(findAssetKeyFromRequestV3307(d));
-    }
-    d.status=removed?'승인·삭제완료':'승인완료';
-    d.reviewer=currentUserNameV3307();
-    d.reviewedAt=new Date().toLocaleString('ko-KR');
-    persistV3307('삭제요청 승인');
-    if(typeof showToast==='function')showToast(removed?'삭제요청을 승인하고 설비를 삭제했습니다.':'삭제요청을 승인 처리했습니다.');
-  };
-
-  window.rejectDeleteRequestV3307=function(i){
-    if(!isAdminV3307()){
-      if(typeof showToast==='function')showToast('관리자만 삭제요청을 반려할 수 있습니다.');
-      return;
-    }
-    const d=window.deleteRequests?.[i];
-    if(!d||d.status!=='승인대기')return;
-    const memo=prompt('반려 사유를 입력하세요.');
-    if(!memo||!memo.trim())return;
-    d.status='반려'; d.reviewMemo=memo.trim();
-    d.reviewer=currentUserNameV3307(); d.reviewedAt=new Date().toLocaleString('ko-KR');
-    persistV3307('삭제요청 반려');
-    if(typeof showToast==='function')showToast('삭제요청을 반려했습니다.');
-  };
-
-  window.renderDeleteRequests=function(){
-    const body=document.getElementById('deleteBody');
-    if(!body)return;
-    const list=Array.isArray(window.deleteRequests)?window.deleteRequests:[];
-    const table=body.closest('table');
-    if(table){
-      const tr=table.querySelector('thead tr');
-      if(tr)tr.innerHTML='<th>요청일시</th><th>시설명</th><th>내용</th><th>요청자</th><th>사유</th><th>상태</th><th>처리</th>';
-    }
-    body.innerHTML=list.length?list.map((d,i)=>{
-      const wait=d.status==='승인대기';
-      const cls=wait?'wait':(String(d.status).includes('완료')?'done':'delay');
-      const actions=isAdminV3307()&&wait
-        ? `<button class="small-btn blue" onclick="approveDeleteRequestV3307(${i})">승인·삭제</button> <button class="small-btn red" onclick="rejectDeleteRequestV3307(${i})">반려</button>`
-        : '-';
-      return `<tr><td>${escV3307(d.time)}</td><td>${escV3307(d.facility)}</td><td>${escV3307(d.detail)}</td><td>${escV3307(d.user)}</td><td>${escV3307(d.reason)}</td><td><span class="status ${cls}">${escV3307(d.status)}</span></td><td>${actions}</td></tr>`;
-    }).join(''):'<tr><td colspan="7"><div class="empty-state">삭제 요청된 자료가 없습니다.</div></td></tr>';
-  };
-
-  function applyDeleteUiV3307(){
-    const btn=document.querySelector('#equipment button[onclick="deleteSelectedAsset()"]');
-    if(btn)btn.textContent=isAdminV3307()?'즉시삭제':'삭제요청';
-    const note=document.querySelector('#equipment .asset-form-note');
-    if(note){
-      const base='<b>설비명만 필수 입력</b>이며, 제조사·모델명·제조번호·용량·제조년도·설치일 등 해당하지 않는 항목은 공란으로 등록할 수 있습니다.<br>';
-      note.innerHTML=base+(isAdminV3307()?'관리자는 오입력 설비를 즉시삭제할 수 있으며, 삭제 사유는 삭제관리 이력에 남습니다.':'일반담당자의 삭제는 관리자 승인을 위한 삭제요청으로 접수됩니다.');
-    }
-    window.renderDeleteRequests();
-  }
-
-  const oldShowPageV3307=window.showPage;
-  window.showPage=function(id,btn){
-    const r=oldShowPageV3307?.(id,btn);
-    if(id==='equipment'||id==='deleteManage')setTimeout(applyDeleteUiV3307,30);
-    return r;
-  };
-  document.addEventListener('DOMContentLoaded',()=>setTimeout(applyDeleteUiV3307,300));
-  window.addEventListener('load',()=>setTimeout(applyDeleteUiV3307,500));
-})();
-</script>
-
-<script id="tfms-v3313-asset-master-fix">
-/* TFMS v33.1.3: 설비 전체항목 수정저장 + 저장후 전체 재조회 + undefined 제거 */
-(function(){
-  const el=id=>document.getElementById(id);
-  const val=id=>String(el(id)?.value??'').trim();
-  const nullIfBlank=v=>{v=String(v??'').trim();return (!v||v==='-'||v==='undefined')?null:v;};
-  const sbClient=()=>window.getTfmsSupabaseClient?.();
-  const cloudUser=()=>window.getTfmsCloudUser?.();
-  const makeAssetCode=()=>`AST-${new Date().toISOString().slice(0,10).replaceAll('-','')}-${String(Date.now()).slice(-7)}`;
-  const setValue=(id,v)=>{const e=el(id);if(e)e.value=(v==null||v==='undefined')?'':String(v);};
-  const dateOnly=v=>{const s=String(v??'');return /^\d{4}-\d{2}-\d{2}/.test(s)?s.slice(0,10):'';};
-  const numberOnly=v=>{const s=String(v??'').replace(/[^0-9.]/g,'');return s?Number(s):null;};
-  const riskClass=v=>typeof window.riskClassName==='function'?window.riskClassName(v||'양호'):'good';
-
-  function rowToAsset(row, old={}){
-    const installed=dateOnly(row.installed_on);
-    const life=row.useful_life_years ?? null;
-    const replace=row.replacement_cost ?? null;
-    return {
-      dbId:row.id,
-      assetCode:row.asset_code||'',
-      name:row.name||'설비',
-      facility:row.facility?.name||old.facility||'',
-      space:row.space?.name||row.location_detail||old.space||'기본시설',
-      category:row.category||'',
-      manufacturer:row.manufacturer||'',
-      model:row.model_name||'',
-      serial:row.serial_number||'',
-      capacity:row.capacity||'',
-      manufactureYear:row.manufacture_year??'',
-      installDate:installed,
-      year:installed?installed.slice(0,4):'',
-      life:life==null?'':String(life),
-      location:row.location_detail||'',
-      operation:row.operation_type||'',
-      cycle:row.inspection_cycle||'',
-      status:row.condition_status||'정상',
-      importance:row.importance||'중',
-      risk:row.risk_level||'양호',
-      riskClass:riskClass(row.risk_level||'양호'),
-      check:dateOnly(row.last_inspected_on).replaceAll('-','.'),
-      qrId:row.qr_code||'',
-      remarks:row.remarks||'',
-      replace:replace==null?'':String(replace),
-      history:old.history||'0건', repair:old.repair||'0원', rank:old.rank||'관찰', timeline:old.timeline||[]
-    };
-  }
-
-  async function reloadAssets3313(preferredId){
-    const sb=sbClient();
-    if(!sb)return false;
-    const res=await sb.from('assets')
-      .select('*, facility:facilities(id,name), space:facility_spaces(id,name)')
-      .eq('is_active',true)
-      .order('created_at',{ascending:true});
-    if(res.error){console.error('TFMS assets reload error',res.error);showToast?.('설비목록 재조회 실패: '+res.error.message);return false;}
-    const old=window.assetData||{};
-    const next={};
-    for(const row of (res.data||[])){
-      const key=row.asset_code||String(row.id);
-      const oldOne=Object.values(old).find(a=>a?.dbId===row.id)||old[key]||{};
-      next[key]=rowToAsset(row,oldOne);
-    }
-    window.assetData=next;
-    const preferredKey=Object.keys(next).find(k=>next[k]?.dbId===preferredId);
-    window.selectedAssetKey=preferredKey||window.selectedAssetKey;
-    if(!next[window.selectedAssetKey])window.selectedAssetKey=Object.keys(next)[0]||'';
-    try{window.renderAssetList?.();}catch(e){console.warn(e)}
-    try{window.renderUserFlowNavigator?.();}catch(e){console.warn(e)}
-    try{window.renderQrAssetOptions?.();}catch(e){console.warn(e)}
-    return true;
-  }
-  window.reloadAssets3313=reloadAssets3313;
-
-  window.loadAssetForm=function(key){
-    const a=window.assetData?.[key];
-    if(!a)return;
-    window.tfmsEditingAssetDbId=a.dbId||null;
-    try{window.renderAssetFacilityOptions?.();}catch(e){}
-    setValue('assetInputFacility',a.facility);
-    setValue('assetInputSpace',a.space);
-    setValue('assetInputName',a.name);
-    setValue('assetInputCategory',a.category);
-    setValue('assetInputManufacturer',a.manufacturer);
-    setValue('assetInputModel',a.model);
-    setValue('assetInputSerial',a.serial);
-    setValue('assetInputCapacity',a.capacity);
-    setValue('assetInputManufactureYear',a.manufactureYear);
-    setValue('assetInputYear',a.year);
-    setValue('assetInputInstallDate',a.installDate);
-    setValue('assetInputLife',a.life);
-    setValue('assetInputLocation',a.location);
-    setValue('assetInputOperation',a.operation);
-    setValue('assetInputCycle',a.cycle||'수시');
-    setValue('assetInputStatus',a.status||'정상');
-    setValue('assetInputImportance',a.importance||'중');
-    setValue('assetInputRisk',a.risk||'양호');
-    setValue('assetInputCheck',String(a.check||'').replaceAll('.','-'));
-    setValue('assetInputReplace',a.replace);
-    setValue('assetInputQrId',a.qrId);
-    setValue('assetInputRemarks',a.remarks);
-    setValue('assetInputTimeline',(a.timeline?.[0]?.[0]||'')+(a.timeline?.[0]?.[1]?' / '+a.timeline[0][1]:''));
-    const btn=[...document.querySelectorAll('#equipment button')].find(b=>b.getAttribute('onclick')==='saveAsset()');
-    if(btn)btn.textContent='설비 수정 저장';
-  };
-
-  const previousClear3313=window.clearAssetForm;
-  window.clearAssetForm=function(){
-    try{previousClear3313?.();}catch(e){}
-    ['assetInputSpace','assetInputName','assetInputCategory','assetInputManufacturer','assetInputModel','assetInputSerial','assetInputCapacity','assetInputManufactureYear','assetInputYear','assetInputInstallDate','assetInputLife','assetInputLocation','assetInputOperation','assetInputCheck','assetInputReplace','assetInputQrId','assetInputRemarks','assetInputTimeline'].forEach(id=>setValue(id,''));
-    setValue('assetInputCycle','수시');setValue('assetInputStatus','정상');setValue('assetInputImportance','중');setValue('assetInputRisk','양호');
-    window.tfmsEditingAssetDbId=null;
-    const btn=[...document.querySelectorAll('#equipment button')].find(b=>b.getAttribute('onclick')==='saveAsset()');
-    if(btn)btn.textContent='새 설비 등록';
-  };
-
-  window.saveAsset=async function(){
-    const sb=sbClient(), user=cloudUser();
-    if(!sb||!user){showToast?.('DB 로그인 상태를 확인해 주세요.');return;}
-    const name=val('assetInputName'), facilityName=val('assetInputFacility');
-    if(!name){showToast?.('설비명을 입력하세요.');el('assetInputName')?.focus();return;}
-    if(!facilityName){showToast?.('소속 시설을 선택하세요.');return;}
-
-    const fac=await sb.from('facilities').select('id,name').eq('name',facilityName).maybeSingle();
-    if(fac.error||!fac.data){showToast?.('시설정보를 DB에서 찾지 못했습니다.');return;}
-
-    const existingId=window.tfmsEditingAssetDbId||null;
-    let assetCode='';
-    if(existingId){
-      const current=await sb.from('assets').select('id,asset_code').eq('id',existingId).single();
-      if(current.error||!current.data){showToast?.('수정 대상 설비를 DB에서 찾지 못했습니다. 새로고침 후 다시 선택해 주세요.');return;}
-      assetCode=current.data.asset_code;
-    }else assetCode=makeAssetCode();
-
-    const installDateRaw=dateOnly(val('assetInputInstallDate'));
-    const yearRaw=val('assetInputYear');
-    const installedOn=installDateRaw || (/^(19|20)\d{2}$/.test(yearRaw)?`${yearRaw}-01-01`:null);
-    const manufactureYear=/^(19|20)\d{2}$/.test(val('assetInputManufactureYear'))?Number(val('assetInputManufactureYear')):null;
-    const lastCheck=dateOnly(val('assetInputCheck'))||null;
-    const payload={
-      facility_id:fac.data.id,
-      asset_code:assetCode,
-      name,
-      category:nullIfBlank(val('assetInputCategory')),
-      manufacturer:nullIfBlank(val('assetInputManufacturer')),
-      model_name:nullIfBlank(val('assetInputModel')),
-      serial_number:nullIfBlank(val('assetInputSerial')),
-      capacity:nullIfBlank(val('assetInputCapacity')),
-      manufacture_year:manufactureYear,
-      installed_on:installedOn,
-      useful_life_years:numberOnly(val('assetInputLife')),
-      location_detail:nullIfBlank(val('assetInputLocation')||val('assetInputSpace')),
-      operation_type:nullIfBlank(val('assetInputOperation')),
-      inspection_cycle:nullIfBlank(val('assetInputCycle')),
-      condition_status:val('assetInputStatus')||'정상',
-      importance:val('assetInputImportance')||'중',
-      risk_level:val('assetInputRisk')||'양호',
-      last_inspected_on:lastCheck,
-      replacement_cost:numberOnly(val('assetInputReplace')),
-      qr_code:nullIfBlank(val('assetInputQrId')),
-      remarks:nullIfBlank(val('assetInputRemarks')),
-      is_active:true,
-      updated_at:new Date().toISOString()
-    };
-    if(!existingId)payload.created_by=user.id;
-
-    const result=existingId
-      ? await sb.from('assets').update(payload).eq('id',existingId).select('id').single()
-      : await sb.from('assets').insert(payload).select('id').single();
-    if(result.error){console.error('TFMS asset save v33.1.3',result.error,payload);showToast?.('설비 저장 실패: '+result.error.message);return;}
-
-    await reloadAssets3313(result.data.id);
-    const key=Object.keys(window.assetData||{}).find(k=>window.assetData[k]?.dbId===result.data.id);
-    if(key){window.selectedAssetKey=key;try{window.showAsset?.(key);}catch(e){console.warn(e)}}
-    showToast?.(existingId?'설비의 모든 수정항목을 DB에 저장했습니다.':'새 설비를 DB에 등록했습니다.');
-  };
-
-  window.deleteSelectedAsset=async function(){
-    const sb=sbClient(), user=cloudUser();
-    const a=window.assetData?.[window.selectedAssetKey];
-    if(!a?.dbId){showToast?.('삭제할 DB 설비를 먼저 선택하세요.');return;}
-    const role=String(window.tfmsRole||'user').toLowerCase();
-    const reason=prompt(role==='admin'?'즉시삭제 사유를 입력하세요.':'삭제요청 사유를 입력하세요.');
-    if(!reason)return;
-    if(role==='admin'){
-      if(!confirm(`「${a.name}」 설비를 즉시 삭제하시겠습니까?`))return;
-      const res=await sb.from('assets').delete().eq('id',a.dbId);
-      if(res.error){showToast?.('설비 삭제 실패: '+res.error.message);return;}
-      await reloadAssets3313();
-      if(window.selectedAssetKey)try{window.showAsset?.(window.selectedAssetKey)}catch(e){}
-      showToast?.('설비를 DB에서 삭제했습니다.');
-    }else{
-      /* 기존 Supabase 구조를 변경하지 않고, TFMS 기존 삭제관리 저장소를 사용 */
-      const request={
-        time:new Date().toLocaleString('ko-KR'),
-        facility:a.facility||'-',
-        detail:`설비관리 / ${a.name}`,
-        user:(window.getTfmsCloudProfile?.()?.full_name||window.getTfmsCloudProfile?.()?.username||'현장 담당자'),
-        reason:reason.trim(),
-        status:'승인대기',
-        type:'asset',
-        assetKey:window.selectedAssetKey,
-        assetDbId:a.dbId
-      };
-      try{
-        if(Array.isArray(deleteRequests)) deleteRequests.unshift(request);
-        else if(Array.isArray(window.deleteRequests)) window.deleteRequests.unshift(request);
-        else window.deleteRequests=[request];
-        if(typeof syncDB==='function') syncDB('설비 삭제요청 등록');
-        if(typeof renderDeleteRequests==='function') renderDeleteRequests();
-        showToast?.('설비 삭제요청을 등록했습니다.');
-      }catch(e){
-        console.error('TFMS delete request local save error',e);
-        showToast?.('삭제요청 저장 실패: '+(e?.message||e));
-      }
+      console.error('TFMS delete request local save error',e);
+      showToast?.('삭제요청 저장 실패: '+(e?.message||e));
     }
   };
 
