@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko">
-<!-- TFMS v35 Final Stable | 기존 UI 유지 안정화 기준본 | 2026-07-20 -->
+<!-- TFMS v35.1 Stable | 기존 UI 유지 안정화 기준본 | 2026-07-20 -->
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TFMS v35 Final Stable</title>
+<title>TFMS v35.1 Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -2443,6 +2443,14 @@ try{
   if(assetData.filter){ assetData.filter.facility='태백국민체육센터'; assetData.filter.space='수영장 기계실'; assetData.filter.capacity='수영장 여과설비 1식'; assetData.filter.operation='여과·역세척 운전'; assetData.filter.cycle='주간'; assetData.filter.qrId='TBCC-FILTER-01'; }
   if(assetData.panel){ assetData.panel.facility='태백국민체육센터'; assetData.panel.space='전기실'; assetData.panel.capacity='분전반 1면'; assetData.panel.operation='전기 분배·차단'; assetData.panel.cycle='월간'; assetData.panel.qrId='TBCC-PANEL-01'; }
 }catch(e){console.warn('v29 asset defaults', e);}
+
+
+/* TFMS v35.1 compatibility guard: 이전 패치의 미정의 전역 호출 방지 */
+if(typeof window.renderSampleStatus!=='function') window.renderSampleStatus=function(){};
+if(typeof renderSampleStatus==='undefined') var renderSampleStatus=window.renderSampleStatus;
+if(typeof window.applyLoginUI!=='function') window.applyLoginUI=function(){};
+if(typeof applyLoginUI==='undefined') var applyLoginUI=window.applyLoginUI;
+if(typeof cloudProfile==='undefined') var cloudProfile=window.cloudProfile||null;
 
 changeDept(); changeSubField(); initTodayDates(); previewNextDue(); renderDailyRows(); renderAssetList(); showAsset('boilerA'); renderAccountTables(); renderSampleStatus(); renderFacilityListStable(); applyMenuByRoleStable(); renderCycleTasks(); renderDashboardData(); renderHistory(); renderExportPreview(); renderDeleteRequests(); renderFacilityList(); renderStatsCharts(); renderTodayTasks(); applyRole(); renderUserFlowNavigator(); renderCycleAssetOptions();
 </script>
@@ -6701,7 +6709,7 @@ document.addEventListener('DOMContentLoaded',function(){
 </script>
 
 <script id="tfms-v35-final-stable-controller">
-/* TFMS v35 Final Stable
+/* TFMS v35.1 Stable
    기존 UI 유지 / 설비선택·상세보기·저장·삭제를 마지막 단일 컨트롤러로 고정 */
 (function(){
   'use strict';
@@ -6883,8 +6891,8 @@ document.addEventListener('DOMContentLoaded',function(){
   };
 
   function init(){
-    const badge=document.querySelector('.v32-classic-note');if(badge)badge.textContent='v35 Final Stable';
-    const sub=document.querySelector('.logo-title small');if(sub)sub.textContent=sub.textContent.replace(/v33\.0\.2 Pilot Enterprise|v34\.\d+ Stable|v35[^·]*/,'v35 Final Stable');
+    const badge=document.querySelector('.v32-classic-note');if(badge)badge.textContent='v35.1 Stable';
+    const sub=document.querySelector('.logo-title small');if(sub)sub.textContent=sub.textContent.replace(/v33\.0\.2 Pilot Enterprise|v34\.\d+ Stable|v35[^·]*/,'v35.1 Stable');
     setData(getData());
     try{window.renderAssetList();window.renderUserFlowNavigator()}catch(e){}
     const key=getData()[getSelected()]?getSelected():(scopedEntries()[0]?.[0]||Object.keys(getData())[0]);
@@ -7265,9 +7273,29 @@ TFMS v31.2 작업 메모
       if(window.selectedAssetKey)try{window.showAsset?.(window.selectedAssetKey)}catch(e){}
       showToast?.('설비를 DB에서 삭제했습니다.');
     }else{
-      const res=await sb.from('audit_logs').insert({actor_id:user?.id||null,action_type:'asset_delete_request',target_table:'assets',target_id:a.dbId,detail:`설비관리 / ${a.name} / 사유:${reason}`,created_at:new Date().toISOString()});
-      if(res.error){showToast?.('삭제요청 저장 실패: '+res.error.message);return;}
-      showToast?.('설비 삭제요청을 등록했습니다.');
+      /* 기존 Supabase 구조를 변경하지 않고, TFMS 기존 삭제관리 저장소를 사용 */
+      const request={
+        time:new Date().toLocaleString('ko-KR'),
+        facility:a.facility||'-',
+        detail:`설비관리 / ${a.name}`,
+        user:(window.getTfmsCloudProfile?.()?.full_name||window.getTfmsCloudProfile?.()?.username||'현장 담당자'),
+        reason:reason.trim(),
+        status:'승인대기',
+        type:'asset',
+        assetKey:window.selectedAssetKey,
+        assetDbId:a.dbId
+      };
+      try{
+        if(Array.isArray(deleteRequests)) deleteRequests.unshift(request);
+        else if(Array.isArray(window.deleteRequests)) window.deleteRequests.unshift(request);
+        else window.deleteRequests=[request];
+        if(typeof syncDB==='function') syncDB('설비 삭제요청 등록');
+        if(typeof renderDeleteRequests==='function') renderDeleteRequests();
+        showToast?.('설비 삭제요청을 등록했습니다.');
+      }catch(e){
+        console.error('TFMS delete request local save error',e);
+        showToast?.('삭제요청 저장 실패: '+(e?.message||e));
+      }
     }
   };
 
