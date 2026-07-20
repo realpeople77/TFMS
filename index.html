@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko">
-<!-- TFMS v35.2 Stable | 관리자 즉시삭제 권한판별 수정 | 2026-07-20 -->
+<!-- TFMS v35.3 Stable | 삭제관리 승인·삭제 버튼 복구 | 2026-07-20 -->
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TFMS v35.2 Stable</title>
+<title>TFMS v35.3 Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -6750,5 +6750,168 @@ document.addEventListener('DOMContentLoaded',function(){
     },30);
     return r;
   };
+})();
+</script>
+
+<script id="tfms-v353-delete-manage-controller">
+/* TFMS v35.3 - 삭제관리 처리버튼 및 관리자 권한판별 최종 보완 */
+(function(){
+  'use strict';
+
+  function esc(v){
+    return String(v ?? '').replace(/[&<>"']/g, function(c){
+      return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];
+    });
+  }
+
+  function getRole(){
+    const candidates=[];
+    try{ candidates.push(window.getTfmsCloudProfile?.()?.role); }catch(e){}
+    try{ candidates.push(window.cloudProfile?.role); }catch(e){}
+    try{ candidates.push(window.tfmsRole); }catch(e){}
+    try{ candidates.push(typeof tfmsRole!=='undefined' ? tfmsRole : ''); }catch(e){}
+    try{ candidates.push(JSON.parse(sessionStorage.getItem('tfmsSession')||'{}').role); }catch(e){}
+    try{ candidates.push(JSON.parse(localStorage.getItem('tfmsSession')||'{}').role); }catch(e){}
+
+    let role=String(candidates.find(Boolean)||'').trim().toLowerCase();
+    if(role==='관리자') role='admin';
+    return role;
+  }
+
+  function isAdmin(){
+    return getRole()==='admin';
+  }
+
+  function getRequests(){
+    try{
+      if(Array.isArray(deleteRequests)){
+        window.deleteRequests=deleteRequests;
+        return deleteRequests;
+      }
+    }catch(e){}
+    if(!Array.isArray(window.deleteRequests)) window.deleteRequests=[];
+    return window.deleteRequests;
+  }
+
+  async function approve(i){
+    if(!isAdmin()){
+      window.showToast?.('관리자만 삭제요청을 승인할 수 있습니다.');
+      return;
+    }
+
+    const list=getRequests();
+    const d=list[i];
+    if(!d || d.status!=='승인대기') return;
+    if(!confirm('이 삭제요청을 승인하고 대상 자료를 삭제하시겠습니까?')) return;
+
+    let deleted=false;
+    let message='삭제요청을 승인 처리했습니다.';
+
+    if(d.type==='asset' || String(d.detail||'').startsWith('설비관리')){
+      const sb=window.tfmsSupabase || window.sb || null;
+      if(d.assetDbId && sb){
+        const res=await sb.from('assets').delete().eq('id',d.assetDbId);
+        if(res.error){
+          console.error('TFMS delete approval error',res.error);
+          window.showToast?.('설비 삭제 실패: '+res.error.message);
+          return;
+        }
+        deleted=true;
+      }else{
+        const key=d.assetKey;
+        try{
+          if(key && window.assetData?.[key]){
+            delete window.assetData[key];
+            if(typeof assetData!=='undefined') assetData=window.assetData;
+            deleted=true;
+          }
+        }catch(e){}
+      }
+    }
+
+    d.status=deleted?'승인·삭제완료':'승인완료';
+    d.reviewer=(window.getTfmsCloudProfile?.()?.full_name || window.getTfmsCloudProfile?.()?.username || '관리자');
+    d.reviewedAt=new Date().toLocaleString('ko-KR');
+
+    try{ if(typeof syncDB==='function') syncDB('삭제요청 승인'); }catch(e){}
+    try{ if(typeof window.reloadAssets3313==='function') await window.reloadAssets3313(); }catch(e){}
+    try{ if(typeof renderAssetList==='function') renderAssetList(); }catch(e){}
+    window.renderDeleteRequests();
+    window.showToast?.(deleted?'삭제요청을 승인하고 설비를 삭제했습니다.':message);
+  }
+
+  function reject(i){
+    if(!isAdmin()){
+      window.showToast?.('관리자만 삭제요청을 반려할 수 있습니다.');
+      return;
+    }
+
+    const list=getRequests();
+    const d=list[i];
+    if(!d || d.status!=='승인대기') return;
+
+    const memo=prompt('반려 사유를 입력하세요.');
+    if(!memo || !memo.trim()) return;
+
+    d.status='반려';
+    d.reviewMemo=memo.trim();
+    d.reviewer=(window.getTfmsCloudProfile?.()?.full_name || window.getTfmsCloudProfile?.()?.username || '관리자');
+    d.reviewedAt=new Date().toLocaleString('ko-KR');
+
+    try{ if(typeof syncDB==='function') syncDB('삭제요청 반려'); }catch(e){}
+    window.renderDeleteRequests();
+    window.showToast?.('삭제요청을 반려했습니다.');
+  }
+
+  window.approveDeleteRequestV353=approve;
+  window.rejectDeleteRequestV353=reject;
+
+  window.renderDeleteRequests=function(){
+    const body=document.getElementById('deleteBody');
+    if(!body) return;
+
+    const list=getRequests();
+    const table=body.closest('table');
+    const head=table?.querySelector('thead tr');
+    if(head){
+      head.innerHTML='<th>요청일시</th><th>시설명</th><th>내용</th><th>요청자</th><th>사유</th><th>상태</th><th>처리</th>';
+    }
+
+    if(!list.length){
+      body.innerHTML='<tr><td colspan="7"><div class="empty-state">삭제 요청된 자료가 없습니다.</div></td></tr>';
+      return;
+    }
+
+    const admin=isAdmin();
+    body.innerHTML=list.map(function(d,i){
+      const waiting=d.status==='승인대기';
+      const cls=waiting?'wait':(String(d.status||'').includes('완료')?'done':'delay');
+      const actions=(admin && waiting)
+        ? '<button class="small-btn blue" onclick="approveDeleteRequestV353('+i+')">승인·삭제</button> '+
+          '<button class="small-btn red" onclick="rejectDeleteRequestV353('+i+')">반려</button>'
+        : '-';
+
+      return '<tr>'+
+        '<td>'+esc(d.time)+'</td>'+
+        '<td>'+esc(d.facility)+'</td>'+
+        '<td>'+esc(d.detail)+'</td>'+
+        '<td>'+esc(d.user)+'</td>'+
+        '<td>'+esc(d.reason)+'</td>'+
+        '<td><span class="status '+cls+'">'+esc(d.status)+'</span></td>'+
+        '<td>'+actions+'</td>'+
+      '</tr>';
+    }).join('');
+  };
+
+  const previousShowPage=window.showPage;
+  window.showPage=function(id,btn){
+    const result=previousShowPage?.(id,btn);
+    if(id==='deleteManage') setTimeout(window.renderDeleteRequests,30);
+    return result;
+  };
+
+  document.addEventListener('DOMContentLoaded', function(){
+    setTimeout(window.renderDeleteRequests,100);
+  });
 })();
 </script>
