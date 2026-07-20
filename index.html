@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko">
-<!-- TFMS v33.1.0 | 운영 안정화 기준본 | 2026-07-20 -->
+<!-- TFMS v33.1.4 | 상세보기·DB 재조회 통합수정 | 2026-07-20 -->
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TFMS v33.1.0 - 운영 안정화 버전</title>
+<title>TFMS v33.1.4 - 상세보기·DB 재조회 통합수정</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -6933,17 +6933,21 @@ TFMS v31.2 작업 메모
       .eq('is_active',true)
       .order('created_at',{ascending:true});
     if(res.error){console.error('TFMS assets reload error',res.error);showToast?.('설비목록 재조회 실패: '+res.error.message);return false;}
-    const old=window.assetData||{};
+    const old=(typeof assetData!=='undefined'&&assetData)||window.assetData||{};
     const next={};
     for(const row of (res.data||[])){
       const key=row.asset_code||String(row.id);
       const oldOne=Object.values(old).find(a=>a?.dbId===row.id)||old[key]||{};
       next[key]=rowToAsset(row,oldOne);
     }
-    window.assetData=next;
-    const preferredKey=Object.keys(next).find(k=>next[k]?.dbId===preferredId);
-    window.selectedAssetKey=preferredKey||window.selectedAssetKey;
-    if(!next[window.selectedAssetKey])window.selectedAssetKey=Object.keys(next)[0]||'';
+    // 중요: 기존 화면 함수들은 전역 let assetData / selectedAssetKey를 참조한다.
+    // window 별칭만 교체하면 DB 재조회 결과와 상세보기 참조가 분리되므로 둘을 동일 객체로 맞춘다.
+    assetData=next;
+    window.assetData=assetData;
+    const preferredKey=Object.keys(assetData).find(k=>assetData[k]?.dbId===preferredId);
+    selectedAssetKey=preferredKey||selectedAssetKey;
+    if(!assetData[selectedAssetKey])selectedAssetKey=Object.keys(assetData)[0]||'';
+    window.selectedAssetKey=selectedAssetKey;
     try{window.renderAssetList?.();}catch(e){console.warn(e)}
     try{window.renderUserFlowNavigator?.();}catch(e){console.warn(e)}
     try{window.renderQrAssetOptions?.();}catch(e){console.warn(e)}
@@ -6952,7 +6956,7 @@ TFMS v31.2 작업 메모
   window.reloadAssets3313=reloadAssets3313;
 
   window.loadAssetForm=function(key){
-    const a=window.assetData?.[key];
+    const a=assetData?.[key];
     if(!a)return;
     window.tfmsEditingAssetDbId=a.dbId||null;
     try{window.renderAssetFacilityOptions?.();}catch(e){}
@@ -7049,14 +7053,14 @@ TFMS v31.2 작업 메모
     if(result.error){console.error('TFMS asset save v33.1.3',result.error,payload);showToast?.('설비 저장 실패: '+result.error.message);return;}
 
     await reloadAssets3313(result.data.id);
-    const key=Object.keys(window.assetData||{}).find(k=>window.assetData[k]?.dbId===result.data.id);
-    if(key){window.selectedAssetKey=key;try{window.showAsset?.(key);}catch(e){console.warn(e)}}
+    const key=Object.keys(assetData||{}).find(k=>assetData[k]?.dbId===result.data.id);
+    if(key){selectedAssetKey=key;window.selectedAssetKey=key;try{window.showAsset?.(key);}catch(e){console.warn(e)}}
     showToast?.(existingId?'설비의 모든 수정항목을 DB에 저장했습니다.':'새 설비를 DB에 등록했습니다.');
   };
 
   window.deleteSelectedAsset=async function(){
     const sb=sbClient(), user=cloudUser();
-    const a=window.assetData?.[window.selectedAssetKey];
+    const a=assetData?.[selectedAssetKey];
     if(!a?.dbId){showToast?.('삭제할 DB 설비를 먼저 선택하세요.');return;}
     const role=String(window.tfmsRole||'user').toLowerCase();
     const reason=prompt(role==='admin'?'즉시삭제 사유를 입력하세요.':'삭제요청 사유를 입력하세요.');
@@ -7066,7 +7070,7 @@ TFMS v31.2 작업 메모
       const res=await sb.from('assets').delete().eq('id',a.dbId);
       if(res.error){showToast?.('설비 삭제 실패: '+res.error.message);return;}
       await reloadAssets3313();
-      if(window.selectedAssetKey)try{window.showAsset?.(window.selectedAssetKey)}catch(e){}
+      if(selectedAssetKey)try{window.showAsset?.(selectedAssetKey)}catch(e){}
       showToast?.('설비를 DB에서 삭제했습니다.');
     }else{
       const res=await sb.from('audit_logs').insert({actor_id:user?.id||null,action_type:'asset_delete_request',target_table:'assets',target_id:a.dbId,detail:`설비관리 / ${a.name} / 사유:${reason}`,created_at:new Date().toISOString()});
@@ -7089,9 +7093,88 @@ TFMS v31.2 작업 메모
     const r=oldShowPage3313?.(id,btn);
     if(id==='equipment')setTimeout(async()=>{
       await reloadAssets3313(window.tfmsEditingAssetDbId||null);
-      if(window.selectedAssetKey)window.showAsset?.(window.selectedAssetKey);
+      if(selectedAssetKey)window.showAsset?.(selectedAssetKey);
     },30);
     return r;
   };
 })();
 </script>
+
+<script id="tfms-v3314-asset-detail-reload-bridge">
+/* TFMS v33.1.4: 설비 상세보기 렌더링 + DB 재조회 참조 통합 */
+(function(){
+  const byId=id=>document.getElementById(id);
+  const display=v=>{
+    const s=String(v??'').trim();
+    return (!s||s==='undefined'||s==='null')?'-':s;
+  };
+  const lifeText=v=>{
+    const s=display(v);
+    return s==='-'?s:(/년$/.test(s)?s:`${s}년`);
+  };
+  const moneyText=v=>{
+    const s=display(v);
+    if(s==='-')return s;
+    if(/원$/.test(s))return s;
+    const n=Number(String(s).replace(/[^0-9.-]/g,''));
+    return Number.isFinite(n)?`${n.toLocaleString('ko-KR')}원`:s;
+  };
+  const setText=(id,v)=>{const e=byId(id);if(e)e.textContent=display(v);};
+
+  window.showAsset=function(key,clickedEl){
+    if(!assetData?.[key]) key=Object.keys(assetData||{})[0];
+    if(!key||!assetData?.[key])return;
+    selectedAssetKey=key;
+    window.selectedAssetKey=key;
+    window.assetData=assetData;
+    const a=assetData[key];
+
+    document.querySelectorAll('#assetList .tree-item').forEach(node=>node.classList.remove('active'));
+    if(clickedEl?.classList)clickedEl.classList.add('active');
+    else document.querySelector(`#assetList .tree-item[data-key="${CSS.escape(String(key))}"]`)?.classList.add('active');
+
+    setText('assetName',a.name);
+    setText('assetManufacturer',a.manufacturer);
+    setText('assetModel',a.model);
+    setText('assetSerial',a.serial);
+    setText('assetCapacity',a.capacity);
+    setText('assetManufactureYear',a.manufactureYear);
+    setText('assetYear',a.year||String(a.installDate||'').slice(0,4));
+    setText('assetInstallDate',a.installDate);
+    const lifeEl=byId('assetLife'); if(lifeEl)lifeEl.textContent=lifeText(a.life);
+    setText('assetStatus',a.status||'정상');
+    setText('assetImportance',a.importance||'중');
+    setText('assetCheck',a.check);
+    setText('assetHistory',a.history);
+    setText('assetLocation',a.location||a.space);
+    setText('assetOperation',a.operation);
+    setText('assetCycle',a.cycle);
+    setText('assetQrId',a.qrId||a.assetCode);
+    setText('assetRemarks',a.remarks);
+    setText('lccRepair',a.repair);
+    const replaceEl=byId('lccReplace'); if(replaceEl)replaceEl.textContent=moneyText(a.replace);
+    setText('lccRank',a.rank);
+
+    const risk=byId('assetRisk');
+    if(risk){risk.textContent=display(a.risk);risk.className=`risk ${a.riskClass||'good'}`;}
+    const timeline=byId('assetTimeline');
+    if(timeline){
+      const rows=Array.isArray(a.timeline)?a.timeline:[];
+      timeline.innerHTML=rows.length?rows.map(t=>`<div class="timeline-item"><strong>${display(t?.[0])}</strong><span>${display(t?.[1])}</span></div>`).join(''):'<div class="empty-state">등록된 이력이 없습니다.</div>';
+    }
+    try{window.renderUserFlowNavigator?.();}catch(e){console.warn(e)}
+  };
+
+  const reload3313=window.reloadAssets3313;
+  if(typeof reload3313==='function'){
+    window.reloadAssets3313=async function(preferredId){
+      const ok=await reload3313(preferredId);
+      window.assetData=assetData;
+      window.selectedAssetKey=selectedAssetKey;
+      if(ok&&selectedAssetKey)window.showAsset(selectedAssetKey);
+      return ok;
+    };
+  }
+})();
+</script>
+
