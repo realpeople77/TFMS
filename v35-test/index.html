@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>TFMS v35 Clean Pilot</title>
+  <link rel="stylesheet" href="css/app.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <div id="toast" class="toast"></div>
+
+  <section id="loginView" class="login-view">
+    <div class="login-card">
+      <div class="brand">TFMS <span>v35 Clean Pilot</span></div>
+      <h1>로그인</h1>
+      <p>기존 TFMS 계정으로 로그인합니다.</p>
+      <label>아이디<input id="loginId" autocomplete="username"></label>
+      <label>비밀번호<input id="loginPassword" type="password" autocomplete="current-password"></label>
+      <div id="loginError" class="error hidden"></div>
+      <button id="loginBtn" class="primary">로그인</button>
+      <div class="small-note">이 테스트본은 설비관리 안정화 기능만 포함합니다.</div>
+    </div>
+  </section>
+
+  <div id="appView" class="hidden">
+    <header>
+      <div>
+        <strong>TFMS</strong><span class="version">v35 Clean Pilot</span>
+      </div>
+      <div class="userbar"><span id="userLabel"></span><button id="logoutBtn">로그아웃</button></div>
+    </header>
+
+    <main>
+      <section class="toolbar panel">
+        <div>
+          <h1>설비관리 안정화 테스트</h1>
+          <p>목록 선택 → 상세보기 → 수정 저장 → DB 재조회 → 삭제 기능을 검증합니다.</p>
+        </div>
+        <div class="toolbar-actions">
+          <button id="refreshBtn">DB 새로고침</button>
+          <button id="newBtn">새 설비</button>
+        </div>
+      </section>
+
+      <section class="layout">
+        <aside class="panel">
+          <h2>설비 목록</h2>
+          <input id="searchInput" placeholder="설비명·시설·QR 검색">
+          <div id="assetList" class="asset-list"></div>
+        </aside>
+
+        <div class="content">
+          <section class="panel">
+            <div class="detail-head">
+              <div><h2 id="detailName">설비를 선택하세요</h2><div id="detailMeta" class="muted">-</div></div>
+              <span id="detailRisk" class="badge">-</span>
+            </div>
+            <div id="detailGrid" class="detail-grid"></div>
+          </section>
+
+          <section class="panel">
+            <div class="section-head"><h2>설비 등록/수정</h2><span id="editMode" class="mode">신규</span></div>
+            <form id="assetForm">
+              <input id="assetId" type="hidden">
+              <div class="form-grid">
+                <label>소속 시설 *<select id="facilityId" required></select></label>
+                <label>설비명 *<input id="name" required></label>
+                <label>설비분류<input id="category"></label>
+                <label>제조사<input id="manufacturer"></label>
+                <label>모델명<input id="modelName"></label>
+                <label>제조번호<input id="serialNumber"></label>
+                <label>규모/용량<input id="capacity"></label>
+                <label>제조년도<input id="manufactureYear" inputmode="numeric"></label>
+                <label>설치일<input id="installedOn" type="date"></label>
+                <label>내용연수<input id="usefulLifeYears" inputmode="numeric"></label>
+                <label>설치위치<input id="locationDetail"></label>
+                <label>작동형태<input id="operationType"></label>
+                <label>점검주기<select id="inspectionCycle"><option>수시</option><option>일일</option><option>주간</option><option>월간</option><option>분기</option><option>반기</option><option>연간</option></select></label>
+                <label>관리상태<select id="conditionStatus"><option>정상</option><option>주의</option><option>고장</option><option>사용중지</option></select></label>
+                <label>중요도<select id="importance"><option>상</option><option selected>중</option><option>하</option></select></label>
+                <label>위험도<select id="riskLevel"><option selected>양호</option><option>주의</option><option>위험</option></select></label>
+                <label>최근점검일<input id="lastInspectedOn" type="date"></label>
+                <label>예상교체비<input id="replacementCost" inputmode="numeric"></label>
+                <label>QR관리번호<input id="qrCode"></label>
+                <label class="wide">비고<textarea id="remarks"></textarea></label>
+              </div>
+              <div class="form-actions">
+                <button type="button" id="deleteBtn" class="danger">삭제</button>
+                <button type="button" id="cancelBtn">입력 초기화</button>
+                <button type="submit" class="primary">DB 저장</button>
+              </div>
+            </form>
+          </section>
+
+          <section id="requestPanel" class="panel hidden">
+            <h2>삭제요청 관리</h2>
+            <div id="requestList"></div>
+          </section>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
