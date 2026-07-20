@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko">
-<!-- TFMS v33.1.2 | 설비수정 asset_code 고유값 오류 수정 | 2026-07-20 -->
+<!-- TFMS v33.1.0 | 운영 안정화 기준본 | 2026-07-20 -->
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TFMS v33.1.2 - 설비수정 고유코드 오류 수정</title>
+<title>TFMS v33.1.0 - 운영 안정화 버전</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -361,7 +361,7 @@ nav .nav[onclick*='"qrCheck"']{
   <div class="top">
     <div class="logo" role="button" tabindex="0" aria-label="대시보드 홈으로 이동" onclick="goHome()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goHome();}">
       <img src="data:image/png;base64,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" alt="태백시시설관리공단 CI">
-      <div class="logo-title">TFMS <span class="v32-classic-note">v33.1.2 Pilot</span><small>시설 유지관리 이력관리 시스템 · v33.1.2 Pilot Enterprise</small></div>
+      <div class="logo-title">TFMS <span class="v32-classic-note">v33.0.2 Pilot</span><small>시설 유지관리 이력관리 시스템 · v33.0.2 Pilot Enterprise</small></div>
     </div>
     <div class="user">
       <span id="cloudTopBadge" class="current-role-badge" style="background:#fff7ed;color:#9a3412;border-color:#fed7aa">로컬 저장</span><span>🔔</span><button id="topUserLabel" class="link-btn" style="text-decoration:none" onclick="navTo('myPage')">👤 로그인 사용자</button><span id="roleBadge" class="current-role-badge">권한 확인 중</span><button class="logout" id="topLoginBtn" onclick="toggleTopLogin()">로그아웃</button>
@@ -3058,7 +3058,7 @@ loadDB(); refreshAllV30();
     aRes.data.forEach(a=>{
       const key=a.asset_code||a.id;
       assetData[key]={
-        dbId:a.id,assetCode:a.asset_code,name:a.name,facility:a.facility?.name||'',space:a.space?.name||'기본시설',
+        dbId:a.id,name:a.name,facility:a.facility?.name||'',space:a.space?.name||'기본시설',
         category:a.category||'기타',year:a.installed_on?String(a.installed_on).slice(0,4):'-',
         risk:a.risk_level||'보통',cycle:'미설정',qrId:a.qr_code||'-',
         status:a.condition_status||'정상',manufacturer:a.manufacturer||'',model:a.model_name||''
@@ -6584,23 +6584,9 @@ document.addEventListener('DOMContentLoaded',function(){
     const lifeRaw=value('assetInputLife').replace(/[^0-9.]/g,'');
     const replaceRaw=value('assetInputReplace').replace(/[^0-9]/g,'');
     const qr=blankToNull(value('assetInputQrId'));
-
-    // 수정 시 asset_code는 화면의 QR값이나 임시값을 사용하지 않고
-    // DB 원본값을 다시 조회하여 그대로 유지한다.
-    let existingAssetCode=null;
-    if(existingId){
-      const codeRes=await sb.from('assets').select('asset_code').eq('id',existingId).single();
-      if(codeRes.error||!codeRes.data?.asset_code){
-        console.error('TFMS asset_code lookup error',codeRes.error);
-        showToast('기존 설비코드를 확인하지 못했습니다. 화면을 새로고침한 뒤 다시 시도하세요.');
-        return;
-      }
-      existingAssetCode=codeRes.data.asset_code;
-    }
-
     const payload={
       facility_id:facRes.data.id,
-      asset_code:existingId?existingAssetCode:makeCode(),
+      asset_code:existingId?(editingAsset?.assetCode||editingAsset?.qrId||makeCode()):makeCode(),
       name,
       category:blankToNull(value('assetInputCategory')),
       manufacturer:blankToNull(value('assetInputManufacturer')),
@@ -6888,5 +6874,224 @@ TFMS v31.2 작업 메모
   };
   document.addEventListener('DOMContentLoaded',()=>setTimeout(applyDeleteUiV3307,300));
   window.addEventListener('load',()=>setTimeout(applyDeleteUiV3307,500));
+})();
+</script>
+
+<script id="tfms-v3313-asset-master-fix">
+/* TFMS v33.1.3: 설비 전체항목 수정저장 + 저장후 전체 재조회 + undefined 제거 */
+(function(){
+  const el=id=>document.getElementById(id);
+  const val=id=>String(el(id)?.value??'').trim();
+  const nullIfBlank=v=>{v=String(v??'').trim();return (!v||v==='-'||v==='undefined')?null:v;};
+  const sbClient=()=>window.getTfmsSupabaseClient?.();
+  const cloudUser=()=>window.getTfmsCloudUser?.();
+  const makeAssetCode=()=>`AST-${new Date().toISOString().slice(0,10).replaceAll('-','')}-${String(Date.now()).slice(-7)}`;
+  const setValue=(id,v)=>{const e=el(id);if(e)e.value=(v==null||v==='undefined')?'':String(v);};
+  const dateOnly=v=>{const s=String(v??'');return /^\d{4}-\d{2}-\d{2}/.test(s)?s.slice(0,10):'';};
+  const numberOnly=v=>{const s=String(v??'').replace(/[^0-9.]/g,'');return s?Number(s):null;};
+  const riskClass=v=>typeof window.riskClassName==='function'?window.riskClassName(v||'양호'):'good';
+
+  function rowToAsset(row, old={}){
+    const installed=dateOnly(row.installed_on);
+    const life=row.useful_life_years ?? null;
+    const replace=row.replacement_cost ?? null;
+    return {
+      dbId:row.id,
+      assetCode:row.asset_code||'',
+      name:row.name||'설비',
+      facility:row.facility?.name||old.facility||'',
+      space:row.space?.name||row.location_detail||old.space||'기본시설',
+      category:row.category||'',
+      manufacturer:row.manufacturer||'',
+      model:row.model_name||'',
+      serial:row.serial_number||'',
+      capacity:row.capacity||'',
+      manufactureYear:row.manufacture_year??'',
+      installDate:installed,
+      year:installed?installed.slice(0,4):'',
+      life:life==null?'':String(life),
+      location:row.location_detail||'',
+      operation:row.operation_type||'',
+      cycle:row.inspection_cycle||'',
+      status:row.condition_status||'정상',
+      importance:row.importance||'중',
+      risk:row.risk_level||'양호',
+      riskClass:riskClass(row.risk_level||'양호'),
+      check:dateOnly(row.last_inspected_on).replaceAll('-','.'),
+      qrId:row.qr_code||'',
+      remarks:row.remarks||'',
+      replace:replace==null?'':String(replace),
+      history:old.history||'0건', repair:old.repair||'0원', rank:old.rank||'관찰', timeline:old.timeline||[]
+    };
+  }
+
+  async function reloadAssets3313(preferredId){
+    const sb=sbClient();
+    if(!sb)return false;
+    const res=await sb.from('assets')
+      .select('*, facility:facilities(id,name), space:facility_spaces(id,name)')
+      .eq('is_active',true)
+      .order('created_at',{ascending:true});
+    if(res.error){console.error('TFMS assets reload error',res.error);showToast?.('설비목록 재조회 실패: '+res.error.message);return false;}
+    const old=window.assetData||{};
+    const next={};
+    for(const row of (res.data||[])){
+      const key=row.asset_code||String(row.id);
+      const oldOne=Object.values(old).find(a=>a?.dbId===row.id)||old[key]||{};
+      next[key]=rowToAsset(row,oldOne);
+    }
+    window.assetData=next;
+    const preferredKey=Object.keys(next).find(k=>next[k]?.dbId===preferredId);
+    window.selectedAssetKey=preferredKey||window.selectedAssetKey;
+    if(!next[window.selectedAssetKey])window.selectedAssetKey=Object.keys(next)[0]||'';
+    try{window.renderAssetList?.();}catch(e){console.warn(e)}
+    try{window.renderUserFlowNavigator?.();}catch(e){console.warn(e)}
+    try{window.renderQrAssetOptions?.();}catch(e){console.warn(e)}
+    return true;
+  }
+  window.reloadAssets3313=reloadAssets3313;
+
+  window.loadAssetForm=function(key){
+    const a=window.assetData?.[key];
+    if(!a)return;
+    window.tfmsEditingAssetDbId=a.dbId||null;
+    try{window.renderAssetFacilityOptions?.();}catch(e){}
+    setValue('assetInputFacility',a.facility);
+    setValue('assetInputSpace',a.space);
+    setValue('assetInputName',a.name);
+    setValue('assetInputCategory',a.category);
+    setValue('assetInputManufacturer',a.manufacturer);
+    setValue('assetInputModel',a.model);
+    setValue('assetInputSerial',a.serial);
+    setValue('assetInputCapacity',a.capacity);
+    setValue('assetInputManufactureYear',a.manufactureYear);
+    setValue('assetInputYear',a.year);
+    setValue('assetInputInstallDate',a.installDate);
+    setValue('assetInputLife',a.life);
+    setValue('assetInputLocation',a.location);
+    setValue('assetInputOperation',a.operation);
+    setValue('assetInputCycle',a.cycle||'수시');
+    setValue('assetInputStatus',a.status||'정상');
+    setValue('assetInputImportance',a.importance||'중');
+    setValue('assetInputRisk',a.risk||'양호');
+    setValue('assetInputCheck',String(a.check||'').replaceAll('.','-'));
+    setValue('assetInputReplace',a.replace);
+    setValue('assetInputQrId',a.qrId);
+    setValue('assetInputRemarks',a.remarks);
+    setValue('assetInputTimeline',(a.timeline?.[0]?.[0]||'')+(a.timeline?.[0]?.[1]?' / '+a.timeline[0][1]:''));
+    const btn=[...document.querySelectorAll('#equipment button')].find(b=>b.getAttribute('onclick')==='saveAsset()');
+    if(btn)btn.textContent='설비 수정 저장';
+  };
+
+  const previousClear3313=window.clearAssetForm;
+  window.clearAssetForm=function(){
+    try{previousClear3313?.();}catch(e){}
+    ['assetInputSpace','assetInputName','assetInputCategory','assetInputManufacturer','assetInputModel','assetInputSerial','assetInputCapacity','assetInputManufactureYear','assetInputYear','assetInputInstallDate','assetInputLife','assetInputLocation','assetInputOperation','assetInputCheck','assetInputReplace','assetInputQrId','assetInputRemarks','assetInputTimeline'].forEach(id=>setValue(id,''));
+    setValue('assetInputCycle','수시');setValue('assetInputStatus','정상');setValue('assetInputImportance','중');setValue('assetInputRisk','양호');
+    window.tfmsEditingAssetDbId=null;
+    const btn=[...document.querySelectorAll('#equipment button')].find(b=>b.getAttribute('onclick')==='saveAsset()');
+    if(btn)btn.textContent='새 설비 등록';
+  };
+
+  window.saveAsset=async function(){
+    const sb=sbClient(), user=cloudUser();
+    if(!sb||!user){showToast?.('DB 로그인 상태를 확인해 주세요.');return;}
+    const name=val('assetInputName'), facilityName=val('assetInputFacility');
+    if(!name){showToast?.('설비명을 입력하세요.');el('assetInputName')?.focus();return;}
+    if(!facilityName){showToast?.('소속 시설을 선택하세요.');return;}
+
+    const fac=await sb.from('facilities').select('id,name').eq('name',facilityName).maybeSingle();
+    if(fac.error||!fac.data){showToast?.('시설정보를 DB에서 찾지 못했습니다.');return;}
+
+    const existingId=window.tfmsEditingAssetDbId||null;
+    let assetCode='';
+    if(existingId){
+      const current=await sb.from('assets').select('id,asset_code').eq('id',existingId).single();
+      if(current.error||!current.data){showToast?.('수정 대상 설비를 DB에서 찾지 못했습니다. 새로고침 후 다시 선택해 주세요.');return;}
+      assetCode=current.data.asset_code;
+    }else assetCode=makeAssetCode();
+
+    const installDateRaw=dateOnly(val('assetInputInstallDate'));
+    const yearRaw=val('assetInputYear');
+    const installedOn=installDateRaw || (/^(19|20)\d{2}$/.test(yearRaw)?`${yearRaw}-01-01`:null);
+    const manufactureYear=/^(19|20)\d{2}$/.test(val('assetInputManufactureYear'))?Number(val('assetInputManufactureYear')):null;
+    const lastCheck=dateOnly(val('assetInputCheck'))||null;
+    const payload={
+      facility_id:fac.data.id,
+      asset_code:assetCode,
+      name,
+      category:nullIfBlank(val('assetInputCategory')),
+      manufacturer:nullIfBlank(val('assetInputManufacturer')),
+      model_name:nullIfBlank(val('assetInputModel')),
+      serial_number:nullIfBlank(val('assetInputSerial')),
+      capacity:nullIfBlank(val('assetInputCapacity')),
+      manufacture_year:manufactureYear,
+      installed_on:installedOn,
+      useful_life_years:numberOnly(val('assetInputLife')),
+      location_detail:nullIfBlank(val('assetInputLocation')||val('assetInputSpace')),
+      operation_type:nullIfBlank(val('assetInputOperation')),
+      inspection_cycle:nullIfBlank(val('assetInputCycle')),
+      condition_status:val('assetInputStatus')||'정상',
+      importance:val('assetInputImportance')||'중',
+      risk_level:val('assetInputRisk')||'양호',
+      last_inspected_on:lastCheck,
+      replacement_cost:numberOnly(val('assetInputReplace')),
+      qr_code:nullIfBlank(val('assetInputQrId')),
+      remarks:nullIfBlank(val('assetInputRemarks')),
+      is_active:true,
+      updated_at:new Date().toISOString()
+    };
+    if(!existingId)payload.created_by=user.id;
+
+    const result=existingId
+      ? await sb.from('assets').update(payload).eq('id',existingId).select('id').single()
+      : await sb.from('assets').insert(payload).select('id').single();
+    if(result.error){console.error('TFMS asset save v33.1.3',result.error,payload);showToast?.('설비 저장 실패: '+result.error.message);return;}
+
+    await reloadAssets3313(result.data.id);
+    const key=Object.keys(window.assetData||{}).find(k=>window.assetData[k]?.dbId===result.data.id);
+    if(key){window.selectedAssetKey=key;try{window.showAsset?.(key);}catch(e){console.warn(e)}}
+    showToast?.(existingId?'설비의 모든 수정항목을 DB에 저장했습니다.':'새 설비를 DB에 등록했습니다.');
+  };
+
+  window.deleteSelectedAsset=async function(){
+    const sb=sbClient(), user=cloudUser();
+    const a=window.assetData?.[window.selectedAssetKey];
+    if(!a?.dbId){showToast?.('삭제할 DB 설비를 먼저 선택하세요.');return;}
+    const role=String(window.tfmsRole||'user').toLowerCase();
+    const reason=prompt(role==='admin'?'즉시삭제 사유를 입력하세요.':'삭제요청 사유를 입력하세요.');
+    if(!reason)return;
+    if(role==='admin'){
+      if(!confirm(`「${a.name}」 설비를 즉시 삭제하시겠습니까?`))return;
+      const res=await sb.from('assets').delete().eq('id',a.dbId);
+      if(res.error){showToast?.('설비 삭제 실패: '+res.error.message);return;}
+      await reloadAssets3313();
+      if(window.selectedAssetKey)try{window.showAsset?.(window.selectedAssetKey)}catch(e){}
+      showToast?.('설비를 DB에서 삭제했습니다.');
+    }else{
+      const res=await sb.from('audit_logs').insert({actor_id:user?.id||null,action_type:'asset_delete_request',target_table:'assets',target_id:a.dbId,detail:`설비관리 / ${a.name} / 사유:${reason}`,created_at:new Date().toISOString()});
+      if(res.error){showToast?.('삭제요청 저장 실패: '+res.error.message);return;}
+      showToast?.('설비 삭제요청을 등록했습니다.');
+    }
+  };
+
+  const oldEnterprise=window.loadEnterpriseData;
+  if(typeof oldEnterprise==='function'){
+    window.loadEnterpriseData=async function(){
+      const r=await oldEnterprise.apply(this,arguments);
+      await reloadAssets3313(window.tfmsEditingAssetDbId||null);
+      return r;
+    };
+  }
+
+  const oldShowPage3313=window.showPage;
+  window.showPage=function(id,btn){
+    const r=oldShowPage3313?.(id,btn);
+    if(id==='equipment')setTimeout(async()=>{
+      await reloadAssets3313(window.tfmsEditingAssetDbId||null);
+      if(window.selectedAssetKey)window.showAsset?.(window.selectedAssetKey);
+    },30);
+    return r;
+  };
 })();
 </script>
