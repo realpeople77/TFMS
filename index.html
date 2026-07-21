@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko">
-<!-- TFMS v35.5 Stable | 삭제관리 승인·삭제 버튼 복구 | 2026-07-20 -->
+<!-- TFMS v35.6 Stable | 삭제관리 승인·삭제 버튼 복구 | 2026-07-20 -->
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TFMS v35.5 Stable</title>
+<title>TFMS v35.6 Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -4178,8 +4178,8 @@ document.addEventListener('DOMContentLoaded',function(){
   };
 
   // DB 자료를 다 불러온 뒤 강제 적용
-  const previousLoadEnterpriseDataV15=loadEnterpriseData;
-  loadEnterpriseData=async function(){
+  const previousLoadEnterpriseDataV15=window.loadEnterpriseData;
+  window.loadEnterpriseData=async function(){
     await previousLoadEnterpriseDataV15();
     window.applyUserScopeV15();
   };
@@ -6654,7 +6654,7 @@ document.addEventListener('DOMContentLoaded',function(){
   };
 
   window.deleteSelectedAsset=async function(){
-    const sb=sbClient();
+    const sb=window.getTfmsSupabaseClient?.() || window.tfmsSupabase || window.sb || null;
     const key=window.selectedAssetKey || (typeof selectedAssetKey!=='undefined' ? selectedAssetKey : '');
     const data=window.assetData || (typeof assetData!=='undefined' ? assetData : {});
     const a=data?.[key];
@@ -6693,7 +6693,7 @@ document.addEventListener('DOMContentLoaded',function(){
         return;
       }
 
-      await reloadAssets3313();
+      if(typeof window.reloadAssets3313==='function') await window.reloadAssets3313();
       const firstKey=Object.keys(window.assetData||{})[0]||'';
       window.selectedAssetKey=firstKey;
       try{
@@ -6736,7 +6736,7 @@ document.addEventListener('DOMContentLoaded',function(){
   if(typeof oldEnterprise==='function'){
     window.loadEnterpriseData=async function(){
       const r=await oldEnterprise.apply(this,arguments);
-      await reloadAssets3313(window.tfmsEditingAssetDbId||null);
+      if(typeof window.reloadAssets3313==='function') await window.reloadAssets3313(window.tfmsEditingAssetDbId||null);
       return r;
     };
   }
@@ -6745,7 +6745,7 @@ document.addEventListener('DOMContentLoaded',function(){
   window.showPage=function(id,btn){
     const r=oldShowPage3313?.(id,btn);
     if(id==='equipment')setTimeout(async()=>{
-      await reloadAssets3313(window.tfmsEditingAssetDbId||null);
+      if(typeof window.reloadAssets3313==='function') await window.reloadAssets3313(window.tfmsEditingAssetDbId||null);
       if(window.selectedAssetKey)window.showAsset?.(window.selectedAssetKey);
     },30);
     return r;
@@ -7186,5 +7186,111 @@ document.addEventListener('DOMContentLoaded',function(){
       return r;
     };
   }
+})();
+</script>
+
+
+<script id="tfms-v356-delete-request-final-controller">
+(function(){
+  'use strict';
+
+  function client(){
+    try{return window.getTfmsSupabaseClient?.() || window.tfmsSupabase || window.sb || null;}
+    catch(e){return null;}
+  }
+  function profile(){
+    try{return window.getTfmsCloudProfile?.() || window.cloudProfile || null;}
+    catch(e){return null;}
+  }
+  function role(){
+    let r=String(profile()?.role||window.tfmsRole||'').trim().toLowerCase();
+    if(!r){
+      try{r=String(JSON.parse(sessionStorage.getItem('tfmsSession')||'{}').role||'').trim().toLowerCase();}catch(e){}
+    }
+    return r==='관리자'?'admin':r;
+  }
+  function requests(){
+    try{
+      if(Array.isArray(deleteRequests)){
+        window.deleteRequests=deleteRequests;
+        return deleteRequests;
+      }
+    }catch(e){}
+    if(!Array.isArray(window.deleteRequests))window.deleteRequests=[];
+    return window.deleteRequests;
+  }
+  function selected(){
+    const key=window.selectedAssetKey || (()=>{try{return selectedAssetKey||''}catch(e){return ''}})();
+    const data=window.assetData || (()=>{try{return assetData||{}}catch(e){return {}}})();
+    return {key, asset:data?.[key]};
+  }
+
+  window.deleteSelectedAsset=async function(){
+    const {key,asset}=selected();
+    if(!asset?.dbId){
+      window.showToast?.('삭제할 설비를 먼저 선택하세요.');
+      return;
+    }
+
+    const isAdmin=role()==='admin';
+    const reason=prompt(isAdmin?'즉시삭제 사유를 입력하세요.':'삭제요청 사유를 입력하세요.');
+    if(!reason||!reason.trim())return;
+
+    if(isAdmin){
+      const sb=client();
+      if(!sb){window.showToast?.('DB 연결 상태를 확인해 주세요.');return;}
+      if(!confirm('「'+asset.name+'」 설비를 즉시 삭제하시겠습니까?\n삭제 후에는 복구할 수 없습니다.'))return;
+
+      const res=await sb.from('assets').delete().eq('id',asset.dbId).select('id');
+      if(res.error){
+        console.error('TFMS v35.6 immediate delete',res.error);
+        window.showToast?.('설비 삭제 실패: '+res.error.message);
+        return;
+      }
+
+      const data=window.assetData||{};
+      delete data[key];
+      window.assetData=data;
+      try{assetData=data}catch(e){}
+      const first=Object.keys(data)[0]||'';
+      window.selectedAssetKey=first;
+      try{selectedAssetKey=first}catch(e){}
+      try{window.renderAssetList?.();}catch(e){}
+      try{window.renderUserFlowNavigator?.();}catch(e){}
+      try{
+        if(first)window.showAsset?.(first);
+        else if(document.getElementById('assetDetail'))
+          document.getElementById('assetDetail').innerHTML='<div class="empty-state">등록된 설비가 없습니다.</div>';
+      }catch(e){}
+      window.showToast?.('설비를 Supabase DB에서 삭제했습니다.');
+      return;
+    }
+
+    const p=profile();
+    const req={
+      time:new Date().toLocaleString('ko-KR'),
+      facility:asset.facility||'-',
+      detail:'설비관리 / '+(asset.name||'-'),
+      user:p?.full_name||p?.username||'현장 담당자',
+      reason:reason.trim(),
+      status:'승인대기',
+      type:'asset',
+      assetKey:key,
+      assetDbId:asset.dbId
+    };
+
+    const list=requests();
+    list.unshift(req);
+    window.deleteRequests=list;
+    try{deleteRequests=list}catch(e){}
+
+    try{
+      if(typeof window.syncDB==='function')window.syncDB('설비 삭제요청 등록');
+      else if(typeof syncDB==='function')syncDB('설비 삭제요청 등록');
+    }catch(e){console.warn('TFMS v35.6 syncDB',e);}
+
+    try{window.renderDeleteRequests?.();}catch(e){console.warn(e);}
+    window.showToast?.('설비 삭제요청을 등록했습니다.');
+  };
 })();
 </script>
