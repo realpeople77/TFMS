@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko">
-<!-- TFMS v35.3 Stable | 삭제관리 승인·삭제 버튼 복구 | 2026-07-20 -->
+<!-- TFMS v35.4 Stable | 삭제관리 승인·삭제 버튼 복구 | 2026-07-20 -->
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TFMS v35.3 Stable</title>
+<title>TFMS v35.4 Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -6913,5 +6913,103 @@ document.addEventListener('DOMContentLoaded',function(){
   document.addEventListener('DOMContentLoaded', function(){
     setTimeout(window.renderDeleteRequests,100);
   });
+})();
+</script>
+
+
+<script id="tfms-v354-delete-sync-controller">
+(function(){
+  'use strict';
+
+  function getClient(){
+    try{return window.getTfmsSupabaseClient?.() || window.tfmsSupabase || window.sb || null;}
+    catch(e){return null;}
+  }
+  function getRequests(){
+    try{
+      if(Array.isArray(deleteRequests)){
+        window.deleteRequests=deleteRequests;
+        return deleteRequests;
+      }
+    }catch(e){}
+    if(!Array.isArray(window.deleteRequests))window.deleteRequests=[];
+    return window.deleteRequests;
+  }
+  async function resolveAssetId(sb, req){
+    if(req?.assetDbId)return req.assetDbId;
+    try{
+      const local=(window.assetData || (typeof assetData!=='undefined'?assetData:{}))?.[req?.assetKey];
+      if(local?.dbId)return local.dbId;
+    }catch(e){}
+    const detail=String(req?.detail||'');
+    const name=detail.includes('/') ? detail.split('/').pop().trim() : detail.trim();
+    if(!name)return null;
+    const result=await sb.from('assets')
+      .select('id,name,facility:facilities(name)')
+      .eq('name',name);
+    if(result.error)throw result.error;
+    const facility=String(req?.facility||'').trim();
+    const rows=result.data||[];
+    return (rows.find(r=>!facility || r?.facility?.name===facility) || rows[0])?.id || null;
+  }
+  async function refreshAssetsAfterDelete(deletedId){
+    try{
+      const data=window.assetData || (typeof assetData!=='undefined'?assetData:{});
+      Object.keys(data||{}).forEach(k=>{ if(data[k]?.dbId===deletedId) delete data[k]; });
+      window.assetData=data;
+      try{if(typeof assetData!=='undefined')assetData=data;}catch(e){}
+    }catch(e){}
+    try{if(typeof window.loadEnterpriseData==='function')await window.loadEnterpriseData();}catch(e){console.warn(e);}
+    try{renderAssetList?.();}catch(e){}
+    try{renderUserFlowNavigator?.();}catch(e){}
+    try{renderQrAssetOptions?.();}catch(e){}
+    const data=window.assetData||{};
+    const first=Object.keys(data)[0]||'';
+    window.selectedAssetKey=first;
+    try{if(typeof selectedAssetKey!=='undefined')selectedAssetKey=first;}catch(e){}
+    try{
+      if(first)showAsset?.(first);
+      else if(document.getElementById('assetDetail'))
+        document.getElementById('assetDetail').innerHTML='<div class="empty-state">등록된 설비가 없습니다.</div>';
+    }catch(e){}
+  }
+
+  window.approveDeleteRequestV353=async function(i){
+    const list=getRequests();
+    const d=list[i];
+    if(!d || d.status!=='승인대기')return;
+    if(!confirm('이 삭제요청을 승인하고 대상 설비를 실제 삭제하시겠습니까?'))return;
+
+    const sb=getClient();
+    if(!sb){window.showToast?.('DB 연결 상태를 확인해 주세요.');return;}
+
+    let assetId;
+    try{assetId=await resolveAssetId(sb,d);}
+    catch(e){
+      console.error(e);
+      window.showToast?.('삭제 대상 설비 확인 실패: '+(e?.message||e));
+      return;
+    }
+    if(!assetId){window.showToast?.('DB에서 삭제 대상 설비를 찾지 못했습니다.');return;}
+
+    const del=await sb.from('assets').delete().eq('id',assetId).select('id');
+    if(del.error){
+      console.error(del.error);
+      window.showToast?.('설비 삭제 실패: '+del.error.message);
+      return;
+    }
+    if(!del.data?.length){
+      window.showToast?.('DB에서 삭제가 반영되지 않았습니다. 삭제 권한을 확인해 주세요.');
+      return;
+    }
+
+    d.assetDbId=assetId;
+    d.status='승인·삭제완료';
+    d.reviewedAt=new Date().toLocaleString('ko-KR');
+    try{if(typeof syncDB==='function')syncDB('삭제요청 승인 및 설비삭제');}catch(e){}
+    await refreshAssetsAfterDelete(assetId);
+    try{window.renderDeleteRequests?.();}catch(e){}
+    window.showToast?.('삭제요청을 승인하고 설비를 실제 삭제했습니다.');
+  };
 })();
 </script>
