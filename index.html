@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko">
-<!-- TFMS v35.4 Stable | 삭제관리 승인·삭제 버튼 복구 | 2026-07-20 -->
+<!-- TFMS v35.5 Stable | 삭제관리 승인·삭제 버튼 복구 | 2026-07-20 -->
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TFMS v35.4 Stable</title>
+<title>TFMS v35.5 Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -7011,5 +7011,180 @@ document.addEventListener('DOMContentLoaded',function(){
     try{window.renderDeleteRequests?.();}catch(e){}
     window.showToast?.('삭제요청을 승인하고 설비를 실제 삭제했습니다.');
   };
+})();
+</script>
+
+
+<style id="tfms-v355-new-asset-ux-style">
+  #tfmsAssetModeBanner{
+    margin:14px 0 10px;
+    padding:12px 14px;
+    border-radius:10px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  #tfmsAssetModeBanner.new-mode{
+    background:#ecfdf3;
+    border:1px solid #86efac;
+    color:#166534;
+  }
+  #tfmsAssetModeBanner.edit-mode{
+    background:#fff7ed;
+    border:1px solid #fdba74;
+    color:#9a3412;
+  }
+  #tfmsNewAssetBtn{
+    font-weight:700;
+  }
+</style>
+
+<script id="tfms-v355-new-asset-ux-controller">
+(function(){
+  'use strict';
+
+  function getEditingAsset(){
+    const id=window.tfmsEditingAssetDbId||null;
+    const data=window.assetData||{};
+    const found=Object.values(data).find(a=>a?.dbId===id);
+    return {id, asset:found||null};
+  }
+
+  function equipmentButtons(){
+    const page=document.getElementById('equipment');
+    if(!page)return [];
+    return [...page.querySelectorAll('button')];
+  }
+
+  function saveButton(){
+    return equipmentButtons().find(b=>{
+      const oc=String(b.getAttribute('onclick')||'').replace(/\s/g,'');
+      return oc==='saveAsset()';
+    })||null;
+  }
+
+  function clearButton(){
+    return equipmentButtons().find(b=>{
+      const oc=String(b.getAttribute('onclick')||'').replace(/\s/g,'');
+      return oc==='clearAssetForm()';
+    })||null;
+  }
+
+  function ensureBanner(){
+    const btn=saveButton();
+    if(!btn)return null;
+    let banner=document.getElementById('tfmsAssetModeBanner');
+    if(!banner){
+      banner=document.createElement('div');
+      banner.id='tfmsAssetModeBanner';
+      btn.closest('.buttons')?.parentElement?.insertBefore(
+        banner,
+        btn.closest('.buttons')
+      );
+    }
+    return banner;
+  }
+
+  function updateModeUI(){
+    const {id,asset}=getEditingAsset();
+    const banner=ensureBanner();
+    const btn=saveButton();
+    if(!banner||!btn)return;
+
+    if(id){
+      banner.className='edit-mode';
+      banner.innerHTML='🟠 설비 수정 중 <span style="font-weight:500">— '+escapeHtml(asset?.name||'선택한 설비')+'</span>';
+      btn.textContent='설비 수정 저장';
+    }else{
+      banner.className='new-mode';
+      banner.innerHTML='🟢 신규 설비 등록';
+      btn.textContent='신규 설비 등록';
+    }
+  }
+
+  function escapeHtml(v){
+    return String(v??'').replace(/[&<>"']/g,m=>({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    }[m]));
+  }
+
+  window.startNewAssetRegistration=function(){
+    try{window.clearAssetForm?.();}catch(e){console.warn(e);}
+    window.tfmsEditingAssetDbId=null;
+    try{window.selectedAssetKey='';}catch(e){}
+    try{selectedAssetKey='';}catch(e){}
+    updateModeUI();
+    const name=document.getElementById('assetInputName');
+    if(name){
+      name.focus();
+      name.scrollIntoView({behavior:'smooth',block:'center'});
+    }
+    window.showToast?.('신규 설비 등록 모드로 전환했습니다.');
+  };
+
+  const oldLoadAssetForm=window.loadAssetForm;
+  if(typeof oldLoadAssetForm==='function'){
+    window.loadAssetForm=function(){
+      const r=oldLoadAssetForm.apply(this,arguments);
+      setTimeout(updateModeUI,0);
+      return r;
+    };
+  }
+
+  const oldClearAssetForm=window.clearAssetForm;
+  if(typeof oldClearAssetForm==='function'){
+    window.clearAssetForm=function(){
+      const r=oldClearAssetForm.apply(this,arguments);
+      window.tfmsEditingAssetDbId=null;
+      setTimeout(updateModeUI,0);
+      return r;
+    };
+  }
+
+  const oldSaveAsset=window.saveAsset;
+  if(typeof oldSaveAsset==='function'){
+    window.saveAsset=async function(){
+      const {id,asset}=getEditingAsset();
+      if(id){
+        const ok=confirm(
+          '현재 「'+(asset?.name||'선택한 설비')+'」 설비의 정보를 수정하려고 합니다.\n\n'+
+          '새 설비를 등록하려는 경우 취소 후 「+ 신규설비」 버튼을 눌러 주세요.\n\n'+
+          '기존 설비를 수정 저장하시겠습니까?'
+        );
+        if(!ok)return;
+      }
+      const r=await oldSaveAsset.apply(this,arguments);
+      setTimeout(updateModeUI,100);
+      return r;
+    };
+  }
+
+  function installNewButton(){
+    const old=clearButton();
+    if(!old)return;
+    old.id='tfmsNewAssetBtn';
+    old.textContent='+ 신규설비';
+    old.setAttribute('onclick','startNewAssetRegistration()');
+    old.classList.remove('light');
+    old.classList.add('blue');
+  }
+
+  function apply(){
+    installNewButton();
+    updateModeUI();
+  }
+
+  document.addEventListener('DOMContentLoaded',()=>setTimeout(apply,700));
+  setTimeout(apply,900);
+
+  const oldShowPage=window.showPage;
+  if(typeof oldShowPage==='function'){
+    window.showPage=function(id,btn){
+      const r=oldShowPage.apply(this,arguments);
+      if(id==='equipment')setTimeout(apply,50);
+      return r;
+    };
+  }
 })();
 </script>
