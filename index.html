@@ -8302,3 +8302,259 @@ document.addEventListener('DOMContentLoaded',function(){
   }
 })();
 </script>
+
+
+<style id="tfms-v370-maintenance-detail-style">
+  #historyBody tr.tfms-history-clickable{cursor:pointer}
+  #historyBody tr.tfms-history-clickable:hover{background:#f8fafc}
+  .tfms-history-detail-link{
+    border:0;background:transparent;padding:0;text-align:left;cursor:pointer;
+    color:#1d4ed8;font:inherit;font-weight:700;
+  }
+  .tfms-history-detail-link:hover{text-decoration:underline}
+  .tfms-history-summary{
+    display:block;max-width:360px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+  }
+  .tfms-history-hint{display:block;margin-top:3px;font-size:11px;color:#64748b;font-weight:500}
+  #maintenanceDetailModal .tfms-detail-grid{
+    display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px
+  }
+  #maintenanceDetailModal .tfms-detail-item{
+    padding:12px;border:1px solid #e5e7eb;border-radius:10px;background:#f8fafc
+  }
+  #maintenanceDetailModal .tfms-detail-item.wide{grid-column:1/-1}
+  #maintenanceDetailModal .tfms-detail-item span{
+    display:block;margin-bottom:5px;font-size:12px;color:#64748b;font-weight:700
+  }
+  #maintenanceDetailModal .tfms-detail-item strong,
+  #maintenanceDetailModal .tfms-detail-item div{
+    color:#0f172a;white-space:pre-wrap;word-break:break-word
+  }
+  #maintenanceDetailModal .tfms-detail-section{
+    grid-column:1/-1;margin-top:6px;padding:8px 2px 2px;font-weight:800;color:#1e3a8a;
+    border-bottom:2px solid #dbeafe
+  }
+  #maintenanceDetailModal .tfms-detail-actions{
+    display:flex;justify-content:flex-end;gap:8px;margin-top:16px
+  }
+  @media(max-width:700px){
+    #maintenanceDetailModal .tfms-detail-grid{grid-template-columns:1fr}
+    #maintenanceDetailModal .tfms-detail-item.wide{grid-column:auto}
+  }
+</style>
+
+<script id="tfms-v370-maintenance-detail-controller">
+(function(){
+  'use strict';
+
+  /* 버전 표시는 이 값 하나만 기준으로 자동 반영 */
+  window.TFMS_BUILD = Object.freeze({
+    version:'v37.0',
+    channel:'Stable',
+    buildDate:'2026.07.22',
+    title:'유지관리 상세조회'
+  });
+
+  const $=id=>document.getElementById(id);
+  const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[m]));
+  const fmtMoney=v=>Number(v||0).toLocaleString('ko-KR')+'원';
+  const fmtDateTime=v=>{
+    if(!v)return '-';
+    try{return new Date(v).toLocaleString('ko-KR');}
+    catch(e){return String(v)}
+  };
+  const client=()=>{
+    try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||null}
+    catch(e){return null}
+  };
+  const currentRole=()=>{
+    let r=String(
+      window.getTfmsCloudProfile?.()?.role||
+      window.cloudProfile?.role||
+      JSON.parse(sessionStorage.getItem('tfmsSession')||'{}')?.role||
+      window.tfmsRole||'user'
+    ).toLowerCase();
+    return r==='관리자'?'admin':r;
+  };
+
+  function applyBuildVersion(){
+    const b=window.TFMS_BUILD;
+    const label=`${b.version} ${b.channel}`;
+
+    const badge=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
+    if(badge){
+      badge.textContent=label;
+      badge.title='클릭하여 업데이트 내역 보기';
+    }
+
+    document.querySelectorAll('.logo-title small').forEach(el=>{
+      el.textContent=`시설 유지관리 이력관리 시스템 · ${label} Enterprise`;
+    });
+
+    const current=document.querySelector('#tfmsVersionModal .current-build');
+    if(current)current.textContent=`현재 버전: ${label} · Build ${b.buildDate}`;
+
+    const body=document.querySelector('#tfmsVersionModal .version-body');
+    if(body&&!body.querySelector('[data-version="v37.0"]')){
+      const item=document.createElement('div');
+      item.className='change-item';
+      item.dataset.version='v37.0';
+      item.innerHTML=`
+        <strong>${label}</strong>
+        <ul>
+          <li>유지관리 조회 목록에서 내용 또는 행 클릭 시 상세정보 표시</li>
+          <li>등록 당시 작성한 기본정보·조치내용·예산·증빙·등록정보 확인</li>
+          <li>버전 문구를 단일 빌드정보 기준으로 자동 반영</li>
+        </ul>`;
+      const anchor=body.querySelector('.change-item');
+      if(anchor)body.insertBefore(item,anchor);
+      else body.appendChild(item);
+    }
+    document.title=document.title.replace(/v\d+(?:\.\d+)*/i,b.version);
+  }
+
+  window.closeMaintenanceDetailV370=function(){
+    $('maintenanceDetailModal')?.classList.remove('show');
+  };
+
+  window.openMaintenanceDetailV370=async function(id){
+    if(!id)return;
+    const modal=$('maintenanceDetailModal');
+    const content=$('maintenanceDetailContent');
+    if(!modal||!content)return;
+
+    modal.classList.add('show');
+    content.innerHTML='<div class="empty-state">유지관리 상세내용을 불러오는 중입니다.</div>';
+
+    try{
+      const sb=client();
+      if(!sb)throw new Error('Supabase 연결 정보를 확인하지 못했습니다.');
+
+      const {data,error}=await sb.from('maintenance_records')
+        .select(`
+          *,
+          department:departments(name),
+          facility:facilities(name),
+          asset:assets(name),
+          vendor:vendors(company_name)
+        `)
+        .eq('id',id)
+        .single();
+
+      if(error)throw error;
+      if(!data)throw new Error('해당 유지관리 이력을 찾을 수 없습니다.');
+
+      const tags=Array.isArray(data.evaluation_tags)&&data.evaluation_tags.length
+        ?data.evaluation_tags.join(', '):'-';
+
+      content.innerHTML=`
+        <div class="tfms-detail-grid">
+          <div class="tfms-detail-section">기본정보</div>
+          <div class="tfms-detail-item"><span>등록일자</span><strong>${esc(data.registered_on||'-')}</strong></div>
+          <div class="tfms-detail-item"><span>시행일자</span><strong>${esc(data.executed_on||'-')}</strong></div>
+          <div class="tfms-detail-item"><span>관리부서</span><strong>${esc(data.department?.name||'-')}</strong></div>
+          <div class="tfms-detail-item"><span>시설명</span><strong>${esc(data.facility?.name||'-')}</strong></div>
+          <div class="tfms-detail-item"><span>설비명</span><strong>${esc(data.asset?.name||'-')}</strong></div>
+          <div class="tfms-detail-item"><span>업체명</span><strong>${esc(data.vendor?.company_name||'-')}</strong></div>
+          <div class="tfms-detail-item"><span>접수구분</span><strong>${esc(data.receipt_category||'-')}</strong></div>
+          <div class="tfms-detail-item"><span>유지관리 유형</span><strong>${esc(data.maintenance_type||'-')}</strong></div>
+          <div class="tfms-detail-item"><span>분야</span><strong>${esc(data.field_category||'-')}</strong></div>
+          <div class="tfms-detail-item"><span>세부분야</span><strong>${esc(data.subfield||'-')}</strong></div>
+          <div class="tfms-detail-item"><span>중요도</span><strong>${esc(data.priority||'-')}</strong></div>
+          <div class="tfms-detail-item"><span>처리상태</span><strong>${esc(data.process_status||'-')}</strong></div>
+          <div class="tfms-detail-item"><span>진행구분</span><strong>${esc(data.progress_type||'-')}</strong></div>
+
+          <div class="tfms-detail-section">유지관리 작성내용</div>
+          <div class="tfms-detail-item wide"><span>세부내용</span><div>${esc(data.detail||'-')}</div></div>
+          <div class="tfms-detail-item wide"><span>조치내용</span><div>${esc(data.action_detail||'-')}</div></div>
+          <div class="tfms-detail-item"><span>조치결과</span><strong>${esc(data.action_result||'-')}</strong></div>
+          <div class="tfms-detail-item wide"><span>향후계획</span><div>${esc(data.future_plan||'-')}</div></div>
+
+          <div class="tfms-detail-section">예산·증빙·평가</div>
+          <div class="tfms-detail-item"><span>예산과목</span><strong>${esc(data.budget_account||'-')}</strong></div>
+          <div class="tfms-detail-item"><span>소요금액</span><strong>${fmtMoney(data.amount)}</strong></div>
+          <div class="tfms-detail-item"><span>증빙자료</span><strong>${Number(data.evidence_count||0)}개</strong></div>
+          <div class="tfms-detail-item"><span>경영평가 연계</span><strong>${esc(tags)}</strong></div>
+
+          <div class="tfms-detail-section">등록정보</div>
+          <div class="tfms-detail-item"><span>등록일시</span><strong>${esc(fmtDateTime(data.created_at))}</strong></div>
+          <div class="tfms-detail-item"><span>수정일시</span><strong>${esc(fmtDateTime(data.updated_at))}</strong></div>
+        </div>
+        <div class="tfms-detail-actions">
+          <button type="button" class="small-btn" onclick="window.print()">인쇄</button>
+          <button type="button" class="small-btn" onclick="closeMaintenanceDetailV370()">닫기</button>
+        </div>`;
+    }catch(e){
+      console.error('TFMS v37.0 detail error',e);
+      content.innerHTML=`<div class="empty-state" style="color:#b91c1c">상세조회 실패: ${esc(e?.message||e)}</div>`;
+    }
+  };
+
+  function renderDetailedHistory(){
+    const body=$('historyBody');
+    if(!body)return;
+
+    const facility=$('historyFacility')?.value||'전체';
+    const field=$('historyField')?.value||'전체';
+    const status=$('historyStatus')?.value||'전체';
+    const month=$('historyMonth')?.value||'';
+
+    let list=Array.isArray(window.records)?window.records.slice():[];
+
+    let dept='';
+    try{
+      const p=window.getTfmsCloudProfile?.()||window.cloudProfile||{};
+      const s=JSON.parse(sessionStorage.getItem('tfmsSession')||'{}');
+      dept=p.department?.name||p.department_name||s.dept||'';
+    }catch(e){}
+
+    if(currentRole()!=='admin'&&dept)list=list.filter(r=>r.dept===dept);
+    if(facility!=='전체')list=list.filter(r=>r.facility===facility);
+    if(field!=='전체')list=list.filter(r=>r.field===field);
+    if(status!=='전체')list=list.filter(r=>r.status===status);
+    if(month)list=list.filter(r=>String(r.rawDate||'').slice(0,7)===month);
+
+    if(!list.length){
+      body.innerHTML='<tr><td colspan="8"><div class="empty-state">선택한 조건에 등록된 유지관리 이력이 없습니다.</div></td></tr>';
+      return;
+    }
+
+    const isAdmin=currentRole()==='admin';
+    body.innerHTML=list.map(r=>`
+      <tr class="tfms-history-clickable"
+          onclick="if(!event.target.closest('button'))openMaintenanceDetailV370('${esc(r.dbId)}')"
+          title="클릭하여 유지관리 상세내용 보기">
+        <td>${esc(r.date)}</td>
+        <td>${esc(r.facility)}</td>
+        <td>${esc(r.field)}</td>
+        <td>${esc(r.type)}</td>
+        <td>
+          <button type="button" class="tfms-history-detail-link"
+                  onclick="event.stopPropagation();openMaintenanceDetailV370('${esc(r.dbId)}')">
+            <span class="tfms-history-summary">${esc(r.detail||'-')}</span>
+            <span class="tfms-history-hint">상세보기</span>
+          </button>
+        </td>
+        <td><span class="status">${esc(r.status)}</span></td>
+        <td>${esc(r.evidence)}</td>
+        <td>
+          <button type="button" class="small-btn red"
+                  onclick="event.stopPropagation();handleMaintenanceDeleteV363('${esc(r.dbId)}')">
+            ${isAdmin?'즉시삭제':'삭제요청'}
+          </button>
+        </td>
+      </tr>`).join('');
+  }
+
+  window.openMaintenanceDetailV3115=window.openMaintenanceDetailV370;
+  window.closeMaintenanceDetailV3115=window.closeMaintenanceDetailV370;
+  window.renderMaintenanceHistoryV361=renderDetailedHistory;
+  window.renderHistory=renderDetailedHistory;
+  window.renderHistoryV318=renderDetailedHistory;
+
+  document.addEventListener('DOMContentLoaded',applyBuildVersion);
+  setTimeout(applyBuildVersion,100);
+})();
+</script>
