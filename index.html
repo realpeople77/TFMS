@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko">
-<!-- TFMS v35.6 Stable | 삭제관리 승인·삭제 버튼 복구 | 2026-07-20 -->
+<!-- TFMS v35.7 Stable | 삭제관리 승인·삭제 버튼 복구 | 2026-07-20 -->
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TFMS v35.6 Stable</title>
+<title>TFMS v35.7 Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -7243,7 +7243,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
       const res=await sb.from('assets').delete().eq('id',asset.dbId).select('id');
       if(res.error){
-        console.error('TFMS v35.6 immediate delete',res.error);
+        console.error('TFMS v35.7 immediate delete',res.error);
         window.showToast?.('설비 삭제 실패: '+res.error.message);
         return;
       }
@@ -7287,10 +7287,99 @@ document.addEventListener('DOMContentLoaded',function(){
     try{
       if(typeof window.syncDB==='function')window.syncDB('설비 삭제요청 등록');
       else if(typeof syncDB==='function')syncDB('설비 삭제요청 등록');
-    }catch(e){console.warn('TFMS v35.6 syncDB',e);}
+    }catch(e){console.warn('TFMS v35.7 syncDB',e);}
 
     try{window.renderDeleteRequests?.();}catch(e){console.warn(e);}
     window.showToast?.('설비 삭제요청을 등록했습니다.');
   };
+})();
+</script>
+
+
+<script id="tfms-v357-live-refresh">
+(function(){
+  'use strict';
+
+  function refreshDeleteRequestsNow(){
+    try{ if(typeof window.renderDeleteRequests==='function') window.renderDeleteRequests(); }catch(e){console.warn(e);}
+    try{ if(typeof renderDeleteRequests==='function') renderDeleteRequests(); }catch(e){}
+  }
+
+  function refreshAssetsNow(preferredId){
+    try{ window.renderAssetList?.(); }catch(e){}
+    try{ window.renderUserFlowNavigator?.(); }catch(e){}
+    try{ window.renderQrAssetOptions?.(); }catch(e){}
+
+    const data=window.assetData||{};
+    let key='';
+    if(preferredId) key=Object.keys(data).find(k=>data[k]?.dbId===preferredId)||'';
+    if(!key) key=window.selectedAssetKey||'';
+    if(!key || !data[key]) key=Object.keys(data)[0]||'';
+
+    window.selectedAssetKey=key;
+    try{selectedAssetKey=key}catch(e){}
+    try{
+      if(key) window.showAsset?.(key);
+      else {
+        const d=document.getElementById('assetDetail');
+        if(d)d.innerHTML='<div class="empty-state">등록된 설비가 없습니다.</div>';
+      }
+    }catch(e){}
+  }
+
+  window.tfmsRefreshDeleteRequestsNow=refreshDeleteRequestsNow;
+  window.tfmsRefreshAssetsNow=refreshAssetsNow;
+
+  const oldDelete=window.deleteSelectedAsset;
+  if(typeof oldDelete==='function'){
+    window.deleteSelectedAsset=async function(){
+      const before=Array.isArray(window.deleteRequests)?window.deleteRequests.length:0;
+      const result=await oldDelete.apply(this,arguments);
+      const after=Array.isArray(window.deleteRequests)?window.deleteRequests.length:0;
+
+      if(after>before){
+        refreshDeleteRequestsNow();
+        setTimeout(refreshDeleteRequestsNow,50);
+        setTimeout(refreshDeleteRequestsNow,200);
+      }
+      refreshAssetsNow();
+      return result;
+    };
+  }
+
+  const oldSave=window.saveAsset;
+  if(typeof oldSave==='function'){
+    window.saveAsset=async function(){
+      const result=await oldSave.apply(this,arguments);
+      const preferredId=window.tfmsEditingAssetDbId||null;
+      try{
+        if(typeof window.reloadAssets3313==='function'){
+          await window.reloadAssets3313(preferredId);
+        }
+      }catch(e){console.warn(e);}
+      refreshAssetsNow(preferredId);
+      setTimeout(()=>refreshAssetsNow(preferredId),100);
+      return result;
+    };
+  }
+
+  const oldShowPage=window.showPage;
+  if(typeof oldShowPage==='function'){
+    window.showPage=function(id,btn){
+      const result=oldShowPage.apply(this,arguments);
+      const page=String(id||'');
+      if(page==='equipment')setTimeout(()=>refreshAssetsNow(),30);
+      if(/delete|삭제/i.test(page)){
+        setTimeout(refreshDeleteRequestsNow,30);
+        setTimeout(refreshDeleteRequestsNow,150);
+      }
+      return result;
+    };
+  }
+
+  window.addEventListener('focus',()=>{
+    refreshDeleteRequestsNow();
+    refreshAssetsNow();
+  });
 })();
 </script>
