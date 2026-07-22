@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko">
-<!-- TFMS v35.8 Stable | 삭제관리 승인·삭제 버튼 복구 | 2026-07-20 -->
+<!-- TFMS v36.0 Stable | 삭제관리 승인·삭제 버튼 복구 | 2026-07-20 -->
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TFMS v35.8 Stable</title>
+<title>TFMS v36.0 Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -6626,7 +6626,7 @@ document.addEventListener('DOMContentLoaded',function(){
       facility_id:facRes.data.id,
       asset_code:existingId?(editingAsset?.assetCode||editingAsset?.qrId||makeCode()):makeCode(),
       name,
-      category:blankToNull(value('assetInputCategory')),
+      category:blankToNull(value('assetInputCategory'))||'기타',
       manufacturer:blankToNull(value('assetInputManufacturer')),
       model_name:blankToNull(value('assetInputModel')),
       serial_number:blankToNull(value('assetInputSerial')),
@@ -6659,7 +6659,14 @@ document.addEventListener('DOMContentLoaded',function(){
       const schemaHint=/assets_risk_level_check/i.test(errMsg)
         ?' ZIP의 「01_설비테이블_확장_SQL.sql」을 Supabase SQL Editor에서 다시 실행해 위험도 허용값을 맞춰 주세요.'
         :(/column|schema cache|does not exist/i.test(errMsg)?' ZIP의 「01_설비테이블_확장_SQL.sql」을 Supabase SQL Editor에서 먼저 실행해 주세요.':'');
-      showToast('설비 저장 실패: '+(result.error.message||'알 수 없는 오류')+schemaHint);
+      {
+      const msg=String(result.error.message||'알 수 없는 오류');
+      if(/null value in column ['"]?category['"]?|category.*not-null/i.test(msg)){
+        showToast('설비분류가 비어 있어 저장할 수 없습니다. 설비분류를 선택하거나 다시 시도해 주세요.');
+      }else{
+        showToast('설비 저장 실패: '+msg+schemaHint);
+      }
+    }
       return;
     }
 
@@ -7270,7 +7277,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
       const res=await sb.from('assets').delete().eq('id',asset.dbId).select('id');
       if(res.error){
-        console.error('TFMS v35.8 immediate delete',res.error);
+        console.error('TFMS v36.0 immediate delete',res.error);
         window.showToast?.('설비 삭제 실패: '+res.error.message);
         return;
       }
@@ -7314,7 +7321,7 @@ document.addEventListener('DOMContentLoaded',function(){
     try{
       if(typeof window.syncDB==='function')window.syncDB('설비 삭제요청 등록');
       else if(typeof syncDB==='function')syncDB('설비 삭제요청 등록');
-    }catch(e){console.warn('TFMS v35.8 syncDB',e);}
+    }catch(e){console.warn('TFMS v36.0 syncDB',e);}
 
     try{window.renderDeleteRequests?.();}catch(e){console.warn(e);}
     window.showToast?.('설비 삭제요청을 등록했습니다.');
@@ -7448,5 +7455,260 @@ document.addEventListener('DOMContentLoaded',function(){
   }
 
   document.addEventListener('DOMContentLoaded',()=>setTimeout(normalizeAssetSpace,800));
+})();
+</script>
+
+
+<script id="tfms-v359-category-not-null-fix">
+(function(){
+  'use strict';
+
+  function ensureCategory(){
+    const el=document.getElementById('assetInputCategory');
+    if(el && !String(el.value||'').trim()){
+      const hasEtc=[...el.options||[]].some(o=>o.value==='기타');
+      if(hasEtc) el.value='기타';
+      else {
+        const opt=document.createElement('option');
+        opt.value='기타';
+        opt.textContent='기타';
+        el.appendChild(opt);
+        el.value='기타';
+      }
+    }
+  }
+
+  const oldClear=window.clearAssetForm;
+  if(typeof oldClear==='function'){
+    window.clearAssetForm=function(){
+      const r=oldClear.apply(this,arguments);
+      ensureCategory();
+      return r;
+    };
+  }
+
+  const oldNew=window.startNewAssetRegistration;
+  if(typeof oldNew==='function'){
+    window.startNewAssetRegistration=function(){
+      const r=oldNew.apply(this,arguments);
+      ensureCategory();
+      return r;
+    };
+  }
+
+  const oldSave=window.saveAsset;
+  if(typeof oldSave==='function'){
+    window.saveAsset=async function(){
+      ensureCategory();
+      return await oldSave.apply(this,arguments);
+    };
+  }
+
+  document.addEventListener('DOMContentLoaded',()=>setTimeout(ensureCategory,700));
+})();
+</script>
+
+
+<script id="tfms-v360-maintenance-register-final-fix">
+(function(){
+  'use strict';
+
+  const $=id=>document.getElementById(id);
+  const val=id=>String($(id)?.value||'').trim();
+  const toast=msg=>{
+    try{window.showToast?.(msg);}catch(e){}
+    console.log('[TFMS 유지관리 등록]',msg);
+  };
+  const client=()=>{
+    try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||null;}
+    catch(e){return null;}
+  };
+  const user=()=>{
+    try{return window.getTfmsCloudUser?.()||window.cloudUser||null;}
+    catch(e){return null;}
+  };
+  const profile=()=>{
+    try{return window.getTfmsCloudProfile?.()||window.cloudProfile||{};}
+    catch(e){return {};}
+  };
+  const session=()=>{
+    try{return JSON.parse(sessionStorage.getItem('tfmsSession')||'{}');}
+    catch(e){return {};}
+  };
+  const selectedChoice=name=>{
+    const active=document.querySelector(`#register .choice-group[data-single="${name}"] .choice.active`);
+    return String(active?.textContent||'').trim();
+  };
+  const textareaByPlaceholder=word=>
+    [...document.querySelectorAll('#register textarea')].find(x=>
+      String(x.getAttribute('placeholder')||'').includes(word)
+    );
+
+  function setButtonBusy(busy){
+    const buttons=[...document.querySelectorAll('#register button')]
+      .filter(b=>String(b.textContent||'').trim()==='등록' || b.dataset.tfmsRegisterButton==='1');
+    buttons.forEach(b=>{
+      b.dataset.tfmsRegisterButton='1';
+      b.disabled=busy;
+      b.textContent=busy?'저장 중':'등록';
+    });
+  }
+
+  function parseAmount(v){
+    const n=Number(String(v||'0').replace(/[^0-9.-]/g,''));
+    return Number.isFinite(n) && n>=0 ? n : 0;
+  }
+
+  function getBudget(){
+    const select=$('budgetSelect');
+    const custom=$('budgetCustom');
+    if(!select)return null;
+    return select.value==='직접입력'
+      ? (String(custom?.value||'').trim()||null)
+      : (select.value==='해당없음'?null:select.value);
+  }
+
+  async function resolveDepartmentAndFacility(sb,deptName,facilityName){
+    const deptRes=await sb.from('departments').select('id,name').eq('name',deptName).maybeSingle();
+    if(deptRes.error)throw deptRes.error;
+    if(!deptRes.data)throw new Error('관리부서 정보를 DB에서 찾을 수 없습니다.');
+
+    const facRes=await sb.from('facilities')
+      .select('id,name,department_id')
+      .eq('name',facilityName)
+      .maybeSingle();
+    if(facRes.error)throw facRes.error;
+    if(!facRes.data)throw new Error('시설정보를 DB에서 찾을 수 없습니다.');
+
+    return {dept:deptRes.data,facility:facRes.data};
+  }
+
+  window.addRecordFromForm=async function(){
+    const sb=client();
+    const cloudUser=user();
+    const p=profile();
+    const s=session();
+
+    if(!sb){
+      toast('DB 연결 상태를 확인해 주세요.');
+      return;
+    }
+    if(!cloudUser){
+      toast('로그인 정보를 확인해 주세요.');
+      return;
+    }
+    const role=String(p.role||s.role||'user').toLowerCase();
+    if(role==='viewer'){
+      toast('조회전용 계정은 유지관리 이력을 등록할 수 없습니다.');
+      return;
+    }
+
+    const deptName=val('dept')||p.department?.name||p.department_name||s.dept||'';
+    const facilityName=val('facility');
+    const regDate=val('regDate');
+    const execDate=val('execDate');
+    const field=val('field');
+    const subField=val('subField');
+    const detail=val('regDetail');
+    const action=String(textareaByPlaceholder('조치한 내용')?.value||'').trim();
+    const plan=String(textareaByPlaceholder('향후 계획')?.value||'').trim();
+
+    const missing=[];
+    if(!deptName)missing.push('관리부서');
+    if(!facilityName)missing.push('시설명');
+    if(!regDate)missing.push('등록일자');
+    if(!execDate)missing.push('시행일자');
+    if(!field)missing.push('분야');
+    if(!subField)missing.push('세부분야');
+    if(!detail)missing.push('세부내용');
+    if(!action)missing.push('조치내용');
+
+    if(missing.length){
+      toast('필수항목을 확인하세요: '+missing.join(', '));
+      return;
+    }
+
+    setButtonBusy(true);
+    toast('유지관리 이력을 저장하고 있습니다.');
+
+    try{
+      const {dept,facility}=await resolveDepartmentAndFacility(sb,deptName,facilityName);
+
+      if(role!=='admin' && facility.department_id && facility.department_id!==dept.id){
+        throw new Error('본인 소속부서의 관할 시설만 등록할 수 있습니다.');
+      }
+
+      const payload={
+        department_id:dept.id,
+        facility_id:facility.id,
+        registered_on:regDate,
+        executed_on:execDate,
+        receipt_category:selectedChoice('receipt')||'점검',
+        field_category:field||'기타',
+        subfield:subField||null,
+        maintenance_type:val('regType')||'예방정비',
+        priority:selectedChoice('level')||'보통',
+        process_status:val('regStatus')||'조치완료',
+        progress_type:selectedChoice('progress')||null,
+        detail,
+        action_detail:action,
+        action_result:selectedChoice('result')||null,
+        future_plan:plan||null,
+        budget_account:getBudget(),
+        amount:parseAmount(val('regAmount')),
+        evaluation_tags:[...document.querySelectorAll('#register input[type="checkbox"]:checked')]
+          .map(x=>String(x.parentElement?.textContent||'').trim())
+          .filter(Boolean),
+        evidence_count:0,
+        registered_by:cloudUser.id
+      };
+
+      const result=await sb.from('maintenance_records')
+        .insert(payload)
+        .select('id')
+        .single();
+
+      if(result.error)throw result.error;
+
+      try{
+        if(typeof window.loadEnterpriseData==='function')await window.loadEnterpriseData();
+      }catch(e){console.warn('유지관리 저장 후 화면 갱신 실패',e);}
+
+      toast('유지관리 이력을 Supabase DB에 저장했습니다.');
+
+      setTimeout(()=>{
+        try{
+          if(typeof window.navTo==='function')window.navTo('history');
+          else if(typeof window.showPage==='function')window.showPage('history');
+        }catch(e){}
+      },250);
+
+    }catch(e){
+      console.error('TFMS v36.0 maintenance register error',e);
+      let msg=String(e?.message||e||'알 수 없는 오류');
+      if(/row-level security/i.test(msg)){
+        msg='저장 권한이 없습니다. 로그인 계정의 소속부서와 관할 시설을 확인해 주세요.';
+      }
+      toast('유지관리 등록 실패: '+msg);
+    }finally{
+      setButtonBusy(false);
+    }
+  };
+
+  function bindRegisterButton(){
+    const register=$('register');
+    if(!register)return;
+    const btn=[...register.querySelectorAll('button')].find(b=>
+      String(b.textContent||'').trim()==='등록'
+    );
+    if(btn){
+      btn.type='button';
+      btn.setAttribute('onclick','addRecordFromForm()');
+      btn.dataset.tfmsRegisterButton='1';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded',()=>setTimeout(bindRegisterButton,600));
+  setTimeout(bindRegisterButton,900);
 })();
 </script>
