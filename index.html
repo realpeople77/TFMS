@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko">
-<!-- TFMS v35.7 Stable | 삭제관리 승인·삭제 버튼 복구 | 2026-07-20 -->
+<!-- TFMS v35.8 Stable | 삭제관리 승인·삭제 버튼 복구 | 2026-07-20 -->
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TFMS v35.7 Stable</title>
+<title>TFMS v35.8 Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -3068,11 +3068,38 @@ loadDB(); refreshAllV30();
     assetData={};
     aRes.data.forEach(a=>{
       const key=a.asset_code||a.id;
+      const installed=a.installed_on||'';
+      const spaceName=a.space?.name||a.location_detail||'기본시설';
       assetData[key]={
-        dbId:a.id,name:a.name,facility:a.facility?.name||'',space:a.space?.name||'기본시설',
-        category:a.category||'기타',year:a.installed_on?String(a.installed_on).slice(0,4):'-',
-        risk:a.risk_level||'보통',cycle:'미설정',qrId:a.qr_code||'-',
-        status:a.condition_status||'정상',manufacturer:a.manufacturer||'',model:a.model_name||''
+        dbId:a.id,
+        assetCode:a.asset_code||key,
+        name:a.name,
+        facility:a.facility?.name||'',
+        space:spaceName,
+        location:a.location_detail||a.space?.name||'-',
+        category:a.category||'기타',
+        manufacturer:a.manufacturer||'',
+        model:a.model_name||'',
+        serial:a.serial_number||'',
+        capacity:a.capacity||'-',
+        manufactureYear:a.manufacture_year||'',
+        installDate:installed,
+        year:installed?String(installed).slice(0,4):'-',
+        life:a.useful_life_years?String(a.useful_life_years)+'년':'-',
+        operation:a.operation_type||'-',
+        risk:a.risk_level||'양호',
+        riskClass:typeof riskClassName==='function'?riskClassName(a.risk_level||'양호'):'good',
+        cycle:a.inspection_cycle||'수시',
+        check:a.last_inspected_on?String(a.last_inspected_on).replaceAll('-','.'):'-',
+        qrId:a.qr_code||a.asset_code||'-',
+        status:a.condition_status||'정상',
+        importance:a.importance||'중',
+        remarks:a.remarks||'',
+        replace:a.replacement_cost?Number(a.replacement_cost).toLocaleString('ko-KR')+'원':'0원',
+        history:'0건',
+        repair:'0원',
+        rank:'관찰',
+        timeline:[]
       };
     });
 
@@ -7243,7 +7270,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
       const res=await sb.from('assets').delete().eq('id',asset.dbId).select('id');
       if(res.error){
-        console.error('TFMS v35.7 immediate delete',res.error);
+        console.error('TFMS v35.8 immediate delete',res.error);
         window.showToast?.('설비 삭제 실패: '+res.error.message);
         return;
       }
@@ -7287,7 +7314,7 @@ document.addEventListener('DOMContentLoaded',function(){
     try{
       if(typeof window.syncDB==='function')window.syncDB('설비 삭제요청 등록');
       else if(typeof syncDB==='function')syncDB('설비 삭제요청 등록');
-    }catch(e){console.warn('TFMS v35.7 syncDB',e);}
+    }catch(e){console.warn('TFMS v35.8 syncDB',e);}
 
     try{window.renderDeleteRequests?.();}catch(e){console.warn(e);}
     window.showToast?.('설비 삭제요청을 등록했습니다.');
@@ -7381,5 +7408,45 @@ document.addEventListener('DOMContentLoaded',function(){
     refreshDeleteRequestsNow();
     refreshAssetsNow();
   });
+})();
+</script>
+
+
+<script id="tfms-v358-space-location-persistence-fix">
+(function(){
+  'use strict';
+
+  function normalizeAssetSpace(){
+    const data=window.assetData||{};
+    Object.values(data).forEach(a=>{
+      if(!a)return;
+      if(!a.space || a.space==='기본시설'){
+        a.space=a.location||'기본시설';
+      }
+      if(!a.location || a.location==='-'){
+        a.location=(a.space && a.space!=='기본시설')?a.space:'-';
+      }
+    });
+    try{assetData=data}catch(e){}
+  }
+
+  const oldEnterprise=window.loadEnterpriseData;
+  if(typeof oldEnterprise==='function'){
+    window.loadEnterpriseData=async function(){
+      const result=await oldEnterprise.apply(this,arguments);
+      normalizeAssetSpace();
+      try{window.renderAssetList?.();}catch(e){}
+      try{window.renderUserFlowNavigator?.();}catch(e){}
+      const key=window.selectedAssetKey||Object.keys(window.assetData||{})[0]||'';
+      if(key){
+        window.selectedAssetKey=key;
+        try{selectedAssetKey=key}catch(e){}
+        try{window.showAsset?.(key);}catch(e){}
+      }
+      return result;
+    };
+  }
+
+  document.addEventListener('DOMContentLoaded',()=>setTimeout(normalizeAssetSpace,800));
 })();
 </script>
