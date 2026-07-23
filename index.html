@@ -9394,3 +9394,493 @@ document.addEventListener('DOMContentLoaded',function(){
   setTimeout(applyBuildVersion372,120);
 })();
 </script>
+
+
+<style id="tfms-v380-action-history-style">
+  #maintenanceActionModal{
+    position:fixed;inset:0;z-index:100003;display:none;align-items:center;justify-content:center;
+    background:rgba(15,23,42,.58);padding:18px
+  }
+  #maintenanceActionModal.show{display:flex}
+  #maintenanceActionModal .action-box{
+    width:min(760px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:16px;
+    box-shadow:0 24px 70px rgba(15,23,42,.34)
+  }
+  #maintenanceActionModal .action-head{
+    display:flex;justify-content:space-between;align-items:center;padding:18px 20px;
+    border-bottom:1px solid #e5e7eb;position:sticky;top:0;background:#fff;z-index:2
+  }
+  #maintenanceActionModal .action-head h3{margin:0;font-size:19px}
+  #maintenanceActionModal .action-close{border:0;background:transparent;font-size:26px;cursor:pointer;color:#64748b}
+  #maintenanceActionModal .action-body{padding:18px 20px 22px}
+  #maintenanceActionModal .action-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+  #maintenanceActionModal .action-field.wide{grid-column:1/-1}
+  #maintenanceActionModal label{display:block;margin-bottom:6px;font-size:13px;font-weight:800;color:#334155}
+  #maintenanceActionModal input,
+  #maintenanceActionModal select,
+  #maintenanceActionModal textarea{
+    width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:9px;padding:10px 11px;font:inherit
+  }
+  #maintenanceActionModal textarea{min-height:105px;resize:vertical}
+  #maintenanceActionModal .action-actions{
+    display:flex;justify-content:flex-end;gap:8px;margin-top:18px;padding-top:15px;border-top:1px solid #e5e7eb
+  }
+  .tfms-action-timeline{margin-top:8px}
+  .tfms-action-card{
+    position:relative;margin:0 0 14px 15px;padding:14px 15px;border:1px solid #dbe3ef;
+    border-radius:12px;background:#fff
+  }
+  .tfms-action-card:before{
+    content:"";position:absolute;left:-21px;top:17px;width:11px;height:11px;border-radius:50%;
+    background:#2563eb;border:3px solid #dbeafe
+  }
+  .tfms-action-card:after{
+    content:"";position:absolute;left:-16px;top:31px;bottom:-18px;width:2px;background:#dbeafe
+  }
+  .tfms-action-card:last-child:after{display:none}
+  .tfms-action-card.baseline:before{background:#64748b;border-color:#e2e8f0}
+  .tfms-action-meta{display:flex;justify-content:space-between;gap:12px;margin-bottom:8px}
+  .tfms-action-stage{font-weight:900;color:#1e3a8a}
+  .tfms-action-date{font-size:12px;color:#64748b}
+  .tfms-action-line{margin-top:7px;white-space:pre-wrap;word-break:break-word}
+  .tfms-action-line span{font-size:12px;font-weight:800;color:#64748b;margin-right:7px}
+  .tfms-action-status{
+    display:inline-block;padding:3px 8px;border-radius:999px;background:#eff6ff;color:#1d4ed8;
+    font-size:12px;font-weight:800
+  }
+  @media(max-width:700px){
+    #maintenanceActionModal .action-grid{grid-template-columns:1fr}
+    #maintenanceActionModal .action-field.wide{grid-column:auto}
+  }
+</style>
+
+<div id="maintenanceActionModal" onclick="if(event.target===this)closeMaintenanceActionV380()">
+  <div class="action-box" role="dialog" aria-modal="true" aria-labelledby="maintenanceActionTitle">
+    <div class="action-head">
+      <h3 id="maintenanceActionTitle">유지관리 조치 추가</h3>
+      <button type="button" class="action-close" onclick="closeMaintenanceActionV380()" aria-label="닫기">×</button>
+    </div>
+    <div class="action-body">
+      <div class="tfms-edit-note">
+        기존 발견·검토·임시조치 기록은 그대로 보존하고, 새로운 조치이력을 시간순으로 추가합니다.
+      </div>
+      <input type="hidden" id="actionMaintenanceId">
+      <div class="action-grid">
+        <div class="action-field">
+          <label>조치일자</label>
+          <input type="date" id="actionDate">
+        </div>
+        <div class="action-field">
+          <label>조치단계</label>
+          <select id="actionStage">
+            <option>검토</option>
+            <option>임시조치</option>
+            <option>원인확인</option>
+            <option>자체보수</option>
+            <option>업체조치</option>
+            <option>최종조치</option>
+            <option>완료확인</option>
+          </select>
+        </div>
+        <div class="action-field">
+          <label>처리상태</label>
+          <select id="actionProcessStatus">
+            <option>진행중</option>
+            <option>외부업체 의뢰</option>
+            <option>예산반영 필요</option>
+            <option>조치완료</option>
+          </select>
+        </div>
+        <div class="action-field">
+          <label>조치결과</label>
+          <select id="actionResult">
+            <option>보완 필요</option>
+            <option>일부 보완</option>
+            <option>추가 조치 필요</option>
+            <option>정상</option>
+          </select>
+        </div>
+        <div class="action-field wide">
+          <label>조치내용</label>
+          <textarea id="actionDetail" placeholder="확인한 원인과 실시한 조치를 구체적으로 입력"></textarea>
+        </div>
+        <div class="action-field wide">
+          <label>향후계획</label>
+          <textarea id="actionFuturePlan" placeholder="추가 점검, 업체 방문, 재발 확인 등 향후 계획 입력"></textarea>
+        </div>
+      </div>
+      <div class="action-actions">
+        <button type="button" class="btn" onclick="closeMaintenanceActionV380()">취소</button>
+        <button type="button" class="btn blue" id="saveMaintenanceActionBtn" onclick="saveMaintenanceActionV380()">조치이력 저장</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script id="tfms-v380-action-history-controller">
+(function(){
+  'use strict';
+
+  window.TFMS_BUILD = Object.freeze({
+    version:'v38.0',
+    channel:'Stable',
+    buildDate:'2026.07.23',
+    title:'발견-검토-조치 이력관리'
+  });
+
+  const $=id=>document.getElementById(id);
+  const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[m]));
+  const client=()=>{
+    try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||null}
+    catch(e){return null}
+  };
+  const getUser=async()=>{
+    try{
+      const u=window.getTfmsCloudUser?.()||window.cloudUser;
+      if(u?.id)return u;
+      const sb=client();
+      const {data}=await sb.auth.getUser();
+      return data?.user||null;
+    }catch(e){return null}
+  };
+  const getRole=()=>{
+    let r=String(
+      window.getTfmsCloudProfile?.()?.role||
+      window.cloudProfile?.role||
+      window.tfmsRole||'user'
+    ).toLowerCase();
+    return r==='관리자'?'admin':r;
+  };
+  const toast=msg=>{try{window.showToast?.(msg)}catch(e){}};
+  const today=()=>new Date().toISOString().slice(0,10);
+
+  async function hasAuthenticatedSessionV380(){
+    const sb=client();
+    if(!sb)return false;
+    try{
+      const {data}=await sb.auth.getSession();
+      return Boolean(data?.session?.user);
+    }catch(e){return false}
+  }
+
+  // 로그인 전에는 유지관리 테이블을 조회하지 않도록 모든 주요 로더를 인증 게이트로 감싼다.
+  function authGate(name){
+    const original=window[name];
+    if(typeof original!=='function'||original.__tfmsAuthGated)return;
+    const wrapped=async function(){
+      if(!(await hasAuthenticatedSessionV380()))return;
+      return original.apply(this,arguments);
+    };
+    wrapped.__tfmsAuthGated=true;
+    window[name]=wrapped;
+  }
+
+  [
+    'loadMaintenanceHistoryV361',
+    'loadStatsV363',
+    'loadExportRecordsV371',
+    'renderExportPreview',
+    'loadEnterpriseData'
+  ].forEach(authGate);
+
+  // 로그인 화면에서 발생하는 권한오류 토스트는 표시하지 않는다.
+  const originalShowToast=window.showToast;
+  if(typeof originalShowToast==='function'){
+    window.showToast=function(message){
+      const msg=String(message||'');
+      const loginVisible=!!document.querySelector('#loginPage:not([style*="display: none"]), .login-page:not(.hidden)');
+      if(loginVisible&&/permission denied for table maintenance_records/i.test(msg))return;
+      return originalShowToast.apply(this,arguments);
+    };
+  }
+
+  function applyBuildVersion380(){
+    const b=window.TFMS_BUILD;
+    const label=`${b.version} ${b.channel}`;
+    const badge=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
+    if(badge)badge.textContent=label;
+    document.querySelectorAll('.logo-title small').forEach(el=>{
+      el.textContent=`시설 유지관리 이력관리 시스템 · ${label} Enterprise`;
+    });
+    const current=document.querySelector('#tfmsVersionModal .current-build');
+    if(current)current.textContent=`현재 버전: ${label} · Build ${b.buildDate}`;
+    const body=document.querySelector('#tfmsVersionModal .version-body');
+    if(body&&!body.querySelector('[data-version="v38.0"]')){
+      const item=document.createElement('div');
+      item.className='change-item';
+      item.dataset.version='v38.0';
+      item.innerHTML=`
+        <strong>${label}</strong>
+        <ul>
+          <li>로그인 성공 전 maintenance_records 조회 차단</li>
+          <li>유지관리 건별 발견·검토·임시조치·최종조치 이력 누적</li>
+          <li>기존 내용 정정용 수정과 신규 진행기록용 조치 추가 분리</li>
+        </ul>`;
+      const first=body.querySelector('.change-item');
+      if(first)body.insertBefore(item,first);
+      else body.appendChild(item);
+    }
+  }
+
+  async function mayManageRecordV380(record){
+    const user=await getUser();
+    return getRole()==='admin'||Boolean(user?.id&&record?.registered_by===user.id);
+  }
+
+  window.closeMaintenanceActionV380=function(){
+    $('maintenanceActionModal')?.classList.remove('show');
+  };
+
+  window.openMaintenanceActionV380=async function(id){
+    const sb=client();
+    if(!sb||!id)return;
+    try{
+      const {data,error}=await sb.from('maintenance_records')
+        .select('id,registered_by')
+        .eq('id',id)
+        .single();
+      if(error)throw error;
+      if(!(await mayManageRecordV380(data))){
+        throw new Error('본인이 작성한 유지관리 이력에만 조치를 추가할 수 있습니다.');
+      }
+      $('actionMaintenanceId').value=id;
+      $('actionDate').value=today();
+      $('actionStage').value='자체보수';
+      $('actionProcessStatus').value='조치완료';
+      $('actionResult').value='정상';
+      $('actionDetail').value='';
+      $('actionFuturePlan').value='';
+      $('maintenanceDetailModal')?.classList.remove('show');
+      $('maintenanceActionModal')?.classList.add('show');
+    }catch(e){
+      console.error('TFMS v38 action open error',e);
+      toast('조치 추가 실패: '+(e?.message||e));
+    }
+  };
+
+  async function ensureBaselineV380(record,userId){
+    const sb=client();
+    const {data:existing,error:checkError}=await sb.from('maintenance_actions')
+      .select('id')
+      .eq('maintenance_record_id',record.id)
+      .eq('is_baseline',true)
+      .limit(1);
+    if(checkError)throw checkError;
+    if(existing?.length)return;
+
+    const baseline={
+      maintenance_record_id:record.id,
+      action_date:record.registered_on||record.created_at?.slice(0,10)||today(),
+      action_stage:'최초 등록',
+      process_status:record.process_status||'진행중',
+      action_detail:record.action_detail||record.detail||'',
+      action_result:record.action_result||'',
+      future_plan:record.future_plan||'',
+      created_by:record.registered_by||userId,
+      is_baseline:true
+    };
+    const {error}=await sb.from('maintenance_actions').insert(baseline);
+    if(error)throw error;
+  }
+
+  window.saveMaintenanceActionV380=async function(){
+    const id=$('actionMaintenanceId')?.value;
+    const sb=client();
+    const btn=$('saveMaintenanceActionBtn');
+    if(!sb||!id)return;
+
+    try{
+      const user=await getUser();
+      if(!user?.id)throw new Error('로그인 사용자 정보를 확인할 수 없습니다.');
+
+      const {data:record,error:recordError}=await sb.from('maintenance_records')
+        .select(`
+          id,registered_by,registered_on,created_at,detail,action_detail,
+          action_result,future_plan,process_status
+        `)
+        .eq('id',id)
+        .single();
+      if(recordError)throw recordError;
+      if(!(await mayManageRecordV380(record))){
+        throw new Error('본인이 작성한 유지관리 이력에만 조치를 추가할 수 있습니다.');
+      }
+
+      const detail=String($('actionDetail')?.value||'').trim();
+      if(!detail)throw new Error('조치내용을 입력해 주세요.');
+
+      btn.disabled=true;
+      btn.textContent='저장 중...';
+
+      await ensureBaselineV380(record,user.id);
+
+      const actionPayload={
+        maintenance_record_id:id,
+        action_date:$('actionDate')?.value||today(),
+        action_stage:$('actionStage')?.value||'조치',
+        process_status:$('actionProcessStatus')?.value||'진행중',
+        action_detail:detail,
+        action_result:$('actionResult')?.value||null,
+        future_plan:String($('actionFuturePlan')?.value||'').trim()||null,
+        created_by:user.id,
+        is_baseline:false
+      };
+      const {error:actionError}=await sb.from('maintenance_actions').insert(actionPayload);
+      if(actionError)throw actionError;
+
+      // 상위 유지관리 건에는 최신 상태를 요약값으로 반영하고, 세부 과정은 actions 테이블에 보존
+      let updateQuery=sb.from('maintenance_records').update({
+        process_status:actionPayload.process_status,
+        action_detail:actionPayload.action_detail,
+        action_result:actionPayload.action_result,
+        future_plan:actionPayload.future_plan,
+        executed_on:actionPayload.action_date,
+        updated_at:new Date().toISOString()
+      }).eq('id',id);
+
+      if(getRole()!=='admin')updateQuery=updateQuery.eq('registered_by',user.id);
+
+      const {data:updateData,error:updateError}=await updateQuery.select('id');
+      if(updateError)throw updateError;
+      if(!updateData?.length)throw new Error('상위 유지관리 상태를 갱신하지 못했습니다.');
+
+      closeMaintenanceActionV380();
+      await window.loadMaintenanceHistoryV361?.();
+      await window.loadStatsV363?.();
+      window.tfmsExportRecordsV371=null;
+      toast('조치이력을 추가하고 최신 상태를 반영했습니다.');
+    }catch(e){
+      console.error('TFMS v38 action save error',e);
+      let msg=String(e?.message||e);
+      if(/maintenance_actions/i.test(msg)&&/(does not exist|permission denied|schema cache)/i.test(msg)){
+        msg='Supabase에 maintenance_actions 테이블과 권한 정책을 먼저 적용해 주세요.';
+      }
+      toast('조치이력 저장 실패: '+msg);
+    }finally{
+      if(btn){
+        btn.disabled=false;
+        btn.textContent='조치이력 저장';
+      }
+    }
+  };
+
+  async function renderActionTimelineV380(recordId){
+    const host=$('maintenanceActionTimeline');
+    if(!host)return;
+    const sb=client();
+    try{
+      const {data,error}=await sb.from('maintenance_actions')
+        .select(`
+          id,action_date,action_stage,process_status,action_detail,
+          action_result,future_plan,is_baseline,created_at,created_by
+        `)
+        .eq('maintenance_record_id',recordId)
+        .order('action_date',{ascending:true})
+        .order('created_at',{ascending:true});
+      if(error)throw error;
+
+      if(!data?.length){
+        host.innerHTML='<div class="empty-state">아직 별도의 조치이력이 없습니다. 최초 등록내용만 보존되어 있습니다.</div>';
+        return;
+      }
+
+      host.innerHTML='<div class="tfms-action-timeline">'+data.map(a=>`
+        <div class="tfms-action-card ${a.is_baseline?'baseline':''}">
+          <div class="tfms-action-meta">
+            <div class="tfms-action-stage">${esc(a.action_stage||'조치')}</div>
+            <div class="tfms-action-date">${esc(a.action_date||'')}</div>
+          </div>
+          <div><span class="tfms-action-status">${esc(a.process_status||'-')}</span></div>
+          <div class="tfms-action-line"><span>조치내용</span>${esc(a.action_detail||'-')}</div>
+          <div class="tfms-action-line"><span>조치결과</span>${esc(a.action_result||'-')}</div>
+          <div class="tfms-action-line"><span>향후계획</span>${esc(a.future_plan||'-')}</div>
+        </div>`).join('')+'</div>';
+    }catch(e){
+      host.innerHTML=`<div class="empty-state" style="color:#b91c1c">조치이력 조회 실패: ${esc(e?.message||e)}</div>`;
+    }
+  }
+
+  // 상세조회 완료 후 타임라인과 권한 버튼을 붙인다.
+  const oldOpenDetail=window.openMaintenanceDetailV370;
+  if(typeof oldOpenDetail==='function'){
+    window.openMaintenanceDetailV370=async function(id){
+      await oldOpenDetail(id);
+      try{
+        const content=$('maintenanceDetailContent');
+        if(!content)return;
+
+        let timeline=content.querySelector('#maintenanceActionTimeline');
+        if(!timeline){
+          const section=document.createElement('div');
+          section.innerHTML=`
+            <div class="tfms-detail-section" style="margin-top:14px">진행·조치 이력</div>
+            <div id="maintenanceActionTimeline"><div class="empty-state">조치이력을 불러오는 중입니다.</div></div>`;
+          const actions=content.querySelector('.tfms-detail-actions');
+          if(actions)content.insertBefore(section,actions);
+          else content.appendChild(section);
+        }
+
+        const sb=client();
+        const {data:record}=await sb.from('maintenance_records')
+          .select('registered_by')
+          .eq('id',id)
+          .single();
+
+        if(await mayManageRecordV380(record)){
+          const actions=content.querySelector('.tfms-detail-actions');
+          if(actions&&!actions.querySelector('.tfms-add-action-btn')){
+            const add=document.createElement('button');
+            add.type='button';
+            add.className='small-btn blue tfms-add-action-btn';
+            add.textContent='조치 추가';
+            add.onclick=()=>window.openMaintenanceActionV380(id);
+            actions.insertBefore(add,actions.firstChild);
+          }
+        }
+        await renderActionTimelineV380(id);
+      }catch(e){console.warn('TFMS v38 detail enhance error',e)}
+    };
+    window.openMaintenanceDetailV3115=window.openMaintenanceDetailV370;
+  }
+
+  // 조회 목록 관리칸에도 수정/조치추가/삭제를 분리 표시
+  const oldRender=window.renderMaintenanceHistoryV361;
+  if(typeof oldRender==='function'){
+    window.renderMaintenanceHistoryV361=async function(){
+      await oldRender();
+      const rows=document.querySelectorAll('#historyBody tr');
+      rows.forEach(row=>{
+        const buttons=[...row.querySelectorAll('td:last-child button')];
+        const editBtn=buttons.find(b=>b.textContent.trim()==='수정');
+        if(editBtn&&!row.querySelector('.tfms-add-action-row-btn')){
+          const match=editBtn.getAttribute('onclick')?.match(/openMaintenanceEditV372\('([^']+)'\)/);
+          const id=match?.[1];
+          if(id){
+            const add=document.createElement('button');
+            add.type='button';
+            add.className='small-btn blue tfms-add-action-row-btn';
+            add.textContent='조치추가';
+            add.onclick=e=>{
+              e.stopPropagation();
+              window.openMaintenanceActionV380(id);
+            };
+            editBtn.insertAdjacentElement('afterend',add);
+          }
+        }
+      });
+    };
+    window.renderHistory=window.renderMaintenanceHistoryV361;
+    window.renderHistoryV318=window.renderMaintenanceHistoryV361;
+  }
+
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape')closeMaintenanceActionV380();
+  });
+
+  document.addEventListener('DOMContentLoaded',()=>{
+    applyBuildVersion380();
+    setTimeout(applyBuildVersion380,120);
+  });
+})();
+</script>
