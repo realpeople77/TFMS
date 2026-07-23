@@ -378,7 +378,7 @@ nav .nav[onclick*='"qrCheck"']{
     <button class="nav" data-roles="admin,user" onclick="showPage('qrCheck',this)">QR점검</button>
     <button class="nav" data-roles="admin,user" onclick="showPage('equipment',this)">설비관리</button>
     <button class="nav" data-roles="admin,user" onclick="showPage('cycle',this)">점검주기 관리</button>
-    <button class="nav" data-roles="admin" onclick="showPage('deleteManage',this)">삭제관리</button>
+    <button class="nav" data-roles="admin" onclick="showPage('deleteManage',this)">삭제·변경이력</button>
     <button class="nav" data-roles="admin,user,viewer" onclick="showPage('myPage',this)">내 정보</button>
     <button class="nav" data-roles="admin" onclick="showPage('accountAdmin',this)">계정승인</button>
     <button class="nav dev-nav" data-roles="admin" onclick="showPage('sampleData',this)">예시자료</button>
@@ -655,7 +655,7 @@ nav .nav[onclick*='"qrCheck"']{
     </section>
 
     <section id="deleteManage" class="page">
-      <div class="title-row"><div class="title-left"><div class="title-icon">🗑</div><div><h1>삭제관리</h1><div class="breadcrumb">홈 › 삭제관리</div></div></div></div>
+      <div class="title-row"><div class="title-left"><div class="title-icon">🗑</div><div><h1>삭제·변경이력</h1><div class="breadcrumb">홈 › 삭제·변경이력</div></div></div></div>
       <div class="panel">
         <div class="section-title"><span class="dot"></span>삭제요청 처리 원칙</div>
         <div class="delete-request">
@@ -12127,5 +12127,477 @@ ${getPrintCssV401()}
     setTimeout(addDeleteButtonsV401,500);
   });
   setTimeout(()=>{applyVersion401();addDeleteButtonsV401()},200);
+})();
+</script>
+
+
+<style id="tfms-v402-print-scope-facility-audit-style">
+  #tfmsPrintRootV402{display:none}
+
+  @media print{
+    body.tfms-printing-v402 *{visibility:hidden!important}
+    body.tfms-printing-v402 #tfmsPrintRootV402,
+    body.tfms-printing-v402 #tfmsPrintRootV402 *{
+      visibility:visible!important
+    }
+    body.tfms-printing-v402 #tfmsPrintRootV402{
+      display:block!important;
+      position:absolute!important;
+      left:0!important;
+      top:0!important;
+      width:210mm!important;
+      margin:0!important;
+      padding:0!important;
+      background:#fff!important;
+      overflow:visible!important;
+    }
+    body.tfms-printing-v402 #tfmsPrintRootV402 .dj-sheet{
+      display:block!important;
+      width:210mm!important;
+      min-height:297mm!important;
+      margin:0!important;
+      box-shadow:none!important;
+      background:#fff!important;
+    }
+    body.tfms-printing-v402 #tfmsPrintRootV402 .air-legal-page{
+      display:block!important;
+      visibility:visible!important;
+      opacity:1!important;
+      position:relative!important;
+      page-break-after:always!important;
+      break-after:page!important;
+    }
+    body.tfms-printing-v402 #tfmsPrintRootV402 .air-legal-page:last-child{
+      page-break-after:auto!important;
+      break-after:auto!important;
+    }
+    @page{size:A4 portrait;margin:0}
+  }
+
+  .tfms-unit-wrap{position:relative}
+  .tfms-unit-wrap input{padding-right:48px!important}
+  .tfms-unit-suffix{
+    position:absolute;right:12px;top:50%;transform:translateY(-50%);
+    color:#475569;font-weight:800;pointer-events:none
+  }
+
+  .audit-type{
+    display:inline-block;padding:3px 8px;border-radius:999px;
+    background:#eff6ff;color:#1d4ed8;font-size:12px;font-weight:800
+  }
+  .audit-type.delete{background:#fff1f2;color:#be123c}
+  .audit-type.maintenance{background:#f0fdf4;color:#15803d}
+</style>
+
+<div id="tfmsPrintRootV402"></div>
+
+<script id="tfms-v402-print-scope-facility-audit-controller">
+(function(){
+  'use strict';
+
+  window.TFMS_BUILD=Object.freeze({
+    version:'v40.2',
+    channel:'Stable',
+    buildDate:'2026.07.23',
+    title:'PDF 출력 안정화·팀별 시설범위·삭제변경이력'
+  });
+
+  const $=id=>document.getElementById(id);
+  const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[m]));
+  const client=()=>{
+    try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||null}
+    catch(e){return null}
+  };
+  const toast=m=>{try{window.showToast?.(m)}catch(e){}};
+
+  const TEAM_FACILITIES={
+    '관광운영팀':[
+      '태백고원자연휴양림','고원힐링캠핑장','통리탄탄파크',
+      '오로라파크','쇠바우골 탄광문화장터'
+    ],
+    '체육운영팀':['태백국민체육센터','태백볼링장'],
+    '복지주택팀':[
+      '태백공원묘원','근로자종합복지관','타워빌','목련',
+      '육성2차','서학 상가동','철암목욕탕'
+    ],
+    '안전·시설운영팀':['장성국민체육센터','절골힐링캠핑장','장성게스트하우스'],
+    '안전시설운영팀':['장성국민체육센터','절골힐링캠핑장','장성게스트하우스']
+  };
+  const ALL_FACILITIES=[...new Set(Object.values(TEAM_FACILITIES).flat())];
+
+  function currentContext(){
+    let session={};
+    try{session=JSON.parse(sessionStorage.getItem('tfmsSession')||'{}')}catch(e){}
+    const p=window.getTfmsCloudProfile?.()||window.cloudProfile||{};
+    const role=String(p.role||session.role||window.tfmsRole||'').toLowerCase();
+    return {
+      role,
+      isAdmin:role==='admin'||role==='관리자',
+      dept:p.department?.name||p.department_name||p.dept||session.dept||session.department||'',
+      name:p.name||p.full_name||p.user_name||session.name||session.userName||''
+    };
+  }
+
+  function applyVersion402(){
+    const b=window.TFMS_BUILD,label=`${b.version} ${b.channel}`;
+    const badge=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
+    if(badge)badge.textContent=label;
+    document.querySelectorAll('.logo-title small').forEach(el=>{
+      el.textContent=`시설 유지관리 이력관리 시스템 · ${label} Enterprise`;
+    });
+    const current=document.querySelector('#tfmsVersionModal .current-build');
+    if(current)current.textContent=`현재 버전: ${label} · Build ${b.buildDate}`;
+
+    const body=document.querySelector('#tfmsVersionModal .version-body');
+    if(body&&!body.querySelector('[data-version="v40.2"]')){
+      const item=document.createElement('div');
+      item.className='change-item';
+      item.dataset.version='v40.2';
+      item.innerHTML=`<strong>${label}</strong><ul>
+        <li>인쇄 iframe을 제거하고 현재 문서의 인쇄 전용 영역으로 PDF 백지 현상 수정</li>
+        <li>업무일지 시설목록을 로그인 사용자의 소속팀 시설로 제한</li>
+        <li>작성자·근무자에 로그인 사용자 성명 자동 입력</li>
+        <li>삭제관리 메뉴를 삭제·변경이력으로 개편</li>
+      </ul>`;
+      body.insertBefore(item,body.firstChild);
+    }
+  }
+
+  function setInputIfBlank(id,name){
+    const el=$(id);
+    if(el&&!String(el.value||'').trim()&&name)el.value=name;
+  }
+
+  function applyLoggedInNameV402(){
+    const {name}=currentContext();
+    if(!name)return;
+    setInputIfBlank('djAuthor',name);
+    setInputIfBlank('mjWorkers',name);
+    setInputIfBlank('wjName1',name);
+    setInputIfBlank('wjApprover2',name);
+    setInputIfBlank('airOfficerNameNew',name);
+  }
+
+  function allowedFacilities(){
+    const c=currentContext();
+    if(c.isAdmin)return ALL_FACILITIES.slice();
+    return (TEAM_FACILITIES[c.dept]||[]).slice();
+  }
+
+  function applyFacilityScopeV402(){
+    const select=$('djFacility');
+    if(!select)return;
+
+    const allowed=allowedFacilities();
+    const previous=select.value;
+    select.innerHTML='';
+
+    allowed.forEach(name=>{
+      const op=document.createElement('option');
+      op.value=name;op.textContent=name;select.appendChild(op);
+    });
+
+    if(previous&&allowed.includes(previous))select.value=previous;
+    else if(allowed.length)select.value=allowed[0];
+
+    updateJournalTabsV402();
+  }
+
+  function updateJournalTabsV402(){
+    const facility=$('djFacility')?.value||'';
+    const machineAllowed=['태백국민체육센터','장성국민체육센터'].includes(facility);
+    const airAllowed=facility==='태백국민체육센터';
+
+    const machine=$('djTabMachine');
+    const air=$('djTabAir');
+    const work=$('djTabWork');
+
+    if(machine)machine.style.display=machineAllowed?'':'none';
+    if(air)air.style.display=airAllowed?'':'none';
+    if(work)work.style.display='';
+
+    if(!machineAllowed&&$('djFormMachine')?.classList.contains('active')){
+      window.showDailyFormV390?.('work');
+    }
+    if(!airAllowed&&$('djFormAir')?.classList.contains('active')){
+      window.showDailyFormV390?.(machineAllowed?'machine':'work');
+    }
+  }
+
+  function applyFuelUnitV402(){
+    const input=$('airFuelNew');
+    if(!input||input.dataset.unitReady)return;
+    input.dataset.unitReady='1';
+    input.inputMode='decimal';
+    input.placeholder='숫자 입력';
+    const wrap=document.createElement('div');
+    wrap.className='tfms-unit-wrap';
+    input.parentNode.insertBefore(wrap,input);
+    wrap.appendChild(input);
+    const suffix=document.createElement('span');
+    suffix.className='tfms-unit-suffix';
+    suffix.textContent='㎥';
+    wrap.appendChild(suffix);
+  }
+
+  const oldPreview=window.previewDailyJournalV390;
+  if(typeof oldPreview==='function'){
+    window.previewDailyJournalV390=function(type){
+      const result=oldPreview.apply(this,arguments);
+      if(type==='air'){
+        const sheet=$('dailyJournalPreviewSheet');
+        if(sheet){
+          const rows=[...sheet.querySelectorAll('tr')];
+          const fuelRow=rows.find(r=>r.textContent.includes('⑮연 료 명'));
+          if(fuelRow){
+            const cells=fuelRow.querySelectorAll('td');
+            const target=cells[cells.length-1];
+            if(target&&target.textContent.trim()&&!target.textContent.includes('㎥')){
+              target.textContent=target.textContent.trim()+' ㎥';
+            }
+          }
+        }
+      }
+      return result;
+    };
+  }
+
+  async function printCurrentSheetV402(title){
+    const sheet=$('dailyJournalPreviewSheet');
+    const root=$('tfmsPrintRootV402');
+    if(!sheet||!root||!sheet.innerHTML.trim()){
+      toast('출력할 미리보기 내용이 없습니다.');
+      return;
+    }
+
+    root.innerHTML='';
+    const clone=sheet.cloneNode(true);
+    clone.id='';
+    root.appendChild(clone);
+
+    document.body.classList.add('tfms-printing-v402');
+    $('dailyJournalPreviewModal')?.classList.remove('show');
+
+    try{
+      if(document.fonts?.ready)await document.fonts.ready;
+      await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+      window.print();
+    }finally{
+      setTimeout(()=>{
+        document.body.classList.remove('tfms-printing-v402');
+        root.innerHTML='';
+      },700);
+    }
+  }
+
+  window.printDailyJournalV390=async function(type){
+    window.previewDailyJournalV390?.(type);
+    const date=$('djDate')?.value||'';
+    const label=type==='air'?'대기배출시설 및 방지시설 운영기록부':
+      type==='machine'?'기계실 업무일지':'일상근무일지';
+    await printCurrentSheetV402(`${date}_${label}`);
+  };
+
+  window.printSavedDailyLogV400=async function(id){
+    window.previewSavedDailyLogV400?.(id);
+    await printCurrentSheetV402('TFMS 업무일지');
+  };
+
+  function setupDeleteAuditPageV402(){
+    const section=$('deleteManage');
+    if(!section||section.dataset.v402)return;
+    section.dataset.v402='1';
+
+    const h=section.querySelector('h1');
+    if(h)h.textContent='삭제·변경이력';
+    const breadcrumb=section.querySelector('.breadcrumb');
+    if(breadcrumb)breadcrumb.textContent='홈 › 삭제·변경이력';
+
+    const requestBox=section.querySelector('.delete-request');
+    if(requestBox){
+      requestBox.innerHTML=`
+        설비·유지관리 삭제 처리내역과 업무일지 삭제이력을 한 화면에서 확인합니다.
+        삭제된 업무일지는 복구되지 않으며, 처리일시·처리자·대상정보를 감사이력으로 보관합니다.`;
+    }
+
+    const title=[...section.querySelectorAll('.section-title')].find(x=>x.textContent.includes('삭제요청'));
+    if(title)title.innerHTML='<span class="dot"></span>삭제·변경 처리이력';
+
+    const table=section.querySelector('table');
+    if(table){
+      table.innerHTML=`
+        <thead><tr>
+          <th>처리일시</th><th>구분</th><th>시설명</th><th>대상 내용</th>
+          <th>처리자</th><th>처리결과</th>
+        </tr></thead>
+        <tbody id="deleteBody"><tr><td colspan="6"><div class="empty-state">삭제·변경이력을 불러오는 중입니다.</div></td></tr></tbody>`;
+    }
+    loadDeleteAuditV402();
+  }
+
+  window.loadDeleteAuditV402=async function(){
+    const body=$('deleteBody');
+    if(!body)return;
+    const sb=client();
+    if(!sb)return;
+
+    try{
+      const [maintenance,audit]=await Promise.all([
+        sb.from('maintenance_records')
+          .select('id,deleted_at,detail,process_status,facility:facilities(name)')
+          .not('deleted_at','is',null)
+          .order('deleted_at',{ascending:false})
+          .limit(100),
+        sb.from('tfms_audit_logs')
+          .select('*')
+          .order('created_at',{ascending:false})
+          .limit(100)
+      ]);
+
+      const rows=[];
+      if(!maintenance.error){
+        (maintenance.data||[]).forEach(r=>rows.push({
+          time:r.deleted_at,type:'유지관리',
+          facility:r.facility?.name||'-',
+          detail:r.detail||'-',
+          user:'관리자/작성자',
+          result:r.process_status||'삭제'
+        }));
+      }
+      if(!audit.error){
+        (audit.data||[]).forEach(r=>rows.push({
+          time:r.created_at,type:r.target_type==='daily_log'?'업무일지':'기타',
+          facility:r.facility_name||'-',
+          detail:r.target_title||r.action_detail||'-',
+          user:r.actor_name||'-',
+          result:r.action_type==='delete'?'삭제완료':r.action_type
+        }));
+      }
+
+      rows.sort((a,b)=>String(b.time).localeCompare(String(a.time)));
+
+      if(!rows.length){
+        const missing=audit.error&&/does not exist|schema cache/i.test(String(audit.error.message||''));
+        body.innerHTML=`<tr><td colspan="6"><div class="empty-state">${
+          missing?'업무일지 감사이력 테이블이 아직 없습니다. 동봉된 SQL을 실행하면 삭제이력이 기록됩니다.':'삭제·변경 처리이력이 없습니다.'
+        }</div></td></tr>`;
+        return;
+      }
+
+      body.innerHTML=rows.map(r=>`
+        <tr>
+          <td>${esc(r.time?new Date(r.time).toLocaleString('ko-KR'):'-')}</td>
+          <td><span class="audit-type ${r.type==='업무일지'?'delete':'maintenance'}">${esc(r.type)}</span></td>
+          <td>${esc(r.facility)}</td>
+          <td>${esc(r.detail)}</td>
+          <td>${esc(r.user)}</td>
+          <td>${esc(r.result)}</td>
+        </tr>`).join('');
+    }catch(e){
+      body.innerHTML=`<tr><td colspan="6"><div class="empty-state" style="color:#b91c1c">${esc(e?.message||e)}</div></td></tr>`;
+    }
+  };
+
+  // 업무일지 삭제 시 감사로그를 먼저 기록한 뒤 삭제
+  window.deleteDailyLogV401=async function(id){
+    const row=(window.tfmsDailyLogCache||[]).find(r=>String(r.id)===String(id));
+    if(!row){toast('삭제할 업무일지를 찾지 못했습니다.');return}
+
+    const label=row.journalType==='air'?'대기배출 운영기록부':
+      row.journalType==='machine'?'기계실 업무일지':'일상근무일지';
+
+    if(!confirm(`${row.work_date} ${label}\n정말 삭제하시겠습니까?\n삭제한 자료는 복구할 수 없습니다.`))return;
+
+    try{
+      const sb=client();
+      const {data:auth}=await sb.auth.getUser();
+      const user=auth?.user;
+      if(!user?.id)throw new Error('로그인 세션을 확인할 수 없습니다.');
+
+      const c=currentContext();
+      const facility=row.facility?.name||row.data?.facility||'-';
+
+      const auditResult=await sb.from('tfms_audit_logs').insert({
+        action_type:'delete',
+        target_type:'daily_log',
+        target_id:String(id),
+        target_title:`${row.work_date} ${label}`,
+        facility_name:facility,
+        actor_id:user.id,
+        actor_name:c.name||row.data?.author||'',
+        action_detail:'중복 또는 오입력 업무일지 삭제'
+      });
+      if(auditResult.error&&!/does not exist|schema cache/i.test(String(auditResult.error.message||''))){
+        throw auditResult.error;
+      }
+
+      let q=sb.from('daily_logs').delete().eq('id',id);
+      if(!c.isAdmin)q=q.eq('author_id',user.id);
+      const {data,error}=await q.select('id');
+      if(error)throw error;
+      if(!data?.length)throw new Error('삭제 권한이 없거나 이미 삭제된 업무일지입니다.');
+
+      window.tfmsDailyLogCache=(window.tfmsDailyLogCache||[]).filter(r=>String(r.id)!==String(id));
+      await window.loadDailyLogHistoryV400?.();
+      await window.loadDeleteAuditV402?.();
+      toast('업무일지를 삭제했습니다.');
+    }catch(e){
+      let msg=String(e?.message||e);
+      if(/row-level security/i.test(msg))msg='업무일지 삭제 권한 정책을 확인해 주세요.';
+      toast('업무일지 삭제 실패: '+msg);
+    }
+  };
+
+  function refreshDailyEnhancements(){
+    applyFacilityScopeV402();
+    applyLoggedInNameV402();
+    applyFuelUnitV402();
+
+    const facility=$('djFacility');
+    if(facility&&!facility.dataset.v402Bound){
+      facility.dataset.v402Bound='1';
+      facility.addEventListener('change',updateJournalTabsV402);
+    }
+  }
+
+  const observer=new MutationObserver(()=>{
+    refreshDailyEnhancements();
+    setupDeleteAuditPageV402();
+  });
+
+  document.addEventListener('DOMContentLoaded',()=>{
+    applyVersion402();
+    refreshDailyEnhancements();
+    setupDeleteAuditPageV402();
+    observer.observe(document.body,{childList:true,subtree:true});
+  });
+
+  const oldShow=window.showPage;
+  if(typeof oldShow==='function'){
+    window.showPage=function(id,btn){
+      const result=oldShow.apply(this,arguments);
+      if(id==='dailylog')setTimeout(refreshDailyEnhancements,80);
+      if(id==='deleteManage')setTimeout(()=>{setupDeleteAuditPageV402();loadDeleteAuditV402()},80);
+      return result;
+    };
+  }
+
+  const oldNav=window.navTo;
+  if(typeof oldNav==='function'){
+    window.navTo=function(id){
+      const result=oldNav.apply(this,arguments);
+      if(id==='dailylog')setTimeout(refreshDailyEnhancements,80);
+      if(id==='deleteManage')setTimeout(()=>{setupDeleteAuditPageV402();loadDeleteAuditV402()},80);
+      return result;
+    };
+  }
+
+  setTimeout(()=>{
+    applyVersion402();
+    refreshDailyEnhancements();
+    setupDeleteAuditPageV402();
+  },250);
 })();
 </script>
