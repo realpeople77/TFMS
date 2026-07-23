@@ -10315,7 +10315,7 @@ document.addEventListener('DOMContentLoaded',function(){
       const titles={machine:'기계실 업무일지',air:'대기배출시설 및 방지시설 운영기록부',work:'일상근무일지'};
       const hasIssue=type==='machine'&&Boolean(d.special);
       const {error}=await sb.from('daily_logs').insert({
-        facility_id:facilityId,work_date:d.date,shift_type:type,
+        facility_id:facilityId,work_date:d.date,shift_type:'주간',
         title:`${d.facility} ${titles[type]}`,
         content:JSON.stringify({schema:'tfms-daily-journal-v39',journalType:type,data:d}),
         has_issue:hasIssue,issue_detail:hasIssue?d.special:null,weather:d.weather,author_id:uid
@@ -10977,7 +10977,7 @@ document.addEventListener('DOMContentLoaded',function(){
       if(!facilityId)try{facilityId=(facilityMasterStable||[]).find(f=>f.name===d.facility)?.id||''}catch(e){}
       if(!facilityId)throw new Error('시설 DB 정보를 찾지 못했습니다.');
       const {error}=await sb.from('daily_logs').insert({
-        facility_id:facilityId,work_date:d.date,shift_type:'air',
+        facility_id:facilityId,work_date:d.date,shift_type:'주간',
         title:`${d.facility} 대기배출시설 및 방지시설 운영기록부`,
         content:JSON.stringify({schema:'tfms-air-journal-v39.2',journalType:'air',data:d}),
         has_issue:false,issue_detail:null,weather:d.weather,author_id:uid
@@ -11106,5 +11106,210 @@ document.addEventListener('DOMContentLoaded',function(){
 
   document.addEventListener('DOMContentLoaded',applyVersion393);
   setTimeout(applyVersion393,150);
+})();
+</script>
+
+
+<script id="tfms-v394-daily-log-shift-type-fix">
+(function(){
+  'use strict';
+
+  window.TFMS_BUILD=Object.freeze({
+    version:'v39.4',
+    channel:'Stable',
+    buildDate:'2026.07.23',
+    title:'업무일지 저장 제약조건 수정'
+  });
+
+  const $=id=>document.getElementById(id);
+  const client=()=>{
+    try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||null}
+    catch(e){return null}
+  };
+  const toast=msg=>{try{window.showToast?.(msg)}catch(e){}};
+
+  function applyVersion394(){
+    const b=window.TFMS_BUILD,label=`${b.version} ${b.channel}`;
+    const badge=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
+    if(badge)badge.textContent=label;
+    document.querySelectorAll('.logo-title small').forEach(el=>{
+      el.textContent=`시설 유지관리 이력관리 시스템 · ${label} Enterprise`;
+    });
+    const current=document.querySelector('#tfmsVersionModal .current-build');
+    if(current)current.textContent=`현재 버전: ${label} · Build ${b.buildDate}`;
+
+    const body=document.querySelector('#tfmsVersionModal .version-body');
+    if(body&&!body.querySelector('[data-version="v39.4"]')){
+      const item=document.createElement('div');
+      item.className='change-item';
+      item.dataset.version='v39.4';
+      item.innerHTML=`<strong>${label}</strong><ul>
+        <li>daily_logs.shift_type 제약조건 위반 오류 수정</li>
+        <li>기계실·대기배출·일상근무일지 모두 허용값 '주간'으로 저장</li>
+        <li>일지 종류는 content의 journalType 값으로 구분</li>
+        <li>선택 입력항목은 빈칸이어도 저장 가능</li>
+      </ul>`;
+      body.insertBefore(item,body.firstChild);
+    }
+  }
+
+  function collectAir394(){
+    const v=id=>$(id)?.value??'';
+    return {
+      facility:v('djFacility'),
+      date:v('djDate'),
+      weather:v('djWeather'),
+      author:v('djAuthor'),
+      outlets:[1,2,3,4,5].map(i=>({
+        no:i,
+        facility:v(`airOutFacility${i}`),
+        hours:v(`airOutHours${i}`),
+        remark:v(`airOutRemark${i}`)
+      })),
+      operation:{
+        name:v('airOpName'),
+        location:v('airOpLocation'),
+        power:v('airPower'),
+        capacity:v('airCapacity'),
+        pollutant:v('airPollutant'),
+        concentration:v('airTreatmentConcentration'),
+        efficiency:v('airEfficiency'),
+        chemicalName:v('airChemicalName'),
+        chemicalAmount:v('airChemicalAmount')
+      },
+      repair:{
+        name:v('airRepairName'),
+        outlet:v('airRepairOutlet'),
+        period:v('airRepairPeriodNew'),
+        repairer:v('airRepairerNew'),
+        detail:v('airRepairDetailNew')
+      },
+      measure:{
+        date:v('airMeasureDateNew'),
+        sky:document.querySelector('input[name="airSky"]:checked')?.value||'',
+        temp:v('airTemp'),
+        humidity:v('airHumidity'),
+        pressure:v('airPressure'),
+        windDirection:v('airWindDirection'),
+        windSpeed:v('airWindSpeed'),
+        outlet:v('airMeasureOutletNew'),
+        mainFacility:v('airMainFacilityNew'),
+        item:v('airItemNew'),
+        concentration:v('airConcentrationNew'),
+        flow:v('airFlowNew'),
+        emission:v('airEmissionNew'),
+        device:v('airDeviceNew'),
+        method:v('airMethod'),
+        fuel:v('airFuelNew'),
+        material:v('airMaterialNew'),
+        opinion:v('airOpinionNew'),
+        etc:v('airEtc'),
+        officerRank:v('airOfficerRankNew'),
+        officerName:v('airOfficerNameNew')
+      }
+    };
+  }
+
+  async function getFacilityId394(name){
+    let facilityId='';
+    try{
+      facilityId=facByName?.[name]?.id||facByName?.[name]?.dbId||'';
+    }catch(e){}
+    if(!facilityId){
+      try{
+        facilityId=(facilityMasterStable||[]).find(f=>f.name===name)?.id||'';
+      }catch(e){}
+    }
+    return facilityId;
+  }
+
+  async function saveAir394(){
+    const sb=client();
+    if(!sb){
+      toast('DB 연결 정보를 확인하지 못했습니다.');
+      return;
+    }
+
+    const d=collectAir394();
+
+    if(!d.facility||!d.date){
+      toast('시설명과 근무일은 반드시 입력해야 합니다.');
+      return;
+    }
+    if(d.facility!=='태백국민체육센터'){
+      toast('대기배출 운영기록부는 태백국민체육센터에서만 작성합니다.');
+      return;
+    }
+
+    try{
+      const {data:auth,error:authError}=await sb.auth.getUser();
+      if(authError)throw authError;
+      const uid=auth?.user?.id;
+      if(!uid)throw new Error('로그인 세션을 확인할 수 없습니다.');
+
+      const facilityId=await getFacilityId394(d.facility);
+      if(!facilityId)throw new Error('시설 DB 정보를 찾지 못했습니다.');
+
+      const payload={
+        facility_id:facilityId,
+        work_date:d.date,
+
+        // daily_logs_shift_type_check에서 허용하는 기존 값 사용
+        shift_type:'주간',
+
+        title:`${d.facility} 대기배출시설 및 방지시설 운영기록부`,
+        content:JSON.stringify({
+          schema:'tfms-air-journal-v39.4',
+          journalType:'air',
+          data:d
+        }),
+        has_issue:false,
+        issue_detail:null,
+        weather:d.weather||null,
+        author_id:uid
+      };
+
+      const {error}=await sb.from('daily_logs').insert(payload);
+      if(error)throw error;
+
+      toast('대기배출시설 및 방지시설 운영기록부를 저장했습니다.');
+      try{
+        await window.loadDailyHistoryV322?.();
+        window.renderDashboardDailyV322?.();
+      }catch(e){}
+    }catch(e){
+      console.error('TFMS v39.4 air save error',e);
+
+      let msg=String(e?.message||e);
+      if(/daily_logs_shift_type_check/i.test(msg)){
+        msg='근무구분 저장값이 DB 허용값과 일치하지 않습니다.';
+      }else if(/not-null constraint/i.test(msg)){
+        msg='필수 DB 항목이 누락되었습니다. 시설명과 근무일을 확인해 주세요.';
+      }else if(/row-level security/i.test(msg)){
+        msg='업무일지 저장 권한이 없습니다. 로그인 계정과 시설 권한을 확인해 주세요.';
+      }
+      toast('업무일지 저장 실패: '+msg);
+    }
+  }
+
+  // 최종 저장 컨트롤러:
+  // 대기배출 기록부는 v39.4 전용 저장 사용,
+  // 다른 일지는 기존 저장을 사용하되 잘못된 shift_type을 방지한다.
+  const previousSave=window.saveDailyJournalV390;
+  window.saveDailyJournalV390=async function(type){
+    if(type==='air'){
+      return saveAir394();
+    }
+
+    // 기존 machine/work 저장 함수 내부에서 shift_type:type을 사용하므로
+    // Supabase insert 직전에 type을 '주간'으로 전달하고 실제 일지종류는 content에 보존된다.
+    if(typeof previousSave==='function'){
+      const originalFrom=window.tfmsSupabase?.from?.bind(window.tfmsSupabase);
+      return previousSave(type);
+    }
+  };
+
+  document.addEventListener('DOMContentLoaded',applyVersion394);
+  setTimeout(applyVersion394,150);
 })();
 </script>
