@@ -10623,8 +10623,8 @@ document.addEventListener('DOMContentLoaded',function(){
   .air-weather-checks input{width:auto}
 
   .dj-sheet.air-legal-2026{padding:6mm 7mm!important;font-family:"Batang","바탕",serif!important}
-  .dj-sheet.air-legal-2026 .page{width:100%;min-height:284mm;box-sizing:border-box;page-break-after:always}
-  .dj-sheet.air-legal-2026 .page:last-child{page-break-after:auto}
+  .dj-sheet.air-legal-2026 .air-legal-page{display:block!important;width:100%;min-height:284mm;box-sizing:border-box;page-break-after:always}
+  .dj-sheet.air-legal-2026 .air-legal-page:last-child{page-break-after:auto}
   .dj-sheet.air-legal-2026 table{font-size:8.4px!important}
   .dj-sheet.air-legal-2026 th,.dj-sheet.air-legal-2026 td{
     padding:1px 2px!important;line-height:1.05!important;font-weight:400!important
@@ -10844,7 +10844,7 @@ document.addEventListener('DOMContentLoaded',function(){
         <td><span class="dj-fixed">${esc(o.hours)}</span></td><td><span class="dj-fixed">${esc(o.remark)}</span></td>
       </tr>`).join('');
     const op=d.operation;
-    return `<div class="page">
+    return `<div class="air-legal-page">
       <div class="legal-header"><span>■ 대기환경보전법 시행규칙 [별지 제7호서식] &lt;개정 2026. 7. 15.&gt;</span><span>(앞 쪽)</span></div>
       <div class="legal-title-row">
         <div class="legal-title">대기배출시설 및 방지시설 운영기록부</div>
@@ -10888,7 +10888,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
   function airPage2(d){
     const r=d.repair,m=d.measure;
-    return `<div class="page">
+    return `<div class="air-legal-page">
       <div class="back-label">(뒤 쪽)</div>
       <div class="sub-label" style="padding-left:0">나. 방지시설 보수사항</div>
       <table>
@@ -11007,5 +11007,104 @@ document.addEventListener('DOMContentLoaded',function(){
 
   document.addEventListener('DOMContentLoaded',()=>{applyVersion392();runUpgrade()});
   setTimeout(()=>{applyVersion392();runUpgrade()},180);
+})();
+</script>
+
+
+<style id="tfms-v393-air-preview-visible-fix">
+  #dailyJournalPreviewSheet.air-legal-2026{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+  }
+  #dailyJournalPreviewSheet.air-legal-2026 .air-legal-page{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    position:relative!important;
+  }
+</style>
+
+<script id="tfms-v393-air-preview-visible-controller">
+(function(){
+  'use strict';
+
+  window.TFMS_BUILD=Object.freeze({
+    version:'v39.3',channel:'Stable',buildDate:'2026.07.23',
+    title:'대기배출 법정서식 미리보기 공백 수정'
+  });
+
+  const $=id=>document.getElementById(id);
+
+  function applyVersion393(){
+    const b=window.TFMS_BUILD,label=`${b.version} ${b.channel}`;
+    const badge=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
+    if(badge)badge.textContent=label;
+    document.querySelectorAll('.logo-title small').forEach(el=>{
+      el.textContent=`시설 유지관리 이력관리 시스템 · ${label} Enterprise`;
+    });
+    const current=document.querySelector('#tfmsVersionModal .current-build');
+    if(current)current.textContent=`현재 버전: ${label} · Build ${b.buildDate}`;
+    const body=document.querySelector('#tfmsVersionModal .version-body');
+    if(body&&!body.querySelector('[data-version="v39.3"]')){
+      const item=document.createElement('div');
+      item.className='change-item';
+      item.dataset.version='v39.3';
+      item.innerHTML=`<strong>${label}</strong><ul>
+        <li>법정서식 내부의 page 클래스가 TFMS 화면전환 CSS와 충돌하던 문제 수정</li>
+        <li>대기배출 기록부 앞·뒤 2쪽이 미리보기에서 정상 표시</li>
+        <li>미리보기 생성 실패 시 빈 화면 대신 오류내용 표시</li>
+      </ul>`;
+      body.insertBefore(item,body.firstChild);
+    }
+  }
+
+  const generatedPreview=window.previewDailyJournalV390;
+  window.previewDailyJournalV390=function(type){
+    if(type!=='air')return generatedPreview(type);
+
+    const modal=$('dailyJournalPreviewModal');
+    const sheet=$('dailyJournalPreviewSheet');
+    const title=$('djPreviewTitle');
+
+    if(!modal||!sheet){
+      window.showToast?.('업무일지 미리보기 영역을 찾지 못했습니다.');
+      return;
+    }
+
+    try{
+      generatedPreview('air');
+
+      // v39.2에서 생성된 일반 page 클래스가 남아 있으면 즉시 안전한 전용 클래스로 교체
+      sheet.querySelectorAll(':scope > .page').forEach(el=>{
+        el.classList.remove('page');
+        el.classList.add('air-legal-page');
+      });
+
+      sheet.classList.add('air-legal-2026');
+      if(title)title.textContent='대기배출시설 및 방지시설 운영기록부';
+
+      const pages=sheet.querySelectorAll('.air-legal-page');
+      if(!pages.length||!sheet.textContent.trim()){
+        throw new Error('법정서식 출력내용이 생성되지 않았습니다.');
+      }
+
+      modal.classList.add('show');
+      modal.scrollTop=0;
+    }catch(e){
+      console.error('TFMS v39.3 air preview error',e);
+      sheet.className='dj-sheet air-legal-2026';
+      sheet.innerHTML=`
+        <div style="padding:30px;color:#b91c1c;font-family:Malgun Gothic,sans-serif">
+          <h3 style="margin-top:0">미리보기 생성 실패</h3>
+          <p>${String(e?.message||e).replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]))}</p>
+        </div>`;
+      modal.classList.add('show');
+      window.showToast?.('대기배출 운영기록부 미리보기 생성에 실패했습니다.');
+    }
+  };
+
+  document.addEventListener('DOMContentLoaded',applyVersion393);
+  setTimeout(applyVersion393,150);
 })();
 </script>
