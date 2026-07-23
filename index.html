@@ -12601,3 +12601,129 @@ ${getPrintCssV401()}
   },250);
 })();
 </script>
+
+
+<script id="tfms-v403-server-freeze-fix">
+(function(){
+  'use strict';
+
+  window.TFMS_BUILD=Object.freeze({
+    version:'v40.3',
+    channel:'Stable',
+    buildDate:'2026.07.23',
+    title:'접속 멈춤·무한 DOM 갱신 수정'
+  });
+
+  const $=id=>document.getElementById(id);
+
+  function applyVersion403(){
+    const b=window.TFMS_BUILD,label=`${b.version} ${b.channel}`;
+    const badge=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
+    if(badge)badge.textContent=label;
+    document.querySelectorAll('.logo-title small').forEach(el=>{
+      el.textContent=`시설 유지관리 이력관리 시스템 · ${label} Enterprise`;
+    });
+    const current=document.querySelector('#tfmsVersionModal .current-build');
+    if(current)current.textContent=`현재 버전: ${label} · Build ${b.buildDate}`;
+
+    const body=document.querySelector('#tfmsVersionModal .version-body');
+    if(body&&!body.querySelector('[data-version="v40.3"]')){
+      const item=document.createElement('div');
+      item.className='change-item';
+      item.dataset.version='v40.3';
+      item.innerHTML=`<strong>${label}</strong><ul>
+        <li>업무일지 시설 드롭다운 반복 재생성으로 발생한 무한 DOM 갱신 수정</li>
+        <li>MutationObserver 자기호출 방지 및 메뉴 진입 시에만 시설목록 갱신</li>
+        <li>접속 지연·브라우저 멈춤·서버 응답없음처럼 보이던 현상 해소</li>
+      </ul>`;
+      body.insertBefore(item,body.firstChild);
+    }
+  }
+
+  // v40.2에서 MutationObserver가 시설 드롭다운을 계속 비우고 다시 만들면서
+  // 자기 자신을 다시 호출하는 무한루프가 발생할 수 있었다.
+  // 기존 observer들을 직접 해제할 수 없으므로, 드롭다운 갱신 함수에 상태 비교 및 잠금 적용.
+  const originalApplyFacilityScope=window.applyFacilityScopeV402;
+  let facilityScopeBusy=false;
+  let lastFacilitySignature='';
+
+  function contextSignature(){
+    let session={};
+    try{session=JSON.parse(sessionStorage.getItem('tfmsSession')||'{}')}catch(e){}
+    const p=window.getTfmsCloudProfile?.()||window.cloudProfile||{};
+    const role=String(p.role||session.role||window.tfmsRole||'').toLowerCase();
+    const dept=p.department?.name||p.department_name||p.dept||session.dept||session.department||'';
+    return `${role}|${dept}`;
+  }
+
+  window.applyFacilityScopeV403=function(force=false){
+    const select=$('djFacility');
+    if(!select||facilityScopeBusy)return;
+
+    const sig=contextSignature();
+    const optionSig=[...select.options].map(o=>o.value).join('|');
+    const combined=`${sig}::${optionSig}`;
+
+    if(!force&&combined===lastFacilitySignature)return;
+
+    facilityScopeBusy=true;
+    try{
+      if(typeof originalApplyFacilityScope==='function'){
+        originalApplyFacilityScope();
+      }
+      lastFacilitySignature=`${contextSignature()}::${[...select.options].map(o=>o.value).join('|')}`;
+    }finally{
+      facilityScopeBusy=false;
+    }
+  };
+
+  // 기존 전역 함수명이 존재하면 안전 래퍼로 교체
+  window.applyFacilityScopeV402=window.applyFacilityScopeV403;
+
+  // observer가 다시 호출되더라도 DOM 변경이 없도록 자동입력 및 단위처리도 1회만 수행
+  const originalName=window.applyLoggedInNameV402;
+  window.applyLoggedInNameV402=function(){
+    if(document.body.dataset.tfmsNameApplied==='1')return;
+    originalName?.();
+    document.body.dataset.tfmsNameApplied='1';
+  };
+
+  const originalFuel=window.applyFuelUnitV402;
+  window.applyFuelUnitV402=function(){
+    const input=$('airFuelNew');
+    if(input?.dataset.unitReady==='1')return;
+    originalFuel?.();
+  };
+
+  // 업무일지 메뉴 진입 시에만 명시적으로 갱신
+  function safeRefresh(){
+    window.applyFacilityScopeV403(true);
+    window.applyLoggedInNameV402?.();
+    window.applyFuelUnitV402?.();
+  }
+
+  const oldShow=window.showPage;
+  if(typeof oldShow==='function'){
+    window.showPage=function(id,btn){
+      const result=oldShow.apply(this,arguments);
+      if(id==='dailylog')setTimeout(safeRefresh,100);
+      return result;
+    };
+  }
+
+  const oldNav=window.navTo;
+  if(typeof oldNav==='function'){
+    window.navTo=function(id){
+      const result=oldNav.apply(this,arguments);
+      if(id==='dailylog')setTimeout(safeRefresh,100);
+      return result;
+    };
+  }
+
+  document.addEventListener('DOMContentLoaded',()=>{
+    applyVersion403();
+    setTimeout(safeRefresh,250);
+  });
+  setTimeout(applyVersion403,150);
+})();
+</script>
