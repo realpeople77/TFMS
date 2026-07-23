@@ -11819,3 +11819,313 @@ document.addEventListener('DOMContentLoaded',function(){
   setTimeout(()=>{applyVersion400();ensureJournalHistoryUI()},180);
 })();
 </script>
+
+
+<style id="tfms-v401-print-delete-style">
+  #tfmsPrintFrameV401{
+    position:fixed!important;
+    right:0!important;
+    bottom:0!important;
+    width:1px!important;
+    height:1px!important;
+    border:0!important;
+    opacity:0!important;
+    pointer-events:none!important;
+  }
+</style>
+
+<iframe id="tfmsPrintFrameV401" title="TFMS 인쇄 전용 프레임"></iframe>
+
+<script id="tfms-v401-print-delete-controller">
+(function(){
+  'use strict';
+
+  window.TFMS_BUILD=Object.freeze({
+    version:'v40.1',
+    channel:'Stable',
+    buildDate:'2026.07.23',
+    title:'업무일지 PDF 백지 수정·중복자료 삭제'
+  });
+
+  const $=id=>document.getElementById(id);
+  const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[m]));
+  const client=()=>{
+    try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||null}
+    catch(e){return null}
+  };
+  const toast=m=>{try{window.showToast?.(m)}catch(e){}};
+
+  function applyVersion401(){
+    const b=window.TFMS_BUILD,label=`${b.version} ${b.channel}`;
+    const badge=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
+    if(badge)badge.textContent=label;
+    document.querySelectorAll('.logo-title small').forEach(el=>{
+      el.textContent=`시설 유지관리 이력관리 시스템 · ${label} Enterprise`;
+    });
+    const current=document.querySelector('#tfmsVersionModal .current-build');
+    if(current)current.textContent=`현재 버전: ${label} · Build ${b.buildDate}`;
+
+    const body=document.querySelector('#tfmsVersionModal .version-body');
+    if(body&&!body.querySelector('[data-version="v40.1"]')){
+      const item=document.createElement('div');
+      item.className='change-item';
+      item.dataset.version='v40.1';
+      item.innerHTML=`<strong>${label}</strong><ul>
+        <li>팝업창 대신 동일 문서의 인쇄 전용 iframe을 사용하여 PDF 백지 현상 수정</li>
+        <li>폰트·CSS·법정서식 2쪽 렌더링 완료 후 인쇄창 실행</li>
+        <li>업무일지 이력에 확인 팝업 방식의 즉시삭제 버튼 추가</li>
+      </ul>`;
+      body.insertBefore(item,body.firstChild);
+    }
+  }
+
+  function getPrintCssV401(){
+    return `
+      html,body{
+        margin:0!important;padding:0!important;background:#fff!important;
+        overflow:visible!important;width:210mm!important;
+      }
+      *{box-sizing:border-box}
+      .dj-sheet{
+        display:block!important;visibility:visible!important;opacity:1!important;
+        width:210mm!important;min-height:297mm!important;
+        margin:0!important;padding:9mm!important;background:#fff!important;
+        box-shadow:none!important;color:#111!important;
+        font-family:"Malgun Gothic","Noto Sans KR",sans-serif!important;
+      }
+      .dj-sheet.air-legal-2026{
+        padding:6mm 7mm!important;font-family:"Batang","바탕",serif!important;
+      }
+      .dj-sheet table{
+        width:100%!important;border-collapse:collapse!important;table-layout:fixed!important;
+      }
+      .dj-sheet th,.dj-sheet td{
+        border:1px solid #111!important;color:#111!important;
+        overflow:hidden!important;white-space:normal!important;
+      }
+      .air-legal-page{
+        display:block!important;visibility:visible!important;opacity:1!important;
+        position:relative!important;width:100%!important;min-height:284mm!important;
+        page-break-after:always!important;break-after:page!important;
+      }
+      .air-legal-page:last-child{
+        page-break-after:auto!important;break-after:auto!important;
+      }
+      @page{size:A4 portrait;margin:0}
+      @media print{
+        html,body{width:210mm!important;height:auto!important}
+        .dj-sheet{page-break-inside:auto!important}
+      }
+    `;
+  }
+
+  function getRelevantStylesV401(){
+    return [...document.querySelectorAll('style')]
+      .map(s=>s.textContent||'')
+      .filter(Boolean)
+      .join('\n');
+  }
+
+  window.printTfmsHtmlV401=async function(title,content,sheetClass){
+    const frame=$('tfmsPrintFrameV401');
+    if(!frame){
+      toast('인쇄 전용 영역을 찾지 못했습니다.');
+      return;
+    }
+    if(!String(content||'').trim()){
+      toast('출력할 미리보기 내용이 없습니다.');
+      return;
+    }
+
+    try{
+      const doc=frame.contentDocument||frame.contentWindow?.document;
+      if(!doc)throw new Error('인쇄 문서를 생성하지 못했습니다.');
+
+      doc.open();
+      doc.write(`<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>${esc(title||'TFMS 업무일지')}</title>
+<style>
+${getRelevantStylesV401()}
+${getPrintCssV401()}
+</style>
+</head>
+<body>
+<div class="dj-sheet ${esc(sheetClass||'')}">${content}</div>
+</body>
+</html>`);
+      doc.close();
+
+      await new Promise(resolve=>{
+        if(doc.readyState==='complete')resolve();
+        else frame.onload=()=>resolve();
+      });
+
+      if(doc.fonts?.ready){
+        try{await doc.fonts.ready}catch(e){}
+      }
+
+      // 레이아웃 계산이 끝난 다음 인쇄
+      await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+
+      const pages=doc.querySelectorAll('.air-legal-page');
+      pages.forEach(p=>{
+        p.style.display='block';
+        p.style.visibility='visible';
+        p.style.opacity='1';
+      });
+
+      const printable=doc.querySelector('.dj-sheet');
+      if(!printable||!printable.textContent.trim()){
+        throw new Error('인쇄할 서식 내용이 생성되지 않았습니다.');
+      }
+
+      frame.contentWindow.focus();
+      frame.contentWindow.print();
+    }catch(e){
+      console.error('TFMS v40.1 print error',e);
+      toast('PDF 출력 실패: '+(e?.message||e));
+    }
+  };
+
+  function savedByIdV401(id){
+    return (window.tfmsDailyLogCache||[]).find(r=>String(r.id)===String(id));
+  }
+
+  // 현재 입력자료 출력
+  window.printDailyJournalV390=function(type){
+    try{
+      window.previewDailyJournalV390?.(type);
+      const sheet=$('dailyJournalPreviewSheet');
+      const content=sheet?.innerHTML||'';
+      const cls=(sheet?.className||'').replace(/\bdj-sheet\b/g,'').trim();
+      $('dailyJournalPreviewModal')?.classList.remove('show');
+      window.printTfmsHtmlV401(
+        `${$('djDate')?.value||''}_${type==='air'?'대기배출시설 및 방지시설 운영기록부':type==='machine'?'기계실 업무일지':'일상근무일지'}`,
+        content,
+        cls
+      );
+    }catch(e){
+      console.error(e);
+      toast('PDF 출력 준비에 실패했습니다.');
+    }
+  };
+
+  // 저장자료 출력
+  window.printSavedDailyLogV400=function(id){
+    const r=savedByIdV401(id);
+    if(!r){toast('저장된 업무일지를 찾지 못했습니다.');return}
+    try{
+      window.previewSavedDailyLogV400?.(id);
+      const sheet=$('dailyJournalPreviewSheet');
+      const content=sheet?.innerHTML||'';
+      const cls=(sheet?.className||'').replace(/\bdj-sheet\b/g,'').trim();
+      $('dailyJournalPreviewModal')?.classList.remove('show');
+      const label=r.journalType==='air'?'대기배출 운영기록부':r.journalType==='machine'?'기계실 업무일지':'일상근무일지';
+      window.printTfmsHtmlV401(`${r.work_date}_${label}`,content,cls);
+    }catch(e){
+      console.error(e);
+      toast('저장자료 PDF 출력 준비에 실패했습니다.');
+    }
+  };
+
+  async function currentUserV401(){
+    try{
+      const known=window.getTfmsCloudUser?.()||window.cloudUser;
+      if(known?.id)return known;
+      const sb=client();
+      const {data}=await sb.auth.getUser();
+      return data?.user||null;
+    }catch(e){return null}
+  }
+
+  function isAdminV401(){
+    let s={};try{s=JSON.parse(sessionStorage.getItem('tfmsSession')||'{}')}catch(e){}
+    const p=window.getTfmsCloudProfile?.()||window.cloudProfile||{};
+    const role=String(p.role||s.role||window.tfmsRole||'').toLowerCase();
+    return role==='admin'||role==='관리자';
+  }
+
+  window.deleteDailyLogV401=async function(id){
+    const row=savedByIdV401(id);
+    if(!row){
+      toast('삭제할 업무일지를 찾지 못했습니다.');
+      return;
+    }
+
+    const label=row.journalType==='air'
+      ?'대기배출 운영기록부'
+      :row.journalType==='machine'
+        ?'기계실 업무일지'
+        :'일상근무일지';
+
+    if(!confirm(`${row.work_date} ${label}\n정말 삭제하시겠습니까?\n삭제한 자료는 복구할 수 없습니다.`)){
+      return;
+    }
+
+    try{
+      const sb=client();
+      if(!sb)throw new Error('DB 연결 정보를 확인하지 못했습니다.');
+
+      const user=await currentUserV401();
+      if(!user?.id)throw new Error('로그인 세션을 확인할 수 없습니다.');
+
+      let query=sb.from('daily_logs').delete().eq('id',id);
+      if(!isAdminV401())query=query.eq('author_id',user.id);
+
+      const {data,error}=await query.select('id');
+      if(error)throw error;
+      if(!data?.length){
+        throw new Error('삭제 권한이 없거나 이미 삭제된 업무일지입니다.');
+      }
+
+      window.tfmsDailyLogCache=(window.tfmsDailyLogCache||[])
+        .filter(r=>String(r.id)!==String(id));
+
+      await window.loadDailyLogHistoryV400?.();
+      toast('업무일지를 삭제했습니다.');
+    }catch(e){
+      console.error('TFMS v40.1 delete error',e);
+      let msg=String(e?.message||e);
+      if(/row-level security/i.test(msg)){
+        msg='업무일지 삭제 권한 정책을 확인해 주세요.';
+      }
+      toast('업무일지 삭제 실패: '+msg);
+    }
+  };
+
+  // 이력 표가 갱신될 때 삭제 버튼을 추가
+  function addDeleteButtonsV401(){
+    const rows=document.querySelectorAll('#djHistoryBody tr');
+    rows.forEach(tr=>{
+      const last=tr.querySelector('td:last-child');
+      if(!last||last.querySelector('.dj-delete-btn-v401'))return;
+
+      const preview=last.querySelector('button[onclick*="previewSavedDailyLogV400"]');
+      const source=preview?.getAttribute('onclick')||'';
+      const match=source.match(/previewSavedDailyLogV400\('([^']+)'\)/);
+      const id=match?.[1];
+      if(!id)return;
+
+      const btn=document.createElement('button');
+      btn.type='button';
+      btn.className='small-btn red dj-delete-btn-v401';
+      btn.textContent='삭제';
+      btn.onclick=()=>window.deleteDailyLogV401(id);
+      last.appendChild(btn);
+    });
+  }
+
+  const observer=new MutationObserver(addDeleteButtonsV401);
+  document.addEventListener('DOMContentLoaded',()=>{
+    applyVersion401();
+    observer.observe(document.body,{childList:true,subtree:true});
+    setTimeout(addDeleteButtonsV401,500);
+  });
+  setTimeout(()=>{applyVersion401();addDeleteButtonsV401()},200);
+})();
+</script>
