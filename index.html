@@ -10343,3 +10343,266 @@ document.addEventListener('DOMContentLoaded',function(){
   setTimeout(()=>{applyVersion();rebuildDailyPage()},120);
 })();
 </script>
+
+
+<style id="tfms-v391-print-layout-fix">
+  /* 미리보기와 PDF 출력에서 행 높이가 내용 길이에 따라 달라지지 않도록 고정 */
+  .dj-sheet table{table-layout:fixed!important}
+  .dj-sheet th,.dj-sheet td{
+    box-sizing:border-box!important;
+    padding:2px 3px!important;
+    line-height:1.15!important;
+    overflow:hidden!important;
+    white-space:normal!important;
+  }
+  .dj-sheet tr.dj-h18{height:18px!important}
+  .dj-sheet tr.dj-h20{height:20px!important}
+  .dj-sheet tr.dj-h24{height:24px!important}
+  .dj-sheet tr.dj-h28{height:28px!important}
+  .dj-sheet tr.dj-h34{height:34px!important}
+  .dj-sheet tr.dj-h42{height:42px!important}
+  .dj-sheet tr.dj-h54{height:54px!important}
+  .dj-sheet tr.dj-h68{height:68px!important}
+  .dj-sheet tr.dj-h82{height:82px!important}
+  .dj-sheet .dj-fixed{
+    display:block;max-height:100%;overflow:hidden;white-space:pre-wrap;word-break:break-all
+  }
+
+  /* 법정서식 전용: A4 1면, 원본 비율과 행·열 구조 고정 */
+  .dj-sheet.air-legal{
+    padding:7mm 7mm 6mm!important;
+    font-family:"Batang","바탕","Malgun Gothic",serif!important;
+  }
+  .dj-sheet.air-legal table{font-size:8.8px!important}
+  .dj-sheet.air-legal th,.dj-sheet.air-legal td{
+    padding:1px 2px!important;
+    line-height:1.05!important;
+    font-weight:400;
+  }
+  .dj-sheet.air-legal .air-form-no{font-size:9px;margin-bottom:3px}
+  .dj-sheet.air-legal .air-top{
+    display:grid;grid-template-columns:1fr 190px;border:1px solid #111;border-bottom:0
+  }
+  .dj-sheet.air-legal .air-title{
+    min-height:52px;display:flex;align-items:center;padding-left:15px;
+    font-size:17px;font-weight:700;border-right:1px solid #111
+  }
+  .dj-sheet.air-legal .air-approval{
+    display:grid;grid-template-columns:45px 1fr 38px;height:52px
+  }
+  .dj-sheet.air-legal .air-approval>div{
+    border-left:1px solid #111;display:flex;align-items:center;justify-content:center;text-align:center
+  }
+  .dj-sheet.air-legal .air-approval>div:first-child{border-left:0}
+  .dj-sheet.air-legal .air-date{
+    height:24px;border:1px solid #111;display:flex;align-items:center;justify-content:center;font-size:9px
+  }
+  .dj-sheet.air-legal .air-section{
+    height:20px;border-left:1px solid #111;border-right:1px solid #111;
+    display:flex;align-items:center;padding-left:4px;font-size:9px
+  }
+  .dj-sheet.air-legal .air-subtitle{
+    height:18px;border-left:1px solid #111;border-right:1px solid #111;
+    display:flex;align-items:center;padding-left:14px;font-size:9px
+  }
+  .dj-sheet.air-legal .air-note{
+    border-left:1px solid #111;border-right:1px solid #111;border-bottom:1px solid #111;
+    min-height:18px;padding:3px 4px;font-size:8px
+  }
+  .dj-sheet.air-legal .air-footer-note{
+    font-size:7.8px;line-height:1.35;margin-top:5px
+  }
+</style>
+
+<script id="tfms-v391-legal-form-controller">
+(function(){
+  'use strict';
+
+  window.TFMS_BUILD=Object.freeze({
+    version:'v39.1',channel:'Stable',buildDate:'2026.07.23',
+    title:'업무일지 표 높이 고정·대기 법정서식 원형복원'
+  });
+
+  const $=id=>document.getElementById(id);
+  const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[m]));
+  const fmtDate=d=>{
+    if(!d)return '';
+    const x=new Date(d+'T00:00:00');
+    return `${x.getFullYear()}년 ${x.getMonth()+1}월 ${x.getDate()}일`;
+  };
+  const weekday=d=>d?['일요일','월요일','화요일','수요일','목요일','금요일','토요일'][new Date(d+'T00:00:00').getDay()]:'';
+
+  function applyVersion391(){
+    const b=window.TFMS_BUILD,label=`${b.version} ${b.channel}`;
+    const badge=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
+    if(badge)badge.textContent=label;
+    document.querySelectorAll('.logo-title small').forEach(el=>{
+      el.textContent=`시설 유지관리 이력관리 시스템 · ${label} Enterprise`;
+    });
+    const current=document.querySelector('#tfmsVersionModal .current-build');
+    if(current)current.textContent=`현재 버전: ${label} · Build ${b.buildDate}`;
+    const body=document.querySelector('#tfmsVersionModal .version-body');
+    if(body&&!body.querySelector('[data-version="v39.1"]')){
+      const item=document.createElement('div');
+      item.className='change-item';item.dataset.version='v39.1';
+      item.innerHTML=`<strong>${label}</strong><ul>
+        <li>미리보기·PDF 표 행 높이와 셀 패딩 고정</li>
+        <li>대기배출시설 및 방지시설 운영기록부를 별지 제7호서식 구조로 복원</li>
+        <li>법정서식은 입력 편의만 제공하고 항목명·배열·작성요령 변경 금지</li>
+      </ul>`;
+      body.insertBefore(item,body.firstChild);
+    }
+  }
+
+  function airLegalSheetV391(d){
+    return `
+      <div class="air-form-no">[별지 제7호서식] &lt;개정 2010.12.31&gt;</div>
+
+      <div class="air-top">
+        <div class="air-title">대기배출시설 및 방지시설 운영기록부</div>
+        <div class="air-approval">
+          <div>담당</div>
+          <div>운영팀장<br><br>${esc(d.author||'')}</div>
+          <div>결<br>재</div>
+        </div>
+      </div>
+
+      <div class="air-date">${fmtDate(d.date)} ${weekday(d.date)} 날씨 : ${esc(d.weather)}</div>
+
+      <div class="air-section">1. 배출구별 주요 배출시설 및 방지시설 가동(조업)시간</div>
+      <table>
+        <colgroup><col style="width:13%"><col style="width:31%"><col style="width:31%"><col style="width:25%"></colgroup>
+        <tr class="dj-h20"><td>배 출 구</td><td>배 출 시 설</td><td>가 동 시 간</td><td>비 고</td></tr>
+        <tr class="dj-h28">
+          <td><span class="dj-fixed">${esc(d.outlet)}</span></td>
+          <td><span class="dj-fixed">${esc(d.airFacility)}</span></td>
+          <td><span class="dj-fixed">${esc(d.hours)}</span></td>
+          <td><span class="dj-fixed">${esc(d.remark)}</span></td>
+        </tr>
+      </table>
+      <div class="air-note">* 비고란은 정상 여부를 기재합니다.</div>
+
+      <div class="air-section">2. 방지시설 운영사항</div>
+      <div class="air-subtitle">가. 방지시설 운전사항</div>
+      <table>
+        <colgroup>
+          <col style="width:12%"><col style="width:10%"><col style="width:10%"><col style="width:10%">
+          <col style="width:13%"><col style="width:17%"><col style="width:13%"><col style="width:15%">
+        </colgroup>
+        <tr class="dj-h34">
+          <td>방지시설명</td><td>설치위치</td><td>전력사용량<br>(㎾/h)</td><td>처리용량<br>(㎥/min)</td>
+          <td>처리오염물질</td><td>처리농도<br>(ppm 또는 ㎎/S㎥)</td><td>처리효율<br>(%)</td><td>사용약품<br>약품명·사용량</td>
+        </tr>
+        <tr class="dj-h42">
+          <td><span class="dj-fixed">${esc(d.prevention)}</span></td>
+          <td></td><td></td><td></td><td>먼지<br>황산화물<br>질소산화물</td><td></td><td></td><td></td>
+        </tr>
+      </table>
+
+      <div class="air-subtitle">나. 방지시설 보수사항</div>
+      <table>
+        <colgroup><col style="width:22%"><col style="width:18%"><col style="width:18%"><col style="width:18%"><col style="width:24%"></colgroup>
+        <tr class="dj-h20"><td>방지시설명</td><td>배 출 구 별</td><td>보 수 기 간</td><td>보 수 자</td><td>보 수 명 세</td></tr>
+        <tr class="dj-h28">
+          <td><span class="dj-fixed">${esc(d.prevention)}</span></td>
+          <td><span class="dj-fixed">${esc(d.outlet)}</span></td>
+          <td><span class="dj-fixed">${esc(d.repairPeriod)}</span></td>
+          <td><span class="dj-fixed">${esc(d.repairer)}</span></td>
+          <td><span class="dj-fixed">${esc(d.repairDetail)}</span></td>
+        </tr>
+      </table>
+
+      <div class="air-section">3. 자가측정사항</div>
+      <table>
+        <colgroup>
+          <col style="width:12.5%"><col style="width:12.5%"><col style="width:12.5%"><col style="width:12.5%">
+          <col style="width:12.5%"><col style="width:12.5%"><col style="width:12.5%"><col style="width:12.5%">
+        </colgroup>
+        <tr class="dj-h22">
+          <td>측정일</td><td>①기온</td><td>②습도</td><td>③기압</td><td>④풍향</td><td>⑤풍속</td><td colspan="2">날씨</td>
+        </tr>
+        <tr class="dj-h24">
+          <td><span class="dj-fixed">${esc(d.measureDate)}</span></td>
+          <td><span class="dj-fixed">${esc((d.weatherData||'').split('/')[0]||'')}</span></td>
+          <td><span class="dj-fixed">${esc((d.weatherData||'').split('/')[1]||'')}</span></td>
+          <td><span class="dj-fixed">${esc((d.weatherData||'').split('/')[2]||'')}</span></td>
+          <td><span class="dj-fixed">${esc((d.wind||'').split('/')[0]||'')}</span></td>
+          <td><span class="dj-fixed">${esc((d.wind||'').split('/')[1]||'')}</span></td>
+          <td colspan="2">□맑음　□흐림　□구름　□비</td>
+        </tr>
+        <tr class="dj-h34">
+          <td>⑦배출구 번호</td><td>⑧주요배출시설명</td><td>⑨측정 항목</td>
+          <td>⑩측정농도<br>(ppm, ㎎/S㎥)</td><td>⑪일일유량<br>(S㎥/일)</td>
+          <td>⑫일일매출량<br>(㎏/일)</td><td colspan="2">⑬검사 기기명</td>
+        </tr>
+        <tr class="dj-h34">
+          <td><span class="dj-fixed">${esc(d.measureOutlet)}</span></td>
+          <td><span class="dj-fixed">${esc(d.mainFacility)}</span></td>
+          <td><span class="dj-fixed">${esc(d.item)}</span></td>
+          <td><span class="dj-fixed">${esc(d.concentration)}</span></td>
+          <td><span class="dj-fixed">${esc(d.flow)}</span></td>
+          <td><span class="dj-fixed">${esc(d.emission)}</span></td>
+          <td colspan="2"><span class="dj-fixed">${esc(d.device)}</span></td>
+        </tr>
+        <tr class="dj-h28"><td colspan="2">⑭연료사용량(1일)</td><td colspan="2">${esc(d.fuel)}</td><td colspan="2">잔량</td><td colspan="2">${esc(d.material)}</td></tr>
+        <tr class="dj-h54"><td colspan="2">⑮원료명 및 사용량<br>(특정대기 유해물질 배출원 포함)</td><td colspan="6"></td></tr>
+        <tr class="dj-h42"><td colspan="2">⑯환경기술인 의견</td><td colspan="6" style="text-align:left"><span class="dj-fixed">${esc(d.opinion)}</span></td></tr>
+        <tr class="dj-h24"><td colspan="2">⑰기타</td><td colspan="6"></td></tr>
+        <tr class="dj-h24"><td colspan="2">환경기술인 직급</td><td colspan="2">${esc(d.officerRank)}</td><td colspan="2">성명</td><td colspan="2">${esc(d.officerName)}</td></tr>
+      </table>
+
+      <div class="air-footer-note">
+        ※ 작성요령<br>
+        1. 「대기환경보전법」 제39조에 따라 「환경분야 시험·검사 등에 관한 법률」에 따른 측정대행업자에게 해당 오염물질 전부를 위탁하여 측정하도록 하는 경우에는 제3호란을 작성하지 아니할 수 있습니다.<br>
+        2. 방지시설의 설치를 면제받은 사업장은 제2호와 제3호란을 작성하지 아니할 수 있습니다.<br>
+        3. 제2호나목의 방지시설 보수사항은 별도의 계약서나 지출증빙서로 갈음할 수 있습니다.
+      </div>`;
+  }
+
+  const oldPreview=window.previewDailyJournalV390;
+  if(typeof oldPreview==='function'){
+    window.previewDailyJournalV390=function(type){
+      if(type!=='air')return oldPreview(type);
+
+      const d=(function(){
+        const v=id=>$(id)?.value??'';
+        return {
+          facility:v('djFacility'),date:v('djDate'),weather:v('djWeather'),author:v('djAuthor'),
+          outlet:v('airOutlet'),airFacility:v('airFacility'),hours:v('airHours'),remark:v('airRemark'),
+          prevention:v('airPrevention'),repairPeriod:v('airRepairPeriod'),repairer:v('airRepairer'),
+          repairDetail:v('airRepairDetail'),measureDate:v('airMeasureDate'),
+          weatherData:v('airWeatherData'),wind:v('airWind'),measureOutlet:v('airMeasureOutlet'),
+          mainFacility:v('airMainFacility'),item:v('airItem'),concentration:v('airConcentration'),
+          flow:v('airFlow'),emission:v('airEmission'),device:v('airDevice'),fuel:v('airFuel'),
+          material:v('airMaterial'),opinion:v('airOpinion'),officerRank:v('airOfficerRank'),
+          officerName:v('airOfficerName')
+        };
+      })();
+
+      const sheet=$('dailyJournalPreviewSheet');
+      $('djPreviewTitle').textContent='대기배출시설 및 방지시설 운영기록부';
+      sheet.className='dj-sheet air-legal';
+      sheet.innerHTML=airLegalSheetV391(d);
+      $('dailyJournalPreviewModal').classList.add('show');
+    };
+  }
+
+  const oldClose=window.closeDailyJournalPreviewV390;
+  window.closeDailyJournalPreviewV390=function(){
+    const sheet=$('dailyJournalPreviewSheet');
+    if(sheet)sheet.className='dj-sheet';
+    return oldClose?.();
+  };
+
+  const oldPrint=window.printDailyJournalV390;
+  window.printDailyJournalV390=function(type){
+    window.previewDailyJournalV390(type);
+    setTimeout(()=>window.print(),180);
+  };
+
+  document.addEventListener('DOMContentLoaded',applyVersion391);
+  setTimeout(applyVersion391,120);
+})();
+</script>
