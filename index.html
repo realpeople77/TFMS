@@ -10606,3 +10606,406 @@ document.addEventListener('DOMContentLoaded',function(){
   setTimeout(applyVersion391,120);
 })();
 </script>
+
+
+<style id="tfms-v392-air-2026-style">
+  .air-input-section{margin-top:18px;padding-top:14px;border-top:1px solid #e2e8f0}
+  .air-input-section h3{margin:0 0 12px;font-size:15px;color:#1e3a8a}
+  .air-outlet-row,.air-operation-row,.air-repair-row{display:grid;gap:8px;margin-bottom:8px}
+  .air-outlet-row{grid-template-columns:70px 1.2fr 1.2fr 1fr}
+  .air-operation-row{grid-template-columns:1.1fr .8fr .9fr .9fr 1fr 1.1fr .8fr .9fr .9fr}
+  .air-repair-row{grid-template-columns:1.1fr .8fr 1fr 1fr 1.2fr}
+  .air-input-section input,.air-input-section select,.air-input-section textarea{
+    width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:7px;padding:8px 9px;font:inherit
+  }
+  .air-weather-checks{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  .air-weather-checks label{display:flex;align-items:center;gap:5px;font-weight:700}
+  .air-weather-checks input{width:auto}
+
+  .dj-sheet.air-legal-2026{padding:6mm 7mm!important;font-family:"Batang","바탕",serif!important}
+  .dj-sheet.air-legal-2026 .page{width:100%;min-height:284mm;box-sizing:border-box;page-break-after:always}
+  .dj-sheet.air-legal-2026 .page:last-child{page-break-after:auto}
+  .dj-sheet.air-legal-2026 table{font-size:8.4px!important}
+  .dj-sheet.air-legal-2026 th,.dj-sheet.air-legal-2026 td{
+    padding:1px 2px!important;line-height:1.05!important;font-weight:400!important
+  }
+  .dj-sheet.air-legal-2026 .legal-header{display:flex;justify-content:space-between;font-size:8px;margin-bottom:6px}
+  .dj-sheet.air-legal-2026 .legal-title-row{display:grid;grid-template-columns:1fr 185px;border-top:1px solid #111}
+  .dj-sheet.air-legal-2026 .legal-title{
+    min-height:70px;border-bottom:1px solid #111;display:flex;align-items:center;
+    padding-left:13px;font-size:16px;font-weight:700
+  }
+  .dj-sheet.air-legal-2026 .approval-two{
+    display:grid;grid-template-columns:1fr 1fr 32px;border-left:1px solid #111;border-bottom:1px solid #111
+  }
+  .dj-sheet.air-legal-2026 .approval-two>div{
+    border-right:1px solid #111;display:flex;align-items:center;justify-content:center;text-align:center
+  }
+  .dj-sheet.air-legal-2026 .approval-two>div:nth-child(1),
+  .dj-sheet.air-legal-2026 .approval-two>div:nth-child(2){flex-direction:column}
+  .dj-sheet.air-legal-2026 .legal-date{
+    border:1px solid #111;margin-top:14px;height:38px;display:flex;align-items:center;justify-content:center;font-size:10px
+  }
+  .dj-sheet.air-legal-2026 .section-label{font-size:9px;margin:13px 0 5px}
+  .dj-sheet.air-legal-2026 .sub-label{font-size:9px;margin:8px 0 4px;padding-left:10px}
+  .dj-sheet.air-legal-2026 .legal-note{font-size:7.4px;line-height:1.35;margin-top:5px}
+  .dj-sheet.air-legal-2026 .back-label{text-align:right;font-size:8px;margin-bottom:4px}
+  @media(max-width:900px){
+    .air-outlet-row,.air-operation-row,.air-repair-row{grid-template-columns:1fr 1fr}
+  }
+</style>
+
+<script id="tfms-v392-air-2026-controller">
+(function(){
+  'use strict';
+
+  window.TFMS_BUILD=Object.freeze({
+    version:'v39.2',channel:'Stable',buildDate:'2026.07.23',
+    title:'대기배출 운영기록부 최신 별지 제7호서식 반영'
+  });
+
+  const $=id=>document.getElementById(id);
+  const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[m]));
+  const v=id=>$(id)?.value??'';
+  const fmtDate=d=>{
+    if(!d)return '';
+    const x=new Date(d+'T00:00:00');
+    return `${x.getFullYear()}년 ${x.getMonth()+1}월 ${x.getDate()}일`;
+  };
+  const weekday=d=>d?['일요일','월요일','화요일','수요일','목요일','금요일','토요일'][new Date(d+'T00:00:00').getDay()]:'';
+
+  function applyVersion392(){
+    const b=window.TFMS_BUILD,label=`${b.version} ${b.channel}`;
+    const badge=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
+    if(badge)badge.textContent=label;
+    document.querySelectorAll('.logo-title small').forEach(el=>{
+      el.textContent=`시설 유지관리 이력관리 시스템 · ${label} Enterprise`;
+    });
+    const current=document.querySelector('#tfmsVersionModal .current-build');
+    if(current)current.textContent=`현재 버전: ${label} · Build ${b.buildDate}`;
+    const body=document.querySelector('#tfmsVersionModal .version-body');
+    if(body&&!body.querySelector('[data-version="v39.2"]')){
+      const item=document.createElement('div');
+      item.className='change-item';item.dataset.version='v39.2';
+      item.innerHTML=`<strong>${label}</strong><ul>
+        <li>업로드된 최신 별지 제7호서식의 앞·뒤 2쪽 구조 반영</li>
+        <li>배출구 1~5, 검사방법, 연료명 및 사용량 등 개정 입력항목 반영</li>
+        <li>결재란만 담당·운영팀장 2칸으로 기관 실정에 맞게 변경</li>
+      </ul>`;
+      body.insertBefore(item,body.firstChild);
+    }
+  }
+
+  function outletRows(){
+    return [1,2,3,4,5].map(i=>`
+      <div class="air-outlet-row">
+        <input value="${i}" readonly>
+        <input id="airOutFacility${i}" placeholder="배출시설">
+        <input id="airOutHours${i}" placeholder="가동시간">
+        <input id="airOutRemark${i}" placeholder="비고">
+      </div>`).join('');
+  }
+
+  function upgradeAirInputFormV392(){
+    const form=$('djFormAir');
+    if(!form||form.dataset.v392)return;
+    form.dataset.v392='1';
+    form.innerHTML=`
+      <div class="section-title"><span class="dot"></span>대기배출시설 및 방지시설 운영기록부</div>
+      <div class="notice">
+        업로드된 최신 별지 제7호서식의 항목명·순서·표 구조를 그대로 사용합니다.
+        출력물의 결재란만 담당·운영팀장 2칸으로 변경합니다.
+      </div>
+
+      <div class="air-input-section">
+        <h3>1. 배출구별 주요 배출시설 및 방지시설 가동(조업)시간</h3>
+        <div class="air-outlet-row" style="font-weight:800;text-align:center">
+          <div>배출구</div><div>배출시설</div><div>가동시간</div><div>비고</div>
+        </div>
+        ${outletRows()}
+      </div>
+
+      <div class="air-input-section">
+        <h3>2. 방지시설 운영사항 - 가. 방지시설 운전사항</h3>
+        <div class="air-operation-row">
+          <input id="airOpName" placeholder="방지시설명">
+          <input id="airOpLocation" placeholder="설치위치">
+          <input id="airPower" placeholder="전력사용량(㎾h)">
+          <input id="airCapacity" placeholder="처리용량(㎥/min)">
+          <input id="airPollutant" placeholder="처리오염물질">
+          <input id="airTreatmentConcentration" placeholder="처리농도">
+          <input id="airEfficiency" placeholder="처리효율(%)">
+          <input id="airChemicalName" placeholder="사용약품명">
+          <input id="airChemicalAmount" placeholder="사용량">
+        </div>
+      </div>
+
+      <div class="air-input-section">
+        <h3>2. 방지시설 운영사항 - 나. 방지시설 보수사항</h3>
+        <div class="air-repair-row">
+          <input id="airRepairName" placeholder="방지시설명">
+          <input id="airRepairOutlet" placeholder="배출구별">
+          <input id="airRepairPeriodNew" placeholder="보수기간">
+          <input id="airRepairerNew" placeholder="보수자">
+          <input id="airRepairDetailNew" placeholder="보수명세">
+        </div>
+      </div>
+
+      <div class="air-input-section">
+        <h3>3. 자가측정사항</h3>
+        <div class="dj-grid">
+          <div class="dj-field"><label>측정일</label><input id="airMeasureDateNew" type="date"></div>
+          <div class="dj-field dj-span-2"><label>① 기상</label>
+            <div class="air-weather-checks">
+              <label><input type="radio" name="airSky" value="맑음">맑음</label>
+              <label><input type="radio" name="airSky" value="흐림">흐림</label>
+              <label><input type="radio" name="airSky" value="구름">구름</label>
+              <label><input type="radio" name="airSky" value="눈">눈</label>
+              <label><input type="radio" name="airSky" value="비">비</label>
+            </div>
+          </div>
+          <div class="dj-field"><label>② 기온(℃)</label><input id="airTemp"></div>
+          <div class="dj-field"><label>③ 습도(%)</label><input id="airHumidity"></div>
+          <div class="dj-field"><label>④ 기압(mb)</label><input id="airPressure"></div>
+          <div class="dj-field"><label>⑤ 풍향</label><input id="airWindDirection"></div>
+          <div class="dj-field"><label>⑥ 풍속(m/sec)</label><input id="airWindSpeed"></div>
+          <div class="dj-field"><label>⑦ 배출구 번호</label><input id="airMeasureOutletNew"></div>
+          <div class="dj-field"><label>⑧ 주요배출시설명</label><input id="airMainFacilityNew"></div>
+          <div class="dj-field"><label>⑨ 측정항목</label><input id="airItemNew"></div>
+          <div class="dj-field"><label>⑩ 측정농도</label><input id="airConcentrationNew"></div>
+          <div class="dj-field"><label>⑪ 일일유량</label><input id="airFlowNew"></div>
+          <div class="dj-field"><label>⑫ 일일배출량</label><input id="airEmissionNew"></div>
+          <div class="dj-field"><label>⑬ 검사기기명</label><input id="airDeviceNew"></div>
+          <div class="dj-field"><label>⑭ 검사방법</label><input id="airMethod"></div>
+          <div class="dj-field dj-span-2"><label>⑮ 연료명 및 사용량(1일)</label><input id="airFuelNew"></div>
+          <div class="dj-field dj-span-2"><label>⑯ 원료명 및 사용량(특정대기유해물질 배출원 포함)</label><textarea id="airMaterialNew"></textarea></div>
+          <div class="dj-field dj-span-all"><label>⑰ 환경기술인의 의견</label><textarea id="airOpinionNew"></textarea></div>
+          <div class="dj-field dj-span-all"><label>⑱ 기타</label><textarea id="airEtc"></textarea></div>
+          <div class="dj-field"><label>환경기술인 직급</label><input id="airOfficerRankNew"></div>
+          <div class="dj-field"><label>환경기술인 성명</label><input id="airOfficerNameNew"></div>
+        </div>
+      </div>
+
+      <div class="buttons">
+        <button class="btn light" onclick="previewDailyJournalV390('air')">법정서식 미리보기</button>
+        <button class="btn blue" onclick="saveDailyJournalV390('air')">저장</button>
+        <button class="btn" onclick="printDailyJournalV390('air')">PDF 출력</button>
+      </div>`;
+
+    const date=$('djDate')?.value||new Date().toISOString().slice(0,10);
+    if($('airMeasureDateNew'))$('airMeasureDateNew').value=date;
+  }
+
+  function collectAirV392(){
+    const outlets=[1,2,3,4,5].map(i=>({
+      no:i,
+      facility:v(`airOutFacility${i}`),
+      hours:v(`airOutHours${i}`),
+      remark:v(`airOutRemark${i}`)
+    }));
+    return {
+      facility:v('djFacility'),date:v('djDate'),weather:v('djWeather'),author:v('djAuthor'),
+      outlets,
+      operation:{
+        name:v('airOpName'),location:v('airOpLocation'),power:v('airPower'),capacity:v('airCapacity'),
+        pollutant:v('airPollutant'),concentration:v('airTreatmentConcentration'),
+        efficiency:v('airEfficiency'),chemicalName:v('airChemicalName'),chemicalAmount:v('airChemicalAmount')
+      },
+      repair:{
+        name:v('airRepairName'),outlet:v('airRepairOutlet'),period:v('airRepairPeriodNew'),
+        repairer:v('airRepairerNew'),detail:v('airRepairDetailNew')
+      },
+      measure:{
+        date:v('airMeasureDateNew'),
+        sky:document.querySelector('input[name="airSky"]:checked')?.value||'',
+        temp:v('airTemp'),humidity:v('airHumidity'),pressure:v('airPressure'),
+        windDirection:v('airWindDirection'),windSpeed:v('airWindSpeed'),
+        outlet:v('airMeasureOutletNew'),mainFacility:v('airMainFacilityNew'),
+        item:v('airItemNew'),concentration:v('airConcentrationNew'),
+        flow:v('airFlowNew'),emission:v('airEmissionNew'),
+        device:v('airDeviceNew'),method:v('airMethod'),
+        fuel:v('airFuelNew'),material:v('airMaterialNew'),
+        opinion:v('airOpinionNew'),etc:v('airEtc'),
+        officerRank:v('airOfficerRankNew'),officerName:v('airOfficerNameNew')
+      }
+    };
+  }
+
+  function skyBoxes(selected){
+    return ['맑음','흐림','구름','눈','비'].map(x=>`${selected===x?'☑':'□'}${x}`).join('　');
+  }
+
+  function airPage1(d){
+    const outletRows=d.outlets.map(o=>`
+      <tr style="height:42px">
+        <td>${o.no}</td><td><span class="dj-fixed">${esc(o.facility)}${o.facility?'':'　외　종'}</span></td>
+        <td><span class="dj-fixed">${esc(o.hours)}</span></td><td><span class="dj-fixed">${esc(o.remark)}</span></td>
+      </tr>`).join('');
+    const op=d.operation;
+    return `<div class="page">
+      <div class="legal-header"><span>■ 대기환경보전법 시행규칙 [별지 제7호서식] &lt;개정 2026. 7. 15.&gt;</span><span>(앞 쪽)</span></div>
+      <div class="legal-title-row">
+        <div class="legal-title">대기배출시설 및 방지시설 운영기록부</div>
+        <div class="approval-two">
+          <div>담당<br><br>${esc(d.author||'')}</div>
+          <div>운영팀장<br><br></div>
+          <div>결<br>재</div>
+        </div>
+      </div>
+      <div class="legal-date">${fmtDate(d.date)}　${weekday(d.date)}　날씨 : ${esc(d.weather)}　　온도 :</div>
+
+      <div class="section-label">1. 배출구별 주요 배출시설 및 방지시설 가동(조업)시간</div>
+      <table>
+        <colgroup><col style="width:19%"><col style="width:21%"><col style="width:30%"><col style="width:30%"></colgroup>
+        <tr style="height:25px"><td>배 출 구</td><td>배 출 시 설</td><td>가 동 시 간</td><td>비 고</td></tr>
+        ${outletRows}
+      </table>
+      <div style="font-size:8px;margin:4px 0">* 비고란은 정상 여부를 기재합니다.</div>
+
+      <div class="section-label">2. 방지시설 운영사항</div>
+      <div class="sub-label">가. 방지시설 운전사항</div>
+      <table>
+        <colgroup>
+          <col style="width:9%"><col style="width:8%"><col style="width:13%"><col style="width:11%">
+          <col style="width:11%"><col style="width:16%"><col style="width:11%"><col style="width:10%"><col style="width:11%">
+        </colgroup>
+        <tr style="height:67px">
+          <td>방지<br>시설명</td><td>설치<br>위치</td><td>전력사용량<br>(㎾h)</td><td>처리용량<br>(㎥/min)</td>
+          <td>처리오염<br>물 질</td><td>처리농도<br>(ppm 또는<br>㎎/S㎥)</td><td>처리효율<br>(%)</td>
+          <td colspan="2">사용약품<br><table style="border:0"><tr><td style="border:0;border-right:1px solid #111">약품명</td><td style="border:0">사용량</td></tr></table></td>
+        </tr>
+        <tr style="height:72px">
+          <td>${esc(op.name)}</td><td>${esc(op.location)}</td><td>${esc(op.power)}</td><td>${esc(op.capacity)}</td>
+          <td>${esc(op.pollutant)}</td><td>${esc(op.concentration)}</td><td>${esc(op.efficiency)}</td>
+          <td>${esc(op.chemicalName)}</td><td>${esc(op.chemicalAmount)}</td>
+        </tr>
+      </table>
+      <div style="text-align:right;font-size:7px;margin-top:3px">210㎜×297㎜(신문용지 54g/㎡)</div>
+    </div>`;
+  }
+
+  function airPage2(d){
+    const r=d.repair,m=d.measure;
+    return `<div class="page">
+      <div class="back-label">(뒤 쪽)</div>
+      <div class="sub-label" style="padding-left:0">나. 방지시설 보수사항</div>
+      <table>
+        <colgroup><col style="width:19%"><col style="width:20%"><col style="width:19%"><col style="width:20%"><col style="width:22%"></colgroup>
+        <tr style="height:25px"><td>방지시설명</td><td>배 출 구 별</td><td>보 수 기 간</td><td>보 수 자</td><td>보 수 명 세</td></tr>
+        <tr style="height:48px"><td>${esc(r.name)}</td><td>${esc(r.outlet)}</td><td>${esc(r.period)}</td><td>${esc(r.repairer)}</td><td>${esc(r.detail)}</td></tr>
+      </table>
+
+      <div class="section-label" style="margin-top:18px">3. 자가측정사항</div>
+      <div style="border:1px solid #111;border-bottom:0;height:23px;padding:3px;box-sizing:border-box;font-size:8px">측정일: ${esc(m.date)}</div>
+      <table>
+        <colgroup>
+          <col style="width:34%"><col style="width:10%"><col style="width:10%"><col style="width:10%">
+          <col style="width:10%"><col style="width:10%"><col style="width:16%">
+        </colgroup>
+        <tr style="height:30px"><td>①기　상</td><td>②기온</td><td>③습도</td><td>④기압</td><td>⑤풍향</td><td colspan="2">⑥풍속</td></tr>
+        <tr style="height:42px">
+          <td style="text-align:left">${skyBoxes(m.sky)}</td><td>${esc(m.temp)} ℃</td><td>${esc(m.humidity)} %</td>
+          <td>${esc(m.pressure)} mb</td><td>${esc(m.windDirection)} 풍</td><td colspan="2">${esc(m.windSpeed)} m/sec</td>
+        </tr>
+      </table>
+      <table style="margin-top:-1px">
+        <colgroup>
+          <col style="width:10%"><col style="width:13%"><col style="width:13%"><col style="width:16%">
+          <col style="width:14%"><col style="width:14%"><col style="width:10%"><col style="width:10%">
+        </colgroup>
+        <tr style="height:52px">
+          <td>⑦배출구<br>번호</td><td>⑧주요배출<br>시설명</td><td>⑨측 정<br>항 목</td>
+          <td>⑩측정농도<br>(ppm, ㎎/S㎥)</td><td>⑪일일유량<br>(S㎥/일)</td>
+          <td>⑫일일배출량<br>(㎏/일)</td><td>⑬검 사<br>기기명</td><td>⑭검 사<br>방 법</td>
+        </tr>
+        <tr style="height:96px">
+          <td>${esc(m.outlet)}</td><td>${esc(m.mainFacility)}</td><td>${esc(m.item)}</td><td>${esc(m.concentration)}</td>
+          <td>${esc(m.flow)}</td><td>${esc(m.emission)}</td><td>${esc(m.device)}</td><td>${esc(m.method)}</td>
+        </tr>
+        <tr style="height:45px"><td colspan="3" style="text-align:left">⑮연 료 명　및　사 용 량<br><span style="float:right">(　　일)</span></td><td colspan="5" style="text-align:left">${esc(m.fuel)}</td></tr>
+        <tr style="height:58px"><td colspan="3" style="text-align:left">⑯원 료 명　및　사 용 량<br>(특정대기유해물질 배출원 포함)</td><td colspan="5" style="text-align:left">${esc(m.material)}</td></tr>
+        <tr style="height:82px"><td colspan="3" style="text-align:left">⑰환 경 기 술 인 의　의 견</td><td colspan="5" style="text-align:left">${esc(m.opinion)}</td></tr>
+        <tr style="height:36px"><td colspan="3" style="text-align:left">⑱기　　　타</td><td colspan="5" style="text-align:left">${esc(m.etc)}</td></tr>
+        <tr style="height:38px"><td colspan="8" style="text-align:left;padding-left:25px!important">
+          환경기술인 직급 : ${esc(m.officerRank)}
+          <span style="display:inline-block;width:150px"></span>
+          성명 : ${esc(m.officerName)}　　(인)
+        </td></tr>
+      </table>
+      <div class="legal-note">※ 작성요령<br>
+        1. 「대기환경보전법」 제39조에 따라 「환경분야 시험·검사 등에 관한 법률」에 따른 측정대행업자에게 해당 오염물질 전부를 위탁하여 측정하도록 하는 경우에는 제3호란을 작성하지 아니할 수 있습니다.<br>
+        2. 방지시설의 설치를 면제받은 사업장은 제2호와 제3호란을 작성하지 아니할 수 있습니다.<br>
+        3. 제2호나목의 방지시설 보수사항은 별도의 계약서나 지출증빙서로 갈음할 수 있습니다.<br>
+        4. 「대기환경보전법 시행령」 별표 2 제1호 각 목 외의 부분 단서에 따라 적산전력계의 부착대상 시설에서 제외되는 방지시설은 제2호가목 중 전력사용량란을 작성하지 않을 수 있습니다.
+      </div>
+    </div>`;
+  }
+
+  const oldPreview=window.previewDailyJournalV390;
+  window.previewDailyJournalV390=function(type){
+    if(type!=='air')return oldPreview(type);
+    const d=collectAirV392();
+    const sheet=$('dailyJournalPreviewSheet');
+    $('djPreviewTitle').textContent='대기배출시설 및 방지시설 운영기록부';
+    sheet.className='dj-sheet air-legal-2026';
+    sheet.innerHTML=airPage1(d)+airPage2(d);
+    $('dailyJournalPreviewModal').classList.add('show');
+  };
+
+  const oldClose=window.closeDailyJournalPreviewV390;
+  window.closeDailyJournalPreviewV390=function(){
+    const sheet=$('dailyJournalPreviewSheet');
+    if(sheet)sheet.className='dj-sheet';
+    return oldClose?.();
+  };
+
+  // 저장 시에도 개정 입력항목 전체를 JSON으로 보존
+  const oldSave=window.saveDailyJournalV390;
+  window.saveDailyJournalV390=async function(type){
+    if(type!=='air')return oldSave(type);
+    const sb=(()=>{try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||null}catch(e){return null}})();
+    if(!sb){window.showToast?.('DB 연결 정보를 확인하지 못했습니다.');return}
+    const d=collectAirV392();
+    if(d.facility!=='태백국민체육센터'){window.showToast?.('대기배출 운영기록부는 태백국민체육센터에서만 작성합니다.');return}
+    try{
+      const {data:auth}=await sb.auth.getUser();
+      const uid=auth?.user?.id;if(!uid)throw new Error('로그인 세션 없음');
+      let facilityId='';
+      try{facilityId=facByName?.[d.facility]?.id||facByName?.[d.facility]?.dbId||''}catch(e){}
+      if(!facilityId)try{facilityId=(facilityMasterStable||[]).find(f=>f.name===d.facility)?.id||''}catch(e){}
+      if(!facilityId)throw new Error('시설 DB 정보를 찾지 못했습니다.');
+      const {error}=await sb.from('daily_logs').insert({
+        facility_id:facilityId,work_date:d.date,shift_type:'air',
+        title:`${d.facility} 대기배출시설 및 방지시설 운영기록부`,
+        content:JSON.stringify({schema:'tfms-air-journal-v39.2',journalType:'air',data:d}),
+        has_issue:false,issue_detail:null,weather:d.weather,author_id:uid
+      });
+      if(error)throw error;
+      window.showToast?.('대기배출시설 및 방지시설 운영기록부를 저장했습니다.');
+    }catch(e){
+      console.error('v39.2 air save',e);
+      window.showToast?.('업무일지 저장 실패: '+(e?.message||e));
+    }
+  };
+
+  const oldRebuild=window.rebuildDailyPage;
+  function runUpgrade(){setTimeout(upgradeAirInputFormV392,20)}
+  const oldNav=window.navTo;
+  if(typeof oldNav==='function')window.navTo=function(id){
+    const r=oldNav.apply(this,arguments);
+    if(id==='dailylog')runUpgrade();
+    return r;
+  };
+  const oldShow=window.showPage;
+  if(typeof oldShow==='function')window.showPage=function(id,btn){
+    const r=oldShow.apply(this,arguments);
+    if(id==='dailylog')runUpgrade();
+    return r;
+  };
+
+  document.addEventListener('DOMContentLoaded',()=>{applyVersion392();runUpgrade()});
+  setTimeout(()=>{applyVersion392();runUpgrade()},180);
+})();
+</script>
