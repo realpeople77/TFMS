@@ -11313,3 +11313,509 @@ document.addEventListener('DOMContentLoaded',function(){
   setTimeout(applyVersion394,150);
 })();
 </script>
+
+
+<style id="tfms-v400-journal-history-print-style">
+  .dj-history-panel{margin-top:16px}
+  .dj-history-filter{display:grid;grid-template-columns:160px 180px 180px 1fr auto;gap:10px;align-items:end}
+  .dj-history-filter label{display:block;margin-bottom:5px;font-size:12px;font-weight:800;color:#334155}
+  .dj-history-filter input,.dj-history-filter select{
+    width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:8px;padding:9px 10px;font:inherit
+  }
+  .dj-history-table-wrap{overflow:auto;margin-top:14px}
+  .dj-history-table{width:100%;border-collapse:collapse;min-width:900px}
+  .dj-history-table th,.dj-history-table td{border:1px solid #dbe3ef;padding:8px;text-align:center;font-size:13px}
+  .dj-history-table th{background:#eff6ff;color:#1e3a8a}
+  .dj-history-table td.left{text-align:left}
+  .dj-edit-banner{
+    display:none;margin:10px 0;padding:10px 12px;border:1px solid #f59e0b;background:#fffbeb;
+    border-radius:9px;color:#92400e;font-size:13px;font-weight:700
+  }
+  .dj-edit-banner.show{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  @media(max-width:900px){
+    .dj-history-filter{grid-template-columns:1fr 1fr}
+  }
+</style>
+
+<script id="tfms-v400-journal-history-print-controller">
+(function(){
+  'use strict';
+
+  window.TFMS_BUILD=Object.freeze({
+    version:'v40.0',
+    channel:'Stable',
+    buildDate:'2026.07.23',
+    title:'업무일지 DB 이력·수정·일자별 다운로드·PDF 출력 안정화'
+  });
+
+  const $=id=>document.getElementById(id);
+  const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[m]));
+  const client=()=>{
+    try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||null}
+    catch(e){return null}
+  };
+  const toast=m=>{try{window.showToast?.(m)}catch(e){}};
+  const value=id=>$(id)?.value??'';
+  const set=(id,v)=>{
+    const el=$(id);if(!el)return;
+    if(el.tagName==='SELECT'&&![...el.options].some(o=>o.value===String(v??''))){
+      const op=document.createElement('option');op.value=String(v??'');op.textContent=String(v??'');el.appendChild(op);
+    }
+    el.value=v??'';
+  };
+  const today=()=>new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);
+
+  window.tfmsEditingDailyLogId=null;
+  window.tfmsEditingDailyLogAuthorId=null;
+  window.tfmsDailyLogCache=[];
+
+  function applyVersion400(){
+    const b=window.TFMS_BUILD,label=`${b.version} ${b.channel}`;
+    const badge=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
+    if(badge)badge.textContent=label;
+    document.querySelectorAll('.logo-title small').forEach(el=>{
+      el.textContent=`시설 유지관리 이력관리 시스템 · ${label} Enterprise`;
+    });
+    const current=document.querySelector('#tfmsVersionModal .current-build');
+    if(current)current.textContent=`현재 버전: ${label} · Build ${b.buildDate}`;
+    const body=document.querySelector('#tfmsVersionModal .version-body');
+    if(body&&!body.querySelector('[data-version="v40.0"]')){
+      const item=document.createElement('div');
+      item.className='change-item';item.dataset.version='v40.0';
+      item.innerHTML=`<strong>${label}</strong><ul>
+        <li>인쇄 전용 새 창을 사용하여 PDF 스크롤바·잘림·축소 오류 수정</li>
+        <li>업무일지 DB 이력조회·일자/시설/종류 필터·엑셀 다운로드 추가</li>
+        <li>관리자 또는 작성자 본인의 저장 일지 수정 기능 추가</li>
+      </ul>`;
+      body.insertBefore(item,body.firstChild);
+    }
+  }
+
+  function getSessionProfile(){
+    let s={};try{s=JSON.parse(sessionStorage.getItem('tfmsSession')||'{}')}catch(e){}
+    const p=window.getTfmsCloudProfile?.()||window.cloudProfile||{};
+    return {session:s,profile:p};
+  }
+
+  async function currentUser(){
+    const sb=client();
+    const known=window.getTfmsCloudUser?.()||window.cloudUser;
+    if(known?.id)return known;
+    const {data}=await sb.auth.getUser();
+    return data?.user||null;
+  }
+
+  function isAdmin(){
+    const {session,profile}=getSessionProfile();
+    const r=String(profile.role||session.role||window.tfmsRole||'').toLowerCase();
+    return r==='admin'||r==='관리자';
+  }
+
+  function ensureJournalHistoryUI(){
+    const section=$('dailylog');
+    if(!section||$('djHistoryPanel'))return;
+
+    const firstPanel=section.querySelector('.panel');
+    if(firstPanel&&!$('djEditBanner')){
+      const banner=document.createElement('div');
+      banner.id='djEditBanner';banner.className='dj-edit-banner';
+      banner.innerHTML=`<span id="djEditBannerText">저장된 업무일지를 수정 중입니다.</span>
+        <button type="button" class="small-btn" onclick="cancelDailyLogEditV400()">수정 취소</button>`;
+      firstPanel.insertAdjacentElement('afterend',banner);
+    }
+
+    const panel=document.createElement('div');
+    panel.id='djHistoryPanel';
+    panel.className='panel dj-history-panel';
+    panel.innerHTML=`
+      <div class="section-title"><span class="dot"></span>업무일지 저장·다운로드 이력</div>
+      <div class="notice">
+        저장된 업무일지는 daily_logs 테이블에 누적됩니다. 일자·시설·일지 종류별로 조회하고,
+        선택한 조건의 자료를 엑셀로 내려받을 수 있습니다.
+      </div>
+      <div class="dj-history-filter">
+        <div><label>연도</label><select id="djHistoryYear"></select></div>
+        <div><label>시설</label><select id="djHistoryFacility"><option value="">전체 시설</option></select></div>
+        <div><label>일지 종류</label><select id="djHistoryType">
+          <option value="">전체 종류</option>
+          <option value="machine">기계실 업무일지</option>
+          <option value="air">대기배출 운영기록부</option>
+          <option value="work">일상근무일지</option>
+        </select></div>
+        <div><label>특정 일자</label><input id="djHistoryDate" type="date"></div>
+        <div style="display:flex;gap:7px">
+          <button type="button" class="btn light" onclick="loadDailyLogHistoryV400()">조회</button>
+          <button type="button" class="btn blue" onclick="downloadDailyLogExcelV400()">엑셀 다운로드</button>
+        </div>
+      </div>
+      <div class="dj-history-table-wrap">
+        <table class="dj-history-table">
+          <thead><tr>
+            <th>일자</th><th>시설명</th><th>일지 종류</th><th>작성자</th><th>저장일시</th><th>관리</th>
+          </tr></thead>
+          <tbody id="djHistoryBody"><tr><td colspan="6">업무일지 메뉴 진입 후 조회됩니다.</td></tr></tbody>
+        </table>
+      </div>`;
+    section.appendChild(panel);
+    initHistoryFilters();
+  }
+
+  function initHistoryFilters(){
+    const year=$('djHistoryYear');
+    if(year&&!year.options.length){
+      const now=new Date().getFullYear();
+      for(let y=now;y>=now-5;y--){
+        year.insertAdjacentHTML('beforeend',`<option value="${y}">${y}년</option>`);
+      }
+      year.value=String(now);
+    }
+    const fac=$('djHistoryFacility');
+    if(fac&&fac.options.length===1){
+      ['태백국민체육센터','장성국민체육센터'].forEach(n=>{
+        fac.insertAdjacentHTML('beforeend',`<option value="${n}">${n}</option>`);
+      });
+    }
+  }
+
+  function parseJournal(row){
+    let parsed={};
+    try{parsed=JSON.parse(row.content||'{}')}catch(e){}
+    const d=parsed.data||{};
+    const type=parsed.journalType||
+      (String(parsed.schema||'').includes('air')?'air':
+       String(row.title||'').includes('기계실')?'machine':
+       String(row.title||'').includes('일상근무')?'work':'');
+    return {...row,parsed,data:d,journalType:type};
+  }
+
+  function typeLabel(t){
+    return t==='machine'?'기계실 업무일지':t==='air'?'대기배출 운영기록부':t==='work'?'일상근무일지':'업무일지';
+  }
+
+  window.loadDailyLogHistoryV400=async function(){
+    ensureJournalHistoryUI();
+    const body=$('djHistoryBody');
+    if(body)body.innerHTML='<tr><td colspan="6">저장 이력을 불러오는 중입니다.</td></tr>';
+
+    try{
+      const sb=client();
+      if(!sb)throw new Error('DB 연결 정보를 확인하지 못했습니다.');
+
+      const year=value('djHistoryYear')||String(new Date().getFullYear());
+      const from=`${year}-01-01`,to=`${Number(year)+1}-01-01`;
+
+      let query=sb.from('daily_logs')
+        .select(`
+          id,facility_id,work_date,shift_type,title,content,weather,
+          author_id,created_at,updated_at,
+          facility:facilities(name)
+        `)
+        .gte('work_date',from)
+        .lt('work_date',to)
+        .order('work_date',{ascending:false})
+        .order('created_at',{ascending:false});
+
+      const {data,error}=await query;
+      if(error)throw error;
+
+      const facility=value('djHistoryFacility');
+      const type=value('djHistoryType');
+      const date=value('djHistoryDate');
+
+      let list=(data||[]).map(parseJournal);
+      if(facility)list=list.filter(r=>(r.facility?.name||r.data.facility)===facility);
+      if(type)list=list.filter(r=>r.journalType===type);
+      if(date)list=list.filter(r=>r.work_date===date);
+
+      window.tfmsDailyLogCache=list;
+      await renderHistoryRows(list);
+    }catch(e){
+      console.error('TFMS v40 history load error',e);
+      if(body)body.innerHTML=`<tr><td colspan="6" style="color:#b91c1c">${esc(e?.message||e)}</td></tr>`;
+    }
+  };
+
+  async function renderHistoryRows(list){
+    const body=$('djHistoryBody');if(!body)return;
+    if(!list.length){
+      body.innerHTML='<tr><td colspan="6">선택한 조건에 저장된 업무일지가 없습니다.</td></tr>';
+      return;
+    }
+    const user=await currentUser();
+    const admin=isAdmin();
+
+    body.innerHTML=list.map(r=>{
+      const canEdit=admin||Boolean(user?.id&&r.author_id===user.id);
+      const facility=r.facility?.name||r.data.facility||'-';
+      return `<tr>
+        <td>${esc(r.work_date||'')}</td>
+        <td>${esc(facility)}</td>
+        <td>${esc(typeLabel(r.journalType))}</td>
+        <td>${esc(r.data.author||'-')}</td>
+        <td>${esc(r.created_at?new Date(r.created_at).toLocaleString('ko-KR'):'-')}</td>
+        <td style="white-space:nowrap">
+          <button type="button" class="small-btn" onclick="previewSavedDailyLogV400('${r.id}')">미리보기</button>
+          <button type="button" class="small-btn" onclick="printSavedDailyLogV400('${r.id}')">PDF</button>
+          ${canEdit?`<button type="button" class="small-btn blue" onclick="editDailyLogV400('${r.id}')">수정</button>`:''}
+        </td>
+      </tr>`;
+    }).join('');
+  }
+
+  function savedById(id){
+    return window.tfmsDailyLogCache.find(r=>String(r.id)===String(id));
+  }
+
+  function collectCurrentData(type){
+    if(type==='air'){
+      return {
+        facility:value('djFacility'),date:value('djDate'),weather:value('djWeather'),author:value('djAuthor'),
+        outlets:[1,2,3,4,5].map(i=>({no:i,facility:value(`airOutFacility${i}`),hours:value(`airOutHours${i}`),remark:value(`airOutRemark${i}`)})),
+        operation:{name:value('airOpName'),location:value('airOpLocation'),power:value('airPower'),capacity:value('airCapacity'),
+          pollutant:value('airPollutant'),concentration:value('airTreatmentConcentration'),efficiency:value('airEfficiency'),
+          chemicalName:value('airChemicalName'),chemicalAmount:value('airChemicalAmount')},
+        repair:{name:value('airRepairName'),outlet:value('airRepairOutlet'),period:value('airRepairPeriodNew'),
+          repairer:value('airRepairerNew'),detail:value('airRepairDetailNew')},
+        measure:{date:value('airMeasureDateNew'),sky:document.querySelector('input[name="airSky"]:checked')?.value||'',
+          temp:value('airTemp'),humidity:value('airHumidity'),pressure:value('airPressure'),
+          windDirection:value('airWindDirection'),windSpeed:value('airWindSpeed'),outlet:value('airMeasureOutletNew'),
+          mainFacility:value('airMainFacilityNew'),item:value('airItemNew'),concentration:value('airConcentrationNew'),
+          flow:value('airFlowNew'),emission:value('airEmissionNew'),device:value('airDeviceNew'),method:value('airMethod'),
+          fuel:value('airFuelNew'),material:value('airMaterialNew'),opinion:value('airOpinionNew'),etc:value('airEtc'),
+          officerRank:value('airOfficerRankNew'),officerName:value('airOfficerNameNew')}
+      };
+    }
+    if(type==='machine'){
+      const water=[...document.querySelectorAll('#djFormMachine tbody tr')].map(tr=>{
+        const x=tr.querySelectorAll('input');
+        return {time:x[0]?.value||'',room:x[1]?.value||'',adult:x[2]?.value||'',child:x[3]?.value||'',
+          event:x[4]?.value||'',phm:x[5]?.value||'',php:x[6]?.value||'',cl:x[7]?.value||''};
+      });
+      return {facility:value('djFacility'),date:value('djDate'),weather:value('djWeather'),author:value('djAuthor'),
+        workers:value('mjWorkers'),water,lpgPrev:value('mjLpgPrev'),lpgNow:value('mjLpgNow'),
+        vaporTemp:value('mjVaporTemp'),boilerA:value('mjBoilerA'),boilerB:value('mjBoilerB'),
+        fuelPercent:value('mjFuelPercent'),fuelLiter:value('mjFuelLiter'),salt:value('mjSalt'),
+        coagulant:value('mjCoagulant'),boilerStock:value('mjBoilerStock'),coagStock:value('mjCoagStock'),
+        works:window.djMachineRows||[],special:value('mjSpecial')};
+    }
+    return {facility:value('djFacility'),date:value('djDate'),weather:value('djWeather'),author:value('djAuthor'),
+      rank1:value('wjRank1'),name1:value('wjName1'),time1:value('wjTime1'),note1:value('wjNote1'),
+      rank2:value('wjRank2'),name2:value('wjName2'),time2:value('wjTime2'),note2:value('wjNote2'),
+      works:window.djWorkRows||[],attach1:value('wjAttach1'),attach2:value('wjAttach2'),
+      approver1:value('wjApprover1'),approver2:value('wjApprover2')};
+  }
+
+  function currentType(){
+    if($('djFormAir')?.classList.contains('active'))return'air';
+    if($('djFormWork')?.classList.contains('active'))return'work';
+    return'machine';
+  }
+
+  function fillAir(d){
+    set('djFacility',d.facility);set('djDate',d.date);set('djWeather',d.weather);set('djAuthor',d.author);
+    (d.outlets||[]).forEach((o,i)=>{
+      const n=i+1;set(`airOutFacility${n}`,o.facility);set(`airOutHours${n}`,o.hours);set(`airOutRemark${n}`,o.remark);
+    });
+    const op=d.operation||{},r=d.repair||{},m=d.measure||{};
+    set('airOpName',op.name);set('airOpLocation',op.location);set('airPower',op.power);set('airCapacity',op.capacity);
+    set('airPollutant',op.pollutant);set('airTreatmentConcentration',op.concentration);set('airEfficiency',op.efficiency);
+    set('airChemicalName',op.chemicalName);set('airChemicalAmount',op.chemicalAmount);
+    set('airRepairName',r.name);set('airRepairOutlet',r.outlet);set('airRepairPeriodNew',r.period);
+    set('airRepairerNew',r.repairer);set('airRepairDetailNew',r.detail);
+    set('airMeasureDateNew',m.date);set('airTemp',m.temp);set('airHumidity',m.humidity);set('airPressure',m.pressure);
+    set('airWindDirection',m.windDirection);set('airWindSpeed',m.windSpeed);set('airMeasureOutletNew',m.outlet);
+    set('airMainFacilityNew',m.mainFacility);set('airItemNew',m.item);set('airConcentrationNew',m.concentration);
+    set('airFlowNew',m.flow);set('airEmissionNew',m.emission);set('airDeviceNew',m.device);set('airMethod',m.method);
+    set('airFuelNew',m.fuel);set('airMaterialNew',m.material);set('airOpinionNew',m.opinion);set('airEtc',m.etc);
+    set('airOfficerRankNew',m.officerRank);set('airOfficerNameNew',m.officerName);
+    const radio=document.querySelector(`input[name="airSky"][value="${CSS.escape(m.sky||'')}"]`);
+    if(radio)radio.checked=true;
+  }
+
+  function fillMachine(d){
+    set('djFacility',d.facility);set('djDate',d.date);set('djWeather',d.weather);set('djAuthor',d.author);
+    ['mjWorkers','mjLpgPrev','mjLpgNow','mjVaporTemp','mjBoilerA','mjBoilerB','mjFuelPercent',
+      'mjFuelLiter','mjSalt','mjCoagulant','mjBoilerStock','mjCoagStock','mjSpecial'].forEach(id=>{
+        const key={mjWorkers:'workers',mjLpgPrev:'lpgPrev',mjLpgNow:'lpgNow',mjVaporTemp:'vaporTemp',
+          mjBoilerA:'boilerA',mjBoilerB:'boilerB',mjFuelPercent:'fuelPercent',mjFuelLiter:'fuelLiter',
+          mjSalt:'salt',mjCoagulant:'coagulant',mjBoilerStock:'boilerStock',mjCoagStock:'coagStock',mjSpecial:'special'}[id];
+        set(id,d[key]);
+      });
+    const rows=[...document.querySelectorAll('#djFormMachine tbody tr')];
+    (d.water||[]).forEach((w,i)=>{
+      const x=rows[i]?.querySelectorAll('input');if(!x)return;
+      [w.time,w.room,w.adult,w.child,w.event,w.phm,w.php,w.cl].forEach((z,j)=>x[j].value=z??'');
+    });
+    window.djMachineRows=d.works||[];window.renderMachineRowsV390?.();
+  }
+
+  function fillWork(d){
+    set('djFacility',d.facility);set('djDate',d.date);set('djWeather',d.weather);set('djAuthor',d.author);
+    ['rank1','name1','time1','note1','rank2','name2','time2','note2','attach1','attach2','approver1','approver2']
+      .forEach(k=>set('wj'+k[0].toUpperCase()+k.slice(1),d[k]));
+    window.djWorkRows=d.works||[];window.renderWorkRowsV390?.();
+  }
+
+  window.editDailyLogV400=function(id){
+    const r=savedById(id);if(!r)return;
+    window.tfmsEditingDailyLogId=r.id;
+    window.tfmsEditingDailyLogAuthorId=r.author_id;
+    window.showDailyFormV390?.(r.journalType);
+    if(r.journalType==='air')fillAir(r.data);
+    else if(r.journalType==='machine')fillMachine(r.data);
+    else fillWork(r.data);
+    const banner=$('djEditBanner');
+    if(banner){
+      banner.classList.add('show');
+      $('djEditBannerText').textContent=`${r.work_date} ${typeLabel(r.journalType)} 수정 중`;
+    }
+    window.scrollTo({top:0,behavior:'smooth'});
+    toast('저장된 업무일지를 수정화면으로 불러왔습니다.');
+  };
+
+  window.cancelDailyLogEditV400=function(){
+    window.tfmsEditingDailyLogId=null;
+    window.tfmsEditingDailyLogAuthorId=null;
+    $('djEditBanner')?.classList.remove('show');
+    toast('업무일지 수정을 취소했습니다.');
+  };
+
+  function getPreviewMarkupForData(r){
+    // 기존 입력폼에 값을 넣은 뒤 기존 법정서식 생성기를 이용하므로 서식 중복을 피한다.
+    if(r.journalType==='air')fillAir(r.data);
+    else if(r.journalType==='machine')fillMachine(r.data);
+    else fillWork(r.data);
+    window.showDailyFormV390?.(r.journalType);
+    window.previewDailyJournalV390?.(r.journalType);
+    return $('dailyJournalPreviewSheet')?.innerHTML||'';
+  }
+
+  window.previewSavedDailyLogV400=function(id){
+    const r=savedById(id);if(!r)return;
+    getPreviewMarkupForData(r);
+  };
+
+  function printHtmlDocument(title,content,sheetClass){
+    const styles=[...document.querySelectorAll('style')].map(s=>s.textContent).join('\n');
+    const win=window.open('','_blank','width=1000,height=800');
+    if(!win){toast('팝업 차단을 해제해 주세요.');return}
+    win.document.open();
+    win.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>${esc(title)}</title>
+      <style>
+        ${styles}
+        html,body{margin:0!important;padding:0!important;background:#fff!important;overflow:visible!important}
+        .dj-sheet{margin:0 auto!important;box-shadow:none!important}
+        .air-legal-page{display:block!important;page-break-after:always!important}
+        .air-legal-page:last-child{page-break-after:auto!important}
+        @page{size:A4 portrait;margin:0}
+      </style></head><body>
+      <div class="dj-sheet ${esc(sheetClass||'')}">${content}</div>
+      <script>window.onload=function(){setTimeout(function(){window.print()},250)}<\/script>
+      </body></html>`);
+    win.document.close();
+  }
+
+  window.printSavedDailyLogV400=function(id){
+    const r=savedById(id);if(!r)return;
+    const content=getPreviewMarkupForData(r);
+    const cls=$('dailyJournalPreviewSheet')?.className.replace('dj-sheet','').trim()||'';
+    $('dailyJournalPreviewModal')?.classList.remove('show');
+    printHtmlDocument(`${r.work_date}_${typeLabel(r.journalType)}`,content,cls);
+  };
+
+  // 현재 작성 중인 자료의 PDF 출력도 새 인쇄창으로 전환
+  window.printDailyJournalV390=function(type){
+    window.previewDailyJournalV390?.(type);
+    const sheet=$('dailyJournalPreviewSheet');
+    const content=sheet?.innerHTML||'';
+    const cls=sheet?.className.replace('dj-sheet','').trim()||'';
+    $('dailyJournalPreviewModal')?.classList.remove('show');
+    if(!content.trim()){toast('출력할 미리보기 내용이 없습니다.');return}
+    printHtmlDocument(`${value('djDate')}_${typeLabel(type)}`,content,cls);
+  };
+
+  // 통합 저장: 신규 INSERT와 작성자/관리자 UPDATE
+  const previousSave=window.saveDailyJournalV390;
+  window.saveDailyJournalV390=async function(type){
+    if(!window.tfmsEditingDailyLogId){
+      const result=await previousSave(type);
+      setTimeout(()=>window.loadDailyLogHistoryV400?.(),300);
+      return result;
+    }
+
+    const sb=client();
+    const d=collectCurrentData(type);
+    try{
+      const user=await currentUser();
+      if(!user?.id)throw new Error('로그인 세션을 확인할 수 없습니다.');
+      if(!isAdmin()&&window.tfmsEditingDailyLogAuthorId!==user.id){
+        throw new Error('본인이 작성한 업무일지만 수정할 수 있습니다.');
+      }
+
+      const payload={
+        work_date:d.date,
+        title:`${d.facility} ${typeLabel(type)}`,
+        content:JSON.stringify({schema:`tfms-daily-journal-v40`,journalType:type,data:d}),
+        weather:d.weather||null
+      };
+
+      let q=sb.from('daily_logs').update(payload).eq('id',window.tfmsEditingDailyLogId);
+      if(!isAdmin())q=q.eq('author_id',user.id);
+      const {data,error}=await q.select('id');
+      if(error)throw error;
+      if(!data?.length)throw new Error('수정 권한이 없거나 대상 업무일지를 찾을 수 없습니다.');
+
+      toast('업무일지를 수정했습니다.');
+      cancelDailyLogEditV400();
+      await loadDailyLogHistoryV400();
+    }catch(e){
+      console.error('TFMS v40 daily update error',e);
+      let msg=String(e?.message||e);
+      if(/row-level security/i.test(msg))msg='업무일지 수정 권한 정책을 확인해 주세요.';
+      toast('업무일지 수정 실패: '+msg);
+    }
+  };
+
+  window.downloadDailyLogExcelV400=async function(){
+    if(!window.tfmsDailyLogCache.length){
+      await loadDailyLogHistoryV400();
+    }
+    const list=window.tfmsDailyLogCache;
+    if(!list.length){toast('다운로드할 업무일지가 없습니다.');return}
+    if(typeof XLSX==='undefined'){toast('엑셀 모듈을 불러오지 못했습니다.');return}
+
+    const rows=list.map((r,i)=>({
+      순번:i+1,
+      일자:r.work_date,
+      시설명:r.facility?.name||r.data.facility||'',
+      일지종류:typeLabel(r.journalType),
+      작성자:r.data.author||'',
+      날씨:r.weather||r.data.weather||'',
+      제목:r.title||'',
+      저장일시:r.created_at?new Date(r.created_at).toLocaleString('ko-KR'):'',
+      전체입력내용:JSON.stringify(r.data)
+    }));
+    const ws=XLSX.utils.json_to_sheet(rows);
+    ws['!cols']=[{wch:7},{wch:12},{wch:22},{wch:28},{wch:12},{wch:10},{wch:38},{wch:22},{wch:80}];
+    const wb=XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb,ws,'업무일지 이력');
+    const y=value('djHistoryYear')||'전체';
+    const f=value('djHistoryFacility')||'전체시설';
+    const t=typeLabel(value('djHistoryType'))||'전체종류';
+    XLSX.writeFile(wb,`TFMS_업무일지_${y}_${f}_${t}.xlsx`,{compression:true});
+    toast('업무일지 이력을 엑셀로 다운로드했습니다.');
+  };
+
+  // 업무일지 화면이 다시 만들어질 때마다 이력영역을 복원
+  const observer=new MutationObserver(()=>ensureJournalHistoryUI());
+  document.addEventListener('DOMContentLoaded',()=>{
+    applyVersion400();
+    ensureJournalHistoryUI();
+    observer.observe(document.body,{childList:true,subtree:true});
+    setTimeout(()=>loadDailyLogHistoryV400(),400);
+  });
+  setTimeout(()=>{applyVersion400();ensureJournalHistoryUI()},180);
+})();
+</script>
