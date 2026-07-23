@@ -9884,3 +9884,462 @@ document.addEventListener('DOMContentLoaded',function(){
   });
 })();
 </script>
+
+
+<style id="tfms-v390-daily-journal-style">
+  .dj-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+  .dj-tab{border:1px solid #cbd5e1;background:#fff;border-radius:9px;padding:9px 13px;font-weight:800;cursor:pointer}
+  .dj-tab.active{background:#1d4ed8;color:#fff;border-color:#1d4ed8}
+  .dj-form{display:none}.dj-form.active{display:block}
+  .dj-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+  .dj-grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .dj-field label{display:block;margin-bottom:6px;font-size:13px;font-weight:800;color:#334155}
+  .dj-field input,.dj-field select,.dj-field textarea{
+    width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:8px;padding:9px 10px;font:inherit;background:#fff
+  }
+  .dj-field textarea{min-height:88px;resize:vertical}
+  .dj-span-2{grid-column:span 2}.dj-span-all{grid-column:1/-1}
+  .dj-sheet-wrap{overflow:auto;background:#e5e7eb;padding:18px;border-radius:12px;margin-top:16px}
+  .dj-sheet{width:210mm;min-height:297mm;margin:auto;background:#fff;padding:12mm;box-sizing:border-box;color:#111;font-family:"Malgun Gothic","Noto Sans KR",sans-serif}
+  .dj-sheet h2{text-align:center;margin:0 0 8px;font-size:22px;letter-spacing:5px}
+  .dj-meta{text-align:left;font-weight:700;margin-bottom:6px}
+  .dj-sheet table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:11px}
+  .dj-sheet th,.dj-sheet td{border:1px solid #222;padding:4px;text-align:center;vertical-align:middle;word-break:keep-all}
+  .dj-sheet th{background:#e9eef3;font-weight:800}
+  .dj-sheet .blue th,.dj-sheet th.blue{background:#cad8ee}
+  .dj-sheet .green{background:#e9f0df}.dj-sheet .pink{background:#f2dfdc}.dj-sheet .yellow{background:#fff59d}
+  .dj-sheet .left{text-align:left}.dj-sheet .big-cell{height:38px}.dj-sheet .note-cell{height:75px;text-align:left;vertical-align:top}
+  .dj-sheet .doc-header{font-size:12px;margin-bottom:18px}
+  .dj-sheet .corp-title{font-size:20px;font-weight:900;letter-spacing:5px;margin-bottom:14px}
+  .dj-sheet .doc-title{font-size:24px;font-weight:900;text-align:center;margin:18px 0 12px}
+  .dj-sheet .plain-table th{background:#cad8ee}
+  .dj-sheet .approval{width:42%;margin-left:auto;margin-bottom:8px}
+  .dj-sheet .legal-note{font-size:9px;line-height:1.5;margin-top:8px}
+  #dailyJournalPreviewModal{
+    position:fixed;inset:0;z-index:100010;display:none;background:rgba(15,23,42,.66);padding:20px;overflow:auto
+  }
+  #dailyJournalPreviewModal.show{display:block}
+  .dj-modal-bar{
+    position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;
+    max-width:1100px;margin:0 auto 12px;background:#fff;border-radius:12px;padding:10px 14px;box-shadow:0 6px 25px rgba(0,0,0,.18)
+  }
+  .dj-modal-actions{display:flex;gap:8px}
+  @media(max-width:900px){
+    .dj-grid,.dj-grid.two{grid-template-columns:1fr 1fr}
+    .dj-span-2{grid-column:span 2}
+  }
+  @media(max-width:620px){
+    .dj-grid,.dj-grid.two{grid-template-columns:1fr}
+    .dj-span-2,.dj-span-all{grid-column:auto}
+  }
+  @media print{
+    body *{visibility:hidden!important}
+    #dailyJournalPreviewModal,#dailyJournalPreviewModal *{visibility:visible!important}
+    #dailyJournalPreviewModal{display:block!important;position:absolute;inset:0;padding:0;background:#fff}
+    .dj-modal-bar{display:none!important}
+    .dj-sheet-wrap{padding:0;background:#fff;overflow:visible}
+    .dj-sheet{width:210mm;min-height:297mm;margin:0;padding:9mm;box-shadow:none}
+    @page{size:A4 portrait;margin:0}
+  }
+</style>
+
+<div id="dailyJournalPreviewModal" onclick="if(event.target===this)closeDailyJournalPreviewV390()">
+  <div class="dj-modal-bar">
+    <strong id="djPreviewTitle">업무일지 미리보기</strong>
+    <div class="dj-modal-actions">
+      <button type="button" class="btn blue" onclick="window.print()">PDF 출력</button>
+      <button type="button" class="btn" onclick="closeDailyJournalPreviewV390()">닫기</button>
+    </div>
+  </div>
+  <div class="dj-sheet-wrap"><div id="dailyJournalPreviewSheet" class="dj-sheet"></div></div>
+</div>
+
+<script id="tfms-v390-daily-journal-controller">
+(function(){
+  'use strict';
+
+  window.TFMS_BUILD=Object.freeze({
+    version:'v39.0',channel:'Stable',buildDate:'2026.07.23',
+    title:'업무일지 3종 표준양식·PDF 출력'
+  });
+
+  const $=id=>document.getElementById(id);
+  const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const val=id=>$(id)?.value??'';
+  const set=(id,v)=>{if($(id))$(id).value=v??''};
+  const num=id=>val(id)||'';
+  const today=()=>new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);
+  const fmtDate=d=>{
+    if(!d)return '';
+    const x=new Date(d+'T00:00:00');
+    return `${x.getFullYear()}년 ${x.getMonth()+1}월 ${x.getDate()}일`;
+  };
+  const weekday=d=>d?['일요일','월요일','화요일','수요일','목요일','금요일','토요일'][new Date(d+'T00:00:00').getDay()]:'';
+  const toast=m=>{try{window.showToast?.(m)}catch(e){}};
+  const client=()=>{try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||null}catch(e){return null}};
+
+  const machineDefaults=[
+    '기계실시설업무','정재염 2포 충전'
+  ];
+
+  function applyVersion(){
+    const b=window.TFMS_BUILD,label=`${b.version} ${b.channel}`;
+    const badge=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
+    if(badge)badge.textContent=label;
+    document.querySelectorAll('.logo-title small').forEach(el=>el.textContent=`시설 유지관리 이력관리 시스템 · ${label} Enterprise`);
+    const current=document.querySelector('#tfmsVersionModal .current-build');
+    if(current)current.textContent=`현재 버전: ${label} · Build ${b.buildDate}`;
+    const body=document.querySelector('#tfmsVersionModal .version-body');
+    if(body&&!body.querySelector('[data-version="v39.0"]')){
+      const item=document.createElement('div');item.className='change-item';item.dataset.version='v39.0';
+      item.innerHTML=`<strong>${label}</strong><ul>
+        <li>기계실 업무일지·대기배출 법정기록부·일상근무일지 3종 분리</li>
+        <li>태백·장성 국민체육센터 시설별 사용범위 자동 제한</li>
+        <li>원본 양식형 미리보기 및 브라우저 PDF 출력 지원</li>
+      </ul>`;
+      body.insertBefore(item,body.firstChild);
+    }
+  }
+
+  function rebuildDailyPage(){
+    const section=$('dailylog');if(!section||section.dataset.v390)return;
+    section.dataset.v390='1';
+    section.innerHTML=`
+      <div class="title-row">
+        <div class="title-left"><div class="title-icon">📋</div>
+          <div><h1>업무일지</h1><div class="breadcrumb">홈 › 업무일지 › 표준일지 작성·출력</div></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="section-title"><span class="dot"></span>일지 기본정보</div>
+        <div class="notice">
+          기계실 업무일지는 태백·장성국민체육센터에서 사용하며, 대기배출시설 및 방지시설 운영기록부는
+          태백국민체육센터에만 노출됩니다. 일상근무일지는 그룹웨어 공문 등록용으로 작성합니다.
+        </div>
+        <div class="dj-grid" style="margin-top:16px">
+          <div class="dj-field"><label>시설명</label><select id="djFacility" onchange="changeDailyFacilityV390()">
+            <option>태백국민체육센터</option><option>장성국민체육센터</option>
+          </select></div>
+          <div class="dj-field"><label>근무일</label><input id="djDate" type="date" onchange="syncDailyBasicsV390()"></div>
+          <div class="dj-field"><label>날씨</label><select id="djWeather"><option>맑음</option><option>흐림</option><option>비</option><option>눈</option></select></div>
+          <div class="dj-field"><label>작성자</label><input id="djAuthor"></div>
+        </div>
+        <div class="dj-tabs">
+          <button type="button" id="djTabMachine" class="dj-tab active" onclick="showDailyFormV390('machine')">기계실 업무일지</button>
+          <button type="button" id="djTabAir" class="dj-tab" onclick="showDailyFormV390('air')">대기배출 운영기록부</button>
+          <button type="button" id="djTabWork" class="dj-tab" onclick="showDailyFormV390('work')">일상근무일지</button>
+        </div>
+      </div>
+
+      <div id="djFormMachine" class="panel dj-form active">
+        <div class="section-title"><span class="dot"></span>기계실 업무일지 입력</div>
+        <div class="dj-grid">
+          <div class="dj-field"><label>근무자</label><input id="mjWorkers" placeholder="이현규, 이원주"></div>
+          <div class="dj-field"><label>LPG 전일 검침</label><input id="mjLpgPrev"></div>
+          <div class="dj-field"><label>LPG 금일 검침</label><input id="mjLpgNow"></div>
+          <div class="dj-field"><label>기화기 보일러온도 A/B</label><input id="mjVaporTemp" placeholder="63 / 66"></div>
+        </div>
+        <div class="section-title" style="margin-top:18px"><span class="dot"></span>수영장 수질현황</div>
+        <div style="overflow:auto"><table class="table">
+          <thead><tr><th>시간</th><th>실내온도</th><th>성인풀</th><th>유아풀</th><th>이벤트풀</th><th>pH 기계실</th><th>pH 수영장</th><th>잔류염소</th></tr></thead>
+          <tbody>${['06:00','13:00','17:30'].map((t,i)=>`<tr>
+            <td><input class="edit-input mj-time" value="${t}"></td>
+            <td><input class="edit-input mj-room"></td><td><input class="edit-input mj-adult"></td>
+            <td><input class="edit-input mj-child"></td><td><input class="edit-input mj-event"></td>
+            <td><input class="edit-input mj-phm"></td><td><input class="edit-input mj-php"></td>
+            <td><input class="edit-input mj-cl"></td></tr>`).join('')}</tbody>
+        </table></div>
+        <div class="section-title" style="margin-top:18px"><span class="dot"></span>보일러·약품 현황</div>
+        <div class="dj-grid">
+          <div class="dj-field"><label>청관제 전일/금일/사용량</label><input id="mjBoilerA" placeholder="17 / 15 / 2"></div>
+          <div class="dj-field"><label>보일러 B 전일/금일/사용량</label><input id="mjBoilerB" placeholder="22 / 0 / 22"></div>
+          <div class="dj-field"><label>중재고량(%)</label><input id="mjFuelPercent" value="75"></div>
+          <div class="dj-field"><label>총재고량(L)</label><input id="mjFuelLiter"></div>
+          <div class="dj-field"><label>정재염 전일/금일/재고</label><input id="mjSalt" placeholder="87 / 2 / 85"></div>
+          <div class="dj-field"><label>응집제 전일/금일/사용량</label><input id="mjCoagulant" placeholder="210 / 185 / 25"></div>
+          <div class="dj-field"><label>청관제 총재고량</label><input id="mjBoilerStock"></div>
+          <div class="dj-field"><label>응집제 총재고량(L)</label><input id="mjCoagStock"></div>
+        </div>
+        <div class="section-title" style="margin-top:18px"><span class="dot"></span>일일업무내용</div>
+        <div id="mjWorkRows"></div>
+        <button type="button" class="btn light" onclick="addMachineWorkRowV390()">업무행 추가</button>
+        <div class="dj-field" style="margin-top:12px"><label>특이사항</label><textarea id="mjSpecial"></textarea></div>
+        <div class="buttons">
+          <button class="btn light" onclick="previewDailyJournalV390('machine')">일지 미리보기</button>
+          <button class="btn blue" onclick="saveDailyJournalV390('machine')">저장</button>
+          <button class="btn" onclick="printDailyJournalV390('machine')">PDF 출력</button>
+        </div>
+      </div>
+
+      <div id="djFormAir" class="panel dj-form">
+        <div class="section-title"><span class="dot"></span>대기배출시설 및 방지시설 운영기록부</div>
+        <div class="notice">법정 서식의 항목과 출력 배열은 변경하지 않고, 입력 편의만 개선합니다.</div>
+        <div class="dj-grid" style="margin-top:14px">
+          <div class="dj-field"><label>배출구</label><input id="airOutlet" value="1"></div>
+          <div class="dj-field"><label>배출시설</label><input id="airFacility" value="이중"></div>
+          <div class="dj-field"><label>가동시간</label><input id="airHours" value="130(2시간10분)"></div>
+          <div class="dj-field"><label>비고</label><input id="airRemark" value="정상 가동"></div>
+          <div class="dj-field"><label>방지시설명</label><input id="airPrevention" value="연소조절에 의한 시설"></div>
+          <div class="dj-field"><label>보수기간</label><input id="airRepairPeriod"></div>
+          <div class="dj-field"><label>보수자</label><input id="airRepairer"></div>
+          <div class="dj-field"><label>보수명세</label><input id="airRepairDetail"></div>
+          <div class="dj-field"><label>측정일</label><input id="airMeasureDate" type="date"></div>
+          <div class="dj-field"><label>기온/습도/기압</label><input id="airWeatherData" placeholder="기온 / 습도 / 기압"></div>
+          <div class="dj-field"><label>풍향/풍속</label><input id="airWind" placeholder="풍향 / 풍속"></div>
+          <div class="dj-field"><label>배출구 번호</label><input id="airMeasureOutlet" value="1"></div>
+          <div class="dj-field"><label>주요배출시설명</label><input id="airMainFacility"></div>
+          <div class="dj-field"><label>측정항목</label><input id="airItem"></div>
+          <div class="dj-field"><label>측정농도</label><input id="airConcentration"></div>
+          <div class="dj-field"><label>일일유량</label><input id="airFlow"></div>
+          <div class="dj-field"><label>일일매출량</label><input id="airEmission"></div>
+          <div class="dj-field"><label>검사기기명</label><input id="airDevice"></div>
+          <div class="dj-field"><label>연료사용량(1일)</label><input id="airFuel" value="2㎥ (사용)"></div>
+          <div class="dj-field"><label>원료명 및 사용량</label><input id="airMaterial" value="잔량 75%"></div>
+          <div class="dj-field dj-span-all"><label>환경기술인 의견</label><textarea id="airOpinion" placeholder="공급원 교체로 계량기 치수 익일 검침 안됨 차후 설치예정"></textarea></div>
+          <div class="dj-field"><label>환경기술인 직급</label><input id="airOfficerRank"></div>
+          <div class="dj-field"><label>환경기술인 성명</label><input id="airOfficerName"></div>
+        </div>
+        <div class="buttons">
+          <button class="btn light" onclick="previewDailyJournalV390('air')">법정서식 미리보기</button>
+          <button class="btn blue" onclick="saveDailyJournalV390('air')">저장</button>
+          <button class="btn" onclick="printDailyJournalV390('air')">PDF 출력</button>
+        </div>
+      </div>
+
+      <div id="djFormWork" class="panel dj-form">
+        <div class="section-title"><span class="dot"></span>일상근무일지 입력</div>
+        <div class="dj-grid">
+          <div class="dj-field"><label>근무자 1 직급</label><input id="wjRank1" value="기술 9급"></div>
+          <div class="dj-field"><label>근무자 1 성명</label><input id="wjName1"></div>
+          <div class="dj-field"><label>근무시간 1</label><input id="wjTime1" value="09:00 ~ 18:00"></div>
+          <div class="dj-field"><label>비고</label><input id="wjNote1"></div>
+          <div class="dj-field"><label>근무자 2 직급</label><input id="wjRank2"></div>
+          <div class="dj-field"><label>근무자 2 성명</label><input id="wjName2"></div>
+          <div class="dj-field"><label>근무시간 2</label><input id="wjTime2" value="05:00 ~ 14:00"></div>
+          <div class="dj-field"><label>비고</label><input id="wjNote2"></div>
+        </div>
+        <div class="section-title" style="margin-top:18px"><span class="dot"></span>업무 내용</div>
+        <div id="wjWorkRows"></div>
+        <button type="button" class="btn light" onclick="addWorkJournalRowV390()">업무행 추가</button>
+        <div class="dj-grid two" style="margin-top:16px">
+          <div class="dj-field"><label>붙임 1</label><input id="wjAttach1" value="기계실업무일지"></div>
+          <div class="dj-field"><label>붙임 2</label><input id="wjAttach2" value="대기배출시설 및 방지시설 운영기록부"></div>
+          <div class="dj-field"><label>주임</label><input id="wjApprover1"></div>
+          <div class="dj-field"><label>차장</label><input id="wjApprover2"></div>
+        </div>
+        <div class="buttons">
+          <button class="btn light" onclick="previewDailyJournalV390('work')">공문 미리보기</button>
+          <button class="btn blue" onclick="saveDailyJournalV390('work')">저장</button>
+          <button class="btn" onclick="printDailyJournalV390('work')">PDF 출력</button>
+        </div>
+      </div>`;
+    initDailyForms();
+  }
+
+  function initDailyForms(){
+    set('djDate',today());set('airMeasureDate',today());
+    let s={};try{s=JSON.parse(sessionStorage.getItem('tfmsSession')||'{}')}catch(e){}
+    set('djAuthor',s.name||'');set('mjWorkers',s.name||'');set('wjName1',s.name||'');set('wjApprover2',s.name||'');
+    window.djMachineRows=machineDefaults.map(x=>({work:x,note:''}));
+    window.djWorkRows=[
+      {work:'태백국민체육센터 일일 기계실 업무 일지',note:'붙임1'},
+      {work:'태백국민체육센터 일일 대기배출기록부 작성',note:'붙임2'},
+      {work:'태백국민체육센터 수영장 밸런싱 탱크 및 저수조 수위 조절',note:''},
+      {work:'태백국민체육센터 수영장 순환펌프 교번작업',note:'A → B'},
+      {work:'태백국민체육센터 수영장 온도 조절',note:''},
+      {work:'태백국민체육센터 기화기 점검(육안점검, 온도 및 사용량 측정)',note:'이상 없음'},
+      {work:'정재염 2포 보충',note:'이상 없음'}
+    ];
+    renderMachineRows();renderWorkRows();changeDailyFacilityV390();
+  }
+
+  function renderMachineRows(){
+    const h=$('mjWorkRows');if(!h)return;
+    h.innerHTML=window.djMachineRows.map((r,i)=>`<div class="dj-grid two" style="margin-bottom:8px">
+      <div class="dj-field"><input value="${esc(r.work)}" oninput="djMachineRows[${i}].work=this.value"></div>
+      <div class="dj-field" style="display:flex;gap:6px"><input value="${esc(r.note)}" placeholder="비고" oninput="djMachineRows[${i}].note=this.value">
+      <button type="button" class="small-btn red" onclick="djMachineRows.splice(${i},1);renderMachineRowsV390()">삭제</button></div></div>`).join('');
+  }
+  window.renderMachineRowsV390=renderMachineRows;
+  window.addMachineWorkRowV390=()=>{window.djMachineRows.push({work:'',note:''});renderMachineRows()};
+
+  function renderWorkRows(){
+    const h=$('wjWorkRows');if(!h)return;
+    h.innerHTML=window.djWorkRows.map((r,i)=>`<div class="dj-grid two" style="margin-bottom:8px">
+      <div class="dj-field"><input value="${esc(r.work)}" oninput="djWorkRows[${i}].work=this.value"></div>
+      <div class="dj-field" style="display:flex;gap:6px"><input value="${esc(r.note)}" placeholder="비고" oninput="djWorkRows[${i}].note=this.value">
+      <button type="button" class="small-btn red" onclick="djWorkRows.splice(${i},1);renderWorkRowsV390()">삭제</button></div></div>`).join('');
+  }
+  window.renderWorkRowsV390=renderWorkRows;
+  window.addWorkJournalRowV390=()=>{window.djWorkRows.push({work:'',note:''});renderWorkRows()};
+
+  window.showDailyFormV390=function(type){
+    ['machine','air','work'].forEach(t=>{
+      $(`djForm${t[0].toUpperCase()+t.slice(1)}`)?.classList.toggle('active',t===type);
+      $(`djTab${t[0].toUpperCase()+t.slice(1)}`)?.classList.toggle('active',t===type);
+    });
+  };
+
+  window.changeDailyFacilityV390=function(){
+    const facility=val('djFacility');
+    const air=$('djTabAir');
+    if(air)air.style.display=facility==='태백국민체육센터'?'':'none';
+    if(facility!=='태백국민체육센터'&&$('djFormAir')?.classList.contains('active'))showDailyFormV390('machine');
+    const prefix=facility.replace('국민체육센터','국민체육센터');
+    window.djWorkRows?.forEach(r=>r.work=r.work.replace(/태백국민체육센터|장성국민체육센터/g,prefix));
+    renderWorkRows();
+  };
+  window.syncDailyBasicsV390=()=>set('airMeasureDate',val('djDate'));
+
+  function collectWater(){
+    return [...document.querySelectorAll('#djFormMachine tbody tr')].map(tr=>{
+      const x=tr.querySelectorAll('input');
+      return {time:x[0]?.value,room:x[1]?.value,adult:x[2]?.value,child:x[3]?.value,event:x[4]?.value,phm:x[5]?.value,php:x[6]?.value,cl:x[7]?.value};
+    });
+  }
+
+  function data(type){
+    const base={facility:val('djFacility'),date:val('djDate'),weather:val('djWeather'),author:val('djAuthor')};
+    if(type==='machine')return {...base,type,workers:val('mjWorkers'),water:collectWater(),lpgPrev:val('mjLpgPrev'),lpgNow:val('mjLpgNow'),
+      vaporTemp:val('mjVaporTemp'),boilerA:val('mjBoilerA'),boilerB:val('mjBoilerB'),fuelPercent:val('mjFuelPercent'),
+      fuelLiter:val('mjFuelLiter'),salt:val('mjSalt'),coagulant:val('mjCoagulant'),boilerStock:val('mjBoilerStock'),
+      coagStock:val('mjCoagStock'),works:window.djMachineRows||[],special:val('mjSpecial')};
+    if(type==='air')return {...base,type,outlet:val('airOutlet'),airFacility:val('airFacility'),hours:val('airHours'),remark:val('airRemark'),
+      prevention:val('airPrevention'),repairPeriod:val('airRepairPeriod'),repairer:val('airRepairer'),repairDetail:val('airRepairDetail'),
+      measureDate:val('airMeasureDate'),weatherData:val('airWeatherData'),wind:val('airWind'),measureOutlet:val('airMeasureOutlet'),
+      mainFacility:val('airMainFacility'),item:val('airItem'),concentration:val('airConcentration'),flow:val('airFlow'),
+      emission:val('airEmission'),device:val('airDevice'),fuel:val('airFuel'),material:val('airMaterial'),
+      opinion:val('airOpinion'),officerRank:val('airOfficerRank'),officerName:val('airOfficerName')};
+    return {...base,type,rank1:val('wjRank1'),name1:val('wjName1'),time1:val('wjTime1'),note1:val('wjNote1'),
+      rank2:val('wjRank2'),name2:val('wjName2'),time2:val('wjTime2'),note2:val('wjNote2'),
+      works:window.djWorkRows||[],attach1:val('wjAttach1'),attach2:val('wjAttach2'),
+      approver1:val('wjApprover1'),approver2:val('wjApprover2')};
+  }
+
+  const split3=v=>String(v||'').split('/').map(x=>x.trim());
+
+  function machineSheet(d){
+    const lpgUse=(Number(d.lpgPrev)||0)-(Number(d.lpgNow)||0);
+    const water=d.water.map(x=>`<tr><td>${esc(x.time)}</td><td>${esc(x.room)}</td><td>${esc(x.adult)}</td><td>${esc(x.child)}</td><td>${esc(x.event)}</td><td>${esc(x.phm)}</td><td>${esc(x.php)}</td><td>${esc(x.cl)}</td></tr>`).join('');
+    const [a1,a2,a3]=split3(d.boilerA),[b1,b2,b3]=split3(d.boilerB),[s1,s2,s3]=split3(d.salt),[c1,c2,c3]=split3(d.coagulant);
+    return `<h2>기 계 실 업 무 일 지</h2>
+      <div class="dj-meta">${fmtDate(d.date)} ${weekday(d.date)} &nbsp; ${esc(d.workers)} &nbsp; 날씨:${esc(d.weather)}</div>
+      <table>
+        <tr><th colspan="8">수 영 장 수 질 현 황</th></tr>
+        <tr><th>시간</th><th>실내온도(℃)</th><th>성인</th><th>유아</th><th>이벤트</th><th>pH 기계실</th><th>pH 수영장</th><th>잔류염소(CL)</th></tr>${water}
+        <tr><th colspan="4" class="pink">LPG 가스현황</th><th colspan="4" class="blue">청관제 현황 1통20(L)</th></tr>
+        <tr><th>전일</th><th>금일</th><th colspan="2">사용량</th><th>전일</th><th>금일</th><th colspan="2">사용량</th></tr>
+        <tr><td>${esc(d.lpgPrev)}</td><td class="yellow">${esc(d.lpgNow)}</td><td colspan="2">${esc(lpgUse||'')}</td><td>${esc(a1)}</td><td class="yellow">${esc(a2)}</td><td colspan="2">${esc(a3)}</td></tr>
+        <tr><th colspan="4" class="pink">기화기 보일러온도(℃)</th><th colspan="4" class="blue">보일러 (B)</th></tr>
+        <tr><td colspan="2">A ${esc(split3(d.vaporTemp)[0]||'')}</td><td colspan="2">B ${esc(split3(d.vaporTemp)[1]||'')}</td><td>${esc(b1)}</td><td class="yellow">${esc(b2)}</td><td colspan="2">${esc(b3)}</td></tr>
+        <tr><th colspan="2">중재고량(%)</th><td colspan="2">${esc(d.fuelPercent)}</td><th colspan="2">총재고량(L)</th><td colspan="2" class="yellow">${esc(d.fuelLiter)}</td></tr>
+        <tr><th colspan="4" class="green">정재염 현황(1포 25kg)</th><th colspan="4" class="green">응집제 현황 1통(1L)</th></tr>
+        <tr><th>전일</th><th>금일</th><th colspan="2">재고</th><th>전일</th><th>금일</th><th colspan="2">사용량</th></tr>
+        <tr><td>${esc(s1)}</td><td class="yellow">${esc(s2)}</td><td colspan="2">${esc(s3)}</td><td>${esc(c1)}</td><td class="yellow">${esc(c2)}</td><td colspan="2">${esc(c3)}</td></tr>
+        <tr><th colspan="2">총재고량 1포(25kg)</th><td colspan="2">${esc(d.boilerStock||s3)}</td><th colspan="2">총재고량(L)</th><td colspan="2" class="yellow">${esc(d.coagStock)}</td></tr>
+        <tr><th colspan="8">일일업무내용</th></tr>
+        ${(d.works||[]).map(x=>`<tr><td colspan="4" class="left">${esc(x.work)}</td><td colspan="4" class="left">${esc(x.note)}</td></tr>`).join('')}
+        <tr><td colspan="8" class="note-cell">*특이사항:<br>${esc(d.special)}</td></tr>
+      </table>`;
+  }
+
+  function airSheet(d){
+    return `<div class="doc-header">[별지 제7호서식] &lt;개정 2010.12.31&gt;</div>
+      <table class="approval"><tr><th rowspan="2">담당</th><th>운영팀장</th><th rowspan="2">결재</th></tr><tr><td>${esc(d.author)}</td></tr></table>
+      <h2 style="letter-spacing:0">대기배출시설 및 방지시설 운영기록부</h2>
+      <div class="dj-meta" style="text-align:center">${fmtDate(d.date)} ${weekday(d.date)} 날씨:${esc(d.weather)}</div>
+      <table>
+        <tr><th colspan="4">1. 배출구별 주요 배출시설 및 방지시설 가동(조업)시간</th></tr>
+        <tr><th>배출구</th><th>배출시설</th><th>가동시간</th><th>비고</th></tr>
+        <tr><td>${esc(d.outlet)}</td><td>${esc(d.airFacility)}</td><td>${esc(d.hours)}</td><td>${esc(d.remark)}</td></tr>
+        <tr><td colspan="4" class="left">* 비고란은 정상 여부를 기재합니다.</td></tr>
+        <tr><th colspan="4">2. 방지시설 운영사항</th></tr>
+        <tr><th>방지시설명</th><th>보수기간</th><th>보수자</th><th>보수명세</th></tr>
+        <tr class="big-cell"><td>${esc(d.prevention)}</td><td>${esc(d.repairPeriod)}</td><td>${esc(d.repairer)}</td><td>${esc(d.repairDetail)}</td></tr>
+        <tr><th colspan="4">3. 자가측정사항</th></tr>
+        <tr><th>측정일</th><th>기온·습도·기압</th><th>풍향·풍속</th><th>배출구 번호</th></tr>
+        <tr><td>${esc(d.measureDate)}</td><td>${esc(d.weatherData)}</td><td>${esc(d.wind)}</td><td>${esc(d.measureOutlet)}</td></tr>
+        <tr><th>주요배출시설명</th><th>측정항목·농도</th><th>일일유량·매출량</th><th>검사기기명</th></tr>
+        <tr class="big-cell"><td>${esc(d.mainFacility)}</td><td>${esc(d.item)} ${esc(d.concentration)}</td><td>${esc(d.flow)} ${esc(d.emission)}</td><td>${esc(d.device)}</td></tr>
+        <tr><th>연료사용량(1일)</th><td>${esc(d.fuel)}</td><th>원료명 및 사용량</th><td>${esc(d.material)}</td></tr>
+        <tr><th>환경기술인 의견</th><td colspan="3" class="left">${esc(d.opinion)}</td></tr>
+        <tr><th>환경기술인 직급</th><td>${esc(d.officerRank)}</td><th>성명</th><td>${esc(d.officerName)}</td></tr>
+      </table>
+      <div class="legal-note">※ 작성요령<br>
+      1. 「대기환경보전법」 및 관련 법령에 따른 법정 운영기록부입니다.<br>
+      2. 방지시설의 설치를 면제받은 사업장은 제2호와 제3호란을 작성하지 아니할 수 있습니다.<br>
+      3. 방지시설 보수사항은 별도의 계약서나 지출증빙서로 갈음할 수 있습니다.</div>`;
+  }
+
+  function workSheet(d){
+    return `<div class="corp-title">태 백 시 시 설 관 리 공 단</div>
+      <div class="doc-header">수신&nbsp;&nbsp;내부결재<br><br>(경유)<br><br>제목&nbsp;&nbsp;기계실 업무일지(${new Date(d.date+'T00:00:00').getMonth()+1}월 ${new Date(d.date+'T00:00:00').getDate()}일)</div>
+      <div class="doc-title">일상근무일지</div>
+      <table class="plain-table">
+        <tr><th colspan="3">근무개요</th><th colspan="2">근무자</th></tr>
+        <tr><th>근무일</th><th>근무시간</th><th>날씨</th><th>직급</th><th>성명</th></tr>
+        <tr><td rowspan="2">${esc(d.date)}</td><td>${esc(d.time1)}</td><td rowspan="2">${esc(d.weather)}</td><td>${esc(d.rank1)}</td><td>${esc(d.name1)}</td></tr>
+        <tr><td>${esc(d.time2)}</td><td>${esc(d.rank2)}</td><td>${esc(d.name2)}</td></tr>
+      </table>
+      <table class="plain-table" style="margin-top:12px">
+        <tr><th>업무 내용</th><th style="width:20%">비고</th></tr>
+        ${(d.works||[]).map(x=>`<tr><td class="left">□ ${esc(x.work)}</td><td>${esc(x.note)}</td></tr>`).join('')}
+      </table>
+      <div style="font-size:11px;margin-top:14px">붙임&nbsp;&nbsp;1. ${esc(d.attach1)}(${d.date.replaceAll('-','.')}). 1부.<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. ${esc(d.attach2)}(${d.date.replaceAll('-','.')}). 1부. 끝.</div>
+      <div style="margin-top:80px;border-top:18px solid #ddd;padding-top:12px;font-size:11px">
+        주임&nbsp;&nbsp;<b>${esc(d.approver1)}</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;차장&nbsp;&nbsp;<b>${esc(d.approver2)}</b>
+      </div>`;
+  }
+
+  window.previewDailyJournalV390=function(type){
+    const d=data(type);
+    $('djPreviewTitle').textContent=type==='machine'?'기계실 업무일지':type==='air'?'대기배출시설 및 방지시설 운영기록부':'일상근무일지';
+    $('dailyJournalPreviewSheet').innerHTML=type==='machine'?machineSheet(d):type==='air'?airSheet(d):workSheet(d);
+    $('dailyJournalPreviewModal').classList.add('show');
+  };
+  window.closeDailyJournalPreviewV390=()=>$('dailyJournalPreviewModal')?.classList.remove('show');
+  window.printDailyJournalV390=function(type){previewDailyJournalV390(type);setTimeout(()=>window.print(),120)};
+
+  window.saveDailyJournalV390=async function(type){
+    const sb=client();if(!sb){toast('DB 연결 정보를 확인하지 못했습니다.');return}
+    const d=data(type);
+    if(!d.facility||!d.date){toast('시설명과 근무일을 확인하세요.');return}
+    if(type==='air'&&d.facility!=='태백국민체육센터'){toast('대기배출 운영기록부는 태백국민체육센터에서만 작성합니다.');return}
+    try{
+      const {data:auth}=await sb.auth.getUser();const uid=auth?.user?.id;if(!uid)throw new Error('로그인 세션 없음');
+      let facilityId='';
+      try{facilityId=facByName?.[d.facility]?.id||facByName?.[d.facility]?.dbId||''}catch(e){}
+      if(!facilityId)try{facilityId=(facilityMasterStable||[]).find(f=>f.name===d.facility)?.id||''}catch(e){}
+      if(!facilityId)throw new Error('시설 DB 정보를 찾지 못했습니다.');
+      const titles={machine:'기계실 업무일지',air:'대기배출시설 및 방지시설 운영기록부',work:'일상근무일지'};
+      const hasIssue=type==='machine'&&Boolean(d.special);
+      const {error}=await sb.from('daily_logs').insert({
+        facility_id:facilityId,work_date:d.date,shift_type:type,
+        title:`${d.facility} ${titles[type]}`,
+        content:JSON.stringify({schema:'tfms-daily-journal-v39',journalType:type,data:d}),
+        has_issue:hasIssue,issue_detail:hasIssue?d.special:null,weather:d.weather,author_id:uid
+      });
+      if(error)throw error;
+      toast(`${titles[type]}를 저장했습니다.`);
+      try{await window.loadDailyHistoryV322?.();window.renderDashboardDailyV322?.()}catch(e){}
+    }catch(e){console.error('v39 journal save',e);toast('업무일지 저장 실패: '+(e?.message||e))}
+  };
+
+  const oldNav=window.navTo;
+  if(typeof oldNav==='function')window.navTo=function(id){
+    const r=oldNav.apply(this,arguments);
+    if(id==='dailylog')setTimeout(rebuildDailyPage,10);
+    return r;
+  };
+  const oldShow=window.showPage;
+  if(typeof oldShow==='function')window.showPage=function(id,btn){
+    const r=oldShow.apply(this,arguments);
+    if(id==='dailylog')setTimeout(rebuildDailyPage,10);
+    return r;
+  };
+
+  document.addEventListener('DOMContentLoaded',()=>{applyVersion();rebuildDailyPage()});
+  setTimeout(()=>{applyVersion();rebuildDailyPage()},120);
+})();
+</script>
