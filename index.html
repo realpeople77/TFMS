@@ -4619,12 +4619,6 @@ document.addEventListener('DOMContentLoaded',function(){
     }
   },true);
 
-  const observer=new MutationObserver(()=>{
-    if(session().accountId)setTimeout(init,20);
-  });
-  document.addEventListener('DOMContentLoaded',()=>{
-    observer.observe(document.body,{childList:true,subtree:true});
-  });
 })();
 </script>
 
@@ -11809,14 +11803,7 @@ document.addEventListener('DOMContentLoaded',function(){
   };
 
   // 업무일지 화면이 다시 만들어질 때마다 이력영역을 복원
-  const observer=new MutationObserver(()=>ensureJournalHistoryUI());
-  document.addEventListener('DOMContentLoaded',()=>{
-    applyVersion400();
-    ensureJournalHistoryUI();
-    observer.observe(document.body,{childList:true,subtree:true});
-    setTimeout(()=>loadDailyLogHistoryV400(),400);
-  });
-  setTimeout(()=>{applyVersion400();ensureJournalHistoryUI()},180);
+
 })();
 </script>
 
@@ -12120,13 +12107,6 @@ ${getPrintCssV401()}
     });
   }
 
-  const observer=new MutationObserver(addDeleteButtonsV401);
-  document.addEventListener('DOMContentLoaded',()=>{
-    applyVersion401();
-    observer.observe(document.body,{childList:true,subtree:true});
-    setTimeout(addDeleteButtonsV401,500);
-  });
-  setTimeout(()=>{applyVersion401();addDeleteButtonsV401()},200);
 })();
 </script>
 
@@ -12562,17 +12542,6 @@ ${getPrintCssV401()}
     }
   }
 
-  const observer=new MutationObserver(()=>{
-    refreshDailyEnhancements();
-    setupDeleteAuditPageV402();
-  });
-
-  document.addEventListener('DOMContentLoaded',()=>{
-    applyVersion402();
-    refreshDailyEnhancements();
-    setupDeleteAuditPageV402();
-    observer.observe(document.body,{childList:true,subtree:true});
-  });
 
   const oldShow=window.showPage;
   if(typeof oldShow==='function'){
@@ -12603,127 +12572,212 @@ ${getPrintCssV401()}
 </script>
 
 
-<script id="tfms-v403-server-freeze-fix">
+<style id="tfms-v410-stable-style">
+  #tfmsPrintRootV410{display:none}
+  @media print{
+    body.tfms-printing-v410 > *:not(#tfmsPrintRootV410){display:none!important}
+    body.tfms-printing-v410 #tfmsPrintRootV410{
+      display:block!important;
+      position:static!important;
+      width:210mm!important;
+      margin:0!important;
+      padding:0!important;
+      background:#fff!important;
+    }
+    body.tfms-printing-v410 #tfmsPrintRootV410 .dj-sheet{
+      display:block!important;
+      width:210mm!important;
+      min-height:297mm!important;
+      margin:0!important;
+      box-shadow:none!important;
+      background:#fff!important;
+    }
+    body.tfms-printing-v410 .air-legal-page{
+      display:block!important;
+      page-break-after:always!important;
+      break-after:page!important;
+    }
+    body.tfms-printing-v410 .air-legal-page:last-child{
+      page-break-after:auto!important;
+      break-after:auto!important;
+    }
+    @page{size:A4 portrait;margin:0}
+  }
+</style>
+
+<div id="tfmsPrintRootV410"></div>
+
+<script id="tfms-v410-enterprise-stable-controller">
 (function(){
   'use strict';
 
   window.TFMS_BUILD=Object.freeze({
-    version:'v40.3',
-    channel:'Stable',
+    version:'v41.0',
+    channel:'Enterprise Stable',
     buildDate:'2026.07.23',
-    title:'접속 멈춤·무한 DOM 갱신 수정'
+    title:'중복 이벤트·Observer 제거 안정화'
   });
 
   const $=id=>document.getElementById(id);
+  const toast=m=>{try{window.showToast?.(m)}catch(e){}};
 
-  function applyVersion403(){
+  const TEAM_FACILITIES={
+    '관광운영팀':['태백고원자연휴양림','고원힐링캠핑장','통리탄탄파크','오로라파크','쇠바우골 탄광문화장터'],
+    '체육운영팀':['태백국민체육센터','태백볼링장'],
+    '복지주택팀':['태백공원묘원','근로자종합복지관','타워빌','목련','육성2차','서학 상가동','철암목욕탕'],
+    '안전·시설운영팀':['장성국민체육센터','절골힐링캠핑장','장성게스트하우스'],
+    '안전시설운영팀':['장성국민체육센터','절골힐링캠핑장','장성게스트하우스']
+  };
+  const ALL=[...new Set(Object.values(TEAM_FACILITIES).flat())];
+
+  function context(){
+    let s={};try{s=JSON.parse(sessionStorage.getItem('tfmsSession')||'{}')}catch(e){}
+    const p=window.getTfmsCloudProfile?.()||window.cloudProfile||{};
+    const role=String(p.role||s.role||window.tfmsRole||'').toLowerCase();
+    return {
+      admin:role==='admin'||role==='관리자',
+      dept:p.department?.name||p.department_name||p.dept||s.dept||s.department||'',
+      name:p.name||p.full_name||p.user_name||s.name||s.userName||''
+    };
+  }
+
+  function version(){
     const b=window.TFMS_BUILD,label=`${b.version} ${b.channel}`;
     const badge=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
     if(badge)badge.textContent=label;
     document.querySelectorAll('.logo-title small').forEach(el=>{
-      el.textContent=`시설 유지관리 이력관리 시스템 · ${label} Enterprise`;
+      el.textContent=`시설 유지관리 이력관리 시스템 · ${label}`;
     });
     const current=document.querySelector('#tfmsVersionModal .current-build');
     if(current)current.textContent=`현재 버전: ${label} · Build ${b.buildDate}`;
-
-    const body=document.querySelector('#tfmsVersionModal .version-body');
-    if(body&&!body.querySelector('[data-version="v40.3"]')){
-      const item=document.createElement('div');
-      item.className='change-item';
-      item.dataset.version='v40.3';
-      item.innerHTML=`<strong>${label}</strong><ul>
-        <li>업무일지 시설 드롭다운 반복 재생성으로 발생한 무한 DOM 갱신 수정</li>
-        <li>MutationObserver 자기호출 방지 및 메뉴 진입 시에만 시설목록 갱신</li>
-        <li>접속 지연·브라우저 멈춤·서버 응답없음처럼 보이던 현상 해소</li>
-      </ul>`;
-      body.insertBefore(item,body.firstChild);
-    }
   }
 
-  // v40.2에서 MutationObserver가 시설 드롭다운을 계속 비우고 다시 만들면서
-  // 자기 자신을 다시 호출하는 무한루프가 발생할 수 있었다.
-  // 기존 observer들을 직접 해제할 수 없으므로, 드롭다운 갱신 함수에 상태 비교 및 잠금 적용.
-  const originalApplyFacilityScope=window.applyFacilityScopeV402;
-  let facilityScopeBusy=false;
-  let lastFacilitySignature='';
-
-  function contextSignature(){
-    let session={};
-    try{session=JSON.parse(sessionStorage.getItem('tfmsSession')||'{}')}catch(e){}
-    const p=window.getTfmsCloudProfile?.()||window.cloudProfile||{};
-    const role=String(p.role||session.role||window.tfmsRole||'').toLowerCase();
-    const dept=p.department?.name||p.department_name||p.dept||session.dept||session.department||'';
-    return `${role}|${dept}`;
+  function fillName(){
+    const name=context().name;
+    if(!name)return;
+    ['djAuthor','mjWorkers','wjName1','wjApprover2','airOfficerNameNew'].forEach(id=>{
+      const el=$(id);
+      if(el&&!String(el.value||'').trim())el.value=name;
+    });
   }
 
-  window.applyFacilityScopeV403=function(force=false){
+  function scopeFacilities(){
     const select=$('djFacility');
-    if(!select||facilityScopeBusy)return;
-
-    const sig=contextSignature();
-    const optionSig=[...select.options].map(o=>o.value).join('|');
-    const combined=`${sig}::${optionSig}`;
-
-    if(!force&&combined===lastFacilitySignature)return;
-
-    facilityScopeBusy=true;
-    try{
-      if(typeof originalApplyFacilityScope==='function'){
-        originalApplyFacilityScope();
-      }
-      lastFacilitySignature=`${contextSignature()}::${[...select.options].map(o=>o.value).join('|')}`;
-    }finally{
-      facilityScopeBusy=false;
+    if(!select)return;
+    const c=context();
+    const allowed=c.admin?ALL:(TEAM_FACILITIES[c.dept]||[]);
+    const current=select.value;
+    const existing=[...select.options].map(o=>o.value);
+    if(existing.length===allowed.length&&existing.every((v,i)=>v===allowed[i])){
+      updateTabs();
+      return;
     }
-  };
-
-  // 기존 전역 함수명이 존재하면 안전 래퍼로 교체
-  window.applyFacilityScopeV402=window.applyFacilityScopeV403;
-
-  // observer가 다시 호출되더라도 DOM 변경이 없도록 자동입력 및 단위처리도 1회만 수행
-  const originalName=window.applyLoggedInNameV402;
-  window.applyLoggedInNameV402=function(){
-    if(document.body.dataset.tfmsNameApplied==='1')return;
-    originalName?.();
-    document.body.dataset.tfmsNameApplied='1';
-  };
-
-  const originalFuel=window.applyFuelUnitV402;
-  window.applyFuelUnitV402=function(){
-    const input=$('airFuelNew');
-    if(input?.dataset.unitReady==='1')return;
-    originalFuel?.();
-  };
-
-  // 업무일지 메뉴 진입 시에만 명시적으로 갱신
-  function safeRefresh(){
-    window.applyFacilityScopeV403(true);
-    window.applyLoggedInNameV402?.();
-    window.applyFuelUnitV402?.();
+    select.innerHTML='';
+    allowed.forEach(name=>{
+      const op=document.createElement('option');
+      op.value=name;op.textContent=name;select.appendChild(op);
+    });
+    select.value=allowed.includes(current)?current:(allowed[0]||'');
+    updateTabs();
   }
 
-  const oldShow=window.showPage;
-  if(typeof oldShow==='function'){
+  function updateTabs(){
+    const f=$('djFacility')?.value||'';
+    const machine=['태백국민체육센터','장성국민체육센터'].includes(f);
+    const air=f==='태백국민체육센터';
+    if($('djTabMachine'))$('djTabMachine').style.display=machine?'':'none';
+    if($('djTabAir'))$('djTabAir').style.display=air?'':'none';
+    if(!machine&&$('djFormMachine')?.classList.contains('active'))window.showDailyFormV390?.('work');
+    if(!air&&$('djFormAir')?.classList.contains('active'))window.showDailyFormV390?.(machine?'machine':'work');
+  }
+
+  function fuelUnit(){
+    const input=$('airFuelNew');
+    if(!input||input.dataset.v410Unit)return;
+    input.dataset.v410Unit='1';
+    input.placeholder='숫자 입력 (단위: ㎥)';
+  }
+
+  function initDaily(){
+    scopeFacilities();
+    fillName();
+    fuelUnit();
+    const select=$('djFacility');
+    if(select&&!select.dataset.v410Bound){
+      select.dataset.v410Bound='1';
+      select.addEventListener('change',updateTabs);
+    }
+    window.ensureJournalHistoryUI?.();
+    setTimeout(()=>window.loadDailyLogHistoryV400?.(),120);
+  }
+
+  async function printSheet(){
+    const sheet=$('dailyJournalPreviewSheet');
+    const root=$('tfmsPrintRootV410');
+    if(!sheet||!root||!sheet.innerHTML.trim()){
+      toast('출력할 미리보기 내용이 없습니다.');
+      return;
+    }
+    root.innerHTML='';
+    const clone=sheet.cloneNode(true);
+    clone.id='';
+    root.appendChild(clone);
+    $('dailyJournalPreviewModal')?.classList.remove('show');
+    document.body.classList.add('tfms-printing-v410');
+    try{
+      if(document.fonts?.ready)await document.fonts.ready;
+      await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+      window.print();
+    }finally{
+      setTimeout(()=>{
+        document.body.classList.remove('tfms-printing-v410');
+        root.innerHTML='';
+      },1000);
+    }
+  }
+
+  window.printDailyJournalV390=async function(type){
+    window.previewDailyJournalV390?.(type);
+    await printSheet();
+  };
+  window.printSavedDailyLogV400=async function(id){
+    window.previewSavedDailyLogV400?.(id);
+    await printSheet();
+  };
+
+  // Single lifecycle entry points only. No MutationObserver.
+  const showBase=window.showPage;
+  if(typeof showBase==='function'){
     window.showPage=function(id,btn){
-      const result=oldShow.apply(this,arguments);
-      if(id==='dailylog')setTimeout(safeRefresh,100);
+      const result=showBase.apply(this,arguments);
+      if(id==='dailylog')setTimeout(initDaily,80);
+      if(id==='deleteManage')setTimeout(()=>{
+        window.setupDeleteAuditPageV402?.();
+        window.loadDeleteAuditV402?.();
+      },80);
       return result;
     };
   }
 
-  const oldNav=window.navTo;
-  if(typeof oldNav==='function'){
+  const navBase=window.navTo;
+  if(typeof navBase==='function'){
     window.navTo=function(id){
-      const result=oldNav.apply(this,arguments);
-      if(id==='dailylog')setTimeout(safeRefresh,100);
+      const result=navBase.apply(this,arguments);
+      if(id==='dailylog')setTimeout(initDaily,80);
+      if(id==='deleteManage')setTimeout(()=>{
+        window.setupDeleteAuditPageV402?.();
+        window.loadDeleteAuditV402?.();
+      },80);
       return result;
     };
   }
 
   document.addEventListener('DOMContentLoaded',()=>{
-    applyVersion403();
-    setTimeout(safeRefresh,250);
+    version();
+    setTimeout(initDaily,250);
+    setTimeout(()=>{
+      window.setupDeleteAuditPageV402?.();
+    },300);
   });
-  setTimeout(applyVersion403,150);
 })();
 </script>
