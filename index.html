@@ -12781,3 +12781,765 @@ ${getPrintCssV401()}
   });
 })();
 </script>
+
+
+<style id="tfms-v411-audit-delete-style">
+  .audit-delete-btn{
+    margin-left:6px;
+  }
+</style>
+
+<script id="tfms-v411-audit-delete-controller">
+(function(){
+  'use strict';
+
+  window.TFMS_BUILD=Object.freeze({
+    version:'v41.1',
+    channel:'Enterprise Stable',
+    buildDate:'2026.07.23',
+    title:'관리자 삭제·변경이력 정리 기능'
+  });
+
+  const $=id=>document.getElementById(id);
+  const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[m]));
+  const client=()=>{
+    try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||null}
+    catch(e){return null}
+  };
+  const toast=m=>{try{window.showToast?.(m)}catch(e){}};
+
+  function context(){
+    let s={};
+    try{s=JSON.parse(sessionStorage.getItem('tfmsSession')||'{}')}catch(e){}
+    const p=window.getTfmsCloudProfile?.()||window.cloudProfile||{};
+    const role=String(p.role||s.role||window.tfmsRole||'').toLowerCase();
+    return {
+      admin:role==='admin'||role==='관리자'
+    };
+  }
+
+  function applyVersion411(){
+    const b=window.TFMS_BUILD,label=`${b.version} ${b.channel}`;
+    const badge=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
+    if(badge)badge.textContent=label;
+
+    document.querySelectorAll('.logo-title small').forEach(el=>{
+      el.textContent=`시설 유지관리 이력관리 시스템 · ${label}`;
+    });
+
+    const current=document.querySelector('#tfmsVersionModal .current-build');
+    if(current)current.textContent=`현재 버전: ${label} · Build ${b.buildDate}`;
+
+    const body=document.querySelector('#tfmsVersionModal .version-body');
+    if(body&&!body.querySelector('[data-version="v41.1"]')){
+      const item=document.createElement('div');
+      item.className='change-item';
+      item.dataset.version='v41.1';
+      item.innerHTML=`<strong>${label}</strong><ul>
+        <li>관리자가 업무일지 감사이력을 직접 정리할 수 있도록 삭제 버튼 추가</li>
+        <li>삭제 시 사유 입력 없이 확인창만 표시</li>
+        <li>유지관리 원본 삭제기록은 보존하고 업무일지 감사로그만 정리 가능</li>
+      </ul>`;
+      body.insertBefore(item,body.firstChild);
+    }
+  }
+
+  window.deleteAuditLogV411=async function(id,title){
+    if(!context().admin){
+      toast('관리자만 삭제·변경이력을 정리할 수 있습니다.');
+      return;
+    }
+
+    if(!confirm(`${title||'선택한 이력'}\n정말 삭제하시겠습니까?\n삭제한 감사이력은 복구할 수 없습니다.`)){
+      return;
+    }
+
+    try{
+      const sb=client();
+      if(!sb)throw new Error('DB 연결 정보를 확인하지 못했습니다.');
+
+      const {data,error}=await sb.from('tfms_audit_logs')
+        .delete()
+        .eq('id',id)
+        .select('id');
+
+      if(error)throw error;
+      if(!data?.length)throw new Error('삭제 권한이 없거나 이미 삭제된 이력입니다.');
+
+      await window.loadDeleteAuditV411();
+      toast('삭제·변경이력을 정리했습니다.');
+    }catch(e){
+      console.error('TFMS v41.1 audit delete error',e);
+      let msg=String(e?.message||e);
+      if(/row-level security/i.test(msg)){
+        msg='감사이력 삭제 권한 정책을 확인해 주세요.';
+      }
+      toast('감사이력 삭제 실패: '+msg);
+    }
+  };
+
+  window.loadDeleteAuditV411=async function(){
+    const body=$('deleteBody');
+    if(!body)return;
+
+    const sb=client();
+    if(!sb){
+      body.innerHTML='<tr><td colspan="7"><div class="empty-state">DB 연결 정보를 확인하지 못했습니다.</div></td></tr>';
+      return;
+    }
+
+    try{
+      const [maintenance,audit]=await Promise.all([
+        sb.from('maintenance_records')
+          .select('id,deleted_at,detail,process_status,facility:facilities(name)')
+          .not('deleted_at','is',null)
+          .order('deleted_at',{ascending:false})
+          .limit(100),
+
+        sb.from('tfms_audit_logs')
+          .select('id,action_type,target_type,target_id,target_title,facility_name,actor_name,action_detail,created_at')
+          .order('created_at',{ascending:false})
+          .limit(100)
+      ]);
+
+      const rows=[];
+
+      if(!maintenance.error){
+        (maintenance.data||[]).forEach(r=>rows.push({
+          source:'maintenance',
+          id:r.id,
+          time:r.deleted_at,
+          type:'유지관리',
+          facility:r.facility?.name||'-',
+          detail:r.detail||'-',
+          user:'관리자/작성자',
+          result:r.process_status||'삭제',
+          deletable:false
+        }));
+      }
+
+      if(!audit.error){
+        (audit.data||[]).forEach(r=>rows.push({
+          source:'audit',
+          id:r.id,
+          time:r.created_at,
+          type:r.target_type==='daily_log'?'업무일지':'기타',
+          facility:r.facility_name||'-',
+          detail:r.target_title||r.action_detail||'-',
+          user:r.actor_name||'-',
+          result:r.action_type==='delete'?'삭제완료':r.action_type,
+          deletable:true
+        }));
+      }
+
+      rows.sort((a,b)=>String(b.time||'').localeCompare(String(a.time||'')));
+
+      const admin=context().admin;
+
+      if(!rows.length){
+        const missing=audit.error&&/does not exist|schema cache/i.test(String(audit.error.message||''));
+        body.innerHTML=`<tr><td colspan="7"><div class="empty-state">${
+          missing
+            ?'업무일지 감사이력 테이블이 아직 없습니다. 기존 v40.2 SQL을 실행하면 삭제이력이 기록됩니다.'
+            :'삭제·변경 처리이력이 없습니다.'
+        }</div></td></tr>`;
+        return;
+      }
+
+      body.innerHTML=rows.map(r=>`
+        <tr>
+          <td>${esc(r.time?new Date(r.time).toLocaleString('ko-KR'):'-')}</td>
+          <td><span class="audit-type ${r.type==='업무일지'?'delete':'maintenance'}">${esc(r.type)}</span></td>
+          <td>${esc(r.facility)}</td>
+          <td>${esc(r.detail)}</td>
+          <td>${esc(r.user)}</td>
+          <td>${esc(r.result)}</td>
+          <td>
+            ${
+              admin&&r.deletable
+                ?`<button type="button" class="small-btn red audit-delete-btn"
+                    onclick="deleteAuditLogV411('${esc(r.id)}','${esc(r.detail)}')">이력삭제</button>`
+                :'-'
+            }
+          </td>
+        </tr>
+      `).join('');
+    }catch(e){
+      body.innerHTML=`<tr><td colspan="7"><div class="empty-state" style="color:#b91c1c">${esc(e?.message||e)}</div></td></tr>`;
+    }
+  };
+
+  function upgradeAuditTableV411(){
+    const section=$('deleteManage');
+    if(!section)return;
+
+    const table=section.querySelector('table');
+    if(table){
+      table.innerHTML=`
+        <thead>
+          <tr>
+            <th>처리일시</th>
+            <th>구분</th>
+            <th>시설명</th>
+            <th>대상 내용</th>
+            <th>처리자</th>
+            <th>처리결과</th>
+            <th>관리</th>
+          </tr>
+        </thead>
+        <tbody id="deleteBody">
+          <tr><td colspan="7"><div class="empty-state">삭제·변경이력을 불러오는 중입니다.</div></td></tr>
+        </tbody>`;
+    }
+
+    const notice=section.querySelector('.delete-request');
+    if(notice){
+      notice.innerHTML=`
+        설비·유지관리 삭제 처리내역과 업무일지 삭제이력을 확인합니다.
+        관리자는 불필요하게 누적된 업무일지 감사이력을 직접 정리할 수 있습니다.
+        유지관리 원본 삭제기록은 감사 목적상 보존됩니다.`;
+    }
+
+    window.loadDeleteAuditV411();
+  }
+
+  const oldShow=window.showPage;
+  if(typeof oldShow==='function'){
+    window.showPage=function(id,btn){
+      const result=oldShow.apply(this,arguments);
+      if(id==='deleteManage')setTimeout(upgradeAuditTableV411,80);
+      return result;
+    };
+  }
+
+  const oldNav=window.navTo;
+  if(typeof oldNav==='function'){
+    window.navTo=function(id){
+      const result=oldNav.apply(this,arguments);
+      if(id==='deleteManage')setTimeout(upgradeAuditTableV411,80);
+      return result;
+    };
+  }
+
+  document.addEventListener('DOMContentLoaded',()=>{
+    applyVersion411();
+    setTimeout(upgradeAuditTableV411,300);
+  });
+})();
+</script>
+
+
+<style id="tfms-v412-photo-remove-style">
+  #photoPreview .thumb{
+    position:relative;
+    overflow:visible;
+  }
+  #photoPreview .thumb img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:8px;
+  }
+  #photoPreview .photo-remove-btn{
+    position:absolute;
+    top:-8px;
+    right:-8px;
+    width:24px;
+    height:24px;
+    border:0;
+    border-radius:50%;
+    background:#dc2626;
+    color:#fff;
+    font-size:17px;
+    font-weight:900;
+    line-height:24px;
+    text-align:center;
+    cursor:pointer;
+    box-shadow:0 2px 7px rgba(0,0,0,.28);
+    z-index:2;
+  }
+  #photoPreview .photo-remove-btn:hover{
+    background:#b91c1c;
+  }
+  #photoPreview .photo-name{
+    position:absolute;
+    left:4px;
+    right:4px;
+    bottom:4px;
+    padding:3px 5px;
+    border-radius:5px;
+    background:rgba(15,23,42,.72);
+    color:#fff;
+    font-size:10px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .upload-zone.tfms-drag-active{
+    border-color:#2563eb!important;
+    background:#eff6ff!important;
+  }
+</style>
+
+<script id="tfms-v412-photo-remove-controller">
+(function(){
+  'use strict';
+
+  window.TFMS_BUILD=Object.freeze({
+    version:'v41.2',
+    channel:'Enterprise Stable',
+    buildDate:'2026.07.23',
+    title:'유지관리 첨부사진 개별삭제'
+  });
+
+  const $=id=>document.getElementById(id);
+  const toast=m=>{try{window.showToast?.(m)}catch(e){}};
+
+  window.tfmsSelectedMaintenancePhotos=[];
+
+  function applyVersion412(){
+    const b=window.TFMS_BUILD;
+    const label=`${b.version} ${b.channel}`;
+
+    const badge=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
+    if(badge)badge.textContent=label;
+
+    document.querySelectorAll('.logo-title small').forEach(el=>{
+      el.textContent=`시설 유지관리 이력관리 시스템 · ${label}`;
+    });
+
+    const current=document.querySelector('#tfmsVersionModal .current-build');
+    if(current)current.textContent=`현재 버전: ${label} · Build ${b.buildDate}`;
+
+    const body=document.querySelector('#tfmsVersionModal .version-body');
+    if(body&&!body.querySelector('[data-version="v41.2"]')){
+      const item=document.createElement('div');
+      item.className='change-item';
+      item.dataset.version='v41.2';
+      item.innerHTML=`<strong>${label}</strong><ul>
+        <li>첨부사진 썸네일 우측 상단에 개별 삭제 × 버튼 추가</li>
+        <li>잘못 선택한 사진만 제거하고 나머지 사진은 유지</li>
+        <li>파일 선택과 드래그 추가를 동일한 첨부목록으로 관리</li>
+      </ul>`;
+      body.insertBefore(item,body.firstChild);
+    }
+  }
+
+  function syncInputFilesV412(){
+    const input=$('photoInput');
+    if(!input)return;
+
+    try{
+      const transfer=new DataTransfer();
+      window.tfmsSelectedMaintenancePhotos.forEach(file=>transfer.items.add(file));
+      input.files=transfer.files;
+    }catch(e){
+      console.warn('첨부파일 입력 동기화 실패',e);
+    }
+  }
+
+  function renderPhotosV412(){
+    const box=$('photoPreview');
+    if(!box)return;
+
+    box.innerHTML='';
+
+    if(!window.tfmsSelectedMaintenancePhotos.length){
+      box.innerHTML=
+        '<div class="thumb">사진1</div>'+
+        '<div class="thumb">사진2</div>'+
+        '<div class="thumb">사진3</div>'+
+        '<div class="thumb">사진4</div>';
+      syncInputFilesV412();
+      return;
+    }
+
+    window.tfmsSelectedMaintenancePhotos.forEach((file,index)=>{
+      const div=document.createElement('div');
+      div.className='thumb';
+
+      const img=document.createElement('img');
+      img.alt=`첨부사진 ${index+1}`;
+
+      const remove=document.createElement('button');
+      remove.type='button';
+      remove.className='photo-remove-btn';
+      remove.setAttribute('aria-label',`${file.name} 삭제`);
+      remove.title='이 사진 삭제';
+      remove.textContent='×';
+      remove.onclick=e=>{
+        e.preventDefault();
+        e.stopPropagation();
+        window.removeMaintenancePhotoV412(index);
+      };
+
+      const name=document.createElement('div');
+      name.className='photo-name';
+      name.title=file.name;
+      name.textContent=file.name;
+
+      div.appendChild(img);
+      div.appendChild(remove);
+      div.appendChild(name);
+      box.appendChild(div);
+
+      const reader=new FileReader();
+      reader.onload=e=>{img.src=e.target.result};
+      reader.readAsDataURL(file);
+    });
+
+    syncInputFilesV412();
+  }
+
+  function addFilesV412(files){
+    const images=Array.from(files||[]).filter(file=>file.type.startsWith('image/'));
+    if(!images.length)return;
+
+    const existing=window.tfmsSelectedMaintenancePhotos;
+    const newFiles=[];
+
+    images.forEach(file=>{
+      const duplicate=existing.some(x=>
+        x.name===file.name&&
+        x.size===file.size&&
+        x.lastModified===file.lastModified
+      );
+      if(!duplicate)newFiles.push(file);
+    });
+
+    const available=10-existing.length;
+    if(available<=0){
+      toast('사진은 최대 10장까지 첨부할 수 있습니다.');
+      return;
+    }
+
+    window.tfmsSelectedMaintenancePhotos=[
+      ...existing,
+      ...newFiles.slice(0,available)
+    ];
+
+    if(newFiles.length>available){
+      toast('사진은 최대 10장까지만 첨부되었습니다.');
+    }
+
+    renderPhotosV412();
+  }
+
+  window.previewPhotos=function(event){
+    addFilesV412(event?.target?.files);
+  };
+
+  window.removeMaintenancePhotoV412=function(index){
+    if(index<0||index>=window.tfmsSelectedMaintenancePhotos.length)return;
+    window.tfmsSelectedMaintenancePhotos.splice(index,1);
+    renderPhotosV412();
+    toast('첨부사진을 삭제했습니다.');
+  };
+
+  window.clearMaintenancePhotosV412=function(){
+    window.tfmsSelectedMaintenancePhotos=[];
+    renderPhotosV412();
+  };
+
+  function setupDropV412(){
+    const input=$('photoInput');
+    const zone=document.querySelector('label[for="photoInput"].upload-zone');
+    if(!input||!zone||zone.dataset.v412Ready)return;
+
+    zone.dataset.v412Ready='1';
+
+    ['dragenter','dragover'].forEach(type=>{
+      zone.addEventListener(type,e=>{
+        e.preventDefault();
+        e.stopPropagation();
+        zone.classList.add('tfms-drag-active');
+      });
+    });
+
+    ['dragleave','drop'].forEach(type=>{
+      zone.addEventListener(type,e=>{
+        e.preventDefault();
+        e.stopPropagation();
+        zone.classList.remove('tfms-drag-active');
+      });
+    });
+
+    zone.addEventListener('drop',e=>{
+      addFilesV412(e.dataTransfer?.files);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded',()=>{
+    applyVersion412();
+    setupDropV412();
+  });
+
+  setTimeout(()=>{
+    applyVersion412();
+    setupDropV412();
+  },200);
+})();
+</script>
+
+
+<style id="tfms-v413-photo-remove-final-style">
+  #photoPreview .tfms-photo-thumb-v413{
+    position:relative!important;
+    width:78px;
+    height:78px;
+    border:1px solid #cbd5e1;
+    border-radius:9px;
+    background:#fff;
+    overflow:visible!important;
+  }
+  #photoPreview .tfms-photo-thumb-v413 img{
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:8px;
+  }
+  #photoPreview .tfms-photo-remove-v413{
+    position:absolute!important;
+    top:-9px!important;
+    right:-9px!important;
+    width:26px!important;
+    height:26px!important;
+    min-width:26px!important;
+    padding:0!important;
+    border:2px solid #fff!important;
+    border-radius:50%!important;
+    background:#dc2626!important;
+    color:#fff!important;
+    font-size:18px!important;
+    font-weight:900!important;
+    line-height:22px!important;
+    cursor:pointer!important;
+    z-index:999!important;
+    box-shadow:0 2px 8px rgba(0,0,0,.32)!important;
+  }
+  #photoPreview .tfms-photo-remove-v413:hover{
+    background:#991b1b!important;
+  }
+  #photoPreview .tfms-photo-number-v413{
+    position:absolute;
+    left:4px;
+    bottom:4px;
+    min-width:19px;
+    height:19px;
+    padding:0 5px;
+    border-radius:10px;
+    background:rgba(15,23,42,.76);
+    color:#fff;
+    font-size:11px;
+    line-height:19px;
+    text-align:center;
+    pointer-events:none;
+  }
+</style>
+
+<script id="tfms-v413-photo-remove-final-controller">
+(function(){
+  'use strict';
+
+  window.TFMS_BUILD=Object.freeze({
+    version:'v41.3',
+    channel:'Enterprise Stable',
+    buildDate:'2026.07.23',
+    title:'첨부사진 개별삭제 최종수정'
+  });
+
+  const $=id=>document.getElementById(id);
+  const toast=m=>{try{window.showToast?.(m)}catch(e){}};
+
+  const state={
+    files:[]
+  };
+  window.tfmsMaintenancePhotoStateV413=state;
+
+  function applyVersion413(){
+    const b=window.TFMS_BUILD;
+    const label=`${b.version} ${b.channel}`;
+
+    const badge=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
+    if(badge)badge.textContent=label;
+
+    document.querySelectorAll('.logo-title small').forEach(el=>{
+      el.textContent=`시설 유지관리 이력관리 시스템 · ${label}`;
+    });
+
+    const current=document.querySelector('#tfmsVersionModal .current-build');
+    if(current)current.textContent=`현재 버전: ${label} · Build ${b.buildDate}`;
+
+    const body=document.querySelector('#tfmsVersionModal .version-body');
+    if(body&&!body.querySelector('[data-version="v41.3"]')){
+      const item=document.createElement('div');
+      item.className='change-item';
+      item.dataset.version='v41.3';
+      item.innerHTML=`<strong>${label}</strong><ul>
+        <li>기존 inline onchange와 사진 삭제 함수 충돌 제거</li>
+        <li>사진 × 버튼을 이벤트 위임 방식으로 안정화</li>
+        <li>삭제 후 실제 파일 입력 목록까지 확실하게 동기화</li>
+      </ul>`;
+      body.insertBefore(item,body.firstChild);
+    }
+  }
+
+  function syncNativeInput(){
+    const input=$('photoInput');
+    if(!input)return;
+
+    try{
+      const dt=new DataTransfer();
+      state.files.forEach(file=>dt.items.add(file));
+      input.files=dt.files;
+    }catch(e){
+      console.warn('TFMS v41.3 DataTransfer sync failed',e);
+    }
+  }
+
+  function emptyPreview(){
+    return '<div class="thumb">사진1</div><div class="thumb">사진2</div><div class="thumb">사진3</div><div class="thumb">사진4</div>';
+  }
+
+  function render(){
+    const box=$('photoPreview');
+    if(!box)return;
+
+    box.innerHTML='';
+
+    if(!state.files.length){
+      box.innerHTML=emptyPreview();
+      syncNativeInput();
+      return;
+    }
+
+    state.files.forEach((file,index)=>{
+      const thumb=document.createElement('div');
+      thumb.className='tfms-photo-thumb-v413';
+      thumb.dataset.photoIndex=String(index);
+
+      const img=document.createElement('img');
+      img.alt=`첨부사진 ${index+1}`;
+
+      const remove=document.createElement('button');
+      remove.type='button';
+      remove.className='tfms-photo-remove-v413';
+      remove.dataset.removePhotoIndex=String(index);
+      remove.setAttribute('aria-label',`${file.name} 삭제`);
+      remove.title='사진 삭제';
+      remove.textContent='×';
+
+      const number=document.createElement('span');
+      number.className='tfms-photo-number-v413';
+      number.textContent=String(index+1);
+
+      thumb.appendChild(img);
+      thumb.appendChild(remove);
+      thumb.appendChild(number);
+      box.appendChild(thumb);
+
+      const reader=new FileReader();
+      reader.onload=e=>{img.src=e.target.result};
+      reader.readAsDataURL(file);
+    });
+
+    syncNativeInput();
+  }
+
+  function addFiles(fileList){
+    const incoming=Array.from(fileList||[]).filter(f=>f.type.startsWith('image/'));
+    if(!incoming.length)return;
+
+    incoming.forEach(file=>{
+      const duplicate=state.files.some(existing=>
+        existing.name===file.name &&
+        existing.size===file.size &&
+        existing.lastModified===file.lastModified
+      );
+      if(!duplicate&&state.files.length<10)state.files.push(file);
+    });
+
+    if(incoming.length+state.files.length>10){
+      toast('사진은 최대 10장까지 첨부할 수 있습니다.');
+    }
+    render();
+  }
+
+  function removeAt(index){
+    if(!Number.isInteger(index)||index<0||index>=state.files.length)return;
+    state.files.splice(index,1);
+    render();
+    toast('첨부사진을 삭제했습니다.');
+  }
+
+  function setup(){
+    const oldInput=$('photoInput');
+    const box=$('photoPreview');
+    const zone=document.querySelector('label[for="photoInput"].upload-zone');
+    if(!oldInput||!box||!zone)return;
+    if(oldInput.dataset.v413Ready==='1')return;
+
+    // 기존 inline onchange="previewPhotos(event)"를 완전히 제거하기 위해 입력요소 교체
+    const input=oldInput.cloneNode(true);
+    input.removeAttribute('onchange');
+    input.value='';
+    input.dataset.v413Ready='1';
+    oldInput.replaceWith(input);
+
+    input.addEventListener('change',e=>{
+      addFiles(e.target.files);
+    });
+
+    box.addEventListener('click',e=>{
+      const btn=e.target.closest('[data-remove-photo-index]');
+      if(!btn)return;
+      e.preventDefault();
+      e.stopPropagation();
+      const index=Number(btn.dataset.removePhotoIndex);
+      removeAt(index);
+    });
+
+    ['dragenter','dragover'].forEach(type=>{
+      zone.addEventListener(type,e=>{
+        e.preventDefault();
+        zone.classList.add('tfms-drag-active');
+      });
+    });
+
+    ['dragleave','drop'].forEach(type=>{
+      zone.addEventListener(type,e=>{
+        e.preventDefault();
+        zone.classList.remove('tfms-drag-active');
+      });
+    });
+
+    zone.addEventListener('drop',e=>{
+      addFiles(e.dataTransfer?.files);
+    });
+
+    render();
+  }
+
+  // 기존 코드나 저장 완료 후 호출할 수 있도록 공개
+  window.clearMaintenancePhotosV413=function(){
+    state.files.length=0;
+    render();
+  };
+  window.getMaintenancePhotosV413=function(){
+    return state.files.slice();
+  };
+
+  document.addEventListener('DOMContentLoaded',()=>{
+    applyVersion413();
+    setup();
+  });
+
+  setTimeout(()=>{
+    applyVersion413();
+    setup();
+  },250);
+})();
+</script>
