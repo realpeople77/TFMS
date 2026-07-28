@@ -1117,6 +1117,7 @@ nav .nav[onclick*='"qrCheck"']{
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
 const facilities = {
   "체육운영팀":["태백국민체육센터","태백볼링장"],
@@ -14638,6 +14639,655 @@ document.addEventListener('DOMContentLoaded',()=>setTimeout(initialize,250));
       return result;
     };
   }
+
+  document.addEventListener('DOMContentLoaded',applyVersion);
+})();
+</script>
+
+
+<style id="tfms-v420-fire-style">
+  .fire-page-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+  .fire-page-grid .wide{grid-column:1/-1}
+  .fire-field label{display:block;margin-bottom:6px;font-size:13px;font-weight:800;color:#334155}
+  .fire-field input,.fire-field select,.fire-field textarea{
+    width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:8px;padding:9px 10px;font:inherit;background:#fff
+  }
+  .fire-field textarea{min-height:82px;resize:vertical}
+  .fire-check-card{border:1px solid #dbe3ef;border-radius:12px;padding:14px;margin-top:12px}
+  .fire-check-head{display:grid;grid-template-columns:170px 1fr 180px;gap:10px;align-items:start}
+  .fire-result{display:flex;gap:12px;align-items:center;padding-top:28px}
+  .fire-result label{display:flex;gap:5px;align-items:center;font-weight:800}
+  .fire-ext-table{width:100%;border-collapse:collapse;min-width:1150px}
+  .fire-ext-table th,.fire-ext-table td{border:1px solid #dbe3ef;padding:6px;text-align:center;font-size:12px}
+  .fire-ext-table th{background:#eff6ff;color:#1e3a8a}
+  .fire-ext-table input,.fire-ext-table select{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:6px;padding:6px}
+  .fire-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:16px}
+  .fire-legal-sheet{width:210mm;min-height:297mm;margin:auto;background:#fff;padding:9mm;box-sizing:border-box;font-family:"Batang","바탕",serif;color:#111}
+  .fire-legal-sheet h1{text-align:center;font-size:22px;margin:10px 0 8px}
+  .fire-legal-sheet .small{font-size:9px}
+  .fire-legal-sheet table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:10px}
+  .fire-legal-sheet th,.fire-legal-sheet td{border:1px solid #222;padding:4px;text-align:center;vertical-align:middle}
+  .fire-legal-sheet .left{text-align:left;white-space:pre-wrap}
+  .fire-legal-sheet .h54{height:54px}.fire-legal-sheet .h78{height:78px}.fire-legal-sheet .h96{height:96px}
+  #firePreviewModal{position:fixed;inset:0;z-index:100050;display:none;background:rgba(15,23,42,.66);padding:18px;overflow:auto}
+  #firePreviewModal.show{display:block}
+  .fire-preview-bar{position:sticky;top:0;z-index:2;max-width:1050px;margin:0 auto 12px;background:#fff;border-radius:10px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center}
+  #fireQrModal{position:fixed;inset:0;z-index:100051;display:none;align-items:center;justify-content:center;background:rgba(15,23,42,.66);padding:18px}
+  #fireQrModal.show{display:flex}
+  .fire-qr-box{width:min(440px,100%);background:#fff;border-radius:14px;padding:18px;text-align:center}
+  .fire-qr-box #fireQrCode{display:flex;justify-content:center;margin:15px}
+  .fire-mobile-banner{background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:10px 12px;margin-bottom:12px;color:#1e3a8a;font-weight:700}
+  @media(max-width:900px){
+    .fire-page-grid{grid-template-columns:1fr 1fr}
+    .fire-check-head{grid-template-columns:1fr}
+    .fire-result{padding-top:0}
+  }
+  @media(max-width:600px){
+    .fire-page-grid{grid-template-columns:1fr}
+  }
+  @media print{
+    body.fire-printing *{visibility:hidden!important}
+    body.fire-printing #firePrintRoot,
+    body.fire-printing #firePrintRoot *{visibility:visible!important}
+    body.fire-printing #firePrintRoot{position:absolute;left:0;top:0;width:210mm}
+    @page{size:A4 portrait;margin:0}
+  }
+</style>
+
+<div id="firePreviewModal" onclick="if(event.target===this)closeFirePreviewV420()">
+  <div class="fire-preview-bar">
+    <strong>소방안전관리자 업무 수행 기록표 미리보기</strong>
+    <div>
+      <button type="button" class="btn blue" onclick="printFireRecordV420()">출력</button>
+      <button type="button" class="btn" onclick="closeFirePreviewV420()">닫기</button>
+    </div>
+  </div>
+  <div id="firePreviewSheet" class="fire-legal-sheet"></div>
+</div>
+
+<div id="fireQrModal" onclick="if(event.target===this)closeFireQrV420()">
+  <div class="fire-qr-box">
+    <h3 style="margin-top:0">소화기 현장점검 QR</h3>
+    <div id="fireQrTitle"></div>
+    <div id="fireQrCode"></div>
+    <input id="fireQrUrl" readonly style="width:100%;box-sizing:border-box;padding:8px">
+    <div style="margin-top:12px;display:flex;gap:8px;justify-content:center">
+      <button type="button" class="btn blue" onclick="copyFireQrUrlV420()">링크 복사</button>
+      <button type="button" class="btn" onclick="closeFireQrV420()">닫기</button>
+    </div>
+  </div>
+</div>
+
+<div id="firePrintRoot" style="display:none"></div>
+
+<script id="tfms-v420-fire-controller">
+(function(){
+'use strict';
+
+window.TFMS_BUILD=Object.freeze({
+  version:'v42.0',
+  channel:'Enterprise Stable',
+  buildDate:'2026.07.28',
+  title:'소방 월간점검·소화기 QR 현장점검'
+});
+
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const toast=m=>{try{window.showToast?.(m)}catch(e){}};
+const today=()=>new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);
+
+function db(){
+  try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||(typeof sb!=='undefined'?sb:null)}
+  catch(e){return null}
+}
+function ctx(){
+  let s={};try{s=JSON.parse(sessionStorage.getItem('tfmsSession')||'{}')}catch(e){}
+  const p=window.getTfmsCloudProfile?.()||window.cloudProfile||{};
+  return {
+    name:p.full_name||p.name||p.user_name||s.name||s.userName||'',
+    dept:p.department?.name||p.department_name||s.dept||''
+  };
+}
+function applyVersion(){
+  const b=window.TFMS_BUILD,label=`${b.version} ${b.channel}`;
+  const badge=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
+  if(badge)badge.textContent=label;
+  document.querySelectorAll('.logo-title small').forEach(el=>el.textContent=`시설 유지관리 이력관리 시스템 · ${label}`);
+  const current=document.querySelector('#tfmsVersionModal .current-build');
+  if(current)current.textContent=`현재 버전: ${label} · Build ${b.buildDate}`;
+}
+function value(id){return $(id)?.value??''}
+function checked(name){return document.querySelector(`input[name="${name}"]:checked`)?.value||''}
+
+window.fireExtRowsV420=[];
+
+function buildFirePage(){
+  if($('fireMonthly'))return;
+  const main=document.querySelector('main');
+  if(!main)return;
+
+  const section=document.createElement('section');
+  section.id='fireMonthly';
+  section.className='page';
+  section.innerHTML=`
+    <div class="title-row">
+      <div class="title-left"><div class="title-icon">🧯</div>
+        <div><h1>소방 월간점검</h1><div class="breadcrumb">홈 › 소방 월간점검 › 업무 수행 기록표·소화기 QR점검</div></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="section-title"><span class="dot"></span>소방안전관리자 업무 수행 기록표</div>
+      <div class="notice">
+        별지 제12호서식의 항목에 따라 월 1회 이상 기록합니다.
+        소화기 현장점검은 아래 소화기 목록의 QR을 촬영하여 모바일에서 바로 저장할 수 있습니다.
+      </div>
+      <div id="fireMobileBanner" class="fire-mobile-banner" style="display:none"></div>
+      <div class="fire-page-grid" style="margin-top:14px">
+        <div class="fire-field"><label>수행일자</label><input id="fireDate" type="date"></div>
+        <div class="fire-field"><label>수행자</label><input id="firePerformer"></div>
+        <div class="fire-field"><label>상호</label><input id="fireFacility"></div>
+        <div class="fire-field"><label>등급</label><select id="fireGrade"><option>특급</option><option>1급</option><option selected>2급</option><option>3급</option></select></div>
+        <div class="fire-field wide"><label>소재지</label><input id="fireAddress"></div>
+        <div class="fire-field"><label>지하층</label><input id="fireBasement" inputmode="numeric"></div>
+        <div class="fire-field"><label>지상층</label><input id="fireGround" inputmode="numeric"></div>
+        <div class="fire-field"><label>연면적(㎡)</label><input id="fireTotalArea" inputmode="decimal"></div>
+        <div class="fire-field"><label>바닥면적(㎡)</label><input id="fireFloorArea" inputmode="decimal"></div>
+        <div class="fire-field"><label>동수</label><input id="fireBuildings" inputmode="numeric"></div>
+      </div>
+      ${['소방시설','피난방화시설','화기취급감독','기타사항'].map((label,i)=>`
+        <div class="fire-check-card">
+          <div class="fire-check-head">
+            <div class="fire-field"><label>항목</label><input value="${label}" readonly></div>
+            <div class="fire-field"><label>확인내용</label><textarea id="fireCheck${i}"></textarea></div>
+            <div>
+              <div class="fire-result">
+                <label><input type="radio" name="fireResult${i}" value="양호" checked> 양호</label>
+                <label><input type="radio" name="fireResult${i}" value="불량"> 불량</label>
+              </div>
+              <div class="fire-field" style="margin-top:8px"><label>조치사항</label><textarea id="fireAction${i}"></textarea></div>
+            </div>
+          </div>
+        </div>`).join('')}
+    </div>
+
+    <div class="panel">
+      <div class="section-title"><span class="dot"></span>불량사항 개선보고</div>
+      <div class="fire-page-grid">
+        <div class="fire-field"><label>보고일시</label><input id="fireReportDate" type="datetime-local"></div>
+        <div class="fire-field"><label>보고방법</label><select id="fireReportMethod"><option value="">해당없음</option><option>대면</option><option>서면</option><option>정보통신</option></select></div>
+        <div class="fire-field"><label>보고받은 사람</label><input id="fireReportTo"></div>
+        <div class="fire-field"><label>조치방법</label><select id="fireRemedy"><option value="">해당없음</option><option>이전</option><option>제거</option><option>수리·교체</option><option>기타</option></select></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="section-title"><span class="dot"></span>소화기 월간점검 목록</div>
+      <div class="notice">
+        QR은 소화기별 고유번호를 포함합니다. 현장에서 QR을 촬영하면 해당 소화기 행이 자동 선택되고,
+        압력·안전핀·호스·외관·배치상태만 확인한 뒤 저장할 수 있습니다.
+      </div>
+      <div style="overflow:auto;margin-top:12px">
+        <table class="fire-ext-table">
+          <thead><tr>
+            <th>위치</th><th>관리번호</th><th>종류</th><th>압력</th><th>안전핀·봉인</th>
+            <th>호스·노즐</th><th>부식·변형</th><th>배치·표지</th><th>결과</th><th>비고</th><th>QR</th><th>삭제</th>
+          </tr></thead>
+          <tbody id="fireExtBody"></tbody>
+        </table>
+      </div>
+      <button type="button" class="btn light" style="margin-top:10px" onclick="addFireExtRowV420()">소화기 추가</button>
+      <div class="fire-actions">
+        <button type="button" class="btn light" onclick="previewFireRecordV420()">서식 미리보기</button>
+        <button type="button" class="btn blue" onclick="saveFireRecordV420()">점검 저장</button>
+        <button type="button" class="btn" onclick="previewFireRecordV420();setTimeout(printFireRecordV420,150)">별도 출력</button>
+      </div>
+    </div>`;
+  main.appendChild(section);
+}
+
+function addCycleEntryButton(){
+  const cycle=document.getElementById('cycle');
+  const preset=cycle?.querySelector('.preset-grid');
+  if(!preset||cycle.querySelector('.fire-v420-card'))return;
+  const card=document.createElement('div');
+  card.className='preset-card fire-v420-card';
+  card.innerHTML='<strong>🧯 소방 월간점검 기록표</strong><span>별지 제12호서식·소화기 QR 현장점검</span>';
+  card.onclick=()=>navToFireV420();
+  preset.appendChild(card);
+}
+
+function navToFireV420(){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  $('fireMonthly')?.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  initFireForm();
+}
+window.navToFireV420=navToFireV420;
+
+function initFireForm(){
+  $('fireDate').value=$('fireDate').value||today();
+  $('firePerformer').value=$('firePerformer').value||ctx().name;
+  if(!$('fireFacility').value){
+    const fac=$('cycleFacility')?.value||$('todayManualFacilityV416')?.value||'';
+    $('fireFacility').value=fac;
+  }
+  if(!window.fireExtRowsV420.length)addFireExtRowV420();
+  applyQrQuery();
+}
+
+window.addFireExtRowV420=function(seed={}){
+  window.fireExtRowsV420.push({
+    location:seed.location||'',
+    code:seed.code||`EXT-${String(window.fireExtRowsV420.length+1).padStart(3,'0')}`,
+    type:seed.type||'분말',
+    pressure:seed.pressure||'양호',
+    pin:seed.pin||'양호',
+    hose:seed.hose||'양호',
+    body:seed.body||'양호',
+    placement:seed.placement||'양호',
+    result:seed.result||'양호',
+    note:seed.note||''
+  });
+  renderExtRows();
+};
+
+function renderExtRows(){
+  const body=$('fireExtBody');if(!body)return;
+  body.innerHTML=window.fireExtRowsV420.map((r,i)=>`
+    <tr>
+      <td><input value="${esc(r.location)}" oninput="fireExtRowsV420[${i}].location=this.value"></td>
+      <td><input value="${esc(r.code)}" oninput="fireExtRowsV420[${i}].code=this.value"></td>
+      <td><select onchange="fireExtRowsV420[${i}].type=this.value"><option ${r.type==='분말'?'selected':''}>분말</option><option ${r.type==='CO2'?'selected':''}>CO2</option><option ${r.type==='강화액'?'selected':''}>강화액</option><option ${r.type==='기타'?'selected':''}>기타</option></select></td>
+      ${['pressure','pin','hose','body','placement','result'].map(k=>`<td><select onchange="fireExtRowsV420[${i}].${k}=this.value"><option ${r[k]==='양호'?'selected':''}>양호</option><option ${r[k]==='불량'?'selected':''}>불량</option><option ${r[k]==='해당없음'?'selected':''}>해당없음</option></select></td>`).join('')}
+      <td><input value="${esc(r.note)}" oninput="fireExtRowsV420[${i}].note=this.value"></td>
+      <td><button type="button" class="small-btn blue" onclick="showFireQrV420(${i})">QR</button></td>
+      <td><button type="button" class="small-btn red" onclick="fireExtRowsV420.splice(${i},1);renderFireExtRowsV420()">삭제</button></td>
+    </tr>`).join('');
+}
+window.renderFireExtRowsV420=renderExtRows;
+
+function collect(){
+  return {
+    date:value('fireDate'),performer:value('firePerformer'),facility:value('fireFacility'),
+    grade:value('fireGrade'),address:value('fireAddress'),basement:value('fireBasement'),
+    ground:value('fireGround'),totalArea:value('fireTotalArea'),floorArea:value('fireFloorArea'),
+    buildings:value('fireBuildings'),
+    checks:[0,1,2,3].map(i=>({item:['소방시설','피난방화시설','화기취급감독','기타사항'][i],
+      content:value(`fireCheck${i}`),result:checked(`fireResult${i}`),action:value(`fireAction${i}`)})),
+    improvement:{reportDate:value('fireReportDate'),method:value('fireReportMethod'),
+      reportTo:value('fireReportTo'),remedy:value('fireRemedy')},
+    extinguishers:window.fireExtRowsV420
+  };
+}
+
+function legalHtml(d){
+  const resultBox=v=>`[${v==='양호'?'√':' '}] 양호<br>[${v==='불량'?'√':' '}] 불량`;
+  return `<div class="small">■ 화재의 예방 및 안전관리에 관한 법률 시행규칙 [별지 제12호서식]</div>
+    <h1>소방안전관리자 업무 수행 기록표</h1>
+    <div class="small">※ [ ]에는 해당되는 곳에 √표를 합니다.</div>
+    <table>
+      <tr><th style="width:16%">수행일자</th><td>${esc(d.date)}</td><th style="width:16%">수행자</th><td>${esc(d.performer)}　(서명)</td></tr>
+      <tr><th rowspan="3">소방안전<br>관리대상물</th><th>상호</th><td>${esc(d.facility)}</td><th>등급</th><td colspan="2">[${d.grade==='특급'?'√':' '}]특급　[${d.grade==='1급'?'√':' '}]1급　[${d.grade==='2급'?'√':' '}]2급　[${d.grade==='3급'?'√':' '}]3급</td></tr>
+      <tr><th>소재지</th><td colspan="4">${esc(d.address)}</td></tr>
+      <tr><th>지하층</th><td>${esc(d.basement)}</td><th>지상층</th><td>${esc(d.ground)}</td><td>연면적 ${esc(d.totalArea)}㎡ / 바닥면적 ${esc(d.floorArea)}㎡ / ${esc(d.buildings)}동</td></tr>
+    </table>
+    <table style="margin-top:-1px">
+      <tr><th style="width:18%">항목</th><th>확인내용</th><th style="width:14%">확인결과</th><th style="width:18%">조치사항</th></tr>
+      ${d.checks.map(c=>`<tr class="h78"><td>${esc(c.item)}</td><td class="left">${esc(c.content)}</td><td>${resultBox(c.result)}</td><td class="left">${esc(c.action)}</td></tr>`).join('')}
+    </table>
+    <table style="margin-top:-1px">
+      <tr><th rowspan="3" style="width:18%">불량사항<br>개선보고</th><th>보고일시</th><th>보고방법</th><th>보고받은 사람</th></tr>
+      <tr><td>${esc(d.improvement.reportDate)}</td><td>[${d.improvement.method==='대면'?'√':' '}]대면　[${d.improvement.method==='서면'?'√':' '}]서면　[${d.improvement.method==='정보통신'?'√':' '}]정보통신</td><td>${esc(d.improvement.reportTo)}</td></tr>
+      <tr><th>조치방법</th><td colspan="2">[${d.improvement.remedy==='이전'?'√':' '}]이전　[${d.improvement.remedy==='제거'?'√':' '}]제거　[${d.improvement.remedy==='수리·교체'?'√':' '}]수리·교체　[${d.improvement.remedy==='기타'?'√':' '}]기타</td></tr>
+    </table>
+    <div class="small" style="margin-top:12px;line-height:1.7">※ 작성요령<br>
+    1. 소방안전관리업무를 수행한 날을 포함하여 월 1회 이상 작성<br>
+    2. 당해연도 소방계획서 및 소방시설등 점검표에 따른 점검항목을 참고하여 작성<br>
+    3. 대상물의 특성에 따라 기타사항에 추가항목 작성<br>
+    4. 수신기, 제어반 및 가압송수장치(펌프 등)를 중점적으로 확인하여 작성</div>`;
+}
+
+window.previewFireRecordV420=function(){
+  const d=collect();
+  $('firePreviewSheet').innerHTML=legalHtml(d);
+  $('firePreviewModal').classList.add('show');
+};
+window.closeFirePreviewV420=()=> $('firePreviewModal')?.classList.remove('show');
+
+window.printFireRecordV420=function(){
+  const root=$('firePrintRoot');
+  root.innerHTML=`<div class="fire-legal-sheet">${$('firePreviewSheet').innerHTML}</div>`;
+  root.style.display='block';
+  document.body.classList.add('fire-printing');
+  window.print();
+  setTimeout(()=>{document.body.classList.remove('fire-printing');root.style.display='none';root.innerHTML=''},700);
+};
+
+async function resolveFacilityId(name){
+  const sbc=db();if(!sbc)throw new Error('DB 연결 정보를 확인하지 못했습니다.');
+  const {data,error}=await sbc.from('facilities').select('id,name').eq('name',name).limit(1);
+  if(error)throw error;
+  if(!data?.length)throw new Error(`시설 DB에서 '${name}'을 찾지 못했습니다.`);
+  return data[0].id;
+}
+
+window.saveFireRecordV420=async function(){
+  const d=collect();
+  if(!d.date||!d.performer||!d.facility){toast('수행일자, 수행자, 상호를 입력해 주세요.');return}
+  try{
+    const sbc=db();
+    const {data:auth}=await sbc.auth.getUser();
+    const uid=auth?.user?.id;if(!uid)throw new Error('로그인 세션을 확인할 수 없습니다.');
+    const fid=await resolveFacilityId(d.facility);
+
+    const {data:record,error}=await sbc.from('fire_safety_records').insert({
+      facility_id:fid,performed_on:d.date,performer_id:uid,performer_name:d.performer,
+      target_grade:d.grade,address:d.address,basement_floors:Number(d.basement||0),
+      ground_floors:Number(d.ground||0),total_area:Number(d.totalArea||0),
+      floor_area:Number(d.floorArea||0),building_count:Number(d.buildings||0),
+      form_data:d
+    }).select('id').single();
+    if(error)throw error;
+
+    if(d.extinguishers.length){
+      const rows=d.extinguishers.map(x=>({
+        fire_record_id:record.id,facility_id:fid,inspection_date:d.date,
+        extinguisher_code:x.code,location_detail:x.location,extinguisher_type:x.type,
+        pressure_status:x.pressure,pin_seal_status:x.pin,hose_nozzle_status:x.hose,
+        body_status:x.body,placement_status:x.placement,result_status:x.result,
+        note:x.note,inspector_id:uid,inspector_name:d.performer
+      }));
+      const {error:extError}=await sbc.from('fire_extinguisher_checks').insert(rows);
+      if(extError)throw extError;
+    }
+    toast('소방 월간점검 기록을 저장했습니다.');
+  }catch(e){
+    console.error(e);
+    toast('소방점검 저장 실패: '+(e?.message||e));
+  }
+};
+
+window.showFireQrV420=function(index){
+  const row=window.fireExtRowsV420[index];if(!row)return;
+  const base=location.origin+location.pathname;
+  const params=new URLSearchParams({fire:'1',facility:value('fireFacility'),ext:row.code});
+  const url=`${base}?${params.toString()}`;
+  $('fireQrTitle').textContent=`${row.location||'위치 미입력'} · ${row.code}`;
+  $('fireQrUrl').value=url;
+  $('fireQrCode').innerHTML='';
+  if(window.QRCode)new QRCode($('fireQrCode'),{text:url,width:190,height:190});
+  $('fireQrModal').classList.add('show');
+};
+window.closeFireQrV420=()=> $('fireQrModal')?.classList.remove('show');
+window.copyFireQrUrlV420=async function(){
+  await navigator.clipboard.writeText($('fireQrUrl').value);
+  toast('QR 링크를 복사했습니다.');
+};
+
+function applyQrQuery(){
+  const p=new URLSearchParams(location.search);
+  if(p.get('fire')!=='1')return;
+  const facility=p.get('facility')||'';
+  const code=p.get('ext')||'';
+  $('fireMobileBanner').style.display='block';
+  $('fireMobileBanner').textContent=`QR 현장점검 모드: ${facility} / ${code}`;
+  $('fireFacility').value=facility;
+  let idx=window.fireExtRowsV420.findIndex(x=>x.code===code);
+  if(idx<0){addFireExtRowV420({code});idx=window.fireExtRowsV420.length-1}
+  renderExtRows();
+  setTimeout(()=>document.querySelector(`#fireExtBody tr:nth-child(${idx+1})`)?.scrollIntoView({behavior:'smooth',block:'center'}),150);
+}
+
+function enhanceTodayRows(){
+  const body=$('todayBody');if(!body)return;
+  [...body.querySelectorAll('tr')].forEach(tr=>{
+    const task=tr.children[2]?.textContent||tr.textContent;
+    if(!/소화기|소방/.test(task)||tr.querySelector('.fire-today-btn'))return;
+    const cell=tr.lastElementChild;
+    const btn=document.createElement('button');
+    btn.type='button';btn.className='small-btn blue fire-today-btn';btn.textContent='소방점검';
+    btn.onclick=()=>navToFireV420();
+    cell?.prepend(btn);
+  });
+}
+
+const oldRenderToday=window.renderTodayTasks;
+if(typeof oldRenderToday==='function'){
+  window.renderTodayTasks=function(){
+    const r=oldRenderToday.apply(this,arguments);
+    setTimeout(enhanceTodayRows,20);
+    return r;
+  };
+}
+
+const oldPreset=window.applyPreset;
+if(typeof oldPreset==='function'){
+  window.applyPreset=function(field,task,period){
+    const r=oldPreset.apply(this,arguments);
+    if(field==='소방'&&/소화기/.test(task))setTimeout(()=>toast('점검주기 등록 후 오늘의 업무에서 소방점검 기록표로 연결됩니다.'),50);
+    return r;
+  };
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  applyVersion();
+  buildFirePage();
+  addCycleEntryButton();
+  const p=new URLSearchParams(location.search);
+  if(p.get('fire')==='1')setTimeout(navToFireV420,500);
+});
+})();
+</script>
+
+
+<script id="tfms-v421-cycle-delete-sync-controller">
+(function(){
+  'use strict';
+
+  window.TFMS_BUILD=Object.freeze({
+    version:'v42.1',
+    channel:'Enterprise Stable',
+    buildDate:'2026.07.28',
+    title:'점검주기 삭제·오늘의 업무 동기화'
+  });
+
+  const toast=m=>{try{window.showToast?.(m)}catch(e){}};
+  const today=()=>new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);
+
+  function db(){
+    try{
+      return window.getTfmsSupabaseClient?.()||
+        window.tfmsSupabase||
+        window.sb||
+        (typeof sb!=='undefined'?sb:null);
+    }catch(e){return null}
+  }
+
+  function normalize(v){
+    return String(v||'')
+      .replace(/\s+/g,'')
+      .replace(/[·ㆍ]/g,'')
+      .toLowerCase();
+  }
+
+  function applyVersion(){
+    const b=window.TFMS_BUILD,label=`${b.version} ${b.channel}`;
+    const badge=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
+    if(badge)badge.textContent=label;
+
+    document.querySelectorAll('.logo-title small').forEach(el=>{
+      el.textContent=`시설 유지관리 이력관리 시스템 · ${label}`;
+    });
+
+    const current=document.querySelector('#tfmsVersionModal .current-build');
+    if(current)current.textContent=`현재 버전: ${label} · Build ${b.buildDate}`;
+  }
+
+  async function resolveFacilityId(name){
+    try{
+      const cached=facByName?.[name];
+      if(cached?.id)return cached.id;
+      if(cached?.dbId)return cached.dbId;
+    }catch(e){}
+
+    const sbc=db();
+    const {data,error}=await sbc.from('facilities')
+      .select('id,name')
+      .eq('is_active',true);
+
+    if(error)throw error;
+
+    const found=(data||[]).find(f=>normalize(f.name)===normalize(name));
+    if(!found)throw new Error(`시설 DB에서 '${name}'을 찾지 못했습니다.`);
+    return found.id;
+  }
+
+  async function reloadCycleAndToday(){
+    if(typeof window.loadEnterpriseData==='function'){
+      await window.loadEnterpriseData();
+      return;
+    }
+
+    try{
+      window.renderCycleTasks?.();
+      window.renderTodayTasks?.();
+      window.renderDashboardData?.();
+    }catch(e){}
+  }
+
+  // v41.8 오늘생성에 점검주기 고유 ID를 함께 저장
+  const previousGenerate=window.generateTodayFromCycle;
+  window.generateTodayFromCycle=async function(index){
+    const list=(typeof cycleTasks!=='undefined'?cycleTasks:window.cycleTasks)||[];
+    const cycle=list[index];
+
+    if(!cycle){
+      toast('선택한 점검주기를 찾지 못했습니다.');
+      return;
+    }
+
+    // DB에서 불러온 점검주기는 dbId가 있으므로 직접 연계 저장
+    if(cycle.dbId){
+      try{
+        const sbc=db();
+        const facilityId=await resolveFacilityId(cycle.facility);
+        const assetId=cycle.assetKey
+          ?(assetData?.[cycle.assetKey]?.dbId||null)
+          :(cycle.assetId||null);
+        const title=String(cycle.task||cycle.title||'').trim();
+
+        let duplicate=sbc.from('today_tasks')
+          .select('id')
+          .eq('source_cycle_id',cycle.dbId)
+          .eq('task_date',today())
+          .limit(1);
+
+        const {data:existing,error:dupError}=await duplicate;
+        if(dupError)throw dupError;
+
+        if(existing?.length){
+          await reloadCycleAndToday();
+          toast('이미 오늘의 업무에 등록된 점검입니다.');
+          return;
+        }
+
+        const {error}=await sbc.from('today_tasks').insert({
+          facility_id:facilityId,
+          asset_id:assetId,
+          title,
+          task_date:today(),
+          task_status:'예정',
+          source_type:'inspection_cycle',
+          source_cycle_id:cycle.dbId
+        });
+
+        if(error)throw error;
+
+        await reloadCycleAndToday();
+        toast('점검주기를 오늘의 업무에 등록했습니다.');
+        return;
+      }catch(e){
+        console.error('TFMS v42.1 linked create error',e);
+
+        if(/source_cycle_id|source_type|schema cache|column/i.test(String(e?.message||''))){
+          toast('점검주기 연동 컬럼이 없습니다. v42.1 SQL을 먼저 실행해 주세요.');
+          return;
+        }
+
+        toast('오늘의 업무 생성 실패: '+(e?.message||e));
+        return;
+      }
+    }
+
+    // 아직 DB ID가 없는 구형 로컬 점검주기는 기존 생성방식 사용
+    return previousGenerate?.(index);
+  };
+
+  window.deleteCycleTask=async function(index){
+    const list=(typeof cycleTasks!=='undefined'?cycleTasks:window.cycleTasks)||[];
+    const cycle=list[index];
+
+    if(!cycle){
+      toast('삭제할 점검주기를 찾지 못했습니다.');
+      return;
+    }
+
+    const label=`${cycle.facility||''} / ${cycle.task||cycle.title||'점검주기'}`;
+
+    if(!confirm(`${label}\n점검주기를 삭제하시겠습니까?\n연동된 미완료 오늘의 업무도 함께 삭제됩니다.`)){
+      return;
+    }
+
+    try{
+      const sbc=db();
+      if(!sbc)throw new Error('DB 연결 정보를 확인하지 못했습니다.');
+
+      const facilityId=await resolveFacilityId(cycle.facility);
+      const title=String(cycle.task||cycle.title||'').trim();
+
+      // 1. 고유 ID로 연결된 오늘의 업무 삭제
+      if(cycle.dbId){
+        const linkedDelete=await sbc.from('today_tasks')
+          .delete()
+          .eq('source_cycle_id',cycle.dbId)
+          .neq('task_status','완료');
+
+        if(linkedDelete.error &&
+           !/source_cycle_id|schema cache|column/i.test(String(linkedDelete.error.message||''))){
+          throw linkedDelete.error;
+        }
+      }
+
+      // 2. v42.0 이전 생성자료는 source_cycle_id가 없으므로
+      //    동일 시설·업무명·미완료 자료를 보완 삭제
+      let legacyDelete=sbc.from('today_tasks')
+        .delete()
+        .eq('facility_id',facilityId)
+        .eq('title',title)
+        .neq('task_status','완료');
+
+      const {error:legacyError}=await legacyDelete;
+      if(legacyError)throw legacyError;
+
+      // 3. 점검주기 원본 비활성화
+      if(cycle.dbId){
+        const {error:cycleError}=await sbc.from('inspection_cycles')
+          .update({is_active:false})
+          .eq('id',cycle.dbId);
+
+        if(cycleError)throw cycleError;
+      }else{
+        // DB ID가 없는 임시 항목은 화면 배열에서만 제거
+        list.splice(index,1);
+      }
+
+      await reloadCycleAndToday();
+      toast('점검주기와 연동된 오늘의 업무를 함께 삭제했습니다.');
+    }catch(e){
+      console.error('TFMS v42.1 cycle delete error',e);
+      toast('점검주기 삭제 실패: '+(e?.message||e));
+    }
+  };
 
   document.addEventListener('DOMContentLoaded',applyVersion);
 })();
