@@ -1102,7 +1102,7 @@ nav .nav[onclick*='"qrCheck"']{
           <div class="field"><label>점검항목</label><input id="cycleTask" placeholder="예: 소화기 월별 점검"></div>
           <div class="field"><label>점검주기</label><select id="cyclePeriod" onchange="previewNextDue()"><option>일일</option><option>주간</option><option>월간</option><option>분기</option><option>반기</option><option>연간</option></select></div>
           <div class="field"><label>기준일</label><input id="cycleDue" type="date" onchange="previewNextDue()"></div>
-          <div class="field"><label>담당자</label><input id="cycleManager" value="윤호철"></div>
+          <div class="field"><label>담당자</label><input id="cycleManager" placeholder="로그인 사용자 성명 자동입력"></div>
           <div class="field"><label>오늘의 업무 표시</label><select id="cycleActive"><option>사용</option><option>미사용</option></select></div>
           <div class="field"><label>다음 생성 예정일</label><div class="help"><span id="nextDuePreview" class="schedule-chip">-</span></div></div>
         </div>
@@ -1570,7 +1570,7 @@ function deleteCycleTask(i){
 }
 function resetCycleForm(){
   document.getElementById('cycleTask').value='';
-  document.getElementById('cycleManager').value='윤호철';
+  document.getElementById('cycleManager').value='';
   document.getElementById('cycleDue').value=todayISO(); previewNextDue();
 }
 function applyRole(){
@@ -13646,5 +13646,437 @@ if(typeof oldNav==='function'){
   };
 }
 document.addEventListener('DOMContentLoaded',()=>setTimeout(initialize,250));
+})();
+</script>
+
+
+<script id="tfms-v415-cycle-manager-controller">
+(function(){
+  'use strict';
+
+  window.TFMS_BUILD=Object.freeze({
+    version:'v41.5',
+    channel:'Enterprise Stable',
+    buildDate:'2026.07.28',
+    title:'점검주기 담당자 로그인 사용자 자동입력'
+  });
+
+  const $=id=>document.getElementById(id);
+
+  function currentUserNameV415(){
+    let session={};
+    try{session=JSON.parse(sessionStorage.getItem('tfmsSession')||'{}')}catch(e){}
+
+    const profile=window.getTfmsCloudProfile?.()||window.cloudProfile||{};
+    const cloudUser=window.getTfmsCloudUser?.()||window.cloudUser||{};
+
+    return (
+      profile.full_name||
+      profile.name||
+      profile.username||
+      profile.user_name||
+      session.name||
+      session.userName||
+      cloudUser.user_metadata?.full_name||
+      cloudUser.user_metadata?.name||
+      ''
+    );
+  }
+
+  function applyVersionV415(){
+    const b=window.TFMS_BUILD;
+    const label=`${b.version} ${b.channel}`;
+
+    const badge=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
+    if(badge)badge.textContent=label;
+
+    document.querySelectorAll('.logo-title small').forEach(el=>{
+      el.textContent=`시설 유지관리 이력관리 시스템 · ${label}`;
+    });
+
+    const current=document.querySelector('#tfmsVersionModal .current-build');
+    if(current)current.textContent=`현재 버전: ${label} · Build ${b.buildDate}`;
+  }
+
+  function applyCycleManagerV415(force=false){
+    const input=$('cycleManager');
+    if(!input)return;
+
+    const name=currentUserNameV415();
+    if(!name)return;
+
+    const current=String(input.value||'').trim();
+
+    // 기존 하드코딩된 값 또는 비어 있는 경우 로그인 사용자 이름으로 교체
+    if(
+      force||
+      !current||
+      current==='윤호철'||
+      current==='담당자'||
+      current==='담당자 미입력'
+    ){
+      input.value=name;
+    }
+  }
+
+  // 기존 초기화 함수 실행 후에도 로그인 사용자명으로 다시 채움
+  const oldReset=window.resetCycleForm;
+  if(typeof oldReset==='function'){
+    window.resetCycleForm=function(){
+      const result=oldReset.apply(this,arguments);
+      setTimeout(()=>applyCycleManagerV415(true),20);
+      return result;
+    };
+  }
+
+  // 점검주기 등록 직전에도 현재 로그인 사용자명 적용
+  const oldAdd=window.addCycleTask;
+  if(typeof oldAdd==='function'){
+    window.addCycleTask=function(){
+      applyCycleManagerV415(false);
+      return oldAdd.apply(this,arguments);
+    };
+  }
+
+  const oldShow=window.showPage;
+  if(typeof oldShow==='function'){
+    window.showPage=function(id,btn){
+      const result=oldShow.apply(this,arguments);
+      if(id==='cycle')setTimeout(()=>applyCycleManagerV415(true),80);
+      return result;
+    };
+  }
+
+  const oldNav=window.navTo;
+  if(typeof oldNav==='function'){
+    window.navTo=function(id){
+      const result=oldNav.apply(this,arguments);
+      if(id==='cycle')setTimeout(()=>applyCycleManagerV415(true),80);
+      return result;
+    };
+  }
+
+  document.addEventListener('DOMContentLoaded',()=>{
+    applyVersionV415();
+    setTimeout(()=>applyCycleManagerV415(true),250);
+  });
+})();
+</script>
+
+
+<style id="tfms-v416-today-link-style">
+  .today-manual-panel{
+    margin-bottom:16px;
+    padding:16px;
+    border:1px solid #dbe7f5;
+    border-radius:14px;
+    background:#f8fbff;
+  }
+  .today-manual-grid{
+    display:grid;
+    grid-template-columns:1.1fr 1.1fr 1.6fr .8fr auto;
+    gap:10px;
+    align-items:end;
+  }
+  .today-manual-grid label{
+    display:block;
+    margin-bottom:6px;
+    font-size:12px;
+    font-weight:800;
+    color:#334155;
+  }
+  .today-manual-grid input,
+  .today-manual-grid select{
+    width:100%;
+    box-sizing:border-box;
+    border:1px solid #cbd5e1;
+    border-radius:8px;
+    padding:9px 10px;
+    font:inherit;
+    background:#fff;
+  }
+  @media(max-width:1000px){
+    .today-manual-grid{grid-template-columns:1fr 1fr}
+  }
+</style>
+
+<script id="tfms-v416-today-link-controller">
+(function(){
+  'use strict';
+
+  window.TFMS_BUILD=Object.freeze({
+    version:'v41.6',
+    channel:'Enterprise Stable',
+    buildDate:'2026.07.28',
+    title:'점검주기·오늘의 업무 완전 연동'
+  });
+
+  const $=id=>document.getElementById(id);
+  const toast=m=>{try{window.showToast?.(m)}catch(e){}};
+  const todayISO=()=>new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);
+
+  function client(){
+    try{
+      return window.getTfmsSupabaseClient?.()||
+        window.tfmsSupabase||
+        window.sb||
+        (typeof sb!=='undefined'?sb:null);
+    }catch(e){return null}
+  }
+
+  function session(){
+    try{return JSON.parse(sessionStorage.getItem('tfmsSession')||'{}')}catch(e){return {}}
+  }
+
+  function currentDept(){
+    const p=window.getTfmsCloudProfile?.()||window.cloudProfile||{};
+    return p.department?.name||p.department_name||session().dept||'';
+  }
+
+  function isAdmin(){
+    const p=window.getTfmsCloudProfile?.()||window.cloudProfile||{};
+    const role=String(p.role||session().role||window.tfmsRole||'').toLowerCase();
+    return role==='admin'||role==='관리자';
+  }
+
+  function applyVersion(){
+    const b=window.TFMS_BUILD,label=`${b.version} ${b.channel}`;
+    const badge=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
+    if(badge)badge.textContent=label;
+    document.querySelectorAll('.logo-title small').forEach(el=>{
+      el.textContent=`시설 유지관리 이력관리 시스템 · ${label}`;
+    });
+    const current=document.querySelector('#tfmsVersionModal .current-build');
+    if(current)current.textContent=`현재 버전: ${label} · Build ${b.buildDate}`;
+  }
+
+  function allowedFacilities(){
+    try{
+      const list=(typeof facilityMasterStable!=='undefined'?facilityMasterStable:[])||[];
+      return isAdmin()?list:list.filter(f=>f.dept===currentDept());
+    }catch(e){return []}
+  }
+
+  function ensureManualTodayUI(){
+    const page=$('today');
+    const table=page?.querySelector('table');
+    if(!page||!table||$('todayManualPanelV416'))return;
+
+    const panel=document.createElement('div');
+    panel.id='todayManualPanelV416';
+    panel.className='today-manual-panel';
+    panel.innerHTML=`
+      <div class="section-title" style="margin-bottom:12px">
+        <span class="dot"></span>오늘의 업무 직접 등록
+      </div>
+      <div class="today-manual-grid">
+        <div>
+          <label>시설명</label>
+          <select id="todayManualFacilityV416"></select>
+        </div>
+        <div>
+          <label>연계 설비</label>
+          <select id="todayManualAssetV416">
+            <option value="">시설 공통업무</option>
+          </select>
+        </div>
+        <div>
+          <label>업무명</label>
+          <input id="todayManualTitleV416" placeholder="예: 보일러 운전상태 확인">
+        </div>
+        <div>
+          <label>업무일</label>
+          <input id="todayManualDateV416" type="date">
+        </div>
+        <div>
+          <button type="button" class="btn blue" onclick="addManualTodayTaskV416()">오늘의 업무 등록</button>
+        </div>
+      </div>`;
+    table.insertAdjacentElement('beforebegin',panel);
+
+    const fac=$('todayManualFacilityV416');
+    allowedFacilities().forEach(f=>{
+      fac.insertAdjacentHTML('beforeend',`<option value="${f.name}">${f.name}</option>`);
+    });
+    $('todayManualDateV416').value=todayISO();
+
+    fac.addEventListener('change',renderManualAssets);
+    renderManualAssets();
+  }
+
+  function renderManualAssets(){
+    const fac=$('todayManualFacilityV416')?.value||'';
+    const asset=$('todayManualAssetV416');
+    if(!asset)return;
+
+    asset.innerHTML='<option value="">시설 공통업무</option>';
+    try{
+      Object.entries(typeof assetData!=='undefined'?assetData:{}).forEach(([key,a])=>{
+        if(a.facility===fac){
+          asset.insertAdjacentHTML('beforeend',
+            `<option value="${key}">${a.space||'기본시설'} · ${a.name}</option>`);
+        }
+      });
+    }catch(e){}
+  }
+
+  function facilityId(name){
+    try{return facByName?.[name]?.id||facByName?.[name]?.dbId||''}catch(e){return ''}
+  }
+
+  function assetId(key){
+    try{return key&&assetData?.[key]?.dbId||null}catch(e){return null}
+  }
+
+  async function reloadToday(){
+    if(typeof window.loadEnterpriseData==='function'){
+      await window.loadEnterpriseData();
+    }else{
+      try{
+        window.renderTodayTasks?.();
+        window.renderDashboardData?.();
+      }catch(e){}
+    }
+  }
+
+  async function insertTodayTask(payload){
+    const sbc=client();
+    if(!sbc)throw new Error('DB 연결 정보를 확인하지 못했습니다.');
+
+    const {data,error}=await sbc.from('today_tasks')
+      .insert(payload)
+      .select('id')
+      .single();
+
+    if(error)throw error;
+    return data;
+  }
+
+  window.addManualTodayTaskV416=async function(){
+    const facility=$('todayManualFacilityV416')?.value||'';
+    const assetKey=$('todayManualAssetV416')?.value||'';
+    const title=String($('todayManualTitleV416')?.value||'').trim();
+    const date=$('todayManualDateV416')?.value||todayISO();
+
+    if(!facility||!title){
+      toast('시설명과 업무명을 입력해 주세요.');
+      return;
+    }
+
+    try{
+      const fid=facilityId(facility);
+      if(!fid)throw new Error('시설 DB 정보를 찾지 못했습니다.');
+
+      await insertTodayTask({
+        facility_id:fid,
+        asset_id:assetId(assetKey),
+        title,
+        task_date:date,
+        task_status:'예정'
+      });
+
+      $('todayManualTitleV416').value='';
+      await reloadToday();
+      toast('오늘의 업무를 등록했습니다.');
+    }catch(e){
+      console.error('TFMS v41.6 manual today error',e);
+      toast('오늘의 업무 등록 실패: '+(e?.message||e));
+    }
+  };
+
+  // 점검주기의 '오늘생성'을 DB today_tasks와 직접 연동
+  window.generateTodayFromCycle=async function(index){
+    const c=(typeof cycleTasks!=='undefined'?cycleTasks:[])[index];
+    if(!c)return;
+
+    try{
+      const fid=facilityId(c.facility);
+      if(!fid)throw new Error('시설 DB 정보를 찾지 못했습니다.');
+
+      const aId=c.assetKey?assetId(c.assetKey):null;
+      const sbc=client();
+
+      // 같은 날짜·시설·업무가 이미 있으면 중복 생성을 막음
+      let duplicateQuery=sbc.from('today_tasks')
+        .select('id')
+        .eq('facility_id',fid)
+        .eq('title',c.task)
+        .eq('task_date',todayISO());
+
+      if(aId)duplicateQuery=duplicateQuery.eq('asset_id',aId);
+      const {data:dupes,error:dupError}=await duplicateQuery.limit(1);
+      if(dupError)throw dupError;
+
+      if(dupes?.length){
+        await reloadToday();
+        toast('이미 오늘의 업무에 생성된 항목입니다.');
+        return;
+      }
+
+      await insertTodayTask({
+        facility_id:fid,
+        asset_id:aId,
+        title:c.task,
+        task_date:todayISO(),
+        task_status:'예정'
+      });
+
+      await reloadToday();
+      toast('점검주기를 오늘의 업무에 생성했습니다.');
+    }catch(e){
+      console.error('TFMS v41.6 cycle today error',e);
+
+      // DB 저장이 막힌 경우에도 화면에서 유실되지 않도록 로컬 반영
+      try{
+        todayTasks.unshift({
+          facility:c.facility,
+          assetKey:c.assetKey||'',
+          assetName:c.assetName||c.asset||'시설 공통업무',
+          task:c.task,
+          cycle:c.cycle||'점검',
+          due:'오늘',
+          status:'예정'
+        });
+        window.renderTodayTasks?.();
+        window.renderDashboardData?.();
+      }catch(_){}
+
+      toast('DB 연동은 실패했지만 화면에 임시 생성했습니다: '+(e?.message||e));
+    }
+  };
+
+  // 메뉴에 진입할 때 항상 DB 최신 today_tasks를 다시 불러옴
+  const oldShow=window.showPage;
+  if(typeof oldShow==='function'){
+    window.showPage=function(id,btn){
+      const result=oldShow.apply(this,arguments);
+      if(id==='today'){
+        setTimeout(async()=>{
+          ensureManualTodayUI();
+          try{await reloadToday()}catch(e){}
+        },80);
+      }
+      return result;
+    };
+  }
+
+  const oldNav=window.navTo;
+  if(typeof oldNav==='function'){
+    window.navTo=function(id){
+      const result=oldNav.apply(this,arguments);
+      if(id==='today'){
+        setTimeout(async()=>{
+          ensureManualTodayUI();
+          try{await reloadToday()}catch(e){}
+        },80);
+      }
+      return result;
+    };
+  }
+
+  document.addEventListener('DOMContentLoaded',()=>{
+    applyVersion();
+    setTimeout(ensureManualTodayUI,300);
+  });
 })();
 </script>
