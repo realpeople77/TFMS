@@ -1,9 +1,10 @@
 <!DOCTYPE html>
+
 <html lang="ko">
 <!-- TFMS v36.3 Stable | 삭제관리 승인·삭제 버튼 복구 | 2026-07-20 -->
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>TFMS v36.3 Stable</title>
 <style>
 :root {
@@ -286,7 +287,6 @@ input[type='checkbox']{width:16px;height:16px;accent-color:var(--blue)}
 @media(max-width:1000px){.userflow-grid,.asset-workspace{grid-template-columns:1fr}.asset-kpi-row,.asset-mini-actions{grid-template-columns:1fr 1fr}}
 
 </style>
-
 <style id="v317-refined-style">
 /* v31.7 화면 정돈: 기존 구조와 기능은 유지 */
 nav{gap:0;padding:0 22px;scrollbar-width:thin}
@@ -309,13 +309,10 @@ nav{gap:0;padding:0 22px;scrollbar-width:thin}
 @media(max-width:1350px){.nav{padding:17px 12px;font-size:13px}.layout{grid-template-columns:235px 1fr;padding:20px}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script id="tfms-v3113-safe-init">
 window.renderEmpStatuses = window.renderEmpStatuses || function(){};
 window.renderEmployeeStatuses = window.renderEmployeeStatuses || function(){};
 </script>
-
-
 <style id="tfms-v3115-detail-style">
 .maint-row-admin{cursor:pointer}
 .maint-row-admin:hover{background:#f3f8ff}
@@ -332,12 +329,9 @@ window.renderEmployeeStatuses = window.renderEmployeeStatuses || function(){};
 .tfms-detail-item strong,.tfms-detail-item div{white-space:pre-wrap;line-height:1.55}
 @media(max-width:700px){.tfms-detail-grid{grid-template-columns:1fr}.tfms-detail-item.wide{grid-column:auto}}
 </style>
-
-
 <style id="v32-classic-badge-style">
 .v32-classic-note{font-size:11px;color:#0b4fb3;background:#eef6ff;border:1px solid #cfe0f5;border-radius:999px;padding:4px 8px;margin-left:6px;font-weight:900}
 </style>
-
 <style id="tfms-v15-scope-style">
 .tfms-fixed-dept{
   width:100%;min-height:44px;display:flex;align-items:center;
@@ -345,8 +339,6 @@ window.renderEmployeeStatuses = window.renderEmployeeStatuses || function(){};
   background:#f3f6fa;color:#172033;font-weight:800
 }
 </style>
-
-
 <style id="tfms-v326-hide-qr-menu">
 /* v32.6 운영 프로토타입: QR점검 기능은 보존하고 메뉴 노출만 보류 */
 nav .nav[onclick*="'qrCheck'"],
@@ -354,768 +346,718 @@ nav .nav[onclick*='"qrCheck"']{
   display:none!important;
 }
 </style>
-
 </head>
 <body>
-<header id="appHeader" class="hidden">
-  <div class="top">
-    <div class="logo" role="button" tabindex="0" aria-label="대시보드 홈으로 이동" onclick="goHome()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goHome();}">
-      <img src="data:image/png;base64,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" alt="태백시시설관리공단 CI">
-      <div class="logo-title">TFMS <span class="v32-classic-note" id="tfmsVersionBadge" title="클릭하여 업데이트 내역 보기">v36.3 Stable</span><small>시설 유지관리 이력관리 시스템 · v36.3 Stable Enterprise</small></div>
-    </div>
-    <div class="user">
-      <span id="cloudTopBadge" class="current-role-badge" style="background:#fff7ed;color:#9a3412;border-color:#fed7aa">로컬 저장</span><span>🔔</span><button id="topUserLabel" class="link-btn" style="text-decoration:none" onclick="navTo('myPage')">👤 로그인 사용자</button><span id="roleBadge" class="current-role-badge">권한 확인 중</span><button class="logout" id="topLoginBtn" onclick="toggleTopLogin()">로그아웃</button>
-    </div>
-  </div>
-  <nav>
-    <button class="nav active" data-roles="admin,user,viewer" onclick="showPage('dashboard',this)">대시보드</button>
-    <button class="nav" data-roles="admin,user" onclick="showPage('today',this)">오늘의 업무</button>
-    <button class="nav" data-roles="admin,user" onclick="showPage('register',this)">유지관리 등록</button>
-    <button class="nav" data-roles="admin,user,viewer" onclick="showPage('history',this)">유지관리 조회</button>
-    <button class="nav" data-roles="admin,viewer" onclick="showPage('stats',this)">통계현황</button>
-    <button class="nav" data-roles="admin,viewer" onclick="showPage('excel',this)">엑셀 다운로드</button>
-    <button class="nav" data-roles="admin,user" onclick="showPage('dailylog',this)">업무일지</button>
-    <button class="nav" data-roles="admin,user" onclick="showPage('qrCheck',this)">QR점검</button>
-    <button class="nav" data-roles="admin,user" onclick="showPage('equipment',this)">설비관리</button>
-    <button class="nav" data-roles="admin,user" onclick="showPage('cycle',this)">점검주기 관리</button>
-    <button class="nav" data-roles="admin" onclick="showPage('deleteManage',this)">삭제·변경이력</button>
-    <button class="nav" data-roles="admin,user,viewer" onclick="showPage('myPage',this)">내 정보</button>
-    <button class="nav" data-roles="admin" onclick="showPage('accountAdmin',this)">계정승인</button>
-    <button class="nav dev-nav" data-roles="admin" onclick="showPage('sampleData',this)">예시자료</button>
-    <button class="nav dev-nav" data-roles="admin" onclick="showPage('finalTest',this)">실전 테스트</button>
-  </nav>
+<header class="hidden" id="appHeader">
+<div class="top">
+<div aria-label="대시보드 홈으로 이동" class="logo" onclick="goHome()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goHome();}" role="button" tabindex="0">
+<img alt="태백시시설관리공단 CI" src="data:image/png;base64,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"/>
+<div class="logo-title">TFMS <span class="v32-classic-note" id="tfmsVersionBadge" title="클릭하여 업데이트 내역 보기">v36.3 Stable</span><small>시설 유지관리 이력관리 시스템 · v36.3 Stable Enterprise</small></div>
+</div>
+<div class="user">
+<span class="current-role-badge" id="cloudTopBadge" style="background:#fff7ed;color:#9a3412;border-color:#fed7aa">로컬 저장</span><span>🔔</span><button class="link-btn" id="topUserLabel" onclick="navTo('myPage')" style="text-decoration:none">👤 로그인 사용자</button><span class="current-role-badge" id="roleBadge">권한 확인 중</span><button class="logout" id="topLoginBtn" onclick="toggleTopLogin()">로그아웃</button>
+</div>
+</div>
+<nav>
+<button class="nav active" data-roles="admin,user,viewer" onclick="showPage('dashboard',this)">대시보드</button>
+<button class="nav" data-roles="admin,user" onclick="showPage('today',this)">오늘의 업무</button>
+<button class="nav" data-roles="admin,user" onclick="showPage('register',this)">유지관리 등록</button>
+<button class="nav" data-roles="admin,user,viewer" onclick="showPage('history',this)">유지관리 조회</button>
+<button class="nav" data-roles="admin,viewer" onclick="showPage('stats',this)">통계현황</button>
+<button class="nav" data-roles="admin,viewer" onclick="showPage('excel',this)">엑셀 다운로드</button>
+<button class="nav" data-roles="admin,user" onclick="showPage('dailylog',this)">업무일지</button>
+<button class="nav" data-roles="admin,user" onclick="showPage('qrCheck',this)">QR점검</button>
+<button class="nav" data-roles="admin,user" onclick="showPage('equipment',this)">설비관리</button>
+<button class="nav" data-roles="admin,user" onclick="showPage('cycle',this)">점검주기 관리</button>
+<button class="nav" data-roles="admin" onclick="showPage('deleteManage',this)">삭제·변경이력</button>
+<button class="nav" data-roles="admin,user,viewer" onclick="showPage('myPage',this)">내 정보</button>
+<button class="nav" data-roles="admin" onclick="showPage('accountAdmin',this)">계정승인</button>
+<button class="nav dev-nav" data-roles="admin" onclick="showPage('sampleData',this)">예시자료</button>
+<button class="nav dev-nav" data-roles="admin" onclick="showPage('finalTest',this)">실전 테스트</button>
+</nav>
 </header>
-
-
-<section id="loginScreen" class="login-screen">
-  <div class="login-box">
-    <h1>TFMS 로그인</h1>
-    <p>등록된 사용자와 비밀번호가 일치해야 접속할 수 있습니다. 권한은 계정에 따라 자동 적용됩니다.</p>
-    <div class="field"><label>아이디</label><input id="loginId" type="text" autocomplete="username" placeholder="가입한 아이디 입력" onkeydown="if(event.key==='Enter') document.getElementById('loginPassword').focus()"></div>
-    <div class="field" style="margin-top:14px"><label>비밀번호</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="비밀번호 입력" onkeydown="if(event.key==='Enter') stableLoginEnter()"></div>
-    <div id="loginError" class="hidden" role="alert" style="margin-top:12px;padding:11px 13px;border:1px solid #fecaca;border-radius:9px;background:#fff5f5;color:#b91c1c;font-size:14px;font-weight:800">사용자 또는 비밀번호가 올바르지 않습니다.</div>
-    <div class="buttons"><button class="btn blue" onclick="stableLoginEnter()">로그인</button></div><div class="login-links"><button class="link-btn" onclick="showAccountRequest()">계정 신청</button><span id="cloudLoginStatus" style="color:#667085;font-size:13px">DB 연결 확인 중</span></div>
-  </div>
+<section class="login-screen" id="loginScreen">
+<div class="login-box">
+<h1>TFMS 로그인</h1>
+<p>등록된 사용자와 비밀번호가 일치해야 접속할 수 있습니다. 권한은 계정에 따라 자동 적용됩니다.</p>
+<div class="field"><label>아이디</label><input autocomplete="username" id="loginId" onkeydown="if(event.key==='Enter') document.getElementById('loginPassword').focus()" placeholder="가입한 아이디 입력" type="text"/></div>
+<div class="field" style="margin-top:14px"><label>비밀번호</label><input autocomplete="current-password" id="loginPassword" onkeydown="if(event.key==='Enter') stableLoginEnter()" placeholder="비밀번호 입력" type="password"/></div>
+<div class="hidden" id="loginError" role="alert" style="margin-top:12px;padding:11px 13px;border:1px solid #fecaca;border-radius:9px;background:#fff5f5;color:#b91c1c;font-size:14px;font-weight:800">사용자 또는 비밀번호가 올바르지 않습니다.</div>
+<div class="buttons"><button class="btn blue" onclick="stableLoginEnter()">로그인</button></div><div class="login-links"><button class="link-btn" onclick="showAccountRequest()">계정 신청</button><span id="cloudLoginStatus" style="color:#667085;font-size:13px">DB 연결 확인 중</span></div>
+</div>
 </section>
-
-
-<section id="accountRequestScreen" class="login-screen hidden">
-  <div class="login-box">
-    <h1>TFMS 계정 신청</h1>
-    <p>공단 내부 사용자만 신청할 수 있으며, 가입 시 소속을 입력하고 최종 권한은 관리자가 승인 단계에서 부여합니다.</p>
-    <div class="grid two">
-      <div class="field"><label>아이디</label><input id="reqId" placeholder="영문·숫자 조합"></div>
-      <div class="field"><label>성명</label><input id="reqName" placeholder="예: 윤호철"></div>
-      <div class="field"><label>직급/직위</label><input id="reqRank" placeholder="예: 차장"></div>
-      <div class="field"><label>소속부서</label><select id="reqDept" onchange="handleRequestDeptChange()"><option>체육운영팀</option><option>관광운영팀</option><option>복지주택팀</option><option>안전·시설운영팀</option><option>경영지원팀</option></select></div>
-      <div class="field"><label>담당시설</label><input id="reqFacility" placeholder="예: 태백국민체육센터"><div id="reqFacilityHelp" style="margin-top:6px;font-size:12px;color:#64748b">직접 관리하는 대표 시설을 입력하세요.</div></div>
-      <div class="field"><label>공단 이메일</label><input id="reqEmail" placeholder="예: user@tfmc.or.kr"></div>
-      <input id="reqRole" type="hidden" value="일반담당자"><div class="field"><label>비밀번호</label><input id="reqPassword" type="password" placeholder="비밀번호 입력"></div><div class="field"><label>비밀번호 확인</label><input id="reqPassword2" type="password" placeholder="비밀번호 재입력"></div>
-      <div class="field wide"><label>신청사유</label><textarea id="reqReason" placeholder="예: 태백국민체육센터 유지관리 이력 등록 및 조회"></textarea></div>
-    </div>
-    <div class="account-note" style="margin-top:14px">개인정보는 계정 승인 및 권한관리를 위한 최소항목만 수집합니다. 실제 운영 시 비밀번호는 암호화된 인증서비스에서 처리하고 관리자도 원문을 볼 수 없습니다.</div>
-    <div class="buttons"><button class="btn" onclick="backToLogin()">취소</button><button class="btn blue" onclick="submitAccountRequest()">신청</button></div>
-  </div>
+<section class="login-screen hidden" id="accountRequestScreen">
+<div class="login-box">
+<h1>TFMS 계정 신청</h1>
+<p>공단 내부 사용자만 신청할 수 있으며, 가입 시 소속을 입력하고 최종 권한은 관리자가 승인 단계에서 부여합니다.</p>
+<div class="grid two">
+<div class="field"><label>아이디</label><input id="reqId" placeholder="영문·숫자 조합"/></div>
+<div class="field"><label>성명</label><input id="reqName" placeholder="예: 윤호철"/></div>
+<div class="field"><label>직급/직위</label><input id="reqRank" placeholder="예: 차장"/></div>
+<div class="field"><label>소속부서</label><select id="reqDept" onchange="handleRequestDeptChange()"><option>체육운영팀</option><option>관광운영팀</option><option>복지주택팀</option><option>안전·시설운영팀</option><option>경영지원팀</option></select></div>
+<div class="field"><label>담당시설</label><input id="reqFacility" placeholder="예: 태백국민체육센터"/><div id="reqFacilityHelp" style="margin-top:6px;font-size:12px;color:#64748b">직접 관리하는 대표 시설을 입력하세요.</div></div>
+<div class="field"><label>공단 이메일</label><input id="reqEmail" placeholder="예: user@tfmc.or.kr"/></div>
+<input id="reqRole" type="hidden" value="일반담당자"/><div class="field"><label>비밀번호</label><input id="reqPassword" placeholder="비밀번호 입력" type="password"/></div><div class="field"><label>비밀번호 확인</label><input id="reqPassword2" placeholder="비밀번호 재입력" type="password"/></div>
+<div class="field wide"><label>신청사유</label><textarea id="reqReason" placeholder="예: 태백국민체육센터 유지관리 이력 등록 및 조회"></textarea></div>
+</div>
+<div class="account-note" style="margin-top:14px">개인정보는 계정 승인 및 권한관리를 위한 최소항목만 수집합니다. 실제 운영 시 비밀번호는 암호화된 인증서비스에서 처리하고 관리자도 원문을 볼 수 없습니다.</div>
+<div class="buttons"><button class="btn" onclick="backToLogin()">취소</button><button class="btn blue" onclick="submitAccountRequest()">신청</button></div>
+</div>
 </section>
-
-
-<section id="supabaseSettingsScreen" class="login-screen hidden">
-  <div class="login-box" style="width:min(620px,100%)">
-    <h1>Supabase DB 연결 설정</h1>
-    <p>Supabase 프로젝트의 Project URL과 Publishable key를 입력합니다. Secret key와 service_role key는 절대 입력하지 마십시오.</p>
-    <div class="field"><label>Project URL</label><input id="sbProjectUrl" placeholder="https://xxxxxxxx.supabase.co"></div>
-    <div class="field" style="margin-top:14px"><label>Publishable key</label><textarea id="sbPublishableKey" style="min-height:110px" placeholder="sb_publishable_... 또는 anon public key"></textarea></div>
-    <div id="sbTestResult" class="notice" style="margin-top:14px">아직 연결을 확인하지 않았습니다.</div>
-    <div class="buttons"><button class="btn" onclick="closeSupabaseSettings()">취소</button><button class="btn light" onclick="testSupabaseConnection()">연결 확인</button><button class="btn blue" onclick="saveSupabaseSettings()">저장</button></div>
-  </div>
+<section class="login-screen hidden" id="supabaseSettingsScreen">
+<div class="login-box" style="width:min(620px,100%)">
+<h1>Supabase DB 연결 설정</h1>
+<p>Supabase 프로젝트의 Project URL과 Publishable key를 입력합니다. Secret key와 service_role key는 절대 입력하지 마십시오.</p>
+<div class="field"><label>Project URL</label><input id="sbProjectUrl" placeholder="https://xxxxxxxx.supabase.co"/></div>
+<div class="field" style="margin-top:14px"><label>Publishable key</label><textarea id="sbPublishableKey" placeholder="sb_publishable_... 또는 anon public key" style="min-height:110px"></textarea></div>
+<div class="notice" id="sbTestResult" style="margin-top:14px">아직 연결을 확인하지 않았습니다.</div>
+<div class="buttons"><button class="btn" onclick="closeSupabaseSettings()">취소</button><button class="btn light" onclick="testSupabaseConnection()">연결 확인</button><button class="btn blue" onclick="saveSupabaseSettings()">저장</button></div>
+</div>
 </section>
-
 <div class="layout hidden" id="appLayout">
-  <aside>
-    <div class="side-card">
-      <h3>관리부서</h3>
-      <div class="team" onclick="setDeptFilter('관광운영팀', this)"><span>🔧</span><span>관광운영팀</span></div>
-      <div class="team active" onclick="setDeptFilter('체육운영팀', this)"><span>🏊</span><span>체육운영팀</span></div>
-      <div class="team" onclick="setDeptFilter('복지주택팀', this)"><span>🏠</span><span>복지주택팀</span></div>
-      <div class="team" onclick="setDeptFilter('안전·시설운영팀', this)"><span>⚙</span><span>안전·시설운영팀</span></div>
-    </div>
-    <div class="side-card">
-      <h3>우리 시설 현황</h3>
-      <div class="facility-stat"><span>전체 시설</span><strong id="sideFacilityCount">0개</strong></div>
-      <div class="facility-stat"><span>점검예정</span><strong id="sideTodoCount">0건</strong></div>
-      <div class="facility-stat"><span>미조치</span><strong id="sideOpenCount">0건</strong></div>
-      <div class="facility-stat"><span>금월 등록</span><strong id="sideMonthCount">0건</strong></div>
-    </div>
-    <div class="side-card">
-      <h3>업무 흐름</h3>
-      <div class="flow"><span>점검주기</span><b>→</b><span>오늘의 업무</span><b>→</b><span>업무일지</span><b>→</b><span>이력등록</span><b>→</b><span>증빙자료</span></div>
-    </div>
-  </aside>
-
-  <main>
-
-    <section id="dashboard" class="page active">
-      <div class="patch-note" style="margin-bottom:14px"><strong>v31.10 시설 마스터 반영</strong> · 복지주택팀 관할 시설에 철암목욕탕을 추가하여 유지관리·설비·점검주기·QR·업무일지 시설 목록에 연동했습니다.</div>
-      <div class="title-row"><div class="title-left"><div class="title-icon">📊</div><div><h1>대시보드</h1><div class="breadcrumb">홈 › 대시보드</div></div></div><div style="display:flex;gap:10px;align-items:center"><span id="scopeBadge" class="current-scope">체육운영팀 기준</span><div class="live-mark"><span class="live-dot"></span> 실시간 집계</div></div></div>
-      <div class="patch-note"><strong>Supabase 연결형</strong> · 화면은 v31 그대로 유지하며, DB 설정 후 시설·설비·점검주기·오늘업무·유지관리 이력을 Supabase에 공동 저장합니다.</div>
-      <div class="patch-note" id="dbStatusPanel"><strong>v30 DB 상태</strong> · 화면 로딩 후 현재 데이터 수량을 표시합니다.</div>
-      <div class="change-note"><strong>v31.1 로그인·홈 이동 안정화</strong> · 등록된 계정정보가 일치할 때만 로그인되며, 권한은 계정에 따라 고정 적용됩니다. 공단 CI·TFMS 로고를 누르면 대시보드 홈으로 이동합니다. 단, 조회전용 권한은 기존처럼 숨김 처리하고 삭제는 즉시삭제가 아닌 삭제요청 이력으로 남기는 구조를 유지합니다.</div>
-      <div class="panel"><div class="section-title"><span class="dot"></span>관리부서별 현황</div><div class="dept-tabs"><button class="dept-tab active" onclick="filterDeptDash('전체',this)">전체</button><button class="dept-tab" onclick="filterDeptDash('체육운영팀',this)">체육운영팀</button><button class="dept-tab" onclick="filterDeptDash('관광운영팀',this)">관광운영팀</button><button class="dept-tab" onclick="filterDeptDash('복지주택팀',this)">복지주택팀</button><button class="dept-tab" onclick="filterDeptDash('안전·시설운영팀',this)">안전·시설운영팀</button></div><div id="deptSummary" class="notice">전체 시설 기준으로 표시 중입니다.</div></div>
-      <div class="guide-box">
-        <div class="guide-step"><b>1</b><strong>오늘 업무 확인</strong><p>출근 후 해야 할 점검을 먼저 확인합니다.</p></div>
-        <div class="guide-step"><b>2</b><strong>정상 업무 체크</strong><p>반복점검은 업무일지에 간단히 저장합니다.</p></div>
-        <div class="guide-step"><b>3</b><strong>특이사항 등록</strong><p>고장·보수·교체·민원은 유지관리 등록으로 보냅니다.</p></div>
-        <div class="guide-step"><b>4</b><strong>조회·확인</strong><p>등록된 이력은 조회 화면에서 바로 확인합니다.</p></div>
-        <div class="guide-step"><b>5</b><strong>자료 출력</strong><p>필요 시 엑셀·경영평가 자료로 내려받습니다.</p></div>
-      </div>
-      <div class="panel">
-        <div class="section-title"><span class="dot"></span>오늘 가장 먼저 할 일</div>
-        <div class="action-panel">
-          <button class="primary-action" onclick="navTo('today')"><h2>오늘의 업무 확인하기</h2><p>점검주기 기준으로 자동 생성된 오늘 업무를 확인하고, 완료 또는 이력등록으로 연결합니다.</p></button>
-          <div class="secondary-actions">
-            <button class="secondary-action" onclick="navTo('register')"><strong>＋ 유지관리 등록</strong><span>특이사항·보수·교체 등록</span></button>
-            <button class="secondary-action" onclick="navTo('history')"><strong>🔍 이력 조회</strong><span>최근 등록 결과 확인</span></button>
-            <button class="secondary-action" onclick="navTo('dailylog')"><strong>📋 업무일지</strong><span>해당 시설만 사용</span></button>
-            <button class="secondary-action" onclick="navTo('excel')"><strong>↓ 자료 다운로드</strong><span>엑셀·평가자료 확인</span></button>
-          </div>
-        </div>
-      </div>
-      <div class="panel">
-        <div class="section-title"><span class="dot"></span>오늘 해야 하는 업무</div>
-        <table class="table">
-          <thead><tr><th>시설명</th><th>업무명</th><th>주기</th><th>기한</th><th>상태</th></tr></thead>
-          <tbody id="dashTodayBody"></tbody>
-        </table>
-      </div>
-      <div class="stats">
-        <div class="stat"><p>금월 등록</p><strong id="dashTotal">0건</strong></div><div class="stat"><p>점검 예정</p><strong id="dashTodo">0건</strong></div><div class="stat"><p>미조치</p><strong id="dashOpen">0건</strong></div><div class="stat"><p>금월 집행금액</p><strong id="dashBudget">0천원</strong></div>
-      </div>
-      <div class="panel" style="margin-top:18px">
-        <div class="section-title"><span class="dot"></span>실시간 결과 요약</div>
-        <div class="summary-grid">
-          <div class="summary-card"><p>오늘 등록한 유지관리</p><strong id="dashTodayRegistered">0건</strong></div>
-          <div class="summary-card"><p>경영평가 증빙</p><strong id="dashEvalCount">0건</strong></div>
-          <div class="summary-card"><p>증빙자료 포함</p><strong id="dashEvidenceCount">0건</strong></div>
-        </div>
-      </div>
-      
-      <div class="panel" style="margin-top:18px">
-        <div class="section-title"><span class="dot"></span>최근 업무일지</div>
-        <table class="table">
-          <thead><tr><th>근무일</th><th>시설명</th><th>근무자</th><th>업무건수</th><th>특이사항</th><th>관리</th></tr></thead>
-          <tbody id="dashDailyBodyV322"><tr><td colspan="6"><div class="empty-state">저장된 업무일지가 없습니다.</div></td></tr></tbody>
-        </table>
-      </div>
-
-      <div class="panel" style="margin-top:18px">
-        <div class="section-title"><span class="dot"></span>보조 메뉴</div>
-        <div class="quick-grid">
-          <div class="quick" onclick="navTo('register')"><div class="ico">＋</div><h3>유지관리 등록</h3><p>점검·보수·교체 이력 등록</p></div>
-          <div class="quick" onclick="navTo('history')"><div class="ico">🔍</div><h3>이력 조회</h3><p>시설별·기간별 검색</p></div>
-          <div class="quick" onclick="navTo('today')"><div class="ico">✓</div><h3>오늘의 업무</h3><p>점검주기 기반 업무 확인</p></div>
-          <div class="quick" onclick="navTo('excel')"><div class="ico">↓</div><h3>엑셀 다운로드</h3><p>경영평가 자료 추출</p></div>
-        </div>
-      </div>
-    </section>
-
-    <section id="register" class="page">
-      <div class="title-row"><div class="title-left"><div class="title-icon">📝</div><div><h1>유지관리 등록</h1><div class="breadcrumb">홈 › 유지관리 등록 › 실무형 입력화면</div></div></div></div>
-      <div class="panel">
-        <div class="section">
-          <div class="section-title"><span class="dot"></span>기본정보</div>
-          <div class="grid">
-            <div class="field"><label>관리부서 <span class="req">*</span></label><select id="dept" onchange="changeDept()"><option>체육운영팀</option><option>관광운영팀</option><option>복지주택팀</option><option>안전·시설운영팀</option></select></div>
-            <div class="field"><label>시설명 <span class="req">*</span></label><select id="facility"></select></div>
-            <div class="field"><label>등록일자 <span class="req">*</span></label><input id="regDate" type="date"></div>
-            <div class="field"><label>시행일자 <span class="req">*</span></label><input id="execDate" type="date"></div>
-            <div class="field wide"><label>접수구분 <span class="req">*</span></label><div class="choice-group" data-single="receipt"><button class="choice active" type="button">점검</button><button class="choice" type="button">보수</button><button class="choice" type="button">교체</button><button class="choice" type="button">민원</button><button class="choice" type="button">기타</button></div></div>
-            <div class="field"><label>분야 <span class="req">*</span></label><select id="field" onchange="changeSubField()"><option>기계</option><option>전기</option><option>건축</option><option>토목</option><option>소방</option><option>통신</option><option>수질</option><option>환경정비</option><option>조경</option><option>기타</option></select></div>
-            <div class="field"><label>세부분야 <span class="req">*</span></label><select id="subField"></select></div>
-            <div class="field"><label>점검주기</label><select><option>수시</option><option>일일</option><option>주간</option><option>월 1회</option><option>분기 1회</option><option>반기 1회</option><option>연 1회</option></select></div>
-            <div class="field"><label>유지관리 유형 <span class="req">*</span></label><select id="regType"><option>예방정비</option><option>법정점검</option><option>고장수리</option><option>노후교체</option><option>민원조치</option><option>안전조치</option><option>시설개선</option></select></div>
-            <div class="field"><label>처리상태 <span class="req">*</span></label><select id="regStatus"><option>조치완료</option><option>진행중</option><option>미조치</option><option>예산반영 필요</option><option>외부업체 의뢰</option></select></div>
-            <div class="field"><label>담당자 <span class="req">*</span></label><input value="윤호철"></div>
-            <div class="field"><label>연락처</label><input value="010-1234-5678"></div>
-            <div class="field wide"><label>중요도 <span class="req">*</span></label><div class="choice-group" data-single="level"><button class="choice red" type="button">긴급</button><button class="choice orange active" type="button">높음</button><button class="choice green" type="button">보통</button><button class="choice gray" type="button">낮음</button></div></div>
-          </div>
-        </div>
-
-        <div class="section">
-          <div class="section-title"><span class="dot"></span>유지관리 내용</div>
-          <div class="grid two">
-            <div class="field wide"><label>세부내용 <span class="req">*</span></label><textarea id="regDetail" placeholder="유지관리 내용을 상세히 입력해주세요."></textarea></div>
-            <div class="field"><label>조치내용 <span class="req">*</span></label><textarea placeholder="조치한 내용을 상세히 입력해주세요."></textarea></div>
-            <div class="field">
-              <label>조치결과</label>
-              <div class="choice-group" data-single="result"><button class="choice green active" type="button">정상</button><button class="choice" type="button">일부 보완</button><button class="choice orange" type="button">보완 필요</button><button class="choice red" type="button">추가 조치 필요</button></div>
-              <label style="margin-top:17px">진행구분</label>
-              <div class="choice-group" data-single="progress"><button class="choice active" type="button">예산</button><button class="choice" type="button">일상경비</button><button class="choice" type="button">자체조치</button><button class="choice" type="button">기타</button></div>
-            </div>
-            <div class="field"><label>예산과목</label><select id="budgetSelect" onchange="toggleBudgetInput()"><option>운영관리비-수선유지비(214-05)</option><option>사무관리비(201-01)</option><option>공공운영비(201-02)</option><option>시설비(401-01)</option><option>해당없음</option><option>직접입력</option></select><input id="budgetCustom" style="display:none;margin-top:8px" placeholder="예: 체육시설운영사업-국민체육센터운영관리-수선유지비"></div>
-            <div class="field"><label>소요금액(원)</label><div class="money"><input id="regAmount" value="0"><span class="unit">원</span></div></div>
-            <div class="field wide"><label>향후계획</label><textarea placeholder="향후 계획 내용을 입력해주세요."></textarea></div>
-          </div>
-        </div>
-
-        <div class="section">
-          <div class="section-title"><span class="dot"></span>증빙자료 및 경영평가 연계</div>
-          <div class="grid">
-            <div class="field">
-              <label>사진 첨부</label>
-              <label class="upload-zone" for="photoInput"><div><strong>사진 첨부</strong><span class="file-btn">파일 선택</span> 또는 드래그<br><small>최대 10장</small></div></label>
-              <input id="photoInput" type="file" accept="image/*" multiple style="display:none" onchange="previewPhotos(event)">
-              <div class="preview" id="photoPreview"><div class="thumb">사진1</div><div class="thumb">사진2</div><div class="thumb">사진3</div><div class="thumb">사진4</div></div>
-            </div>
-            <div class="field">
-              <label>관련 문서 첨부</label>
-              <label class="upload-zone" for="docInput"><div><strong>문서 첨부</strong><span class="file-btn">파일 선택</span> 또는 드래그<br><small>견적서, 결과보고, 세금계산서 등</small></div></label>
-              <input id="docInput" type="file" multiple style="display:none" onchange="showDocCount(event)">
-              <div class="help" id="docCount" style="margin-top:10px">선택된 문서가 없습니다.</div>
-            </div>
-            <div class="field"><label>첨부 안내</label><div class="help">· jpg, png, pdf, hwp, xlsx 파일 업로드 가능<br>· 사진은 썸네일로 즉시 확인<br>· 첨부자료는 조회 및 엑셀 목록에 반영</div></div>
-            <div class="field"><label>경영평가 연계</label><div class="eval"><h4>경영평가 분류</h4><div class="eval-grid"><label><input type="checkbox"> 예방정비</label><label><input type="checkbox"> 안전관리</label><label><input type="checkbox"> 법정점검</label><label><input type="checkbox"> 시설개선</label><label><input type="checkbox"> 고객민원</label><label><input type="checkbox"> 예산절감</label><label><input type="checkbox"> ESG</label><label><input type="checkbox"> 경영평가 증빙</label></div></div></div>
-          </div>
-        </div>
-
-
-        <div class="notice" style="margin-top:4px">
-          <strong>업무일지 연계 추천</strong><br>
+<aside>
+<div class="side-card">
+<h3>관리부서</h3>
+<div class="team" onclick="setDeptFilter('관광운영팀', this)"><span>🔧</span><span>관광운영팀</span></div>
+<div class="team active" onclick="setDeptFilter('체육운영팀', this)"><span>🏊</span><span>체육운영팀</span></div>
+<div class="team" onclick="setDeptFilter('복지주택팀', this)"><span>🏠</span><span>복지주택팀</span></div>
+<div class="team" onclick="setDeptFilter('안전·시설운영팀', this)"><span>⚙</span><span>안전·시설운영팀</span></div>
+</div>
+<div class="side-card">
+<h3>우리 시설 현황</h3>
+<div class="facility-stat"><span>전체 시설</span><strong id="sideFacilityCount">0개</strong></div>
+<div class="facility-stat"><span>점검예정</span><strong id="sideTodoCount">0건</strong></div>
+<div class="facility-stat"><span>미조치</span><strong id="sideOpenCount">0건</strong></div>
+<div class="facility-stat"><span>금월 등록</span><strong id="sideMonthCount">0건</strong></div>
+</div>
+<div class="side-card">
+<h3>업무 흐름</h3>
+<div class="flow"><span>점검주기</span><b>→</b><span>오늘의 업무</span><b>→</b><span>업무일지</span><b>→</b><span>이력등록</span><b>→</b><span>증빙자료</span></div>
+</div>
+</aside>
+<main>
+<section class="page active" id="dashboard">
+<div class="patch-note" style="margin-bottom:14px"><strong>v31.10 시설 마스터 반영</strong> · 복지주택팀 관할 시설에 철암목욕탕을 추가하여 유지관리·설비·점검주기·QR·업무일지 시설 목록에 연동했습니다.</div>
+<div class="title-row"><div class="title-left"><div class="title-icon">📊</div><div><h1>대시보드</h1><div class="breadcrumb">홈 › 대시보드</div></div></div><div style="display:flex;gap:10px;align-items:center"><span class="current-scope" id="scopeBadge">체육운영팀 기준</span><div class="live-mark"><span class="live-dot"></span> 실시간 집계</div></div></div>
+<div class="patch-note"><strong>Supabase 연결형</strong> · 화면은 v31 그대로 유지하며, DB 설정 후 시설·설비·점검주기·오늘업무·유지관리 이력을 Supabase에 공동 저장합니다.</div>
+<div class="patch-note" id="dbStatusPanel"><strong>v30 DB 상태</strong> · 화면 로딩 후 현재 데이터 수량을 표시합니다.</div>
+<div class="change-note"><strong>v31.1 로그인·홈 이동 안정화</strong> · 등록된 계정정보가 일치할 때만 로그인되며, 권한은 계정에 따라 고정 적용됩니다. 공단 CI·TFMS 로고를 누르면 대시보드 홈으로 이동합니다. 단, 조회전용 권한은 기존처럼 숨김 처리하고 삭제는 즉시삭제가 아닌 삭제요청 이력으로 남기는 구조를 유지합니다.</div>
+<div class="panel"><div class="section-title"><span class="dot"></span>관리부서별 현황</div><div class="dept-tabs"><button class="dept-tab active" onclick="filterDeptDash('전체',this)">전체</button><button class="dept-tab" onclick="filterDeptDash('체육운영팀',this)">체육운영팀</button><button class="dept-tab" onclick="filterDeptDash('관광운영팀',this)">관광운영팀</button><button class="dept-tab" onclick="filterDeptDash('복지주택팀',this)">복지주택팀</button><button class="dept-tab" onclick="filterDeptDash('안전·시설운영팀',this)">안전·시설운영팀</button></div><div class="notice" id="deptSummary">전체 시설 기준으로 표시 중입니다.</div></div>
+<div class="guide-box">
+<div class="guide-step"><b>1</b><strong>오늘 업무 확인</strong><p>출근 후 해야 할 점검을 먼저 확인합니다.</p></div>
+<div class="guide-step"><b>2</b><strong>정상 업무 체크</strong><p>반복점검은 업무일지에 간단히 저장합니다.</p></div>
+<div class="guide-step"><b>3</b><strong>특이사항 등록</strong><p>고장·보수·교체·민원은 유지관리 등록으로 보냅니다.</p></div>
+<div class="guide-step"><b>4</b><strong>조회·확인</strong><p>등록된 이력은 조회 화면에서 바로 확인합니다.</p></div>
+<div class="guide-step"><b>5</b><strong>자료 출력</strong><p>필요 시 엑셀·경영평가 자료로 내려받습니다.</p></div>
+</div>
+<div class="panel">
+<div class="section-title"><span class="dot"></span>오늘 가장 먼저 할 일</div>
+<div class="action-panel">
+<button class="primary-action" onclick="navTo('today')"><h2>오늘의 업무 확인하기</h2><p>점검주기 기준으로 자동 생성된 오늘 업무를 확인하고, 완료 또는 이력등록으로 연결합니다.</p></button>
+<div class="secondary-actions">
+<button class="secondary-action" onclick="navTo('register')"><strong>＋ 유지관리 등록</strong><span>특이사항·보수·교체 등록</span></button>
+<button class="secondary-action" onclick="navTo('history')"><strong>🔍 이력 조회</strong><span>최근 등록 결과 확인</span></button>
+<button class="secondary-action" onclick="navTo('dailylog')"><strong>📋 업무일지</strong><span>해당 시설만 사용</span></button>
+<button class="secondary-action" onclick="navTo('excel')"><strong>↓ 자료 다운로드</strong><span>엑셀·평가자료 확인</span></button>
+</div>
+</div>
+</div>
+<div class="panel">
+<div class="section-title"><span class="dot"></span>오늘 해야 하는 업무</div>
+<table class="table">
+<thead><tr><th>시설명</th><th>업무명</th><th>주기</th><th>기한</th><th>상태</th></tr></thead>
+<tbody id="dashTodayBody"></tbody>
+</table>
+</div>
+<div class="stats">
+<div class="stat"><p>금월 등록</p><strong id="dashTotal">0건</strong></div><div class="stat"><p>점검 예정</p><strong id="dashTodo">0건</strong></div><div class="stat"><p>미조치</p><strong id="dashOpen">0건</strong></div><div class="stat"><p>금월 집행금액</p><strong id="dashBudget">0천원</strong></div>
+</div>
+<div class="panel" style="margin-top:18px">
+<div class="section-title"><span class="dot"></span>실시간 결과 요약</div>
+<div class="summary-grid">
+<div class="summary-card"><p>오늘 등록한 유지관리</p><strong id="dashTodayRegistered">0건</strong></div>
+<div class="summary-card"><p>경영평가 증빙</p><strong id="dashEvalCount">0건</strong></div>
+<div class="summary-card"><p>증빙자료 포함</p><strong id="dashEvidenceCount">0건</strong></div>
+</div>
+</div>
+<div class="panel" style="margin-top:18px">
+<div class="section-title"><span class="dot"></span>최근 업무일지</div>
+<table class="table">
+<thead><tr><th>근무일</th><th>시설명</th><th>근무자</th><th>업무건수</th><th>특이사항</th><th>관리</th></tr></thead>
+<tbody id="dashDailyBodyV322"><tr><td colspan="6"><div class="empty-state">저장된 업무일지가 없습니다.</div></td></tr></tbody>
+</table>
+</div>
+<div class="panel" style="margin-top:18px">
+<div class="section-title"><span class="dot"></span>보조 메뉴</div>
+<div class="quick-grid">
+<div class="quick" onclick="navTo('register')"><div class="ico">＋</div><h3>유지관리 등록</h3><p>점검·보수·교체 이력 등록</p></div>
+<div class="quick" onclick="navTo('history')"><div class="ico">🔍</div><h3>이력 조회</h3><p>시설별·기간별 검색</p></div>
+<div class="quick" onclick="navTo('today')"><div class="ico">✓</div><h3>오늘의 업무</h3><p>점검주기 기반 업무 확인</p></div>
+<div class="quick" onclick="navTo('excel')"><div class="ico">↓</div><h3>엑셀 다운로드</h3><p>경영평가 자료 추출</p></div>
+</div>
+</div>
+</section>
+<section class="page" id="register">
+<div class="title-row"><div class="title-left"><div class="title-icon">📝</div><div><h1>유지관리 등록</h1><div class="breadcrumb">홈 › 유지관리 등록 › 실무형 입력화면</div></div></div></div>
+<div class="panel">
+<div class="section">
+<div class="section-title"><span class="dot"></span>기본정보</div>
+<div class="grid">
+<div class="field"><label>관리부서 <span class="req">*</span></label><select id="dept" onchange="changeDept()"><option>체육운영팀</option><option>관광운영팀</option><option>복지주택팀</option><option>안전·시설운영팀</option></select></div>
+<div class="field"><label>시설명 <span class="req">*</span></label><select id="facility"></select></div>
+<div class="field"><label>등록일자 <span class="req">*</span></label><input id="regDate" type="date"/></div>
+<div class="field"><label>시행일자 <span class="req">*</span></label><input id="execDate" type="date"/></div>
+<div class="field wide"><label>접수구분 <span class="req">*</span></label><div class="choice-group" data-single="receipt"><button class="choice active" type="button">점검</button><button class="choice" type="button">보수</button><button class="choice" type="button">교체</button><button class="choice" type="button">민원</button><button class="choice" type="button">기타</button></div></div>
+<div class="field"><label>분야 <span class="req">*</span></label><select id="field" onchange="changeSubField()"><option>기계</option><option>전기</option><option>건축</option><option>토목</option><option>소방</option><option>통신</option><option>수질</option><option>환경정비</option><option>조경</option><option>기타</option></select></div>
+<div class="field"><label>세부분야 <span class="req">*</span></label><select id="subField"></select></div>
+<div class="field"><label>점검주기</label><select><option>수시</option><option>일일</option><option>주간</option><option>월 1회</option><option>분기 1회</option><option>반기 1회</option><option>연 1회</option></select></div>
+<div class="field"><label>유지관리 유형 <span class="req">*</span></label><select id="regType"><option>예방정비</option><option>법정점검</option><option>고장수리</option><option>노후교체</option><option>민원조치</option><option>안전조치</option><option>시설개선</option></select></div>
+<div class="field"><label>처리상태 <span class="req">*</span></label><select id="regStatus"><option>조치완료</option><option>진행중</option><option>미조치</option><option>예산반영 필요</option><option>외부업체 의뢰</option></select></div>
+<div class="field"><label>담당자 <span class="req">*</span></label><input value="윤호철"/></div>
+<div class="field"><label>연락처</label><input value="010-1234-5678"/></div>
+<div class="field wide"><label>중요도 <span class="req">*</span></label><div class="choice-group" data-single="level"><button class="choice red" type="button">긴급</button><button class="choice orange active" type="button">높음</button><button class="choice green" type="button">보통</button><button class="choice gray" type="button">낮음</button></div></div>
+</div>
+</div>
+<div class="section">
+<div class="section-title"><span class="dot"></span>유지관리 내용</div>
+<div class="grid two">
+<div class="field wide"><label>세부내용 <span class="req">*</span></label><textarea id="regDetail" placeholder="유지관리 내용을 상세히 입력해주세요."></textarea></div>
+<div class="field"><label>조치내용 <span class="req">*</span></label><textarea placeholder="조치한 내용을 상세히 입력해주세요."></textarea></div>
+<div class="field">
+<label>조치결과</label>
+<div class="choice-group" data-single="result"><button class="choice green active" type="button">정상</button><button class="choice" type="button">일부 보완</button><button class="choice orange" type="button">보완 필요</button><button class="choice red" type="button">추가 조치 필요</button></div>
+<label style="margin-top:17px">진행구분</label>
+<div class="choice-group" data-single="progress"><button class="choice active" type="button">예산</button><button class="choice" type="button">일상경비</button><button class="choice" type="button">자체조치</button><button class="choice" type="button">기타</button></div>
+</div>
+<div class="field"><label>예산과목</label><select id="budgetSelect" onchange="toggleBudgetInput()"><option>운영관리비-수선유지비(214-05)</option><option>사무관리비(201-01)</option><option>공공운영비(201-02)</option><option>시설비(401-01)</option><option>해당없음</option><option>직접입력</option></select><input id="budgetCustom" placeholder="예: 체육시설운영사업-국민체육센터운영관리-수선유지비" style="display:none;margin-top:8px"/></div>
+<div class="field"><label>소요금액(원)</label><div class="money"><input id="regAmount" value="0"/><span class="unit">원</span></div></div>
+<div class="field wide"><label>향후계획</label><textarea placeholder="향후 계획 내용을 입력해주세요."></textarea></div>
+</div>
+</div>
+<div class="section">
+<div class="section-title"><span class="dot"></span>증빙자료 및 경영평가 연계</div>
+<div class="grid">
+<div class="field">
+<label>사진 첨부</label>
+<label class="upload-zone" for="photoInput"><div><strong>사진 첨부</strong><span class="file-btn">파일 선택</span> 또는 드래그<br/><small>최대 10장</small></div></label>
+<input accept="image/*" id="photoInput" multiple="" onchange="previewPhotos(event)" style="display:none" type="file"/>
+<div class="preview" id="photoPreview"><div class="thumb">사진1</div><div class="thumb">사진2</div><div class="thumb">사진3</div><div class="thumb">사진4</div></div>
+</div>
+<div class="field">
+<label>관련 문서 첨부</label>
+<label class="upload-zone" for="docInput"><div><strong>문서 첨부</strong><span class="file-btn">파일 선택</span> 또는 드래그<br/><small>견적서, 결과보고, 세금계산서 등</small></div></label>
+<input id="docInput" multiple="" onchange="showDocCount(event)" style="display:none" type="file"/>
+<div class="help" id="docCount" style="margin-top:10px">선택된 문서가 없습니다.</div>
+</div>
+<div class="field"><label>첨부 안내</label><div class="help">· jpg, png, pdf, hwp, xlsx 파일 업로드 가능<br/>· 사진은 썸네일로 즉시 확인<br/>· 첨부자료는 조회 및 엑셀 목록에 반영</div></div>
+<div class="field"><label>경영평가 연계</label><div class="eval"><h4>경영평가 분류</h4><div class="eval-grid"><label><input type="checkbox"/> 예방정비</label><label><input type="checkbox"/> 안전관리</label><label><input type="checkbox"/> 법정점검</label><label><input type="checkbox"/> 시설개선</label><label><input type="checkbox"/> 고객민원</label><label><input type="checkbox"/> 예산절감</label><label><input type="checkbox"/> ESG</label><label><input type="checkbox"/> 경영평가 증빙</label></div></div></div>
+</div>
+</div>
+<div class="notice" style="margin-top:4px">
+<strong>업무일지 연계 추천</strong><br/>
           태백국민체육센터·장성국민체육센터처럼 매일 작성하는 기계실 업무일지는 TFMS에서 별도 중복 입력하지 않고,
           오늘의 업무 체크 결과를 모아 <b>일상근무일지</b>로 자동 생성하는 구조를 추천합니다.
           단순 반복점검은 업무일지로 처리하고, 비용·고장·보수·교체·민원·사진증빙이 필요한 건만 유지관리 이력으로 승격 등록하는 방식이 가장 효율적입니다.
         </div>
-
-        <div class="buttons"><button class="btn" onclick="resetRegisterForm()">초기화</button><button class="btn blue" onclick="addRecordFromForm()">등록</button><button class="btn" onclick="navTo('history')">목록</button></div>
-      </div>
-    </section>
-
-    <section id="history" class="page">
-      <div class="title-row"><div class="title-left"><div class="title-icon">🔍</div><div><h1>유지관리 조회</h1><div class="breadcrumb">홈 › 유지관리 조회</div></div></div></div>
-      <div class="panel"><div class="grid"><div><label>시설명</label><select id="historyFacility"><option>전체</option></select></div><div><label>분야</label><select id="historyField"><option>전체</option><option>기계</option><option>전기</option><option>건축</option><option>토목</option><option>소방</option><option>통신</option><option>수질</option><option>환경정비</option><option>조경</option><option>기타</option></select></div><div><label>상태</label><select id="historyStatus"><option>전체</option><option>조치완료</option><option>진행중</option><option>미조치</option><option>예산반영 필요</option><option>외부업체 의뢰</option></select></div><div><label>기간</label><input id="historyMonth" type="month"></div></div><div class="buttons"><button class="btn" onclick="resetHistoryFilterV318()">초기화</button><button class="btn blue" onclick="renderHistoryV318()">검색</button></div></div>
-      <div class="panel"><table class="table"><thead><tr><th>일자</th><th>시설명</th><th>분야</th><th>유형</th><th>내용</th><th>상태</th><th>증빙</th><th>관리</th></tr></thead><tbody id="historyBody"></tbody></table></div>
-    </section>
-
-
-
-    <section id="myPage" class="page">
-      <div class="title-row"><div class="title-left"><div class="title-icon">👤</div><div><h1>내 정보</h1><div class="breadcrumb">홈 › 내 정보 › 비밀번호 변경</div></div></div></div>
-      <div class="panel">
-        <div class="section-title"><span class="dot"></span>계정정보</div>
-        <div class="grid two">
-          <div class="field"><label>사용자</label><input id="myName" readonly></div>
-          <div class="field"><label>소속부서</label><input id="myDept" readonly></div>
-          <div class="field"><label>권한</label><input id="myRole" readonly></div>
-          <div class="field"><label>계정상태</label><input value="사용중" readonly></div>
-        </div>
-      </div>
-      <div class="panel">
-        <div class="section-title"><span class="dot"></span>비밀번호 변경</div>
-        <div class="grid two">
-          <div class="field wide"><label>현재 비밀번호 <span class="req">*</span></label><input id="currentPassword" type="password" autocomplete="current-password"></div>
-          <div class="field"><label>새 비밀번호 <span class="req">*</span></label><input id="newPassword" type="password" autocomplete="new-password" placeholder="6자 이상"></div>
-          <div class="field"><label>새 비밀번호 확인 <span class="req">*</span></label><input id="newPasswordConfirm" type="password" autocomplete="new-password"></div>
-        </div>
-        <div class="buttons"><button class="btn blue" onclick="changeMyPassword()">비밀번호 변경</button></div>
-        <div class="help">변경된 비밀번호는 현재 브라우저에 저장됩니다. 다른 PC·휴대폰에는 동일하게 적용되지 않습니다.</div>
-      </div>
-    </section>
-
-    <section id="accountAdmin" class="page">
-      <div class="title-row"><div class="title-left"><div class="title-icon">👥</div><div><h1>계정승인</h1><div class="breadcrumb">홈 › 계정승인 › 사용자 권한관리</div></div></div></div>
-      <div class="panel">
-        <div class="section-title"><span class="dot"></span>계정 운영 흐름</div>
-        <div class="account-flow">
-          <div class="flow-card"><b>1</b><strong>계정 신청</strong><p>직원이 성명, 부서, 담당시설, 요청권한을 입력합니다.</p></div>
-          <div class="flow-card"><b>2</b><strong>관리자 확인</strong><p>공단 내부 사용자 여부와 담당시설을 확인합니다.</p></div>
-          <div class="flow-card"><b>3</b><strong>권한 부여</strong><p>일반담당자, 팀 관리자, 조회전용 권한을 부여합니다.</p></div>
-          <div class="flow-card"><b>4</b><strong>사용 시작</strong><p>승인된 사용자만 TFMS에 접속할 수 있습니다.</p></div>
-        </div>
-      </div>
-      <div class="panel">
-        <div class="section-title"><span class="dot"></span>승인 대기 목록</div>
-        <table class="table">
-          <thead><tr><th>신청일시</th><th>성명</th><th>부서</th><th>담당시설</th><th>요청권한</th><th>상태</th><th>관리</th></tr></thead>
-          <tbody id="accountRequestBody"></tbody>
-        </table>
-      </div>
-      <div class="panel">
-        <div class="section-title"><span class="dot"></span>승인된 사용자</div>
-        <table class="table">
-          <thead><tr><th>성명</th><th>부서</th><th>담당시설</th><th>권한</th><th>상태</th><th>관리</th></tr></thead>
-          <tbody id="approvedUserBody"></tbody>
-        </table>
-      </div>
-      <div class="panel">
-        <div class="section-title"><span class="dot"></span>보안 원칙</div>
-        <div class="account-note">
+<div class="buttons"><button class="btn" onclick="resetRegisterForm()">초기화</button><button class="btn blue" onclick="addRecordFromForm()">등록</button><button class="btn" onclick="navTo('history')">목록</button></div>
+</div>
+</section>
+<section class="page" id="history">
+<div class="title-row"><div class="title-left"><div class="title-icon">🔍</div><div><h1>유지관리 조회</h1><div class="breadcrumb">홈 › 유지관리 조회</div></div></div></div>
+<div class="panel"><div class="grid"><div><label>시설명</label><select id="historyFacility"><option>전체</option></select></div><div><label>분야</label><select id="historyField"><option>전체</option><option>기계</option><option>전기</option><option>건축</option><option>토목</option><option>소방</option><option>통신</option><option>수질</option><option>환경정비</option><option>조경</option><option>기타</option></select></div><div><label>상태</label><select id="historyStatus"><option>전체</option><option>조치완료</option><option>진행중</option><option>미조치</option><option>예산반영 필요</option><option>외부업체 의뢰</option></select></div><div><label>기간</label><input id="historyMonth" type="month"/></div></div><div class="buttons"><button class="btn" onclick="resetHistoryFilterV318()">초기화</button><button class="btn blue" onclick="renderHistoryV318()">검색</button></div></div>
+<div class="panel"><table class="table"><thead><tr><th>일자</th><th>시설명</th><th>분야</th><th>유형</th><th>내용</th><th>상태</th><th>증빙</th><th>관리</th></tr></thead><tbody id="historyBody"></tbody></table></div>
+</section>
+<section class="page" id="myPage">
+<div class="title-row"><div class="title-left"><div class="title-icon">👤</div><div><h1>내 정보</h1><div class="breadcrumb">홈 › 내 정보 › 비밀번호 변경</div></div></div></div>
+<div class="panel">
+<div class="section-title"><span class="dot"></span>계정정보</div>
+<div class="grid two">
+<div class="field"><label>사용자</label><input id="myName" readonly=""/></div>
+<div class="field"><label>소속부서</label><input id="myDept" readonly=""/></div>
+<div class="field"><label>권한</label><input id="myRole" readonly=""/></div>
+<div class="field"><label>계정상태</label><input readonly="" value="사용중"/></div>
+</div>
+</div>
+<div class="panel">
+<div class="section-title"><span class="dot"></span>비밀번호 변경</div>
+<div class="grid two">
+<div class="field wide"><label>현재 비밀번호 <span class="req">*</span></label><input autocomplete="current-password" id="currentPassword" type="password"/></div>
+<div class="field"><label>새 비밀번호 <span class="req">*</span></label><input autocomplete="new-password" id="newPassword" placeholder="6자 이상" type="password"/></div>
+<div class="field"><label>새 비밀번호 확인 <span class="req">*</span></label><input autocomplete="new-password" id="newPasswordConfirm" type="password"/></div>
+</div>
+<div class="buttons"><button class="btn blue" onclick="changeMyPassword()">비밀번호 변경</button></div>
+<div class="help">변경된 비밀번호는 현재 브라우저에 저장됩니다. 다른 PC·휴대폰에는 동일하게 적용되지 않습니다.</div>
+</div>
+</section>
+<section class="page" id="accountAdmin">
+<div class="title-row"><div class="title-left"><div class="title-icon">👥</div><div><h1>계정승인</h1><div class="breadcrumb">홈 › 계정승인 › 사용자 권한관리</div></div></div></div>
+<div class="panel">
+<div class="section-title"><span class="dot"></span>계정 운영 흐름</div>
+<div class="account-flow">
+<div class="flow-card"><b>1</b><strong>계정 신청</strong><p>직원이 성명, 부서, 담당시설, 요청권한을 입력합니다.</p></div>
+<div class="flow-card"><b>2</b><strong>관리자 확인</strong><p>공단 내부 사용자 여부와 담당시설을 확인합니다.</p></div>
+<div class="flow-card"><b>3</b><strong>권한 부여</strong><p>일반담당자, 팀 관리자, 조회전용 권한을 부여합니다.</p></div>
+<div class="flow-card"><b>4</b><strong>사용 시작</strong><p>승인된 사용자만 TFMS에 접속할 수 있습니다.</p></div>
+</div>
+</div>
+<div class="panel">
+<div class="section-title"><span class="dot"></span>승인 대기 목록</div>
+<table class="table">
+<thead><tr><th>신청일시</th><th>성명</th><th>부서</th><th>담당시설</th><th>요청권한</th><th>상태</th><th>관리</th></tr></thead>
+<tbody id="accountRequestBody"></tbody>
+</table>
+</div>
+<div class="panel">
+<div class="section-title"><span class="dot"></span>승인된 사용자</div>
+<table class="table">
+<thead><tr><th>성명</th><th>부서</th><th>담당시설</th><th>권한</th><th>상태</th><th>관리</th></tr></thead>
+<tbody id="approvedUserBody"></tbody>
+</table>
+</div>
+<div class="panel">
+<div class="section-title"><span class="dot"></span>보안 원칙</div>
+<div class="account-note">
           회원가입은 외부 공개형이 아니라 <b>공단 내부 승인제</b>로 운영합니다.
           비밀번호는 직접 저장하지 않고 인증서비스를 사용하며, 접속기록·권한변경이력·삭제요청이력을 남기는 구조가 안전합니다.
         </div>
-      </div>
-    </section>
-
-    <section id="deleteManage" class="page">
-      <div class="title-row"><div class="title-left"><div class="title-icon">🗑</div><div><h1>삭제·변경이력</h1><div class="breadcrumb">홈 › 삭제·변경이력</div></div></div></div>
-      <div class="panel">
-        <div class="section-title"><span class="dot"></span>삭제요청 처리 원칙</div>
-        <div class="delete-request">
+</div>
+</section>
+<section class="page" id="deleteManage">
+<div class="title-row"><div class="title-left"><div class="title-icon">🗑</div><div><h1>삭제·변경이력</h1><div class="breadcrumb">홈 › 삭제·변경이력</div></div></div></div>
+<div class="panel">
+<div class="section-title"><span class="dot"></span>삭제요청 처리 원칙</div>
+<div class="delete-request">
           오입력 데이터는 담당자가 직접 완전삭제하지 않고 <b>삭제요청</b>으로 남깁니다.
           관리자가 삭제 사유를 확인한 뒤 승인하면 목록에서 제외하고, 삭제일시·요청자·승인자·사유는 감사이력으로 보관합니다.
         </div>
-      </div>
-      <div class="panel">
-        <div class="section-title"><span class="dot"></span>삭제요청 목록</div>
-        <table class="table"><thead><tr><th>요청일시</th><th>시설명</th><th>내용</th><th>요청자</th><th>사유</th><th>상태</th></tr></thead><tbody id="deleteBody"><tr><td colspan="6"><div class="empty-state">삭제 요청된 자료가 없습니다.</div></td></tr></tbody></table>
-      </div>
-    </section>
-
-
-    <section id="today" class="page">
-      <div class="title-row"><div class="title-left"><div class="title-icon">✅</div><div><h1>오늘의 업무</h1><div class="breadcrumb">홈 › 오늘의 업무</div></div></div></div>
-      <div class="panel"><div class="notice">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
-          <div><b>점검주기 관리</b>에 등록된 정기 업무가 자동으로 표시됩니다. 담당 시설의 정기점검 기준을 확인·등록한 뒤, 완료 처리하면 유지관리 등록 화면으로 연결할 수 있습니다.</div>
-          <button class="btn primary" type="button" onclick="navTo('cycle')">📅 점검주기 관리 바로가기</button>
-        </div>
-      </div><table class="table" style="margin-top:16px"><thead><tr><th>시설명</th><th>연계 설비</th><th>업무명</th><th>주기</th><th>기한</th><th>상태</th><th>처리</th></tr></thead><tbody id="todayBody"></tbody></table></div>
-    </section>
-
-
-    <section id="dailylog" class="page">
-      <div class="title-row">
-        <div class="title-left">
-          <div class="title-icon">📋</div>
-          <div><h1>업무일지</h1><div class="breadcrumb">홈 › 업무일지 › 일상점검 자동작성</div></div>
-        </div>
-      </div>
-      <div class="panel">
-        <div class="section-title"><span class="dot"></span>일상근무일지 생성</div>
-        <div class="notice">
+</div>
+<div class="panel">
+<div class="section-title"><span class="dot"></span>삭제요청 목록</div>
+<table class="table"><thead><tr><th>요청일시</th><th>시설명</th><th>내용</th><th>요청자</th><th>사유</th><th>상태</th></tr></thead><tbody id="deleteBody"><tr><td colspan="6"><div class="empty-state">삭제 요청된 자료가 없습니다.</div></td></tr></tbody></table>
+</div>
+</section>
+<section class="page" id="today">
+<div class="title-row"><div class="title-left"><div class="title-icon">✅</div><div><h1>오늘의 업무</h1><div class="breadcrumb">홈 › 오늘의 업무</div></div></div></div>
+<div class="panel"><div class="notice">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+<div><b>점검주기 관리</b>에 등록된 정기 업무가 자동으로 표시됩니다. 담당 시설의 정기점검 기준을 확인·등록한 뒤, 완료 처리하면 유지관리 등록 화면으로 연결할 수 있습니다.</div>
+<button class="btn primary" onclick="navTo('cycle')" type="button">📅 점검주기 관리 바로가기</button>
+</div>
+</div><table class="table" style="margin-top:16px"><thead><tr><th>시설명</th><th>연계 설비</th><th>업무명</th><th>주기</th><th>기한</th><th>상태</th><th>처리</th></tr></thead><tbody id="todayBody"></tbody></table></div>
+</section>
+<section class="page" id="dailylog">
+<div class="title-row">
+<div class="title-left">
+<div class="title-icon">📋</div>
+<div><h1>업무일지</h1><div class="breadcrumb">홈 › 업무일지 › 일상점검 자동작성</div></div>
+</div>
+</div>
+<div class="panel">
+<div class="section-title"><span class="dot"></span>일상근무일지 생성</div>
+<div class="notice">
           태백국민체육센터·장성국민체육센터처럼 일일 업무일지를 운영하는 시설에만 노출되는 선택 메뉴입니다.
           업무내용은 매일 달라질 수 있으므로 행 추가·수정·삭제가 가능하도록 구성했습니다.
         </div>
-        <div class="grid" style="margin-top:16px">
-          <div class="field"><label>시설명</label><select id="dailyFacility"></select></div>
-          <div class="field"><label>근무일</label><input id="dailyDate" type="date"></div>
-          <div class="field"><label>날씨</label><select id="dailyWeather"><option>맑음</option><option>흐림</option><option>비</option><option>눈</option></select></div>
-          <div class="field"><label>근무자</label><input id="dailyWorkers"></div>
-        </div>
-      </div>
-      <div class="panel">
-        <div class="section-title"><span class="dot"></span>업무 내용</div>
-        <div class="buttons" style="justify-content:flex-start;margin-top:0">
-          <button class="btn light" onclick="addDailyRow()">업무내용 추가</button>
-          <button class="btn light" onclick="loadTodayToDaily()">오늘의 업무 불러오기</button>
-        </div>
-        <table class="table" style="margin-top:16px">
-          <thead><tr><th style="width:64px"><span class="vertical-th">선<br>택</span></th><th>업무내용</th><th style="width:170px">비고</th><th style="width:180px">이력등록</th><th style="width:100px">관리</th></tr></thead>
-          <tbody id="dailyBody"></tbody>
-        </table>
-        <div class="buttons">
-          <button class="btn light" onclick="previewDailyLogV322()">일지 미리보기</button>
-          <button class="btn blue" id="dailySaveBtnV322" onclick="saveDailyLogV322()">업무일지 저장</button>
-          <button class="btn" onclick="showToast('표준 업무일지 양식 업로드 후 PDF 출력을 연결합니다.')">PDF 출력</button>
-        </div>
-      </div>
-      <div class="panel">
-        <div class="section-title"><span class="dot"></span>중복입력 방지 원칙</div>
-        <div class="quick-grid">
-          <div class="quick"><div class="ico">1</div><h3>반복점검</h3><p>매일 반복되는 정상 점검은 업무일지에만 저장</p></div>
-          <div class="quick"><div class="ico">2</div><h3>이상 없음</h3><p>특이사항 없으면 유지관리 이력 등록 생략</p></div>
-          <div class="quick"><div class="ico">3</div><h3>조치 발생</h3><p>보수·교체·비용·사진증빙 발생 시 이력 등록</p></div>
-          <div class="quick"><div class="ico">4</div><h3>평가 증빙</h3><p>중요 항목만 경영평가 증빙으로 자동 분류</p></div>
-        </div>
-      </div>
-    </section>
-
-
-    <section id="qrCheck" class="page">
-      <div class="title-row"><div class="title-left"><div class="title-icon">📱</div><div><h1>QR점검</h1><div class="breadcrumb">홈 › QR점검 › 모바일 현장점검</div></div></div></div>
-      <div class="panel">
-        <div class="section-title"><span class="dot"></span>QR 점검 흐름</div>
-        <div class="notice">
+<div class="grid" style="margin-top:16px">
+<div class="field"><label>시설명</label><select id="dailyFacility"></select></div>
+<div class="field"><label>근무일</label><input id="dailyDate" type="date"/></div>
+<div class="field"><label>날씨</label><select id="dailyWeather"><option>맑음</option><option>흐림</option><option>비</option><option>눈</option></select></div>
+<div class="field"><label>근무자</label><input id="dailyWorkers"/></div>
+</div>
+</div>
+<div class="panel">
+<div class="section-title"><span class="dot"></span>업무 내용</div>
+<div class="buttons" style="justify-content:flex-start;margin-top:0">
+<button class="btn light" onclick="addDailyRow()">업무내용 추가</button>
+<button class="btn light" onclick="loadTodayToDaily()">오늘의 업무 불러오기</button>
+</div>
+<table class="table" style="margin-top:16px">
+<thead><tr><th style="width:64px"><span class="vertical-th">선<br/>택</span></th><th>업무내용</th><th style="width:170px">비고</th><th style="width:180px">이력등록</th><th style="width:100px">관리</th></tr></thead>
+<tbody id="dailyBody"></tbody>
+</table>
+<div class="buttons">
+<button class="btn light" onclick="previewDailyLogV322()">일지 미리보기</button>
+<button class="btn blue" id="dailySaveBtnV322" onclick="saveDailyLogV322()">업무일지 저장</button>
+<button class="btn" onclick="showToast('표준 업무일지 양식 업로드 후 PDF 출력을 연결합니다.')">PDF 출력</button>
+</div>
+</div>
+<div class="panel">
+<div class="section-title"><span class="dot"></span>중복입력 방지 원칙</div>
+<div class="quick-grid">
+<div class="quick"><div class="ico">1</div><h3>반복점검</h3><p>매일 반복되는 정상 점검은 업무일지에만 저장</p></div>
+<div class="quick"><div class="ico">2</div><h3>이상 없음</h3><p>특이사항 없으면 유지관리 이력 등록 생략</p></div>
+<div class="quick"><div class="ico">3</div><h3>조치 발생</h3><p>보수·교체·비용·사진증빙 발생 시 이력 등록</p></div>
+<div class="quick"><div class="ico">4</div><h3>평가 증빙</h3><p>중요 항목만 경영평가 증빙으로 자동 분류</p></div>
+</div>
+</div>
+</section>
+<section class="page" id="qrCheck">
+<div class="title-row"><div class="title-left"><div class="title-icon">📱</div><div><h1>QR점검</h1><div class="breadcrumb">홈 › QR점검 › 모바일 현장점검</div></div></div></div>
+<div class="panel">
+<div class="section-title"><span class="dot"></span>QR 점검 흐름</div>
+<div class="notice">
           설비에 부착된 QR코드를 촬영하면 <b>TFMS 로그인 확인 → 해당 설비카드 자동 이동 → 점검/사진첨부/이력등록</b> 순서로 연결됩니다.
           이미 로그인된 상태라면 바로 설비 점검 화면으로 이동하고, 미로그인 상태라면 로그인 후 원래 설비 화면으로 돌아오게 설계합니다.
         </div>
-      </div>
-      <div class="mobile-preview">
-        <div class="mobile-top">TFMS 모바일 점검</div>
-        <div class="mobile-body">
-          <div class="mobile-card">
-            <label>QR 설비 선택</label>
-            <select id="qrAssetSelect" onchange="renderQrAsset()"></select>
-          </div>
-          <div class="mobile-card">
-            <strong id="qrAssetName">관류식 보일러 A</strong>
-            <p id="qrAssetMeta" style="color:#667085;margin:8px 0 0">태백국민체육센터 · 기계실</p>
-            <p style="margin:8px 0 0"><span id="qrAssetRisk" class="risk warn">주의</span></p>
-            <div class="card-meta" style="grid-template-columns:1fr 1fr;margin-top:12px">
-              <div class="meta-item"><span>설치연도</span><strong id="qrAssetYear">-</strong></div>
-              <div class="meta-item"><span>규모/용량</span><strong id="qrAssetCapacity">-</strong></div>
-              <div class="meta-item"><span>작동형태</span><strong id="qrAssetOperation">-</strong></div>
-              <div class="meta-item"><span>점검주기</span><strong id="qrAssetCycle">-</strong></div>
-            </div>
-          </div>
-          <div class="mobile-card">
-            <label>최근 설비 이력</label>
-            <div id="qrAssetTimeline" class="timeline" style="margin-top:10px"></div>
-          </div>
-          <div class="mobile-card">
-            <label>오늘 해야 할 업무</label>
-            <div id="qrTodayTasks" style="margin-top:10px"></div>
-          </div>
-          <div class="mobile-card">
-            <label>점검결과</label>
-            <select><option>이상 없음</option><option>보완 필요</option><option>긴급 조치 필요</option></select>
-          </div>
-          <div class="mobile-card">
-            <label>점검내용</label>
-            <textarea placeholder="현장 점검 내용을 입력하세요."></textarea>
-          </div>
-          <div class="mobile-actions">
-            <button style="background:#eef6ff;color:#0b4fb3" onclick="showToast('모바일 사진 첨부 기능입니다.')">사진 첨부</button>
-            <button style="background:#0b4fb3;color:#fff" onclick="saveQrCheckResult()">점검 저장</button>
-            <button style="background:#fff7ed;color:#c2410c" onclick="navTo('register')">유지관리 이력으로 전환</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-
-    <section id="sampleData" class="page">
-      <div class="title-row"><div class="title-left"><div class="title-icon">🗂</div><div><h1>예시자료</h1><div class="breadcrumb">홈 › 예시자료 › 테스트 데이터 관리</div></div></div></div>
-      <div class="panel">
-        <div class="section-title"><span class="dot"></span>테스트 데이터 관리</div>
-        <div class="notice">
+</div>
+<div class="mobile-preview">
+<div class="mobile-top">TFMS 모바일 점검</div>
+<div class="mobile-body">
+<div class="mobile-card">
+<label>QR 설비 선택</label>
+<select id="qrAssetSelect" onchange="renderQrAsset()"></select>
+</div>
+<div class="mobile-card">
+<strong id="qrAssetName">관류식 보일러 A</strong>
+<p id="qrAssetMeta" style="color:#667085;margin:8px 0 0">태백국민체육센터 · 기계실</p>
+<p style="margin:8px 0 0"><span class="risk warn" id="qrAssetRisk">주의</span></p>
+<div class="card-meta" style="grid-template-columns:1fr 1fr;margin-top:12px">
+<div class="meta-item"><span>설치연도</span><strong id="qrAssetYear">-</strong></div>
+<div class="meta-item"><span>규모/용량</span><strong id="qrAssetCapacity">-</strong></div>
+<div class="meta-item"><span>작동형태</span><strong id="qrAssetOperation">-</strong></div>
+<div class="meta-item"><span>점검주기</span><strong id="qrAssetCycle">-</strong></div>
+</div>
+</div>
+<div class="mobile-card">
+<label>최근 설비 이력</label>
+<div class="timeline" id="qrAssetTimeline" style="margin-top:10px"></div>
+</div>
+<div class="mobile-card">
+<label>오늘 해야 할 업무</label>
+<div id="qrTodayTasks" style="margin-top:10px"></div>
+</div>
+<div class="mobile-card">
+<label>점검결과</label>
+<select><option>이상 없음</option><option>보완 필요</option><option>긴급 조치 필요</option></select>
+</div>
+<div class="mobile-card">
+<label>점검내용</label>
+<textarea placeholder="현장 점검 내용을 입력하세요."></textarea>
+</div>
+<div class="mobile-actions">
+<button onclick="showToast('모바일 사진 첨부 기능입니다.')" style="background:#eef6ff;color:#0b4fb3">사진 첨부</button>
+<button onclick="saveQrCheckResult()" style="background:#0b4fb3;color:#fff">점검 저장</button>
+<button onclick="navTo('register')" style="background:#fff7ed;color:#c2410c">유지관리 이력으로 전환</button>
+</div>
+</div>
+</div>
+</section>
+<section class="page" id="sampleData">
+<div class="title-row"><div class="title-left"><div class="title-icon">🗂</div><div><h1>예시자료</h1><div class="breadcrumb">홈 › 예시자료 › 테스트 데이터 관리</div></div></div></div>
+<div class="panel">
+<div class="section-title"><span class="dot"></span>테스트 데이터 관리</div>
+<div class="notice">
           실제 입력 전 화면 흐름을 확인하기 위한 예시자료입니다.
           예시자료를 불러오면 대시보드, 유지관리 조회, 통계현황, 엑셀 다운로드 미리보기에 즉시 반영됩니다.
           확인 후 예시자료를 삭제하면 다시 빈 상태로 돌아갑니다.
         </div>
-      </div>
-      <div class="sample-actions">
-        <div class="sample-action">
-          <span class="sample-badge">추천</span>
-          <strong>예시자료 불러오기</strong>
-          <p>유지관리 이력, 점검주기, 오늘의 업무, 설비 데이터를 한 번에 불러옵니다.</p>
-          <button class="btn blue" onclick="loadSampleData()">예시자료 불러오기</button>
-        </div>
-        <div class="sample-action">
-          <span class="sample-badge">확인</span>
-          <strong>반영 결과 보기</strong>
-          <p>불러온 예시자료가 대시보드와 조회 화면에 반영되었는지 확인합니다.</p>
-          <button class="btn light" onclick="navTo('dashboard')">대시보드 확인</button>
-        </div>
-        <div class="sample-action">
-          <span class="sample-badge">초기화</span>
-          <strong>예시자료 삭제</strong>
-          <p>예시자료만 삭제하고 다시 빈 상태에서 실제 입력 테스트를 시작합니다.</p>
-          <button class="btn" onclick="clearSampleData()">예시자료 삭제</button>
-        </div>
-      </div>
-      <div class="panel" style="margin-top:18px">
-        <div class="section-title"><span class="dot"></span>현재 테스트 자료 현황</div>
-        <table class="table">
-          <thead><tr><th>구분</th><th>건수</th><th>설명</th></tr></thead>
-          <tbody id="sampleStatusBody"></tbody>
-        </table>
-      </div>
-    </section>
-
-
-    <section id="finalTest" class="page">
-      <div class="title-row"><div class="title-left"><div class="title-icon">🧪</div><div><h1>실전 테스트</h1><div class="breadcrumb">홈 › 실전 테스트 › 최종 점검</div></div></div></div>
-      <div class="panel">
-        <div class="section-title"><span class="dot"></span>운영 전 체크리스트</div>
-        <div class="test-grid">
-          <div class="test-card"><strong>로그인/권한</strong><span class="pass">정상</span><p>관리자·일반·조회전용 구분</p></div>
-          <div class="test-card"><strong>점검주기</strong><span class="pass">정상</span><p>주기 등록 후 오늘의 업무 생성</p></div>
-          <div class="test-card"><strong>유지관리 등록</strong><span class="pass">정상</span><p>등록 후 조회·통계 반영</p></div>
-          <div class="test-card"><strong>삭제관리</strong><span class="pass">정상</span><p>즉시 삭제가 아닌 요청 방식</p></div>
-          <div class="test-card"><strong>설비관리</strong><span class="pass">정상</span><p>설비카드 등록·수정·삭제요청</p></div>
-          <div class="test-card"><strong>QR/모바일</strong><span class="warn-text">시제품</span><p>실제 배포 시 URL 연결 필요</p></div>
-        </div>
-      </div>
-      <div class="panel">
-        <div class="section-title"><span class="dot"></span>실전 테스트 시나리오</div>
-        <table class="table">
-          <thead><tr><th>순서</th><th>테스트 내용</th><th>확인 메뉴</th><th>예상 결과</th></tr></thead>
-          <tbody>
-            <tr><td>1</td><td>계정 신청 후 관리자 승인</td><td>계정신청/계정승인</td><td>승인 사용자 목록 반영</td></tr>
-            <tr><td>2</td><td>소화기 월별 점검주기 등록</td><td>점검주기 관리</td><td>오늘의 업무 생성</td></tr>
-            <tr><td>3</td><td>오늘의 업무 완료 처리</td><td>오늘의 업무</td><td>완료/취소 전환 가능</td></tr>
-            <tr><td>4</td><td>고장사항 유지관리 등록</td><td>유지관리 등록</td><td>조회·대시보드·통계 반영</td></tr>
-            <tr><td>5</td><td>설비카드 수정</td><td>설비관리</td><td>설비 정보 변경</td></tr>
-            <tr><td>6</td><td>엑셀 자료 미리보기</td><td>엑셀 다운로드</td><td>등록 데이터 출력</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-
-    <section id="stats" class="page">
-      <div class="title-row"><div class="title-left"><div class="title-icon">📈</div><div><h1>통계현황</h1><div class="breadcrumb">홈 › 통계현황 › 전월 대비 분석</div></div></div></div>
-      <div class="panel">
-        <div class="section-title"><span class="dot"></span>당월/전월 비교</div>
-        <div class="compare-grid">
-          <div class="compare-card"><p>유지관리 등록</p><strong id="cmpCount">0건</strong><span id="cmpCountDelta" class="delta same">변동 없음</span></div>
-          <div class="compare-card"><p>예산 집행</p><strong id="cmpBudget">0원</strong><span id="cmpBudgetDelta" class="delta same">변동 없음</span></div>
-          <div class="compare-card"><p>미조치·진행중</p><strong id="cmpOpen">0건</strong><span id="cmpOpenDelta" class="delta same">변동 없음</span></div>
-          <div class="compare-card"><p>경영평가 증빙</p><strong id="cmpEval">0건</strong><span id="cmpEvalDelta" class="delta same">변동 없음</span></div>
-        </div>
-        <div class="notice">증감 표시는 등록된 유지관리 이력을 기준으로 당월과 전월을 비교합니다. 예산집행은 증가가 반드시 나쁜 의미는 아니며, 노후시설 보수·교체 실적으로 해석될 수 있습니다.</div>
-      </div>
-      <div class="panel">
-        <div class="section-title"><span class="dot"></span>월별 유지관리 건수</div>
-        <div id="monthlyChart" class="chart-wrap"></div>
-      </div>
-      <div class="panel">
-        <div class="section-title"><span class="dot"></span>분야별 유지관리 건수</div>
-        <div id="fieldChart" class="chart-wrap"></div>
-      </div>
-      <div class="panel">
-        <div class="section-title"><span class="dot"></span>부서별 유지관리 건수</div>
-        <div id="deptChart" class="chart-wrap"></div>
-      </div>
-    </section>
-
-    <section id="excel" class="page">
-      <div class="title-row"><div class="title-left"><div class="title-icon">⬇</div><div><h1>엑셀 다운로드</h1><div class="breadcrumb">홈 › 엑셀 다운로드</div></div></div></div>
-      <div class="panel">
-        <div class="notice">자료구분·대상연도·시설 조건에 따라 유지관리 데이터를 자동 분류하여 실제 .xlsx 엑셀파일로 내려받습니다.</div>
-        <div class="grid" style="margin-top:16px">
-          <div><label>자료구분</label><select id="exportType" onchange="renderExportPreview()"><option>전체 유지관리대장</option><option>시설별 유지관리 이력대장</option><option>보수·교체 이력대장</option><option>정기점검 이행현황</option><option>미조치·진행중 관리대장</option><option>예산집행 현황</option><option>사진·증빙자료 목록</option><option>LCC·중장기 반영 검토자료</option><option>경영평가 제출용 요약자료</option></select></div>
-          <div><label>대상연도</label><select id="exportYear" onchange="renderExportPreview()"><option value="2026">2026년</option></select></div>
-          <div><label>시설명</label><select id="exportFacility" onchange="renderExportPreview()"><option>전체 시설</option></select></div>
-          <div><label>포함자료</label><select id="exportInclude" onchange="renderExportPreview()"><option>이력 + 금액 + 증빙목록</option><option>사진대장 포함</option><option>경영평가 요약 포함</option></select></div>
-        </div>
-        <div class="buttons"><button class="btn light" onclick="renderExportPreview()">미리보기 갱신</button><button class="btn blue" onclick="downloadXlsx()">엑셀(.xlsx) 다운로드</button></div>
-      </div>
-      <div class="panel">
-        <div class="section-title"><span class="dot"></span>다운로드 미리보기</div>
-        <table class="table"><thead id="exportHead"></thead><tbody id="exportBody"></tbody></table>
-      </div>
-    </section>
-
-    <section id="facility" class="page">
-      <div class="title-row">
-        <div class="title-left">
-          <div class="title-icon">🏢</div>
-          <div><h1>시설관리</h1><div class="breadcrumb">홈 › 시설관리 › 기준정보 관리</div></div>
-        </div>
-      </div>
-
-      <div class="panel">
-        <div class="section-title"><span class="dot"></span>시설관리 메뉴의 역할</div>
-        <div class="notice">
+</div>
+<div class="sample-actions">
+<div class="sample-action">
+<span class="sample-badge">추천</span>
+<strong>예시자료 불러오기</strong>
+<p>유지관리 이력, 점검주기, 오늘의 업무, 설비 데이터를 한 번에 불러옵니다.</p>
+<button class="btn blue" onclick="loadSampleData()">예시자료 불러오기</button>
+</div>
+<div class="sample-action">
+<span class="sample-badge">확인</span>
+<strong>반영 결과 보기</strong>
+<p>불러온 예시자료가 대시보드와 조회 화면에 반영되었는지 확인합니다.</p>
+<button class="btn light" onclick="navTo('dashboard')">대시보드 확인</button>
+</div>
+<div class="sample-action">
+<span class="sample-badge">초기화</span>
+<strong>예시자료 삭제</strong>
+<p>예시자료만 삭제하고 다시 빈 상태에서 실제 입력 테스트를 시작합니다.</p>
+<button class="btn" onclick="clearSampleData()">예시자료 삭제</button>
+</div>
+</div>
+<div class="panel" style="margin-top:18px">
+<div class="section-title"><span class="dot"></span>현재 테스트 자료 현황</div>
+<table class="table">
+<thead><tr><th>구분</th><th>건수</th><th>설명</th></tr></thead>
+<tbody id="sampleStatusBody"></tbody>
+</table>
+</div>
+</section>
+<section class="page" id="finalTest">
+<div class="title-row"><div class="title-left"><div class="title-icon">🧪</div><div><h1>실전 테스트</h1><div class="breadcrumb">홈 › 실전 테스트 › 최종 점검</div></div></div></div>
+<div class="panel">
+<div class="section-title"><span class="dot"></span>운영 전 체크리스트</div>
+<div class="test-grid">
+<div class="test-card"><strong>로그인/권한</strong><span class="pass">정상</span><p>관리자·일반·조회전용 구분</p></div>
+<div class="test-card"><strong>점검주기</strong><span class="pass">정상</span><p>주기 등록 후 오늘의 업무 생성</p></div>
+<div class="test-card"><strong>유지관리 등록</strong><span class="pass">정상</span><p>등록 후 조회·통계 반영</p></div>
+<div class="test-card"><strong>삭제관리</strong><span class="pass">정상</span><p>즉시 삭제가 아닌 요청 방식</p></div>
+<div class="test-card"><strong>설비관리</strong><span class="pass">정상</span><p>설비카드 등록·수정·삭제요청</p></div>
+<div class="test-card"><strong>QR/모바일</strong><span class="warn-text">시제품</span><p>실제 배포 시 URL 연결 필요</p></div>
+</div>
+</div>
+<div class="panel">
+<div class="section-title"><span class="dot"></span>실전 테스트 시나리오</div>
+<table class="table">
+<thead><tr><th>순서</th><th>테스트 내용</th><th>확인 메뉴</th><th>예상 결과</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>계정 신청 후 관리자 승인</td><td>계정신청/계정승인</td><td>승인 사용자 목록 반영</td></tr>
+<tr><td>2</td><td>소화기 월별 점검주기 등록</td><td>점검주기 관리</td><td>오늘의 업무 생성</td></tr>
+<tr><td>3</td><td>오늘의 업무 완료 처리</td><td>오늘의 업무</td><td>완료/취소 전환 가능</td></tr>
+<tr><td>4</td><td>고장사항 유지관리 등록</td><td>유지관리 등록</td><td>조회·대시보드·통계 반영</td></tr>
+<tr><td>5</td><td>설비카드 수정</td><td>설비관리</td><td>설비 정보 변경</td></tr>
+<tr><td>6</td><td>엑셀 자료 미리보기</td><td>엑셀 다운로드</td><td>등록 데이터 출력</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+<section class="page" id="stats">
+<div class="title-row"><div class="title-left"><div class="title-icon">📈</div><div><h1>통계현황</h1><div class="breadcrumb">홈 › 통계현황 › 전월 대비 분석</div></div></div></div>
+<div class="panel">
+<div class="section-title"><span class="dot"></span>당월/전월 비교</div>
+<div class="compare-grid">
+<div class="compare-card"><p>유지관리 등록</p><strong id="cmpCount">0건</strong><span class="delta same" id="cmpCountDelta">변동 없음</span></div>
+<div class="compare-card"><p>예산 집행</p><strong id="cmpBudget">0원</strong><span class="delta same" id="cmpBudgetDelta">변동 없음</span></div>
+<div class="compare-card"><p>미조치·진행중</p><strong id="cmpOpen">0건</strong><span class="delta same" id="cmpOpenDelta">변동 없음</span></div>
+<div class="compare-card"><p>경영평가 증빙</p><strong id="cmpEval">0건</strong><span class="delta same" id="cmpEvalDelta">변동 없음</span></div>
+</div>
+<div class="notice">증감 표시는 등록된 유지관리 이력을 기준으로 당월과 전월을 비교합니다. 예산집행은 증가가 반드시 나쁜 의미는 아니며, 노후시설 보수·교체 실적으로 해석될 수 있습니다.</div>
+</div>
+<div class="panel">
+<div class="section-title"><span class="dot"></span>월별 유지관리 건수</div>
+<div class="chart-wrap" id="monthlyChart"></div>
+</div>
+<div class="panel">
+<div class="section-title"><span class="dot"></span>분야별 유지관리 건수</div>
+<div class="chart-wrap" id="fieldChart"></div>
+</div>
+<div class="panel">
+<div class="section-title"><span class="dot"></span>부서별 유지관리 건수</div>
+<div class="chart-wrap" id="deptChart"></div>
+</div>
+</section>
+<section class="page" id="excel">
+<div class="title-row"><div class="title-left"><div class="title-icon">⬇</div><div><h1>엑셀 다운로드</h1><div class="breadcrumb">홈 › 엑셀 다운로드</div></div></div></div>
+<div class="panel">
+<div class="notice">자료구분·대상연도·시설 조건에 따라 유지관리 데이터를 자동 분류하여 실제 .xlsx 엑셀파일로 내려받습니다.</div>
+<div class="grid" style="margin-top:16px">
+<div><label>자료구분</label><select id="exportType" onchange="renderExportPreview()"><option>전체 유지관리대장</option><option>시설별 유지관리 이력대장</option><option>보수·교체 이력대장</option><option>정기점검 이행현황</option><option>미조치·진행중 관리대장</option><option>예산집행 현황</option><option>사진·증빙자료 목록</option><option>LCC·중장기 반영 검토자료</option><option>경영평가 제출용 요약자료</option></select></div>
+<div><label>대상연도</label><select id="exportYear" onchange="renderExportPreview()"><option value="2026">2026년</option></select></div>
+<div><label>시설명</label><select id="exportFacility" onchange="renderExportPreview()"><option>전체 시설</option></select></div>
+<div><label>포함자료</label><select id="exportInclude" onchange="renderExportPreview()"><option>이력 + 금액 + 증빙목록</option><option>사진대장 포함</option><option>경영평가 요약 포함</option></select></div>
+</div>
+<div class="buttons"><button class="btn light" onclick="renderExportPreview()">미리보기 갱신</button><button class="btn blue" onclick="downloadXlsx()">엑셀(.xlsx) 다운로드</button></div>
+</div>
+<div class="panel">
+<div class="section-title"><span class="dot"></span>다운로드 미리보기</div>
+<table class="table"><thead id="exportHead"></thead><tbody id="exportBody"></tbody></table>
+</div>
+</section>
+<section class="page" id="facility">
+<div class="title-row">
+<div class="title-left">
+<div class="title-icon">🏢</div>
+<div><h1>시설관리</h1><div class="breadcrumb">홈 › 시설관리 › 기준정보 관리</div></div>
+</div>
+</div>
+<div class="panel">
+<div class="section-title"><span class="dot"></span>시설관리 메뉴의 역할</div>
+<div class="notice">
           시설관리 메뉴는 유지관리 이력을 등록하는 화면이 아니라, TFMS 전체가 사용하는 <b>시설 기준정보</b>를 관리하는 관리자용 화면입니다.
           여기서 시설명, 관리부서, 운영상태, 담당자, 업무일지 사용 여부를 정해야 유지관리 등록, 점검주기, 오늘의 업무, 통계현황이 같은 기준으로 연결됩니다.
         </div>
-        <div class="facility-purpose">
-          <div class="facility-purpose-card"><strong>시설 목록 기준</strong><p>유지관리 등록의 시설명 목록과 조회·통계 필터에 사용됩니다.</p></div>
-          <div class="facility-purpose-card"><strong>담당자 권한 기준</strong><p>일반담당자가 본인 부서·시설만 입력·조회하도록 연결합니다.</p></div>
-          <div class="facility-purpose-card"><strong>자동화 기준</strong><p>점검주기, 업무일지, 설비관리 연결 기준으로 활용됩니다.</p></div>
-        </div>
-      </div>
-
-      <div class="panel">
-        <div class="section-title"><span class="dot"></span>시설 목록</div>
-        <div class="dept-tabs">
-          <button class="dept-tab active" onclick="filterFacilityDept('전체',this)">전체</button>
-          <button class="dept-tab" onclick="filterFacilityDept('관광운영팀',this)">관광운영팀</button>
-          <button class="dept-tab" onclick="filterFacilityDept('체육운영팀',this)">체육운영팀</button>
-          <button class="dept-tab" onclick="filterFacilityDept('복지주택팀',this)">복지주택팀</button>
-          <button class="dept-tab" onclick="filterFacilityDept('안전·시설운영팀',this)">안전·시설운영팀</button>
-        </div>
-        <table class="table">
-          <thead><tr><th>관리부서</th><th>시설명</th><th>운영상태</th><th>담당자</th><th>주요 관리항목</th><th>업무일지</th><th>관리</th></tr></thead>
-          <tbody id="facilityBody"></tbody>
-        </table>
-      </div>
-
-      <div class="panel">
-        <div class="section-title"><span class="dot"></span>시설 등록/수정</div>
-        <div class="grid">
-          <div class="field"><label>관리부서</label><select id="facDept"><option>관광운영팀</option><option>체육운영팀</option><option>복지주택팀</option><option>안전·시설운영팀</option></select></div>
-          <div class="field"><label>시설명</label><input id="facName" placeholder="예: 태백국민체육센터"></div>
-          <div class="field"><label>운영상태</label><select id="facStatus"><option>운영중</option><option>미운영</option><option>휴업</option><option>공사중</option></select></div>
-          <div class="field"><label>업무일지 사용</label><select id="facDaily"><option>미사용</option><option>사용</option></select></div>
-          <div class="field"><label>담당자</label><input id="facManager" placeholder="예: 윤호철"></div>
-          <div class="field wide"><label>주요 관리항목</label><input id="facItems" placeholder="예: 기계, 전기, 소방, 수질, 건축"></div>
-        </div>
-        <div class="buttons">
-          <button class="btn light" onclick="clearFacilityForm()">초기화</button>
-          <button class="btn blue" onclick="saveFacility()">시설 등록/수정</button>
-        </div>
-      </div>
-    </section>
-
-
-
-    <section id="equipment" class="page">
-      <div class="title-row">
-        <div class="title-left">
-          <div class="title-icon">⚙</div>
-          <div><h1>설비관리</h1><div class="breadcrumb">홈 › 설비관리 › 설비 기준정보 및 이력</div></div>
-        </div>
-      </div>
-
-      <div class="panel">
-        <div class="section-title"><span class="dot"></span>설비관리 메뉴의 역할</div>
-        <div class="notice">
+<div class="facility-purpose">
+<div class="facility-purpose-card"><strong>시설 목록 기준</strong><p>유지관리 등록의 시설명 목록과 조회·통계 필터에 사용됩니다.</p></div>
+<div class="facility-purpose-card"><strong>담당자 권한 기준</strong><p>일반담당자가 본인 부서·시설만 입력·조회하도록 연결합니다.</p></div>
+<div class="facility-purpose-card"><strong>자동화 기준</strong><p>점검주기, 업무일지, 설비관리 연결 기준으로 활용됩니다.</p></div>
+</div>
+</div>
+<div class="panel">
+<div class="section-title"><span class="dot"></span>시설 목록</div>
+<div class="dept-tabs">
+<button class="dept-tab active" onclick="filterFacilityDept('전체',this)">전체</button>
+<button class="dept-tab" onclick="filterFacilityDept('관광운영팀',this)">관광운영팀</button>
+<button class="dept-tab" onclick="filterFacilityDept('체육운영팀',this)">체육운영팀</button>
+<button class="dept-tab" onclick="filterFacilityDept('복지주택팀',this)">복지주택팀</button>
+<button class="dept-tab" onclick="filterFacilityDept('안전·시설운영팀',this)">안전·시설운영팀</button>
+</div>
+<table class="table">
+<thead><tr><th>관리부서</th><th>시설명</th><th>운영상태</th><th>담당자</th><th>주요 관리항목</th><th>업무일지</th><th>관리</th></tr></thead>
+<tbody id="facilityBody"></tbody>
+</table>
+</div>
+<div class="panel">
+<div class="section-title"><span class="dot"></span>시설 등록/수정</div>
+<div class="grid">
+<div class="field"><label>관리부서</label><select id="facDept"><option>관광운영팀</option><option>체육운영팀</option><option>복지주택팀</option><option>안전·시설운영팀</option></select></div>
+<div class="field"><label>시설명</label><input id="facName" placeholder="예: 태백국민체육센터"/></div>
+<div class="field"><label>운영상태</label><select id="facStatus"><option>운영중</option><option>미운영</option><option>휴업</option><option>공사중</option></select></div>
+<div class="field"><label>업무일지 사용</label><select id="facDaily"><option>미사용</option><option>사용</option></select></div>
+<div class="field"><label>담당자</label><input id="facManager" placeholder="예: 윤호철"/></div>
+<div class="field wide"><label>주요 관리항목</label><input id="facItems" placeholder="예: 기계, 전기, 소방, 수질, 건축"/></div>
+</div>
+<div class="buttons">
+<button class="btn light" onclick="clearFacilityForm()">초기화</button>
+<button class="btn blue" onclick="saveFacility()">시설 등록/수정</button>
+</div>
+</div>
+</section>
+<section class="page" id="equipment">
+<div class="title-row">
+<div class="title-left">
+<div class="title-icon">⚙</div>
+<div><h1>설비관리</h1><div class="breadcrumb">홈 › 설비관리 › 설비 기준정보 및 이력</div></div>
+</div>
+</div>
+<div class="panel">
+<div class="section-title"><span class="dot"></span>설비관리 메뉴의 역할</div>
+<div class="notice">
           설비관리 메뉴는 관류식 보일러 A, 급탕순환펌프, 수영장 여과기처럼 <b>시설 안에 설치된 주요 설비의 기준정보</b>를 관리합니다.
-          여기서 입력한 설치연도, 규모, 위치, 작동형태, 점검주기, QR관리번호는 QR점검 화면과 유지관리 이력 조회에 연결됩니다.<br>
-          <b>권한 기준</b> · 관리자와 일반담당자는 설비를 조회·등록·수정할 수 있으며, 조회전용 권한에서는 메뉴가 숨김 처리됩니다.
+          여기서 입력한 설치연도, 규모, 위치, 작동형태, 점검주기, QR관리번호는 QR점검 화면과 유지관리 이력 조회에 연결됩니다.<br/>
+<b>권한 기준</b> · 관리자와 일반담당자는 설비를 조회·등록·수정할 수 있으며, 조회전용 권한에서는 메뉴가 숨김 처리됩니다.
         </div>
-      </div>
-
-      <div class="panel">
-        <div class="section-title"><span class="dot"></span>사용자 중심 설비 구조 <span class="v29-badge">v29 추가</span></div>
-        <div class="notice">
+</div>
+<div class="panel">
+<div class="section-title"><span class="dot"></span>사용자 중심 설비 구조 <span class="v29-badge">v29 추가</span></div>
+<div class="notice">
           실제 사용자는 메뉴를 여러 번 이동하지 않고 <b>시설 → 공간/구역 → 설비</b> 순서로 접근합니다.
           설비를 선택하면 기본정보, 최근 점검, 보수·교체 이력, LCC, QR관리번호를 한 화면에서 확인하도록 구성했습니다.
         </div>
-        <div class="userflow-grid">
-          <div class="userflow-col"><h3>1. 시설 선택</h3><div id="ufFacilityList"></div></div>
-          <div class="userflow-col"><h3>2. 공간/구역 선택</h3><div id="ufSpaceList"></div></div>
-          <div class="userflow-col"><h3>3. 설비 선택</h3><div id="ufAssetList"></div></div>
-        </div>
-        <div class="asset-workspace">
-          <div class="asset-card-panel">
-            <h3 id="ufAssetTitle">설비카드</h3>
-            <div id="ufAssetSummary" class="notice">설비를 선택하면 상세정보가 표시됩니다.</div>
-            <div class="asset-kpi-row">
-              <div class="asset-kpi"><span>설치연도</span><strong id="ufYear">-</strong></div>
-              <div class="asset-kpi"><span>규모/용량</span><strong id="ufCapacity">-</strong></div>
-              <div class="asset-kpi"><span>점검주기</span><strong id="ufCycle">-</strong></div>
-              <div class="asset-kpi"><span>QR관리번호</span><strong id="ufQr">-</strong></div>
-            </div>
-            <div class="asset-mini-actions">
-              <button onclick="navTo('qrCheck')">QR점검 보기</button>
-              <button onclick="navTo('register')">이력 등록</button>
-              <button onclick="showToast('선택 설비의 전체 이력 화면입니다.')">전체 이력</button>
-            </div>
-          </div>
-          <div class="asset-card-panel">
-            <h3>최근 생애주기 이력</h3>
-            <div id="ufTimeline" class="timeline"></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="asset-tree">
-        <div class="tree-list">
-          <div class="section-title" style="margin-bottom:10px"><span class="dot"></span>설비 목록</div>
-          <div id="assetList"></div>
-        </div>
-        <div class="asset-detail">
-          <div class="asset-title"><h3 id="assetName">-</h3><span id="assetRisk" class="risk good">양호</span></div>
-          <div class="card-meta">
-            <div class="meta-item"><span>제조사</span><strong id="assetManufacturer">-</strong></div>
-            <div class="meta-item"><span>모델명</span><strong id="assetModel">-</strong></div>
-            <div class="meta-item"><span>제조번호</span><strong id="assetSerial">-</strong></div>
-            <div class="meta-item"><span>규모/용량</span><strong id="assetCapacity">-</strong></div>
-            <div class="meta-item"><span>제조년도</span><strong id="assetManufactureYear">-</strong></div>
-            <div class="meta-item"><span>설치연도</span><strong id="assetYear">-</strong></div>
-            <div class="meta-item"><span>설치일</span><strong id="assetInstallDate">-</strong></div>
-            <div class="meta-item"><span>내용연수</span><strong id="assetLife">-</strong></div>
-            <div class="meta-item"><span>관리상태</span><strong id="assetStatus">-</strong></div>
-            <div class="meta-item"><span>중요도</span><strong id="assetImportance">-</strong></div>
-            <div class="meta-item"><span>최근점검</span><strong id="assetCheck">-</strong></div>
-            <div class="meta-item"><span>이력건수</span><strong id="assetHistory">-</strong></div>
-            <div class="meta-item"><span>설치위치</span><strong id="assetLocation">-</strong></div>
-            <div class="meta-item"><span>작동형태</span><strong id="assetOperation">-</strong></div>
-            <div class="meta-item"><span>점검주기</span><strong id="assetCycle">-</strong></div>
-            <div class="meta-item"><span>QR관리번호</span><strong id="assetQrId">-</strong></div>
-            <div class="meta-item" style="grid-column:1/-1"><span>비고</span><strong id="assetRemarks">-</strong></div>
-          </div>
-          <div class="section-title" style="margin-top:20px"><span class="dot"></span>LCC·교체 검토</div>
-          <div class="lcc-box">
-            <div class="lcc-card"><p>누적 보수비</p><strong id="lccRepair">-</strong></div>
-            <div class="lcc-card"><p>예상 교체비</p><strong id="lccReplace">-</strong></div>
-            <div class="lcc-card"><p>우선순위</p><strong id="lccRank">-</strong></div>
-          </div>
-          <div class="section-title" style="margin-top:20px"><span class="dot"></span>최근 이력</div>
-          <div id="assetTimeline" class="timeline"></div>
-        </div>
-      </div>
-
-      <div class="panel" style="margin-top:18px">
-        <div class="section-title"><span class="dot"></span>설비 등록/수정</div>
-        <div class="asset-form-note"><b>설비명만 필수 입력</b>이며, 제조사·모델명·제조번호·용량·제조년도·설치일 등 해당하지 않는 항목은 공란으로 등록할 수 있습니다.<br>QR관리번호는 비워두면 자동 생성되며, 삭제는 즉시삭제가 아니라 관리자 확인이 가능한 삭제요청으로 남깁니다.</div>
-        <div class="grid">
-          <div class="field"><label>소속 시설 <b style="color:#d92d20">*</b></label><select id="assetInputFacility"></select></div>
-          <div class="field"><label>공간/구역</label><input id="assetInputSpace" placeholder="예: 기계실, 전기실, 수영장"></div>
-          <div class="field"><label>설비명 <b style="color:#d92d20">*</b></label><input id="assetInputName" placeholder="예: 관류식 보일러 A"></div>
-          <div class="field"><label>설비분류</label><input id="assetInputCategory" placeholder="예: 보일러, 펌프, 여과설비, 전기설비"></div>
-          <div class="field"><label>제조사</label><input id="assetInputManufacturer" placeholder="선택입력"></div>
-          <div class="field"><label>모델명</label><input id="assetInputModel" placeholder="선택입력"></div>
-          <div class="field"><label>제조번호</label><input id="assetInputSerial" placeholder="선택입력"></div>
-          <div class="field"><label>규모/용량</label><input id="assetInputCapacity" placeholder="예: 1.5ton/h, 20HP, 500L (선택입력)"></div>
-          <div class="field"><label>제조년도</label><input id="assetInputManufactureYear" inputmode="numeric" placeholder="예: 2018 (선택입력)"></div>
-          <div class="field"><label>설치연도</label><input id="assetInputYear" inputmode="numeric" placeholder="예: 2019 (선택입력)"></div>
-          <div class="field"><label>설치일</label><input id="assetInputInstallDate" type="date"></div>
-          <div class="field"><label>내용연수</label><input id="assetInputLife" placeholder="예: 10년 (선택입력)"></div>
-          <div class="field"><label>설치위치</label><input id="assetInputLocation" placeholder="예: 지하 기계실"></div>
-          <div class="field"><label>작동형태</label><input id="assetInputOperation" placeholder="예: 자동제어, 상시가동"></div>
-          <div class="field"><label>점검주기</label><select id="assetInputCycle"><option>일일</option><option>주간</option><option>월간</option><option>분기</option><option>반기</option><option>연간</option><option>수시</option><option>해당없음</option></select></div>
-          <div class="field"><label>관리상태</label><select id="assetInputStatus"><option>정상</option><option>점검필요</option><option>수리중</option><option>교체예정</option><option>사용중지</option><option>폐기</option></select></div>
-          <div class="field"><label>중요도</label><select id="assetInputImportance"><option>상</option><option selected>중</option><option>하</option></select></div>
-          <div class="field"><label>위험도</label><select id="assetInputRisk"><option>양호</option><option>주의</option><option>위험</option></select></div>
-          <div class="field"><label>최근점검일</label><input id="assetInputCheck" type="date"></div>
-          <div class="field"><label>예상 교체비</label><input id="assetInputReplace" placeholder="예: 9,000천원"></div>
-          <div class="field"><label>QR관리번호</label><input id="assetInputQrId" placeholder="공란 시 자동 생성"></div>
-          <div class="field wide"><label>비고</label><textarea id="assetInputRemarks" rows="3" placeholder="특이사항, 부품정보, 관리 시 주의사항 등을 입력하세요."></textarea></div>
-          <div class="field wide"><label>최근 이력</label><input id="assetInputTimeline" placeholder="예: 2026.07.08 / 기화기 육안점검 및 온도 확인"></div>
-        </div>
-        <div class="buttons">
-          <button class="btn light" onclick="clearAssetForm()">초기화</button>
-          <button class="btn" onclick="deleteSelectedAsset()">삭제요청</button>
-          <button class="btn blue" onclick="saveAsset()">설비 등록/수정</button>
-        </div>
-      </div>
-    </section>
-
-    <section id="cycle" class="page">
-      <div class="title-row"><div class="title-left"><div class="title-icon">📅</div><div><h1>점검주기 관리</h1><div class="breadcrumb">홈 › 점검주기 관리 › 자동 생성 규칙</div></div></div></div>
-      <div class="role-note"><strong>권한 기준</strong> · 관리자와 일반담당자는 점검주기 관리 메뉴를 사용할 수 있습니다. 조회전용 권한에서는 메뉴가 숨김 처리됩니다.</div>
-      <div class="panel">
-        <div class="section-title"><span class="dot"></span>정기점검 자동 생성 규칙</div>
-        <div class="notice">
+<div class="userflow-grid">
+<div class="userflow-col"><h3>1. 시설 선택</h3><div id="ufFacilityList"></div></div>
+<div class="userflow-col"><h3>2. 공간/구역 선택</h3><div id="ufSpaceList"></div></div>
+<div class="userflow-col"><h3>3. 설비 선택</h3><div id="ufAssetList"></div></div>
+</div>
+<div class="asset-workspace">
+<div class="asset-card-panel">
+<h3 id="ufAssetTitle">설비카드</h3>
+<div class="notice" id="ufAssetSummary">설비를 선택하면 상세정보가 표시됩니다.</div>
+<div class="asset-kpi-row">
+<div class="asset-kpi"><span>설치연도</span><strong id="ufYear">-</strong></div>
+<div class="asset-kpi"><span>규모/용량</span><strong id="ufCapacity">-</strong></div>
+<div class="asset-kpi"><span>점검주기</span><strong id="ufCycle">-</strong></div>
+<div class="asset-kpi"><span>QR관리번호</span><strong id="ufQr">-</strong></div>
+</div>
+<div class="asset-mini-actions">
+<button onclick="navTo('qrCheck')">QR점검 보기</button>
+<button onclick="navTo('register')">이력 등록</button>
+<button onclick="showToast('선택 설비의 전체 이력 화면입니다.')">전체 이력</button>
+</div>
+</div>
+<div class="asset-card-panel">
+<h3>최근 생애주기 이력</h3>
+<div class="timeline" id="ufTimeline"></div>
+</div>
+</div>
+</div>
+<div class="asset-tree">
+<div class="tree-list">
+<div class="section-title" style="margin-bottom:10px"><span class="dot"></span>설비 목록</div>
+<div id="assetList"></div>
+</div>
+<div class="asset-detail">
+<div class="asset-title"><h3 id="assetName">-</h3><span class="risk good" id="assetRisk">양호</span></div>
+<div class="card-meta">
+<div class="meta-item"><span>제조사</span><strong id="assetManufacturer">-</strong></div>
+<div class="meta-item"><span>모델명</span><strong id="assetModel">-</strong></div>
+<div class="meta-item"><span>제조번호</span><strong id="assetSerial">-</strong></div>
+<div class="meta-item"><span>규모/용량</span><strong id="assetCapacity">-</strong></div>
+<div class="meta-item"><span>제조년도</span><strong id="assetManufactureYear">-</strong></div>
+<div class="meta-item"><span>설치연도</span><strong id="assetYear">-</strong></div>
+<div class="meta-item"><span>설치일</span><strong id="assetInstallDate">-</strong></div>
+<div class="meta-item"><span>내용연수</span><strong id="assetLife">-</strong></div>
+<div class="meta-item"><span>관리상태</span><strong id="assetStatus">-</strong></div>
+<div class="meta-item"><span>중요도</span><strong id="assetImportance">-</strong></div>
+<div class="meta-item"><span>최근점검</span><strong id="assetCheck">-</strong></div>
+<div class="meta-item"><span>이력건수</span><strong id="assetHistory">-</strong></div>
+<div class="meta-item"><span>설치위치</span><strong id="assetLocation">-</strong></div>
+<div class="meta-item"><span>작동형태</span><strong id="assetOperation">-</strong></div>
+<div class="meta-item"><span>점검주기</span><strong id="assetCycle">-</strong></div>
+<div class="meta-item"><span>QR관리번호</span><strong id="assetQrId">-</strong></div>
+<div class="meta-item" style="grid-column:1/-1"><span>비고</span><strong id="assetRemarks">-</strong></div>
+</div>
+<div class="section-title" style="margin-top:20px"><span class="dot"></span>LCC·교체 검토</div>
+<div class="lcc-box">
+<div class="lcc-card"><p>누적 보수비</p><strong id="lccRepair">-</strong></div>
+<div class="lcc-card"><p>예상 교체비</p><strong id="lccReplace">-</strong></div>
+<div class="lcc-card"><p>우선순위</p><strong id="lccRank">-</strong></div>
+</div>
+<div class="section-title" style="margin-top:20px"><span class="dot"></span>최근 이력</div>
+<div class="timeline" id="assetTimeline"></div>
+</div>
+</div>
+<div class="panel" style="margin-top:18px">
+<div class="section-title"><span class="dot"></span>설비 등록/수정</div>
+<div class="asset-form-note"><b>설비명만 필수 입력</b>이며, 제조사·모델명·제조번호·용량·제조년도·설치일 등 해당하지 않는 항목은 공란으로 등록할 수 있습니다.<br/>QR관리번호는 비워두면 자동 생성되며, 삭제는 즉시삭제가 아니라 관리자 확인이 가능한 삭제요청으로 남깁니다.</div>
+<div class="grid">
+<div class="field"><label>소속 시설 <b style="color:#d92d20">*</b></label><select id="assetInputFacility"></select></div>
+<div class="field"><label>공간/구역</label><input id="assetInputSpace" placeholder="예: 기계실, 전기실, 수영장"/></div>
+<div class="field"><label>설비명 <b style="color:#d92d20">*</b></label><input id="assetInputName" placeholder="예: 관류식 보일러 A"/></div>
+<div class="field"><label>설비분류</label><input id="assetInputCategory" placeholder="예: 보일러, 펌프, 여과설비, 전기설비"/></div>
+<div class="field"><label>제조사</label><input id="assetInputManufacturer" placeholder="선택입력"/></div>
+<div class="field"><label>모델명</label><input id="assetInputModel" placeholder="선택입력"/></div>
+<div class="field"><label>제조번호</label><input id="assetInputSerial" placeholder="선택입력"/></div>
+<div class="field"><label>규모/용량</label><input id="assetInputCapacity" placeholder="예: 1.5ton/h, 20HP, 500L (선택입력)"/></div>
+<div class="field"><label>제조년도</label><input id="assetInputManufactureYear" inputmode="numeric" placeholder="예: 2018 (선택입력)"/></div>
+<div class="field"><label>설치연도</label><input id="assetInputYear" inputmode="numeric" placeholder="예: 2019 (선택입력)"/></div>
+<div class="field"><label>설치일</label><input id="assetInputInstallDate" type="date"/></div>
+<div class="field"><label>내용연수</label><input id="assetInputLife" placeholder="예: 10년 (선택입력)"/></div>
+<div class="field"><label>설치위치</label><input id="assetInputLocation" placeholder="예: 지하 기계실"/></div>
+<div class="field"><label>작동형태</label><input id="assetInputOperation" placeholder="예: 자동제어, 상시가동"/></div>
+<div class="field"><label>점검주기</label><select id="assetInputCycle"><option>일일</option><option>주간</option><option>월간</option><option>분기</option><option>반기</option><option>연간</option><option>수시</option><option>해당없음</option></select></div>
+<div class="field"><label>관리상태</label><select id="assetInputStatus"><option>정상</option><option>점검필요</option><option>수리중</option><option>교체예정</option><option>사용중지</option><option>폐기</option></select></div>
+<div class="field"><label>중요도</label><select id="assetInputImportance"><option>상</option><option selected="">중</option><option>하</option></select></div>
+<div class="field"><label>위험도</label><select id="assetInputRisk"><option>양호</option><option>주의</option><option>위험</option></select></div>
+<div class="field"><label>최근점검일</label><input id="assetInputCheck" type="date"/></div>
+<div class="field"><label>예상 교체비</label><input id="assetInputReplace" placeholder="예: 9,000천원"/></div>
+<div class="field"><label>QR관리번호</label><input id="assetInputQrId" placeholder="공란 시 자동 생성"/></div>
+<div class="field wide"><label>비고</label><textarea id="assetInputRemarks" placeholder="특이사항, 부품정보, 관리 시 주의사항 등을 입력하세요." rows="3"></textarea></div>
+<div class="field wide"><label>최근 이력</label><input id="assetInputTimeline" placeholder="예: 2026.07.08 / 기화기 육안점검 및 온도 확인"/></div>
+</div>
+<div class="buttons">
+<button class="btn light" onclick="clearAssetForm()">초기화</button>
+<button class="btn" onclick="deleteSelectedAsset()">삭제요청</button>
+<button class="btn blue" onclick="saveAsset()">설비 등록/수정</button>
+</div>
+</div>
+</section>
+<section class="page" id="cycle">
+<div class="title-row"><div class="title-left"><div class="title-icon">📅</div><div><h1>점검주기 관리</h1><div class="breadcrumb">홈 › 점검주기 관리 › 자동 생성 규칙</div></div></div></div>
+<div class="role-note"><strong>권한 기준</strong> · 관리자와 일반담당자는 점검주기 관리 메뉴를 사용할 수 있습니다. 조회전용 권한에서는 메뉴가 숨김 처리됩니다.</div>
+<div class="panel">
+<div class="section-title"><span class="dot"></span>정기점검 자동 생성 규칙</div>
+<div class="notice">
           소화기 월별 점검, 전기설비 정기점검, 보일러 점검처럼 반복되는 업무는 매번 입력하지 않고 여기서 <b>한 번만 등록</b>합니다.
           등록된 주기에 따라 오늘의 업무에 자동 표시되고, 완료 처리하면 업무일지 또는 유지관리 이력으로 연결됩니다.
         </div>
-        <div class="preset-grid">
-          <div class="preset-card" onclick="applyPreset('소방','소화기 월별 점검','월간')"><strong>소방 월간점검</strong><span>소화기·유도등·소방시설 확인</span></div>
-          <div class="preset-card" onclick="applyPreset('전기','전기설비 정기점검','월간')"><strong>전기 정기점검</strong><span>분전반·조명·누전차단기 확인</span></div>
-          <div class="preset-card" onclick="applyPreset('기계','보일러 및 펌프 점검','주간')"><strong>기계설비 점검</strong><span>보일러·펌프·배관 상태 확인</span></div>
-          <div class="preset-card" onclick="applyPreset('수질','수영장 수질 확인','일일')"><strong>수질 일일확인</strong><span>수온·수질·밸런싱 탱크 확인</span></div>
-          <div class="preset-card" onclick="applyPreset('건축','건축물 상태 점검','분기')"><strong>건축 분기점검</strong><span>누수·타일·창호·바닥 확인</span></div>
-          <div class="preset-card" onclick="applyPreset('안전','시설물 안전점검','반기')"><strong>반기 안전점검</strong><span>난간·계단·외부 시설 확인</span></div>
-        </div>
-      </div>
-      <div class="panel">
-        <div class="section-title"><span class="dot"></span>점검주기 등록</div>
-        <div class="grid">
-          <div class="field"><label>시설명</label><select id="cycleFacility" onchange="renderCycleAssetOptions()"><option>태백국민체육센터</option><option>태백볼링장</option><option>장성국민체육센터</option><option>장성게스트하우스</option></select></div>
-          <div class="field"><label>연계 설비</label><select id="cycleAsset"><option value="">시설 공통업무</option></select></div>
-          <div class="field"><label>분야</label><select id="cycleField"><option>소방</option><option>전기</option><option>기계</option><option>수질</option><option>건축</option><option>안전</option><option>기타</option></select></div>
-          <div class="field"><label>점검항목</label><input id="cycleTask" placeholder="예: 소화기 월별 점검"></div>
-          <div class="field"><label>점검주기</label><select id="cyclePeriod" onchange="previewNextDue()"><option>일일</option><option>주간</option><option>월간</option><option>분기</option><option>반기</option><option>연간</option></select></div>
-          <div class="field"><label>기준일</label><input id="cycleDue" type="date" onchange="previewNextDue()"></div>
-          <div class="field"><label>담당자</label><input id="cycleManager" placeholder="로그인 사용자 성명 자동입력"></div>
-          <div class="field"><label>오늘의 업무 표시</label><select id="cycleActive"><option>사용</option><option>미사용</option></select></div>
-          <div class="field"><label>다음 생성 예정일</label><div class="help"><span id="nextDuePreview" class="schedule-chip">-</span></div></div>
-        </div>
-        <div class="buttons"><button class="btn light" onclick="resetCycleForm()">초기화</button><button class="btn blue" onclick="addCycleTask()">점검주기 등록</button></div>
-      </div>
-      <div class="panel">
-        <div class="section-title"><span class="dot"></span>등록된 점검주기</div>
-        <table class="table"><thead><tr><th>시설명</th><th>분야</th><th>점검항목</th><th>주기</th><th>담당자</th><th>다음 기한</th><th>표시</th><th>관리</th></tr></thead><tbody id="cycleBody"></tbody></table>
-      </div>
-    </section>
+<div class="preset-grid">
+<div class="preset-card" onclick="applyPreset('소방','소화기 월별 점검','월간')"><strong>소방 월간점검</strong><span>소화기·유도등·소방시설 확인</span></div>
+<div class="preset-card" onclick="applyPreset('전기','전기설비 정기점검','월간')"><strong>전기 정기점검</strong><span>분전반·조명·누전차단기 확인</span></div>
+<div class="preset-card" onclick="applyPreset('기계','보일러 및 펌프 점검','주간')"><strong>기계설비 점검</strong><span>보일러·펌프·배관 상태 확인</span></div>
+<div class="preset-card" onclick="applyPreset('수질','수영장 수질 확인','일일')"><strong>수질 일일확인</strong><span>수온·수질·밸런싱 탱크 확인</span></div>
+<div class="preset-card" onclick="applyPreset('건축','건축물 상태 점검','분기')"><strong>건축 분기점검</strong><span>누수·타일·창호·바닥 확인</span></div>
+<div class="preset-card" onclick="applyPreset('안전','시설물 안전점검','반기')"><strong>반기 안전점검</strong><span>난간·계단·외부 시설 확인</span></div>
+</div>
+</div>
+<div class="panel">
+<div class="section-title"><span class="dot"></span>점검주기 등록</div>
+<div class="grid">
+<div class="field"><label>시설명</label><select id="cycleFacility" onchange="renderCycleAssetOptions()"><option>태백국민체육센터</option><option>태백볼링장</option><option>장성국민체육센터</option><option>장성게스트하우스</option></select></div>
+<div class="field"><label>연계 설비</label><select id="cycleAsset"><option value="">시설 공통업무</option></select></div>
+<div class="field"><label>분야</label><select id="cycleField"><option>소방</option><option>전기</option><option>기계</option><option>수질</option><option>건축</option><option>안전</option><option>기타</option></select></div>
+<div class="field"><label>점검항목</label><input id="cycleTask" placeholder="예: 소화기 월별 점검"/></div>
+<div class="field"><label>점검주기</label><select id="cyclePeriod" onchange="previewNextDue()"><option>일일</option><option>주간</option><option>월간</option><option>분기</option><option>반기</option><option>연간</option></select></div>
+<div class="field"><label>기준일</label><input id="cycleDue" onchange="previewNextDue()" type="date"/></div>
+<div class="field"><label>담당자</label><input id="cycleManager" placeholder="로그인 사용자 성명 자동입력"/></div>
+<div class="field"><label>오늘의 업무 표시</label><select id="cycleActive"><option>사용</option><option>미사용</option></select></div>
+<div class="field"><label>다음 생성 예정일</label><div class="help"><span class="schedule-chip" id="nextDuePreview">-</span></div></div>
+</div>
+<div class="buttons"><button class="btn light" onclick="resetCycleForm()">초기화</button><button class="btn blue" onclick="addCycleTask()">점검주기 등록</button></div>
+</div>
+<div class="panel">
+<div class="section-title"><span class="dot"></span>등록된 점검주기</div>
+<table class="table"><thead><tr><th>시설명</th><th>분야</th><th>점검항목</th><th>주기</th><th>담당자</th><th>다음 기한</th><th>표시</th><th>관리</th></tr></thead><tbody id="cycleBody"></tbody></table>
+</div>
+</section>
 </main>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
@@ -2455,8 +2397,6 @@ if(typeof cloudProfile==='undefined') var cloudProfile=window.cloudProfile||null
 
 changeDept(); changeSubField(); initTodayDates(); previewNextDue(); renderDailyRows(); renderAssetList(); showAsset('boilerA'); renderAccountTables(); renderSampleStatus(); renderFacilityListStable(); applyMenuByRoleStable(); renderCycleTasks(); renderDashboardData(); renderHistory(); renderExportPreview(); renderDeleteRequests(); renderFacilityList(); renderStatsCharts(); renderTodayTasks(); applyRole(); renderUserFlowNavigator(); renderCycleAssetOptions();
 </script>
-
-
 <script>
 /* v30 DB 중심 구조 패치: 단일 임시 DB(localStorage) + 설비/QR/점검주기/이력 연동 */
 const TFMS_DB_KEY = 'tfms_v30_db_stable';
@@ -2688,8 +2628,6 @@ function resetTFMSDB(){
 
 loadDB(); refreshAllV30();
 </script>
-
-
 <script id="v317-refined-script">
 (function(){
   function monthText(){
@@ -2723,7 +2661,6 @@ loadDB(); refreshAllV30();
   document.addEventListener('DOMContentLoaded',()=>setTimeout(updateV317SideSummary,0));
 })();
 </script>
-
 <script id="v318-facility-scope-patch">
 (function(){
   const ALL_FACILITIES_V318 = {
@@ -2883,9 +2820,6 @@ loadDB(); refreshAllV30();
   },0);
 })();
 </script>
-
-
-
 <script id="tfms-v3262-auto-db-config">
 (function(){
   const CONFIG_KEY='tfms_supabase_config_v2';
@@ -2894,7 +2828,6 @@ loadDB(); refreshAllV30();
   window.TFMS_SUPABASE_CONFIG=AUTO_CONFIG;
 })();
 </script>
-
 <script id="tfms-supabase-enterprise-adapter">
 /* TFMS v31 UI + Enterprise DB v1 연결 */
 (function(){
@@ -3438,9 +3371,6 @@ loadDB(); refreshAllV30();
   setTimeout(init,0);
 })();
 </script>
-
-
-
 <script id="tfms-v3113-deferred-ui-init">
 document.addEventListener('DOMContentLoaded',function(){
   setTimeout(function(){
@@ -3459,8 +3389,6 @@ document.addEventListener('DOMContentLoaded',function(){
   },100);
 });
 </script>
-
-
 <script id="tfms-v3114-maintenance-history-fix">
 (function(){
   function el(id){return document.getElementById(id)}
@@ -3617,19 +3545,15 @@ document.addEventListener('DOMContentLoaded',function(){
   });
 })();
 </script>
-
-
-<div id="maintenanceDetailModal" class="tfms-detail-modal" onclick="if(event.target===this)closeMaintenanceDetailV3115()">
-  <div class="tfms-detail-box">
-    <div class="tfms-detail-head">
-      <h2>유지관리 상세내용 <small style="font-size:12px;color:#667085">관리자 조회</small></h2>
-      <button class="tfms-detail-close" onclick="closeMaintenanceDetailV3115()">닫기</button>
-    </div>
-    <div id="maintenanceDetailContent"></div>
-  </div>
+<div class="tfms-detail-modal" id="maintenanceDetailModal" onclick="if(event.target===this)closeMaintenanceDetailV3115()">
+<div class="tfms-detail-box">
+<div class="tfms-detail-head">
+<h2>유지관리 상세내용 <small style="font-size:12px;color:#667085">관리자 조회</small></h2>
+<button class="tfms-detail-close" onclick="closeMaintenanceDetailV3115()">닫기</button>
 </div>
-
-
+<div id="maintenanceDetailContent"></div>
+</div>
+</div>
 <script id="tfms-v3115-maintenance-detail">
 (function(){
   function esc(v){
@@ -3751,8 +3675,6 @@ document.addEventListener('DOMContentLoaded',function(){
   });
 })();
 </script>
-
-
 <script id="tfms-v32-v12-user-scope-fix">
 (function(){
   function q(id){return document.getElementById(id)}
@@ -3923,8 +3845,6 @@ document.addEventListener('DOMContentLoaded',function(){
   });
 })();
 </script>
-
-
 <script id="tfms-v32-v13-dept-dropdown-fix">
 (function(){
   function getEl(id){ return document.getElementById(id); }
@@ -3997,8 +3917,6 @@ document.addEventListener('DOMContentLoaded',function(){
   });
 })();
 </script>
-
-
 <script id="tfms-v32-v14-sidebar-scope-fix">
 (function(){
   function isAdminV14(){
@@ -4089,8 +4007,6 @@ document.addEventListener('DOMContentLoaded',function(){
   });
 })();
 </script>
-
-
 <script id="tfms-v32-v15-definitive-scope-fix">
 (function(){
   let scopeObserverV15=null;
@@ -4235,8 +4151,6 @@ document.addEventListener('DOMContentLoaded',function(){
   });
 })();
 </script>
-
-
 <script id="tfms-v32-v16-session-scope-fix">
 (function(){
   let observerV16=null;
@@ -4351,8 +4265,6 @@ document.addEventListener('DOMContentLoaded',function(){
   });
 })();
 </script>
-
-
 <script id="tfms-v321-maintenance-register-complete">
 (function(){
   const DRAFT_KEY='tfms_v321_maintenance_draft';
@@ -4622,8 +4534,6 @@ document.addEventListener('DOMContentLoaded',function(){
 
 })();
 </script>
-
-
 <script id="tfms-v3211-duplicate-dept-fix">
 (function(){
   function cleanDuplicateDept(){
@@ -4668,8 +4578,6 @@ document.addEventListener('DOMContentLoaded',function(){
   
 })();
 </script>
-
-
 <script id="tfms-v3212-no-flicker-fix">
 (function(){
   let appliedPageKey='';
@@ -4742,20 +4650,16 @@ document.addEventListener('DOMContentLoaded',function(){
   });
 })();
 </script>
-
-
-<div id="dailyPreviewModalV322" class="modal-overlay hidden">
-  <div class="modal-card" style="max-width:900px">
-    <div class="modal-head">
-      <h2>업무일지 미리보기</h2>
-      <button class="modal-close" onclick="closeDailyPreviewV322()">×</button>
-    </div>
-    <div id="dailyPreviewContentV322"></div>
-    <div class="buttons"><button class="btn" onclick="closeDailyPreviewV322()">닫기</button></div>
-  </div>
+<div class="modal-overlay hidden" id="dailyPreviewModalV322">
+<div class="modal-card" style="max-width:900px">
+<div class="modal-head">
+<h2>업무일지 미리보기</h2>
+<button class="modal-close" onclick="closeDailyPreviewV322()">×</button>
 </div>
-
-
+<div id="dailyPreviewContentV322"></div>
+<div class="buttons"><button class="btn" onclick="closeDailyPreviewV322()">닫기</button></div>
+</div>
+</div>
 <script id="tfms-v322-dailylog-db-dashboard">
 (function(){
   const CONFIG_KEY='tfms_supabase_config_v2';
@@ -5043,8 +4947,6 @@ document.addEventListener('DOMContentLoaded',function(){
   }
 })();
 </script>
-
-
 <script id="tfms-v323-equipment-dept-scope">
 (function(){
   function sessionV323(){
@@ -5277,8 +5179,6 @@ document.addEventListener('DOMContentLoaded',function(){
   });
 })();
 </script>
-
-
 <script id="tfms-v324-cycle-facility-scope">
 (function(){
   let cycleScopeKeyV324='';
@@ -5389,8 +5289,6 @@ document.addEventListener('DOMContentLoaded',function(){
   },true);
 })();
 </script>
-
-
 <script id="tfms-v3241-cycle-scope-corrected">
 (function(){
   const DEPT_FACILITIES_V3241={
@@ -5472,8 +5370,6 @@ document.addEventListener('DOMContentLoaded',function(){
   },true);
 })();
 </script>
-
-
 <script id="tfms-v325-session-reset">
 (function(){
   const CONFIG_KEY='tfms_supabase_config_v2';
@@ -5718,8 +5614,6 @@ document.addEventListener('DOMContentLoaded',function(){
   });
 })();
 </script>
-
-
 <style id="tfms-v3261-today-flow-style">
 .today-flow-actions{display:flex;gap:7px;flex-wrap:wrap}
 .today-flow-btn{border:1px solid #cbd5e1;background:#fff;border-radius:8px;padding:8px 11px;font-weight:900;cursor:pointer}
@@ -5741,19 +5635,17 @@ document.addEventListener('DOMContentLoaded',function(){
 .tfms-flow-choice span{font-size:13px;color:#667085;line-height:1.45}
 @media(max-width:650px){.tfms-flow-choice{grid-template-columns:1fr}}
 </style>
-
-<div id="todayFlowModalV3261" class="tfms-flow-modal" onclick="if(event.target===this)closeTodayFlowV3261()">
-  <div class="tfms-flow-box">
-    <h2>오늘의 업무 처리</h2>
-    <p id="todayFlowModalTextV3261">점검 결과를 선택하세요.</p>
-    <div class="tfms-flow-choice">
-      <button onclick="finishTodayNormalV3261()"><strong>✅ 이상 없음 · 완료</strong><span>정상 점검으로 처리하고 설비 최근 점검일과 이력에 자동 반영합니다.</span></button>
-      <button onclick="sendTodayIssueV3261()"><strong>⚠ 특이사항 있음 · 이력등록</strong><span>시설·설비·업무내용을 유지관리 등록 화면에 자동으로 불러옵니다.</span></button>
-    </div>
-    <div class="buttons"><button class="btn" onclick="closeTodayFlowV3261()">취소</button></div>
-  </div>
+<div class="tfms-flow-modal" id="todayFlowModalV3261" onclick="if(event.target===this)closeTodayFlowV3261()">
+<div class="tfms-flow-box">
+<h2>오늘의 업무 처리</h2>
+<p id="todayFlowModalTextV3261">점검 결과를 선택하세요.</p>
+<div class="tfms-flow-choice">
+<button onclick="finishTodayNormalV3261()"><strong>✅ 이상 없음 · 완료</strong><span>정상 점검으로 처리하고 설비 최근 점검일과 이력에 자동 반영합니다.</span></button>
+<button onclick="sendTodayIssueV3261()"><strong>⚠ 특이사항 있음 · 이력등록</strong><span>시설·설비·업무내용을 유지관리 등록 화면에 자동으로 불러옵니다.</span></button>
 </div>
-
+<div class="buttons"><button class="btn" onclick="closeTodayFlowV3261()">취소</button></div>
+</div>
+</div>
 <script id="tfms-v3261-today-maintenance-flow">
 (function(){
   const LINK_KEY='tfms_v3261_today_link';
@@ -5880,10 +5772,7 @@ document.addEventListener('DOMContentLoaded',function(){
   });
 })();
 </script>
-
 <script>document.addEventListener('DOMContentLoaded',()=>{try{handleRequestDeptChange()}catch(e){}});</script>
-
-
 <script id="tfms-v3282-delete-request-fix">
 /* v32.8.2: 삭제요청 함수의 스코프 오류(sb is not defined) 수정 */
 (function(){
@@ -5954,14 +5843,10 @@ document.addEventListener('DOMContentLoaded',function(){
   };
 })();
 </script>
-
-
-
 <style id="tfms-v3302-stable-scope-style">
 /* v33.0.2 시범운영 안정화: QR 점검 기능은 코드만 보존하고 화면 연결은 숨김 */
 #equipment .asset-mini-actions button[onclick*="qrCheck"]{display:none!important}
 </style>
-
 <script id="tfms-v3302-stable-scope-patch">
 /*
   v33.0.2 Pilot Stable QA
@@ -6128,9 +6013,6 @@ document.addEventListener('DOMContentLoaded',function(){
   window.addEventListener('load',()=>setTimeout(refreshScopeViewsV3302,500));
 })();
 </script>
-
-
-
 <script id="tfms-v3303-register-facility-link-patch">
 /*
   v33.0.3
@@ -6211,8 +6093,6 @@ document.addEventListener('DOMContentLoaded',function(){
   window.addEventListener('load',()=>setTimeout(bind3303,300));
 })();
 </script>
-
-
 <script>
 /* TFMS v33.0.4 - 자료구분별 실제 XLSX 다운로드 */
 (function(){
@@ -6442,8 +6322,6 @@ document.addEventListener('DOMContentLoaded',function(){
   document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{refreshExportFacilities();refreshExportYears();window.renderExportPreview();},800));
 })();
 </script>
-
-
 <script>
 /* TFMS v33.0.7 - 관리자 설비 삭제권한 수정 패치 */
 (function(){
@@ -6536,8 +6414,6 @@ document.addEventListener('DOMContentLoaded',function(){
   });
 })();
 </script>
-
-
 <script id="tfms-v3308-asset-db-persistence">
 /* TFMS v33.0.9: 설비관리 Supabase 영구저장 패치 */
 (function(){
@@ -6781,7 +6657,6 @@ document.addEventListener('DOMContentLoaded',function(){
   };
 })();
 </script>
-
 <script id="tfms-v353-delete-manage-controller">
 /* TFMS v35.3 - 삭제관리 처리버튼 및 관리자 권한판별 최종 보완 */
 (function(){
@@ -6944,8 +6819,6 @@ document.addEventListener('DOMContentLoaded',function(){
   });
 })();
 </script>
-
-
 <script id="tfms-v354-delete-sync-controller">
 (function(){
   'use strict';
@@ -7042,8 +6915,6 @@ document.addEventListener('DOMContentLoaded',function(){
   };
 })();
 </script>
-
-
 <style id="tfms-v355-new-asset-ux-style">
   #tfmsAssetModeBanner{
     margin:14px 0 10px;
@@ -7068,7 +6939,6 @@ document.addEventListener('DOMContentLoaded',function(){
     font-weight:700;
   }
 </style>
-
 <script id="tfms-v355-new-asset-ux-controller">
 (function(){
   'use strict';
@@ -7217,8 +7087,6 @@ document.addEventListener('DOMContentLoaded',function(){
   }
 })();
 </script>
-
-
 <script id="tfms-v356-delete-request-final-controller">
 (function(){
   'use strict';
@@ -7323,8 +7191,6 @@ document.addEventListener('DOMContentLoaded',function(){
   };
 })();
 </script>
-
-
 <script id="tfms-v357-live-refresh">
 (function(){
   'use strict';
@@ -7412,8 +7278,6 @@ document.addEventListener('DOMContentLoaded',function(){
   });
 })();
 </script>
-
-
 <script id="tfms-v358-space-location-persistence-fix">
 (function(){
   'use strict';
@@ -7452,8 +7316,6 @@ document.addEventListener('DOMContentLoaded',function(){
   document.addEventListener('DOMContentLoaded',()=>setTimeout(normalizeAssetSpace,800));
 })();
 </script>
-
-
 <script id="tfms-v359-category-not-null-fix">
 (function(){
   'use strict';
@@ -7502,8 +7364,6 @@ document.addEventListener('DOMContentLoaded',function(){
   document.addEventListener('DOMContentLoaded',()=>setTimeout(ensureCategory,700));
 })();
 </script>
-
-
 <script id="tfms-v360-maintenance-register-final-fix">
 (function(){
   'use strict';
@@ -7707,8 +7567,6 @@ document.addEventListener('DOMContentLoaded',function(){
   setTimeout(bindRegisterButton,900);
 })();
 </script>
-
-
 <script id="tfms-v361-maintenance-history-final-fix">
 (function(){
   'use strict';
@@ -7902,8 +7760,6 @@ document.addEventListener('DOMContentLoaded',function(){
   });
 })();
 </script>
-
-
 <style id="tfms-v362-version-style">
   #tfmsVersionBadge{
     cursor:pointer;
@@ -7965,64 +7821,56 @@ document.addEventListener('DOMContentLoaded',function(){
   #tfmsVersionModal .change-item ul{margin:0;padding-left:20px;color:#475569}
   #tfmsVersionModal .change-item li{margin:4px 0}
 </style>
-
-<div id="tfmsVersionModal" aria-hidden="true">
-  <div class="version-box" role="dialog" aria-modal="true" aria-labelledby="tfmsVersionTitle">
-    <div class="version-head">
-      <h3 id="tfmsVersionTitle">TFMS 업데이트 내역</h3>
-      <button type="button" class="version-close" id="tfmsVersionClose" aria-label="닫기">×</button>
-    </div>
-    <div class="version-body">
-      <div class="current-build">현재 버전: v36.3 Stable · Build 2026.07.22</div>
-
-      <div class="change-item">
-        <strong>v36.3 Stable</strong>
-        <ul>
-          <li>상단 버전 표시를 실제 버전으로 갱신</li>
-          <li>버전 배지 클릭 시 업데이트 내역 확인 기능 추가</li>
-        </ul>
-      </div>
-
-      <div class="change-item">
-        <strong>v36.1</strong>
-        <ul>
-          <li>유지관리 등록 후 조회 화면 미표시 문제 수정</li>
-          <li>조회 메뉴 진입 시 Supabase 유지관리 이력 자동 재조회</li>
-        </ul>
-      </div>
-
-      <div class="change-item">
-        <strong>v36.0</strong>
-        <ul>
-          <li>유지관리 등록 버튼 무반응 문제 수정</li>
-          <li>등록 성공·실패·필수항목 안내 메시지 추가</li>
-        </ul>
-      </div>
-
-      <div class="change-item">
-        <strong>v35.9</strong>
-        <ul>
-          <li>설비분류 빈값으로 인한 저장 오류 수정</li>
-        </ul>
-      </div>
-
-      <div class="change-item">
-        <strong>v35.8</strong>
-        <ul>
-          <li>공간·구역 및 설치위치 새로고침 유지 처리</li>
-        </ul>
-      </div>
-
-      <div class="change-item">
-        <strong>v35.7 이하</strong>
-        <ul>
-          <li>F5 없는 화면 갱신, 삭제요청, 신규설비 등록 안전장치 등 안정화</li>
-        </ul>
-      </div>
-    </div>
-  </div>
+<div aria-hidden="true" id="tfmsVersionModal">
+<div aria-labelledby="tfmsVersionTitle" aria-modal="true" class="version-box" role="dialog">
+<div class="version-head">
+<h3 id="tfmsVersionTitle">TFMS 업데이트 내역</h3>
+<button aria-label="닫기" class="version-close" id="tfmsVersionClose" type="button">×</button>
 </div>
-
+<div class="version-body">
+<div class="current-build">현재 버전: v36.3 Stable · Build 2026.07.22</div>
+<div class="change-item">
+<strong>v36.3 Stable</strong>
+<ul>
+<li>상단 버전 표시를 실제 버전으로 갱신</li>
+<li>버전 배지 클릭 시 업데이트 내역 확인 기능 추가</li>
+</ul>
+</div>
+<div class="change-item">
+<strong>v36.1</strong>
+<ul>
+<li>유지관리 등록 후 조회 화면 미표시 문제 수정</li>
+<li>조회 메뉴 진입 시 Supabase 유지관리 이력 자동 재조회</li>
+</ul>
+</div>
+<div class="change-item">
+<strong>v36.0</strong>
+<ul>
+<li>유지관리 등록 버튼 무반응 문제 수정</li>
+<li>등록 성공·실패·필수항목 안내 메시지 추가</li>
+</ul>
+</div>
+<div class="change-item">
+<strong>v35.9</strong>
+<ul>
+<li>설비분류 빈값으로 인한 저장 오류 수정</li>
+</ul>
+</div>
+<div class="change-item">
+<strong>v35.8</strong>
+<ul>
+<li>공간·구역 및 설치위치 새로고침 유지 처리</li>
+</ul>
+</div>
+<div class="change-item">
+<strong>v35.7 이하</strong>
+<ul>
+<li>F5 없는 화면 갱신, 삭제요청, 신규설비 등록 안전장치 등 안정화</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
 <script id="tfms-v362-version-controller">
 (function(){
   'use strict';
@@ -8052,8 +7900,6 @@ document.addEventListener('DOMContentLoaded',function(){
   });
 })();
 </script>
-
-
 <script id="tfms-v363-stats-delete-final-fix">
 (function(){
   'use strict';
@@ -8297,8 +8143,6 @@ document.addEventListener('DOMContentLoaded',function(){
   }
 })();
 </script>
-
-
 <style id="tfms-v370-maintenance-detail-style">
   #historyBody tr.tfms-history-clickable{cursor:pointer}
   #historyBody tr.tfms-history-clickable:hover{background:#f8fafc}
@@ -8337,7 +8181,6 @@ document.addEventListener('DOMContentLoaded',function(){
     #maintenanceDetailModal .tfms-detail-item.wide{grid-column:auto}
   }
 </style>
-
 <script id="tfms-v370-maintenance-detail-controller">
 (function(){
   'use strict';
@@ -8553,8 +8396,6 @@ document.addEventListener('DOMContentLoaded',function(){
   setTimeout(applyBuildVersion,100);
 })();
 </script>
-
-
 <script id="tfms-v371-export-full-fields-fix">
 (function(){
   'use strict';
@@ -8885,8 +8726,6 @@ document.addEventListener('DOMContentLoaded',function(){
   });
 })();
 </script>
-
-
 <style id="tfms-v372-maintenance-edit-style">
   #maintenanceEditModal{
     position:fixed;inset:0;z-index:100002;display:none;align-items:center;justify-content:center;
@@ -8926,90 +8765,80 @@ document.addEventListener('DOMContentLoaded',function(){
     #maintenanceEditModal .edit-field.wide{grid-column:auto}
   }
 </style>
-
 <div id="maintenanceEditModal" onclick="if(event.target===this)closeMaintenanceEditV372()">
-  <div class="edit-box" role="dialog" aria-modal="true" aria-labelledby="maintenanceEditTitle">
-    <div class="edit-head">
-      <h3 id="maintenanceEditTitle">유지관리 이력 수정</h3>
-      <button type="button" class="edit-close" onclick="closeMaintenanceEditV372()" aria-label="닫기">×</button>
-    </div>
-    <div class="edit-body">
-      <div class="tfms-edit-note">
+<div aria-labelledby="maintenanceEditTitle" aria-modal="true" class="edit-box" role="dialog">
+<div class="edit-head">
+<h3 id="maintenanceEditTitle">유지관리 이력 수정</h3>
+<button aria-label="닫기" class="edit-close" onclick="closeMaintenanceEditV372()" type="button">×</button>
+</div>
+<div class="edit-body">
+<div class="tfms-edit-note">
         관리자 또는 해당 이력을 최초 등록한 사용자만 수정할 수 있습니다.
         수정 후 조회·통계·엑셀자료가 즉시 갱신됩니다.
       </div>
-      <input type="hidden" id="editMaintenanceId">
-      <input type="hidden" id="editMaintenanceOwner">
-
-      <div class="edit-grid">
-        <div class="edit-field"><label>등록일자</label><input id="editRegisteredOn" type="date"></div>
-        <div class="edit-field"><label>시행일자</label><input id="editExecutedOn" type="date"></div>
-
-        <div class="edit-field"><label>접수구분</label>
-          <select id="editReceiptCategory">
-            <option>점검</option><option>보수</option><option>교체</option><option>민원</option><option>기타</option>
-          </select>
-        </div>
-        <div class="edit-field"><label>유지관리 유형</label>
-          <select id="editMaintenanceType">
-            <option>예방정비</option><option>법정점검</option><option>고장수리</option>
-            <option>노후교체</option><option>민원조치</option><option>안전조치</option><option>시설개선</option>
-          </select>
-        </div>
-
-        <div class="edit-field"><label>분야</label>
-          <select id="editFieldCategory">
-            <option>기계</option><option>전기</option><option>건축</option><option>토목</option>
-            <option>소방</option><option>통신</option><option>수질</option><option>환경정비</option>
-            <option>조경</option><option>기타</option>
-          </select>
-        </div>
-        <div class="edit-field"><label>세부분야</label><input id="editSubfield"></div>
-
-        <div class="edit-field"><label>중요도</label>
-          <select id="editPriority">
-            <option>긴급</option><option>높음</option><option>보통</option><option>낮음</option>
-          </select>
-        </div>
-        <div class="edit-field"><label>처리상태</label>
-          <select id="editProcessStatus">
-            <option>조치완료</option><option>진행중</option><option>미조치</option>
-            <option>예산반영 필요</option><option>외부업체 의뢰</option>
-          </select>
-        </div>
-
-        <div class="edit-field"><label>진행구분</label>
-          <select id="editProgressType">
-            <option value="">선택 안 함</option><option>예산</option><option>일상경비</option>
-            <option>자체조치</option><option>기타</option>
-          </select>
-        </div>
-        <div class="edit-field"><label>조치결과</label>
-          <select id="editActionResult">
-            <option value="">선택 안 함</option><option>정상</option><option>일부 보완</option>
-            <option>보완 필요</option><option>추가 조치 필요</option>
-          </select>
-        </div>
-
-        <div class="edit-field wide"><label>세부내용</label><textarea id="editDetail"></textarea></div>
-        <div class="edit-field wide"><label>조치내용</label><textarea id="editActionDetail"></textarea></div>
-        <div class="edit-field wide"><label>향후계획</label><textarea id="editFuturePlan"></textarea></div>
-
-        <div class="edit-field"><label>예산과목</label><input id="editBudgetAccount"></div>
-        <div class="edit-field"><label>소요금액(원)</label><input id="editAmount" inputmode="numeric"></div>
-        <div class="edit-field wide"><label>경영평가 연계</label>
-          <input id="editEvaluationTags" placeholder="예: 예방정비, 안전관리">
-        </div>
-      </div>
-
-      <div class="edit-actions">
-        <button type="button" class="btn" onclick="closeMaintenanceEditV372()">취소</button>
-        <button type="button" class="btn blue" id="saveMaintenanceEditBtn" onclick="saveMaintenanceEditV372()">수정 저장</button>
-      </div>
-    </div>
-  </div>
+<input id="editMaintenanceId" type="hidden"/>
+<input id="editMaintenanceOwner" type="hidden"/>
+<div class="edit-grid">
+<div class="edit-field"><label>등록일자</label><input id="editRegisteredOn" type="date"/></div>
+<div class="edit-field"><label>시행일자</label><input id="editExecutedOn" type="date"/></div>
+<div class="edit-field"><label>접수구분</label>
+<select id="editReceiptCategory">
+<option>점검</option><option>보수</option><option>교체</option><option>민원</option><option>기타</option>
+</select>
 </div>
-
+<div class="edit-field"><label>유지관리 유형</label>
+<select id="editMaintenanceType">
+<option>예방정비</option><option>법정점검</option><option>고장수리</option>
+<option>노후교체</option><option>민원조치</option><option>안전조치</option><option>시설개선</option>
+</select>
+</div>
+<div class="edit-field"><label>분야</label>
+<select id="editFieldCategory">
+<option>기계</option><option>전기</option><option>건축</option><option>토목</option>
+<option>소방</option><option>통신</option><option>수질</option><option>환경정비</option>
+<option>조경</option><option>기타</option>
+</select>
+</div>
+<div class="edit-field"><label>세부분야</label><input id="editSubfield"/></div>
+<div class="edit-field"><label>중요도</label>
+<select id="editPriority">
+<option>긴급</option><option>높음</option><option>보통</option><option>낮음</option>
+</select>
+</div>
+<div class="edit-field"><label>처리상태</label>
+<select id="editProcessStatus">
+<option>조치완료</option><option>진행중</option><option>미조치</option>
+<option>예산반영 필요</option><option>외부업체 의뢰</option>
+</select>
+</div>
+<div class="edit-field"><label>진행구분</label>
+<select id="editProgressType">
+<option value="">선택 안 함</option><option>예산</option><option>일상경비</option>
+<option>자체조치</option><option>기타</option>
+</select>
+</div>
+<div class="edit-field"><label>조치결과</label>
+<select id="editActionResult">
+<option value="">선택 안 함</option><option>정상</option><option>일부 보완</option>
+<option>보완 필요</option><option>추가 조치 필요</option>
+</select>
+</div>
+<div class="edit-field wide"><label>세부내용</label><textarea id="editDetail"></textarea></div>
+<div class="edit-field wide"><label>조치내용</label><textarea id="editActionDetail"></textarea></div>
+<div class="edit-field wide"><label>향후계획</label><textarea id="editFuturePlan"></textarea></div>
+<div class="edit-field"><label>예산과목</label><input id="editBudgetAccount"/></div>
+<div class="edit-field"><label>소요금액(원)</label><input id="editAmount" inputmode="numeric"/></div>
+<div class="edit-field wide"><label>경영평가 연계</label>
+<input id="editEvaluationTags" placeholder="예: 예방정비, 안전관리"/>
+</div>
+</div>
+<div class="edit-actions">
+<button class="btn" onclick="closeMaintenanceEditV372()" type="button">취소</button>
+<button class="btn blue" id="saveMaintenanceEditBtn" onclick="saveMaintenanceEditV372()" type="button">수정 저장</button>
+</div>
+</div>
+</div>
+</div>
 <script id="tfms-v372-maintenance-edit-controller">
 (function(){
   'use strict';
@@ -9389,8 +9218,6 @@ document.addEventListener('DOMContentLoaded',function(){
   setTimeout(applyBuildVersion372,120);
 })();
 </script>
-
-
 <style id="tfms-v380-action-history-style">
   #maintenanceActionModal{
     position:fixed;inset:0;z-index:100003;display:none;align-items:center;justify-content:center;
@@ -9448,70 +9275,68 @@ document.addEventListener('DOMContentLoaded',function(){
     #maintenanceActionModal .action-field.wide{grid-column:auto}
   }
 </style>
-
 <div id="maintenanceActionModal" onclick="if(event.target===this)closeMaintenanceActionV380()">
-  <div class="action-box" role="dialog" aria-modal="true" aria-labelledby="maintenanceActionTitle">
-    <div class="action-head">
-      <h3 id="maintenanceActionTitle">유지관리 조치 추가</h3>
-      <button type="button" class="action-close" onclick="closeMaintenanceActionV380()" aria-label="닫기">×</button>
-    </div>
-    <div class="action-body">
-      <div class="tfms-edit-note">
+<div aria-labelledby="maintenanceActionTitle" aria-modal="true" class="action-box" role="dialog">
+<div class="action-head">
+<h3 id="maintenanceActionTitle">유지관리 조치 추가</h3>
+<button aria-label="닫기" class="action-close" onclick="closeMaintenanceActionV380()" type="button">×</button>
+</div>
+<div class="action-body">
+<div class="tfms-edit-note">
         기존 발견·검토·임시조치 기록은 그대로 보존하고, 새로운 조치이력을 시간순으로 추가합니다.
       </div>
-      <input type="hidden" id="actionMaintenanceId">
-      <div class="action-grid">
-        <div class="action-field">
-          <label>조치일자</label>
-          <input type="date" id="actionDate">
-        </div>
-        <div class="action-field">
-          <label>조치단계</label>
-          <select id="actionStage">
-            <option>검토</option>
-            <option>임시조치</option>
-            <option>원인확인</option>
-            <option>자체보수</option>
-            <option>업체조치</option>
-            <option>최종조치</option>
-            <option>완료확인</option>
-          </select>
-        </div>
-        <div class="action-field">
-          <label>처리상태</label>
-          <select id="actionProcessStatus">
-            <option>진행중</option>
-            <option>외부업체 의뢰</option>
-            <option>예산반영 필요</option>
-            <option>조치완료</option>
-          </select>
-        </div>
-        <div class="action-field">
-          <label>조치결과</label>
-          <select id="actionResult">
-            <option>보완 필요</option>
-            <option>일부 보완</option>
-            <option>추가 조치 필요</option>
-            <option>정상</option>
-          </select>
-        </div>
-        <div class="action-field wide">
-          <label>조치내용</label>
-          <textarea id="actionDetail" placeholder="확인한 원인과 실시한 조치를 구체적으로 입력"></textarea>
-        </div>
-        <div class="action-field wide">
-          <label>향후계획</label>
-          <textarea id="actionFuturePlan" placeholder="추가 점검, 업체 방문, 재발 확인 등 향후 계획 입력"></textarea>
-        </div>
-      </div>
-      <div class="action-actions">
-        <button type="button" class="btn" onclick="closeMaintenanceActionV380()">취소</button>
-        <button type="button" class="btn blue" id="saveMaintenanceActionBtn" onclick="saveMaintenanceActionV380()">조치이력 저장</button>
-      </div>
-    </div>
-  </div>
+<input id="actionMaintenanceId" type="hidden"/>
+<div class="action-grid">
+<div class="action-field">
+<label>조치일자</label>
+<input id="actionDate" type="date"/>
 </div>
-
+<div class="action-field">
+<label>조치단계</label>
+<select id="actionStage">
+<option>검토</option>
+<option>임시조치</option>
+<option>원인확인</option>
+<option>자체보수</option>
+<option>업체조치</option>
+<option>최종조치</option>
+<option>완료확인</option>
+</select>
+</div>
+<div class="action-field">
+<label>처리상태</label>
+<select id="actionProcessStatus">
+<option>진행중</option>
+<option>외부업체 의뢰</option>
+<option>예산반영 필요</option>
+<option>조치완료</option>
+</select>
+</div>
+<div class="action-field">
+<label>조치결과</label>
+<select id="actionResult">
+<option>보완 필요</option>
+<option>일부 보완</option>
+<option>추가 조치 필요</option>
+<option>정상</option>
+</select>
+</div>
+<div class="action-field wide">
+<label>조치내용</label>
+<textarea id="actionDetail" placeholder="확인한 원인과 실시한 조치를 구체적으로 입력"></textarea>
+</div>
+<div class="action-field wide">
+<label>향후계획</label>
+<textarea id="actionFuturePlan" placeholder="추가 점검, 업체 방문, 재발 확인 등 향후 계획 입력"></textarea>
+</div>
+</div>
+<div class="action-actions">
+<button class="btn" onclick="closeMaintenanceActionV380()" type="button">취소</button>
+<button class="btn blue" id="saveMaintenanceActionBtn" onclick="saveMaintenanceActionV380()" type="button">조치이력 저장</button>
+</div>
+</div>
+</div>
+</div>
 <script id="tfms-v380-action-history-controller">
 (function(){
   'use strict';
@@ -9879,8 +9704,6 @@ document.addEventListener('DOMContentLoaded',function(){
   });
 })();
 </script>
-
-
 <style id="tfms-v390-daily-journal-style">
   .dj-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
   .dj-tab{border:1px solid #cbd5e1;background:#fff;border-radius:9px;padding:9px 13px;font-weight:800;cursor:pointer}
@@ -9937,18 +9760,16 @@ document.addEventListener('DOMContentLoaded',function(){
     @page{size:A4 portrait;margin:0}
   }
 </style>
-
 <div id="dailyJournalPreviewModal" onclick="if(event.target===this)closeDailyJournalPreviewV390()">
-  <div class="dj-modal-bar">
-    <strong id="djPreviewTitle">업무일지 미리보기</strong>
-    <div class="dj-modal-actions">
-      <button type="button" class="btn blue" onclick="window.print()">PDF 출력</button>
-      <button type="button" class="btn" onclick="closeDailyJournalPreviewV390()">닫기</button>
-    </div>
-  </div>
-  <div class="dj-sheet-wrap"><div id="dailyJournalPreviewSheet" class="dj-sheet"></div></div>
+<div class="dj-modal-bar">
+<strong id="djPreviewTitle">업무일지 미리보기</strong>
+<div class="dj-modal-actions">
+<button class="btn blue" onclick="window.print()" type="button">PDF 출력</button>
+<button class="btn" onclick="closeDailyJournalPreviewV390()" type="button">닫기</button>
 </div>
-
+</div>
+<div class="dj-sheet-wrap"><div class="dj-sheet" id="dailyJournalPreviewSheet"></div></div>
+</div>
 <script id="tfms-v390-daily-journal-controller">
 (function(){
   'use strict';
@@ -10338,8 +10159,6 @@ document.addEventListener('DOMContentLoaded',function(){
   setTimeout(()=>{applyVersion();rebuildDailyPage()},120);
 })();
 </script>
-
-
 <style id="tfms-v391-print-layout-fix">
   /* 미리보기와 PDF 출력에서 행 높이가 내용 길이에 따라 달라지지 않도록 고정 */
   .dj-sheet table{table-layout:fixed!important}
@@ -10408,7 +10227,6 @@ document.addEventListener('DOMContentLoaded',function(){
     font-size:7.8px;line-height:1.35;margin-top:5px
   }
 </style>
-
 <script id="tfms-v391-legal-form-controller">
 (function(){
   'use strict';
@@ -10601,8 +10419,6 @@ document.addEventListener('DOMContentLoaded',function(){
   setTimeout(applyVersion391,120);
 })();
 </script>
-
-
 <style id="tfms-v392-air-2026-style">
   .air-input-section{margin-top:18px;padding-top:14px;border-top:1px solid #e2e8f0}
   .air-input-section h3{margin:0 0 12px;font-size:15px;color:#1e3a8a}
@@ -10649,7 +10465,6 @@ document.addEventListener('DOMContentLoaded',function(){
     .air-outlet-row,.air-operation-row,.air-repair-row{grid-template-columns:1fr 1fr}
   }
 </style>
-
 <script id="tfms-v392-air-2026-controller">
 (function(){
   'use strict';
@@ -11004,8 +10819,6 @@ document.addEventListener('DOMContentLoaded',function(){
   setTimeout(()=>{applyVersion392();runUpgrade()},180);
 })();
 </script>
-
-
 <style id="tfms-v393-air-preview-visible-fix">
   #dailyJournalPreviewSheet.air-legal-2026{
     display:block!important;
@@ -11019,7 +10832,6 @@ document.addEventListener('DOMContentLoaded',function(){
     position:relative!important;
   }
 </style>
-
 <script id="tfms-v393-air-preview-visible-controller">
 (function(){
   'use strict';
@@ -11103,8 +10915,6 @@ document.addEventListener('DOMContentLoaded',function(){
   setTimeout(applyVersion393,150);
 })();
 </script>
-
-
 <script id="tfms-v394-daily-log-shift-type-fix">
 (function(){
   'use strict';
@@ -11308,8 +11118,6 @@ document.addEventListener('DOMContentLoaded',function(){
   setTimeout(applyVersion394,150);
 })();
 </script>
-
-
 <style id="tfms-v400-journal-history-print-style">
   .dj-history-panel{margin-top:16px}
   .dj-history-filter{display:grid;grid-template-columns:160px 180px 180px 1fr auto;gap:10px;align-items:end}
@@ -11331,7 +11139,6 @@ document.addEventListener('DOMContentLoaded',function(){
     .dj-history-filter{grid-template-columns:1fr 1fr}
   }
 </style>
-
 <script id="tfms-v400-journal-history-print-controller">
 (function(){
   'use strict';
@@ -11807,8 +11614,6 @@ document.addEventListener('DOMContentLoaded',function(){
 
 })();
 </script>
-
-
 <style id="tfms-v401-print-delete-style">
   #tfmsPrintFrameV401{
     position:fixed!important;
@@ -11821,9 +11626,7 @@ document.addEventListener('DOMContentLoaded',function(){
     pointer-events:none!important;
   }
 </style>
-
 <iframe id="tfmsPrintFrameV401" title="TFMS 인쇄 전용 프레임"></iframe>
-
 <script id="tfms-v401-print-delete-controller">
 (function(){
   'use strict';
@@ -12116,8 +11919,6 @@ ${getPrintCssV401()}
 
 })();
 </script>
-
-
 <style id="tfms-v402-print-scope-facility-audit-style">
   #tfmsPrintRootV402{display:none}
 
@@ -12175,9 +11976,7 @@ ${getPrintCssV401()}
   .audit-type.delete{background:#fff1f2;color:#be123c}
   .audit-type.maintenance{background:#f0fdf4;color:#15803d}
 </style>
-
 <div id="tfmsPrintRootV402"></div>
-
 <script id="tfms-v402-print-scope-facility-audit-controller">
 (function(){
   'use strict';
@@ -12577,8 +12376,6 @@ ${getPrintCssV401()}
   },250);
 })();
 </script>
-
-
 <style id="tfms-v410-stable-style">
   #tfmsPrintRootV410{display:none}
   @media print{
@@ -12611,9 +12408,7 @@ ${getPrintCssV401()}
     @page{size:A4 portrait;margin:0}
   }
 </style>
-
 <div id="tfmsPrintRootV410"></div>
-
 <script id="tfms-v410-enterprise-stable-controller">
 (function(){
   'use strict';
@@ -12788,14 +12583,11 @@ ${getPrintCssV401()}
   });
 })();
 </script>
-
-
 <style id="tfms-v411-audit-delete-style">
   .audit-delete-btn{
     margin-left:6px;
   }
 </style>
-
 <script id="tfms-v411-audit-delete-controller">
 (function(){
   'use strict';
@@ -13036,8 +12828,6 @@ ${getPrintCssV401()}
   });
 })();
 </script>
-
-
 <style id="tfms-v412-photo-remove-style">
   #photoPreview .thumb{
     position:relative;
@@ -13089,7 +12879,6 @@ ${getPrintCssV401()}
     background:#eff6ff!important;
   }
 </style>
-
 <script id="tfms-v412-photo-remove-controller">
 (function(){
   'use strict';
@@ -13289,8 +13078,6 @@ ${getPrintCssV401()}
   },200);
 })();
 </script>
-
-
 <style id="tfms-v413-photo-remove-final-style">
   #photoPreview .tfms-photo-thumb-v413{
     position:relative!important;
@@ -13346,7 +13133,6 @@ ${getPrintCssV401()}
     pointer-events:none;
   }
 </style>
-
 <script id="tfms-v413-photo-remove-final-controller">
 (function(){
   'use strict';
@@ -13550,8 +13336,6 @@ ${getPrintCssV401()}
   },250);
 })();
 </script>
-
-
 <style id="tfms-v414-work-placeholder-style">
   #wjWorkRows input::placeholder{color:#94a3b8;opacity:1}
 </style>
@@ -13655,8 +13439,6 @@ if(typeof oldNav==='function'){
 document.addEventListener('DOMContentLoaded',()=>setTimeout(initialize,250));
 })();
 </script>
-
-
 <script id="tfms-v415-cycle-manager-controller">
 (function(){
   'use strict';
@@ -13769,8 +13551,6 @@ document.addEventListener('DOMContentLoaded',()=>setTimeout(initialize,250));
   });
 })();
 </script>
-
-
 <style id="tfms-v416-today-link-style">
   .today-manual-panel{
     margin-bottom:16px;
@@ -13806,7 +13586,6 @@ document.addEventListener('DOMContentLoaded',()=>setTimeout(initialize,250));
     .today-manual-grid{grid-template-columns:1fr 1fr}
   }
 </style>
-
 <script id="tfms-v416-today-link-controller">
 (function(){
   'use strict';
@@ -14087,8 +13866,6 @@ document.addEventListener('DOMContentLoaded',()=>setTimeout(initialize,250));
   });
 })();
 </script>
-
-
 <script id="tfms-v417-export-department-scope-controller">
 (function(){
   'use strict';
@@ -14370,8 +14147,6 @@ document.addEventListener('DOMContentLoaded',()=>setTimeout(initialize,250));
   });
 })();
 </script>
-
-
 <script id="tfms-v418-cycle-today-db-link-controller">
 (function(){
   'use strict';
@@ -14649,8 +14424,6 @@ document.addEventListener('DOMContentLoaded',()=>setTimeout(initialize,250));
   document.addEventListener('DOMContentLoaded',applyVersion);
 })();
 </script>
-
-
 <style id="tfms-v420-fire-style">
   .fire-page-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
   .fire-page-grid .wide{grid-column:1/-1}
@@ -14699,33 +14472,29 @@ document.addEventListener('DOMContentLoaded',()=>setTimeout(initialize,250));
     @page{size:A4 portrait;margin:0}
   }
 </style>
-
 <div id="firePreviewModal" onclick="if(event.target===this)closeFirePreviewV420()">
-  <div class="fire-preview-bar">
-    <strong>소방안전관리자 업무 수행 기록표 미리보기</strong>
-    <div>
-      <button type="button" class="btn blue" onclick="printFireRecordV420()">출력</button>
-      <button type="button" class="btn" onclick="closeFirePreviewV420()">닫기</button>
-    </div>
-  </div>
-  <div id="firePreviewSheet" class="fire-legal-sheet"></div>
+<div class="fire-preview-bar">
+<strong>소방안전관리자 업무 수행 기록표 미리보기</strong>
+<div>
+<button class="btn blue" onclick="printFireRecordV420()" type="button">출력</button>
+<button class="btn" onclick="closeFirePreviewV420()" type="button">닫기</button>
 </div>
-
+</div>
+<div class="fire-legal-sheet" id="firePreviewSheet"></div>
+</div>
 <div id="fireQrModal" onclick="if(event.target===this)closeFireQrV420()">
-  <div class="fire-qr-box">
-    <h3 style="margin-top:0">소화기 현장점검 QR</h3>
-    <div id="fireQrTitle"></div>
-    <div id="fireQrCode"></div>
-    <input id="fireQrUrl" readonly style="width:100%;box-sizing:border-box;padding:8px">
-    <div style="margin-top:12px;display:flex;gap:8px;justify-content:center">
-      <button type="button" class="btn blue" onclick="copyFireQrUrlV420()">링크 복사</button>
-      <button type="button" class="btn" onclick="closeFireQrV420()">닫기</button>
-    </div>
-  </div>
+<div class="fire-qr-box">
+<h3 style="margin-top:0">소화기 현장점검 QR</h3>
+<div id="fireQrTitle"></div>
+<div id="fireQrCode"></div>
+<input id="fireQrUrl" readonly="" style="width:100%;box-sizing:border-box;padding:8px"/>
+<div style="margin-top:12px;display:flex;gap:8px;justify-content:center">
+<button class="btn blue" onclick="copyFireQrUrlV420()" type="button">링크 복사</button>
+<button class="btn" onclick="closeFireQrV420()" type="button">닫기</button>
 </div>
-
+</div>
+</div>
 <div id="firePrintRoot" style="display:none"></div>
-
 <script id="tfms-v420-fire-controller">
 (function(){
 'use strict';
@@ -15084,8 +14853,6 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 })();
 </script>
-
-
 <script id="tfms-v421-cycle-delete-sync-controller">
 (function(){
   'use strict';
@@ -15298,8 +15065,6 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.addEventListener('DOMContentLoaded',applyVersion);
 })();
 </script>
-
-
 <script id="tfms-v422-login-permission-guard-controller">
 (function(){
   'use strict';
@@ -15412,8 +15177,6 @@ document.addEventListener('DOMContentLoaded',()=>{
   });
 })();
 </script>
-
-
 <style id="tfms-v423-fire-original-form-style">
   .fire-original-sheet{
     position:relative;
@@ -15449,7 +15212,6 @@ document.addEventListener('DOMContentLoaded',()=>{
     }
   }
 </style>
-
 <script id="tfms-v423-fire-original-form-controller">
 (function(){
   'use strict';
@@ -15566,204 +15328,6 @@ document.addEventListener('DOMContentLoaded',()=>{
 })();
 </script>
 
-
-<script id="tfms-v424-fire-preview-button-fix">
-(function(){
-  'use strict';
-
-  window.TFMS_BUILD=Object.freeze({
-    version:'v42.4',
-    channel:'Enterprise Stable',
-    buildDate:'2026.07.28',
-    title:'소방 법정서식 미리보기 버튼 수정'
-  });
-
-  const $=id=>document.getElementById(id);
-  const val=id=>$(id)?.value??'';
-  const radio=name=>document.querySelector(`input[name="${name}"]:checked`)?.value||'';
-
-  function applyVersionV424(){
-    const b=window.TFMS_BUILD,label=`${b.version} ${b.channel}`;
-    const badge=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
-    if(badge)badge.textContent=label;
-
-    document.querySelectorAll('.logo-title small').forEach(el=>{
-      el.textContent=`시설 유지관리 이력관리 시스템 · ${label}`;
-    });
-
-    const current=document.querySelector('#tfmsVersionModal .current-build');
-    if(current)current.textContent=`현재 버전: ${label} · Build ${b.buildDate}`;
-  }
-
-  function collectFireDataV424(){
-    return {
-      date:val('fireDate'),
-      performer:val('firePerformer'),
-      facility:val('fireFacility'),
-      grade:val('fireGrade'),
-      address:val('fireAddress'),
-      basement:val('fireBasement'),
-      ground:val('fireGround'),
-      totalArea:val('fireTotalArea'),
-      floorArea:val('fireFloorArea'),
-      buildings:val('fireBuildings'),
-      checks:[0,1,2,3].map((i)=>({
-        item:['소방시설','피난방화시설','화기취급감독','기타사항'][i],
-        content:val(`fireCheck${i}`),
-        result:radio(`fireResult${i}`),
-        action:val(`fireAction${i}`)
-      })),
-      improvement:{
-        reportDate:val('fireReportDate'),
-        method:val('fireReportMethod'),
-        reportTo:val('fireReportTo'),
-        remedy:val('fireRemedy')
-      },
-      extinguishers:Array.isArray(window.fireExtRowsV420)
-        ? window.fireExtRowsV420
-        : []
-    };
-  }
-
-  function escapeHtml(v){
-    return String(v??'').replace(/[&<>"']/g,m=>({
-      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-    }[m]));
-  }
-
-  function pos(left,top,width,height,content,cls=''){
-    return `<div class="fire-overlay ${cls}" style="left:${left}%;top:${top}%;width:${width}%;height:${height}%">${content}</div>`;
-  }
-
-  function gradeMark(grade){
-    const map={
-      '특급':[68.4,17.12],
-      '1급':[77.2,17.12],
-      '2급':[85.3,17.12],
-      '3급':[68.4,19.18]
-    };
-    const p=map[grade];
-    return p?pos(p[0],p[1],1.6,1.2,'√','checkmark center'):'';
-  }
-
-  function resultMarks(result,top){
-    let html='';
-    if(result==='양호')html+=pos(71.85,top,2.0,1.3,'√','checkmark center');
-    if(result==='불량')html+=pos(71.85,top+2.15,2.0,1.3,'√','checkmark center');
-    return html;
-  }
-
-  function methodMark(method){
-    const map={
-      '대면':[42.1,77.27],
-      '서면':[53.8,77.27],
-      '정보통신':[66.5,77.27]
-    };
-    const p=map[method];
-    return p?pos(p[0],p[1],1.6,1.2,'√','checkmark center'):'';
-  }
-
-  function remedyMark(method){
-    const map={
-      '이전':[42.1,80.05],
-      '제거':[53.0,80.05],
-      '수리·교체':[65.8,81.0],
-      '기타':[80.2,80.05]
-    };
-    const p=map[method];
-    return p?pos(p[0],p[1],1.6,1.2,'√','checkmark center'):'';
-  }
-
-  function originalFormOverlayV424(d){
-    const checks=d.checks||[];
-    const imp=d.improvement||{};
-    let overlay='';
-
-    overlay+=pos(17.0,14.80,17.0,2.0,escapeHtml(d.date),'center');
-    overlay+=pos(43.0,14.80,19.0,2.0,escapeHtml(d.performer),'center signature');
-    overlay+=pos(25.0,17.45,27.0,2.2,escapeHtml(d.facility),'center');
-    overlay+=gradeMark(d.grade);
-    overlay+=pos(24.8,20.45,65.0,2.2,escapeHtml(d.address),'center');
-    overlay+=pos(17.0,24.05,15.0,2.0,escapeHtml(d.basement),'center');
-    overlay+=pos(32.0,24.05,15.0,2.0,escapeHtml(d.ground),'center');
-    overlay+=pos(47.0,24.05,15.0,2.0,escapeHtml(d.totalArea),'center');
-    overlay+=pos(62.0,24.05,15.0,2.0,escapeHtml(d.floorArea),'center');
-    overlay+=pos(77.0,24.05,13.0,2.0,escapeHtml(d.buildings),'center');
-
-    const rowTops=[33.1,43.4,53.5,63.6];
-    const resultTops=[35.95,46.25,56.45,66.65];
-
-    checks.forEach((c,i)=>{
-      overlay+=pos(17.2,rowTops[i],50.0,8.3,escapeHtml(c.content),'left');
-      overlay+=resultMarks(c.result,resultTops[i]);
-      overlay+=pos(81.1,rowTops[i],9.0,8.3,escapeHtml(c.action),'left small-value');
-    });
-
-    overlay+=pos(17.1,76.5,17.5,2.3,escapeHtml(imp.reportDate),'center small-value');
-    overlay+=methodMark(imp.method);
-    overlay+=pos(70.5,76.5,19.5,2.3,escapeHtml(imp.reportTo),'center small-value');
-    overlay+=remedyMark(imp.remedy);
-
-    return overlay;
-  }
-
-  window.previewFireRecordV420=function(){
-    const modal=$('firePreviewModal');
-    const sheet=$('firePreviewSheet');
-
-    if(!modal||!sheet){
-      window.showToast?.('소방 법정서식 미리보기 영역을 찾지 못했습니다.');
-      return;
-    }
-
-    try{
-      const d=collectFireDataV424();
-      const source=document.querySelector('.fire-original-sheet .fire-form-bg');
-      const sourceUrl=source?.src;
-
-      if(!sourceUrl){
-        throw new Error('법정서식 원본 이미지를 찾지 못했습니다.');
-      }
-
-      sheet.className='fire-original-sheet';
-      sheet.innerHTML=`
-        <img class="fire-form-bg" src="${sourceUrl}" alt="소방안전관리자 업무 수행 기록표 원본 서식">
-        ${originalFormOverlayV424(d)}
-      `;
-
-      modal.classList.add('show');
-      modal.scrollTop=0;
-    }catch(e){
-      console.error('TFMS v42.4 fire preview error',e);
-      window.showToast?.('서식 미리보기 실패: '+(e?.message||e));
-    }
-  };
-
-  window.printFireRecordV420=function(){
-    const preview=$('firePreviewSheet');
-    const root=$('firePrintRoot');
-
-    if(!preview||!root||!preview.innerHTML.trim()){
-      window.showToast?.('먼저 서식 미리보기를 생성해 주세요.');
-      return;
-    }
-
-    root.innerHTML=`<div class="fire-original-sheet">${preview.innerHTML}</div>`;
-    root.style.display='block';
-    document.body.classList.add('fire-printing');
-
-    setTimeout(()=>window.print(),180);
-    setTimeout(()=>{
-      document.body.classList.remove('fire-printing');
-      root.style.display='none';
-      root.innerHTML='';
-    },1000);
-  };
-
-  document.addEventListener('DOMContentLoaded',applyVersionV424);
-})();
-</script>
-
 <style id="tfms-v425-fire-original-preview-style">
   /* v42.5: 별지 제12호서식 원본 이미지 위에 입력값만 중첩 */
   #firePreviewSheet.fire-original-sheet,
@@ -15790,335 +15354,100 @@ document.addEventListener('DOMContentLoaded',()=>{
   }
 </style>
 
-<script id="tfms-v425-fire-original-preview-controller">
+
+
+<style id="tfms-v428-fire-record-final-style">
+/* v42.8: 법정서식 입력값 정렬 및 독립 인쇄문서 출력 */
+#firePreviewSheet.fire-original-sheet{
+  position:relative!important;width:210mm!important;height:297mm!important;
+  margin:0 auto!important;padding:0!important;overflow:hidden!important;background:#fff!important;
+}
+.fire-original-sheet .fire-form-bg{
+  position:absolute!important;inset:0!important;width:210mm!important;height:297mm!important;
+  object-fit:fill!important;display:block!important;z-index:0!important;
+}
+.fire-original-sheet .fire-overlay{
+  position:absolute!important;z-index:1!important;box-sizing:border-box!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  padding:0 1mm!important;margin:0!important;color:#111!important;
+  font-family:"Malgun Gothic","맑은 고딕",sans-serif!important;
+  font-size:9px!important;line-height:1.15!important;text-align:center!important;
+  white-space:pre-wrap!important;word-break:break-word!important;overflow:hidden!important;
+}
+.fire-original-sheet .fire-overlay.left{
+  justify-content:flex-start!important;align-items:flex-start!important;text-align:left!important;
+  padding:1.3mm 1.5mm!important;
+}
+.fire-original-sheet .fire-overlay.signature{font-size:8.8px!important}
+.fire-original-sheet .fire-overlay.small-value{font-size:8.1px!important}
+.fire-original-sheet .fire-overlay.checkmark{
+  padding:0!important;overflow:visible!important;font-family:Arial,sans-serif!important;
+  font-size:12px!important;font-weight:700!important;line-height:1!important;
+}
+</style><script id="tfms-v428-fire-record-final-controller">
 (function(){
-  'use strict';
-
-  window.TFMS_BUILD=Object.freeze({
-    version:'v42.5',
-    channel:'Enterprise Stable',
-    buildDate:'2026.07.28',
-    title:'소방안전관리자 업무 수행 기록표 원본 법정서식 미리보기·출력 완성'
-  });
-
-  const $=id=>document.getElementById(id);
-  const val=id=>$(id)?.value??'';
-  const radio=name=>document.querySelector(`input[name="${name}"]:checked`)?.value||'';
-  const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({
-    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-  }[m]));
-
-  let originalFormImageCache='';
-
-  function applyVersionV425(){
-    const b=window.TFMS_BUILD,label=`${b.version} ${b.channel}`;
-    const badge=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
-    if(badge)badge.textContent=label;
-    document.querySelectorAll('.logo-title small').forEach(el=>{
-      el.textContent=`시설 유지관리 이력관리 시스템 · ${label}`;
-    });
-    const current=document.querySelector('#tfmsVersionModal .current-build');
-    if(current)current.textContent=`현재 버전: ${label} · Build ${b.buildDate}`;
-  }
-
-  function getOriginalFormImageV425(){
-    if(originalFormImageCache)return originalFormImageCache;
-
-    const rendered=document.querySelector('.fire-original-sheet .fire-form-bg');
-    if(rendered?.src?.startsWith('data:image/')){
-      originalFormImageCache=rendered.src;
-      return originalFormImageCache;
-    }
-
-    /* v42.3에 내장된 원본 PDF 렌더 이미지를 재사용한다. 원본 서식 자체는 수정하지 않는다. */
-    const sourceScript=$('tfms-v423-fire-original-form-controller')?.textContent||'';
-    const match=sourceScript.match(/const\s+FORM_IMAGE\s*=\s*['"](data:image\/png;base64,[^'"]+)['"]/);
-    if(match?.[1]){
-      originalFormImageCache=match[1];
-      return originalFormImageCache;
-    }
-    throw new Error('별지 제12호서식 원본 이미지를 불러오지 못했습니다.');
-  }
-
-  function collectFireDataV425(){
-    return {
-      date:val('fireDate'), performer:val('firePerformer'), facility:val('fireFacility'),
-      grade:val('fireGrade'), address:val('fireAddress'), basement:val('fireBasement'),
-      ground:val('fireGround'), totalArea:val('fireTotalArea'), floorArea:val('fireFloorArea'),
-      buildings:val('fireBuildings'),
-      checks:[0,1,2,3].map(i=>({
-        content:val(`fireCheck${i}`), result:radio(`fireResult${i}`), action:val(`fireAction${i}`)
-      })),
-      improvement:{
-        reportDate:val('fireReportDate'), method:val('fireReportMethod'),
-        reportTo:val('fireReportTo'), remedy:val('fireRemedy')
-      }
-    };
-  }
-
-  function formatDateV425(v){
-    const m=String(v||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);
-    return m?`${m[1]}. ${Number(m[2])}. ${Number(m[3])}.`:String(v||'');
-  }
-
-  function formatDateTimeV425(v){
-    const m=String(v||'').match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/);
-    return m?`${m[1]}. ${Number(m[2])}. ${Number(m[3])}. ${m[4]}:${m[5]}`:String(v||'');
-  }
-
-  function pos(left,top,width,height,content,cls=''){
-    return `<div class="fire-overlay ${cls}" style="left:${left}%;top:${top}%;width:${width}%;height:${height}%">${content}</div>`;
-  }
-  function mark(left,top){return pos(left,top,1.7,1.35,'√','checkmark center')}
-
-  function gradeMark(v){
-    const map={'특급':[68.4,17.12],'1급':[77.2,17.12],'2급':[85.3,17.12],'3급':[68.4,19.18]};
-    return map[v]?mark(...map[v]):'';
-  }
-  function resultMark(v,top){
-    if(v==='양호')return mark(71.85,top);
-    if(v==='불량')return mark(71.85,top+2.15);
-    return '';
-  }
-  function methodMark(v){
-    const map={'대면':[42.1,77.27],'서면':[53.8,77.27],'정보통신':[66.5,77.27]};
-    return map[v]?mark(...map[v]):'';
-  }
-  function remedyMark(v){
-    const map={'이전':[42.1,80.05],'제거':[53.0,80.05],'수리·교체':[65.8,81.0],'기타':[80.2,80.05]};
-    return map[v]?mark(...map[v]):'';
-  }
-
-  function buildOverlayV425(d){
-    const c=d.checks||[], imp=d.improvement||{};
-    let out='';
-    out+=pos(17.0,14.80,17.0,2.0,esc(formatDateV425(d.date)),'center');
-    out+=pos(43.0,14.80,19.0,2.0,esc(d.performer),'center signature');
-    out+=pos(25.0,17.45,27.0,2.2,esc(d.facility),'center');
-    out+=gradeMark(d.grade);
-    out+=pos(24.8,20.45,65.0,2.2,esc(d.address),'center');
-    out+=pos(17.0,24.05,15.0,2.0,esc(d.basement),'center');
-    out+=pos(32.0,24.05,15.0,2.0,esc(d.ground),'center');
-    out+=pos(47.0,24.05,15.0,2.0,esc(d.totalArea),'center');
-    out+=pos(62.0,24.05,15.0,2.0,esc(d.floorArea),'center');
-    out+=pos(77.0,24.05,13.0,2.0,esc(d.buildings),'center');
-
-    const rowTops=[33.1,43.4,53.5,63.6], resultTops=[35.95,46.25,56.45,66.65];
-    c.forEach((row,i)=>{
-      out+=pos(17.2,rowTops[i],50.0,8.3,esc(row.content),'left');
-      out+=resultMark(row.result,resultTops[i]);
-      out+=pos(81.1,rowTops[i],9.0,8.3,esc(row.action),'left small-value');
-    });
-    out+=pos(17.1,76.5,17.5,2.3,esc(formatDateTimeV425(imp.reportDate)),'center small-value');
-    out+=methodMark(imp.method);
-    out+=pos(70.5,76.5,19.5,2.3,esc(imp.reportTo),'center small-value');
-    out+=remedyMark(imp.remedy);
-    return out;
-  }
-
-  window.previewFireRecordV420=function(){
-    const modal=$('firePreviewModal'), sheet=$('firePreviewSheet');
-    if(!modal||!sheet){window.showToast?.('소방 법정서식 미리보기 영역을 찾지 못했습니다.');return}
-    try{
-      const image=getOriginalFormImageV425();
-      const data=collectFireDataV425();
-      sheet.className='fire-original-sheet';
-      sheet.innerHTML=`<img class="fire-form-bg" src="${image}" alt="소방안전관리자 업무 수행 기록표 원본 서식">${buildOverlayV425(data)}`;
-      modal.classList.add('show');
-      modal.scrollTop=0;
-    }catch(e){
-      console.error('TFMS v42.5 fire preview error',e);
-      window.showToast?.('서식 미리보기 실패: '+(e?.message||e));
-    }
-  };
-
-  window.printFireRecordV420=function(){
-    const preview=$('firePreviewSheet'), root=$('firePrintRoot');
-    if(!preview||!root||!preview.innerHTML.trim()){
-      window.showToast?.('먼저 서식 미리보기를 생성해 주세요.');return;
-    }
-    root.innerHTML=`<div class="fire-original-sheet">${preview.innerHTML}</div>`;
-    root.style.display='block';
-    document.body.classList.add('fire-printing');
-    const img=root.querySelector('.fire-form-bg');
-    const doPrint=()=>setTimeout(()=>window.print(),80);
-    if(img&&!img.complete){img.addEventListener('load',doPrint,{once:true});img.addEventListener('error',doPrint,{once:true})}
-    else doPrint();
-    setTimeout(()=>{
-      document.body.classList.remove('fire-printing');
-      root.style.display='none';root.innerHTML='';
-    },1500);
-  };
-
-  document.addEventListener('DOMContentLoaded',applyVersionV425);
-  if(document.readyState!=='loading')applyVersionV425();
+'use strict';
+window.TFMS_BUILD=Object.freeze({version:'v42.8',channel:'Enterprise Stable',buildDate:'2026.07.28',title:'소방 법정서식 정렬 및 PDF 출력 최종 수정'});
+const $=id=>document.getElementById(id);
+const val=id=>$(id)?.value??'';
+const radio=name=>document.querySelector(`input[name="${name}"]:checked`)?.value||'';
+const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+function toast(m){try{window.showToast?.(m)}catch(e){}}
+function applyVersion(){
+  const b=window.TFMS_BUILD,label=`${b.version} ${b.channel}`;
+  const badge=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note'); if(badge)badge.textContent=label;
+  document.querySelectorAll('.logo-title small').forEach(el=>el.textContent=`시설 유지관리 이력관리 시스템 · ${label}`);
+  const current=document.querySelector('#tfmsVersionModal .current-build');if(current)current.textContent=`현재 버전: ${label} · Build ${b.buildDate}`;
+}
+function data(){return{
+ date:val('fireDate'),performer:val('firePerformer'),facility:val('fireFacility'),grade:val('fireGrade'),address:val('fireAddress'),
+ basement:val('fireBasement'),ground:val('fireGround'),totalArea:val('fireTotalArea'),floorArea:val('fireFloorArea'),buildings:val('fireBuildings'),
+ checks:[0,1,2,3].map(i=>({content:val(`fireCheck${i}`),result:radio(`fireResult${i}`),action:val(`fireAction${i}`)})),
+ improvement:{reportDate:val('fireReportDate'),method:val('fireReportMethod'),reportTo:val('fireReportTo'),remedy:val('fireRemedy')}
+};}
+function fmtDate(v){const m=String(v||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);return m?`${m[1]}. ${Number(m[2])}. ${Number(m[3])}.`:String(v||'');}
+function fmtDT(v){const m=String(v||'').match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/);return m?`${m[1]}. ${Number(m[2])}. ${Number(m[3])}. ${m[4]}:${m[5]}`:String(v||'');}
+function pos(l,t,w,h,c,cls=''){return `<div class="fire-overlay ${cls}" style="left:${l}%;top:${t}%;width:${w}%;height:${h}%">${c}</div>`;}
+function mark(l,t){return pos(l,t,1.2,1.05,'✓','checkmark');}
+function sourceImage(){
+ const shown=document.querySelector('.fire-original-sheet .fire-form-bg');if(shown?.src?.startsWith('data:image/'))return shown.src;
+ const src=$('tfms-v423-fire-original-form-controller')?.textContent||'';
+ const m=src.match(/const\s+FORM_IMAGE\s*=\s*['"](data:image\/png;base64,[^'"]+)['"]/);if(m?.[1])return m[1];
+ throw new Error('원본 법정서식 이미지를 불러오지 못했습니다.');
+}
+function grade(v){const m={'특급':[67.15,16.55],'1급':[76.25,16.55],'2급':[84.65,16.55],'3급':[67.15,18.85]};return m[v]?mark(...m[v]):'';}
+function result(v,i){const yGood=[36.55,47.05,57.55,68.05],yBad=[38.75,49.25,59.75,70.25];return v==='양호'?mark(75.75,yGood[i]):v==='불량'?mark(75.75,yBad[i]):'';}
+function method(v){const m={'대면':[41.65,77.15],'서면':[53.45,77.15],'정보통신':[65.9,77.15]};return m[v]?mark(...m[v]):'';}
+function remedy(v){const m={'이전':[41.65,80.15],'제거':[52.95,80.15],'수리·교체':[65.7,81.05],'기타':[80.5,80.15]};return m[v]?mark(...m[v]):'';}
+function overlay(d){let o='';
+ o+=pos(15.8,13.95,35.0,2.45,esc(fmtDate(d.date)));
+ o+=pos(64.2,13.95,30.5,2.45,esc(d.performer),'signature');
+ o+=pos(20.9,16.45,30.0,2.55,esc(d.facility));o+=grade(d.grade);
+ o+=pos(20.9,19.45,74.0,2.55,esc(d.address));
+ o+=pos(20.9,22.75,14.8,2.5,esc(d.basement));o+=pos(35.7,22.75,14.8,2.5,esc(d.ground));
+ o+=pos(50.5,22.75,14.8,2.5,esc(d.totalArea));o+=pos(65.3,22.75,14.8,2.5,esc(d.floorArea));o+=pos(80.1,22.75,14.8,2.5,esc(d.buildings));
+ const top=[28.55,39.05,49.55,60.05];(d.checks||[]).forEach((r,i)=>{o+=pos(20.9,top[i],53.0,10.45,esc(r.content),'left');o+=result(r.result,i);o+=pos(83.8,top[i],11.1,10.45,esc(r.action),'left small-value');});
+ const imp=d.improvement||{};o+=pos(20.9,75.15,15.6,2.45,esc(fmtDT(imp.reportDate)),'small-value');o+=method(imp.method);o+=pos(70.1,75.15,24.8,2.45,esc(imp.reportTo),'small-value');o+=remedy(imp.remedy);return o;
+}
+window.previewFireRecordV420=function(){
+ const modal=$('firePreviewModal'),sheet=$('firePreviewSheet');if(!modal||!sheet){toast('소방 법정서식 미리보기 영역을 찾지 못했습니다.');return;}
+ try{sheet.className='fire-original-sheet';sheet.innerHTML=`<img class="fire-form-bg" src="${sourceImage()}" alt="소방안전관리자 업무 수행 기록표 원본 서식">${overlay(data())}`;modal.classList.add('show');modal.scrollTop=0;}
+ catch(e){console.error('TFMS v42.8 fire preview error',e);toast('서식 미리보기 실패: '+(e?.message||e));}
+};
+window.printFireRecordV420=async function(){
+ const preview=$('firePreviewSheet');if(!preview?.innerHTML.trim()){toast('먼저 서식 미리보기를 생성해 주세요.');return;}
+ let frame=document.getElementById('tfmsFirePrintFrameV428');if(frame)frame.remove();
+ frame=document.createElement('iframe');frame.id='tfmsFirePrintFrameV428';frame.setAttribute('aria-hidden','true');
+ Object.assign(frame.style,{position:'fixed',right:'0',bottom:'0',width:'2px',height:'2px',border:'0',opacity:'0.01',zIndex:'2147483647'});document.body.appendChild(frame);
+ try{
+  const doc=frame.contentDocument||frame.contentWindow.document;doc.open();doc.write(`<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>소방안전관리자 업무 수행 기록표</title><style>@page{size:A4 portrait;margin:0}html,body{margin:0!important;padding:0!important;width:210mm!important;height:297mm!important;background:#fff!important}.fire-original-sheet{position:relative;width:210mm;height:297mm;margin:0;padding:0;overflow:hidden;background:#fff;box-sizing:border-box}.fire-form-bg{position:absolute;inset:0;width:210mm;height:297mm;object-fit:fill;display:block;z-index:0}.fire-overlay{position:absolute;z-index:1;box-sizing:border-box;display:flex;align-items:center;justify-content:center;padding:0 1mm;margin:0;color:#111;font-family:"Malgun Gothic","맑은 고딕",sans-serif;font-size:9px;line-height:1.15;text-align:center;white-space:pre-wrap;word-break:break-word;overflow:hidden}.fire-overlay.left{justify-content:flex-start;align-items:flex-start;text-align:left;padding:1.3mm 1.5mm}.fire-overlay.signature{font-size:8.8px}.fire-overlay.small-value{font-size:8.1px}.fire-overlay.checkmark{padding:0;overflow:visible;font-family:Arial,sans-serif;font-size:12px;font-weight:700;line-height:1}</style></head><body><div class="fire-original-sheet">${preview.innerHTML}</div></body></html>`);doc.close();
+  await new Promise(r=>{if(doc.readyState==='complete')r();else frame.onload=r;});
+  const imgs=[...doc.images];await Promise.all(imgs.map(img=>img.complete?(img.decode?.().catch(()=>{})||Promise.resolve()):new Promise(res=>{img.onload=img.onerror=res;})));
+  if(doc.fonts?.ready)try{await doc.fonts.ready}catch(e){}
+  await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));frame.contentWindow.focus();frame.contentWindow.print();
+  setTimeout(()=>frame.remove(),3000);
+ }catch(e){console.error('TFMS v42.8 fire print error',e);frame.remove();toast('PDF 출력 실패: '+(e?.message||e));}
+};
+document.addEventListener('DOMContentLoaded',applyVersion);if(document.readyState!=='loading')applyVersion();
 })();
-</script>
-
-<style id="tfms-v426-fire-overlay-alignment-style">
-  /* v42.7: 원본 법정서식 좌표·정렬 보정 */
-  .fire-original-sheet .fire-overlay{
-    box-sizing:border-box!important;
-    display:flex!important;
-    align-items:center!important;
-    justify-content:center!important;
-    padding:0 1.2mm!important;
-    font-family:"Malgun Gothic","맑은 고딕",sans-serif!important;
-    font-size:9.2px!important;
-    line-height:1.25!important;
-    white-space:pre-wrap!important;
-    overflow:hidden!important;
-  }
-  .fire-original-sheet .fire-overlay.left{
-    justify-content:flex-start!important;
-    align-items:flex-start!important;
-    text-align:left!important;
-    padding:1.5mm 1.8mm!important;
-  }
-  .fire-original-sheet .fire-overlay.signature{font-size:9px!important}
-  .fire-original-sheet .fire-overlay.small-value{font-size:8.4px!important}
-  .fire-original-sheet .fire-overlay.checkmark{
-    padding:0!important;
-    font-family:Arial,sans-serif!important;
-    font-size:13px!important;
-    font-weight:700!important;
-    line-height:1!important;
-    overflow:visible!important;
-    transform:translateY(-0.2mm);
-  }
-</style>
-
-<script id="tfms-v426-fire-overlay-alignment-controller">
-(function(){
-  'use strict';
-
-  window.TFMS_BUILD=Object.freeze({
-    version:'v42.7',
-    channel:'Enterprise Stable',
-    buildDate:'2026.07.28',
-    title:'소방 법정서식 출력 위치 및 HTML 노출 오류 수정'
-  });
-
-  const $=id=>document.getElementById(id);
-  const val=id=>$(id)?.value??'';
-  const radio=name=>document.querySelector(`input[name="${name}"]:checked`)?.value||'';
-  const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({
-    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-  }[m]));
-
-  function applyVersionV426(){
-    const b=window.TFMS_BUILD,label=`${b.version} ${b.channel}`;
-    const badge=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
-    if(badge)badge.textContent=label;
-    document.querySelectorAll('.logo-title small').forEach(el=>{
-      el.textContent=`시설 유지관리 이력관리 시스템 · ${label}`;
-    });
-    const current=document.querySelector('#tfmsVersionModal .current-build');
-    if(current)current.textContent=`현재 버전: ${label} · Build ${b.buildDate}`;
-  }
-
-  function collectData(){
-    return {
-      date:val('fireDate'),performer:val('firePerformer'),facility:val('fireFacility'),
-      grade:val('fireGrade'),address:val('fireAddress'),basement:val('fireBasement'),
-      ground:val('fireGround'),totalArea:val('fireTotalArea'),floorArea:val('fireFloorArea'),
-      buildings:val('fireBuildings'),
-      checks:[0,1,2,3].map(i=>({
-        content:val(`fireCheck${i}`),result:radio(`fireResult${i}`),action:val(`fireAction${i}`)
-      })),
-      improvement:{
-        reportDate:val('fireReportDate'),method:val('fireReportMethod'),
-        reportTo:val('fireReportTo'),remedy:val('fireRemedy')
-      }
-    };
-  }
-
-  function fmtDate(v){
-    const m=String(v||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);
-    return m?`${m[1]}. ${Number(m[2])}. ${Number(m[3])}.`:String(v||'');
-  }
-  function fmtDateTime(v){
-    const m=String(v||'').match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/);
-    return m?`${m[1]}. ${Number(m[2])}. ${Number(m[3])}. ${m[4]}:${m[5]}`:String(v||'');
-  }
-  function pos(l,t,w,h,content,cls=''){
-    return `<div class="fire-overlay ${cls}" style="left:${l}%;top:${t}%;width:${w}%;height:${h}%">${content}</div>`;
-  }
-  function mark(l,t){return pos(l,t,1.4,1.15,'✓','checkmark center')}
-
-  function gradeMark(v){
-    const map={'특급':[66.75,16.73],'1급':[76.0,16.73],'2급':[84.35,16.73],'3급':[66.75,19.18]};
-    return map[v]?mark(...map[v]):'';
-  }
-  function resultMark(v,i){
-    const good=[37.33,47.83,58.34,68.84];
-    const bad =[39.50,50.00,60.51,71.01];
-    if(v==='양호')return mark(75.15,good[i]);
-    if(v==='불량')return mark(75.15,bad[i]);
-    return '';
-  }
-  function methodMark(v){
-    const map={'대면':[42.4,77.35],'서면':[54.2,77.35],'정보통신':[66.4,77.35]};
-    return map[v]?mark(...map[v]):'';
-  }
-  function remedyMark(v){
-    const map={'이전':[42.4,80.35],'제거':[53.6,80.35],'수리·교체':[66.4,81.30],'기타':[81.0,80.35]};
-    return map[v]?mark(...map[v]):'';
-  }
-
-  function getImage(){
-    const current=document.querySelector('.fire-original-sheet .fire-form-bg');
-    if(current?.src)return current.src;
-    const src=$('tfms-v423-fire-original-form-controller')?.textContent||'';
-    const m=src.match(/const\s+FORM_IMAGE\s*=\s*['"](data:image\/png;base64,[^'"]+)['"]/);
-    if(m?.[1])return m[1];
-    throw new Error('별지 제12호서식 원본 이미지를 불러오지 못했습니다.');
-  }
-
-  function overlay(d){
-    const c=d.checks||[],imp=d.improvement||{};
-    let out='';
-    /* 상단 기본정보: 실제 셀 내부 중앙으로 이동 */
-    out+=pos(20.7,14.45,29.0,2.35,esc(fmtDate(d.date)),'center');
-    out+=pos(66.0,14.45,29.0,2.35,esc(d.performer),'center signature');
-    out+=pos(21.2,16.95,29.4,2.35,esc(d.facility),'center');
-    out+=gradeMark(d.grade);
-    out+=pos(21.2,20.05,73.8,2.35,esc(d.address),'center');
-    out+=pos(21.2,23.25,14.7,2.35,esc(d.basement),'center');
-    out+=pos(35.9,23.25,14.7,2.35,esc(d.ground),'center');
-    out+=pos(50.6,23.25,14.7,2.35,esc(d.totalArea),'center');
-    out+=pos(65.3,23.25,14.7,2.35,esc(d.floorArea),'center');
-    out+=pos(80.0,23.25,15.0,2.35,esc(d.buildings),'center');
-
-    const rowTop=[29.10,39.62,50.13,60.64];
-    c.forEach((r,i)=>{
-      out+=pos(21.0,rowTop[i],53.0,10.45,esc(r.content),'left');
-      out+=resultMark(r.result,i);
-      out+=pos(84.3,rowTop[i],10.7,10.45,esc(r.action),'left small-value');
-    });
-
-    out+=pos(21.1,75.55,15.0,2.35,esc(fmtDateTime(imp.reportDate)),'center small-value');
-    out+=methodMark(imp.method);
-    out+=pos(70.0,75.55,25.0,2.35,esc(imp.reportTo),'center small-value');
-    out+=remedyMark(imp.remedy);
-    return out;
-  }
-
-  window.previewFireRecordV420=function(){
-    const modal=$('firePreviewModal'),sheet=$('firePreviewSheet');
-    if(!modal||!sheet){window.showToast?.('소방 법정서식 미리보기 영역을 찾지 못했습니다.');return}
-    try{
-      sheet.className='fire-original-sheet';
-      sheet.innerHTML=`<img class="fire-form-bg" src="${getImage()}" alt="소방안전관리자 업무 수행 기록표 원본 서식">${overlay(collectData())}`;
-      modal.classList.add('show');
-      modal.scrollTop=0;
-    }catch(e){
-      console.error('TFMS v42.7 fire preview error',e);
-      window.showToast?.('서식 미리보기 실패: '+(e?.message||e));
-    }
-  };
-
-  document.addEventListener('DOMContentLoaded',applyVersionV426);
-  if(document.readyState!=='loading')applyVersionV426();
-})();
-</script>
+</script></body></html>
