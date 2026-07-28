@@ -15559,3 +15559,201 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.addEventListener('DOMContentLoaded',applyVersionV423);
 })();
 </script>
+
+
+<script id="tfms-v424-fire-preview-button-fix">
+(function(){
+  'use strict';
+
+  window.TFMS_BUILD=Object.freeze({
+    version:'v42.4',
+    channel:'Enterprise Stable',
+    buildDate:'2026.07.28',
+    title:'소방 법정서식 미리보기 버튼 수정'
+  });
+
+  const $=id=>document.getElementById(id);
+  const val=id=>$(id)?.value??'';
+  const radio=name=>document.querySelector(`input[name="${name}"]:checked`)?.value||'';
+
+  function applyVersionV424(){
+    const b=window.TFMS_BUILD,label=`${b.version} ${b.channel}`;
+    const badge=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
+    if(badge)badge.textContent=label;
+
+    document.querySelectorAll('.logo-title small').forEach(el=>{
+      el.textContent=`시설 유지관리 이력관리 시스템 · ${label}`;
+    });
+
+    const current=document.querySelector('#tfmsVersionModal .current-build');
+    if(current)current.textContent=`현재 버전: ${label} · Build ${b.buildDate}`;
+  }
+
+  function collectFireDataV424(){
+    return {
+      date:val('fireDate'),
+      performer:val('firePerformer'),
+      facility:val('fireFacility'),
+      grade:val('fireGrade'),
+      address:val('fireAddress'),
+      basement:val('fireBasement'),
+      ground:val('fireGround'),
+      totalArea:val('fireTotalArea'),
+      floorArea:val('fireFloorArea'),
+      buildings:val('fireBuildings'),
+      checks:[0,1,2,3].map((i)=>({
+        item:['소방시설','피난방화시설','화기취급감독','기타사항'][i],
+        content:val(`fireCheck${i}`),
+        result:radio(`fireResult${i}`),
+        action:val(`fireAction${i}`)
+      })),
+      improvement:{
+        reportDate:val('fireReportDate'),
+        method:val('fireReportMethod'),
+        reportTo:val('fireReportTo'),
+        remedy:val('fireRemedy')
+      },
+      extinguishers:Array.isArray(window.fireExtRowsV420)
+        ? window.fireExtRowsV420
+        : []
+    };
+  }
+
+  function escapeHtml(v){
+    return String(v??'').replace(/[&<>"']/g,m=>({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    }[m]));
+  }
+
+  function pos(left,top,width,height,content,cls=''){
+    return `<div class="fire-overlay ${cls}" style="left:${left}%;top:${top}%;width:${width}%;height:${height}%">${content}</div>`;
+  }
+
+  function gradeMark(grade){
+    const map={
+      '특급':[68.4,17.12],
+      '1급':[77.2,17.12],
+      '2급':[85.3,17.12],
+      '3급':[68.4,19.18]
+    };
+    const p=map[grade];
+    return p?pos(p[0],p[1],1.6,1.2,'√','checkmark center'):'';
+  }
+
+  function resultMarks(result,top){
+    let html='';
+    if(result==='양호')html+=pos(71.85,top,2.0,1.3,'√','checkmark center');
+    if(result==='불량')html+=pos(71.85,top+2.15,2.0,1.3,'√','checkmark center');
+    return html;
+  }
+
+  function methodMark(method){
+    const map={
+      '대면':[42.1,77.27],
+      '서면':[53.8,77.27],
+      '정보통신':[66.5,77.27]
+    };
+    const p=map[method];
+    return p?pos(p[0],p[1],1.6,1.2,'√','checkmark center'):'';
+  }
+
+  function remedyMark(method){
+    const map={
+      '이전':[42.1,80.05],
+      '제거':[53.0,80.05],
+      '수리·교체':[65.8,81.0],
+      '기타':[80.2,80.05]
+    };
+    const p=map[method];
+    return p?pos(p[0],p[1],1.6,1.2,'√','checkmark center'):'';
+  }
+
+  function originalFormOverlayV424(d){
+    const checks=d.checks||[];
+    const imp=d.improvement||{};
+    let overlay='';
+
+    overlay+=pos(17.0,14.80,17.0,2.0,escapeHtml(d.date),'center');
+    overlay+=pos(43.0,14.80,19.0,2.0,escapeHtml(d.performer),'center signature');
+    overlay+=pos(25.0,17.45,27.0,2.2,escapeHtml(d.facility),'center');
+    overlay+=gradeMark(d.grade);
+    overlay+=pos(24.8,20.45,65.0,2.2,escapeHtml(d.address),'center');
+    overlay+=pos(17.0,24.05,15.0,2.0,escapeHtml(d.basement),'center');
+    overlay+=pos(32.0,24.05,15.0,2.0,escapeHtml(d.ground),'center');
+    overlay+=pos(47.0,24.05,15.0,2.0,escapeHtml(d.totalArea),'center');
+    overlay+=pos(62.0,24.05,15.0,2.0,escapeHtml(d.floorArea),'center');
+    overlay+=pos(77.0,24.05,13.0,2.0,escapeHtml(d.buildings),'center');
+
+    const rowTops=[33.1,43.4,53.5,63.6];
+    const resultTops=[35.95,46.25,56.45,66.65];
+
+    checks.forEach((c,i)=>{
+      overlay+=pos(17.2,rowTops[i],50.0,8.3,escapeHtml(c.content),'left');
+      overlay+=resultMarks(c.result,resultTops[i]);
+      overlay+=pos(81.1,rowTops[i],9.0,8.3,escapeHtml(c.action),'left small-value');
+    });
+
+    overlay+=pos(17.1,76.5,17.5,2.3,escapeHtml(imp.reportDate),'center small-value');
+    overlay+=methodMark(imp.method);
+    overlay+=pos(70.5,76.5,19.5,2.3,escapeHtml(imp.reportTo),'center small-value');
+    overlay+=remedyMark(imp.remedy);
+
+    return overlay;
+  }
+
+  window.previewFireRecordV420=function(){
+    const modal=$('firePreviewModal');
+    const sheet=$('firePreviewSheet');
+
+    if(!modal||!sheet){
+      window.showToast?.('소방 법정서식 미리보기 영역을 찾지 못했습니다.');
+      return;
+    }
+
+    try{
+      const d=collectFireDataV424();
+      const source=document.querySelector('.fire-original-sheet .fire-form-bg');
+      const sourceUrl=source?.src;
+
+      if(!sourceUrl){
+        throw new Error('법정서식 원본 이미지를 찾지 못했습니다.');
+      }
+
+      sheet.className='fire-original-sheet';
+      sheet.innerHTML=`
+        <img class="fire-form-bg" src="${sourceUrl}" alt="소방안전관리자 업무 수행 기록표 원본 서식">
+        ${originalFormOverlayV424(d)}
+      `;
+
+      modal.classList.add('show');
+      modal.scrollTop=0;
+    }catch(e){
+      console.error('TFMS v42.4 fire preview error',e);
+      window.showToast?.('서식 미리보기 실패: '+(e?.message||e));
+    }
+  };
+
+  window.printFireRecordV420=function(){
+    const preview=$('firePreviewSheet');
+    const root=$('firePrintRoot');
+
+    if(!preview||!root||!preview.innerHTML.trim()){
+      window.showToast?.('먼저 서식 미리보기를 생성해 주세요.');
+      return;
+    }
+
+    root.innerHTML=`<div class="fire-original-sheet">${preview.innerHTML}</div>`;
+    root.style.display='block';
+    document.body.classList.add('fire-printing');
+
+    setTimeout(()=>window.print(),180);
+    setTimeout(()=>{
+      document.body.classList.remove('fire-printing');
+      root.style.display='none';
+      root.innerHTML='';
+    },1000);
+  };
+
+  document.addEventListener('DOMContentLoaded',applyVersionV424);
+})();
+</script>
