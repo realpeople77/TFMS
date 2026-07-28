@@ -13543,3 +13543,108 @@ ${getPrintCssV401()}
   },250);
 })();
 </script>
+
+
+<style id="tfms-v414-work-placeholder-style">
+  #wjWorkRows input::placeholder{color:#94a3b8;opacity:1}
+</style>
+<script id="tfms-v414-work-placeholder-controller">
+(function(){
+'use strict';
+window.TFMS_BUILD=Object.freeze({
+  version:'v41.4',
+  channel:'Enterprise Stable',
+  buildDate:'2026.07.28',
+  title:'일상근무일지 업무내용 예시문구 처리'
+});
+const $=id=>document.getElementById(id);
+const examples=[
+  '예: 해당 시설 일일 기계실 업무일지 작성',
+  '예: 해당 시설 관련 법정·운영기록부 작성',
+  '예: 시설 내 수위·온도·설비 상태 점검',
+  '예: 순환펌프 교번작업 및 운전상태 확인',
+  '예: 시설 환경 및 온도 조절',
+  '예: 주요 설비 육안점검 및 사용량 확인',
+  '예: 소모품 보충 및 재고 확인'
+];
+
+function applyVersion(){
+  const b=window.TFMS_BUILD,label=`${b.version} ${b.channel}`;
+  const badge=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
+  if(badge)badge.textContent=label;
+  document.querySelectorAll('.logo-title small').forEach(el=>{
+    el.textContent=`시설 유지관리 이력관리 시스템 · ${label}`;
+  });
+  const current=document.querySelector('#tfmsVersionModal .current-build');
+  if(current)current.textContent=`현재 버전: ${label} · Build ${b.buildDate}`;
+}
+
+function escapeAttr(v){
+  return String(v??'')
+    .replace(/&/g,'&amp;')
+    .replace(/"/g,'&quot;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;');
+}
+
+function renderRows(){
+  const host=$('wjWorkRows');
+  if(!host)return;
+  const rows=window.djWorkRows||[];
+  host.innerHTML=rows.map((row,i)=>`
+    <div class="dj-grid two" style="margin-bottom:8px">
+      <div class="dj-field">
+        <input value="${escapeAttr(row.work||'')}"
+          placeholder="${examples[i]||'예: 오늘 수행한 업무내용 입력'}"
+          oninput="djWorkRows[${i}].work=this.value">
+      </div>
+      <div class="dj-field" style="display:flex;gap:6px">
+        <input value="${escapeAttr(row.note||'')}"
+          placeholder="비고"
+          oninput="djWorkRows[${i}].note=this.value">
+        <button type="button" class="small-btn red"
+          onclick="djWorkRows.splice(${i},1);renderWorkRowsV414()">삭제</button>
+      </div>
+    </div>`).join('');
+}
+
+window.renderWorkRowsV414=renderRows;
+window.addWorkJournalRowV390=function(){
+  window.djWorkRows=window.djWorkRows||[];
+  window.djWorkRows.push({work:'',note:''});
+  renderRows();
+};
+
+function initialize(){
+  applyVersion();
+  const host=$('wjWorkRows');
+  if(!host)return;
+
+  const currentRows=window.djWorkRows||[];
+  const hasFixedTaebaek=currentRows.some(r=>String(r.work||'').includes('태백국민체육센터'));
+
+  if(!currentRows.length||hasFixedTaebaek){
+    window.djWorkRows=examples.map(()=>({work:'',note:''}));
+  }
+  renderRows();
+}
+
+const oldShow=window.showPage;
+if(typeof oldShow==='function'){
+  window.showPage=function(id,btn){
+    const result=oldShow.apply(this,arguments);
+    if(id==='dailylog')setTimeout(initialize,120);
+    return result;
+  };
+}
+const oldNav=window.navTo;
+if(typeof oldNav==='function'){
+  window.navTo=function(id){
+    const result=oldNav.apply(this,arguments);
+    if(id==='dailylog')setTimeout(initialize,120);
+    return result;
+  };
+}
+document.addEventListener('DOMContentLoaded',()=>setTimeout(initialize,250));
+})();
+</script>
