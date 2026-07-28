@@ -15292,3 +15292,117 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.addEventListener('DOMContentLoaded',applyVersion);
 })();
 </script>
+
+
+<script id="tfms-v422-login-permission-guard-controller">
+(function(){
+  'use strict';
+
+  window.TFMS_BUILD=Object.freeze({
+    version:'v42.2',
+    channel:'Enterprise Stable',
+    buildDate:'2026.07.28',
+    title:'로그인 전 유지관리 자료조회 차단'
+  });
+
+  function db(){
+    try{
+      return window.getTfmsSupabaseClient?.()||
+        window.tfmsSupabase||
+        window.sb||
+        (typeof sb!=='undefined'?sb:null);
+    }catch(e){return null}
+  }
+
+  async function hasSession(){
+    const sbc=db();
+    if(!sbc)return false;
+    try{
+      const {data}=await sbc.auth.getSession();
+      return Boolean(data?.session?.user);
+    }catch(e){
+      return false;
+    }
+  }
+
+  function loginVisible(){
+    const login=
+      document.getElementById('loginPage')||
+      document.querySelector('.login-page')||
+      document.querySelector('[data-page="login"]');
+
+    if(!login)return false;
+    const style=getComputedStyle(login);
+    return style.display!=='none'&&style.visibility!=='hidden';
+  }
+
+  function applyVersion(){
+    const b=window.TFMS_BUILD,label=`${b.version} ${b.channel}`;
+    const badge=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
+    if(badge)badge.textContent=label;
+
+    document.querySelectorAll('.logo-title small').forEach(el=>{
+      el.textContent=`시설 유지관리 이력관리 시스템 · ${label}`;
+    });
+
+    const current=document.querySelector('#tfmsVersionModal .current-build');
+    if(current)current.textContent=`현재 버전: ${label} · Build ${b.buildDate}`;
+  }
+
+  function guard(name){
+    const original=window[name];
+    if(typeof original!=='function'||original.__tfmsV422Guarded)return;
+
+    const wrapped=async function(){
+      if(!(await hasSession()))return;
+      return original.apply(this,arguments);
+    };
+
+    wrapped.__tfmsV422Guarded=true;
+    window[name]=wrapped;
+  }
+
+  [
+    'loadEnterpriseData',
+    'loadMaintenanceHistoryV361',
+    'loadStatsV363',
+    'loadExportRecordsV371',
+    'renderExportPreview',
+    'downloadXlsx',
+    'downloadCsv',
+    'loadDailyLogHistoryV400',
+    'loadDeleteAuditV411',
+    'loadDeleteAuditV402'
+  ].forEach(guard);
+
+  const originalToast=window.showToast;
+  if(typeof originalToast==='function'){
+    window.showToast=function(message){
+      const msg=String(message||'');
+
+      if(
+        loginVisible() &&
+        /permission denied for table maintenance_records|자료 미리보기 실패/i.test(msg)
+      ){
+        console.warn('TFMS v42.2 blocked pre-login query:',msg);
+        return;
+      }
+
+      return originalToast.apply(this,arguments);
+    };
+  }
+
+  document.addEventListener('DOMContentLoaded',async()=>{
+    applyVersion();
+
+    if(!(await hasSession())){
+      window.tfmsExportRecordsV371=[];
+      const body=document.getElementById('exportPreviewBody');
+      if(body){
+        body.innerHTML=
+          '<tr><td colspan="18"><div class="empty-state">로그인 후 자료를 조회할 수 있습니다.</div></td></tr>';
+      }
+    }
+  });
+})();
+</script>
