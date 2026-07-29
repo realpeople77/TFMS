@@ -15468,7 +15468,7 @@ const val=id=>$(id)?.value??'';
 const radio=name=>document.querySelector(`input[name="${name}"]:checked`)?.value||'';
 const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const toast=m=>{try{window.showToast?.(m)}catch(e){alert(m)}};
-window.TFMS_BUILD=Object.freeze({version:'v43.1',channel:'Enterprise Stable',buildDate:'2026.07.29',title:'소방 서식 마감·대시보드 한눈보기'});
+window.TFMS_BUILD=Object.freeze({version:'v43.2',channel:'Enterprise Stable',buildDate:'2026.07.29',title:'대시보드 화면 전환 안정화'});
 function applyVersion(){const b=window.TFMS_BUILD,label=`${b.version} ${b.channel}`;const badge=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');if(badge)badge.textContent=label;document.querySelectorAll('.logo-title small').forEach(el=>el.textContent=`시설 유지관리 이력관리 시스템 · ${label}`);const current=document.querySelector('#tfmsVersionModal .current-build');if(current)current.textContent=`현재 버전: ${label} · Build ${b.buildDate}`;}
 function data(){return{date:val('fireDate'),performer:val('firePerformer'),facility:val('fireFacility'),grade:val('fireGrade'),address:val('fireAddress'),basement:val('fireBasement'),ground:val('fireGround'),totalArea:val('fireTotalArea'),floorArea:val('fireFloorArea'),buildings:val('fireBuildings'),checks:[0,1,2,3].map(i=>({content:val(`fireCheck${i}`),result:radio(`fireResult${i}`),action:val(`fireAction${i}`)})),improvement:{reportDate:val('fireReportDate'),method:val('fireReportMethod'),reportTo:val('fireReportTo'),remedy:val('fireRemedy')},extinguishers:Array.isArray(window.fireExtRowsV420)?window.fireExtRowsV420:[]};}
 function fmtDate(v){const m=String(v||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);return m?`${m[1]}. ${Number(m[2])}. ${Number(m[3])}.`:String(v||'');}
@@ -15548,6 +15548,11 @@ document.addEventListener('DOMContentLoaded',applyVersion);if(document.readyStat
 .fire-editing-badge-v431{display:none;margin-left:8px;padding:5px 9px;border-radius:999px;background:#fff7ed;color:#c2410c;font-size:12px;font-weight:800}
 .fire-editing-badge-v431.show{display:inline-block}
 @media(max-width:800px){.fire-history-toolbar-v431{grid-template-columns:1fr 1fr}.fire-history-toolbar-v431 .wide{grid-column:1/-1}}
+
+/* v43.2 화면 전환 수정: 대시보드 압축 레이아웃의 display:grid가 비활성 page의 display:none을 덮어쓰지 않도록 제한 */
+#dashboard.tfms-dashboard-v431:not(.active){display:none!important}
+#dashboard.tfms-dashboard-v431.active{display:grid}
+@media(max-width:900px){#dashboard.tfms-dashboard-v431.active{display:block}}
 </style>
 <script id="tfms-v431-controller">
 (function(){
