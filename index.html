@@ -15468,7 +15468,7 @@ const val=id=>$(id)?.value??'';
 const radio=name=>document.querySelector(`input[name="${name}"]:checked`)?.value||'';
 const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const toast=m=>{try{window.showToast?.(m)}catch(e){alert(m)}};
-window.TFMS_BUILD=Object.freeze({version:'v43.0',channel:'Enterprise Stable',buildDate:'2026.07.29',title:'소방 법정서식 최종 안정화'});
+window.TFMS_BUILD=Object.freeze({version:'v43.1',channel:'Enterprise Stable',buildDate:'2026.07.29',title:'소방 서식 마감·대시보드 한눈보기'});
 function applyVersion(){const b=window.TFMS_BUILD,label=`${b.version} ${b.channel}`;const badge=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');if(badge)badge.textContent=label;document.querySelectorAll('.logo-title small').forEach(el=>el.textContent=`시설 유지관리 이력관리 시스템 · ${label}`);const current=document.querySelector('#tfmsVersionModal .current-build');if(current)current.textContent=`현재 버전: ${label} · Build ${b.buildDate}`;}
 function data(){return{date:val('fireDate'),performer:val('firePerformer'),facility:val('fireFacility'),grade:val('fireGrade'),address:val('fireAddress'),basement:val('fireBasement'),ground:val('fireGround'),totalArea:val('fireTotalArea'),floorArea:val('fireFloorArea'),buildings:val('fireBuildings'),checks:[0,1,2,3].map(i=>({content:val(`fireCheck${i}`),result:radio(`fireResult${i}`),action:val(`fireAction${i}`)})),improvement:{reportDate:val('fireReportDate'),method:val('fireReportMethod'),reportTo:val('fireReportTo'),remedy:val('fireRemedy')},extinguishers:Array.isArray(window.fireExtRowsV420)?window.fireExtRowsV420:[]};}
 function fmtDate(v){const m=String(v||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);return m?`${m[1]}. ${Number(m[2])}. ${Number(m[3])}.`:String(v||'');}
@@ -15477,15 +15477,17 @@ function imgSrc(){const src=$('tfms-v423-fire-original-form-controller')?.textCo
 const PW=1653,PH=2337;
 function box(x,y,w,h,text,cls=''){return `<div class="fire-overlay-v430 ${cls}" style="left:${x/PW*100}%;top:${y/PH*100}%;width:${w/PW*100}%;height:${h/PH*100}%">${text}</div>`;}
 function mark(x,y){return box(x,y,30,30,'✓','check');}
-function grade(v){return ({'특급':[1138,405],'1급':[1268,405],'2급':[1398,405],'3급':[1138,455]}[v]||[]);}
+function gradeHtml(v){return ['특급','1급','2급','3급'].map(g=>`<span>[ <b>${v===g?'✓':'&nbsp;'}</b> ]${g}</span>`).join('');}
 function result(v,i){const good=[830,1059,1288,1516],bad=[880,1109,1338,1566];return v==='양호'?[1160,good[i]]:v==='불량'?[1160,bad[i]]:[];}
 function method(v){return ({'대면':[675,1774],'서면':[835,1774],'정보통신':[1015,1774]}[v]||[]);}
 function remedy(v){return ({'이전':[675,1850],'제거':[835,1850],'수리·교체':[1018,1880],'기타':[1260,1850]}[v]||[]);}
 function overlays(d){let o='';
  o+=box(417,330,474,64,esc(fmtDate(d.date)),'compact');
- o+=box(1058,330,427,64,esc(d.performer),'compact');
- o+=box(607,397,451,76,esc(d.facility),'compact');
- let m=grade(d.grade);if(m.length)o+=mark(...m);
+ o+=box(1138,330,447,64,esc(d.performer),'compact');
+ o+=box(607,397,351,76,esc(d.facility),'compact');
+ o+=`<div class="fire-grade-divider-v431" style="left:${958/PW*100}%;top:${330/PH*100}%;height:${143/PH*100}%"></div>`;
+ o+=box(1138,397,447,76,gradeHtml(d.grade),'grade-line-v431');
+ let m=[];
  o+=box(607,473,878,75,esc(d.address),'compact');
  o+=box(607,548,204,75,esc(d.basement),'compact');o+=box(811,548,247,75,esc(d.ground),'compact');o+=box(1058,548,247,75,esc(d.totalArea),'compact');o+=box(1305,548,180,75,esc(d.floorArea),'compact');o+=box(1485,548,100,75,esc(d.buildings),'compact');
  const ys=[757,986,1215,1444],hs=[229,229,229,228];d.checks.forEach((r,i)=>{o+=box(417,ys[i],722,hs[i],esc(r.content),'left');const q=result(r.result,i);if(q.length)o+=mark(...q);o+=box(1304,ys[i],181,hs[i],esc(r.action),'left');});
@@ -15496,6 +15498,118 @@ function db(){try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||
 async function facilityId(name){const sbc=db();const {data,error}=await sbc.from('facilities').select('id,name').eq('name',name).limit(1);if(error)throw error;if(!data?.length)throw new Error(`시설 DB에서 '${name}'을 찾지 못했습니다.`);return data[0].id;}
 window.saveFireRecordV420=async function(){const d=data();if(!d.date||!d.performer||!d.facility){toast('수행일자, 수행자, 상호를 입력해 주세요.');return;}try{const sbc=db();if(!sbc)throw new Error('DB 연결 정보를 확인하지 못했습니다.');const {data:auth,error:authErr}=await sbc.auth.getUser();if(authErr)throw authErr;const uid=auth?.user?.id;if(!uid)throw new Error('로그인 세션을 확인할 수 없습니다.');const fid=await facilityId(d.facility);const payload={facility_id:String(fid),performed_on:d.date,performer_id:uid,performer_name:d.performer,target_grade:d.grade,address:d.address,basement_floors:Number(d.basement||0),ground_floors:Number(d.ground||0),total_area:Number(d.totalArea||0),floor_area:Number(d.floorArea||0),building_count:Number(d.buildings||0),form_data:d};const {data:record,error}=await sbc.from('fire_safety_records').insert(payload).select('id').single();if(error){if(/schema cache|Could not find the table|PGRST205/i.test(error.message||''))throw new Error('소방점검 저장 테이블이 없습니다. ZIP의 「필수_SQL_1회실행.sql」을 Supabase SQL Editor에서 실행한 뒤 새로고침해 주세요.');throw error;}if(d.extinguishers.length){const rows=d.extinguishers.map(x=>({fire_record_id:record.id,facility_id:String(fid),inspection_date:d.date,extinguisher_code:x.code,location_detail:x.location,extinguisher_type:x.type,pressure_status:x.pressure,pin_seal_status:x.pin,hose_nozzle_status:x.hose,body_status:x.body,placement_status:x.placement,result_status:x.result,note:x.note,inspector_id:uid,inspector_name:d.performer}));const {error:ee}=await sbc.from('fire_extinguisher_checks').insert(rows);if(ee)throw ee;}toast('소방 월간점검 기록을 저장했습니다.');}catch(e){console.error(e);toast('소방점검 저장 실패: '+(e?.message||e));}};
 document.addEventListener('DOMContentLoaded',applyVersion);if(document.readyState!=='loading')applyVersion();
+})();
+</script>
+<style id="tfms-v431-final-style">
+/* v43.1 대시보드 한 화면 요약: 기존 데이터 ID와 연결 기능은 유지 */
+#dashboard.tfms-dashboard-v431{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:12px;align-items:start}
+#dashboard.tfms-dashboard-v431>.title-row{grid-column:1/-1;margin:0}
+#dashboard.tfms-dashboard-v431>.panel{margin:0!important}
+#dashboard.tfms-dashboard-v431>.dept-compact-v431{grid-column:1/-1;padding:12px 16px}
+#dashboard.tfms-dashboard-v431>.dept-compact-v431 .section-title{display:none}
+#dashboard.tfms-dashboard-v431>.dept-compact-v431 .dept-tabs{margin:0;display:flex;gap:7px;flex-wrap:nowrap;overflow:auto}
+#dashboard.tfms-dashboard-v431>.dept-compact-v431 .dept-tab{padding:7px 12px;white-space:nowrap}
+#dashboard.tfms-dashboard-v431>.dept-compact-v431 .notice{display:none}
+#dashboard.tfms-dashboard-v431>.stats{grid-column:1/-1;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px;margin:0}
+#dashboard.tfms-dashboard-v431>.stats .stat{padding:12px 14px;min-height:74px}
+#dashboard.tfms-dashboard-v431>.stats .stat p{font-size:12px;margin-bottom:5px}
+#dashboard.tfms-dashboard-v431>.stats .stat strong{font-size:22px}
+#dashboard.tfms-dashboard-v431>.dash-action-v431{grid-column:1/5;padding:14px}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .section-title{margin-bottom:9px}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .action-panel{display:block}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .primary-action{padding:14px;min-height:auto}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .primary-action h2{font-size:18px;margin:0 0 5px}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .primary-action p{font-size:12px;line-height:1.35;margin:0}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .secondary-actions{grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .secondary-action{padding:9px 10px;min-height:54px}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .secondary-action strong{font-size:13px}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .secondary-action span{font-size:11px}
+#dashboard.tfms-dashboard-v431>.dash-today-v431{grid-column:5/-1;padding:14px}
+#dashboard.tfms-dashboard-v431>.dash-daily-v431{grid-column:1/-1;padding:14px}
+#dashboard.tfms-dashboard-v431>.dash-today-v431 .table,#dashboard.tfms-dashboard-v431>.dash-daily-v431 .table{font-size:12px}
+#dashboard.tfms-dashboard-v431>.dash-today-v431 .table th,#dashboard.tfms-dashboard-v431>.dash-today-v431 .table td,#dashboard.tfms-dashboard-v431>.dash-daily-v431 .table th,#dashboard.tfms-dashboard-v431>.dash-daily-v431 .table td{padding:7px 8px}
+#dashboard.tfms-dashboard-v431>.guide-box,
+#dashboard.tfms-dashboard-v431>.dash-hide-v431{display:none!important}
+#dashboard.tfms-dashboard-v431 .section-title{font-size:15px;margin-bottom:9px}
+@media(min-width:1100px){#dashboard.tfms-dashboard-v431>.dash-daily-v431 tbody tr:nth-child(n+4){display:none}}
+@media(max-width:1250px){#dashboard.tfms-dashboard-v431>.dash-action-v431{grid-column:1/6}#dashboard.tfms-dashboard-v431>.dash-today-v431{grid-column:6/-1}}
+@media(max-width:900px){#dashboard.tfms-dashboard-v431{display:block}#dashboard.tfms-dashboard-v431>*{margin-bottom:12px!important}#dashboard.tfms-dashboard-v431>.stats{grid-template-columns:1fr 1fr}}
+/* 법정서식 수행자/등급 경계와 등급 선택 정렬 */
+.fire-original-sheet .fire-grade-divider-v431{position:absolute;z-index:3;width:1px;background:#777;pointer-events:none}
+.fire-original-sheet .fire-overlay-v430.grade-line-v431{background:#fff;display:grid!important;grid-template-columns:repeat(4,1fr)!important;gap:0!important;padding:0 1mm!important;white-space:nowrap!important;font-size:8.5pt!important;overflow:visible!important}
+.fire-original-sheet .fire-overlay-v430.grade-line-v431 span{display:flex;align-items:center;justify-content:center;gap:.5mm;min-width:0}
+.fire-original-sheet .fire-overlay-v430.grade-line-v431 b{display:inline-block;min-width:3mm;font-size:9pt;line-height:1;font-weight:700}
+/* 저장 이력 */
+.fire-history-v431{margin-top:14px}
+.fire-history-toolbar-v431{display:grid;grid-template-columns:180px 180px 1fr auto;gap:8px;align-items:end;margin-bottom:10px}
+.fire-history-table-v431{width:100%;border-collapse:collapse;font-size:12px}
+.fire-history-table-v431 th,.fire-history-table-v431 td{border:1px solid #dbe3ef;padding:8px;text-align:center}
+.fire-history-table-v431 th{background:#eff6ff;color:#1e3a8a}
+.fire-editing-badge-v431{display:none;margin-left:8px;padding:5px 9px;border-radius:999px;background:#fff7ed;color:#c2410c;font-size:12px;font-weight:800}
+.fire-editing-badge-v431.show{display:inline-block}
+@media(max-width:800px){.fire-history-toolbar-v431{grid-template-columns:1fr 1fr}.fire-history-toolbar-v431 .wide{grid-column:1/-1}}
+</style>
+<script id="tfms-v431-controller">
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const toast=m=>{try{window.showToast?.(m)}catch(e){alert(m)}};
+function db(){try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||(typeof sb!=='undefined'?sb:null)}catch(e){return null}}
+let editingId=null;
+function setupDashboard(){
+ const d=$('dashboard');if(!d||d.classList.contains('tfms-dashboard-v431'))return;
+ d.classList.add('tfms-dashboard-v431');
+ const panels=[...d.children];
+ const dept=panels.find(x=>x.querySelector?.('.dept-tabs'));if(dept)dept.classList.add('dept-compact-v431');
+ const action=panels.find(x=>x.querySelector?.('.action-panel'));if(action)action.classList.add('dash-action-v431');
+ const today=panels.find(x=>x.querySelector?.('#dashTodayBody'));if(today)today.classList.add('dash-today-v431');
+ const daily=panels.find(x=>x.querySelector?.('#dashDailyBodyV322'));if(daily)daily.classList.add('dash-daily-v431');
+ panels.filter(x=>x.querySelector?.('#dashTodayRegistered')||x.querySelector?.('.quick-grid')).forEach(x=>x.classList.add('dash-hide-v431'));
+ const stats=d.querySelector(':scope>.stats');if(stats&&dept)dept.after(stats);
+}
+function fireData(){
+ const val=id=>$(id)?.value??'';const radio=n=>document.querySelector(`input[name="${n}"]:checked`)?.value||'';
+ return {date:val('fireDate'),performer:val('firePerformer'),facility:val('fireFacility'),grade:val('fireGrade'),address:val('fireAddress'),basement:val('fireBasement'),ground:val('fireGround'),totalArea:val('fireTotalArea'),floorArea:val('fireFloorArea'),buildings:val('fireBuildings'),checks:[0,1,2,3].map(i=>({content:val(`fireCheck${i}`),result:radio(`fireResult${i}`),action:val(`fireAction${i}`)})),improvement:{reportDate:val('fireReportDate'),method:val('fireReportMethod'),reportTo:val('fireReportTo'),remedy:val('fireRemedy')},extinguishers:Array.isArray(window.fireExtRowsV420)?window.fireExtRowsV420:[]};
+}
+function setRadio(name,value){document.querySelectorAll(`input[name="${name}"]`).forEach(r=>r.checked=r.value===value)}
+function fillFire(d){
+ const set=(id,v)=>{if($(id))$(id).value=v??''};
+ set('fireDate',d.date);set('firePerformer',d.performer);set('fireFacility',d.facility);set('fireGrade',d.grade||'2급');set('fireAddress',d.address);set('fireBasement',d.basement);set('fireGround',d.ground);set('fireTotalArea',d.totalArea);set('fireFloorArea',d.floorArea);set('fireBuildings',d.buildings);
+ (d.checks||[]).forEach((r,i)=>{set(`fireCheck${i}`,r.content);setRadio(`fireResult${i}`,r.result);set(`fireAction${i}`,r.action)});
+ set('fireReportDate',d.improvement?.reportDate);set('fireReportMethod',d.improvement?.method||'해당없음');set('fireReportTo',d.improvement?.reportTo);set('fireRemedy',d.improvement?.remedy||'해당없음');
+ window.fireExtRowsV420=Array.isArray(d.extinguishers)?JSON.parse(JSON.stringify(d.extinguishers)):[];if(!window.fireExtRowsV420.length)window.addFireExtRowV420?.();else window.renderFireExtRowsV420?.();
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function ensureHistory(){
+ const page=$('fireMonthly');if(!page||$('fireHistoryPanelV431'))return;
+ const firstPanel=page.querySelector('.panel');if(!firstPanel)return;
+ const badge=document.createElement('span');badge.id='fireEditingBadgeV431';badge.className='fire-editing-badge-v431';badge.textContent='기존 기록 수정 중';page.querySelector('h1')?.after(badge);
+ const panel=document.createElement('div');panel.id='fireHistoryPanelV431';panel.className='panel fire-history-v431';panel.innerHTML=`<div class="section-title"><span class="dot"></span>저장된 소방점검 기록</div><div class="fire-history-toolbar-v431"><div class="fire-field"><label>시작일</label><input id="fireHistFromV431" type="date"></div><div class="fire-field"><label>종료일</label><input id="fireHistToV431" type="date"></div><div class="fire-field wide"><label>시설명·수행자</label><input id="fireHistKeywordV431" placeholder="검색어 입력"></div><button class="btn blue" type="button" onclick="loadFireHistoryV431()">조회</button></div><div style="overflow:auto"><table class="fire-history-table-v431"><thead><tr><th>수행일자</th><th>시설명</th><th>수행자</th><th>등급</th><th>저장일시</th><th>관리</th></tr></thead><tbody id="fireHistoryBodyV431"><tr><td colspan="6">조회 버튼을 눌러 저장된 기록을 확인하세요.</td></tr></tbody></table></div>`;
+ firstPanel.after(panel);
+ const now=new Date(), start=new Date(now.getFullYear(),now.getMonth(),1);const iso=x=>new Date(x.getTime()-x.getTimezoneOffset()*60000).toISOString().slice(0,10);$('fireHistFromV431').value=iso(start);$('fireHistToV431').value=iso(now);
+}
+window.loadFireHistoryV431=async function(){
+ try{const sbc=db();if(!sbc)throw new Error('DB 연결 정보를 확인하지 못했습니다.');let q=sbc.from('fire_safety_records').select('id,performed_on,performer_name,target_grade,form_data,created_at,updated_at').order('performed_on',{ascending:false}).order('created_at',{ascending:false}).limit(100);const f=$('fireHistFromV431')?.value,t=$('fireHistToV431')?.value,k=($('fireHistKeywordV431')?.value||'').trim().toLowerCase();if(f)q=q.gte('performed_on',f);if(t)q=q.lte('performed_on',t);const {data,error}=await q;if(error)throw error;const rows=(data||[]).filter(r=>!k||String(r.form_data?.facility||'').toLowerCase().includes(k)||String(r.performer_name||'').toLowerCase().includes(k));const body=$('fireHistoryBodyV431');body.innerHTML=rows.length?rows.map(r=>`<tr><td>${esc(r.performed_on||'')}</td><td>${esc(r.form_data?.facility||'')}</td><td>${esc(r.performer_name||'')}</td><td>${esc(r.target_grade||'')}</td><td>${esc(new Date(r.updated_at||r.created_at).toLocaleString('ko-KR'))}</td><td><button class="small-btn" onclick="viewFireRecordV431('${r.id}')">보기</button> <button class="small-btn" onclick="editFireRecordV431('${r.id}')">수정</button> <button class="small-btn red" onclick="deleteFireRecordV431('${r.id}')">삭제</button></td></tr>`).join(''):'<tr><td colspan="6">조건에 맞는 기록이 없습니다.</td></tr>';window._fireHistoryRowsV431=rows;}catch(e){console.error(e);toast('소방점검 기록 조회 실패: '+(e?.message||e));}
+};
+function rowById(id){return (window._fireHistoryRowsV431||[]).find(r=>String(r.id)===String(id))}
+window.viewFireRecordV431=function(id){const r=rowById(id);if(!r)return toast('기록을 다시 조회해 주세요.');fillFire(r.form_data||{});window.previewFireRecordV420?.();};
+window.editFireRecordV431=function(id){const r=rowById(id);if(!r)return toast('기록을 다시 조회해 주세요.');editingId=id;fillFire(r.form_data||{});$('fireEditingBadgeV431')?.classList.add('show');const btn=[...document.querySelectorAll('#fireMonthly button')].find(b=>b.getAttribute('onclick')?.includes('saveFireRecordV420'));if(btn)btn.textContent='수정 저장';toast('기존 기록을 불러왔습니다. 수정 후 「수정 저장」을 눌러주세요.');};
+window.cancelFireEditV431=function(){editingId=null;$('fireEditingBadgeV431')?.classList.remove('show');const btn=[...document.querySelectorAll('#fireMonthly button')].find(b=>b.getAttribute('onclick')?.includes('saveFireRecordV420'));if(btn)btn.textContent='점검 저장';};
+window.deleteFireRecordV431=async function(id){if(!confirm('선택한 소방점검 기록을 삭제하시겠습니까?\n삭제한 자료는 복구할 수 없습니다.'))return;try{const sbc=db();const {error}=await sbc.from('fire_safety_records').delete().eq('id',id);if(error)throw error;toast('삭제했습니다.');await window.loadFireHistoryV431();}catch(e){console.error(e);toast('삭제 실패: '+(e?.message||e));}};
+async function facilityId(name){const sbc=db();const {data,error}=await sbc.from('facilities').select('id,name').eq('name',name).limit(1);if(error)throw error;if(!data?.length)throw new Error(`시설 DB에서 '${name}'을 찾지 못했습니다.`);return data[0].id;}
+window.saveFireRecordV420=async function(){
+ const d=fireData();if(!d.date||!d.performer||!d.facility){toast('수행일자, 수행자, 상호를 입력해 주세요.');return;}
+ try{const sbc=db();if(!sbc)throw new Error('DB 연결 정보를 확인하지 못했습니다.');const {data:auth,error:ae}=await sbc.auth.getUser();if(ae)throw ae;const uid=auth?.user?.id;if(!uid)throw new Error('로그인 세션을 확인할 수 없습니다.');const fid=await facilityId(d.facility);const payload={facility_id:String(fid),performed_on:d.date,performer_id:uid,performer_name:d.performer,target_grade:d.grade,address:d.address,basement_floors:Number(d.basement||0),ground_floors:Number(d.ground||0),total_area:Number(d.totalArea||0),floor_area:Number(d.floorArea||0),building_count:Number(d.buildings||0),form_data:d,updated_at:new Date().toISOString()};let recordId=editingId;
+ if(editingId){const {error}=await sbc.from('fire_safety_records').update(payload).eq('id',editingId);if(error)throw error;await sbc.from('fire_extinguisher_checks').delete().eq('fire_record_id',editingId);}else{const {data:r,error}=await sbc.from('fire_safety_records').insert(payload).select('id').single();if(error)throw error;recordId=r.id;}
+ if(d.extinguishers.length){const rows=d.extinguishers.map(x=>({fire_record_id:recordId,facility_id:String(fid),inspection_date:d.date,extinguisher_code:x.code,location_detail:x.location,extinguisher_type:x.type,pressure_status:x.pressure,pin_seal_status:x.pin,hose_nozzle_status:x.hose,body_status:x.body,placement_status:x.placement,result_status:x.result,note:x.note,inspector_id:uid,inspector_name:d.performer}));const {error}=await sbc.from('fire_extinguisher_checks').insert(rows);if(error)throw error;}
+ toast(editingId?'소방점검 기록을 수정했습니다.':'소방 월간점검 기록을 저장했습니다.');window.cancelFireEditV431();await window.loadFireHistoryV431();
+ }catch(e){console.error(e);toast('소방점검 저장 실패: '+(e?.message||e));}
+};
+function init(){setupDashboard();ensureHistory();setTimeout(()=>{ensureHistory();setupDashboard();},500)}
+document.addEventListener('DOMContentLoaded',init);if(document.readyState!=='loading')init();
+const oldShow=window.showPage;if(typeof oldShow==='function')window.showPage=function(id,btn){const r=oldShow.apply(this,arguments);if(id==='dashboard')setTimeout(setupDashboard,20);if(id==='fireMonthly')setTimeout(()=>{ensureHistory();window.loadFireHistoryV431?.()},100);return r};
+const oldNav=window.navTo;if(typeof oldNav==='function')window.navTo=function(id){const r=oldNav.apply(this,arguments);if(id==='dashboard')setTimeout(setupDashboard,20);if(id==='fireMonthly')setTimeout(()=>{ensureHistory();window.loadFireHistoryV431?.()},100);return r};
 })();
 </script>
 </body></html>
