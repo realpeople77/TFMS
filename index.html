@@ -820,18 +820,14 @@ nav .nav[onclick*='"qrCheck"']{
 </div>
 </div>
 <div class="panel tfms-stats-main">
-<div class="tfms-stats-toolbar">
 <div class="section-title"><span class="dot"></span>유지관리 분석</div>
-<div class="tfms-stat-tabs" role="tablist" aria-label="통계 구분">
-<button type="button" class="tfms-stat-tab active" data-stat-tab="monthly" onclick="switchStatsTabV440('monthly',this)">월별 추이</button>
-<button type="button" class="tfms-stat-tab" data-stat-tab="field" onclick="switchStatsTabV440('field',this)">분야별</button>
-<button type="button" class="tfms-stat-tab" data-stat-tab="dept" onclick="switchStatsTabV440('dept',this)">부서별</button>
+<div class="tfms-four-charts">
+  <div class="tfms-mini-chart"><h3>월별 등록 추이</h3><div class="chart-wrap" id="monthlyChart"></div></div>
+  <div class="tfms-mini-chart"><h3>분야별 현황</h3><div class="chart-wrap" id="fieldChart"></div></div>
+  <div class="tfms-mini-chart"><h3>부서별 현황</h3><div class="chart-wrap" id="deptChart"></div></div>
+  <div class="tfms-mini-chart"><h3>처리상태 현황</h3><div class="chart-wrap" id="statusChartV443"></div></div>
 </div>
-</div>
-<div class="tfms-stat-view active" data-stat-view="monthly"><div class="tfms-chart-caption">최근 등록 추이를 월별로 비교합니다.</div><div class="chart-wrap" id="monthlyChart"></div></div>
-<div class="tfms-stat-view" data-stat-view="field"><div class="tfms-chart-caption">유지관리 분야별 등록 비중을 확인합니다.</div><div class="chart-wrap" id="fieldChart"></div></div>
-<div class="tfms-stat-view" data-stat-view="dept"><div class="tfms-chart-caption">관리부서별 유지관리 등록 건수를 비교합니다.</div><div class="chart-wrap" id="deptChart"></div></div>
-<div class="tfms-stats-footnote">※ 증감은 등록된 유지관리 이력을 기준으로 전월과 비교합니다. 예산 증가는 보수·교체 실적 증가일 수 있습니다.</div>
+<div class="tfms-stats-footnote">※ 등록된 유지관리 이력을 기준으로 집계하며, 카드와 그래프는 현재 선택 부서 기준으로 표시됩니다.</div>
 </div>
 </section>
 <section class="page" id="excel">
@@ -1025,11 +1021,11 @@ nav .nav[onclick*='"qrCheck"']{
 <div class="panel">
 <div class="section-title"><span class="dot"></span>정기점검 자동 생성 규칙</div>
 <div class="notice">
-          소화기 월별 점검, 전기설비 정기점검, 보일러 점검처럼 반복되는 업무는 매번 입력하지 않고 여기서 <b>한 번만 등록</b>합니다.
-          등록된 주기에 따라 오늘의 업무에 자동 표시되고, 완료 처리하면 업무일지 또는 유지관리 이력으로 연결됩니다.
+          전기설비 정기점검, 보일러 점검처럼 반복되는 업무는 매번 입력하지 않고 여기서 <b>한 번만 등록</b>합니다.
+          소방 관련 업무는 아래의 <b>소방 월간점검 기록표</b>를 기준으로 등록하며, 오늘의 업무에서 기록표 작성 화면으로 연결됩니다.
         </div>
 <div class="preset-grid">
-<div class="preset-card" onclick="applyPreset('소방','소화기 월별 점검','월간')"><strong>소방 월간점검</strong><span>소화기·유도등·소방시설 확인</span></div>
+
 <div class="preset-card" onclick="applyPreset('전기','전기설비 정기점검','월간')"><strong>전기 정기점검</strong><span>분전반·조명·누전차단기 확인</span></div>
 <div class="preset-card" onclick="applyPreset('기계','보일러 및 펌프 점검','주간')"><strong>기계설비 점검</strong><span>보일러·펌프·배관 상태 확인</span></div>
 <div class="preset-card" onclick="applyPreset('수질','수영장 수질 확인','일일')"><strong>수질 일일확인</strong><span>수온·수질·밸런싱 탱크 확인</span></div>
@@ -11525,7 +11521,134 @@ document.addEventListener('DOMContentLoaded',function(){
       </style></head><body>
       <div class="dj-sheet ${esc(sheetClass||'')}">${content}</div>
       <script>window.onload=function(){setTimeout(function(){window.print()},250)}<\/script>
-      </body></html>`);
+      
+<style id="tfms-v443-ux-review-style">
+/* 오늘의 업무: 처리 버튼 한 줄 고정 */
+#today .table td:last-child{white-space:nowrap;min-width:285px}
+#today .table td:last-child .btn,#today .table td:last-child .small-btn{display:inline-flex;align-items:center;justify-content:center;margin:2px 3px 2px 0;padding:7px 10px;font-size:12px;line-height:1;vertical-align:middle}
+#today .table th,#today .table td{padding:10px 12px}
+/* 통계: 4개 소형 그래프 */
+#stats .tfms-stats-summary{padding:8px 12px!important;margin-bottom:10px!important}
+#stats .tfms-compact-kpi{gap:8px!important}
+#stats .tfms-compact-kpi .compare-card{min-height:64px!important;padding:8px 12px!important}
+#stats .tfms-compact-kpi .compare-card p{font-size:11px!important;margin:0 0 3px!important}
+#stats .tfms-compact-kpi .compare-card strong{font-size:18px!important;line-height:1.05!important}
+#stats .tfms-compact-kpi .delta{font-size:10px!important;margin-top:3px!important}
+#stats .tfms-stats-main{padding:12px!important;min-height:0!important}
+.tfms-four-charts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.tfms-mini-chart{border:1px solid #d8e2f1;border-radius:14px;padding:10px;background:#fff;min-width:0}
+.tfms-mini-chart h3{font-size:13px;margin:0 0 6px;color:#14213d}
+.tfms-mini-chart .chart-wrap{height:190px!important;min-height:190px!important;overflow:hidden}
+.tfms-mini-chart .chart-wrap svg{max-height:185px!important}
+/* 설비관리: 내용 유지, 현황/등록 탭으로 구조 분리 */
+#equipment .tfms-equipment-tabs{display:flex;gap:8px;position:sticky;top:0;z-index:4;background:#f4f7fb;padding:8px 0;margin-bottom:8px}
+#equipment .tfms-equipment-tabs button{border:1px solid #c8d8ee;background:#fff;border-radius:10px;padding:9px 16px;font-weight:700;color:#27466f;cursor:pointer}
+#equipment .tfms-equipment-tabs button.active{background:#1559bd;color:#fff;border-color:#1559bd}
+#equipment[data-eq-view="overview"] .tfms-eq-register-panel{display:none}
+#equipment[data-eq-view="edit"] .tfms-eq-overview-block{display:none}
+@media(max-width:1100px){.tfms-four-charts{grid-template-columns:1fr}.tfms-mini-chart .chart-wrap{height:220px!important}}
+</style>
+<script id="tfms-v443-ux-review-controller">
+(function(){
+'use strict';
+window.TFMS_BUILD=Object.freeze({version:'v44.3',channel:'Enterprise UX Review',buildDate:'2026.07.30',title:'오늘의 업무·통계·엑셀·설비·감사이력 UX 보완'});
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const toast=m=>(window.showToast||window.toast||alert)(m);
+
+function enhanceTodayActionsV443(){
+ const body=$('todayBody'); if(!body)return;
+ body.querySelectorAll('tr').forEach(tr=>{
+   const cell=tr.lastElementChild; if(!cell)return;
+   cell.style.whiteSpace='nowrap';
+   const task=tr.children[2]?.textContent||'';
+   const fire=cell.querySelector('.fire-today-btn');
+   if(fire && !/소방|소화기/.test(task)) fire.remove();
+ });
+}
+const oldToday=window.renderTodayTasks;
+if(typeof oldToday==='function')window.renderTodayTasks=function(){const r=oldToday.apply(this,arguments);setTimeout(enhanceTodayActionsV443,20);return r};
+
+function renderStatusChartV443(){
+ const el=$('statusChartV443'); if(!el)return;
+ let list=Array.isArray(window.records)?window.records:[];
+ try{
+   const dept=window.currentUserDept||window.tfmsUserDept||'';
+   if(dept&&dept!=='전체')list=list.filter(r=>(window.getFacilityDept?.(r.facility)||r.dept)===dept);
+ }catch(e){}
+ const labels=['완료','진행중','미조치','기타'];
+ const counts={완료:0,진행중:0,미조치:0,기타:0};
+ list.forEach(r=>{const st=String(r.status||r.process_status||''); if(/완료|조치완료/.test(st))counts.완료++;else if(/진행|처리중/.test(st))counts.진행중++;else if(/미조치|예정|대기/.test(st))counts.미조치++;else counts.기타++;});
+ const max=Math.max(1,...Object.values(counts));
+ const bars=labels.map(k=>'<div style="flex:1;text-align:center;min-width:0"><div style="font-size:11px;font-weight:800;color:#1559bd;margin-bottom:3px">'+counts[k]+'</div><div style="height:'+Math.max(4,Math.round(counts[k]/max*125))+'px;background:linear-gradient(#327bdd,#1559bd);border-radius:7px 7px 2px 2px;max-width:44px;margin:auto"></div><div style="font-size:10px;color:#52657d;margin-top:5px;white-space:nowrap">'+k+'</div></div>').join('');
+ el.innerHTML='<div style="height:100%;display:flex;align-items:flex-end;justify-content:space-around;gap:10px;padding:12px 8px 3px">'+bars+'</div>';
+}
+const oldStats=window.renderStatsCharts;
+if(typeof oldStats==='function')window.renderStatsCharts=function(){const r=oldStats.apply(this,arguments);setTimeout(renderStatusChartV443,30);return r};
+
+// 업무일지 Excel: JSON 원문 대신 목록 + 구조화 상세행으로 다운로드
+function flattenV443(value,prefix='',rows=[]){
+ if(value===null||value===undefined||value==='')return rows;
+ if(Array.isArray(value)){value.forEach((v,i)=>flattenV443(v,`${prefix}${prefix?' > ':''}${i+1}번`,rows));return rows;}
+ if(typeof value==='object'){Object.entries(value).forEach(([k,v])=>flattenV443(v,`${prefix}${prefix?' > ':''}${k}`,rows));return rows;}
+ rows.push([prefix,String(value)]); return rows;
+}
+window.downloadDailyLogExcelV400=async function(){
+ if(!window.tfmsDailyLogCache?.length)await window.loadDailyLogHistoryV400?.();
+ const list=window.tfmsDailyLogCache||[]; if(!list.length){toast('다운로드할 업무일지가 없습니다.');return}
+ if(typeof XLSX==='undefined'){toast('엑셀 모듈을 불러오지 못했습니다.');return}
+ const common=list.map((r,i)=>({순번:i+1,일자:r.work_date||'',시설명:r.facility?.name||r.data?.facility||'',일지종류:(window.typeLabel?.(r.journalType)||r.journalType||''),작성자:r.data?.author||r.author_name||'',날씨:r.weather||r.data?.weather||'',제목:r.title||'',저장일시:r.created_at?new Date(r.created_at).toLocaleString('ko-KR'):''}));
+ const detail=[];
+ list.forEach((r,i)=>{const base=[i+1,r.work_date||'',r.facility?.name||r.data?.facility||'',window.typeLabel?.(r.journalType)||r.journalType||''];flattenV443(r.data||{}).forEach(([item,val])=>detail.push([...base,item,val]));});
+ const wb=XLSX.utils.book_new();
+ const ws1=XLSX.utils.json_to_sheet(common); ws1['!cols']=[{wch:7},{wch:12},{wch:24},{wch:28},{wch:14},{wch:10},{wch:42},{wch:22}]; ws1['!autofilter']={ref:`A1:H${Math.max(2,common.length+1)}`};
+ XLSX.utils.book_append_sheet(wb,ws1,'업무일지 목록');
+ const ws2=XLSX.utils.aoa_to_sheet([['순번','일자','시설명','일지종류','입력항목','입력내용'],...detail]); ws2['!cols']=[{wch:7},{wch:12},{wch:24},{wch:28},{wch:42},{wch:60}]; ws2['!autofilter']={ref:`A1:F${Math.max(2,detail.length+1)}`};
+ XLSX.utils.book_append_sheet(wb,ws2,'구조화 상세내용');
+ const y=$('djHistoryYear')?.value||'전체',f=$('djHistoryFacility')?.value||'전체시설',t=window.typeLabel?.($('djHistoryType')?.value)||'전체종류';
+ XLSX.writeFile(wb,`TFMS_업무일지_${y}_${f}_${t}.xlsx`,{compression:true}); toast('업무일지 목록과 구조화 상세내용을 엑셀로 다운로드했습니다.');
+};
+
+function setupEquipmentTabsV443(){
+ const page=$('equipment'); if(!page||page.dataset.v443)return; page.dataset.v443='1';page.dataset.eqView='overview';
+ const panels=[...page.querySelectorAll(':scope > .panel')]; const reg=panels.find(x=>x.querySelector('.section-title')?.textContent.includes('설비 등록/수정'));
+ if(!reg)return; reg.classList.add('tfms-eq-register-panel');
+ panels.filter(x=>x!==reg).forEach(x=>x.classList.add('tfms-eq-overview-block'));
+ const tabs=document.createElement('div');tabs.className='tfms-equipment-tabs';tabs.innerHTML='<button class="active" type="button" data-v="overview">설비 현황·이력</button><button type="button" data-v="edit">설비 등록·수정</button>';
+ const first=page.querySelector(':scope > .panel');first?.before(tabs);
+ tabs.onclick=e=>{const b=e.target.closest('button');if(!b)return;page.dataset.eqView=b.dataset.v;tabs.querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));window.scrollTo({top:page.offsetTop-10,behavior:'smooth'});};
+}
+
+// 소방 중복 프리셋 확실히 제거하고 기록표 카드만 유지
+function normalizeFireCycleV443(){
+ const page=$('cycle');if(!page)return;
+ page.querySelectorAll('.preset-card').forEach(c=>{const t=c.querySelector('strong')?.textContent.trim();if(t==='소방 월간점검')c.remove();});
+ const notice=page.querySelector('.panel .notice'); if(notice)notice.innerHTML='전기·기계·수질·건축·안전 등 반복 업무를 한 번 등록하면 오늘의 업무에 자동 생성됩니다. <b>소방 관련 월간점검은 「소방 월간점검 기록표」로 통합</b>하며, 별도의 소방 월간점검 프리셋은 사용하지 않습니다.';
+}
+
+window.hardDeleteMaintenanceAuditV443=async function(id,title){
+ if(!window.context?.().admin){toast('관리자만 테스트 이력을 삭제할 수 있습니다.');return}
+ if(!confirm(`${title||'선택한 유지관리 삭제이력'}\n테스트 자료를 DB에서 완전 삭제하시겠습니까?\n정식 운영 이후에는 감사기록 보존을 권장합니다.`))return;
+ try{const sb=window.client?.();if(!sb)throw new Error('DB 연결 정보를 확인하지 못했습니다.');const {data,error}=await sb.from('maintenance_records').delete().eq('id',id).select('id');if(error)throw error;if(!data?.length)throw new Error('삭제 권한이 없거나 이미 삭제된 자료입니다.');toast('테스트 유지관리 삭제이력을 정리했습니다.');await window.loadDeleteAuditV443();}catch(e){toast('테스트 이력 삭제 실패: '+(e?.message||e));}
+};
+window.loadDeleteAuditV443=async function(){
+ const body=$('deleteBody'),sb=window.client?.();if(!body||!sb)return;
+ try{const [m,a]=await Promise.all([sb.from('maintenance_records').select('id,deleted_at,detail,process_status,facility:facilities(name)').not('deleted_at','is',null).order('deleted_at',{ascending:false}).limit(100),sb.from('tfms_audit_logs').select('id,action_type,target_type,target_title,facility_name,actor_name,action_detail,created_at').order('created_at',{ascending:false}).limit(100)]);const rows=[];
+ if(!m.error)(m.data||[]).forEach(r=>rows.push({source:'maintenance',id:r.id,time:r.deleted_at,type:'유지관리',facility:r.facility?.name||'-',detail:r.detail||'-',user:'관리자/작성자',result:r.process_status||'삭제'}));
+ if(!a.error)(a.data||[]).forEach(r=>rows.push({source:'audit',id:r.id,time:r.created_at,type:r.target_type==='daily_log'?'업무일지':'기타',facility:r.facility_name||'-',detail:r.target_title||r.action_detail||'-',user:r.actor_name||'-',result:r.action_type==='delete'?'삭제완료':r.action_type}));rows.sort((x,y)=>String(y.time||'').localeCompare(String(x.time||'')));const admin=window.context?.().admin;
+ body.innerHTML=rows.length?rows.map(r=>`<tr><td>${esc(r.time?new Date(r.time).toLocaleString('ko-KR'):'-')}</td><td>${esc(r.type)}</td><td>${esc(r.facility)}</td><td>${esc(r.detail)}</td><td>${esc(r.user)}</td><td>${esc(r.result)}</td><td>${admin?(r.source==='audit'?`<button class="small-btn red" onclick="deleteAuditLogV411('${esc(r.id)}','${esc(r.detail)}')">이력삭제</button>`:`<button class="small-btn red" onclick="hardDeleteMaintenanceAuditV443('${esc(r.id)}','${esc(r.detail)}')">테스트삭제</button>`):'-'}</td></tr>`).join(''):'<tr><td colspan="7"><div class="empty-state">삭제·변경 처리이력이 없습니다.</div></td></tr>';
+ }catch(e){body.innerHTML=`<tr><td colspan="7"><div class="empty-state">${esc(e?.message||e)}</div></td></tr>`;}
+};
+function setupAuditV443(){const sec=$('deleteManage');if(!sec)return;const th=sec.querySelector('thead tr');if(th&&!/관리/.test(th.textContent))th.insertAdjacentHTML('beforeend','<th>관리</th>');setTimeout(window.loadDeleteAuditV443,50)}
+
+const oldShow=window.showPage;if(typeof oldShow==='function')window.showPage=function(id,btn){const r=oldShow.apply(this,arguments);if(id==='equipment')setTimeout(setupEquipmentTabsV443,20);if(id==='cycle')setTimeout(normalizeFireCycleV443,20);if(id==='deleteManage')setTimeout(setupAuditV443,80);if(id==='stats')setTimeout(()=>{window.renderStatsCharts?.();renderStatusChartV443()},40);return r};
+const oldNav=window.navTo;if(typeof oldNav==='function')window.navTo=function(id){const r=oldNav.apply(this,arguments);if(id==='equipment')setTimeout(setupEquipmentTabsV443,20);if(id==='cycle')setTimeout(normalizeFireCycleV443,20);if(id==='deleteManage')setTimeout(setupAuditV443,80);return r};
+
+document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayActionsV443();renderStatusChartV443();setupEquipmentTabsV443();normalizeFireCycleV443();},350)});
+})();
+</script>
+
+</body></html>`);
     win.document.close();
   }
 
@@ -15684,7 +15807,7 @@ const oldNav=window.navTo;if(typeof oldNav==='function')window.navTo=function(id
   try{if(typeof applyVersion==='function')applyVersion();}catch(e){}
 })();
 </script>
-<!-- TFMS v44.2 Enterprise UX Pilot: 일상근무일지 A4 출력 및 근무자 연동 개선 -->
+<!-- TFMS v44.3 Enterprise UX Review: 일상근무일지 A4 출력 및 근무자 연동 개선 -->
 
 
 <style id="tfms-v440-ux-style">
