@@ -11523,6 +11523,51 @@ document.addEventListener('DOMContentLoaded',function(){
       <script>window.onload=function(){setTimeout(function(){window.print()},250)}<\/script>
       
 
+
+<!-- TFMS v44.5 Enterprise Stable UX: 대시보드 다이어트 1회차 -->
+<style id="tfms-v445-dashboard-diet">
+/* 기존 레이아웃과 기능을 유지하고 대시보드의 세로 여백만 보수적으로 축소 */
+#dashboard.tfms-dashboard-v431.active{gap:10px}
+#dashboard.tfms-dashboard-v431>.patch-note,
+#dashboard.tfms-dashboard-v431>.change-note,
+#dashboard.tfms-dashboard-v431>#dbStatusPanel{display:none!important}
+#dashboard.tfms-dashboard-v431>.title-row{padding:0 2px 2px;min-height:54px}
+#dashboard.tfms-dashboard-v431>.title-row h1{font-size:25px;line-height:1.15;margin:0 0 2px}
+#dashboard.tfms-dashboard-v431>.title-row .title-icon{width:50px;height:50px;font-size:24px;border-radius:14px}
+#dashboard.tfms-dashboard-v431>.title-row .breadcrumb{font-size:12px}
+#dashboard.tfms-dashboard-v431>.title-row .current-scope,
+#dashboard.tfms-dashboard-v431>.title-row .live-mark{font-size:12px;white-space:nowrap}
+#dashboard.tfms-dashboard-v431>.stats{gap:9px}
+#dashboard.tfms-dashboard-v431>.stats .stat{padding:10px 13px;min-height:64px;border-radius:14px}
+#dashboard.tfms-dashboard-v431>.stats .stat p{font-size:11px;margin:0 0 3px}
+#dashboard.tfms-dashboard-v431>.stats .stat strong{font-size:20px;line-height:1.1}
+#dashboard.tfms-dashboard-v431>.dash-action-v431,
+#dashboard.tfms-dashboard-v431>.dash-today-v431,
+#dashboard.tfms-dashboard-v431>.dash-daily-v431{padding:12px 13px;border-radius:15px}
+#dashboard.tfms-dashboard-v431 .section-title{font-size:14px;margin-bottom:7px}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .primary-action{padding:12px 13px;border-radius:14px}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .primary-action h2{font-size:17px;margin-bottom:3px}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .primary-action p{font-size:11px;line-height:1.3}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .secondary-actions{gap:6px;margin-top:7px}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .secondary-action{padding:8px 9px;min-height:48px;border-radius:12px}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .secondary-action strong{font-size:12px}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .secondary-action span{font-size:10px;margin-top:2px}
+#dashboard.tfms-dashboard-v431>.dash-today-v431 .table th,
+#dashboard.tfms-dashboard-v431>.dash-today-v431 .table td,
+#dashboard.tfms-dashboard-v431>.dash-daily-v431 .table th,
+#dashboard.tfms-dashboard-v431>.dash-daily-v431 .table td{padding:6px 7px;font-size:11px}
+#dashboard.tfms-dashboard-v431>.dash-today-v431 .empty-state,
+#dashboard.tfms-dashboard-v431>.dash-daily-v431 .empty-state{min-height:54px;padding:14px;font-size:11px}
+#dashboard.tfms-dashboard-v431>.dash-daily-v431{margin-top:0!important}
+@media(min-width:1200px){
+ #dashboard.tfms-dashboard-v431>.dash-action-v431{grid-column:1/5}
+ #dashboard.tfms-dashboard-v431>.dash-today-v431{grid-column:5/-1}
+}
+@media(max-width:900px){
+ #dashboard.tfms-dashboard-v431>.title-row{align-items:flex-start}
+ #dashboard.tfms-dashboard-v431>.title-row>div:last-child{flex-wrap:wrap;justify-content:flex-end}
+}
+</style>
 </body></html>`);
     win.document.close();
   }
@@ -15455,6 +15500,51 @@ window.printFireRecordV420=async function(){
   const doc=frame.contentDocument||frame.contentWindow.document;doc.open();doc.write(`<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>소방안전관리자 업무 수행 기록표</title><style>@page{size:A4 portrait;margin:0}html,body{margin:0!important;padding:0!important;width:210mm!important;height:297mm!important;background:#fff!important}.fire-original-sheet{position:relative;width:210mm;height:297mm;margin:0;padding:0;overflow:hidden;background:#fff;box-sizing:border-box}.fire-form-bg{position:absolute;inset:0;width:210mm;height:297mm;object-fit:fill;display:block;z-index:0}.fire-overlay{position:absolute;z-index:1;box-sizing:border-box;display:flex;align-items:center;justify-content:center;padding:0 1mm;margin:0;color:#111;font-family:"Malgun Gothic","맑은 고딕",sans-serif;font-size:9px;line-height:1.15;text-align:center;white-space:pre-wrap;word-break:break-word;overflow:hidden}.fire-overlay.left{justify-content:flex-start;align-items:flex-start;text-align:left;padding:1.3mm 1.5mm}.fire-overlay.signature{font-size:8.8px}.fire-overlay.small-value{font-size:8.1px}.fire-overlay.checkmark{padding:0;overflow:visible;font-family:Arial,sans-serif;font-size:12px;font-weight:700;line-height:1}</style></head><body><div class="fire-original-sheet">${preview.innerHTML}</div>
 
 
+
+<!-- TFMS v44.5 Enterprise Stable UX: 대시보드 다이어트 1회차 -->
+<style id="tfms-v445-dashboard-diet">
+/* 기존 레이아웃과 기능을 유지하고 대시보드의 세로 여백만 보수적으로 축소 */
+#dashboard.tfms-dashboard-v431.active{gap:10px}
+#dashboard.tfms-dashboard-v431>.patch-note,
+#dashboard.tfms-dashboard-v431>.change-note,
+#dashboard.tfms-dashboard-v431>#dbStatusPanel{display:none!important}
+#dashboard.tfms-dashboard-v431>.title-row{padding:0 2px 2px;min-height:54px}
+#dashboard.tfms-dashboard-v431>.title-row h1{font-size:25px;line-height:1.15;margin:0 0 2px}
+#dashboard.tfms-dashboard-v431>.title-row .title-icon{width:50px;height:50px;font-size:24px;border-radius:14px}
+#dashboard.tfms-dashboard-v431>.title-row .breadcrumb{font-size:12px}
+#dashboard.tfms-dashboard-v431>.title-row .current-scope,
+#dashboard.tfms-dashboard-v431>.title-row .live-mark{font-size:12px;white-space:nowrap}
+#dashboard.tfms-dashboard-v431>.stats{gap:9px}
+#dashboard.tfms-dashboard-v431>.stats .stat{padding:10px 13px;min-height:64px;border-radius:14px}
+#dashboard.tfms-dashboard-v431>.stats .stat p{font-size:11px;margin:0 0 3px}
+#dashboard.tfms-dashboard-v431>.stats .stat strong{font-size:20px;line-height:1.1}
+#dashboard.tfms-dashboard-v431>.dash-action-v431,
+#dashboard.tfms-dashboard-v431>.dash-today-v431,
+#dashboard.tfms-dashboard-v431>.dash-daily-v431{padding:12px 13px;border-radius:15px}
+#dashboard.tfms-dashboard-v431 .section-title{font-size:14px;margin-bottom:7px}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .primary-action{padding:12px 13px;border-radius:14px}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .primary-action h2{font-size:17px;margin-bottom:3px}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .primary-action p{font-size:11px;line-height:1.3}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .secondary-actions{gap:6px;margin-top:7px}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .secondary-action{padding:8px 9px;min-height:48px;border-radius:12px}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .secondary-action strong{font-size:12px}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .secondary-action span{font-size:10px;margin-top:2px}
+#dashboard.tfms-dashboard-v431>.dash-today-v431 .table th,
+#dashboard.tfms-dashboard-v431>.dash-today-v431 .table td,
+#dashboard.tfms-dashboard-v431>.dash-daily-v431 .table th,
+#dashboard.tfms-dashboard-v431>.dash-daily-v431 .table td{padding:6px 7px;font-size:11px}
+#dashboard.tfms-dashboard-v431>.dash-today-v431 .empty-state,
+#dashboard.tfms-dashboard-v431>.dash-daily-v431 .empty-state{min-height:54px;padding:14px;font-size:11px}
+#dashboard.tfms-dashboard-v431>.dash-daily-v431{margin-top:0!important}
+@media(min-width:1200px){
+ #dashboard.tfms-dashboard-v431>.dash-action-v431{grid-column:1/5}
+ #dashboard.tfms-dashboard-v431>.dash-today-v431{grid-column:5/-1}
+}
+@media(max-width:900px){
+ #dashboard.tfms-dashboard-v431>.title-row{align-items:flex-start}
+ #dashboard.tfms-dashboard-v431>.title-row>div:last-child{flex-wrap:wrap;justify-content:flex-end}
+}
+</style>
 </body></html>`);doc.close();
   await new Promise(r=>{if(doc.readyState==='complete')r();else frame.onload=r;});
   const imgs=[...doc.images];await Promise.all(imgs.map(img=>img.complete?(img.decode?.().catch(()=>{})||Promise.resolve()):new Promise(res=>{img.onload=img.onerror=res;})));
@@ -15507,55 +15597,54 @@ function overlays(d){let o='';
  const ys=[757,986,1215,1444],hs=[229,229,229,228];d.checks.forEach((r,i)=>{o+=box(417,ys[i],722,hs[i],esc(r.content),'left');const q=result(r.result,i);if(q.length)o+=mark(...q);o+=box(1304,ys[i],181,hs[i],esc(r.action),'left');});
  const imp=d.improvement;o+=box(417,1675,230,73,esc(fmtDT(imp.reportDate)),'compact');m=method(imp.method);if(m.length)o+=mark(...m);o+=box(1139,1675,346,73,esc(imp.reportTo),'compact');m=remedy(imp.remedy);if(m.length)o+=mark(...m);return o;}
 window.previewFireRecordV420=function(){try{const sheet=$('firePreviewSheet'),modal=$('firePreviewModal');if(!sheet||!modal)throw new Error('미리보기 영역을 찾지 못했습니다.');sheet.className='fire-original-sheet';sheet.innerHTML=`<img class="fire-form-bg" src="${imgSrc()}" alt="소방안전관리자 업무 수행 기록표">${overlays(data())}`;modal.classList.add('show');modal.scrollTop=0;}catch(e){console.error(e);toast('서식 미리보기 실패: '+(e?.message||e));}};
-window.printFireRecordV420=async function(){try{window.previewFireRecordV420();const preview=$('firePreviewSheet');if(!preview?.innerHTML.trim())throw new Error('인쇄할 서식을 생성하지 못했습니다.');const frame=document.createElement('iframe');frame.setAttribute('aria-hidden','true');Object.assign(frame.style,{position:'fixed',right:'0',bottom:'0',width:'1px',height:'1px',border:'0',opacity:'0',pointerEvents:'none'});document.body.appendChild(frame);const css=`@page{size:A4 portrait;margin:0}*{box-sizing:border-box}html,body{margin:0!important;padding:0!important;width:210mm!important;height:297mm!important;background:#fff!important}.fire-original-sheet{position:relative;width:210mm;height:297mm;margin:0;padding:0;overflow:hidden;background:#fff}.fire-form-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;display:block;z-index:0}.fire-overlay-v430{position:absolute;z-index:2;box-sizing:border-box;display:flex;align-items:center;justify-content:center;padding:0 1.1mm;overflow:hidden;color:#111;font-family:"Malgun Gothic","맑은 고딕",Arial,sans-serif;font-size:9pt;line-height:1.18;font-weight:400;text-align:center;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere}.fire-overlay-v430.left{align-items:flex-start;justify-content:flex-start;text-align:left;padding:1.5mm 1.7mm;font-size:8.5pt;line-height:1.28}.fire-overlay-v430.compact{font-size:8.5pt}.fire-overlay-v430.check{padding:0;font-size:9.5pt;font-weight:700;line-height:1;overflow:hidden}`;const doc=frame.contentDocument||frame.contentWindow.document;doc.open();doc.write(`<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>소방안전관리자 업무 수행 기록표</title><style>${css}</style>
-<style id="tfms-v450-ux2-style">
-:root{--ux-gap:12px;--ux-radius:18px;--ux-border:#dce6f4;--ux-soft:#f7faff;--ux-blue:#1557c0;--ux-text:#0c1e3a;--ux-muted:#6c7b92}
-#dashboard.tfms-ux2{padding-bottom:8px}
-#dashboard.tfms-ux2 .ux2-head{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:12px}
-#dashboard.tfms-ux2 .ux2-welcome{display:flex;align-items:center;gap:14px}
-#dashboard.tfms-ux2 .ux2-avatar{width:52px;height:52px;border-radius:17px;display:grid;place-items:center;background:linear-gradient(145deg,#0c5fd3,#438be6);color:#fff;font-size:25px;box-shadow:0 10px 24px rgba(21,87,192,.2)}
-#dashboard.tfms-ux2 .ux2-welcome h1{font-size:25px;line-height:1.1;margin:0;color:var(--ux-text)}
-#dashboard.tfms-ux2 .ux2-welcome p{margin:5px 0 0;color:var(--ux-muted);font-size:13px}
-#dashboard.tfms-ux2 .ux2-scope{display:flex;align-items:center;gap:8px;white-space:nowrap}
-#dashboard.tfms-ux2 .ux2-scope .current-scope{padding:8px 12px}
-#dashboard.tfms-ux2 .ux2-top{display:grid;grid-template-columns:1.1fr 2.4fr;gap:var(--ux-gap);margin-bottom:var(--ux-gap)}
-#dashboard.tfms-ux2 .ux2-focus{border-radius:var(--ux-radius);padding:18px 20px;background:linear-gradient(135deg,#0f55bb 0%,#327fe0 100%);color:#fff;box-shadow:0 12px 28px rgba(16,75,163,.2);min-height:142px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer}
-#dashboard.tfms-ux2 .ux2-focus .label{font-size:13px;opacity:.86}
-#dashboard.tfms-ux2 .ux2-focus strong{font-size:42px;line-height:1;font-weight:800;letter-spacing:-2px}
-#dashboard.tfms-ux2 .ux2-focus small{font-size:12px;opacity:.88}
-#dashboard.tfms-ux2 .ux2-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--ux-gap)}
-#dashboard.tfms-ux2 .ux2-kpi{background:#fff;border:1px solid var(--ux-border);border-radius:var(--ux-radius);padding:16px 17px;box-shadow:0 8px 20px rgba(30,65,112,.06);display:flex;flex-direction:column;justify-content:center;min-width:0}
-#dashboard.tfms-ux2 .ux2-kpi span{font-size:12px;color:var(--ux-muted);margin-bottom:7px}
-#dashboard.tfms-ux2 .ux2-kpi strong{font-size:23px;color:var(--ux-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#dashboard.tfms-ux2 .ux2-main{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(300px,.75fr);gap:var(--ux-gap);margin-bottom:var(--ux-gap)}
-#dashboard.tfms-ux2 .ux2-card{background:#fff;border:1px solid var(--ux-border);border-radius:var(--ux-radius);box-shadow:0 8px 22px rgba(30,65,112,.06);overflow:hidden}
-#dashboard.tfms-ux2 .ux2-card-head{height:50px;padding:0 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #edf2f8}
-#dashboard.tfms-ux2 .ux2-card-head h2{font-size:16px;margin:0;color:var(--ux-text)}
-#dashboard.tfms-ux2 .ux2-link{border:0;background:transparent;color:var(--ux-blue);font-weight:700;font-size:12px;cursor:pointer}
-#dashboard.tfms-ux2 .ux2-table-wrap{max-height:224px;overflow:auto;padding:0 12px 10px}
-#dashboard.tfms-ux2 .table{margin:0;font-size:12px}
-#dashboard.tfms-ux2 .table th{position:sticky;top:0;background:#f6f9fd;z-index:1;padding:10px 8px}
-#dashboard.tfms-ux2 .table td{padding:10px 8px}
-#dashboard.tfms-ux2 .ux2-actions{padding:12px;display:grid;grid-template-columns:1fr 1fr;gap:9px}
-#dashboard.tfms-ux2 .ux2-action{border:1px solid var(--ux-border);background:linear-gradient(180deg,#fff,#f8fbff);border-radius:14px;padding:13px;text-align:left;cursor:pointer;min-height:74px;transition:.16s ease}
-#dashboard.tfms-ux2 .ux2-action:hover{transform:translateY(-2px);border-color:#9fc2f2;box-shadow:0 7px 16px rgba(21,87,192,.1)}
-#dashboard.tfms-ux2 .ux2-action b{display:block;font-size:13px;color:var(--ux-text);margin-bottom:5px}
-#dashboard.tfms-ux2 .ux2-action span{font-size:11px;color:var(--ux-muted)}
-#dashboard.tfms-ux2 .ux2-bottom{display:grid;grid-template-columns:1.45fr .55fr;gap:var(--ux-gap)}
-#dashboard.tfms-ux2 .ux2-daily-wrap{max-height:178px;overflow:auto;padding:0 12px 8px}
-#dashboard.tfms-ux2 .ux2-status-list{padding:12px 15px;display:grid;gap:9px}
-#dashboard.tfms-ux2 .ux2-status-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px dashed #e5edf7;font-size:12px}
-#dashboard.tfms-ux2 .ux2-status-row:last-child{border-bottom:0}
-#dashboard.tfms-ux2 .ux2-status-row b{font-size:16px;color:var(--ux-blue)}
-#dashboard.tfms-ux2 .compat-hidden{display:none!important}
-@media(max-width:1200px){#dashboard.tfms-ux2 .ux2-top,#dashboard.tfms-ux2 .ux2-main,#dashboard.tfms-ux2 .ux2-bottom{grid-template-columns:1fr}#dashboard.tfms-ux2 .ux2-kpis{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:700px){#dashboard.tfms-ux2 .ux2-head{align-items:flex-start;flex-direction:column}#dashboard.tfms-ux2 .ux2-kpis{grid-template-columns:1fr 1fr}#dashboard.tfms-ux2 .ux2-actions{grid-template-columns:1fr}#dashboard.tfms-ux2 .ux2-focus strong{font-size:34px}}
-/* UX 2.0 global density refinements without changing data/forms */
-.page>.title-row{margin-bottom:12px}.panel{border-radius:16px}.section-title{margin-bottom:12px}.notice,.change-note,.patch-note{line-height:1.45}.btn,.small-btn{white-space:nowrap}.table th,.table td{vertical-align:middle}
+window.printFireRecordV420=async function(){try{window.previewFireRecordV420();const preview=$('firePreviewSheet');if(!preview?.innerHTML.trim())throw new Error('인쇄할 서식을 생성하지 못했습니다.');const frame=document.createElement('iframe');frame.setAttribute('aria-hidden','true');Object.assign(frame.style,{position:'fixed',right:'0',bottom:'0',width:'1px',height:'1px',border:'0',opacity:'0',pointerEvents:'none'});document.body.appendChild(frame);const css=`@page{size:A4 portrait;margin:0}*{box-sizing:border-box}html,body{margin:0!important;padding:0!important;width:210mm!important;height:297mm!important;background:#fff!important}.fire-original-sheet{position:relative;width:210mm;height:297mm;margin:0;padding:0;overflow:hidden;background:#fff}.fire-form-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;display:block;z-index:0}.fire-overlay-v430{position:absolute;z-index:2;box-sizing:border-box;display:flex;align-items:center;justify-content:center;padding:0 1.1mm;overflow:hidden;color:#111;font-family:"Malgun Gothic","맑은 고딕",Arial,sans-serif;font-size:9pt;line-height:1.18;font-weight:400;text-align:center;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere}.fire-overlay-v430.left{align-items:flex-start;justify-content:flex-start;text-align:left;padding:1.5mm 1.7mm;font-size:8.5pt;line-height:1.28}.fire-overlay-v430.compact{font-size:8.5pt}.fire-overlay-v430.check{padding:0;font-size:9.5pt;font-weight:700;line-height:1;overflow:hidden}`;const doc=frame.contentDocument||frame.contentWindow.document;doc.open();doc.write(`<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>소방안전관리자 업무 수행 기록표</title><style>${css}</style></head><body>${preview.outerHTML}
+
+
+
+<!-- TFMS v44.5 Enterprise Stable UX: 대시보드 다이어트 1회차 -->
+<style id="tfms-v445-dashboard-diet">
+/* 기존 레이아웃과 기능을 유지하고 대시보드의 세로 여백만 보수적으로 축소 */
+#dashboard.tfms-dashboard-v431.active{gap:10px}
+#dashboard.tfms-dashboard-v431>.patch-note,
+#dashboard.tfms-dashboard-v431>.change-note,
+#dashboard.tfms-dashboard-v431>#dbStatusPanel{display:none!important}
+#dashboard.tfms-dashboard-v431>.title-row{padding:0 2px 2px;min-height:54px}
+#dashboard.tfms-dashboard-v431>.title-row h1{font-size:25px;line-height:1.15;margin:0 0 2px}
+#dashboard.tfms-dashboard-v431>.title-row .title-icon{width:50px;height:50px;font-size:24px;border-radius:14px}
+#dashboard.tfms-dashboard-v431>.title-row .breadcrumb{font-size:12px}
+#dashboard.tfms-dashboard-v431>.title-row .current-scope,
+#dashboard.tfms-dashboard-v431>.title-row .live-mark{font-size:12px;white-space:nowrap}
+#dashboard.tfms-dashboard-v431>.stats{gap:9px}
+#dashboard.tfms-dashboard-v431>.stats .stat{padding:10px 13px;min-height:64px;border-radius:14px}
+#dashboard.tfms-dashboard-v431>.stats .stat p{font-size:11px;margin:0 0 3px}
+#dashboard.tfms-dashboard-v431>.stats .stat strong{font-size:20px;line-height:1.1}
+#dashboard.tfms-dashboard-v431>.dash-action-v431,
+#dashboard.tfms-dashboard-v431>.dash-today-v431,
+#dashboard.tfms-dashboard-v431>.dash-daily-v431{padding:12px 13px;border-radius:15px}
+#dashboard.tfms-dashboard-v431 .section-title{font-size:14px;margin-bottom:7px}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .primary-action{padding:12px 13px;border-radius:14px}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .primary-action h2{font-size:17px;margin-bottom:3px}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .primary-action p{font-size:11px;line-height:1.3}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .secondary-actions{gap:6px;margin-top:7px}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .secondary-action{padding:8px 9px;min-height:48px;border-radius:12px}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .secondary-action strong{font-size:12px}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .secondary-action span{font-size:10px;margin-top:2px}
+#dashboard.tfms-dashboard-v431>.dash-today-v431 .table th,
+#dashboard.tfms-dashboard-v431>.dash-today-v431 .table td,
+#dashboard.tfms-dashboard-v431>.dash-daily-v431 .table th,
+#dashboard.tfms-dashboard-v431>.dash-daily-v431 .table td{padding:6px 7px;font-size:11px}
+#dashboard.tfms-dashboard-v431>.dash-today-v431 .empty-state,
+#dashboard.tfms-dashboard-v431>.dash-daily-v431 .empty-state{min-height:54px;padding:14px;font-size:11px}
+#dashboard.tfms-dashboard-v431>.dash-daily-v431{margin-top:0!important}
+@media(min-width:1200px){
+ #dashboard.tfms-dashboard-v431>.dash-action-v431{grid-column:1/5}
+ #dashboard.tfms-dashboard-v431>.dash-today-v431{grid-column:5/-1}
+}
+@media(max-width:900px){
+ #dashboard.tfms-dashboard-v431>.title-row{align-items:flex-start}
+ #dashboard.tfms-dashboard-v431>.title-row>div:last-child{flex-wrap:wrap;justify-content:flex-end}
+}
 </style>
-</head><body>${preview.outerHTML}
-
-
 </body></html>`);doc.close();await new Promise(r=>setTimeout(r,100));if(doc.fonts?.ready)await doc.fonts.ready;await Promise.all([...doc.images].map(img=>img.complete?Promise.resolve():new Promise(r=>{img.onload=img.onerror=r})));await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));frame.contentWindow.focus();frame.contentWindow.print();setTimeout(()=>frame.remove(),5000);}catch(e){console.error(e);toast('PDF 출력 실패: '+(e?.message||e));}};
 function db(){try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||(typeof sb!=='undefined'?sb:null)}catch(e){return null}}
 async function facilityId(name){const sbc=db();const {data,error}=await sbc.from('facilities').select('id,name').eq('name',name).limit(1);if(error)throw error;if(!data?.length)throw new Error(`시설 DB에서 '${name}'을 찾지 못했습니다.`);return data[0].id;}
@@ -15804,7 +15893,7 @@ function switchStatsTabV440(name,btn){
 <script id="tfms-v443-ux-review-controller">
 (function(){
 'use strict';
-window.TFMS_BUILD=Object.freeze({version:'v45.0',channel:'Enterprise UX Review Fixed',buildDate:'2026.07.30',title:'오늘의 업무·통계·엑셀·설비·감사이력 UX 보완'});
+window.TFMS_BUILD=Object.freeze({version:'v44.5',channel:'Enterprise Stable UX',buildDate:'2026.07.30',title:'대시보드 다이어트 1회차'});
 const $=id=>document.getElementById(id);
 const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const toast=m=>(window.showToast||window.toast||alert)(m);
@@ -15901,72 +15990,48 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 })();
 </script>
 
-<script id="tfms-v450-ux2-script">
-(function(){
-  function text(v){return (v||'').toString().trim();}
-  function getUserLabel(){
-    try{
-      const candidates=[window.tfmsCloudProfile,window.cloudProfile,window.tfmsUser,window.currentUser];
-      const u=candidates.find(x=>x&&typeof x==='object')||{};
-      const name=text(u.name||u.user_name||u.username||u.display_name)||'사용자';
-      const rank=text(u.rank||u.position||u.job_title||u.grade);
-      return rank?`${name} ${rank}님`:`${name}님`;
-    }catch(e){return '사용자님';}
-  }
-  function syncHero(){
-    const source=document.getElementById('dashTodo');
-    const target=document.getElementById('ux2TodayCount');
-    if(source&&target)target.textContent=source.textContent||'0건';
-  }
-  function build(){
-    const d=document.getElementById('dashboard');
-    if(!d||d.dataset.ux2Built==='1')return;
-    d.dataset.ux2Built='1'; d.classList.add('tfms-ux2');
-    d.innerHTML=`
-      <div class="ux2-head">
-        <div class="ux2-welcome"><div class="ux2-avatar">✓</div><div><h1>안녕하세요, <span id="ux2UserName">${getUserLabel()}</span></h1><p>오늘 필요한 시설관리 업무와 현황을 한 화면에서 확인하세요.</p></div></div>
-        <div class="ux2-scope"><span class="current-scope" id="scopeBadge">현재 선택 부서 기준</span><div class="live-mark"><span class="live-dot"></span> 실시간 집계</div></div>
-      </div>
-      <div class="ux2-top">
-        <div class="ux2-focus" onclick="navTo('today')"><span class="label">오늘 해야 할 업무</span><strong id="ux2TodayCount">0건</strong><small>클릭하면 오늘의 업무로 이동합니다 →</small></div>
-        <div class="ux2-kpis">
-          <div class="ux2-kpi"><span>점검 예정</span><strong id="dashTodo">0건</strong></div>
-          <div class="ux2-kpi"><span>미조치·진행중</span><strong id="dashOpen">0건</strong></div>
-          <div class="ux2-kpi"><span>금월 등록</span><strong id="dashTotal">0건</strong></div>
-          <div class="ux2-kpi"><span>금월 집행금액</span><strong id="dashBudget">0천원</strong></div>
-        </div>
-      </div>
-      <div class="ux2-main">
-        <div class="ux2-card"><div class="ux2-card-head"><h2>오늘의 업무</h2><button class="ux2-link" onclick="navTo('today')">전체 보기 →</button></div><div class="ux2-table-wrap"><table class="table"><thead><tr><th>시설명</th><th>업무명</th><th>주기</th><th>기한</th><th>상태</th></tr></thead><tbody id="dashTodayBody"></tbody></table></div></div>
-        <div class="ux2-card"><div class="ux2-card-head"><h2>빠른 실행</h2><span style="font-size:11px;color:#7a899e">자주 쓰는 메뉴</span></div><div class="ux2-actions">
-          <button class="ux2-action" onclick="navTo('register')"><b>＋ 유지관리 등록</b><span>점검·보수·교체 입력</span></button>
-          <button class="ux2-action" onclick="navTo('history')"><b>🔎 이력 조회</b><span>시설·기간별 검색</span></button>
-          <button class="ux2-action" onclick="navTo('dailylog')"><b>▣ 업무일지</b><span>작성·조회·출력</span></button>
-          <button class="ux2-action" onclick="navTo('cycle')"><b>▦ 점검주기</b><span>정기업무 자동 생성</span></button>
-          <button class="ux2-action" onclick="navTo('equipment')"><b>⚙ 설비관리</b><span>설비 현황과 이력</span></button>
-          <button class="ux2-action" onclick="navTo('stats')"><b>↗ 통계현황</b><span>실적·집행 분석</span></button>
-        </div></div>
-      </div>
-      <div class="ux2-bottom">
-        <div class="ux2-card"><div class="ux2-card-head"><h2>최근 업무일지</h2><button class="ux2-link" onclick="navTo('dailylog')">업무일지 열기 →</button></div><div class="ux2-daily-wrap"><table class="table"><thead><tr><th>근무일</th><th>시설명</th><th>근무자</th><th>업무건수</th><th>특이사항</th><th>관리</th></tr></thead><tbody id="dashDailyBodyV322"><tr><td colspan="6"><div class="empty-state">저장된 업무일지가 없습니다.</div></td></tr></tbody></table></div></div>
-        <div class="ux2-card"><div class="ux2-card-head"><h2>업무 요약</h2><button class="ux2-link" onclick="navTo('stats')">통계 보기 →</button></div><div class="ux2-status-list">
-          <div class="ux2-status-row"><span>오늘 등록</span><b id="dashTodayRegistered">0건</b></div>
-          <div class="ux2-status-row"><span>경영평가 증빙</span><b id="dashEvalCount">0건</b></div>
-          <div class="ux2-status-row"><span>증빙자료 포함</span><b id="dashEvidenceCount">0건</b></div>
-        </div></div>
-      </div>
-      <div class="compat-hidden"><div id="deptSummary"></div><div class="dept-tabs"></div><div id="dbStatusPanel"></div></div>`;
-    const todo=document.getElementById('dashTodo');
-    if(todo){new MutationObserver(syncHero).observe(todo,{childList:true,subtree:true,characterData:true});}
-    setTimeout(()=>{
-      try{if(typeof renderDashboardData==='function')renderDashboardData();}catch(e){console.warn('v45 dashboard render',e)}
-      try{if(typeof renderTodayTasks==='function')renderTodayTasks();}catch(e){}
-      syncHero();
-    },50);
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',build);else build();
-  const oldShowPage=window.showPage;
-  if(typeof oldShowPage==='function')window.showPage=function(id,btn){const r=oldShowPage.apply(this,arguments);if(id==='dashboard'){setTimeout(()=>{build();syncHero();},20)}return r;};
-})();
-</script>
+<!-- TFMS v44.5 Enterprise Stable UX: 대시보드 다이어트 1회차 -->
+<style id="tfms-v445-dashboard-diet">
+/* 기존 레이아웃과 기능을 유지하고 대시보드의 세로 여백만 보수적으로 축소 */
+#dashboard.tfms-dashboard-v431.active{gap:10px}
+#dashboard.tfms-dashboard-v431>.patch-note,
+#dashboard.tfms-dashboard-v431>.change-note,
+#dashboard.tfms-dashboard-v431>#dbStatusPanel{display:none!important}
+#dashboard.tfms-dashboard-v431>.title-row{padding:0 2px 2px;min-height:54px}
+#dashboard.tfms-dashboard-v431>.title-row h1{font-size:25px;line-height:1.15;margin:0 0 2px}
+#dashboard.tfms-dashboard-v431>.title-row .title-icon{width:50px;height:50px;font-size:24px;border-radius:14px}
+#dashboard.tfms-dashboard-v431>.title-row .breadcrumb{font-size:12px}
+#dashboard.tfms-dashboard-v431>.title-row .current-scope,
+#dashboard.tfms-dashboard-v431>.title-row .live-mark{font-size:12px;white-space:nowrap}
+#dashboard.tfms-dashboard-v431>.stats{gap:9px}
+#dashboard.tfms-dashboard-v431>.stats .stat{padding:10px 13px;min-height:64px;border-radius:14px}
+#dashboard.tfms-dashboard-v431>.stats .stat p{font-size:11px;margin:0 0 3px}
+#dashboard.tfms-dashboard-v431>.stats .stat strong{font-size:20px;line-height:1.1}
+#dashboard.tfms-dashboard-v431>.dash-action-v431,
+#dashboard.tfms-dashboard-v431>.dash-today-v431,
+#dashboard.tfms-dashboard-v431>.dash-daily-v431{padding:12px 13px;border-radius:15px}
+#dashboard.tfms-dashboard-v431 .section-title{font-size:14px;margin-bottom:7px}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .primary-action{padding:12px 13px;border-radius:14px}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .primary-action h2{font-size:17px;margin-bottom:3px}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .primary-action p{font-size:11px;line-height:1.3}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .secondary-actions{gap:6px;margin-top:7px}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .secondary-action{padding:8px 9px;min-height:48px;border-radius:12px}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .secondary-action strong{font-size:12px}
+#dashboard.tfms-dashboard-v431>.dash-action-v431 .secondary-action span{font-size:10px;margin-top:2px}
+#dashboard.tfms-dashboard-v431>.dash-today-v431 .table th,
+#dashboard.tfms-dashboard-v431>.dash-today-v431 .table td,
+#dashboard.tfms-dashboard-v431>.dash-daily-v431 .table th,
+#dashboard.tfms-dashboard-v431>.dash-daily-v431 .table td{padding:6px 7px;font-size:11px}
+#dashboard.tfms-dashboard-v431>.dash-today-v431 .empty-state,
+#dashboard.tfms-dashboard-v431>.dash-daily-v431 .empty-state{min-height:54px;padding:14px;font-size:11px}
+#dashboard.tfms-dashboard-v431>.dash-daily-v431{margin-top:0!important}
+@media(min-width:1200px){
+ #dashboard.tfms-dashboard-v431>.dash-action-v431{grid-column:1/5}
+ #dashboard.tfms-dashboard-v431>.dash-today-v431{grid-column:5/-1}
+}
+@media(max-width:900px){
+ #dashboard.tfms-dashboard-v431>.title-row{align-items:flex-start}
+ #dashboard.tfms-dashboard-v431>.title-row>div:last-child{flex-wrap:wrap;justify-content:flex-end}
+}
+</style>
 </body></html>
