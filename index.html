@@ -16034,4 +16034,114 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
  #dashboard.tfms-dashboard-v431>.title-row>div:last-child{flex-wrap:wrap;justify-content:flex-end}
 }
 </style>
+
+
+<!-- TFMS v44.6 Enterprise Stable UX: 오늘의 업무 다이어트 2회차 -->
+<style id="tfms-v446-today-actions-diet">
+/* 오늘의 업무 처리 버튼을 한 줄로 정렬 */
+#today #todayBody td:last-child{
+  min-width:292px;
+  white-space:nowrap;
+  vertical-align:middle;
+}
+#today #todayBody .today-action-line-v446{
+  display:flex;
+  flex-direction:row;
+  flex-wrap:nowrap;
+  align-items:center;
+  justify-content:flex-start;
+  gap:6px;
+  width:max-content;
+  max-width:none;
+}
+#today #todayBody .today-flow-actions{
+  display:flex!important;
+  flex-direction:row!important;
+  flex-wrap:nowrap!important;
+  align-items:center;
+  gap:6px!important;
+  width:auto;
+}
+#today #todayBody .fire-today-btn,
+#today #todayBody .today-flow-btn{
+  display:inline-flex!important;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 auto;
+  min-width:76px;
+  height:34px;
+  margin:0!important;
+  padding:0 10px!important;
+  border-radius:8px;
+  font-size:12px!important;
+  line-height:1!important;
+  white-space:nowrap;
+}
+#today #todayBody .today-flow-btn.issue{min-width:82px}
+@media(max-width:1100px){
+  #today #todayBody td:last-child{min-width:265px}
+  #today #todayBody .fire-today-btn,
+  #today #todayBody .today-flow-btn{min-width:70px;padding:0 8px!important;font-size:11px!important}
+}
+</style>
+<script id="tfms-v446-today-actions-controller">
+(function(){
+  'use strict';
+  window.TFMS_BUILD=Object.freeze({version:'v44.6',channel:'Enterprise Stable UX',buildDate:'2026.07.30',title:'오늘의 업무 다이어트 2회차'});
+
+  function normalizeTodayActionRowsV446(){
+    const body=document.getElementById('todayBody');
+    if(!body)return;
+    body.querySelectorAll('tr').forEach(tr=>{
+      const cell=tr.lastElementChild;
+      if(!cell)return;
+      const task=String(tr.children[2]?.textContent||tr.textContent||'');
+      const fire=cell.querySelector('.fire-today-btn');
+      if(fire && !/소방|소화기/.test(task))fire.remove();
+
+      let line=cell.querySelector(':scope > .today-action-line-v446');
+      if(!line){
+        line=document.createElement('div');
+        line.className='today-action-line-v446';
+        const directFire=cell.querySelector(':scope > .fire-today-btn');
+        const flow=cell.querySelector(':scope > .today-flow-actions');
+        if(directFire)line.appendChild(directFire);
+        if(flow)line.appendChild(flow);
+        if(line.childNodes.length)cell.appendChild(line);
+      }else{
+        const strayFire=cell.querySelector(':scope > .fire-today-btn');
+        const strayFlow=cell.querySelector(':scope > .today-flow-actions');
+        if(strayFire)line.insertBefore(strayFire,line.firstChild);
+        if(strayFlow)line.appendChild(strayFlow);
+      }
+
+      cell.querySelectorAll('.today-flow-btn.normal').forEach(b=>{if(/결과\s*처리/.test(b.textContent))b.textContent='결과입력';});
+      cell.querySelectorAll('.today-flow-btn.issue').forEach(b=>{if(/특이사항/.test(b.textContent))b.textContent='특이사항';});
+    });
+  }
+
+  let queued=false;
+  function schedule(){
+    if(queued)return;queued=true;
+    requestAnimationFrame(()=>{queued=false;normalizeTodayActionRowsV446();});
+  }
+
+  document.addEventListener('DOMContentLoaded',()=>{
+    setTimeout(()=>{
+      normalizeTodayActionRowsV446();
+      const body=document.getElementById('todayBody');
+      if(body)new MutationObserver(schedule).observe(body,{childList:true,subtree:true});
+    },400);
+  });
+
+  const oldRender=window.renderTodayTasks;
+  if(typeof oldRender==='function'){
+    window.renderTodayTasks=function(){
+      const result=oldRender.apply(this,arguments);
+      setTimeout(normalizeTodayActionRowsV446,30);
+      return result;
+    };
+  }
+})();
+</script>
 </body></html>
