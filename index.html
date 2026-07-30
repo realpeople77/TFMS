@@ -11525,41 +11525,7 @@ document.addEventListener('DOMContentLoaded',function(){
       </style></head><body>
       <div class="dj-sheet ${esc(sheetClass||'')}">${content}</div>
       <script>window.onload=function(){setTimeout(function(){window.print()},250)}<\/script>
-      
-<style id="tfms-v436-work-journal-fix">
-  .dj-sheet.work-journal-sheet{padding:11mm 13mm!important}
-  .work-journal-page{min-height:273mm;display:flex;flex-direction:column;box-sizing:border-box}
-  .dj-sheet.work-journal-sheet .corp-title{text-align:center!important;font-size:21px!important;letter-spacing:8px!important;margin:0 0 16px!important}
-  .dj-sheet.work-journal-sheet .work-doc-header{font-size:11px;line-height:1.45;margin-bottom:8px}
-  .dj-sheet.work-journal-sheet .doc-title{font-size:24px!important;margin:12px 0 10px!important}
-  .dj-sheet.work-journal-sheet .work-summary-table{margin-top:0}
-  .dj-sheet.work-journal-sheet .work-detail-table{margin-top:10px!important}
-  .dj-sheet.work-journal-sheet .work-detail-table tr{height:25px}
-  .dj-sheet.work-journal-sheet .work-attachments{font-size:11px;line-height:1.55;margin-top:14px}
-  .dj-sheet.work-journal-sheet .work-signature-line{margin-top:auto;border-top:18px solid #ddd;padding-top:12px;font-size:11px;text-align:left;min-height:24px}
-  @media print{
-    .dj-sheet.work-journal-sheet{width:210mm!important;min-height:297mm!important;padding:11mm 13mm!important}
-    .dj-sheet.work-journal-sheet .work-journal-page{min-height:273mm!important}
-  }
-</style>
-<script id="tfms-v436-work-journal-sync">
-(function(){
-  window.TFMS_BUILD=Object.freeze({version:'v44.0',channel:'Enterprise Stable',buildDate:'2026.07.30',title:'일상근무일지 A4 출력 및 근무자 연동 개선'});
-  function sync(){
-    const r=document.getElementById('wjRank1'),n=document.getElementById('wjName1');
-    const ar=document.getElementById('wjApprover1'),an=document.getElementById('wjApprover2');
-    if(ar&&r)ar.value=r.value||''; if(an&&n)an.value=n.value||'';
-  }
-  document.addEventListener('input',function(e){if(e.target?.id==='wjRank1'||e.target?.id==='wjName1')sync();});
-  const oldShow=window.showDailyFormV390;
-  if(typeof oldShow==='function')window.showDailyFormV390=function(type){const out=oldShow.apply(this,arguments);if(type==='work')setTimeout(sync,0);return out;};
-  setTimeout(sync,300);
-  try{if(typeof applyVersion==='function')applyVersion();}catch(e){}
-})();
-</script>
-<!-- TFMS v44.0 Enterprise UX Pilot: 일상근무일지 A4 출력 및 근무자 연동 개선 -->
-
-</body></html>`);
+      </body></html>`);
     win.document.close();
   }
 
@@ -11816,7 +11782,7 @@ ${getPrintCssV401()}
 </style>
 <script id="tfms-v436-work-journal-sync">
 (function(){
-  window.TFMS_BUILD=Object.freeze({version:'v44.0',channel:'Enterprise Stable',buildDate:'2026.07.30',title:'일상근무일지 A4 출력 및 근무자 연동 개선'});
+  window.TFMS_BUILD=Object.freeze({version:'v44.1',channel:'Enterprise Stable',buildDate:'2026.07.30',title:'일상근무일지 A4 출력 및 근무자 연동 개선'});
   function sync(){
     const r=document.getElementById('wjRank1'),n=document.getElementById('wjName1');
     const ar=document.getElementById('wjApprover1'),an=document.getElementById('wjApprover2');
@@ -11829,7 +11795,7 @@ ${getPrintCssV401()}
   try{if(typeof applyVersion==='function')applyVersion();}catch(e){}
 })();
 </script>
-<!-- TFMS v44.0 Enterprise UX Pilot: 일상근무일지 A4 출력 및 근무자 연동 개선 -->
+<!-- TFMS v44.1 Enterprise UX Pilot: 일상근무일지 A4 출력 및 근무자 연동 개선 -->
 
 </body>
 </html>`);
@@ -15538,7 +15504,7 @@ window.printFireRecordV420=async function(){
 </style>
 <script id="tfms-v436-work-journal-sync">
 (function(){
-  window.TFMS_BUILD=Object.freeze({version:'v44.0',channel:'Enterprise Stable',buildDate:'2026.07.30',title:'일상근무일지 A4 출력 및 근무자 연동 개선'});
+  window.TFMS_BUILD=Object.freeze({version:'v44.1',channel:'Enterprise Stable',buildDate:'2026.07.30',title:'일상근무일지 A4 출력 및 근무자 연동 개선'});
   function sync(){
     const r=document.getElementById('wjRank1'),n=document.getElementById('wjName1');
     const ar=document.getElementById('wjApprover1'),an=document.getElementById('wjApprover2');
@@ -15551,7 +15517,7 @@ window.printFireRecordV420=async function(){
   try{if(typeof applyVersion==='function')applyVersion();}catch(e){}
 })();
 </script>
-<!-- TFMS v44.0 Enterprise UX Pilot: 일상근무일지 A4 출력 및 근무자 연동 개선 -->
+<!-- TFMS v44.1 Enterprise UX Pilot: 일상근무일지 A4 출력 및 근무자 연동 개선 -->
 
 </body></html>`);doc.close();
   await new Promise(r=>{if(doc.readyState==='complete')r();else frame.onload=r;});
@@ -15624,7 +15590,7 @@ window.printFireRecordV420=async function(){try{window.previewFireRecordV420();c
 </style>
 <script id="tfms-v436-work-journal-sync">
 (function(){
-  window.TFMS_BUILD=Object.freeze({version:'v44.0',channel:'Enterprise Stable',buildDate:'2026.07.30',title:'일상근무일지 A4 출력 및 근무자 연동 개선'});
+  window.TFMS_BUILD=Object.freeze({version:'v44.1',channel:'Enterprise Stable',buildDate:'2026.07.30',title:'일상근무일지 A4 출력 및 근무자 연동 개선'});
   function sync(){
     const r=document.getElementById('wjRank1'),n=document.getElementById('wjName1');
     const ar=document.getElementById('wjApprover1'),an=document.getElementById('wjApprover2');
@@ -15637,7 +15603,7 @@ window.printFireRecordV420=async function(){try{window.previewFireRecordV420();c
   try{if(typeof applyVersion==='function')applyVersion();}catch(e){}
 })();
 </script>
-<!-- TFMS v44.0 Enterprise UX Pilot: 일상근무일지 A4 출력 및 근무자 연동 개선 -->
+<!-- TFMS v44.1 Enterprise UX Pilot: 일상근무일지 A4 출력 및 근무자 연동 개선 -->
 
 </body></html>`);doc.close();await new Promise(r=>setTimeout(r,100));if(doc.fonts?.ready)await doc.fonts.ready;await Promise.all([...doc.images].map(img=>img.complete?Promise.resolve():new Promise(r=>{img.onload=img.onerror=r})));await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));frame.contentWindow.focus();frame.contentWindow.print();setTimeout(()=>frame.remove(),5000);}catch(e){console.error(e);toast('PDF 출력 실패: '+(e?.message||e));}};
 function db(){try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||(typeof sb!=='undefined'?sb:null)}catch(e){return null}}
@@ -15798,7 +15764,7 @@ const oldNav=window.navTo;if(typeof oldNav==='function')window.navTo=function(id
 </style>
 <script id="tfms-v436-work-journal-sync">
 (function(){
-  window.TFMS_BUILD=Object.freeze({version:'v44.0',channel:'Enterprise Stable',buildDate:'2026.07.30',title:'일상근무일지 A4 출력 및 근무자 연동 개선'});
+  window.TFMS_BUILD=Object.freeze({version:'v44.1',channel:'Enterprise Stable',buildDate:'2026.07.30',title:'일상근무일지 A4 출력 및 근무자 연동 개선'});
   function sync(){
     const r=document.getElementById('wjRank1'),n=document.getElementById('wjName1');
     const ar=document.getElementById('wjApprover1'),an=document.getElementById('wjApprover2');
@@ -15811,11 +15777,11 @@ const oldNav=window.navTo;if(typeof oldNav==='function')window.navTo=function(id
   try{if(typeof applyVersion==='function')applyVersion();}catch(e){}
 })();
 </script>
-<!-- TFMS v44.0 Enterprise UX Pilot: 일상근무일지 A4 출력 및 근무자 연동 개선 -->
+<!-- TFMS v44.1 Enterprise UX Pilot: 일상근무일지 A4 출력 및 근무자 연동 개선 -->
 
 
 <style id="tfms-v440-ux-style">
-/* v44.0 UX Pilot: 기존 기능은 유지하고 화면 밀도와 통계 탐색만 개선 */
+/* v44.1 UX Pilot: 기존 기능은 유지하고 화면 밀도와 통계 탐색만 개선 */
 .tfms-ux-page{padding-bottom:10px}
 .tfms-ux-title{margin-bottom:10px!important;align-items:center}
 .tfms-stats-badge{margin-left:auto;padding:8px 12px;border:1px solid #bbf7d0;border-radius:999px;background:#f0fdf4;color:#166534;font-size:12px;font-weight:800;white-space:nowrap}
