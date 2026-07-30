@@ -808,29 +808,30 @@ nav .nav[onclick*='"qrCheck"']{
 </table>
 </div>
 </section>
-<section class="page" id="stats">
-<div class="title-row"><div class="title-left"><div class="title-icon">📈</div><div><h1>통계현황</h1><div class="breadcrumb">홈 › 통계현황 › 전월 대비 분석</div></div></div></div>
-<div class="panel">
-<div class="section-title"><span class="dot"></span>당월/전월 비교</div>
-<div class="compare-grid">
-<div class="compare-card"><p>유지관리 등록</p><strong id="cmpCount">0건</strong><span class="delta same" id="cmpCountDelta">변동 없음</span></div>
-<div class="compare-card"><p>예산 집행</p><strong id="cmpBudget">0원</strong><span class="delta same" id="cmpBudgetDelta">변동 없음</span></div>
-<div class="compare-card"><p>미조치·진행중</p><strong id="cmpOpen">0건</strong><span class="delta same" id="cmpOpenDelta">변동 없음</span></div>
-<div class="compare-card"><p>경영평가 증빙</p><strong id="cmpEval">0건</strong><span class="delta same" id="cmpEvalDelta">변동 없음</span></div>
+<section class="page tfms-ux-page" id="stats">
+<div class="title-row tfms-ux-title"><div class="title-left"><div class="title-icon">📈</div><div><h1>통계현황</h1><div class="breadcrumb">홈 › 통계현황 › 핵심지표 요약</div></div></div>
+<div class="tfms-stats-badge">현재 선택 부서 기준 · 실시간 집계</div></div>
+<div class="panel tfms-stats-summary">
+<div class="compare-grid tfms-compact-kpi">
+<div class="compare-card"><p>금월 등록</p><strong id="cmpCount">0건</strong><span class="delta same" id="cmpCountDelta">전월 동일</span></div>
+<div class="compare-card"><p>금월 집행</p><strong id="cmpBudget">0원</strong><span class="delta same" id="cmpBudgetDelta">전월 동일</span></div>
+<div class="compare-card"><p>미조치·진행중</p><strong id="cmpOpen">0건</strong><span class="delta same" id="cmpOpenDelta">전월 동일</span></div>
+<div class="compare-card"><p>경영평가 증빙</p><strong id="cmpEval">0건</strong><span class="delta same" id="cmpEvalDelta">전월 동일</span></div>
 </div>
-<div class="notice">증감 표시는 등록된 유지관리 이력을 기준으로 당월과 전월을 비교합니다. 예산집행은 증가가 반드시 나쁜 의미는 아니며, 노후시설 보수·교체 실적으로 해석될 수 있습니다.</div>
 </div>
-<div class="panel">
-<div class="section-title"><span class="dot"></span>월별 유지관리 건수</div>
-<div class="chart-wrap" id="monthlyChart"></div>
+<div class="panel tfms-stats-main">
+<div class="tfms-stats-toolbar">
+<div class="section-title"><span class="dot"></span>유지관리 분석</div>
+<div class="tfms-stat-tabs" role="tablist" aria-label="통계 구분">
+<button type="button" class="tfms-stat-tab active" data-stat-tab="monthly" onclick="switchStatsTabV440('monthly',this)">월별 추이</button>
+<button type="button" class="tfms-stat-tab" data-stat-tab="field" onclick="switchStatsTabV440('field',this)">분야별</button>
+<button type="button" class="tfms-stat-tab" data-stat-tab="dept" onclick="switchStatsTabV440('dept',this)">부서별</button>
 </div>
-<div class="panel">
-<div class="section-title"><span class="dot"></span>분야별 유지관리 건수</div>
-<div class="chart-wrap" id="fieldChart"></div>
 </div>
-<div class="panel">
-<div class="section-title"><span class="dot"></span>부서별 유지관리 건수</div>
-<div class="chart-wrap" id="deptChart"></div>
+<div class="tfms-stat-view active" data-stat-view="monthly"><div class="tfms-chart-caption">최근 등록 추이를 월별로 비교합니다.</div><div class="chart-wrap" id="monthlyChart"></div></div>
+<div class="tfms-stat-view" data-stat-view="field"><div class="tfms-chart-caption">유지관리 분야별 등록 비중을 확인합니다.</div><div class="chart-wrap" id="fieldChart"></div></div>
+<div class="tfms-stat-view" data-stat-view="dept"><div class="tfms-chart-caption">관리부서별 유지관리 등록 건수를 비교합니다.</div><div class="chart-wrap" id="deptChart"></div></div>
+<div class="tfms-stats-footnote">※ 증감은 등록된 유지관리 이력을 기준으로 전월과 비교합니다. 예산 증가는 보수·교체 실적 증가일 수 있습니다.</div>
 </div>
 </section>
 <section class="page" id="excel">
@@ -9925,7 +9926,7 @@ document.addEventListener('DOMContentLoaded',function(){
       <div id="djFormWork" class="panel dj-form">
         <div class="section-title"><span class="dot"></span>일상근무일지 입력</div>
         <div class="dj-grid">
-          <div class="dj-field"><label>근무자 1 직급</label><input id="wjRank1" value="기술 9급"></div>
+          <div class="dj-field"><label>근무자 1 직급</label><input id="wjRank1" placeholder="직급 입력"></div>
           <div class="dj-field"><label>근무자 1 성명</label><input id="wjName1"></div>
           <div class="dj-field"><label>근무시간 1</label><input id="wjTime1" value="09:00 ~ 18:00"></div>
           <div class="dj-field"><label>비고</label><input id="wjNote1"></div>
@@ -9940,8 +9941,8 @@ document.addEventListener('DOMContentLoaded',function(){
         <div class="dj-grid two" style="margin-top:16px">
           <div class="dj-field"><label>붙임 1</label><input id="wjAttach1" value="기계실업무일지"></div>
           <div class="dj-field"><label>붙임 2</label><input id="wjAttach2" value="대기배출시설 및 방지시설 운영기록부"></div>
-          <div class="dj-field"><label>주임</label><input id="wjApprover1"></div>
-          <div class="dj-field"><label>차장</label><input id="wjApprover2"></div>
+          <div class="dj-field"><label>하단 표시 직급</label><input id="wjApprover1" readonly title="근무자 1 직급과 자동 연동됩니다."></div>
+          <div class="dj-field"><label>하단 표시 성명</label><input id="wjApprover2" readonly title="근무자 1 성명과 자동 연동됩니다."></div>
         </div>
         <div class="buttons">
           <button class="btn light" onclick="previewDailyJournalV390('work')">공문 미리보기</button>
@@ -9955,7 +9956,11 @@ document.addEventListener('DOMContentLoaded',function(){
   function initDailyForms(){
     set('djDate',today());set('airMeasureDate',today());
     let s={};try{s=JSON.parse(sessionStorage.getItem('tfmsSession')||'{}')}catch(e){}
-    set('djAuthor',s.name||'');set('mjWorkers',s.name||'');set('wjName1',s.name||'');set('wjApprover2',s.name||'');
+    set('djAuthor',s.name||'');set('mjWorkers',s.name||'');
+    const sessionRank=s.rank||s.position||s.job_title||s.jobTitle||'';
+    set('wjRank1',sessionRank);set('wjName1',s.name||'');set('wjApprover1',sessionRank);set('wjApprover2',s.name||'');
+    const syncWorkSigner=()=>{set('wjApprover1',val('wjRank1'));set('wjApprover2',val('wjName1'));};
+    $('wjRank1')?.addEventListener('input',syncWorkSigner);$('wjName1')?.addEventListener('input',syncWorkSigner);
     window.djMachineRows=machineDefaults.map(x=>({work:x,note:''}));
     window.djWorkRows=[
       {work:'태백국민체육센터 일일 기계실 업무 일지',note:'붙임1'},
@@ -10088,30 +10093,35 @@ document.addEventListener('DOMContentLoaded',function(){
   }
 
   function workSheet(d){
-    return `<div class="corp-title">태 백 시 시 설 관 리 공 단</div>
-      <div class="doc-header">수신&nbsp;&nbsp;내부결재<br><br>(경유)<br><br>제목&nbsp;&nbsp;기계실 업무일지(${new Date(d.date+'T00:00:00').getMonth()+1}월 ${new Date(d.date+'T00:00:00').getDate()}일)</div>
+    const rows=[...(d.works||[])];
+    while(rows.length<10)rows.push({work:'',note:''});
+    const signerRank=d.rank1||d.approver1||'';
+    const signerName=d.name1||d.approver2||'';
+    return `<div class="work-journal-page">
+      <div class="corp-title">태 백 시 시 설 관 리 공 단</div>
+      <div class="doc-header work-doc-header">수신&nbsp;&nbsp;내부결재<br><br>(경유)<br><br>제목&nbsp;&nbsp;기계실 업무일지(${new Date(d.date+'T00:00:00').getMonth()+1}월 ${new Date(d.date+'T00:00:00').getDate()}일)</div>
       <div class="doc-title">일상근무일지</div>
-      <table class="plain-table">
+      <table class="plain-table work-summary-table">
         <tr><th colspan="3">근무개요</th><th colspan="2">근무자</th></tr>
         <tr><th>근무일</th><th>근무시간</th><th>날씨</th><th>직급</th><th>성명</th></tr>
         <tr><td rowspan="2">${esc(d.date)}</td><td>${esc(d.time1)}</td><td rowspan="2">${esc(d.weather)}</td><td>${esc(d.rank1)}</td><td>${esc(d.name1)}</td></tr>
         <tr><td>${esc(d.time2)}</td><td>${esc(d.rank2)}</td><td>${esc(d.name2)}</td></tr>
       </table>
-      <table class="plain-table" style="margin-top:12px">
+      <table class="plain-table work-detail-table">
         <tr><th>업무 내용</th><th style="width:20%">비고</th></tr>
-        ${(d.works||[]).map(x=>`<tr><td class="left">□ ${esc(x.work)}</td><td>${esc(x.note)}</td></tr>`).join('')}
+        ${rows.map(x=>`<tr><td class="left">${x.work?'□ '+esc(x.work):'&nbsp;'}</td><td>${esc(x.note)}</td></tr>`).join('')}
       </table>
-      <div style="font-size:11px;margin-top:14px">붙임&nbsp;&nbsp;1. ${esc(d.attach1)}(${d.date.replaceAll('-','.')}). 1부.<br>
+      <div class="work-attachments">붙임&nbsp;&nbsp;1. ${esc(d.attach1)}(${d.date.replaceAll('-','.')}). 1부.<br>
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. ${esc(d.attach2)}(${d.date.replaceAll('-','.')}). 1부. 끝.</div>
-      <div style="margin-top:80px;border-top:18px solid #ddd;padding-top:12px;font-size:11px">
-        주임&nbsp;&nbsp;<b>${esc(d.approver1)}</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;차장&nbsp;&nbsp;<b>${esc(d.approver2)}</b>
-      </div>`;
+      <div class="work-signature-line"><span>${esc(signerRank)}</span>&nbsp;&nbsp;<b>${esc(signerName)}</b></div>
+    </div>`;
   }
 
   window.previewDailyJournalV390=function(type){
     const d=data(type);
     $('djPreviewTitle').textContent=type==='machine'?'기계실 업무일지':type==='air'?'대기배출시설 및 방지시설 운영기록부':'일상근무일지';
-    $('dailyJournalPreviewSheet').innerHTML=type==='machine'?machineSheet(d):type==='air'?airSheet(d):workSheet(d);
+    const sheet=$('dailyJournalPreviewSheet');
+    if(sheet){sheet.className=type==='work'?'dj-sheet work-journal-sheet':'dj-sheet';sheet.innerHTML=type==='machine'?machineSheet(d):type==='air'?airSheet(d):workSheet(d);}
     $('dailyJournalPreviewModal').classList.add('show');
   };
   window.closeDailyJournalPreviewV390=()=>$('dailyJournalPreviewModal')?.classList.remove('show');
@@ -11515,7 +11525,41 @@ document.addEventListener('DOMContentLoaded',function(){
       </style></head><body>
       <div class="dj-sheet ${esc(sheetClass||'')}">${content}</div>
       <script>window.onload=function(){setTimeout(function(){window.print()},250)}<\/script>
-      </body></html>`);
+      
+<style id="tfms-v436-work-journal-fix">
+  .dj-sheet.work-journal-sheet{padding:11mm 13mm!important}
+  .work-journal-page{min-height:273mm;display:flex;flex-direction:column;box-sizing:border-box}
+  .dj-sheet.work-journal-sheet .corp-title{text-align:center!important;font-size:21px!important;letter-spacing:8px!important;margin:0 0 16px!important}
+  .dj-sheet.work-journal-sheet .work-doc-header{font-size:11px;line-height:1.45;margin-bottom:8px}
+  .dj-sheet.work-journal-sheet .doc-title{font-size:24px!important;margin:12px 0 10px!important}
+  .dj-sheet.work-journal-sheet .work-summary-table{margin-top:0}
+  .dj-sheet.work-journal-sheet .work-detail-table{margin-top:10px!important}
+  .dj-sheet.work-journal-sheet .work-detail-table tr{height:25px}
+  .dj-sheet.work-journal-sheet .work-attachments{font-size:11px;line-height:1.55;margin-top:14px}
+  .dj-sheet.work-journal-sheet .work-signature-line{margin-top:auto;border-top:18px solid #ddd;padding-top:12px;font-size:11px;text-align:left;min-height:24px}
+  @media print{
+    .dj-sheet.work-journal-sheet{width:210mm!important;min-height:297mm!important;padding:11mm 13mm!important}
+    .dj-sheet.work-journal-sheet .work-journal-page{min-height:273mm!important}
+  }
+</style>
+<script id="tfms-v436-work-journal-sync">
+(function(){
+  window.TFMS_BUILD=Object.freeze({version:'v44.0',channel:'Enterprise Stable',buildDate:'2026.07.30',title:'일상근무일지 A4 출력 및 근무자 연동 개선'});
+  function sync(){
+    const r=document.getElementById('wjRank1'),n=document.getElementById('wjName1');
+    const ar=document.getElementById('wjApprover1'),an=document.getElementById('wjApprover2');
+    if(ar&&r)ar.value=r.value||''; if(an&&n)an.value=n.value||'';
+  }
+  document.addEventListener('input',function(e){if(e.target?.id==='wjRank1'||e.target?.id==='wjName1')sync();});
+  const oldShow=window.showDailyFormV390;
+  if(typeof oldShow==='function')window.showDailyFormV390=function(type){const out=oldShow.apply(this,arguments);if(type==='work')setTimeout(sync,0);return out;};
+  setTimeout(sync,300);
+  try{if(typeof applyVersion==='function')applyVersion();}catch(e){}
+})();
+</script>
+<!-- TFMS v44.0 Enterprise UX Pilot: 일상근무일지 A4 출력 및 근무자 연동 개선 -->
+
+</body></html>`);
     win.document.close();
   }
 
@@ -11752,6 +11796,40 @@ ${getPrintCssV401()}
 
 
 
+
+
+<style id="tfms-v436-work-journal-fix">
+  .dj-sheet.work-journal-sheet{padding:11mm 13mm!important}
+  .work-journal-page{min-height:273mm;display:flex;flex-direction:column;box-sizing:border-box}
+  .dj-sheet.work-journal-sheet .corp-title{text-align:center!important;font-size:21px!important;letter-spacing:8px!important;margin:0 0 16px!important}
+  .dj-sheet.work-journal-sheet .work-doc-header{font-size:11px;line-height:1.45;margin-bottom:8px}
+  .dj-sheet.work-journal-sheet .doc-title{font-size:24px!important;margin:12px 0 10px!important}
+  .dj-sheet.work-journal-sheet .work-summary-table{margin-top:0}
+  .dj-sheet.work-journal-sheet .work-detail-table{margin-top:10px!important}
+  .dj-sheet.work-journal-sheet .work-detail-table tr{height:25px}
+  .dj-sheet.work-journal-sheet .work-attachments{font-size:11px;line-height:1.55;margin-top:14px}
+  .dj-sheet.work-journal-sheet .work-signature-line{margin-top:auto;border-top:18px solid #ddd;padding-top:12px;font-size:11px;text-align:left;min-height:24px}
+  @media print{
+    .dj-sheet.work-journal-sheet{width:210mm!important;min-height:297mm!important;padding:11mm 13mm!important}
+    .dj-sheet.work-journal-sheet .work-journal-page{min-height:273mm!important}
+  }
+</style>
+<script id="tfms-v436-work-journal-sync">
+(function(){
+  window.TFMS_BUILD=Object.freeze({version:'v44.0',channel:'Enterprise Stable',buildDate:'2026.07.30',title:'일상근무일지 A4 출력 및 근무자 연동 개선'});
+  function sync(){
+    const r=document.getElementById('wjRank1'),n=document.getElementById('wjName1');
+    const ar=document.getElementById('wjApprover1'),an=document.getElementById('wjApprover2');
+    if(ar&&r)ar.value=r.value||''; if(an&&n)an.value=n.value||'';
+  }
+  document.addEventListener('input',function(e){if(e.target?.id==='wjRank1'||e.target?.id==='wjName1')sync();});
+  const oldShow=window.showDailyFormV390;
+  if(typeof oldShow==='function')window.showDailyFormV390=function(type){const out=oldShow.apply(this,arguments);if(type==='work')setTimeout(sync,0);return out;};
+  setTimeout(sync,300);
+  try{if(typeof applyVersion==='function')applyVersion();}catch(e){}
+})();
+</script>
+<!-- TFMS v44.0 Enterprise UX Pilot: 일상근무일지 A4 출력 및 근무자 연동 개선 -->
 
 </body>
 </html>`);
@@ -15441,7 +15519,41 @@ window.printFireRecordV420=async function(){
  frame=document.createElement('iframe');frame.id='tfmsFirePrintFrameV428';frame.setAttribute('aria-hidden','true');
  Object.assign(frame.style,{position:'fixed',right:'0',bottom:'0',width:'2px',height:'2px',border:'0',opacity:'0.01',zIndex:'2147483647'});document.body.appendChild(frame);
  try{
-  const doc=frame.contentDocument||frame.contentWindow.document;doc.open();doc.write(`<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>소방안전관리자 업무 수행 기록표</title><style>@page{size:A4 portrait;margin:0}html,body{margin:0!important;padding:0!important;width:210mm!important;height:297mm!important;background:#fff!important}.fire-original-sheet{position:relative;width:210mm;height:297mm;margin:0;padding:0;overflow:hidden;background:#fff;box-sizing:border-box}.fire-form-bg{position:absolute;inset:0;width:210mm;height:297mm;object-fit:fill;display:block;z-index:0}.fire-overlay{position:absolute;z-index:1;box-sizing:border-box;display:flex;align-items:center;justify-content:center;padding:0 1mm;margin:0;color:#111;font-family:"Malgun Gothic","맑은 고딕",sans-serif;font-size:9px;line-height:1.15;text-align:center;white-space:pre-wrap;word-break:break-word;overflow:hidden}.fire-overlay.left{justify-content:flex-start;align-items:flex-start;text-align:left;padding:1.3mm 1.5mm}.fire-overlay.signature{font-size:8.8px}.fire-overlay.small-value{font-size:8.1px}.fire-overlay.checkmark{padding:0;overflow:visible;font-family:Arial,sans-serif;font-size:12px;font-weight:700;line-height:1}</style></head><body><div class="fire-original-sheet">${preview.innerHTML}</div></body></html>`);doc.close();
+  const doc=frame.contentDocument||frame.contentWindow.document;doc.open();doc.write(`<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>소방안전관리자 업무 수행 기록표</title><style>@page{size:A4 portrait;margin:0}html,body{margin:0!important;padding:0!important;width:210mm!important;height:297mm!important;background:#fff!important}.fire-original-sheet{position:relative;width:210mm;height:297mm;margin:0;padding:0;overflow:hidden;background:#fff;box-sizing:border-box}.fire-form-bg{position:absolute;inset:0;width:210mm;height:297mm;object-fit:fill;display:block;z-index:0}.fire-overlay{position:absolute;z-index:1;box-sizing:border-box;display:flex;align-items:center;justify-content:center;padding:0 1mm;margin:0;color:#111;font-family:"Malgun Gothic","맑은 고딕",sans-serif;font-size:9px;line-height:1.15;text-align:center;white-space:pre-wrap;word-break:break-word;overflow:hidden}.fire-overlay.left{justify-content:flex-start;align-items:flex-start;text-align:left;padding:1.3mm 1.5mm}.fire-overlay.signature{font-size:8.8px}.fire-overlay.small-value{font-size:8.1px}.fire-overlay.checkmark{padding:0;overflow:visible;font-family:Arial,sans-serif;font-size:12px;font-weight:700;line-height:1}</style></head><body><div class="fire-original-sheet">${preview.innerHTML}</div>
+<style id="tfms-v436-work-journal-fix">
+  .dj-sheet.work-journal-sheet{padding:11mm 13mm!important}
+  .work-journal-page{min-height:273mm;display:flex;flex-direction:column;box-sizing:border-box}
+  .dj-sheet.work-journal-sheet .corp-title{text-align:center!important;font-size:21px!important;letter-spacing:8px!important;margin:0 0 16px!important}
+  .dj-sheet.work-journal-sheet .work-doc-header{font-size:11px;line-height:1.45;margin-bottom:8px}
+  .dj-sheet.work-journal-sheet .doc-title{font-size:24px!important;margin:12px 0 10px!important}
+  .dj-sheet.work-journal-sheet .work-summary-table{margin-top:0}
+  .dj-sheet.work-journal-sheet .work-detail-table{margin-top:10px!important}
+  .dj-sheet.work-journal-sheet .work-detail-table tr{height:25px}
+  .dj-sheet.work-journal-sheet .work-attachments{font-size:11px;line-height:1.55;margin-top:14px}
+  .dj-sheet.work-journal-sheet .work-signature-line{margin-top:auto;border-top:18px solid #ddd;padding-top:12px;font-size:11px;text-align:left;min-height:24px}
+  @media print{
+    .dj-sheet.work-journal-sheet{width:210mm!important;min-height:297mm!important;padding:11mm 13mm!important}
+    .dj-sheet.work-journal-sheet .work-journal-page{min-height:273mm!important}
+  }
+</style>
+<script id="tfms-v436-work-journal-sync">
+(function(){
+  window.TFMS_BUILD=Object.freeze({version:'v44.0',channel:'Enterprise Stable',buildDate:'2026.07.30',title:'일상근무일지 A4 출력 및 근무자 연동 개선'});
+  function sync(){
+    const r=document.getElementById('wjRank1'),n=document.getElementById('wjName1');
+    const ar=document.getElementById('wjApprover1'),an=document.getElementById('wjApprover2');
+    if(ar&&r)ar.value=r.value||''; if(an&&n)an.value=n.value||'';
+  }
+  document.addEventListener('input',function(e){if(e.target?.id==='wjRank1'||e.target?.id==='wjName1')sync();});
+  const oldShow=window.showDailyFormV390;
+  if(typeof oldShow==='function')window.showDailyFormV390=function(type){const out=oldShow.apply(this,arguments);if(type==='work')setTimeout(sync,0);return out;};
+  setTimeout(sync,300);
+  try{if(typeof applyVersion==='function')applyVersion();}catch(e){}
+})();
+</script>
+<!-- TFMS v44.0 Enterprise UX Pilot: 일상근무일지 A4 출력 및 근무자 연동 개선 -->
+
+</body></html>`);doc.close();
   await new Promise(r=>{if(doc.readyState==='complete')r();else frame.onload=r;});
   const imgs=[...doc.images];await Promise.all(imgs.map(img=>img.complete?(img.decode?.().catch(()=>{})||Promise.resolve()):new Promise(res=>{img.onload=img.onerror=res;})));
   if(doc.fonts?.ready)try{await doc.fonts.ready}catch(e){}
@@ -15493,7 +15605,41 @@ function overlays(d){let o='';
  const ys=[757,986,1215,1444],hs=[229,229,229,228];d.checks.forEach((r,i)=>{o+=box(417,ys[i],722,hs[i],esc(r.content),'left');const q=result(r.result,i);if(q.length)o+=mark(...q);o+=box(1304,ys[i],181,hs[i],esc(r.action),'left');});
  const imp=d.improvement;o+=box(417,1675,230,73,esc(fmtDT(imp.reportDate)),'compact');m=method(imp.method);if(m.length)o+=mark(...m);o+=box(1139,1675,346,73,esc(imp.reportTo),'compact');m=remedy(imp.remedy);if(m.length)o+=mark(...m);return o;}
 window.previewFireRecordV420=function(){try{const sheet=$('firePreviewSheet'),modal=$('firePreviewModal');if(!sheet||!modal)throw new Error('미리보기 영역을 찾지 못했습니다.');sheet.className='fire-original-sheet';sheet.innerHTML=`<img class="fire-form-bg" src="${imgSrc()}" alt="소방안전관리자 업무 수행 기록표">${overlays(data())}`;modal.classList.add('show');modal.scrollTop=0;}catch(e){console.error(e);toast('서식 미리보기 실패: '+(e?.message||e));}};
-window.printFireRecordV420=async function(){try{window.previewFireRecordV420();const preview=$('firePreviewSheet');if(!preview?.innerHTML.trim())throw new Error('인쇄할 서식을 생성하지 못했습니다.');const frame=document.createElement('iframe');frame.setAttribute('aria-hidden','true');Object.assign(frame.style,{position:'fixed',right:'0',bottom:'0',width:'1px',height:'1px',border:'0',opacity:'0',pointerEvents:'none'});document.body.appendChild(frame);const css=`@page{size:A4 portrait;margin:0}*{box-sizing:border-box}html,body{margin:0!important;padding:0!important;width:210mm!important;height:297mm!important;background:#fff!important}.fire-original-sheet{position:relative;width:210mm;height:297mm;margin:0;padding:0;overflow:hidden;background:#fff}.fire-form-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;display:block;z-index:0}.fire-overlay-v430{position:absolute;z-index:2;box-sizing:border-box;display:flex;align-items:center;justify-content:center;padding:0 1.1mm;overflow:hidden;color:#111;font-family:"Malgun Gothic","맑은 고딕",Arial,sans-serif;font-size:9pt;line-height:1.18;font-weight:400;text-align:center;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere}.fire-overlay-v430.left{align-items:flex-start;justify-content:flex-start;text-align:left;padding:1.5mm 1.7mm;font-size:8.5pt;line-height:1.28}.fire-overlay-v430.compact{font-size:8.5pt}.fire-overlay-v430.check{padding:0;font-size:9.5pt;font-weight:700;line-height:1;overflow:hidden}`;const doc=frame.contentDocument||frame.contentWindow.document;doc.open();doc.write(`<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>소방안전관리자 업무 수행 기록표</title><style>${css}</style></head><body>${preview.outerHTML}</body></html>`);doc.close();await new Promise(r=>setTimeout(r,100));if(doc.fonts?.ready)await doc.fonts.ready;await Promise.all([...doc.images].map(img=>img.complete?Promise.resolve():new Promise(r=>{img.onload=img.onerror=r})));await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));frame.contentWindow.focus();frame.contentWindow.print();setTimeout(()=>frame.remove(),5000);}catch(e){console.error(e);toast('PDF 출력 실패: '+(e?.message||e));}};
+window.printFireRecordV420=async function(){try{window.previewFireRecordV420();const preview=$('firePreviewSheet');if(!preview?.innerHTML.trim())throw new Error('인쇄할 서식을 생성하지 못했습니다.');const frame=document.createElement('iframe');frame.setAttribute('aria-hidden','true');Object.assign(frame.style,{position:'fixed',right:'0',bottom:'0',width:'1px',height:'1px',border:'0',opacity:'0',pointerEvents:'none'});document.body.appendChild(frame);const css=`@page{size:A4 portrait;margin:0}*{box-sizing:border-box}html,body{margin:0!important;padding:0!important;width:210mm!important;height:297mm!important;background:#fff!important}.fire-original-sheet{position:relative;width:210mm;height:297mm;margin:0;padding:0;overflow:hidden;background:#fff}.fire-form-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;display:block;z-index:0}.fire-overlay-v430{position:absolute;z-index:2;box-sizing:border-box;display:flex;align-items:center;justify-content:center;padding:0 1.1mm;overflow:hidden;color:#111;font-family:"Malgun Gothic","맑은 고딕",Arial,sans-serif;font-size:9pt;line-height:1.18;font-weight:400;text-align:center;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere}.fire-overlay-v430.left{align-items:flex-start;justify-content:flex-start;text-align:left;padding:1.5mm 1.7mm;font-size:8.5pt;line-height:1.28}.fire-overlay-v430.compact{font-size:8.5pt}.fire-overlay-v430.check{padding:0;font-size:9.5pt;font-weight:700;line-height:1;overflow:hidden}`;const doc=frame.contentDocument||frame.contentWindow.document;doc.open();doc.write(`<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>소방안전관리자 업무 수행 기록표</title><style>${css}</style></head><body>${preview.outerHTML}
+<style id="tfms-v436-work-journal-fix">
+  .dj-sheet.work-journal-sheet{padding:11mm 13mm!important}
+  .work-journal-page{min-height:273mm;display:flex;flex-direction:column;box-sizing:border-box}
+  .dj-sheet.work-journal-sheet .corp-title{text-align:center!important;font-size:21px!important;letter-spacing:8px!important;margin:0 0 16px!important}
+  .dj-sheet.work-journal-sheet .work-doc-header{font-size:11px;line-height:1.45;margin-bottom:8px}
+  .dj-sheet.work-journal-sheet .doc-title{font-size:24px!important;margin:12px 0 10px!important}
+  .dj-sheet.work-journal-sheet .work-summary-table{margin-top:0}
+  .dj-sheet.work-journal-sheet .work-detail-table{margin-top:10px!important}
+  .dj-sheet.work-journal-sheet .work-detail-table tr{height:25px}
+  .dj-sheet.work-journal-sheet .work-attachments{font-size:11px;line-height:1.55;margin-top:14px}
+  .dj-sheet.work-journal-sheet .work-signature-line{margin-top:auto;border-top:18px solid #ddd;padding-top:12px;font-size:11px;text-align:left;min-height:24px}
+  @media print{
+    .dj-sheet.work-journal-sheet{width:210mm!important;min-height:297mm!important;padding:11mm 13mm!important}
+    .dj-sheet.work-journal-sheet .work-journal-page{min-height:273mm!important}
+  }
+</style>
+<script id="tfms-v436-work-journal-sync">
+(function(){
+  window.TFMS_BUILD=Object.freeze({version:'v44.0',channel:'Enterprise Stable',buildDate:'2026.07.30',title:'일상근무일지 A4 출력 및 근무자 연동 개선'});
+  function sync(){
+    const r=document.getElementById('wjRank1'),n=document.getElementById('wjName1');
+    const ar=document.getElementById('wjApprover1'),an=document.getElementById('wjApprover2');
+    if(ar&&r)ar.value=r.value||''; if(an&&n)an.value=n.value||'';
+  }
+  document.addEventListener('input',function(e){if(e.target?.id==='wjRank1'||e.target?.id==='wjName1')sync();});
+  const oldShow=window.showDailyFormV390;
+  if(typeof oldShow==='function')window.showDailyFormV390=function(type){const out=oldShow.apply(this,arguments);if(type==='work')setTimeout(sync,0);return out;};
+  setTimeout(sync,300);
+  try{if(typeof applyVersion==='function')applyVersion();}catch(e){}
+})();
+</script>
+<!-- TFMS v44.0 Enterprise UX Pilot: 일상근무일지 A4 출력 및 근무자 연동 개선 -->
+
+</body></html>`);doc.close();await new Promise(r=>setTimeout(r,100));if(doc.fonts?.ready)await doc.fonts.ready;await Promise.all([...doc.images].map(img=>img.complete?Promise.resolve():new Promise(r=>{img.onload=img.onerror=r})));await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));frame.contentWindow.focus();frame.contentWindow.print();setTimeout(()=>frame.remove(),5000);}catch(e){console.error(e);toast('PDF 출력 실패: '+(e?.message||e));}};
 function db(){try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||(typeof sb!=='undefined'?sb:null)}catch(e){return null}}
 async function facilityId(name){const sbc=db();const {data,error}=await sbc.from('facilities').select('id,name').eq('name',name).limit(1);if(error)throw error;if(!data?.length)throw new Error(`시설 DB에서 '${name}'을 찾지 못했습니다.`);return data[0].id;}
 window.saveFireRecordV420=async function(){const d=data();if(!d.date||!d.performer||!d.facility){toast('수행일자, 수행자, 상호를 입력해 주세요.');return;}try{const sbc=db();if(!sbc)throw new Error('DB 연결 정보를 확인하지 못했습니다.');const {data:auth,error:authErr}=await sbc.auth.getUser();if(authErr)throw authErr;const uid=auth?.user?.id;if(!uid)throw new Error('로그인 세션을 확인할 수 없습니다.');const fid=await facilityId(d.facility);const payload={facility_id:String(fid),performed_on:d.date,performer_id:uid,performer_name:d.performer,target_grade:d.grade,address:d.address,basement_floors:Number(d.basement||0),ground_floors:Number(d.ground||0),total_area:Number(d.totalArea||0),floor_area:Number(d.floorArea||0),building_count:Number(d.buildings||0),form_data:d};const {data:record,error}=await sbc.from('fire_safety_records').insert(payload).select('id').single();if(error){if(/schema cache|Could not find the table|PGRST205/i.test(error.message||''))throw new Error('소방점검 저장 테이블이 없습니다. ZIP의 「필수_SQL_1회실행.sql」을 Supabase SQL Editor에서 실행한 뒤 새로고침해 주세요.');throw error;}if(d.extinguishers.length){const rows=d.extinguishers.map(x=>({fire_record_id:record.id,facility_id:String(fid),inspection_date:d.date,extinguisher_code:x.code,location_detail:x.location,extinguisher_type:x.type,pressure_status:x.pressure,pin_seal_status:x.pin,hose_nozzle_status:x.hose,body_status:x.body,placement_status:x.placement,result_status:x.result,note:x.note,inspector_id:uid,inspector_name:d.performer}));const {error:ee}=await sbc.from('fire_extinguisher_checks').insert(rows);if(ee)throw ee;}toast('소방 월간점검 기록을 저장했습니다.');}catch(e){console.error(e);toast('소방점검 저장 실패: '+(e?.message||e));}};
@@ -15632,5 +15778,83 @@ document.addEventListener('DOMContentLoaded',init);if(document.readyState!=='loa
 const oldShow=window.showPage;if(typeof oldShow==='function')window.showPage=function(id,btn){const r=oldShow.apply(this,arguments);if(id==='dashboard')setTimeout(setupDashboard,20);if(id==='fireMonthly')setTimeout(()=>{ensureHistory();window.loadFireHistoryV431?.()},100);return r};
 const oldNav=window.navTo;if(typeof oldNav==='function')window.navTo=function(id){const r=oldNav.apply(this,arguments);if(id==='dashboard')setTimeout(setupDashboard,20);if(id==='fireMonthly')setTimeout(()=>{ensureHistory();window.loadFireHistoryV431?.()},100);return r};
 })();
+</script>
+
+<style id="tfms-v436-work-journal-fix">
+  .dj-sheet.work-journal-sheet{padding:11mm 13mm!important}
+  .work-journal-page{min-height:273mm;display:flex;flex-direction:column;box-sizing:border-box}
+  .dj-sheet.work-journal-sheet .corp-title{text-align:center!important;font-size:21px!important;letter-spacing:8px!important;margin:0 0 16px!important}
+  .dj-sheet.work-journal-sheet .work-doc-header{font-size:11px;line-height:1.45;margin-bottom:8px}
+  .dj-sheet.work-journal-sheet .doc-title{font-size:24px!important;margin:12px 0 10px!important}
+  .dj-sheet.work-journal-sheet .work-summary-table{margin-top:0}
+  .dj-sheet.work-journal-sheet .work-detail-table{margin-top:10px!important}
+  .dj-sheet.work-journal-sheet .work-detail-table tr{height:25px}
+  .dj-sheet.work-journal-sheet .work-attachments{font-size:11px;line-height:1.55;margin-top:14px}
+  .dj-sheet.work-journal-sheet .work-signature-line{margin-top:auto;border-top:18px solid #ddd;padding-top:12px;font-size:11px;text-align:left;min-height:24px}
+  @media print{
+    .dj-sheet.work-journal-sheet{width:210mm!important;min-height:297mm!important;padding:11mm 13mm!important}
+    .dj-sheet.work-journal-sheet .work-journal-page{min-height:273mm!important}
+  }
+</style>
+<script id="tfms-v436-work-journal-sync">
+(function(){
+  window.TFMS_BUILD=Object.freeze({version:'v44.0',channel:'Enterprise Stable',buildDate:'2026.07.30',title:'일상근무일지 A4 출력 및 근무자 연동 개선'});
+  function sync(){
+    const r=document.getElementById('wjRank1'),n=document.getElementById('wjName1');
+    const ar=document.getElementById('wjApprover1'),an=document.getElementById('wjApprover2');
+    if(ar&&r)ar.value=r.value||''; if(an&&n)an.value=n.value||'';
+  }
+  document.addEventListener('input',function(e){if(e.target?.id==='wjRank1'||e.target?.id==='wjName1')sync();});
+  const oldShow=window.showDailyFormV390;
+  if(typeof oldShow==='function')window.showDailyFormV390=function(type){const out=oldShow.apply(this,arguments);if(type==='work')setTimeout(sync,0);return out;};
+  setTimeout(sync,300);
+  try{if(typeof applyVersion==='function')applyVersion();}catch(e){}
+})();
+</script>
+<!-- TFMS v44.0 Enterprise UX Pilot: 일상근무일지 A4 출력 및 근무자 연동 개선 -->
+
+
+<style id="tfms-v440-ux-style">
+/* v44.0 UX Pilot: 기존 기능은 유지하고 화면 밀도와 통계 탐색만 개선 */
+.tfms-ux-page{padding-bottom:10px}
+.tfms-ux-title{margin-bottom:10px!important;align-items:center}
+.tfms-stats-badge{margin-left:auto;padding:8px 12px;border:1px solid #bbf7d0;border-radius:999px;background:#f0fdf4;color:#166534;font-size:12px;font-weight:800;white-space:nowrap}
+.tfms-stats-summary{padding:12px!important;margin-bottom:10px!important}
+.tfms-compact-kpi{gap:10px!important}
+.tfms-compact-kpi .compare-card{min-height:86px;padding:12px 14px!important}
+.tfms-compact-kpi .compare-card p{font-size:12px;margin:0 0 5px}
+.tfms-compact-kpi .compare-card strong{font-size:23px;line-height:1.1}
+.tfms-compact-kpi .delta{margin-top:5px;font-size:11px}
+.tfms-stats-main{padding:14px!important;margin-bottom:0!important;min-height:390px}
+.tfms-stats-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}
+.tfms-stats-toolbar .section-title{margin:0!important}
+.tfms-stat-tabs{display:flex;gap:6px;padding:4px;background:#f1f5f9;border-radius:10px}
+.tfms-stat-tab{border:0;background:transparent;color:#475569;font-size:12px;font-weight:800;padding:8px 14px;border-radius:8px;cursor:pointer}
+.tfms-stat-tab.active{background:#1557c0;color:#fff;box-shadow:0 2px 8px rgba(21,87,192,.18)}
+.tfms-stat-view{display:none}
+.tfms-stat-view.active{display:block}
+.tfms-chart-caption{font-size:12px;color:#64748b;margin:2px 0 4px}
+#stats .chart-wrap{height:285px;min-height:285px;padding:8px 12px 0!important;margin:0!important;overflow:hidden}
+#stats .bar-item{min-width:42px}
+#stats .bar{max-height:185px}
+.tfms-stats-footnote{font-size:11px;color:#64748b;border-top:1px solid #e2e8f0;padding-top:8px;margin-top:4px}
+/* 공통 화면 밀도 개선: 구조와 기능은 유지 */
+.page>.title-row{margin-bottom:12px}
+.page>.panel{margin-bottom:12px}
+.page>.panel .notice{padding:11px 14px}
+.page>.panel .section-title{margin-bottom:10px}
+.page .buttons{margin-top:12px}
+@media(max-width:900px){
+ .tfms-stats-badge{display:none}.tfms-compact-kpi{grid-template-columns:1fr 1fr!important}
+ .tfms-stats-toolbar{align-items:flex-start;flex-direction:column}.tfms-stat-tabs{width:100%}.tfms-stat-tab{flex:1}
+ #stats .chart-wrap{height:320px;min-height:320px;overflow:auto}
+}
+</style>
+<script id="tfms-v440-ux-script">
+function switchStatsTabV440(name,btn){
+ document.querySelectorAll('#stats .tfms-stat-tab').forEach(b=>b.classList.toggle('active',b===btn));
+ document.querySelectorAll('#stats .tfms-stat-view').forEach(v=>v.classList.toggle('active',v.dataset.statView===name));
+ try{ if(typeof renderStatsCharts==='function') renderStatsCharts(); }catch(e){ console.warn('v44.0 stats tab refresh',e); }
+}
 </script>
 </body></html>
