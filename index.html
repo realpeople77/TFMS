@@ -14527,6 +14527,13 @@ document.addEventListener('DOMContentLoaded',()=>setTimeout(initialize,250));
     body.fire-printing #firePrintRoot{position:absolute;left:0;top:0;width:210mm}
     @page{size:A4 portrait;margin:0}
   }
+
+  .fire-bulk-box{border:1px solid #cfe0f5;background:#f7fbff;border-radius:14px;padding:14px;margin-top:12px}
+  .fire-bulk-grid{display:grid;grid-template-columns:1.3fr .7fr 1fr .65fr 1fr 1.4fr;gap:10px;align-items:end}
+  .fire-bulk-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .fire-bulk-summary{font-size:13px;color:#52647a;margin-top:8px}
+  @media(max-width:1100px){.fire-bulk-grid{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:700px){.fire-bulk-grid{grid-template-columns:1fr 1fr}}
 </style>
 <div id="firePreviewModal" onclick="if(event.target===this)closeFirePreviewV420()">
 <div class="fire-preview-bar">
@@ -14654,8 +14661,27 @@ function buildFirePage(){
     <div class="panel">
       <div class="section-title"><span class="dot"></span>소화기 월간점검 목록</div>
       <div class="notice">
-        QR은 소화기별 고유번호를 포함합니다. 현장에서 QR을 촬영하면 해당 소화기 행이 자동 선택되고,
-        압력·안전핀·호스·외관·배치상태만 확인한 뒤 저장할 수 있습니다.
+        QR은 소화기별 고유번호를 포함합니다. 대량 시설은 구역·수량만 입력해 관리번호를 일괄 생성하고,
+        현장에서 QR을 부착하면서 상세 위치를 보정할 수 있습니다.
+      </div>
+      <div class="fire-bulk-box">
+        <div class="section-title" style="margin-bottom:10px"><span class="dot"></span>구역별 일괄 생성</div>
+        <div class="fire-bulk-grid">
+          <div class="fire-field"><label>구역·기본 위치</label><input id="fireBulkZone" placeholder="예: 본관 1층"></div>
+          <div class="fire-field"><label>수량</label><input id="fireBulkQty" type="number" min="1" max="500" value="10"></div>
+          <div class="fire-field"><label>관리번호 접두어</label><input id="fireBulkPrefix" value="EXT-"></div>
+          <div class="fire-field"><label>시작번호</label><input id="fireBulkStart" type="number" min="1" value="1"></div>
+          <div class="fire-field"><label>종류</label><select id="fireBulkType"><option>분말</option><option>CO2</option><option>강화액</option><option>기타</option></select></div>
+          <div class="fire-field"><label>공통 비고</label><input id="fireBulkNote" placeholder="없으면 공란"></div>
+        </div>
+        <div class="fire-bulk-actions">
+          <button type="button" class="btn blue" onclick="generateFireExtBulkV447()">일괄 생성</button>
+          <button type="button" class="btn light" onclick="loadFireExtInventoryV447()">저장 목록 불러오기</button>
+          <button type="button" class="btn light" onclick="saveFireExtInventoryV447()">소화기 목록 저장</button>
+          <button type="button" class="btn light" onclick="printFireExtQrLabelsV447()">QR 라벨 일괄 출력</button>
+          <button type="button" class="btn" onclick="clearFireExtRowsV447()">목록 비우기</button>
+        </div>
+        <div id="fireBulkSummary" class="fire-bulk-summary">시설별 최초 목록은 한 번만 저장하고, 이후 월간점검에서는 저장 목록을 불러와 사용합니다.</div>
       </div>
       <div style="overflow:auto;margin-top:12px">
         <table class="fire-ext-table">
@@ -14709,6 +14735,7 @@ function initFireForm(){
 
 window.addFireExtRowV420=function(seed={}){
   window.fireExtRowsV420.push({
+    id:seed.id||null,
     location:seed.location||'',
     code:seed.code||`EXT-${String(window.fireExtRowsV420.length+1).padStart(3,'0')}`,
     type:seed.type||'분말',
@@ -14737,6 +14764,108 @@ function renderExtRows(){
     </tr>`).join('');
 }
 window.renderFireExtRowsV420=renderExtRows;
+
+
+function firePadV447(n){return String(n).padStart(3,'0')}
+
+window.generateFireExtBulkV447=function(){
+  const zone=value('fireBulkZone').trim();
+  const qty=Math.max(1,Math.min(500,Number(value('fireBulkQty')||0)));
+  const prefix=value('fireBulkPrefix').trim()||'EXT-';
+  const start=Math.max(1,Number(value('fireBulkStart')||1));
+  const type=value('fireBulkType')||'분말';
+  const note=value('fireBulkNote').trim();
+  if(!zone){toast('구역·기본 위치를 입력해 주세요.');return}
+  const existing=new Set(window.fireExtRowsV420.map(x=>String(x.code||'').trim()));
+  let added=0, skipped=0;
+  for(let k=0;k<qty;k++){
+    const code=`${prefix}${firePadV447(start+k)}`;
+    if(existing.has(code)){skipped++;continue}
+    window.fireExtRowsV420.push({id:null,location:zone,code,type,pressure:'양호',pin:'양호',hose:'양호',body:'양호',placement:'양호',result:'양호',note});
+    existing.add(code);added++;
+  }
+  renderExtRows();
+  $('fireBulkStart').value=start+qty;
+  $('fireBulkSummary').textContent=`${zone}: ${added}대 생성${skipped?` · 중복 ${skipped}대 제외`:''} · 현재 목록 ${window.fireExtRowsV420.length}대`;
+  toast(`소화기 ${added}대를 일괄 생성했습니다.`);
+};
+
+window.clearFireExtRowsV447=function(){
+  if(!window.fireExtRowsV420.length)return;
+  if(!confirm(`현재 목록 ${window.fireExtRowsV420.length}대를 화면에서 비우시겠습니까?\nDB에 저장된 목록은 삭제되지 않습니다.`))return;
+  window.fireExtRowsV420=[];renderExtRows();
+  $('fireBulkSummary').textContent='화면 목록을 비웠습니다. 저장 목록은 DB에 유지됩니다.';
+};
+
+async function fireInventoryRowsV447(){
+  const facility=value('fireFacility').trim();
+  if(!facility)throw new Error('상호(시설명)를 먼저 선택하거나 입력해 주세요.');
+  const fid=await resolveFacilityId(facility);
+  return {fid,facility,rows:window.fireExtRowsV420.map((x,i)=>({
+    facility_id:fid,extinguisher_code:String(x.code||`EXT-${firePadV447(i+1)}`).trim(),
+    zone_name:String(x.location||'').trim(),location_detail:String(x.location||'').trim(),
+    extinguisher_type:x.type||'분말',note:x.note||'',is_active:true,display_order:i+1,
+    updated_at:new Date().toISOString()
+  }))};
+}
+
+window.saveFireExtInventoryV447=async function(silent=false){
+  try{
+    if(!window.fireExtRowsV420.length)throw new Error('저장할 소화기 목록이 없습니다.');
+    const sbc=db();if(!sbc)throw new Error('DB 연결 정보를 확인하지 못했습니다.');
+    const {rows}=await fireInventoryRowsV447();
+    const {error}=await sbc.from('fire_extinguishers').upsert(rows,{onConflict:'facility_id,extinguisher_code'});
+    if(error)throw error;
+    if(!silent)toast(`소화기 목록 ${rows.length}대를 저장했습니다.`);
+    $('fireBulkSummary').textContent=`시설 소화기 목록 ${rows.length}대 저장 완료 · 이후 월간점검에서 불러올 수 있습니다.`;
+    return true;
+  }catch(e){
+    console.error('fire inventory save',e);
+    if(!silent)toast('소화기 목록 저장 실패: '+(e?.message||e));
+    return false;
+  }
+};
+
+window.loadFireExtInventoryV447=async function(){
+  try{
+    const facility=value('fireFacility').trim();
+    if(!facility)throw new Error('상호(시설명)를 먼저 선택하거나 입력해 주세요.');
+    const sbc=db(),fid=await resolveFacilityId(facility);
+    const {data,error}=await sbc.from('fire_extinguishers').select('*').eq('facility_id',fid).eq('is_active',true).order('display_order',{ascending:true}).order('extinguisher_code',{ascending:true});
+    if(error)throw error;
+    window.fireExtRowsV420=(data||[]).map(x=>({id:x.id,location:x.location_detail||x.zone_name||'',code:x.extinguisher_code,type:x.extinguisher_type||'분말',pressure:'양호',pin:'양호',hose:'양호',body:'양호',placement:'양호',result:'양호',note:x.note||''}));
+    renderExtRows();
+    $('fireBulkSummary').textContent=`${facility} 저장 목록 ${window.fireExtRowsV420.length}대를 불러왔습니다.`;
+    toast(`소화기 ${window.fireExtRowsV420.length}대를 불러왔습니다.`);
+  }catch(e){console.error(e);toast('소화기 목록 불러오기 실패: '+(e?.message||e))}
+};
+
+function qrDataUrlV447(text){
+  return new Promise((resolve,reject)=>{
+    try{
+      const box=document.createElement('div');box.style.cssText='position:fixed;left:-9999px;top:-9999px';document.body.appendChild(box);
+      new QRCode(box,{text,width:180,height:180,correctLevel:QRCode.CorrectLevel?.M});
+      setTimeout(()=>{const canvas=box.querySelector('canvas'),img=box.querySelector('img');const url=canvas?.toDataURL('image/png')||img?.src||'';box.remove();url?resolve(url):reject(new Error('QR 생성 실패'));},80);
+    }catch(e){reject(e)}
+  });
+}
+
+window.printFireExtQrLabelsV447=async function(){
+  try{
+    if(!window.QRCode)throw new Error('QR 생성 라이브러리를 불러오지 못했습니다.');
+    if(!window.fireExtRowsV420.length)throw new Error('출력할 소화기 목록이 없습니다.');
+    const facility=value('fireFacility').trim()||'시설명 미입력';
+    const base=location.origin+location.pathname;
+    const labels=[];
+    for(const row of window.fireExtRowsV420){
+      const url=`${base}?${new URLSearchParams({fire:'1',facility,ext:row.code}).toString()}`;
+      labels.push({...row,qr:await qrDataUrlV447(url)});
+    }
+    const w=window.open('','_blank','width=1100,height=800');if(!w)throw new Error('팝업이 차단되었습니다.');
+    w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>${esc(facility)} 소화기 QR 라벨</title><style>@page{size:A4 portrait;margin:8mm}*{box-sizing:border-box}body{font-family:"Malgun Gothic",sans-serif;margin:0}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5mm}.label{border:1px solid #333;border-radius:3mm;min-height:82mm;padding:4mm;text-align:center;break-inside:avoid}.label img{width:42mm;height:42mm}.facility{font-weight:700;font-size:11pt}.code{font-size:15pt;font-weight:800;margin:2mm 0}.loc{font-size:9pt;min-height:12mm}.hint{font-size:7.5pt;color:#555;margin-top:1mm}@media print{.no-print{display:none}}</style></head><body><div class="no-print" style="padding:10px;text-align:center"><button onclick="print()">인쇄</button></div><div class="grid">${labels.map(x=>`<div class="label"><div class="facility">${esc(facility)}</div><div class="code">${esc(x.code)}</div><img src="${x.qr}"><div class="loc">${esc(x.location||'상세 위치 현장 입력')}</div><div class="hint">QR 촬영 후 현장점검</div></div>`).join('')}</div></body></html>`);
+    w.document.close();setTimeout(()=>w.focus(),200);
+  }catch(e){console.error(e);toast('QR 라벨 출력 준비 실패: '+(e?.message||e))}
+};
 
 function collect(){
   return {
@@ -14856,7 +14985,7 @@ window.copyFireQrUrlV420=async function(){
   toast('QR 링크를 복사했습니다.');
 };
 
-function applyQrQuery(){
+async function applyQrQuery(){
   const p=new URLSearchParams(location.search);
   if(p.get('fire')!=='1')return;
   const facility=p.get('facility')||'';
@@ -14864,8 +14993,14 @@ function applyQrQuery(){
   $('fireMobileBanner').style.display='block';
   $('fireMobileBanner').textContent=`QR 현장점검 모드: ${facility} / ${code}`;
   $('fireFacility').value=facility;
+  let seed={code};
+  try{
+    const sbc=db(),fid=await resolveFacilityId(facility);
+    const {data}=await sbc.from('fire_extinguishers').select('*').eq('facility_id',fid).eq('extinguisher_code',code).maybeSingle();
+    if(data)seed={id:data.id,code:data.extinguisher_code,location:data.location_detail||data.zone_name||'',type:data.extinguisher_type||'분말',note:data.note||''};
+  }catch(e){console.warn('QR master lookup skipped',e)}
   let idx=window.fireExtRowsV420.findIndex(x=>x.code===code);
-  if(idx<0){addFireExtRowV420({code});idx=window.fireExtRowsV420.length-1}
+  if(idx<0){addFireExtRowV420(seed);idx=window.fireExtRowsV420.length-1}
   renderExtRows();
   setTimeout(()=>document.querySelector(`#fireExtBody tr:nth-child(${idx+1})`)?.scrollIntoView({behavior:'smooth',block:'center'}),150);
 }
@@ -16144,4 +16279,8 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
   }
 })();
 </script>
+
+<script id="tfms-v447-version"><!--
+(function(){window.TFMS_BUILD=Object.freeze({version:'v44.7',channel:'Enterprise Stable UX Diet 3',buildDate:'2026.07.30',title:'소화기 구역별 일괄등록·QR 라벨 출력'});document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{const b=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');if(b)b.textContent='v44.7 Enterprise Stable UX Diet 3';},500)});})();
+//--></script>
 </body></html>
