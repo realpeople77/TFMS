@@ -11764,38 +11764,7 @@ ${getPrintCssV401()}
 
 
 
-<style id="tfms-v436-work-journal-fix">
-  .dj-sheet.work-journal-sheet{padding:11mm 13mm!important}
-  .work-journal-page{min-height:273mm;display:flex;flex-direction:column;box-sizing:border-box}
-  .dj-sheet.work-journal-sheet .corp-title{text-align:center!important;font-size:21px!important;letter-spacing:8px!important;margin:0 0 16px!important}
-  .dj-sheet.work-journal-sheet .work-doc-header{font-size:11px;line-height:1.45;margin-bottom:8px}
-  .dj-sheet.work-journal-sheet .doc-title{font-size:24px!important;margin:12px 0 10px!important}
-  .dj-sheet.work-journal-sheet .work-summary-table{margin-top:0}
-  .dj-sheet.work-journal-sheet .work-detail-table{margin-top:10px!important}
-  .dj-sheet.work-journal-sheet .work-detail-table tr{height:25px}
-  .dj-sheet.work-journal-sheet .work-attachments{font-size:11px;line-height:1.55;margin-top:14px}
-  .dj-sheet.work-journal-sheet .work-signature-line{margin-top:auto;border-top:18px solid #ddd;padding-top:12px;font-size:11px;text-align:left;min-height:24px}
-  @media print{
-    .dj-sheet.work-journal-sheet{width:210mm!important;min-height:297mm!important;padding:11mm 13mm!important}
-    .dj-sheet.work-journal-sheet .work-journal-page{min-height:273mm!important}
-  }
-</style>
-<script id="tfms-v436-work-journal-sync">
-(function(){
-  window.TFMS_BUILD=Object.freeze({version:'v44.1',channel:'Enterprise Stable',buildDate:'2026.07.30',title:'일상근무일지 A4 출력 및 근무자 연동 개선'});
-  function sync(){
-    const r=document.getElementById('wjRank1'),n=document.getElementById('wjName1');
-    const ar=document.getElementById('wjApprover1'),an=document.getElementById('wjApprover2');
-    if(ar&&r)ar.value=r.value||''; if(an&&n)an.value=n.value||'';
-  }
-  document.addEventListener('input',function(e){if(e.target?.id==='wjRank1'||e.target?.id==='wjName1')sync();});
-  const oldShow=window.showDailyFormV390;
-  if(typeof oldShow==='function')window.showDailyFormV390=function(type){const out=oldShow.apply(this,arguments);if(type==='work')setTimeout(sync,0);return out;};
-  setTimeout(sync,300);
-  try{if(typeof applyVersion==='function')applyVersion();}catch(e){}
-})();
-</script>
-<!-- TFMS v44.1 Enterprise UX Pilot: 일상근무일지 A4 출력 및 근무자 연동 개선 -->
+
 
 </body>
 </html>`);
@@ -15486,38 +15455,7 @@ window.printFireRecordV420=async function(){
  Object.assign(frame.style,{position:'fixed',right:'0',bottom:'0',width:'2px',height:'2px',border:'0',opacity:'0.01',zIndex:'2147483647'});document.body.appendChild(frame);
  try{
   const doc=frame.contentDocument||frame.contentWindow.document;doc.open();doc.write(`<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>소방안전관리자 업무 수행 기록표</title><style>@page{size:A4 portrait;margin:0}html,body{margin:0!important;padding:0!important;width:210mm!important;height:297mm!important;background:#fff!important}.fire-original-sheet{position:relative;width:210mm;height:297mm;margin:0;padding:0;overflow:hidden;background:#fff;box-sizing:border-box}.fire-form-bg{position:absolute;inset:0;width:210mm;height:297mm;object-fit:fill;display:block;z-index:0}.fire-overlay{position:absolute;z-index:1;box-sizing:border-box;display:flex;align-items:center;justify-content:center;padding:0 1mm;margin:0;color:#111;font-family:"Malgun Gothic","맑은 고딕",sans-serif;font-size:9px;line-height:1.15;text-align:center;white-space:pre-wrap;word-break:break-word;overflow:hidden}.fire-overlay.left{justify-content:flex-start;align-items:flex-start;text-align:left;padding:1.3mm 1.5mm}.fire-overlay.signature{font-size:8.8px}.fire-overlay.small-value{font-size:8.1px}.fire-overlay.checkmark{padding:0;overflow:visible;font-family:Arial,sans-serif;font-size:12px;font-weight:700;line-height:1}</style></head><body><div class="fire-original-sheet">${preview.innerHTML}</div>
-<style id="tfms-v436-work-journal-fix">
-  .dj-sheet.work-journal-sheet{padding:11mm 13mm!important}
-  .work-journal-page{min-height:273mm;display:flex;flex-direction:column;box-sizing:border-box}
-  .dj-sheet.work-journal-sheet .corp-title{text-align:center!important;font-size:21px!important;letter-spacing:8px!important;margin:0 0 16px!important}
-  .dj-sheet.work-journal-sheet .work-doc-header{font-size:11px;line-height:1.45;margin-bottom:8px}
-  .dj-sheet.work-journal-sheet .doc-title{font-size:24px!important;margin:12px 0 10px!important}
-  .dj-sheet.work-journal-sheet .work-summary-table{margin-top:0}
-  .dj-sheet.work-journal-sheet .work-detail-table{margin-top:10px!important}
-  .dj-sheet.work-journal-sheet .work-detail-table tr{height:25px}
-  .dj-sheet.work-journal-sheet .work-attachments{font-size:11px;line-height:1.55;margin-top:14px}
-  .dj-sheet.work-journal-sheet .work-signature-line{margin-top:auto;border-top:18px solid #ddd;padding-top:12px;font-size:11px;text-align:left;min-height:24px}
-  @media print{
-    .dj-sheet.work-journal-sheet{width:210mm!important;min-height:297mm!important;padding:11mm 13mm!important}
-    .dj-sheet.work-journal-sheet .work-journal-page{min-height:273mm!important}
-  }
-</style>
-<script id="tfms-v436-work-journal-sync">
-(function(){
-  window.TFMS_BUILD=Object.freeze({version:'v44.1',channel:'Enterprise Stable',buildDate:'2026.07.30',title:'일상근무일지 A4 출력 및 근무자 연동 개선'});
-  function sync(){
-    const r=document.getElementById('wjRank1'),n=document.getElementById('wjName1');
-    const ar=document.getElementById('wjApprover1'),an=document.getElementById('wjApprover2');
-    if(ar&&r)ar.value=r.value||''; if(an&&n)an.value=n.value||'';
-  }
-  document.addEventListener('input',function(e){if(e.target?.id==='wjRank1'||e.target?.id==='wjName1')sync();});
-  const oldShow=window.showDailyFormV390;
-  if(typeof oldShow==='function')window.showDailyFormV390=function(type){const out=oldShow.apply(this,arguments);if(type==='work')setTimeout(sync,0);return out;};
-  setTimeout(sync,300);
-  try{if(typeof applyVersion==='function')applyVersion();}catch(e){}
-})();
-</script>
-<!-- TFMS v44.1 Enterprise UX Pilot: 일상근무일지 A4 출력 및 근무자 연동 개선 -->
+
 
 </body></html>`);doc.close();
   await new Promise(r=>{if(doc.readyState==='complete')r();else frame.onload=r;});
@@ -15572,38 +15510,7 @@ function overlays(d){let o='';
  const imp=d.improvement;o+=box(417,1675,230,73,esc(fmtDT(imp.reportDate)),'compact');m=method(imp.method);if(m.length)o+=mark(...m);o+=box(1139,1675,346,73,esc(imp.reportTo),'compact');m=remedy(imp.remedy);if(m.length)o+=mark(...m);return o;}
 window.previewFireRecordV420=function(){try{const sheet=$('firePreviewSheet'),modal=$('firePreviewModal');if(!sheet||!modal)throw new Error('미리보기 영역을 찾지 못했습니다.');sheet.className='fire-original-sheet';sheet.innerHTML=`<img class="fire-form-bg" src="${imgSrc()}" alt="소방안전관리자 업무 수행 기록표">${overlays(data())}`;modal.classList.add('show');modal.scrollTop=0;}catch(e){console.error(e);toast('서식 미리보기 실패: '+(e?.message||e));}};
 window.printFireRecordV420=async function(){try{window.previewFireRecordV420();const preview=$('firePreviewSheet');if(!preview?.innerHTML.trim())throw new Error('인쇄할 서식을 생성하지 못했습니다.');const frame=document.createElement('iframe');frame.setAttribute('aria-hidden','true');Object.assign(frame.style,{position:'fixed',right:'0',bottom:'0',width:'1px',height:'1px',border:'0',opacity:'0',pointerEvents:'none'});document.body.appendChild(frame);const css=`@page{size:A4 portrait;margin:0}*{box-sizing:border-box}html,body{margin:0!important;padding:0!important;width:210mm!important;height:297mm!important;background:#fff!important}.fire-original-sheet{position:relative;width:210mm;height:297mm;margin:0;padding:0;overflow:hidden;background:#fff}.fire-form-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;display:block;z-index:0}.fire-overlay-v430{position:absolute;z-index:2;box-sizing:border-box;display:flex;align-items:center;justify-content:center;padding:0 1.1mm;overflow:hidden;color:#111;font-family:"Malgun Gothic","맑은 고딕",Arial,sans-serif;font-size:9pt;line-height:1.18;font-weight:400;text-align:center;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere}.fire-overlay-v430.left{align-items:flex-start;justify-content:flex-start;text-align:left;padding:1.5mm 1.7mm;font-size:8.5pt;line-height:1.28}.fire-overlay-v430.compact{font-size:8.5pt}.fire-overlay-v430.check{padding:0;font-size:9.5pt;font-weight:700;line-height:1;overflow:hidden}`;const doc=frame.contentDocument||frame.contentWindow.document;doc.open();doc.write(`<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>소방안전관리자 업무 수행 기록표</title><style>${css}</style></head><body>${preview.outerHTML}
-<style id="tfms-v436-work-journal-fix">
-  .dj-sheet.work-journal-sheet{padding:11mm 13mm!important}
-  .work-journal-page{min-height:273mm;display:flex;flex-direction:column;box-sizing:border-box}
-  .dj-sheet.work-journal-sheet .corp-title{text-align:center!important;font-size:21px!important;letter-spacing:8px!important;margin:0 0 16px!important}
-  .dj-sheet.work-journal-sheet .work-doc-header{font-size:11px;line-height:1.45;margin-bottom:8px}
-  .dj-sheet.work-journal-sheet .doc-title{font-size:24px!important;margin:12px 0 10px!important}
-  .dj-sheet.work-journal-sheet .work-summary-table{margin-top:0}
-  .dj-sheet.work-journal-sheet .work-detail-table{margin-top:10px!important}
-  .dj-sheet.work-journal-sheet .work-detail-table tr{height:25px}
-  .dj-sheet.work-journal-sheet .work-attachments{font-size:11px;line-height:1.55;margin-top:14px}
-  .dj-sheet.work-journal-sheet .work-signature-line{margin-top:auto;border-top:18px solid #ddd;padding-top:12px;font-size:11px;text-align:left;min-height:24px}
-  @media print{
-    .dj-sheet.work-journal-sheet{width:210mm!important;min-height:297mm!important;padding:11mm 13mm!important}
-    .dj-sheet.work-journal-sheet .work-journal-page{min-height:273mm!important}
-  }
-</style>
-<script id="tfms-v436-work-journal-sync">
-(function(){
-  window.TFMS_BUILD=Object.freeze({version:'v44.1',channel:'Enterprise Stable',buildDate:'2026.07.30',title:'일상근무일지 A4 출력 및 근무자 연동 개선'});
-  function sync(){
-    const r=document.getElementById('wjRank1'),n=document.getElementById('wjName1');
-    const ar=document.getElementById('wjApprover1'),an=document.getElementById('wjApprover2');
-    if(ar&&r)ar.value=r.value||''; if(an&&n)an.value=n.value||'';
-  }
-  document.addEventListener('input',function(e){if(e.target?.id==='wjRank1'||e.target?.id==='wjName1')sync();});
-  const oldShow=window.showDailyFormV390;
-  if(typeof oldShow==='function')window.showDailyFormV390=function(type){const out=oldShow.apply(this,arguments);if(type==='work')setTimeout(sync,0);return out;};
-  setTimeout(sync,300);
-  try{if(typeof applyVersion==='function')applyVersion();}catch(e){}
-})();
-</script>
-<!-- TFMS v44.1 Enterprise UX Pilot: 일상근무일지 A4 출력 및 근무자 연동 개선 -->
+
 
 </body></html>`);doc.close();await new Promise(r=>setTimeout(r,100));if(doc.fonts?.ready)await doc.fonts.ready;await Promise.all([...doc.images].map(img=>img.complete?Promise.resolve():new Promise(r=>{img.onload=img.onerror=r})));await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));frame.contentWindow.focus();frame.contentWindow.print();setTimeout(()=>frame.remove(),5000);}catch(e){console.error(e);toast('PDF 출력 실패: '+(e?.message||e));}};
 function db(){try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||(typeof sb!=='undefined'?sb:null)}catch(e){return null}}
@@ -15764,7 +15671,7 @@ const oldNav=window.navTo;if(typeof oldNav==='function')window.navTo=function(id
 </style>
 <script id="tfms-v436-work-journal-sync">
 (function(){
-  window.TFMS_BUILD=Object.freeze({version:'v44.1',channel:'Enterprise Stable',buildDate:'2026.07.30',title:'일상근무일지 A4 출력 및 근무자 연동 개선'});
+  window.TFMS_BUILD=Object.freeze({version:'v44.2',channel:'Enterprise UX Pilot',buildDate:'2026.07.30',title:'UX Pilot 인쇄문서 구조 안정화'});
   function sync(){
     const r=document.getElementById('wjRank1'),n=document.getElementById('wjName1');
     const ar=document.getElementById('wjApprover1'),an=document.getElementById('wjApprover2');
@@ -15777,11 +15684,11 @@ const oldNav=window.navTo;if(typeof oldNav==='function')window.navTo=function(id
   try{if(typeof applyVersion==='function')applyVersion();}catch(e){}
 })();
 </script>
-<!-- TFMS v44.1 Enterprise UX Pilot: 일상근무일지 A4 출력 및 근무자 연동 개선 -->
+<!-- TFMS v44.2 Enterprise UX Pilot: 일상근무일지 A4 출력 및 근무자 연동 개선 -->
 
 
 <style id="tfms-v440-ux-style">
-/* v44.1 UX Pilot: 기존 기능은 유지하고 화면 밀도와 통계 탐색만 개선 */
+/* v44.2 UX Pilot: 기존 기능은 유지하고 화면 밀도와 통계 탐색만 개선 */
 .tfms-ux-page{padding-bottom:10px}
 .tfms-ux-title{margin-bottom:10px!important;align-items:center}
 .tfms-stats-badge{margin-left:auto;padding:8px 12px;border:1px solid #bbf7d0;border-radius:999px;background:#f0fdf4;color:#166534;font-size:12px;font-weight:800;white-space:nowrap}
