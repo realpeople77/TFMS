@@ -11568,6 +11568,104 @@ document.addEventListener('DOMContentLoaded',function(){
  #dashboard.tfms-dashboard-v431>.title-row>div:last-child{flex-wrap:wrap;justify-content:flex-end}
 }
 </style>
+
+
+<!-- TFMS v44.11 Enterprise Pilot UX: 브라우저 뒤로가기 내부 메뉴 이력 연동 -->
+<script id="tfms-v4411-browser-history-navigation">
+(()=>{
+  'use strict';
+  window.TFMS_BUILD=Object.freeze({version:'v44.11',channel:'Enterprise Pilot UX',buildDate:'2026.07.31',title:'브라우저 뒤로가기 내부 메뉴 이력 연동'});
+
+  const VALID_PAGES=new Set([
+    'dashboard','today','register','history','stats','excel','dailylog','qrCheck',
+    'equipment','cycle','deleteManage','myPage','accountAdmin','sampleData','finalTest',
+    'fireMonthly','fireExtinguisher'
+  ]);
+  let restoring=false;
+  let installed=false;
+  let currentPage='dashboard';
+
+  function activePage(){
+    const el=document.querySelector('.page.active, main section.active, .content-page.active');
+    return el?.id && VALID_PAGES.has(el.id) ? el.id : currentPage;
+  }
+  function navButton(id){
+    return [...document.querySelectorAll('button.nav, .side-menu button')].find(btn=>{
+      const code=btn.getAttribute('onclick')||'';
+      return code.includes(`showPage('${id}'`)||code.includes(`showPage(\"${id}\"`);
+    })||null;
+  }
+  function updateVersion(){
+    const label='v44.11 Enterprise Pilot UX';
+    const badge=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
+    if(badge)badge.textContent=label;
+    document.querySelectorAll('.logo-title small').forEach(el=>el.textContent=`시설 유지관리 이력관리 시스템 · ${label}`);
+  }
+  function writeHistory(id,replace=false){
+    if(!VALID_PAGES.has(id))return;
+    const state={tfms:true,page:id};
+    const url=`#tfms-${encodeURIComponent(id)}`;
+    try{
+      if(replace)history.replaceState(state,'',url);
+      else if(history.state?.tfms!==true||history.state?.page!==id)history.pushState(state,'',url);
+    }catch(e){console.warn('[TFMS] 메뉴 이력 저장 실패',e);}
+  }
+  function restorePage(id){
+    if(!VALID_PAGES.has(id))id='dashboard';
+    restoring=true;
+    try{
+      const btn=navButton(id);
+      if(typeof window.showPage==='function')window.showPage(id,btn);
+      currentPage=id;
+    }finally{
+      setTimeout(()=>{restoring=false;},0);
+    }
+  }
+  function install(){
+    if(installed||typeof window.showPage!=='function')return;
+    installed=true;
+    const baseShow=window.showPage;
+    window.showPage=function(id,btn){
+      const result=baseShow.apply(this,arguments);
+      if(VALID_PAGES.has(id)){
+        currentPage=id;
+        if(!restoring)writeHistory(id,false);
+      }
+      return result;
+    };
+    if(typeof window.navTo==='function'){
+      const baseNav=window.navTo;
+      window.navTo=function(id){
+        const before=history.state?.page;
+        const result=baseNav.apply(this,arguments);
+        if(VALID_PAGES.has(id)&&!restoring&&before!==id){
+          currentPage=id;
+          writeHistory(id,false);
+        }
+        return result;
+      };
+    }
+
+    window.addEventListener('popstate',event=>{
+      const id=event.state?.tfms ? event.state.page : 'dashboard';
+      restorePage(id);
+    });
+
+    const initial=activePage();
+    currentPage=initial;
+    /* 외부 페이지로 즉시 이탈하지 않도록 TFMS 내부 기준점과 현재 메뉴 항목을 만든다. */
+    try{
+      history.replaceState({tfms:true,page:'dashboard',sentinel:true},'', '#tfms-dashboard');
+      history.pushState({tfms:true,page:initial},'', `#tfms-${encodeURIComponent(initial)}`);
+    }catch(e){console.warn('[TFMS] 초기 메뉴 이력 생성 실패',e);}
+    updateVersion();
+  }
+
+  document.addEventListener('DOMContentLoaded',()=>setTimeout(install,900));
+  if(document.readyState!=='loading')setTimeout(install,900);
+})();
+</script>
+
 </body></html>`);
     win.document.close();
   }
