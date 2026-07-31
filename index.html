@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 
 <html lang="ko">
-<!-- TFMS v36.3 Stable | 삭제관리 승인·삭제 버튼 복구 | 2026-07-20 -->
+<!-- TFMS v44.10 Pilot Stable UX | 삭제관리 승인·삭제 버튼 복구 | 2026-07-20 -->
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>TFMS v36.3 Stable</title>
+<title>TFMS v44.10 Pilot Stable UX</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -439,8 +439,8 @@ nav .nav[onclick*='"qrCheck"']{
 <section class="page active" id="dashboard">
 <div class="patch-note" style="margin-bottom:14px"><strong>v31.10 시설 마스터 반영</strong> · 복지주택팀 관할 시설에 철암목욕탕을 추가하여 유지관리·설비·점검주기·QR·업무일지 시설 목록에 연동했습니다.</div>
 <div class="title-row"><div class="title-left"><div class="title-icon">📊</div><div><h1>대시보드</h1><div class="breadcrumb">홈 › 대시보드</div></div></div><div style="display:flex;gap:10px;align-items:center"><span class="current-scope" id="scopeBadge">체육운영팀 기준</span><div class="live-mark"><span class="live-dot"></span> 실시간 집계</div></div></div>
-<div class="patch-note"><strong>Supabase 연결형</strong> · 화면은 v31 그대로 유지하며, DB 설정 후 시설·설비·점검주기·오늘업무·유지관리 이력을 Supabase에 공동 저장합니다.</div>
-<div class="patch-note" id="dbStatusPanel"><strong>v30 DB 상태</strong> · 화면 로딩 후 현재 데이터 수량을 표시합니다.</div>
+
+
 <div class="change-note"><strong>v31.1 로그인·홈 이동 안정화</strong> · 등록된 계정정보가 일치할 때만 로그인되며, 권한은 계정에 따라 고정 적용됩니다. 공단 CI·TFMS 로고를 누르면 대시보드 홈으로 이동합니다. 단, 조회전용 권한은 기존처럼 숨김 처리하고 삭제는 즉시삭제가 아닌 삭제요청 이력으로 남기는 구조를 유지합니다.</div>
 <div class="panel"><div class="section-title"><span class="dot"></span>관리부서별 현황</div><div class="dept-tabs"><button class="dept-tab active" onclick="filterDeptDash('전체',this)">전체</button><button class="dept-tab" onclick="filterDeptDash('체육운영팀',this)">체육운영팀</button><button class="dept-tab" onclick="filterDeptDash('관광운영팀',this)">관광운영팀</button><button class="dept-tab" onclick="filterDeptDash('복지주택팀',this)">복지주택팀</button><button class="dept-tab" onclick="filterDeptDash('안전·시설운영팀',this)">안전·시설운영팀</button></div><div class="notice" id="deptSummary">전체 시설 기준으로 표시 중입니다.</div></div>
 <div class="guide-box">
@@ -694,7 +694,7 @@ nav .nav[onclick*='"qrCheck"']{
 <section class="page" id="qrCheck">
 <div class="title-row"><div class="title-left"><div class="title-icon">📱</div><div><h1>QR점검</h1><div class="breadcrumb">홈 › QR점검 › 모바일 현장점검</div></div></div></div>
 <div class="panel">
-<div class="section-title"><span class="dot"></span>QR 점검 흐름</div>
+<div class="section-title"><span class="dot"></span>QR 점검 (관리자 준비중)</div>
 <div class="notice">
           설비에 부착된 QR코드를 촬영하면 <b>TFMS 로그인 확인 → 해당 설비카드 자동 이동 → 점검/사진첨부/이력등록</b> 순서로 연결됩니다.
           이미 로그인된 상태라면 바로 설비 점검 화면으로 이동하고, 미로그인 상태라면 로그인 후 원래 설비 화면으로 돌아오게 설계합니다.
@@ -790,7 +790,7 @@ nav .nav[onclick*='"qrCheck"']{
 <div class="test-card"><strong>유지관리 등록</strong><span class="pass">정상</span><p>등록 후 조회·통계 반영</p></div>
 <div class="test-card"><strong>삭제관리</strong><span class="pass">정상</span><p>즉시 삭제가 아닌 요청 방식</p></div>
 <div class="test-card"><strong>설비관리</strong><span class="pass">정상</span><p>설비카드 등록·수정·삭제요청</p></div>
-<div class="test-card"><strong>QR/모바일</strong><span class="warn-text">시제품</span><p>실제 배포 시 URL 연결 필요</p></div>
+
 </div>
 </div>
 <div class="panel">
