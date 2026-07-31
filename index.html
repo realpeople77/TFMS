@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 
 <html lang="ko">
-<!-- TFMS v44.10 Pilot Stable UX | 삭제관리 승인·삭제 버튼 복구 | 2026-07-20 -->
+<!-- TFMS v44.11 Enterprise Pilot UX | 삭제관리 승인·삭제 버튼 복구 | 2026-07-20 -->
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>TFMS v44.10 Pilot Stable UX</title>
+<title>TFMS v44.11 Enterprise Pilot UX</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -11569,100 +11569,104 @@ document.addEventListener('DOMContentLoaded',function(){
 }
 </style>
 
-
-<!-- TFMS v44.11 Enterprise Pilot UX: 브라우저 뒤로가기 내부 메뉴 이력 연동 -->
-<script id="tfms-v4411-browser-history-navigation">
-(()=>{
+<!-- TFMS v44.11: 브라우저 뒤로가기 내부 메뉴 이력 연동 및 최종 버전 표기 정상화 -->
+<script id="tfms-v4411-browser-history-and-version-fix">
+(function(){
   'use strict';
-  window.TFMS_BUILD=Object.freeze({version:'v44.11',channel:'Enterprise Pilot UX',buildDate:'2026.07.31',title:'브라우저 뒤로가기 내부 메뉴 이력 연동'});
 
-  const VALID_PAGES=new Set([
-    'dashboard','today','register','history','stats','excel','dailylog','qrCheck',
-    'equipment','cycle','deleteManage','myPage','accountAdmin','sampleData','finalTest',
-    'fireMonthly','fireExtinguisher'
-  ]);
-  let restoring=false;
-  let installed=false;
-  let currentPage='dashboard';
+  const BUILD = Object.freeze({
+    version: 'v44.11',
+    channel: 'Enterprise Pilot UX',
+    buildDate: '2026.07.31',
+    title: '운영 화면 정리 및 브라우저 내부 메뉴 이력'
+  });
+  window.TFMS_BUILD = BUILD;
 
-  function activePage(){
-    const el=document.querySelector('.page.active, main section.active, .content-page.active');
-    return el?.id && VALID_PAGES.has(el.id) ? el.id : currentPage;
+  let restoringFromHistory = false;
+  let historyReady = false;
+
+  function activePageId(){
+    return document.querySelector('.page.active')?.id || 'dashboard';
   }
-  function navButton(id){
-    return [...document.querySelectorAll('button.nav, .side-menu button')].find(btn=>{
-      const code=btn.getAttribute('onclick')||'';
-      return code.includes(`showPage('${id}'`)||code.includes(`showPage(\"${id}\"`);
-    })||null;
+
+  function navButtonFor(id){
+    return Array.from(document.querySelectorAll('.nav')).find(function(btn){
+      const onclick = btn.getAttribute('onclick') || '';
+      return onclick.includes("'" + id + "'") || onclick.includes('"' + id + '"');
+    }) || null;
   }
-  function updateVersion(){
-    const label='v44.11 Enterprise Pilot UX';
-    const badge=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
-    if(badge)badge.textContent=label;
-    document.querySelectorAll('.logo-title small').forEach(el=>el.textContent=`시설 유지관리 이력관리 시스템 · ${label}`);
+
+  function updateVersionLabels(){
+    document.title = 'TFMS v44.11 Enterprise Pilot UX';
+    const badge = document.getElementById('tfmsVersionBadge') || document.querySelector('.v32-classic-note');
+    if(badge) badge.textContent = BUILD.version + ' ' + BUILD.channel;
+
+    document.querySelectorAll('[data-tfms-version], .tfms-version-text').forEach(function(el){
+      el.textContent = BUILD.version + ' ' + BUILD.channel;
+    });
   }
-  function writeHistory(id,replace=false){
-    if(!VALID_PAGES.has(id))return;
-    const state={tfms:true,page:id};
-    const url=`#tfms-${encodeURIComponent(id)}`;
+
+  function stateFor(pageId, isRoot){
+    return {
+      tfmsInternal: true,
+      tfmsPage: pageId || 'dashboard',
+      tfmsRoot: Boolean(isRoot)
+    };
+  }
+
+  function recordPage(pageId){
+    if(!historyReady || restoringFromHistory || !pageId) return;
+    const current = history.state;
+    if(current && current.tfmsInternal && current.tfmsPage === pageId) return;
+    history.pushState(stateFor(pageId, false), '', '#' + pageId);
+  }
+
+  function restorePage(pageId){
+    const target = document.getElementById(pageId) ? pageId : 'dashboard';
+    restoringFromHistory = true;
     try{
-      if(replace)history.replaceState(state,'',url);
-      else if(history.state?.tfms!==true||history.state?.page!==id)history.pushState(state,'',url);
-    }catch(e){console.warn('[TFMS] 메뉴 이력 저장 실패',e);}
-  }
-  function restorePage(id){
-    if(!VALID_PAGES.has(id))id='dashboard';
-    restoring=true;
-    try{
-      const btn=navButton(id);
-      if(typeof window.showPage==='function')window.showPage(id,btn);
-      currentPage=id;
+      const btn = navButtonFor(target);
+      if(typeof window.showPage === 'function' && btn){
+        window.showPage(target, btn);
+      }else if(typeof window.navTo === 'function'){
+        window.navTo(target);
+      }
     }finally{
-      setTimeout(()=>{restoring=false;},0);
+      window.setTimeout(function(){ restoringFromHistory = false; }, 0);
     }
   }
-  function install(){
-    if(installed||typeof window.showPage!=='function')return;
-    installed=true;
-    const baseShow=window.showPage;
-    window.showPage=function(id,btn){
-      const result=baseShow.apply(this,arguments);
-      if(VALID_PAGES.has(id)){
-        currentPage=id;
-        if(!restoring)writeHistory(id,false);
-      }
+
+  const previousShowPage = window.showPage;
+  if(typeof previousShowPage === 'function'){
+    window.showPage = function(id, btn){
+      const result = previousShowPage.apply(this, arguments);
+      recordPage(id);
       return result;
     };
-    if(typeof window.navTo==='function'){
-      const baseNav=window.navTo;
-      window.navTo=function(id){
-        const before=history.state?.page;
-        const result=baseNav.apply(this,arguments);
-        if(VALID_PAGES.has(id)&&!restoring&&before!==id){
-          currentPage=id;
-          writeHistory(id,false);
-        }
-        return result;
-      };
-    }
-
-    window.addEventListener('popstate',event=>{
-      const id=event.state?.tfms ? event.state.page : 'dashboard';
-      restorePage(id);
-    });
-
-    const initial=activePage();
-    currentPage=initial;
-    /* 외부 페이지로 즉시 이탈하지 않도록 TFMS 내부 기준점과 현재 메뉴 항목을 만든다. */
-    try{
-      history.replaceState({tfms:true,page:'dashboard',sentinel:true},'', '#tfms-dashboard');
-      history.pushState({tfms:true,page:initial},'', `#tfms-${encodeURIComponent(initial)}`);
-    }catch(e){console.warn('[TFMS] 초기 메뉴 이력 생성 실패',e);}
-    updateVersion();
   }
 
-  document.addEventListener('DOMContentLoaded',()=>setTimeout(install,900));
-  if(document.readyState!=='loading')setTimeout(install,900);
+  window.addEventListener('popstate', function(event){
+    const state = event.state;
+    if(!state || !state.tfmsInternal) return;
+
+    restorePage(state.tfmsPage || 'dashboard');
+
+    // The first TFMS entry acts as a guard so one more Back press does not
+    // immediately leave TFMS for the previously visited external website.
+    if(state.tfmsRoot){
+      history.pushState(stateFor(state.tfmsPage || 'dashboard', false), '', '#' + (state.tfmsPage || 'dashboard'));
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded', function(){
+    window.setTimeout(function(){
+      updateVersionLabels();
+      const firstPage = activePageId();
+      history.replaceState(stateFor(firstPage, true), '', '#' + firstPage);
+      history.pushState(stateFor(firstPage, false), '', '#' + firstPage);
+      historyReady = true;
+    }, 700);
+  });
 })();
 </script>
 
