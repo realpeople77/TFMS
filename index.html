@@ -548,6 +548,7 @@ nav .nav[onclick*='"qrCheck"']{
 <label class="upload-zone" for="docInput"><div><strong>문서 첨부</strong><span class="file-btn">파일 선택</span> 또는 드래그<br/><small>견적서, 결과보고, 세금계산서 등</small></div></label>
 <input id="docInput" multiple="" onchange="showDocCount(event)" style="display:none" type="file"/>
 <div class="help" id="docCount" style="margin-top:10px">선택된 문서가 없습니다.</div>
+<div id="docFileListV4417" class="tfms-doc-file-list-v4417" aria-live="polite"></div>
 </div>
 <div class="field"><label>첨부 안내</label><div class="help">· jpg, png, pdf, hwp, xlsx 파일 업로드 가능<br/>· 사진은 썸네일로 즉시 확인<br/>· 첨부자료는 조회 및 엑셀 목록에 반영</div></div>
 <div class="field"><label>경영평가 연계</label><div class="eval"><h4>경영평가 분류</h4><div class="eval-grid"><label><input type="checkbox"/> 예방정비</label><label><input type="checkbox"/> 안전관리</label><label><input type="checkbox"/> 법정점검</label><label><input type="checkbox"/> 시설개선</label><label><input type="checkbox"/> 고객민원</label><label><input type="checkbox"/> 예산절감</label><label><input type="checkbox"/> ESG</label><label><input type="checkbox"/> 경영평가 증빙</label></div></div></div>
@@ -16699,4 +16700,97 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
   [500,1500,3000].forEach(function(ms){setTimeout(init,ms)});
 })();
 </script>
+
+<style id="tfms-v4417-document-remove-style">
+  .tfms-doc-file-list-v4417{display:flex;flex-direction:column;gap:7px;margin-top:9px}
+  .tfms-doc-file-item-v4417{display:flex;align-items:center;gap:9px;min-height:40px;padding:7px 9px 7px 11px;border:1px solid #d8e2f0;border-radius:9px;background:#f8fbff}
+  .tfms-doc-file-icon-v4417{flex:0 0 auto;font-size:18px;line-height:1}
+  .tfms-doc-file-info-v4417{min-width:0;flex:1}
+  .tfms-doc-file-name-v4417{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#0f2748;font-weight:700;font-size:13px}
+  .tfms-doc-file-size-v4417{display:block;margin-top:2px;color:#64748b;font-size:11px}
+  .tfms-doc-remove-v4417{flex:0 0 auto;width:25px;height:25px;min-width:25px;padding:0;border:0;border-radius:50%;background:#dc2626;color:#fff;font-size:17px;font-weight:900;line-height:25px;text-align:center;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.18)}
+  .tfms-doc-remove-v4417:hover{background:#991b1b}
+  label[for="docInput"].upload-zone.tfms-doc-drag-v4417{border-color:#2563eb!important;background:#eff6ff!important}
+</style>
+<script id="tfms-v4417-document-remove-controller">
+(function(){
+  'use strict';
+  var BUILD='v44.17 Enterprise Pilot UX';
+  var state={files:[]};
+  window.tfmsMaintenanceDocumentStateV4417=state;
+  function $(id){return document.getElementById(id)}
+  function toast(msg){try{if(typeof window.showToast==='function')window.showToast(msg)}catch(e){}}
+  function fileKey(f){return [f.name,f.size,f.lastModified].join('|')}
+  function sizeText(bytes){
+    var n=Number(bytes||0);
+    if(n<1024)return n+' B';
+    if(n<1024*1024)return (n/1024).toFixed(n<10240?1:0)+' KB';
+    return (n/(1024*1024)).toFixed(1)+' MB';
+  }
+  function syncInput(){
+    var input=$('docInput'); if(!input)return;
+    try{
+      var dt=new DataTransfer();
+      state.files.forEach(function(file){dt.items.add(file)});
+      input.files=dt.files;
+    }catch(err){console.warn('TFMS v44.17 문서 입력 동기화 실패',err)}
+  }
+  function render(){
+    var count=$('docCount'), list=$('docFileListV4417');
+    if(count)count.textContent=state.files.length?'선택된 문서: '+state.files.length+'개':'선택된 문서가 없습니다.';
+    if(!list){syncInput();return}
+    list.innerHTML='';
+    state.files.forEach(function(file,index){
+      var row=document.createElement('div'); row.className='tfms-doc-file-item-v4417';
+      var icon=document.createElement('span'); icon.className='tfms-doc-file-icon-v4417'; icon.textContent='📄';
+      var info=document.createElement('div'); info.className='tfms-doc-file-info-v4417';
+      var name=document.createElement('span'); name.className='tfms-doc-file-name-v4417'; name.title=file.name; name.textContent=file.name;
+      var size=document.createElement('span'); size.className='tfms-doc-file-size-v4417'; size.textContent=sizeText(file.size);
+      var remove=document.createElement('button'); remove.type='button'; remove.className='tfms-doc-remove-v4417'; remove.textContent='×'; remove.title='이 문서 삭제'; remove.setAttribute('aria-label',file.name+' 삭제');
+      remove.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();removeAt(index)});
+      info.appendChild(name); info.appendChild(size); row.appendChild(icon); row.appendChild(info); row.appendChild(remove); list.appendChild(row);
+    });
+    syncInput();
+  }
+  function addFiles(fileList){
+    var incoming=Array.from(fileList||[]); if(!incoming.length)return;
+    var keys=new Set(state.files.map(fileKey)); var added=0;
+    incoming.forEach(function(file){var key=fileKey(file);if(!keys.has(key)){state.files.push(file);keys.add(key);added++}});
+    render();
+    if(added===0)toast('이미 첨부된 문서입니다.');
+  }
+  function removeAt(index){
+    if(index<0||index>=state.files.length)return;
+    state.files.splice(index,1); render(); toast('첨부 문서를 삭제했습니다.');
+  }
+  function clear(){state.files.length=0;render()}
+  function setup(){
+    var oldInput=$('docInput'), zone=document.querySelector('label[for="docInput"].upload-zone');
+    if(!oldInput||!zone||oldInput.dataset.v4417Ready==='1')return;
+    var input=oldInput.cloneNode(true); input.removeAttribute('onchange'); input.value=''; input.dataset.v4417Ready='1'; oldInput.replaceWith(input);
+    input.addEventListener('change',function(e){addFiles(e.target.files)});
+    ['dragenter','dragover'].forEach(function(type){zone.addEventListener(type,function(e){e.preventDefault();e.stopPropagation();zone.classList.add('tfms-doc-drag-v4417')})});
+    ['dragleave','drop'].forEach(function(type){zone.addEventListener(type,function(e){e.preventDefault();e.stopPropagation();zone.classList.remove('tfms-doc-drag-v4417')})});
+    zone.addEventListener('drop',function(e){addFiles(e.dataTransfer&&e.dataTransfer.files)});
+    render();
+  }
+  window.showDocCount=function(event){addFiles(event&&event.target&&event.target.files)};
+  window.removeMaintenanceDocumentV4417=removeAt;
+  window.clearMaintenanceDocumentsV4417=clear;
+  var oldReset=window.resetRegisterForm;
+  if(typeof oldReset==='function'){
+    window.resetRegisterForm=function(){var result=oldReset.apply(this,arguments);clear();return result};
+  }
+  function applyVersion(){
+    document.title='TFMS '+BUILD;
+    var badge=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note'); if(badge)badge.textContent=BUILD;
+    var title=$('tfmsVersionTitle'); if(title)title.textContent=BUILD;
+    document.querySelectorAll('.logo-title small').forEach(function(el){el.textContent='시설 유지관리 이력관리 시스템 · '+BUILD});
+  }
+  function init(){setup();applyVersion()}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+  [300,1000,2500].forEach(function(ms){setTimeout(init,ms)});
+})();
+</script>
+
 </body></html>
