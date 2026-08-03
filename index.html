@@ -16282,7 +16282,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 </script>
 
 <script id="tfms-v447-version"><!--
-(function(){window.TFMS_BUILD=Object.freeze({version:'v44.13',channel:'Enterprise Pilot UX',buildDate:'2026.07.30',title:'소화기 구역별 일괄등록·QR 라벨 출력'});document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{const b=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');if(b)b.textContent='v44.13 Enterprise Pilot UX';},500)});})();
+(function(){window.TFMS_BUILD=Object.freeze({version:'v44.13',channel:'Enterprise Pilot UX',buildDate:'2026.07.30',title:'소화기 구역별 일괄등록·QR 라벨 출력'});document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{const b=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');if(b)b.textContent='v44.14 Enterprise Pilot UX';},500)});})();
 //--></script>
 
 <!-- TFMS v44.9 Enterprise Stable UX: 설비관리 다이어트 5회차 + 사용자정보 자동연동 보완 -->
@@ -16430,11 +16430,11 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 </script>
 
 
-<!-- TFMS v44.13 Enterprise Pilot UX: 코드 노출 복구 + 설비관리 시설범위 보완 + 내부 뒤로가기 -->
+<!-- TFMS v44.14 Enterprise Pilot UX: 코드 노출 복구 + 설비관리 시설범위 보완 + 내부 뒤로가기 -->
 <script id="tfms-v4413-final-fix">
 (function(){
   'use strict';
-  var BUILD_TEXT='v44.13 Enterprise Pilot UX';
+  var BUILD_TEXT='v44.14 Enterprise Pilot UX';
 
   function byId(id){return document.getElementById(id)}
   function readSession(){
@@ -16541,6 +16541,82 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);
   else init();
+})();
+</script>
+
+
+<!-- TFMS v44.14 Enterprise Pilot UX: 설비관리 시설검색 드롭다운 실제 관할시설 연동 -->
+<script id="tfms-v4414-equipment-facility-search-fix">
+(function(){
+  'use strict';
+  var BUILD_TEXT='v44.14 Enterprise Pilot UX';
+  var syncing=false;
+  function el(id){return document.getElementById(id)}
+  function session(){try{return JSON.parse(sessionStorage.getItem('tfmsSession')||'{}')}catch(e){return {}}}
+  function norm(v){return String(v||'').replace(/\s+/g,'').replace(/[ㆍ·]/g,'').trim()}
+  function isAdminRole(role){return /^(admin|administrator|관리자)$/i.test(String(role||'').trim())}
+  function sourceFacilities(){
+    try{
+      if(typeof facilityMasterStable!=='undefined' && Array.isArray(facilityMasterStable) && facilityMasterStable.length) return facilityMasterStable;
+      if(typeof facilityMaster!=='undefined' && Array.isArray(facilityMaster) && facilityMaster.length) return facilityMaster;
+    }catch(e){}
+    return [];
+  }
+  function allowedNames(){
+    var s=session(), all=sourceFacilities().filter(function(f){return f&&f.name});
+    var role=String(s.role||window.tfmsRole||'').trim();
+    var dept=String(s.dept||window.tfmsUserDept||window.currentUserDept||'').trim();
+    if(isAdminRole(role) || /viewer|조회/i.test(role) || !dept || dept==='전체'){
+      return all.map(function(f){return f.name});
+    }
+    var nd=norm(dept);
+    var mine=all.filter(function(f){return norm(f.dept)===nd});
+    if(!mine.length && s.facility) mine=all.filter(function(f){return norm(f.name)===norm(s.facility)});
+    return mine.map(function(f){return f.name});
+  }
+  function unique(arr){return arr.filter(function(v,i,a){return v&&a.indexOf(v)===i})}
+  function escapeHtml(v){return String(v==null?'':v).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]})}
+  function optionSignature(select){return Array.from(select.options||[]).map(function(o){return o.value}).join('|')}
+  function fill(select,names,allOption){
+    if(!select)return;
+    names=unique(names);
+    var desired=(allOption?['']:[]).concat(names).join('|');
+    if(optionSignature(select)===desired)return;
+    var prev=select.value;
+    syncing=true;
+    select.innerHTML=(allOption?'<option value="">전체 시설</option>':'')+names.map(function(n){return '<option value="'+escapeHtml(n)+'">'+escapeHtml(n)+'</option>'}).join('');
+    if((prev===''&&allOption)||names.indexOf(prev)>=0) select.value=prev;
+    else if(!allOption&&names.length) select.value=names[0];
+    syncing=false;
+  }
+  function sync(){
+    var names=allowedNames();
+    fill(el('tfmsEqFacility'),names,true);
+    fill(el('assetInputFacility'),names,false);
+  }
+  function installObserver(){
+    ['tfmsEqFacility','assetInputFacility'].forEach(function(id){
+      var target=el(id); if(!target||target.dataset.v4414Observed)return;
+      target.dataset.v4414Observed='1';
+      new MutationObserver(function(){if(!syncing)setTimeout(sync,0)}).observe(target,{childList:true});
+    });
+  }
+  function refresh(){sync();installObserver();setTimeout(sync,40);setTimeout(sync,180);}
+  var oldShow=window.showPage;
+  if(typeof oldShow==='function'&&!oldShow.__v4414){
+    window.showPage=function(id){var r=oldShow.apply(this,arguments);if(id==='equipment')setTimeout(refresh,80);return r};
+    window.showPage.__v4414=true;
+  }
+  var oldNav=window.navTo;
+  if(typeof oldNav==='function'&&!oldNav.__v4414){
+    window.navTo=function(id){var r=oldNav.apply(this,arguments);if(id==='equipment')setTimeout(refresh,80);return r};
+    window.navTo.__v4414=true;
+  }
+  document.addEventListener('DOMContentLoaded',function(){
+    document.title='TFMS '+BUILD_TEXT;
+    [300,800,1600,3000].forEach(function(ms){setTimeout(refresh,ms)});
+  });
+  window.tfmsSyncEquipmentFacilityOptionsV4414=refresh;
 })();
 </script>
 </body></html>
