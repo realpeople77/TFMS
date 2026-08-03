@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 
 <html lang="ko">
-<!-- TFMS v44.11 Enterprise Pilot UX | 삭제관리 승인·삭제 버튼 복구 | 2026-07-20 -->
+<!-- TFMS v36.3 Stable | 삭제관리 승인·삭제 버튼 복구 | 2026-07-20 -->
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>TFMS v44.11 Enterprise Pilot UX</title>
+<title>TFMS v36.3 Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -439,8 +439,8 @@ nav .nav[onclick*='"qrCheck"']{
 <section class="page active" id="dashboard">
 <div class="patch-note" style="margin-bottom:14px"><strong>v31.10 시설 마스터 반영</strong> · 복지주택팀 관할 시설에 철암목욕탕을 추가하여 유지관리·설비·점검주기·QR·업무일지 시설 목록에 연동했습니다.</div>
 <div class="title-row"><div class="title-left"><div class="title-icon">📊</div><div><h1>대시보드</h1><div class="breadcrumb">홈 › 대시보드</div></div></div><div style="display:flex;gap:10px;align-items:center"><span class="current-scope" id="scopeBadge">체육운영팀 기준</span><div class="live-mark"><span class="live-dot"></span> 실시간 집계</div></div></div>
-
-
+<div class="patch-note"><strong>Supabase 연결형</strong> · 화면은 v31 그대로 유지하며, DB 설정 후 시설·설비·점검주기·오늘업무·유지관리 이력을 Supabase에 공동 저장합니다.</div>
+<div class="patch-note" id="dbStatusPanel"><strong>v30 DB 상태</strong> · 화면 로딩 후 현재 데이터 수량을 표시합니다.</div>
 <div class="change-note"><strong>v31.1 로그인·홈 이동 안정화</strong> · 등록된 계정정보가 일치할 때만 로그인되며, 권한은 계정에 따라 고정 적용됩니다. 공단 CI·TFMS 로고를 누르면 대시보드 홈으로 이동합니다. 단, 조회전용 권한은 기존처럼 숨김 처리하고 삭제는 즉시삭제가 아닌 삭제요청 이력으로 남기는 구조를 유지합니다.</div>
 <div class="panel"><div class="section-title"><span class="dot"></span>관리부서별 현황</div><div class="dept-tabs"><button class="dept-tab active" onclick="filterDeptDash('전체',this)">전체</button><button class="dept-tab" onclick="filterDeptDash('체육운영팀',this)">체육운영팀</button><button class="dept-tab" onclick="filterDeptDash('관광운영팀',this)">관광운영팀</button><button class="dept-tab" onclick="filterDeptDash('복지주택팀',this)">복지주택팀</button><button class="dept-tab" onclick="filterDeptDash('안전·시설운영팀',this)">안전·시설운영팀</button></div><div class="notice" id="deptSummary">전체 시설 기준으로 표시 중입니다.</div></div>
 <div class="guide-box">
@@ -694,7 +694,7 @@ nav .nav[onclick*='"qrCheck"']{
 <section class="page" id="qrCheck">
 <div class="title-row"><div class="title-left"><div class="title-icon">📱</div><div><h1>QR점검</h1><div class="breadcrumb">홈 › QR점검 › 모바일 현장점검</div></div></div></div>
 <div class="panel">
-<div class="section-title"><span class="dot"></span>QR 점검 (관리자 준비중)</div>
+<div class="section-title"><span class="dot"></span>QR 점검 흐름</div>
 <div class="notice">
           설비에 부착된 QR코드를 촬영하면 <b>TFMS 로그인 확인 → 해당 설비카드 자동 이동 → 점검/사진첨부/이력등록</b> 순서로 연결됩니다.
           이미 로그인된 상태라면 바로 설비 점검 화면으로 이동하고, 미로그인 상태라면 로그인 후 원래 설비 화면으로 돌아오게 설계합니다.
@@ -790,7 +790,7 @@ nav .nav[onclick*='"qrCheck"']{
 <div class="test-card"><strong>유지관리 등록</strong><span class="pass">정상</span><p>등록 후 조회·통계 반영</p></div>
 <div class="test-card"><strong>삭제관리</strong><span class="pass">정상</span><p>즉시 삭제가 아닌 요청 방식</p></div>
 <div class="test-card"><strong>설비관리</strong><span class="pass">정상</span><p>설비카드 등록·수정·삭제요청</p></div>
-
+<div class="test-card"><strong>QR/모바일</strong><span class="warn-text">시제품</span><p>실제 배포 시 URL 연결 필요</p></div>
 </div>
 </div>
 <div class="panel">
@@ -11520,9 +11520,13 @@ document.addEventListener('DOMContentLoaded',function(){
         @page{size:A4 portrait;margin:0}
       </style></head><body>
       <div class="dj-sheet ${esc(sheetClass||'')}">${content}</div>
-      <script>window.onload=function(){setTimeout(function(){window.print()},250)}<\/script>
-      
-
+      </body></html>`);
+    win.document.close();
+    setTimeout(function(){
+      try{win.focus();win.print();}catch(e){}
+    },250);
+  }
+</script>
 
 <!-- TFMS v44.5 Enterprise Stable UX: 대시보드 다이어트 1회차 -->
 <style id="tfms-v445-dashboard-diet">
@@ -11568,112 +11572,7 @@ document.addEventListener('DOMContentLoaded',function(){
  #dashboard.tfms-dashboard-v431>.title-row>div:last-child{flex-wrap:wrap;justify-content:flex-end}
 }
 </style>
-
-<!-- TFMS v44.11: 브라우저 뒤로가기 내부 메뉴 이력 연동 및 최종 버전 표기 정상화 -->
-<script id="tfms-v4411-browser-history-and-version-fix">
-(function(){
-  'use strict';
-
-  const BUILD = Object.freeze({
-    version: 'v44.11',
-    channel: 'Enterprise Pilot UX',
-    buildDate: '2026.07.31',
-    title: '운영 화면 정리 및 브라우저 내부 메뉴 이력'
-  });
-  window.TFMS_BUILD = BUILD;
-
-  let restoringFromHistory = false;
-  let historyReady = false;
-
-  function activePageId(){
-    return document.querySelector('.page.active')?.id || 'dashboard';
-  }
-
-  function navButtonFor(id){
-    return Array.from(document.querySelectorAll('.nav')).find(function(btn){
-      const onclick = btn.getAttribute('onclick') || '';
-      return onclick.includes("'" + id + "'") || onclick.includes('"' + id + '"');
-    }) || null;
-  }
-
-  function updateVersionLabels(){
-    document.title = 'TFMS v44.11 Enterprise Pilot UX';
-    const badge = document.getElementById('tfmsVersionBadge') || document.querySelector('.v32-classic-note');
-    if(badge) badge.textContent = BUILD.version + ' ' + BUILD.channel;
-
-    document.querySelectorAll('[data-tfms-version], .tfms-version-text').forEach(function(el){
-      el.textContent = BUILD.version + ' ' + BUILD.channel;
-    });
-  }
-
-  function stateFor(pageId, isRoot){
-    return {
-      tfmsInternal: true,
-      tfmsPage: pageId || 'dashboard',
-      tfmsRoot: Boolean(isRoot)
-    };
-  }
-
-  function recordPage(pageId){
-    if(!historyReady || restoringFromHistory || !pageId) return;
-    const current = history.state;
-    if(current && current.tfmsInternal && current.tfmsPage === pageId) return;
-    history.pushState(stateFor(pageId, false), '', '#' + pageId);
-  }
-
-  function restorePage(pageId){
-    const target = document.getElementById(pageId) ? pageId : 'dashboard';
-    restoringFromHistory = true;
-    try{
-      const btn = navButtonFor(target);
-      if(typeof window.showPage === 'function' && btn){
-        window.showPage(target, btn);
-      }else if(typeof window.navTo === 'function'){
-        window.navTo(target);
-      }
-    }finally{
-      window.setTimeout(function(){ restoringFromHistory = false; }, 0);
-    }
-  }
-
-  const previousShowPage = window.showPage;
-  if(typeof previousShowPage === 'function'){
-    window.showPage = function(id, btn){
-      const result = previousShowPage.apply(this, arguments);
-      recordPage(id);
-      return result;
-    };
-  }
-
-  window.addEventListener('popstate', function(event){
-    const state = event.state;
-    if(!state || !state.tfmsInternal) return;
-
-    restorePage(state.tfmsPage || 'dashboard');
-
-    // The first TFMS entry acts as a guard so one more Back press does not
-    // immediately leave TFMS for the previously visited external website.
-    if(state.tfmsRoot){
-      history.pushState(stateFor(state.tfmsPage || 'dashboard', false), '', '#' + (state.tfmsPage || 'dashboard'));
-    }
-  });
-
-  document.addEventListener('DOMContentLoaded', function(){
-    window.setTimeout(function(){
-      updateVersionLabels();
-      const firstPage = activePageId();
-      history.replaceState(stateFor(firstPage, true), '', '#' + firstPage);
-      history.pushState(stateFor(firstPage, false), '', '#' + firstPage);
-      historyReady = true;
-    }, 700);
-  });
-})();
-</script>
-
-</body></html>`);
-    win.document.close();
-  }
-
+<script>
   window.printSavedDailyLogV400=function(id){
     const r=savedById(id);if(!r)return;
     const content=getPreviewMarkupForData(r);
@@ -16383,7 +16282,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 </script>
 
 <script id="tfms-v447-version"><!--
-(function(){window.TFMS_BUILD=Object.freeze({version:'v44.7',channel:'Enterprise Stable UX Diet 3',buildDate:'2026.07.30',title:'소화기 구역별 일괄등록·QR 라벨 출력'});document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{const b=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');if(b)b.textContent='v44.7 Enterprise Stable UX Diet 3';},500)});})();
+(function(){window.TFMS_BUILD=Object.freeze({version:'v44.13',channel:'Enterprise Pilot UX',buildDate:'2026.07.30',title:'소화기 구역별 일괄등록·QR 라벨 출력'});document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{const b=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');if(b)b.textContent='v44.13 Enterprise Pilot UX';},500)});})();
 //--></script>
 
 <!-- TFMS v44.9 Enterprise Stable UX: 설비관리 다이어트 5회차 + 사용자정보 자동연동 보완 -->
@@ -16530,4 +16429,118 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 })();
 </script>
 
+
+<!-- TFMS v44.13 Enterprise Pilot UX: 코드 노출 복구 + 설비관리 시설범위 보완 + 내부 뒤로가기 -->
+<script id="tfms-v4413-final-fix">
+(function(){
+  'use strict';
+  var BUILD_TEXT='v44.13 Enterprise Pilot UX';
+
+  function byId(id){return document.getElementById(id)}
+  function readSession(){
+    try{return JSON.parse(sessionStorage.getItem('tfmsSession')||'{}')}catch(e){return {}}
+  }
+  function masterFacilities(){
+    try{
+      if(typeof facilityMasterStable!=='undefined' && Array.isArray(facilityMasterStable)) return facilityMasterStable;
+      if(typeof facilityMaster!=='undefined' && Array.isArray(facilityMaster)) return facilityMaster;
+    }catch(e){}
+    return [];
+  }
+  function normalizedRole(s){return String(s.role||'').toLowerCase()}
+  function permittedFacilities(){
+    var s=readSession();
+    var role=normalizedRole(s);
+    var dept=String(s.dept||'').trim();
+    var all=masterFacilities().filter(function(f){return f&&f.name});
+    if(role==='admin' || role==='viewer' || dept==='전체' || !dept) return all;
+    var mine=all.filter(function(f){return String(f.dept||'').trim()===dept});
+    return mine.length?mine:all.filter(function(f){return String(f.name||'')===String(s.facility||'')});
+  }
+  function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]})}
+  function setOptions(select, names, includeAll){
+    if(!select)return;
+    var prev=select.value;
+    var html=includeAll?'<option value="">전체 시설</option>':'';
+    html+=names.map(function(n){return '<option value="'+esc(n)+'">'+esc(n)+'</option>'}).join('');
+    select.innerHTML=html;
+    if(names.indexOf(prev)>=0 || (includeAll&&prev==='')) select.value=prev;
+    else if(!includeAll && names.length) select.value=names[0];
+  }
+  function syncEquipmentFacilities(){
+    var names=permittedFacilities().map(function(f){return f.name}).filter(function(v,i,a){return a.indexOf(v)===i});
+    setOptions(byId('assetInputFacility'),names,false);
+    setOptions(byId('tfmsEqFacility'),names,true);
+
+    // 사용자 흐름의 시설 목록도 현재 계정 관할 시설 기준으로 다시 구성
+    var list=byId('ufFacilityList');
+    if(list && typeof window.renderUserFlowNavigator==='function'){
+      try{window.renderUserFlowNavigator()}catch(e){}
+    }
+  }
+  window.renderAssetFacilityOptions=function(){syncEquipmentFacilities()};
+
+  function setVersion(){
+    document.title='TFMS '+BUILD_TEXT;
+    var badge=byId('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
+    if(badge)badge.textContent=BUILD_TEXT;
+    var title=byId('tfmsVersionTitle');
+    if(title)title.textContent=BUILD_TEXT;
+  }
+
+  // Browser back/forward follows TFMS pages instead of immediately leaving the site.
+  var restoring=false, ready=false;
+  function currentPage(){
+    var active=document.querySelector('section.page.active');
+    return active&&active.id?active.id:'dashboard';
+  }
+  function state(id,root){return {tfmsInternal:true,page:id||'dashboard',root:!!root}}
+  function openPage(id){
+    restoring=true;
+    try{
+      if(typeof window.showPage==='function') window.showPage(id);
+      else if(typeof window.navTo==='function') window.navTo(id);
+    }finally{setTimeout(function(){restoring=false},0)}
+  }
+  function wrapNavigation(name){
+    var fn=window[name];
+    if(typeof fn!=='function'||fn.__v4413)return;
+    var wrapped=function(id){
+      var result=fn.apply(this,arguments);
+      if(ready&&!restoring&&id){
+        try{history.pushState(state(id,false),'',location.pathname+location.search)}catch(e){}
+      }
+      if(id==='equipment')setTimeout(syncEquipmentFacilities,80);
+      return result;
+    };
+    wrapped.__v4413=true;
+    window[name]=wrapped;
+  }
+  window.addEventListener('popstate',function(ev){
+    var st=ev.state||{};
+    if(st.tfmsInternal){
+      if(st.root){
+        try{history.pushState(state(st.page||'dashboard',false),'',location.pathname+location.search)}catch(e){}
+      }
+      openPage(st.page||'dashboard');
+    }
+  });
+
+  function init(){
+    setVersion();
+    wrapNavigation('showPage');
+    wrapNavigation('navTo');
+    syncEquipmentFacilities();
+    var first=currentPage();
+    try{
+      history.replaceState(state(first,true),'',location.pathname+location.search);
+      history.pushState(state(first,false),'',location.pathname+location.search);
+    }catch(e){}
+    ready=true;
+    [300,900,1800,3500].forEach(function(ms){setTimeout(function(){setVersion();syncEquipmentFacilities();wrapNavigation('showPage');wrapNavigation('navTo')},ms)});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);
+  else init();
+})();
+</script>
 </body></html>
