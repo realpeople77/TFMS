@@ -16574,4 +16574,129 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 </script>
 
 
+
+<style id="tfms-v4416-export-preview-style">
+#excel .export-preview-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:14px 0 16px}
+#excel .export-summary-card{border:1px solid #dbe5f3;background:#f8fbff;border-radius:12px;padding:14px 16px}
+#excel .export-summary-card span{display:block;color:#64748b;font-size:13px;margin-bottom:5px}
+#excel .export-summary-card strong{font-size:20px;color:#0f172a}
+#excel .export-preview-wrap{overflow-x:auto;border:1px solid #e2e8f0;border-radius:12px}
+#excel .export-preview-table{width:100%;min-width:1040px;border-collapse:collapse;table-layout:fixed}
+#excel .export-preview-table th{background:#f5f8fc;color:#334155;font-size:13px;padding:12px 10px;border-bottom:1px solid #dbe3ee;text-align:center;white-space:nowrap}
+#excel .export-preview-table td{padding:12px 10px;border-bottom:1px solid #edf1f6;font-size:13px;vertical-align:middle;text-align:center;line-height:1.45}
+#excel .export-preview-table tbody tr{cursor:pointer;transition:background .15s ease}
+#excel .export-preview-table tbody tr:hover{background:#f8fbff}
+#excel .export-preview-table .text-cell{text-align:left}
+#excel .export-preview-table .ellipsis{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word}
+#excel .export-preview-table .status-chip{display:inline-flex;align-items:center;justify-content:center;min-width:62px;padding:4px 9px;border-radius:999px;background:#eef4ff;color:#185abc;font-weight:700;font-size:12px}
+#excel .export-preview-table .detail-btn{border:1px solid #b9cff3;background:#fff;color:#1456b8;border-radius:8px;padding:6px 10px;font-weight:700;cursor:pointer}
+#excel .export-preview-hint{font-size:12px;color:#64748b;margin:8px 2px 0;text-align:right}
+#tfmsExportDetailModal{position:fixed;inset:0;z-index:99999;background:rgba(15,23,42,.48);display:none;align-items:center;justify-content:center;padding:24px}
+#tfmsExportDetailModal.show{display:flex}
+#tfmsExportDetailModal .detail-card{width:min(820px,96vw);max-height:88vh;overflow:auto;background:#fff;border-radius:16px;box-shadow:0 24px 70px rgba(15,23,42,.28)}
+#tfmsExportDetailModal .detail-head{position:sticky;top:0;background:#fff;border-bottom:1px solid #e5eaf1;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;z-index:1}
+#tfmsExportDetailModal .detail-head h3{margin:0;font-size:20px}
+#tfmsExportDetailModal .detail-close{border:0;background:#eef2f7;border-radius:8px;width:34px;height:34px;font-size:21px;cursor:pointer}
+#tfmsExportDetailModal .detail-body{padding:20px 22px 24px}
+#tfmsExportDetailModal .detail-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+#tfmsExportDetailModal .detail-meta span{background:#f1f5f9;border-radius:999px;padding:6px 10px;font-size:12px;color:#334155}
+#tfmsExportDetailModal .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+#tfmsExportDetailModal .detail-block{border:1px solid #e2e8f0;border-radius:10px;padding:13px 14px;background:#fff}
+#tfmsExportDetailModal .detail-block.wide{grid-column:1/-1}
+#tfmsExportDetailModal .detail-block b{display:block;font-size:12px;color:#64748b;margin-bottom:6px}
+#tfmsExportDetailModal .detail-block div{white-space:pre-wrap;word-break:break-word;line-height:1.55;color:#0f172a}
+@media(max-width:800px){#excel .export-preview-summary{grid-template-columns:repeat(2,minmax(0,1fr))}#tfmsExportDetailModal .detail-grid{grid-template-columns:1fr}}
+</style>
+<script id="tfms-v4416-export-preview-controller">
+(function(){
+  'use strict';
+  var BUILD='v44.16 Enterprise Pilot UX';
+  function $(id){return document.getElementById(id)}
+  function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]})}
+  function val(id,fallback){var el=$(id);return el?el.value:(fallback||'')}
+  function rows(){return Array.isArray(window.tfmsExportRecordsV371)?window.tfmsExportRecordsV371:[]}
+  function filtered(){
+    var list=rows().slice();
+    var year=val('exportYear');
+    var fac=val('exportFacility','전체 시설');
+    var type=val('exportType','전체 유지관리대장');
+    if(year)list=list.filter(function(r){return String(r.date||r.rawDate||'').slice(0,4)===String(year)});
+    if(fac&&fac!=='전체 시설')list=list.filter(function(r){return (r.facility||r.facility_name)===fac});
+    if(type==='보수·교체 이력대장')list=list.filter(function(r){return ['보수','교체'].some(function(k){return String(r.type||'').indexOf(k)>-1})});
+    if(type==='정기점검 이행현황')list=list.filter(function(r){return String(r.type||'').indexOf('점검')>-1});
+    if(type==='미조치·진행중 관리대장')list=list.filter(function(r){return !['조치완료','완료'].includes(String(r.status||''))});
+    if(type==='예산집행 현황')list=list.filter(function(r){return Number(r.amount||0)>0});
+    if(type==='사진·증빙자료 목록')list=list.filter(function(r){return Number(r.evidenceCount||r.evidence_count||0)>0});
+    if(type==='LCC·중장기 반영 검토자료')list=list.filter(function(r){var t=[r.status,r.budget,r.eval].join(' ');return /미조치|검토|LCC|중장기/.test(t)});
+    if(type==='경영평가 제출용 요약자료')list=list.filter(function(r){return /경영평가|안전관리|예방정비|법정점검/.test(String(r.eval||''))});
+    return list.sort(function(a,b){return String(b.date||'').localeCompare(String(a.date||''))});
+  }
+  function ensureLayout(){
+    var body=$('exportBody'),head=$('exportHead');
+    if(!body||!head)return;
+    var table=body.closest('table');
+    if(!table)return;
+    table.className='export-preview-table';
+    if(!table.parentElement.classList.contains('export-preview-wrap')){
+      var wrap=document.createElement('div');wrap.className='export-preview-wrap';table.parentNode.insertBefore(wrap,table);wrap.appendChild(table);
+    }
+    var panel=table.closest('.panel');
+    if(panel&&!panel.querySelector('.export-preview-summary')){
+      var summary=document.createElement('div');summary.className='export-preview-summary';summary.id='exportPreviewSummary';
+      table.parentElement.parentNode.insertBefore(summary,table.parentElement);
+      var hint=document.createElement('div');hint.className='export-preview-hint';hint.textContent='행 또는 상세보기를 누르면 전체 내용을 확인할 수 있습니다.';table.parentElement.insertAdjacentElement('afterend',hint);
+    }
+    if(!$('tfmsExportDetailModal')){
+      var modal=document.createElement('div');modal.id='tfmsExportDetailModal';modal.innerHTML='<div class="detail-card" role="dialog" aria-modal="true"><div class="detail-head"><h3 id="tfmsExportDetailTitle">유지관리 상세정보</h3><button class="detail-close" type="button" aria-label="닫기">×</button></div><div class="detail-body" id="tfmsExportDetailBody"></div></div>';
+      document.body.appendChild(modal);
+      modal.addEventListener('click',function(e){if(e.target===modal||e.target.closest('.detail-close'))modal.classList.remove('show')});
+    }
+  }
+  function renderSummary(list){
+    var el=$('exportPreviewSummary');if(!el)return;
+    var total=list.reduce(function(s,r){return s+Number(r.amount||0)},0);
+    var evidence=list.reduce(function(s,r){return s+Number(r.evidenceCount||r.evidence_count||0)},0);
+    var completed=list.filter(function(r){return /완료|정상/.test(String(r.status||r.actionResult||r.action_result||''))}).length;
+    el.innerHTML='<div class="export-summary-card"><span>조회 건수</span><strong>'+list.length.toLocaleString('ko-KR')+'건</strong></div>'+
+      '<div class="export-summary-card"><span>총 금액</span><strong>'+total.toLocaleString('ko-KR')+'원</strong></div>'+
+      '<div class="export-summary-card"><span>증빙자료</span><strong>'+evidence.toLocaleString('ko-KR')+'개</strong></div>'+
+      '<div class="export-summary-card"><span>완료·정상</span><strong>'+completed.toLocaleString('ko-KR')+'건</strong></div>';
+  }
+  function detail(r,index){
+    var modal=$('tfmsExportDetailModal'),body=$('tfmsExportDetailBody'),title=$('tfmsExportDetailTitle');if(!modal||!body)return;
+    title.textContent=(r.facility||r.facility_name||'시설 미지정')+' · '+(r.asset||r.asset_name||'설비 미지정');
+    function block(label,value,wide){return '<div class="detail-block '+(wide?'wide':'')+'"><b>'+label+'</b><div>'+(esc(value)||'-')+'</div></div>'}
+    body.innerHTML='<div class="detail-meta"><span>관리번호 '+esc(r.no||index+1)+'</span><span>'+esc(r.date||r.rawDate||'-')+'</span><span>'+esc(r.dept||r.department_name||'-')+'</span><span>'+esc(r.type||r.maintenance_type||'-')+'</span><span>'+esc(r.status||r.process_status||'-')+'</span></div><div class="detail-grid">'+
+      block('내용',r.detail,true)+block('조치내용',r.actionDetail||r.action_detail,true)+block('조치결과',r.actionResult||r.action_result,false)+block('향후계획',r.futurePlan||r.future_plan,true)+block('세부분야',r.subfield,false)+block('우선순위',r.priority,false)+block('진행구분',r.progress||r.progress_type,false)+block('예산과목',r.budget||r.budget_account,false)+block('금액',Number(r.amount||0).toLocaleString('ko-KR')+'원',false)+block('증빙자료',(r.evidenceCount||r.evidence_count||0)+'개',false)+block('경영평가 연계',r.eval||'-',true)+'</div>';
+    modal.classList.add('show');
+  }
+  window.openExportPreviewDetailV4416=function(index){var list=filtered();if(list[index])detail(list[index],index)};
+  function render(){
+    ensureLayout();var list=filtered();renderSummary(list);
+    var head=$('exportHead'),body=$('exportBody');if(!head||!body)return;
+    head.innerHTML='<tr><th style="width:72px">관리번호</th><th style="width:95px">등록일</th><th style="width:145px">시설명</th><th style="width:115px">설비</th><th style="width:90px">유형</th><th style="width:90px">처리상태</th><th>내용</th><th style="width:84px">상세</th></tr>';
+    if(!list.length){body.innerHTML='<tr><td colspan="8"><div class="empty-state">선택한 조건에 해당하는 자료가 없습니다.</div></td></tr>';return}
+    body.innerHTML=list.slice(0,100).map(function(r,i){
+      return '<tr onclick="openExportPreviewDetailV4416('+i+')"><td>'+(esc(r.no||i+1))+'</td><td>'+esc(r.date||r.rawDate||'')+'</td><td>'+esc(r.facility||r.facility_name||'')+'</td><td>'+esc(r.asset||r.asset_name||'')+'</td><td>'+esc(r.type||r.maintenance_type||'')+'</td><td><span class="status-chip">'+esc(r.status||r.process_status||'-')+'</span></td><td class="text-cell"><div class="ellipsis" title="'+esc(r.detail||'')+'">'+esc(r.detail||'-')+'</div></td><td><button class="detail-btn" type="button" onclick="event.stopPropagation();openExportPreviewDetailV4416('+i+')">보기</button></td></tr>';
+    }).join('');
+  }
+  var previous=window.renderExportPreview;
+  window.renderExportPreview=async function(){
+    try{
+      if(typeof window.loadExportRecordsV371==='function')await window.loadExportRecordsV371();
+      render();
+    }catch(e){console.error('TFMS v44.16 export preview error',e);if(typeof previous==='function')return previous.apply(this,arguments)}
+  };
+  function init(){
+    document.title='TFMS '+BUILD;
+    var badge=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');if(badge)badge.textContent=BUILD;
+    var title=$('tfmsVersionTitle');if(title)title.textContent=BUILD;
+    ensureLayout();
+    ['exportType','exportYear','exportFacility','exportInclude'].forEach(function(id){var el=$(id);if(el&&!el.__v4416){el.addEventListener('change',function(){setTimeout(render,0)});el.__v4416=true}});
+    if(document.querySelector('#excel.active'))setTimeout(function(){window.renderExportPreview()},100);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+  [500,1500,3000].forEach(function(ms){setTimeout(init,ms)});
+})();
+</script>
 </body></html>
