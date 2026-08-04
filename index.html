@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>TFMS v45.1 Enterprise UX</title>
+<title>TFMS v44.20 Enterprise UX Preview</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -364,7 +364,7 @@ body{background:var(--tfms-bg)!important;color:var(--tfms-text)}
 /* application header */
 #appHeader{position:sticky;top:0;z-index:1000;background:var(--tfms-navy)!important;box-shadow:0 7px 24px rgba(4,34,75,.2)}
 #appHeader .top{height:80px!important;background:linear-gradient(90deg,#062b63,#073a77)!important;padding:0 24px!important;border:0!important}
-#appHeader .logo{min-width:0;gap:18px}.logo img{width:250px!important;max-height:54px!important;object-fit:contain;background:#fff;padding:9px 13px;border-radius:8px}.logo-title b{font-size:27px!important;color:#fff!important}.logo-title small{color:#bcd2eb!important}.logo-title:after{content:'v45.1 Enterprise UX';display:inline-block;margin-left:12px;padding:6px 11px;border:1px solid rgba(80,230,220,.45);border-radius:999px;color:#d6fffa;background:rgba(15,163,163,.17);font-size:12px;font-weight:800;vertical-align:middle}
+#appHeader .logo{min-width:0;gap:18px}.logo img{width:250px!important;max-height:54px!important;object-fit:contain;background:#fff;padding:9px 13px;border-radius:8px}.logo-title b{font-size:27px!important;color:#fff!important}.logo-title small{color:#bcd2eb!important}.logo-title:after{content:'v44.20 Enterprise UX Preview';display:inline-block;margin-left:12px;padding:6px 11px;border:1px solid rgba(80,230,220,.45);border-radius:999px;color:#d6fffa;background:rgba(15,163,163,.17);font-size:12px;font-weight:800;vertical-align:middle}
 #appHeader .user{color:#fff!important}.logout{background:#fff!important;color:#07366f!important}
 #appHeader nav{position:fixed!important;left:0;top:80px;bottom:0;width:245px;height:auto!important;display:flex!important;flex-direction:column;align-items:stretch!important;gap:4px!important;padding:18px 12px 100px!important;background:linear-gradient(180deg,#07366f 0%,#032653 100%)!important;overflow-y:auto!important;box-shadow:8px 0 28px rgba(4,37,80,.12);z-index:990}
 #appHeader .nav{position:relative;text-align:left!important;padding:13px 15px 13px 46px!important;border:0!important;border-radius:9px!important;color:#eaf3ff!important;font-size:14px!important;min-height:46px}.nav:hover,.nav.active{background:linear-gradient(90deg,#0f9ca8,#0c7ca5)!important;color:#fff!important;box-shadow:0 8px 18px rgba(12,132,156,.22)}.nav .tfms-nav-ico{position:absolute;left:15px;top:50%;transform:translateY(-50%);font-size:19px;width:22px;text-align:center}
@@ -386,8 +386,8 @@ body{background:var(--tfms-bg)!important;color:var(--tfms-text)}
 @media(max-width:760px){#appHeader .top{height:68px!important;padding:0 12px!important}.logo img{width:145px!important}.logo-title small,.logo-title:after{display:none!important}#appHeader nav{position:static!important;width:100%;height:54px!important;flex-direction:row!important;padding:0 8px!important;overflow-x:auto!important}.nav{min-width:max-content!important;padding:15px 14px!important}.nav .tfms-nav-ico{display:none}#appLayout.layout{padding:15px!important}#tfmsBrandFooter{margin-left:0}#dashboard>.stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}.stat{padding-left:66px!important}}
 </style>
 
-<style id="tfmsV451DashboardStyle">
-/* v45.1 dashboard-only renewal */
+<style id="tfmsV4420DashboardStyle">
+/* v44.20 dashboard-only renewal */
 #appHeader .top .logo img{width:245px!important;max-height:52px!important;object-fit:contain!important;background:#fff!important;padding:7px 12px!important;border-radius:9px!important}
 #appHeader .top .logo{gap:18px!important}.logo-title{font-size:25px!important}.logo-title small{margin-top:4px!important;opacity:.78}
 .tfms-corp-logo img{width:min(355px,36vw)!important}
@@ -11622,8 +11622,8 @@ document.addEventListener('DOMContentLoaded',function(){
   if(typeof old==='function')window.renderDashboardData=function(){const r=old.apply(this,arguments);setTimeout(window.renderBrandDashboardV451,0);return r};
   document.addEventListener('DOMContentLoaded',()=>setTimeout(window.renderBrandDashboardV451,300));
   setTimeout(window.renderBrandDashboardV451,1000);
-  const badge=document.getElementById('tfmsVersionBadge');if(badge)badge.textContent='v45.1 Enterprise UX';
-  document.title='TFMS v45.1 Enterprise UX';
+  const badge=document.getElementById('tfmsVersionBadge');if(badge)badge.textContent='v44.20 Enterprise UX Preview';
+  document.title='TFMS v44.20 Enterprise UX Preview';
 })();
 </script>
 </body></html>`);
@@ -16375,7 +16375,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 })();
 </script>
 <script id="tfms-v447-version"><!--
-(function(){window.TFMS_BUILD=Object.freeze({version:'v44.15',channel:'Enterprise Pilot UX',buildDate:'2026.07.30',title:'소화기 구역별 일괄등록·QR 라벨 출력'});document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{const b=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');if(b)b.textContent='v44.15 Enterprise Pilot UX';},500)});})();
+(function(){window.TFMS_BUILD=Object.freeze({version:'v44.20',channel:'Enterprise UX Preview',buildDate:'2026.07.30',title:'소화기 구역별 일괄등록·QR 라벨 출력'});document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{const b=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');if(b)b.textContent='v44.20 Enterprise UX Preview';},500)});})();
 //--></script>
 <!-- TFMS v44.9 Enterprise Stable UX: 설비관리 다이어트 5회차 + 사용자정보 자동연동 보완 -->
 <style id="tfms-v449-equipment-diet">
@@ -16545,11 +16545,11 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
  document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{setup();applyProfileAuto();},500));
 })();
 </script>
- TFMS v45.1 Enterprise UX
+ TFMS v44.20 Enterprise UX Preview
 <script id="tfms-v4413-final-fix">
 (function(){
   'use strict';
-  var BUILD_TEXT='v44.15 Enterprise Pilot UX';
+  var BUILD_TEXT='v44.20 Enterprise UX Preview';
 
   function byId(id){return document.getElementById(id)}
   function readSession(){
@@ -16697,7 +16697,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 <script id="tfms-v4416-export-preview-controller">
 (function(){
   'use strict';
-  var BUILD='v45.2 Enterprise UX';
+  var BUILD='v44.20 Enterprise UX Preview';
   function $(id){return document.getElementById(id)}
   function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]})}
   function val(id,fallback){var el=$(id);return el?el.value:(fallback||'')}
@@ -16806,8 +16806,8 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 })();
 </script>
 
-<style id="tfms-v452-header-dashboard-refinement">
-/* TFMS v45.2 - header contrast + one-screen dashboard refinement */
+<style id="tfms-v4420-header-dashboard-refinement">
+/* TFMS v44.20 - header contrast + one-screen dashboard refinement */
 #appHeader .top{height:76px!important;padding:0 20px!important}
 #appHeader .top .logo{display:flex!important;align-items:center!important;gap:16px!important;min-width:560px!important}
 #appHeader .top .logo img{width:270px!important;height:48px!important;max-height:48px!important;padding:7px 14px!important;object-fit:contain!important}
@@ -16873,10 +16873,10 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
  #dashboard.v451-renewed .v451-dashboard-grid{grid-template-rows:auto!important}
 }
 </style>
-<script id="tfms-v452-header-dashboard-controller">
+<script id="tfms-v4420-header-dashboard-controller">
 (function(){
  'use strict';
- var BUILD='v45.2 Enterprise UX';
+ var BUILD='v44.20 Enterprise UX Preview';
  function cleanStrayBuildText(){
    var walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
    var remove=[];
@@ -16907,6 +16907,22 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
  function apply(){cleanStrayBuildText();refineHeader()}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
  [150,500,1200,2500].forEach(function(ms){setTimeout(apply,ms)});
+})();
+</script>
+
+<script id="tfms-v4420-version-normalizer">
+(function(){
+  'use strict';
+  const BUILD='v44.20 Enterprise UX Preview';
+  function apply(){
+    document.title='TFMS '+BUILD;
+    const badge=document.getElementById('tfmsVersionBadge') || document.querySelector('.v32-classic-note');
+    if(badge) badge.textContent=BUILD;
+    document.querySelectorAll('.logo-title').forEach(function(el){
+      el.querySelectorAll('.tfms-extra-version').forEach(function(n){n.remove();});
+    });
+  }
+  document.addEventListener('DOMContentLoaded',function(){setTimeout(apply,50);setTimeout(apply,800);});
 })();
 </script>
 </body></html>
