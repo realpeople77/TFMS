@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>TFMS v45.0 Enterprise UX</title>
+<title>TFMS v45.1 Enterprise UX</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -364,7 +364,7 @@ body{background:var(--tfms-bg)!important;color:var(--tfms-text)}
 /* application header */
 #appHeader{position:sticky;top:0;z-index:1000;background:var(--tfms-navy)!important;box-shadow:0 7px 24px rgba(4,34,75,.2)}
 #appHeader .top{height:80px!important;background:linear-gradient(90deg,#062b63,#073a77)!important;padding:0 24px!important;border:0!important}
-#appHeader .logo{min-width:0;gap:18px}.logo img{width:250px!important;max-height:54px!important;object-fit:contain;background:#fff;padding:9px 13px;border-radius:8px}.logo-title b{font-size:27px!important;color:#fff!important}.logo-title small{color:#bcd2eb!important}.logo-title:after{content:'v45.0 Enterprise UX';display:inline-block;margin-left:12px;padding:6px 11px;border:1px solid rgba(80,230,220,.45);border-radius:999px;color:#d6fffa;background:rgba(15,163,163,.17);font-size:12px;font-weight:800;vertical-align:middle}
+#appHeader .logo{min-width:0;gap:18px}.logo img{width:250px!important;max-height:54px!important;object-fit:contain;background:#fff;padding:9px 13px;border-radius:8px}.logo-title b{font-size:27px!important;color:#fff!important}.logo-title small{color:#bcd2eb!important}.logo-title:after{content:'v45.1 Enterprise UX';display:inline-block;margin-left:12px;padding:6px 11px;border:1px solid rgba(80,230,220,.45);border-radius:999px;color:#d6fffa;background:rgba(15,163,163,.17);font-size:12px;font-weight:800;vertical-align:middle}
 #appHeader .user{color:#fff!important}.logout{background:#fff!important;color:#07366f!important}
 #appHeader nav{position:fixed!important;left:0;top:80px;bottom:0;width:245px;height:auto!important;display:flex!important;flex-direction:column;align-items:stretch!important;gap:4px!important;padding:18px 12px 100px!important;background:linear-gradient(180deg,#07366f 0%,#032653 100%)!important;overflow-y:auto!important;box-shadow:8px 0 28px rgba(4,37,80,.12);z-index:990}
 #appHeader .nav{position:relative;text-align:left!important;padding:13px 15px 13px 46px!important;border:0!important;border-radius:9px!important;color:#eaf3ff!important;font-size:14px!important;min-height:46px}.nav:hover,.nav.active{background:linear-gradient(90deg,#0f9ca8,#0c7ca5)!important;color:#fff!important;box-shadow:0 8px 18px rgba(12,132,156,.22)}.nav .tfms-nav-ico{position:absolute;left:15px;top:50%;transform:translateY(-50%);font-size:19px;width:22px;text-align:center}
@@ -384,6 +384,22 @@ body{background:var(--tfms-bg)!important;color:var(--tfms-text)}
 #tfmsBrandFooter{margin-left:245px;padding:16px 24px;text-align:center;background:#062b63;color:#bfd0e4;font-size:12px}
 @media(max-width:1050px){#loginScreen.login-screen{grid-template-columns:1fr}.tfms-login-brand{display:none}#loginScreen .tfms-login-card{width:min(470px,92%)}#appHeader nav{width:210px}#appLayout.layout{padding-left:228px!important}#tfmsBrandFooter{margin-left:210px}#dashboard{grid-template-columns:1fr!important}#dashboard>*{grid-column:1!important}.logo img{width:190px!important}}
 @media(max-width:760px){#appHeader .top{height:68px!important;padding:0 12px!important}.logo img{width:145px!important}.logo-title small,.logo-title:after{display:none!important}#appHeader nav{position:static!important;width:100%;height:54px!important;flex-direction:row!important;padding:0 8px!important;overflow-x:auto!important}.nav{min-width:max-content!important;padding:15px 14px!important}.nav .tfms-nav-ico{display:none}#appLayout.layout{padding:15px!important}#tfmsBrandFooter{margin-left:0}#dashboard>.stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}.stat{padding-left:66px!important}}
+</style>
+
+<style id="tfmsV451DashboardStyle">
+/* v45.1 dashboard-only renewal */
+#appHeader .top .logo img{width:245px!important;max-height:52px!important;object-fit:contain!important;background:#fff!important;padding:7px 12px!important;border-radius:9px!important}
+#appHeader .top .logo{gap:18px!important}.logo-title{font-size:25px!important}.logo-title small{margin-top:4px!important;opacity:.78}
+.tfms-corp-logo img{width:min(355px,36vw)!important}
+#appLayout.layout{background:#f4f7fb!important}
+#dashboard.tfms-dashboard-v451{display:block!important;max-width:1700px;margin:0 auto;padding:0!important;color:#10233f}
+#dashboard.tfms-dashboard-v451>*{grid-column:auto!important;order:initial!important}
+.v451-dash-head{display:flex;align-items:center;justify-content:space-between;margin:0 0 18px;padding:2px 2px 0}.v451-dash-head h1{font-size:28px;margin:0 0 5px;color:#10233f}.v451-dash-head p{margin:0;color:#718098;font-size:14px}.v451-dash-tools{display:flex;align-items:center;gap:10px}.v451-tool-btn{border:1px solid #cbd8e9;background:#fff;color:#1454a4;border-radius:9px;padding:10px 14px;font-weight:800;cursor:pointer}
+.v451-kpi-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;margin-bottom:14px}.v451-kpi{display:flex;align-items:center;gap:13px;min-height:126px;padding:18px 15px;border:1px solid #dde6f1;background:#fff;border-radius:14px;text-align:left;box-shadow:0 5px 14px rgba(15,45,85,.045);cursor:pointer;transition:.16s}.v451-kpi:hover{transform:translateY(-2px);box-shadow:0 9px 22px rgba(15,45,85,.09)}.v451-kpi>span:last-child{display:flex;flex-direction:column;min-width:0}.v451-kpi b{font-size:14px;color:#25344a;white-space:nowrap}.v451-kpi strong{font-size:26px;line-height:1.2;margin:7px 0 3px;color:#10233f}.v451-kpi small{font-size:12px;color:#8693a7}.v451-kpi-icon{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;flex:0 0 48px;font-size:22px;font-weight:900}.v451-kpi-icon.blue{background:#edf4ff;color:#1764c4}.v451-kpi-icon.mint{background:#eaf9f6;color:#0a8b78}.v451-kpi-icon.green{background:#eaf9f4;color:#0b9e7a}.v451-kpi-icon.purple{background:#f4efff;color:#7d4ce0}.v451-kpi-icon.orange{background:#fff4e8;color:#ec7812}.v451-kpi-icon.red{background:#fff0ef;color:#df4d45}
+.v451-dashboard-grid{display:grid;grid-template-columns:1.05fr 1.35fr 1fr;gap:14px;align-items:start}.v451-card{background:#fff;border:1px solid #dde6f1;border-radius:14px;box-shadow:0 5px 14px rgba(15,45,85,.045);overflow:hidden}.v451-card-head{display:flex;align-items:center;justify-content:space-between;padding:17px 18px 12px}.v451-card-head h2{font-size:17px;margin:0;color:#172b49}.v451-card-head button{border:0;background:transparent;color:#1763bd;font-weight:800;font-size:12px;cursor:pointer}.v451-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#10a8a8;margin-right:8px}.v451-facility-card{grid-column:1;grid-row:1}.v451-today-card{grid-column:2;grid-row:1}.v451-recent-card{grid-column:3;grid-row:1 / span 2}.v451-status-card{grid-column:1;grid-row:2}.v451-daily-card{grid-column:2;grid-row:2}.v451-workflow-card{grid-column:1 / span 2;grid-row:3}.v451-facility-content{display:flex;align-items:center;gap:22px;padding:5px 20px 22px}.v451-donut{width:185px;height:185px;border-radius:50%;background:conic-gradient(#1e67c7 0 30%,#0aa7b5 30% 60%,#38b58e 60% 85%,#a8b3c4 85% 100%);position:relative;display:grid;place-items:center;flex:0 0 185px}.v451-donut:after{content:"";position:absolute;inset:34px;border-radius:50%;background:#fff}.v451-donut>div{position:relative;z-index:1;text-align:center}.v451-donut small{display:block;color:#66768e}.v451-donut strong{display:block;font-size:28px;color:#102c55;margin-top:4px}.v451-legend{display:grid;gap:12px;min-width:135px}.v451-legend div{display:flex;align-items:center;gap:9px;color:#52627a;font-size:13px}.v451-legend i{width:10px;height:10px;border-radius:50%;display:inline-block}.v451-legend strong{margin-left:auto;color:#193b6a}.v451-table-wrap{padding:0 12px 14px;overflow:auto}.v451-table{width:100%;border-collapse:collapse;font-size:12px}.v451-table th{background:#f5f8fc;color:#5e6d83;padding:10px 8px;text-align:left;white-space:nowrap}.v451-table td{border-bottom:1px solid #edf1f6;padding:11px 8px;color:#34445c;vertical-align:middle}.v451-table tr:last-child td{border-bottom:0}.v451-recent-list{padding:0 15px 14px}.v451-recent-item{display:grid;grid-template-columns:38px 1fr auto;gap:10px;align-items:center;padding:12px 4px;border-bottom:1px solid #edf1f6}.v451-recent-item:last-child{border-bottom:0}.v451-recent-icon{width:34px;height:34px;border-radius:10px;background:#edf4ff;color:#1763bd;display:grid;place-items:center;font-weight:900}.v451-recent-main b{display:block;color:#26384f;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:230px}.v451-recent-main small{display:block;color:#8693a7;margin-top:3px}.v451-recent-meta{text-align:right}.v451-recent-meta time{display:block;color:#8794a7;font-size:11px;margin-bottom:4px}.v451-mini-stats{padding:3px 18px 17px;display:grid;gap:10px}.v451-mini-stats div{display:flex;justify-content:space-between;align-items:center;color:#56657b}.v451-mini-stats strong{color:#0f58ad}.v451-workflow{display:flex;align-items:center;justify-content:center;gap:12px;padding:8px 18px 20px}.v451-workflow button{border:0;background:transparent;display:grid;gap:5px;place-items:center;color:#31445f;cursor:pointer}.v451-workflow button span{width:42px;height:42px;border-radius:12px;background:#edf4ff;color:#1763bd;display:grid;place-items:center;font-size:19px}.v451-workflow button b{font-size:12px}.v451-workflow i{font-style:normal;color:#94a4b9}.v451-hidden-metrics{display:none!important}
+@media(max-width:1450px){.v451-kpi-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.v451-dashboard-grid{grid-template-columns:1fr 1.4fr}.v451-facility-card{grid-column:1;grid-row:1}.v451-today-card{grid-column:2;grid-row:1}.v451-recent-card{grid-column:1;grid-row:2}.v451-status-card{grid-column:1;grid-row:3}.v451-daily-card{grid-column:2;grid-row:2 / span 2}.v451-workflow-card{grid-column:1 / span 2;grid-row:4}}
+@media(max-width:950px){.v451-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.v451-dashboard-grid{grid-template-columns:1fr}.v451-dashboard-grid>*{grid-column:1!important;grid-row:auto!important}.v451-dash-head{align-items:flex-start;gap:12px}.v451-facility-content{justify-content:center}.v451-workflow{flex-wrap:wrap}#appHeader .top .logo img{width:190px!important}}
+@media(max-width:600px){.v451-kpi-grid{grid-template-columns:1fr}.v451-dash-tools{display:none}.v451-facility-content{flex-direction:column}.v451-donut{width:165px;height:165px;flex-basis:165px}.v451-kpi{min-height:100px}.v451-dashboard-grid{gap:10px}}
 </style>
 </head>
 <body>
@@ -481,65 +497,66 @@ body{background:var(--tfms-bg)!important;color:var(--tfms-text)}
 </div>
 </aside>
 <main>
-<section class="page active" id="dashboard">
-<div class="patch-note" style="margin-bottom:14px"><strong>v31.10 시설 마스터 반영</strong> · 복지주택팀 관할 시설에 철암목욕탕을 추가하여 유지관리·설비·점검주기·QR·업무일지 시설 목록에 연동했습니다.</div>
-<div class="title-row"><div class="title-left"><div class="title-icon">📊</div><div><h1>대시보드</h1><div class="breadcrumb">홈 › 대시보드</div></div></div><div style="display:flex;gap:10px;align-items:center"><span class="current-scope" id="scopeBadge">체육운영팀 기준</span><div class="live-mark"><span class="live-dot"></span> 실시간 집계</div></div></div>
-<div class="patch-note"><strong>Supabase 연결형</strong> · 화면은 v31 그대로 유지하며, DB 설정 후 시설·설비·점검주기·오늘업무·유지관리 이력을 Supabase에 공동 저장합니다.</div>
-<div class="patch-note" id="dbStatusPanel"><strong>v30 DB 상태</strong> · 화면 로딩 후 현재 데이터 수량을 표시합니다.</div>
-<div class="change-note"><strong>v31.1 로그인·홈 이동 안정화</strong> · 등록된 계정정보가 일치할 때만 로그인되며, 권한은 계정에 따라 고정 적용됩니다. 공단 CI·TFMS 로고를 누르면 대시보드 홈으로 이동합니다. 단, 조회전용 권한은 기존처럼 숨김 처리하고 삭제는 즉시삭제가 아닌 삭제요청 이력으로 남기는 구조를 유지합니다.</div>
-<div class="panel dash-dept-panel"><div class="section-title"><span class="dot"></span>관리부서별 현황</div><div class="dept-tabs"><button class="dept-tab active" onclick="filterDeptDash('전체',this)">전체</button><button class="dept-tab" onclick="filterDeptDash('체육운영팀',this)">체육운영팀</button><button class="dept-tab" onclick="filterDeptDash('관광운영팀',this)">관광운영팀</button><button class="dept-tab" onclick="filterDeptDash('복지주택팀',this)">복지주택팀</button><button class="dept-tab" onclick="filterDeptDash('안전·시설운영팀',this)">안전·시설운영팀</button></div><div class="notice" id="deptSummary">전체 시설 기준으로 표시 중입니다.</div></div>
-<div class="guide-box">
-<div class="guide-step"><b>1</b><strong>오늘 업무 확인</strong><p>출근 후 해야 할 점검을 먼저 확인합니다.</p></div>
-<div class="guide-step"><b>2</b><strong>정상 업무 체크</strong><p>반복점검은 업무일지에 간단히 저장합니다.</p></div>
-<div class="guide-step"><b>3</b><strong>특이사항 등록</strong><p>고장·보수·교체·민원은 유지관리 등록으로 보냅니다.</p></div>
-<div class="guide-step"><b>4</b><strong>조회·확인</strong><p>등록된 이력은 조회 화면에서 바로 확인합니다.</p></div>
-<div class="guide-step"><b>5</b><strong>자료 출력</strong><p>필요 시 엑셀·경영평가 자료로 내려받습니다.</p></div>
+<section class="page active tfms-dashboard-v451" id="dashboard">
+<div class="v451-dash-head">
+  <div>
+    <h1>대시보드</h1>
+    <p>오늘도 안전하고 효율적인 시설관리를 응원합니다.</p>
+  </div>
+  <div class="v451-dash-tools">
+    <span class="current-scope" id="scopeBadge">전체 시설 기준</span>
+    <button class="v451-tool-btn" onclick="renderDashboardData();window.renderBrandDashboardV451&&window.renderBrandDashboardV451()">↻ 새로고침</button>
+  </div>
 </div>
-<div class="panel dash-action-panel">
-<div class="section-title"><span class="dot"></span>오늘 가장 먼저 할 일</div>
-<div class="action-panel">
-<button class="primary-action" onclick="navTo('today')"><h2>오늘의 업무 확인하기</h2><p>점검주기 기준으로 자동 생성된 오늘 업무를 확인하고, 완료 또는 이력등록으로 연결합니다.</p></button>
-<div class="secondary-actions">
-<button class="secondary-action" onclick="navTo('register')"><strong>＋ 유지관리 등록</strong><span>특이사항·보수·교체 등록</span></button>
-<button class="secondary-action" onclick="navTo('history')"><strong>🔍 이력 조회</strong><span>최근 등록 결과 확인</span></button>
-<button class="secondary-action" onclick="navTo('dailylog')"><strong>📋 업무일지</strong><span>해당 시설만 사용</span></button>
-<button class="secondary-action" onclick="navTo('excel')"><strong>↓ 자료 다운로드</strong><span>엑셀·평가자료 확인</span></button>
+<div class="v451-kpi-grid">
+  <button class="v451-kpi" onclick="navTo('today')"><span class="v451-kpi-icon blue">▣</span><span><b>오늘의 업무</b><strong id="dashTodo">0건</strong><small>점검 일정 확인</small></span></button>
+  <button class="v451-kpi" onclick="navTo('today')"><span class="v451-kpi-icon mint">◷</span><span><b>진행중 업무</b><strong id="dashProgressV451">0건</strong><small>현재 처리 중</small></span></button>
+  <button class="v451-kpi" onclick="navTo('history')"><span class="v451-kpi-icon green">✓</span><span><b>완료 업무</b><strong id="dashCompleteV451">0건</strong><small>전체 누적</small></span></button>
+  <button class="v451-kpi" onclick="navTo('history')"><span class="v451-kpi-icon purple">▧</span><span><b>증빙자료 포함</b><strong id="dashEvidenceCount">0건</strong><small>사진·문서 확인</small></span></button>
+  <button class="v451-kpi" onclick="navTo('excel')"><span class="v451-kpi-icon orange">₩</span><span><b>금월 집행금액</b><strong id="dashBudget">0천원</strong><small>예산 집행 현황</small></span></button>
+  <button class="v451-kpi" onclick="navTo('history')"><span class="v451-kpi-icon red">⌕</span><span><b>미조치 항목</b><strong id="dashOpen">0건</strong><small>조치 필요</small></span></button>
 </div>
+<div class="v451-dashboard-grid">
+  <div class="v451-card v451-facility-card">
+    <div class="v451-card-head"><h2>시설 현황</h2><button onclick="navTo('equipment')">상세보기 ›</button></div>
+    <div class="v451-facility-content">
+      <div class="v451-donut" id="facilityDonutV451"><div><small>총 시설</small><strong id="facilityTotalV451">0개</strong></div></div>
+      <div class="v451-legend" id="facilityLegendV451"></div>
+    </div>
+  </div>
+  <div class="v451-card v451-today-card">
+    <div class="v451-card-head"><h2><span class="v451-dot"></span>오늘 해야 하는 업무</h2><button onclick="navTo('today')">전체 보기 ›</button></div>
+    <div class="v451-table-wrap"><table class="v451-table"><thead><tr><th>시설명</th><th>업무명</th><th>주기</th><th>기한</th><th>상태</th></tr></thead><tbody id="dashTodayBody"></tbody></table></div>
+  </div>
+  <div class="v451-card v451-recent-card">
+    <div class="v451-card-head"><h2><span class="v451-dot"></span>최근 유지관리 내역</h2><button onclick="navTo('history')">더보기 ›</button></div>
+    <div class="v451-recent-list" id="dashRecentMaintenanceV451"><div class="empty-state">등록된 유지관리 이력이 없습니다.</div></div>
+  </div>
+  <div class="v451-card v451-status-card">
+    <div class="v451-card-head"><h2>우리 시설 현황</h2></div>
+    <div class="v451-mini-stats">
+      <div><span>전체 시설</span><strong id="sideFacilityCount">0개</strong></div>
+      <div><span>점검예정</span><strong id="sideTodoCount">0건</strong></div>
+      <div><span>미조치</span><strong id="sideOpenCount">0건</strong></div>
+      <div><span>금월 등록</span><strong id="sideMonthCount">0건</strong></div>
+    </div>
+  </div>
+  <div class="v451-card v451-daily-card">
+    <div class="v451-card-head"><h2><span class="v451-dot"></span>최근 업무일지</h2><button onclick="navTo('dailylog')">전체 보기 ›</button></div>
+    <div class="v451-table-wrap"><table class="v451-table"><thead><tr><th>근무일</th><th>시설명</th><th>근무자</th><th>업무건수</th><th>특이사항</th><th>관리</th></tr></thead><tbody id="dashDailyBodyV322"><tr><td colspan="6"><div class="empty-state">저장된 업무일지가 없습니다.</div></td></tr></tbody></table></div>
+  </div>
+  <div class="v451-card v451-workflow-card">
+    <div class="v451-card-head"><h2>업무 흐름도</h2></div>
+    <div class="v451-workflow">
+      <button onclick="navTo('cycle')"><span>▦</span><b>점검주기</b></button><i>→</i>
+      <button onclick="navTo('today')"><span>▣</span><b>오늘의 업무</b></button><i>→</i>
+      <button onclick="navTo('dailylog')"><span>▤</span><b>업무일지</b></button><i>→</i>
+      <button onclick="navTo('register')"><span>□</span><b>이력등록</b></button>
+    </div>
+  </div>
 </div>
-</div>
-<div class="panel dash-today-panel">
-<div class="section-title"><span class="dot"></span>오늘 해야 하는 업무</div>
-<table class="table">
-<thead><tr><th>시설명</th><th>업무명</th><th>주기</th><th>기한</th><th>상태</th></tr></thead>
-<tbody id="dashTodayBody"></tbody>
-</table>
-</div>
-<div class="stats">
-<div class="stat"><p>금월 등록</p><strong id="dashTotal">0건</strong></div><div class="stat"><p>점검 예정</p><strong id="dashTodo">0건</strong></div><div class="stat"><p>미조치</p><strong id="dashOpen">0건</strong></div><div class="stat"><p>금월 집행금액</p><strong id="dashBudget">0천원</strong></div>
-</div>
-<div class="panel dash-summary-panel" style="margin-top:18px">
-<div class="section-title"><span class="dot"></span>실시간 결과 요약</div>
-<div class="summary-grid">
-<div class="summary-card"><p>오늘 등록한 유지관리</p><strong id="dashTodayRegistered">0건</strong></div>
-<div class="summary-card"><p>경영평가 증빙</p><strong id="dashEvalCount">0건</strong></div>
-<div class="summary-card"><p>증빙자료 포함</p><strong id="dashEvidenceCount">0건</strong></div>
-</div>
-</div>
-<div class="panel dash-log-panel" style="margin-top:18px">
-<div class="section-title"><span class="dot"></span>최근 업무일지</div>
-<table class="table">
-<thead><tr><th>근무일</th><th>시설명</th><th>근무자</th><th>업무건수</th><th>특이사항</th><th>관리</th></tr></thead>
-<tbody id="dashDailyBodyV322"><tr><td colspan="6"><div class="empty-state">저장된 업무일지가 없습니다.</div></td></tr></tbody>
-</table>
-</div>
-<div class="panel dash-quick-panel" style="margin-top:18px">
-<div class="section-title"><span class="dot"></span>보조 메뉴</div>
-<div class="quick-grid">
-<div class="quick" onclick="navTo('register')"><div class="ico">＋</div><h3>유지관리 등록</h3><p>점검·보수·교체 이력 등록</p></div>
-<div class="quick" onclick="navTo('history')"><div class="ico">🔍</div><h3>이력 조회</h3><p>시설별·기간별 검색</p></div>
-<div class="quick" onclick="navTo('today')"><div class="ico">✓</div><h3>오늘의 업무</h3><p>점검주기 기반 업무 확인</p></div>
-<div class="quick" onclick="navTo('excel')"><div class="ico">↓</div><h3>엑셀 다운로드</h3><p>경영평가 자료 추출</p></div>
-</div>
+<div class="v451-hidden-metrics" aria-hidden="true">
+  <strong id="dashTotal">0건</strong><strong id="dashTodayRegistered">0건</strong><strong id="dashEvalCount">0건</strong><div id="deptSummary"></div>
 </div>
 </section>
 <section class="page" id="register">
@@ -11564,7 +11581,52 @@ document.addEventListener('DOMContentLoaded',function(){
         @page{size:A4 portrait;margin:0}
       </style></head><body>
       <div class="dj-sheet ${esc(sheetClass||'')}">${content}</div>
-      </body></html>`);
+      
+<script id="tfmsV451DashboardScript">
+(function(){
+  const safe=(v)=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const statusCls=(s)=>s==='조치완료'?'done':(s==='미조치'?'danger':'wait');
+  window.renderBrandDashboardV451=function(){
+    try{
+      const recs=(typeof records!=='undefined'&&Array.isArray(records))?records:[];
+      const dept=(typeof currentUserDept!=='undefined')?currentUserDept:'전체';
+      const scoped=dept==='전체'?recs:recs.filter(r=>r.dept===dept);
+      const progress=scoped.filter(r=>['진행중','예산반영 필요','외부업체 의뢰'].includes(r.status)).length;
+      const complete=scoped.filter(r=>r.status==='조치완료').length;
+      const p=document.getElementById('dashProgressV451');if(p)p.textContent=progress+'건';
+      const c=document.getElementById('dashCompleteV451');if(c)c.textContent=complete+'건';
+      const recent=document.getElementById('dashRecentMaintenanceV451');
+      if(recent){
+        const list=scoped.slice(0,6);
+        recent.innerHTML=list.length?list.map((r,i)=>`<div class="v451-recent-item"><span class="v451-recent-icon">${['⚙','▦','⚡','◉','✓','□'][i%6]}</span><span class="v451-recent-main"><b>${safe(r.detail||r.type||'유지관리')}</b><small>${safe(r.facility||'-')}</small></span><span class="v451-recent-meta"><time>${safe(r.date||'')}</time><em class="status ${statusCls(r.status)}">${safe(r.status||'-')}</em></span></div>`).join(''):'<div class="empty-state">등록된 유지관리 이력이 없습니다.</div>';
+      }
+      let groups={};
+      try{
+        if(typeof facilities==='object'&&facilities){
+          Object.entries(facilities).forEach(([team,list])=>{groups[team]=Array.isArray(list)?list.length:0});
+        }
+      }catch(e){}
+      if(!Object.keys(groups).length){groups={'체육시설':5,'관광시설':5,'복지/주택시설':4,'공원/기타시설':1};}
+      const entries=Object.entries(groups).filter(x=>x[1]>0); const total=entries.reduce((s,x)=>s+x[1],0);
+      const ft=document.getElementById('facilityTotalV451');if(ft)ft.textContent=total+'개';
+      const sf=document.getElementById('sideFacilityCount');if(sf)sf.textContent=total+'개';
+      const colors=['#1e67c7','#0aa7b5','#38b58e','#a8b3c4','#7b61d1'];
+      const legend=document.getElementById('facilityLegendV451');if(legend)legend.innerHTML=entries.slice(0,5).map((x,i)=>`<div><i style="background:${colors[i%colors.length]}"></i><span>${safe(x[0])}</span><strong>${x[1]}개</strong></div>`).join('');
+      const donut=document.getElementById('facilityDonutV451');if(donut&&total){let acc=0,stops=[];entries.forEach((x,i)=>{let a=acc/total*100;acc+=x[1];let b=acc/total*100;stops.push(`${colors[i%colors.length]} ${a}% ${b}%`)});donut.style.background=`conic-gradient(${stops.join(',')})`;}
+      const sm=document.getElementById('sideMonthCount'), so=document.getElementById('sideOpenCount'), st=document.getElementById('sideTodoCount');
+      const dt=document.getElementById('dashTotal'),doo=document.getElementById('dashOpen'),dto=document.getElementById('dashTodo');
+      if(sm&&dt)sm.textContent=dt.textContent;if(so&&doo)so.textContent=doo.textContent;if(st&&dto)st.textContent=dto.textContent;
+    }catch(e){console.warn('v45.1 dashboard render',e)}
+  };
+  const old=window.renderDashboardData;
+  if(typeof old==='function')window.renderDashboardData=function(){const r=old.apply(this,arguments);setTimeout(window.renderBrandDashboardV451,0);return r};
+  document.addEventListener('DOMContentLoaded',()=>setTimeout(window.renderBrandDashboardV451,300));
+  setTimeout(window.renderBrandDashboardV451,1000);
+  const badge=document.getElementById('tfmsVersionBadge');if(badge)badge.textContent='v45.1 Enterprise UX';
+  document.title='TFMS v45.1 Enterprise UX';
+})();
+</script>
+</body></html>`);
     win.document.close();
     setTimeout(function(){
       try{win.focus();win.print();}catch(e){}
@@ -16483,7 +16545,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
  document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{setup();applyProfileAuto();},500));
 })();
 </script>
- TFMS v45.0 Enterprise UX
+ TFMS v45.1 Enterprise UX
 <script id="tfms-v4413-final-fix">
 (function(){
   'use strict';
@@ -16635,7 +16697,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 <script id="tfms-v4416-export-preview-controller">
 (function(){
   'use strict';
-  var BUILD='v45.0 Enterprise UX';
+  var BUILD='v45.1 Enterprise UX';
   function $(id){return document.getElementById(id)}
   function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]})}
   function val(id,fallback){var el=$(id);return el?el.value:(fallback||'')}
