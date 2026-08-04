@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>TFMS v44.24 Enterprise UX</title>
+<title>TFMS v44.26 Enterprise UX</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -364,7 +364,7 @@ body{background:var(--tfms-bg)!important;color:var(--tfms-text)}
 /* application header */
 #appHeader{position:sticky;top:0;z-index:1000;background:var(--tfms-navy)!important;box-shadow:0 7px 24px rgba(4,34,75,.2)}
 #appHeader .top{height:80px!important;background:linear-gradient(90deg,#062b63,#073a77)!important;padding:0 24px!important;border:0!important}
-#appHeader .logo{min-width:0;gap:18px}.logo img{width:250px!important;max-height:54px!important;object-fit:contain;background:#fff;padding:9px 13px;border-radius:8px}.logo-title b{font-size:27px!important;color:#fff!important}.logo-title small{color:#bcd2eb!important}.logo-title:after{content:'v44.24 Enterprise UX';display:inline-block;margin-left:12px;padding:6px 11px;border:1px solid rgba(80,230,220,.45);border-radius:999px;color:#d6fffa;background:rgba(15,163,163,.17);font-size:12px;font-weight:800;vertical-align:middle}
+#appHeader .logo{min-width:0;gap:18px}.logo img{width:250px!important;max-height:54px!important;object-fit:contain;background:#fff;padding:9px 13px;border-radius:8px}.logo-title b{font-size:27px!important;color:#fff!important}.logo-title small{color:#bcd2eb!important}.logo-title:after{content:'v44.26 Enterprise UX';display:inline-block;margin-left:12px;padding:6px 11px;border:1px solid rgba(80,230,220,.45);border-radius:999px;color:#d6fffa;background:rgba(15,163,163,.17);font-size:12px;font-weight:800;vertical-align:middle}
 #appHeader .user{color:#fff!important}.logout{background:#fff!important;color:#07366f!important}
 #appHeader nav{position:fixed!important;left:0;top:80px;bottom:0;width:245px;height:auto!important;display:flex!important;flex-direction:column;align-items:stretch!important;gap:4px!important;padding:18px 12px 100px!important;background:linear-gradient(180deg,#07366f 0%,#032653 100%)!important;overflow-y:auto!important;box-shadow:8px 0 28px rgba(4,37,80,.12);z-index:990}
 #appHeader .nav{position:relative;text-align:left!important;padding:13px 15px 13px 46px!important;border:0!important;border-radius:9px!important;color:#eaf3ff!important;font-size:14px!important;min-height:46px}.nav:hover,.nav.active{background:linear-gradient(90deg,#0f9ca8,#0c7ca5)!important;color:#fff!important;box-shadow:0 8px 18px rgba(12,132,156,.22)}.nav .tfms-nav-ico{position:absolute;left:15px;top:50%;transform:translateY(-50%);font-size:19px;width:22px;text-align:center}
@@ -387,7 +387,7 @@ body{background:var(--tfms-bg)!important;color:var(--tfms-text)}
 </style>
 
 <style id="tfmsV4420DashboardStyle">
-/* v44.24 dashboard-only renewal */
+/* v44.25 dashboard-only renewal */
 #appHeader .top .logo img{width:245px!important;max-height:52px!important;object-fit:contain!important;background:#fff!important;padding:7px 12px!important;border-radius:9px!important}
 #appHeader .top .logo{gap:18px!important}.logo-title{font-size:25px!important}.logo-title small{margin-top:4px!important;opacity:.78}
 .tfms-corp-logo img{width:min(355px,36vw)!important}
@@ -403,7 +403,7 @@ body{background:var(--tfms-bg)!important;color:var(--tfms-text)}
 </style>
 
 <style id="tfms-v4422-login-brand-clarity">
-/* TFMS v44.24 로그인 배경 선명도 개선 */
+/* TFMS v44.26 로그인 배경 선명도 개선 */
 #loginScreen.login-screen{background:#edf6fb!important;}
 #loginScreen .tfms-login-brand{
   position:relative!important;
@@ -491,7 +491,7 @@ body{background:var(--tfms-bg)!important;color:var(--tfms-text)}
 </style>
 
 <style id="tfms-v4423-login-brand-final">
-/* TFMS v44.24 로그인 브랜드 최종 마감 */
+/* TFMS v44.26 로그인 브랜드 최종 마감 */
 #loginScreen.login-screen{
   background:radial-gradient(circle at 74% 42%,#f7fbff 0%,#edf6fb 46%,#e8f2f8 100%)!important;
 }
@@ -588,7 +588,7 @@ body{background:var(--tfms-bg)!important;color:var(--tfms-text)}
 </style>
 
 <style id="tfms-v4424-login-mockup-match">
-/* TFMS v44.24 - 예시 시안 비율 및 여백 정밀 조정 */
+/* TFMS v44.26 - 예시 시안 비율 및 여백 정밀 조정 */
 #loginScreen.login-screen{
   grid-template-columns:minmax(680px,53%) minmax(560px,47%)!important;
   background:radial-gradient(circle at 69% 44%,#fbfdff 0%,#f3f9fd 36%,#edf6fb 72%,#eaf3f8 100%)!important;
@@ -1367,6 +1367,7 @@ body{background:var(--tfms-bg)!important;color:var(--tfms-text)}
 <div class="field"><label>중요도</label><select id="assetInputImportance"><option>상</option><option selected="">중</option><option>하</option></select></div>
 <div class="field"><label>위험도</label><select id="assetInputRisk"><option>양호</option><option>주의</option><option>위험</option></select></div>
 <div class="field"><label>최근점검일</label><input id="assetInputCheck" type="date"/></div>
+<div class="field"><label>취득금액</label><input id="assetInputPurchase" inputmode="numeric" placeholder="예: 12,000,000원 (선택입력)"/></div>
 <div class="field"><label>예상 교체비</label><input id="assetInputReplace" placeholder="예: 9,000천원"/></div>
 <div class="field"><label>QR관리번호</label><input id="assetInputQrId" placeholder="공란 시 자동 생성"/></div>
 <div class="field wide"><label>비고</label><textarea id="assetInputRemarks" placeholder="특이사항, 부품정보, 관리 시 주의사항 등을 입력하세요." rows="3"></textarea></div>
@@ -3389,6 +3390,7 @@ loadDB(); refreshAllV30();
         status:a.condition_status||'정상',
         importance:a.importance||'중',
         remarks:a.remarks||'',
+        purchaseCost:a.acquisition_cost?Number(a.acquisition_cost):0,
         replace:a.replacement_cost?Number(a.replacement_cost).toLocaleString('ko-KR')+'원':'0원',
         history:'0건',
         repair:'0원',
@@ -6812,6 +6814,7 @@ document.addEventListener('DOMContentLoaded',function(){
       check:row.last_inspected_on?String(row.last_inspected_on).replaceAll('-','.'):(fallback.check||'-'),
       qrId:row.qr_code||fallback.qrId||row.asset_code||'-',
       remarks:row.remarks||fallback.remarks||'',
+      purchaseCost:Number(row.acquisition_cost ?? fallback.purchaseCost ?? 0),
       replace:row.replacement_cost?`${Number(row.replacement_cost).toLocaleString('ko-KR')}원`:(fallback.replace||'0원'),
       history:fallback.history||'0건', repair:fallback.repair||'0원', rank:fallback.rank||'관찰', timeline:fallback.timeline||[]
     };
@@ -6851,6 +6854,7 @@ document.addEventListener('DOMContentLoaded',function(){
     const lastInspectedRaw=blankToNull(value('assetInputCheck'));
     const lastInspectedOn=lastInspectedRaw && /^\d{4}-\d{2}-\d{2}$/.test(lastInspectedRaw)?lastInspectedRaw:null;
     const lifeRaw=value('assetInputLife').replace(/[^0-9.]/g,'');
+    const purchaseRaw=value('assetInputPurchase').replace(/[^0-9]/g,'');
     const replaceRaw=value('assetInputReplace').replace(/[^0-9]/g,'');
     const qr=blankToNull(value('assetInputQrId'));
     const payload={
@@ -6872,6 +6876,7 @@ document.addEventListener('DOMContentLoaded',function(){
       importance:value('assetInputImportance')||'중',
       risk_level:value('assetInputRisk')||'양호',
       last_inspected_on:lastInspectedOn,
+      acquisition_cost:purchaseRaw?Number(purchaseRaw):null,
       replacement_cost:replaceRaw?Number(replaceRaw):null,
       qr_code:qr,
       remarks:blankToNull(value('assetInputRemarks')),
@@ -11924,17 +11929,11 @@ document.addEventListener('DOMContentLoaded',function(){
   if(typeof old==='function')window.renderDashboardData=function(){const r=old.apply(this,arguments);setTimeout(window.renderBrandDashboardV451,0);return r};
   document.addEventListener('DOMContentLoaded',()=>setTimeout(window.renderBrandDashboardV451,300));
   setTimeout(window.renderBrandDashboardV451,1000);
-  const badge=document.getElementById('tfmsVersionBadge');if(badge)badge.textContent='v44.24 Enterprise UX';
-  document.title='TFMS v44.24 Enterprise UX';
+  const badge=document.getElementById('tfmsVersionBadge');if(badge)badge.textContent='v44.26 Enterprise UX';
+  document.title='TFMS v44.26 Enterprise UX';
 })();
 </script>
-</body></html>`);
-    win.document.close();
-    setTimeout(function(){
-      try{win.focus();win.print();}catch(e){}
-    },250);
-  }
-</script>
+
 <!-- TFMS v44.5 Enterprise Stable UX: 대시보드 다이어트 1회차 -->
 <style id="tfms-v445-dashboard-diet">
 /* 기존 레이아웃과 기능을 유지하고 대시보드의 세로 여백만 보수적으로 축소 */
@@ -16677,7 +16676,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 })();
 </script>
 <script id="tfms-v447-version"><!--
-(function(){window.TFMS_BUILD=Object.freeze({version:'v44.24',channel:'Enterprise UX Preview',buildDate:'2026.07.30',title:'소화기 구역별 일괄등록·QR 라벨 출력'});document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{const b=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');if(b)b.textContent='v44.24 Enterprise UX';},500)});})();
+(function(){window.TFMS_BUILD=Object.freeze({version:'v44.25',channel:'Enterprise UX Preview',buildDate:'2026.07.30',title:'소화기 구역별 일괄등록·QR 라벨 출력'});document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{const b=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');if(b)b.textContent='v44.26 Enterprise UX';},500)});})();
 //--></script>
 <!-- TFMS v44.9 Enterprise Stable UX: 설비관리 다이어트 5회차 + 사용자정보 자동연동 보완 -->
 <style id="tfms-v449-equipment-diet">
@@ -16847,11 +16846,11 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
  document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{setup();applyProfileAuto();},500));
 })();
 </script>
- TFMS v44.24 Enterprise UX
+ TFMS v44.26 Enterprise UX
 <script id="tfms-v4413-final-fix">
 (function(){
   'use strict';
-  var BUILD_TEXT='v44.24 Enterprise UX';
+  var BUILD_TEXT='v44.26 Enterprise UX';
 
   function byId(id){return document.getElementById(id)}
   function readSession(){
@@ -16999,7 +16998,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 <script id="tfms-v4416-export-preview-controller">
 (function(){
   'use strict';
-  var BUILD='v44.24 Enterprise UX';
+  var BUILD='v44.26 Enterprise UX';
   function $(id){return document.getElementById(id)}
   function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]})}
   function val(id,fallback){var el=$(id);return el?el.value:(fallback||'')}
@@ -17109,7 +17108,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 </script>
 
 <style id="tfms-v4420-header-dashboard-refinement">
-/* TFMS v44.24 - header contrast + one-screen dashboard refinement */
+/* TFMS v44.26 - header contrast + one-screen dashboard refinement */
 #appHeader .top{height:76px!important;padding:0 20px!important}
 #appHeader .top .logo{display:flex!important;align-items:center!important;gap:16px!important;min-width:560px!important}
 #appHeader .top .logo img{width:270px!important;height:48px!important;max-height:48px!important;padding:7px 14px!important;object-fit:contain!important}
@@ -17178,7 +17177,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 <script id="tfms-v4420-header-dashboard-controller">
 (function(){
  'use strict';
- var BUILD='v44.24 Enterprise UX';
+ var BUILD='v44.26 Enterprise UX';
  function cleanStrayBuildText(){
    var walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
    var remove=[];
@@ -17215,7 +17214,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 <script id="tfms-v4420-version-normalizer">
 (function(){
   'use strict';
-  const BUILD='v44.24 Enterprise UX';
+  const BUILD='v44.26 Enterprise UX';
   function apply(){
     document.title='TFMS '+BUILD;
     const badge=document.getElementById('tfmsVersionBadge') || document.querySelector('.v32-classic-note');
@@ -17225,6 +17224,201 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
     });
   }
   document.addEventListener('DOMContentLoaded',function(){setTimeout(apply,50);setTimeout(apply,800);});
+})();
+</script>
+
+<style id="tfms-v4425-lcc-style">
+#equipment .tfms-lcc-guide{margin:10px 0 12px;padding:11px 13px;border:1px solid #cfe3f4;border-radius:12px;background:#f5fbff;color:#36546f;font-size:12px;line-height:1.55}
+#equipment .tfms-lcc-guide b{color:#0b477c}
+#equipment .lcc-box.tfms-lcc-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px}
+#equipment .lcc-card{position:relative;overflow:hidden}
+#equipment .lcc-card p{margin:0 0 7px;color:#64748b;font-size:11px}
+#equipment .lcc-card strong{display:block;color:#0c315c;font-size:18px;line-height:1.15}
+#equipment .lcc-card small{display:block;margin-top:6px;color:#7a8da3;font-size:10px;line-height:1.35}
+#equipment .tfms-lcc-status{display:inline-flex!important;align-items:center;justify-content:center;width:auto;padding:6px 10px;border-radius:999px;font-size:13px!important}
+#equipment .tfms-lcc-status.normal{background:#e8f8f1;color:#087a55}
+#equipment .tfms-lcc-status.watch{background:#fff7d6;color:#9a6b00}
+#equipment .tfms-lcc-status.review{background:#fff0dc;color:#b65300}
+#equipment .tfms-lcc-status.replace{background:#ffe8e8;color:#c52b2b}
+#equipment .tfms-lcc-progress-wrap{grid-column:1/-1;background:#f8fafc;border:1px solid #e0e8f2;border-radius:11px;padding:10px 12px}
+#equipment .tfms-lcc-progress-head{display:flex;justify-content:space-between;gap:12px;margin-bottom:7px;font-size:11px;color:#52657c}
+#equipment .tfms-lcc-progress{height:9px;background:#e9eff6;border-radius:999px;overflow:hidden}
+#equipment .tfms-lcc-progress>span{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#16a6a1,#1562c8,#f59e0b,#e74c3c);transition:width .25s ease}
+#equipment .tfms-lcc-empty{grid-column:1/-1;padding:12px;border:1px dashed #cbd8e7;border-radius:11px;color:#64748b;background:#fbfdff;font-size:12px;text-align:center}
+@media(max-width:1200px){#equipment .lcc-box.tfms-lcc-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:760px){#equipment .lcc-box.tfms-lcc-grid{grid-template-columns:1fr 1fr}}
+</style>
+<script id="tfms-v4425-lcc-script">
+(function(){
+  const $=id=>document.getElementById(id);
+  const num=v=>{
+    if(typeof v==='number') return Number.isFinite(v)?v:0;
+    const s=String(v??'').replace(/,/g,'').trim();
+    const n=Number((s.match(/[0-9.]+/)||['0'])[0]);
+    if(!Number.isFinite(n)) return 0;
+    if(/천원/.test(s)) return Math.round(n*1000);
+    if(/만원/.test(s)) return Math.round(n*10000);
+    return Math.round(n);
+  };
+  const money=n=>`${Math.max(0,Math.round(Number(n)||0)).toLocaleString('ko-KR')}원`;
+  const lifeYears=a=>{
+    const n=Number(String(a?.life??'').replace(/[^0-9.]/g,''));
+    return Number.isFinite(n)&&n>0?n:0;
+  };
+  const installDate=a=>{
+    const raw=a?.installDate || (String(a?.year||'').match(/^(19|20)\d{2}$/)?.[0] ? `${a.year}-01-01` : '');
+    const d=raw?new Date(raw+'T00:00:00'):null;
+    return d&&!isNaN(d)?d:null;
+  };
+  const elapsedYears=a=>{
+    const d=installDate(a); if(!d) return 0;
+    return Math.max(0,(Date.now()-d.getTime())/(365.2425*24*60*60*1000));
+  };
+  function recordAssetName(r){return String(r?.assetName||r?.asset||r?.asset_name||r?.target||'').trim();}
+  function repairTotal(key,a){
+    const list=Array.isArray(window.records)?window.records:[];
+    const name=String(a?.name||'').trim(), facility=String(a?.facility||'').trim();
+    return list.reduce((sum,r)=>{
+      const rk=String(r?.assetKey||r?.asset_key||'');
+      const rn=recordAssetName(r);
+      const same=(rk&&rk===String(key)) || (rn&&name&&rn===name) || (rn&&name&&(rn.includes(name)||name.includes(rn)));
+      const sameFacility=!facility || !r?.facility || String(r.facility)===facility;
+      if(!same||!sameFacility) return sum;
+      const type=String(r?.type||r?.receipt_category||'');
+      const detail=String(r?.detail||'');
+      if(/신규구입|취득|구매/.test(type+' '+detail) && !/수리|보수|교체/.test(type+' '+detail)) return sum;
+      return sum+Math.max(0,Number(r?.amount||0));
+    },0);
+  }
+  function calc(key,a){
+    const life=lifeYears(a), elapsed=elapsedYears(a), ageRatio=life?elapsed/life:0;
+    const repair=repairTotal(key,a) || num(a?.repair);
+    const replace=num(a?.replace);
+    const costRatio=replace?repair/replace:0;
+    let score=0;
+    if(ageRatio>=1) score+=40; else if(ageRatio>=.9) score+=32; else if(ageRatio>=.7) score+=20; else if(ageRatio>=.5) score+=10;
+    if(costRatio>=.8) score+=40; else if(costRatio>=.5) score+=30; else if(costRatio>=.3) score+=20; else if(costRatio>=.1) score+=8;
+    if(a?.risk==='위험') score+=20; else if(a?.risk==='주의') score+=10;
+    if(a?.status==='교체예정'||a?.status==='사용중지') score+=20; else if(a?.status==='점검필요'||a?.status==='수리중') score+=10;
+    score=Math.min(100,score);
+    let label='정상', cls='normal';
+    if(score>=70){label='교체 권고';cls='replace'} else if(score>=50){label='우선 검토';cls='review'} else if(score>=30){label='관찰';cls='watch'}
+    let replacementYear='-';
+    const d=installDate(a);
+    if(d&&life){replacementYear=String(d.getFullYear()+Math.ceil(life));}
+    return {life,elapsed,ageRatio,repair,replace,costRatio,score,label,cls,replacementYear};
+  }
+  function ensureUI(){
+    const box=document.querySelector('#equipment .lcc-box'); if(!box) return;
+    box.classList.add('tfms-lcc-grid');
+    if(!document.getElementById('tfmsLccGuide')){
+      const guide=document.createElement('div'); guide.id='tfmsLccGuide';guide.className='tfms-lcc-guide';
+      guide.innerHTML='<b>입력은 간단합니다.</b> 설치일·내용연수·취득금액·예상 교체비만 입력하면 경과연수, 누적 보수비, 교체 예정연도와 우선순위를 자동 계산합니다.';
+      box.parentNode.insertBefore(guide,box);
+    }
+    box.innerHTML=`
+      <div class="lcc-card"><p>누적 보수비</p><strong id="lccRepair">0원</strong><small>해당 설비 유지관리 금액 자동 합산</small></div>
+      <div class="lcc-card"><p>예상 교체비</p><strong id="lccReplace">0원</strong><small>설비 등록정보 기준</small></div>
+      <div class="lcc-card"><p>경과연수</p><strong id="lccElapsed">-</strong><small id="lccAgeText">설치일·내용연수 입력 필요</small></div>
+      <div class="lcc-card"><p>교체 예정연도</p><strong id="lccYear">-</strong><small>설치일 + 내용연수</small></div>
+      <div class="lcc-card"><p>교체 우선순위</p><strong id="lccRank" class="tfms-lcc-status normal">정상</strong><small id="lccScore">자동 판단</small></div>
+      <div class="tfms-lcc-progress-wrap"><div class="tfms-lcc-progress-head"><span>내용연수 소진율</span><b id="lccProgressText">0%</b></div><div class="tfms-lcc-progress"><span id="lccProgressBar" style="width:0%"></span></div></div>`;
+  }
+  function render(key){
+    ensureUI();
+    const a=(window.assetData||{})[key||window.selectedAssetKey]; if(!a) return;
+    const c=calc(key||window.selectedAssetKey,a);
+    if($('lccRepair')) $('lccRepair').textContent=money(c.repair);
+    if($('lccReplace')) $('lccReplace').textContent=money(c.replace);
+    if($('lccElapsed')) $('lccElapsed').textContent=c.elapsed?`${c.elapsed.toFixed(1)}년`:'-';
+    if($('lccAgeText')) $('lccAgeText').textContent=c.life?`내용연수 ${c.life}년 · ${(c.ageRatio*100).toFixed(0)}% 경과`:'내용연수 입력 필요';
+    if($('lccYear')) $('lccYear').textContent=c.replacementYear==='-'?'-':`${c.replacementYear}년`;
+    const rank=$('lccRank'); if(rank){rank.textContent=c.label;rank.className=`tfms-lcc-status ${c.cls}`;}
+    if($('lccScore')) $('lccScore').textContent=`판단점수 ${c.score}점 · 보수비/교체비 ${(c.costRatio*100).toFixed(0)}%`;
+    const pct=Math.min(100,Math.max(0,c.ageRatio*100));
+    if($('lccProgressText')) $('lccProgressText').textContent=`${c.ageRatio?c.ageRatio*100:0}`.replace(/\.0+$/,'').replace(/(\.\d).*/,'$1')+'%';
+    if($('lccProgressBar')) $('lccProgressBar').style.width=`${pct}%`;
+    const purchase=$('assetInputPurchase'); if(purchase && document.activeElement!==purchase) purchase.value=a.purchaseCost?Number(a.purchaseCost).toLocaleString('ko-KR'):'';
+  }
+  function addInputHelp(){
+    const p=$('assetInputPurchase'), r=$('assetInputReplace'), l=$('assetInputLife');
+    [p,r].forEach(el=>{if(el){el.addEventListener('blur',()=>{const n=num(el.value);el.value=n?n.toLocaleString('ko-KR'):'';});}});
+    if(l) l.setAttribute('inputmode','decimal');
+  }
+  const oldShow=window.showAsset;
+  if(typeof oldShow==='function') window.showAsset=function(key,el){const out=oldShow.apply(this,arguments);setTimeout(()=>render(key||window.selectedAssetKey),0);return out;};
+  const oldClear=window.clearAssetForm;
+  if(typeof oldClear==='function') window.clearAssetForm=function(){const out=oldClear.apply(this,arguments);if($('assetInputPurchase'))$('assetInputPurchase').value='';return out;};
+  const oldSave=window.saveAsset;
+  if(typeof oldSave==='function') window.saveAsset=async function(){
+    const purchase=num($('assetInputPurchase')?.value);
+    const out=await oldSave.apply(this,arguments);
+    const a=(window.assetData||{})[window.selectedAssetKey]; if(a) a.purchaseCost=purchase;
+    setTimeout(()=>render(window.selectedAssetKey),80); return out;
+  };
+  const oldPage=window.showPage;
+  if(typeof oldPage==='function') window.showPage=function(id,btn){const out=oldPage.apply(this,arguments);if(id==='equipment')setTimeout(()=>render(window.selectedAssetKey),120);return out;};
+  document.addEventListener('DOMContentLoaded',()=>{ensureUI();addInputHelp();setTimeout(()=>render(window.selectedAssetKey),200);});
+  if(document.readyState!=='loading'){ensureUI();addInputHelp();setTimeout(()=>render(window.selectedAssetKey),200);}
+  window.tfmsCalculateLccV4425=calc;
+})();
+</script>
+
+
+<!-- TFMS v44.26 Dashboard One-Screen Finish -->
+<style id="tfms-v4426-dashboard-one-screen">
+/* 1600x900~1920x1080 환경에서 업무 흐름도까지 첫 화면에 보이도록 대시보드만 압축 */
+#dashboard.tfms-dashboard-v451{gap:9px!important;padding-bottom:8px!important}
+#dashboard .v451-dash-head{min-height:48px!important;margin-bottom:0!important}
+#dashboard .v451-dash-head h1{font-size:27px!important;line-height:1.1!important;margin:0 0 3px!important}
+#dashboard .v451-dash-head p{font-size:13px!important;margin:0!important}
+#dashboard .v451-kpi-grid{gap:10px!important;margin-bottom:2px!important}
+#dashboard .v451-kpi{min-height:94px!important;padding:13px 14px!important;border-radius:13px!important}
+#dashboard .v451-kpi-icon{width:42px!important;height:42px!important;font-size:20px!important}
+#dashboard .v451-kpi strong{font-size:25px!important;line-height:1.05!important;margin-top:3px!important}
+#dashboard .v451-kpi small{font-size:11px!important;margin-top:3px!important}
+#dashboard .v451-dashboard-grid{gap:10px!important;grid-template-rows:230px 174px 116px!important}
+#dashboard .v451-card{border-radius:13px!important}
+#dashboard .v451-card-head{min-height:43px!important;padding:11px 15px!important}
+#dashboard .v451-card-head h2{font-size:17px!important}
+#dashboard .v451-facility-content{gap:14px!important;padding:0 14px 12px!important;height:184px!important;box-sizing:border-box!important}
+#dashboard .v451-donut{width:146px!important;height:146px!important;flex-basis:146px!important}
+#dashboard .v451-donut:after{inset:27px!important}
+#dashboard .v451-donut strong{font-size:24px!important}
+#dashboard .v451-legend{gap:7px!important;font-size:12px!important}
+#dashboard .v451-table-wrap{padding:0 12px 10px!important}
+#dashboard table{font-size:12px!important}
+#dashboard th{padding:8px 7px!important}
+#dashboard td{padding:8px 7px!important}
+#dashboard .empty-state{padding:17px 8px!important}
+#dashboard .v451-status-list{padding:5px 16px 12px!important;gap:7px!important}
+#dashboard .v451-daily-card .v451-table-wrap{max-height:126px!important;overflow:auto!important}
+#dashboard .v451-recent-list{padding:0 13px 10px!important;max-height:182px!important;overflow:auto!important}
+#dashboard .v451-workflow-card{min-height:108px!important}
+#dashboard .v451-workflow-card .v451-card-head{min-height:36px!important;padding:9px 15px 3px!important}
+#dashboard .v451-workflow{padding:6px 16px 12px!important;gap:12px!important;min-height:64px!important}
+#dashboard .v451-workflow button{padding:7px 12px!important;min-width:100px!important}
+#dashboard .v451-workflow button span{width:34px!important;height:34px!important;font-size:17px!important}
+#dashboard .v451-workflow button b{font-size:12px!important}
+#dashboard .v451-workflow i{font-size:18px!important}
+#appFooter{min-height:38px!important;padding:8px 12px!important}
+@media (max-height:820px) and (min-width:1200px){
+ #dashboard .v451-dashboard-grid{grid-template-rows:210px 160px 104px!important}
+ #dashboard .v451-kpi{min-height:86px!important;padding:10px 12px!important}
+ #dashboard .v451-facility-content{height:165px!important}
+ #dashboard .v451-donut{width:132px!important;height:132px!important;flex-basis:132px!important}
+ #dashboard .v451-card-head{min-height:38px!important;padding:9px 13px!important}
+}
+</style>
+<script id="tfms-v4426-version-fix">
+(function(){
+ const BUILD='v44.26 Enterprise UX';
+ function apply(){
+   const b=document.getElementById('tfmsVersionBadge'); if(b)b.textContent=BUILD;
+   document.title='TFMS '+BUILD;
+   document.querySelectorAll('body>text').forEach?.(n=>n.remove());
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
 })();
 </script>
 </body></html>
