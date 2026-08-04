@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>TFMS v44.23 Enterprise UX</title>
+<title>TFMS v44.24 Enterprise UX</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -364,7 +364,7 @@ body{background:var(--tfms-bg)!important;color:var(--tfms-text)}
 /* application header */
 #appHeader{position:sticky;top:0;z-index:1000;background:var(--tfms-navy)!important;box-shadow:0 7px 24px rgba(4,34,75,.2)}
 #appHeader .top{height:80px!important;background:linear-gradient(90deg,#062b63,#073a77)!important;padding:0 24px!important;border:0!important}
-#appHeader .logo{min-width:0;gap:18px}.logo img{width:250px!important;max-height:54px!important;object-fit:contain;background:#fff;padding:9px 13px;border-radius:8px}.logo-title b{font-size:27px!important;color:#fff!important}.logo-title small{color:#bcd2eb!important}.logo-title:after{content:'v44.23 Enterprise UX';display:inline-block;margin-left:12px;padding:6px 11px;border:1px solid rgba(80,230,220,.45);border-radius:999px;color:#d6fffa;background:rgba(15,163,163,.17);font-size:12px;font-weight:800;vertical-align:middle}
+#appHeader .logo{min-width:0;gap:18px}.logo img{width:250px!important;max-height:54px!important;object-fit:contain;background:#fff;padding:9px 13px;border-radius:8px}.logo-title b{font-size:27px!important;color:#fff!important}.logo-title small{color:#bcd2eb!important}.logo-title:after{content:'v44.24 Enterprise UX';display:inline-block;margin-left:12px;padding:6px 11px;border:1px solid rgba(80,230,220,.45);border-radius:999px;color:#d6fffa;background:rgba(15,163,163,.17);font-size:12px;font-weight:800;vertical-align:middle}
 #appHeader .user{color:#fff!important}.logout{background:#fff!important;color:#07366f!important}
 #appHeader nav{position:fixed!important;left:0;top:80px;bottom:0;width:245px;height:auto!important;display:flex!important;flex-direction:column;align-items:stretch!important;gap:4px!important;padding:18px 12px 100px!important;background:linear-gradient(180deg,#07366f 0%,#032653 100%)!important;overflow-y:auto!important;box-shadow:8px 0 28px rgba(4,37,80,.12);z-index:990}
 #appHeader .nav{position:relative;text-align:left!important;padding:13px 15px 13px 46px!important;border:0!important;border-radius:9px!important;color:#eaf3ff!important;font-size:14px!important;min-height:46px}.nav:hover,.nav.active{background:linear-gradient(90deg,#0f9ca8,#0c7ca5)!important;color:#fff!important;box-shadow:0 8px 18px rgba(12,132,156,.22)}.nav .tfms-nav-ico{position:absolute;left:15px;top:50%;transform:translateY(-50%);font-size:19px;width:22px;text-align:center}
@@ -387,7 +387,7 @@ body{background:var(--tfms-bg)!important;color:var(--tfms-text)}
 </style>
 
 <style id="tfmsV4420DashboardStyle">
-/* v44.23 dashboard-only renewal */
+/* v44.24 dashboard-only renewal */
 #appHeader .top .logo img{width:245px!important;max-height:52px!important;object-fit:contain!important;background:#fff!important;padding:7px 12px!important;border-radius:9px!important}
 #appHeader .top .logo{gap:18px!important}.logo-title{font-size:25px!important}.logo-title small{margin-top:4px!important;opacity:.78}
 .tfms-corp-logo img{width:min(355px,36vw)!important}
@@ -403,7 +403,7 @@ body{background:var(--tfms-bg)!important;color:var(--tfms-text)}
 </style>
 
 <style id="tfms-v4422-login-brand-clarity">
-/* TFMS v44.23 로그인 배경 선명도 개선 */
+/* TFMS v44.24 로그인 배경 선명도 개선 */
 #loginScreen.login-screen{background:#edf6fb!important;}
 #loginScreen .tfms-login-brand{
   position:relative!important;
@@ -491,7 +491,7 @@ body{background:var(--tfms-bg)!important;color:var(--tfms-text)}
 </style>
 
 <style id="tfms-v4423-login-brand-final">
-/* TFMS v44.23 로그인 브랜드 최종 마감 */
+/* TFMS v44.24 로그인 브랜드 최종 마감 */
 #loginScreen.login-screen{
   background:radial-gradient(circle at 74% 42%,#f7fbff 0%,#edf6fb 46%,#e8f2f8 100%)!important;
 }
@@ -586,6 +586,123 @@ body{background:var(--tfms-bg)!important;color:var(--tfms-text)}
   #loginScreen .tfms-motto{margin:0!important;}
 }
 </style>
+
+<style id="tfms-v4424-login-mockup-match">
+/* TFMS v44.24 - 예시 시안 비율 및 여백 정밀 조정 */
+#loginScreen.login-screen{
+  grid-template-columns:minmax(680px,53%) minmax(560px,47%)!important;
+  background:radial-gradient(circle at 69% 44%,#fbfdff 0%,#f3f9fd 36%,#edf6fb 72%,#eaf3f8 100%)!important;
+}
+#loginScreen .tfms-login-brand{
+  min-height:100vh!important;
+  padding:48px 54px 54px!important;
+}
+#loginScreen .tfms-login-brand::before{
+  inset:-1px!important;
+  transform:scale(1.001)!important;
+  filter:saturate(.93) contrast(1.04) brightness(1.025)!important;
+  background-size:cover!important;
+  background-position:center center!important;
+}
+#loginScreen .tfms-login-brand::after{
+  background:
+    linear-gradient(180deg,rgba(190,224,249,.34) 0%,rgba(179,217,242,.11) 43%,rgba(8,46,89,.18) 66%,rgba(4,40,82,.93) 100%),
+    linear-gradient(90deg,rgba(42,137,203,.09) 0%,rgba(255,255,255,.03) 72%,rgba(255,255,255,.08) 100%)!important;
+}
+#loginScreen .tfms-brand-lockup{
+  gap:20px!important;
+  align-items:center!important;
+  max-width:620px!important;
+}
+#loginScreen .tfms-corp-logo img{
+  width:min(350px,29vw)!important;
+  max-height:72px!important;
+  filter:none!important;
+}
+#loginScreen .tfms-brand-divider{
+  width:1px!important;
+  height:68px!important;
+  background:rgba(14,62,111,.27)!important;
+}
+#loginScreen .tfms-brand-name strong{
+  font-size:44px!important;
+  line-height:.92!important;
+  color:#07386f!important;
+}
+#loginScreen .tfms-brand-name span{
+  margin-top:10px!important;
+  font-size:14px!important;
+  line-height:1.22!important;
+  color:#164f82!important;
+}
+#loginScreen .tfms-motto{
+  margin:0 0 4px 2px!important;
+  max-width:660px!important;
+  text-shadow:0 2px 14px rgba(0,25,58,.58)!important;
+}
+#loginScreen .tfms-motto::before{
+  margin-bottom:14px!important;
+  font-size:14px!important;
+  letter-spacing:1.65px!important;
+  color:#37d8d0!important;
+}
+#loginScreen .tfms-motto strong{
+  font-size:36px!important;
+  line-height:1.12!important;
+  letter-spacing:-1px!important;
+}
+#loginScreen .tfms-motto span{
+  margin-top:12px!important;
+  font-size:23px!important;
+  line-height:1.25!important;
+}
+#loginScreen .tfms-login-card{
+  width:min(482px,78%)!important;
+  padding:46px 44px 38px!important;
+  border-radius:20px!important;
+  border:1px solid rgba(204,218,231,.82)!important;
+  box-shadow:0 18px 55px rgba(18,55,93,.11)!important;
+}
+#loginScreen .tfms-login-card h1{
+  font-size:32px!important;
+  margin-bottom:16px!important;
+}
+#loginScreen .tfms-login-card>p{
+  max-width:360px!important;
+  margin:0 auto 30px!important;
+  font-size:14px!important;
+  line-height:1.65!important;
+}
+#loginScreen .tfms-login-card .field input{
+  height:52px!important;
+  border-radius:9px!important;
+}
+#loginScreen .tfms-login-card .buttons{
+  margin-top:20px!important;
+}
+#loginScreen .tfms-login-card .btn.blue{
+  min-height:52px!important;
+  border-radius:9px!important;
+  background:linear-gradient(90deg,#0b55ab 0%,#058caa 100%)!important;
+}
+#loginScreen .tfms-login-card .login-links{
+  margin-top:17px!important;
+}
+@media(max-width:1280px){
+  #loginScreen.login-screen{grid-template-columns:52% 48%!important;}
+  #loginScreen .tfms-login-brand{padding:38px 38px 42px!important;}
+  #loginScreen .tfms-corp-logo img{width:min(300px,28vw)!important;}
+  #loginScreen .tfms-brand-name strong{font-size:38px!important;}
+  #loginScreen .tfms-motto strong{font-size:31px!important;}
+  #loginScreen .tfms-motto span{font-size:20px!important;}
+}
+@media(max-width:980px){
+  #loginScreen.login-screen{grid-template-columns:1fr!important;}
+  #loginScreen .tfms-login-brand{display:none!important;}
+  #loginScreen .tfms-login-card{width:min(470px,92%)!important;}
+}
+</style>
+
 </head>
 <body>
 <header class="hidden" id="appHeader">
@@ -11807,8 +11924,8 @@ document.addEventListener('DOMContentLoaded',function(){
   if(typeof old==='function')window.renderDashboardData=function(){const r=old.apply(this,arguments);setTimeout(window.renderBrandDashboardV451,0);return r};
   document.addEventListener('DOMContentLoaded',()=>setTimeout(window.renderBrandDashboardV451,300));
   setTimeout(window.renderBrandDashboardV451,1000);
-  const badge=document.getElementById('tfmsVersionBadge');if(badge)badge.textContent='v44.23 Enterprise UX';
-  document.title='TFMS v44.23 Enterprise UX';
+  const badge=document.getElementById('tfmsVersionBadge');if(badge)badge.textContent='v44.24 Enterprise UX';
+  document.title='TFMS v44.24 Enterprise UX';
 })();
 </script>
 </body></html>`);
@@ -16560,7 +16677,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 })();
 </script>
 <script id="tfms-v447-version"><!--
-(function(){window.TFMS_BUILD=Object.freeze({version:'v44.23',channel:'Enterprise UX Preview',buildDate:'2026.07.30',title:'소화기 구역별 일괄등록·QR 라벨 출력'});document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{const b=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');if(b)b.textContent='v44.23 Enterprise UX';},500)});})();
+(function(){window.TFMS_BUILD=Object.freeze({version:'v44.24',channel:'Enterprise UX Preview',buildDate:'2026.07.30',title:'소화기 구역별 일괄등록·QR 라벨 출력'});document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{const b=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');if(b)b.textContent='v44.24 Enterprise UX';},500)});})();
 //--></script>
 <!-- TFMS v44.9 Enterprise Stable UX: 설비관리 다이어트 5회차 + 사용자정보 자동연동 보완 -->
 <style id="tfms-v449-equipment-diet">
@@ -16730,11 +16847,11 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
  document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{setup();applyProfileAuto();},500));
 })();
 </script>
- TFMS v44.23 Enterprise UX
+ TFMS v44.24 Enterprise UX
 <script id="tfms-v4413-final-fix">
 (function(){
   'use strict';
-  var BUILD_TEXT='v44.23 Enterprise UX';
+  var BUILD_TEXT='v44.24 Enterprise UX';
 
   function byId(id){return document.getElementById(id)}
   function readSession(){
@@ -16882,7 +16999,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 <script id="tfms-v4416-export-preview-controller">
 (function(){
   'use strict';
-  var BUILD='v44.23 Enterprise UX';
+  var BUILD='v44.24 Enterprise UX';
   function $(id){return document.getElementById(id)}
   function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]})}
   function val(id,fallback){var el=$(id);return el?el.value:(fallback||'')}
@@ -16992,7 +17109,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 </script>
 
 <style id="tfms-v4420-header-dashboard-refinement">
-/* TFMS v44.23 - header contrast + one-screen dashboard refinement */
+/* TFMS v44.24 - header contrast + one-screen dashboard refinement */
 #appHeader .top{height:76px!important;padding:0 20px!important}
 #appHeader .top .logo{display:flex!important;align-items:center!important;gap:16px!important;min-width:560px!important}
 #appHeader .top .logo img{width:270px!important;height:48px!important;max-height:48px!important;padding:7px 14px!important;object-fit:contain!important}
@@ -17061,7 +17178,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 <script id="tfms-v4420-header-dashboard-controller">
 (function(){
  'use strict';
- var BUILD='v44.23 Enterprise UX';
+ var BUILD='v44.24 Enterprise UX';
  function cleanStrayBuildText(){
    var walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
    var remove=[];
@@ -17098,7 +17215,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 <script id="tfms-v4420-version-normalizer">
 (function(){
   'use strict';
-  const BUILD='v44.23 Enterprise UX';
+  const BUILD='v44.24 Enterprise UX';
   function apply(){
     document.title='TFMS '+BUILD;
     const badge=document.getElementById('tfmsVersionBadge') || document.querySelector('.v32-classic-note');
