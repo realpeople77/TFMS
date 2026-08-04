@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>TFMS v44.18 Brand Preview</title>
+<title>TFMS v45.0 Enterprise UX</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -346,94 +346,52 @@ nav .nav[onclick*='"qrCheck"']{
   display:none!important;
 }
 </style>
-<style id="tfms-v4418-brand-preview">
-:root{
- --blue:#0d4f9f;--deep:#062c61;--light:#edf7fa;--line:#d8e3ee;--text:#122238;
- --muted:#68788d;--bg:#f4f7fb;--orange:#ff8a00;--green:#0fa3a3;
- --brand-navy:#062c61;--brand-blue:#0d4f9f;--brand-teal:#0fa3a3;--brand-mint:#72d0c6;
- --shadow:0 12px 34px rgba(6,44,97,.10);
-}
-body{background:linear-gradient(145deg,#f7f9fc,#f0f5fa);color:var(--text)}
-header#appHeader{background:var(--brand-navy);border:0;box-shadow:0 8px 28px rgba(6,44,97,.18)}
-#appHeader .top{height:84px;padding:0 26px;color:#fff}
-#appHeader .logo{gap:17px;color:#fff}
-#appHeader .logo img{height:38px;max-width:270px;object-fit:contain;background:#fff;border-radius:9px;padding:6px 10px}
-#appHeader .logo-title{display:grid;grid-template-columns:auto auto auto;align-items:center;gap:9px;color:#fff;font-size:28px;letter-spacing:.2px}
-#appHeader .logo-title .brand-name{font-weight:950}
-#appHeader .brand-divider{width:1px;height:27px;background:rgba(255,255,255,.35)}
-#appHeader .logo-title small{grid-column:1/-1;color:#c7d9ee;font-size:11px;letter-spacing:.25px;margin-top:-5px}
-#tfmsVersionBadge{background:rgba(15,163,163,.2)!important;border:1px solid rgba(114,208,198,.55)!important;color:#d9fffa!important;font-size:11px!important;padding:4px 8px!important;border-radius:999px!important}
-#appHeader .user{color:#e6eef8}
-#appHeader .link-btn{color:#fff!important}
-#appHeader .logout{background:#fff;color:var(--brand-navy);box-shadow:0 5px 14px rgba(0,0,0,.12)}
-#appHeader nav{height:58px;background:#073770;padding:0 25px;box-shadow:none;border-top:1px solid rgba(255,255,255,.08)}
-#appHeader .nav{display:inline-flex;align-items:center;gap:8px;padding:17px 18px;border-bottom-width:3px;color:#e8f1fb}
-#appHeader .nav::before{font-size:16px;opacity:.95}
-#appHeader .nav:nth-child(1)::before{content:'⌂'}
-#appHeader .nav:nth-child(2)::before{content:'▣'}
-#appHeader .nav:nth-child(3)::before{content:'＋'}
-#appHeader .nav:nth-child(4)::before{content:'⌕'}
-#appHeader .nav:nth-child(5)::before{content:'▥'}
-#appHeader .nav:nth-child(6)::before{content:'⇩'}
-#appHeader .nav:nth-child(7)::before{content:'▤'}
-#appHeader .nav:nth-child(8)::before{content:'▦'}
-#appHeader .nav:nth-child(9)::before{content:'⚙'}
-#appHeader .nav:nth-child(10)::before{content:'◷'}
-#appHeader .nav.active,#appHeader .nav:hover{background:linear-gradient(135deg,var(--brand-teal),#087f90);border-bottom-color:#72d0c6;color:#fff}
-.layout{padding-top:28px}
-.side-card,.panel,.stat,.quick,.compare-card,.big-card{border-color:#dbe5ee;box-shadow:0 9px 25px rgba(6,44,97,.07)}
-.side-card h3,.section-title{color:var(--brand-navy)}
-.team.active{background:linear-gradient(135deg,var(--brand-blue),#1676bf)}
-.title-icon{background:linear-gradient(135deg,var(--brand-blue),var(--brand-teal));box-shadow:0 8px 18px rgba(13,79,159,.22)}
-.dot{background:var(--brand-teal)}
-.btn.blue,.small-btn.blue{background:linear-gradient(135deg,var(--brand-blue),#1269c4);border-color:transparent;box-shadow:0 6px 14px rgba(13,79,159,.18)}
-.choice.active{background:var(--brand-blue);border-color:var(--brand-blue)}
-.stat strong,.bar-value,.facility-stat strong{color:var(--brand-blue)}
-.quick .ico{background:#e8f7f6;color:var(--brand-teal)}
-.primary-action{background:linear-gradient(135deg,var(--brand-navy),var(--brand-teal))}
 
-/* branded login */
-.login-screen.tfms-brand-login{min-height:100vh;padding:0;display:grid;grid-template-columns:minmax(430px,46%) minmax(460px,54%);background:#f5f8fc}
-.login-brand-panel{position:relative;overflow:hidden;min-height:100vh;padding:48px 52px;background:linear-gradient(155deg,#f9fcff 0%,#eff8fb 56%,#dff3ed 100%);border-right:1px solid #d7e5ef;display:flex;flex-direction:column;justify-content:space-between}
-.login-brand-head{display:flex;align-items:center;gap:20px;position:relative;z-index:3}
-.login-brand-head>img{width:min(285px,58%);height:auto;object-fit:contain}
-.login-brand-head>span{height:48px;width:1px;background:#b9c9d8}
-.login-brand-head>div strong{display:block;font-size:36px;line-height:1;color:var(--brand-navy);letter-spacing:.5px}
-.login-brand-head>div small{display:block;margin-top:7px;color:#31587f;font-size:11px;line-height:1.25;letter-spacing:.2px}
-.login-brand-copy{position:relative;z-index:3;text-align:center;margin-bottom:17vh}
-.login-brand-copy strong{font-size:22px;color:var(--brand-navy);letter-spacing:.8px}
-.login-brand-copy p{font-size:18px;color:#224a71;margin:10px 0}.login-brand-copy em{font-style:normal;color:var(--brand-teal);font-weight:900}
-.login-city-illustration{position:absolute;left:0;right:0;bottom:0;height:48%;overflow:hidden;background:linear-gradient(to top,rgba(255,255,255,.76),transparent)}
-.login-city-illustration::before,.login-city-illustration::after{content:'';position:absolute;left:-10%;right:-10%;bottom:-28%;height:62%;border-radius:50%;transform:rotate(-4deg)}
-.login-city-illustration::before{background:linear-gradient(90deg,#2f7bc2,#60b8cc);bottom:-39%;z-index:4}
-.login-city-illustration::after{background:linear-gradient(90deg,#8bd8c0,#4fbdac);bottom:-49%;left:17%;z-index:5}
-.mountain{position:absolute;bottom:24%;width:58%;height:44%;clip-path:polygon(50% 0,100% 100%,0 100%);opacity:.32}
-.mountain-a{left:-5%;background:#75aee4}.mountain-b{right:-9%;width:70%;height:52%;background:#9ec9ef}
-.building{position:absolute;bottom:16%;background:linear-gradient(90deg,#9bc6e7,#d9ebf7);border:2px solid rgba(13,79,159,.18);z-index:2;box-shadow:inset 0 0 0 8px rgba(255,255,255,.28)}
-.building::after{content:'';position:absolute;inset:14px;background:repeating-linear-gradient(0deg,transparent 0 17px,rgba(13,79,159,.14) 18px 20px),repeating-linear-gradient(90deg,transparent 0 29px,rgba(13,79,159,.14) 30px 32px)}
-.b1{left:20%;width:26%;height:42%;transform:skewY(-3deg)}.b2{left:42%;width:31%;height:52%}.b3{right:8%;width:22%;height:35%;transform:skewY(4deg)}
-.brand-login-box{align-self:center;justify-self:center;width:min(470px,78%);padding:42px 38px;border:1px solid #d7e2ed;border-radius:25px;box-shadow:0 22px 52px rgba(6,44,97,.13);background:rgba(255,255,255,.96)}
-.brand-login-box h1{text-align:center;color:var(--brand-navy);font-size:31px;margin-bottom:8px}
-.brand-login-box>p{text-align:center;margin-bottom:28px}
-.brand-input label{color:#24415f}
-.brand-input input{height:50px;border-color:#c7d4e2;background:#fbfdff;padding-left:15px}.brand-input input:focus{outline:3px solid rgba(15,163,163,.15);border-color:var(--brand-teal)}
-.brand-login-actions{margin-top:25px}.brand-login-actions .btn{width:100%;height:49px;font-size:16px}
-.brand-login-box .login-links{margin-top:17px}.brand-login-box .login-links #cloudLoginStatus{color:#397865;font-size:13px}
-.brand-login-footer{text-align:center;color:#8392a5;font-size:11px;margin-top:34px;padding-top:18px;border-top:1px solid #edf1f5}
-.login-mobile-logo{display:none}
-@media(max-width:900px){
- .login-screen.tfms-brand-login{grid-template-columns:1fr;padding:24px;background:linear-gradient(145deg,#edf7fb,#e9f5f1)}
- .login-brand-panel{display:none}.brand-login-box{width:min(470px,100%)}.login-mobile-logo{display:flex;align-items:center;justify-content:center;gap:15px;margin-bottom:24px}.login-mobile-logo img{width:210px;max-width:62%}.login-mobile-logo strong{font-size:27px;color:var(--brand-navy);padding-left:14px;border-left:1px solid #cbd7e2}
- #appHeader .logo img{max-width:190px}.logo-title small{display:none!important}
-}
+<style id="tfms-v45-enterprise-ux">
+:root{--tfms-navy:#062b63;--tfms-navy2:#0a3f82;--tfms-teal:#0fa3a3;--tfms-teal2:#13b8ad;--tfms-bg:#f4f7fb;--tfms-line:#dfe7f2;--tfms-text:#10213d;--tfms-muted:#6f7f96}
+*{box-sizing:border-box}
+body{background:var(--tfms-bg)!important;color:var(--tfms-text)}
+/* login */
+#loginScreen.login-screen{min-height:100vh;padding:0!important;display:grid!important;grid-template-columns:minmax(420px,46%) minmax(420px,54%);background:#eef6fb!important;align-items:stretch!important}
+#loginScreen.hidden{display:none!important}
+.tfms-login-brand{position:relative;overflow:hidden;padding:46px 48px;background:linear-gradient(145deg,#f9fcff 0%,#edf8fb 60%,#e5f5f3 100%);display:flex;flex-direction:column;justify-content:space-between;min-height:100vh;border-right:1px solid #d7e3ef}
+.tfms-brand-lockup{display:flex;align-items:center;gap:24px;z-index:2}.tfms-corp-logo img{display:block;width:min(290px,30vw);height:auto}.tfms-brand-divider{height:68px;width:1px;background:#a8bdd1}.tfms-brand-name strong{display:block;color:#07366f;font-size:42px;letter-spacing:1px;line-height:1}.tfms-brand-name span{display:block;margin-top:9px;color:#22558a;font-size:14px;line-height:1.35}
+.tfms-motto{z-index:2;margin-bottom:56px;text-align:center}.tfms-motto strong{display:block;font-size:25px;color:#08356c;letter-spacing:-.5px}.tfms-motto span{display:block;margin-top:13px;font-size:18px;color:#516d8c}.tfms-motto span::first-letter{color:var(--tfms-teal)}
+.tfms-building-art{position:absolute;left:0;right:0;bottom:0;height:48%;opacity:.55}.mountain{position:absolute;bottom:0;width:55%;height:70%;background:#bedbef;clip-path:polygon(50% 0,100% 100%,0 100%)}.m1{left:-8%}.m2{right:-8%;height:85%;background:#cae5f2}.building{position:absolute;bottom:0;border:2px solid #80b3dc;background:rgba(255,255,255,.3)}.b1{left:12%;width:28%;height:34%}.b2{left:36%;width:31%;height:46%}.b3{right:8%;width:27%;height:27%}.building:after{content:"";position:absolute;inset:18px;background:repeating-linear-gradient(90deg,transparent 0 28px,#8cb9db 29px 31px),repeating-linear-gradient(0deg,transparent 0 22px,#8cb9db 23px 25px);opacity:.55}
+#loginScreen .tfms-login-card{align-self:center;justify-self:center;width:min(470px,82%);padding:42px!important;border-radius:18px!important;background:#fff!important;border:1px solid #dae4f0!important;box-shadow:0 22px 65px rgba(7,43,99,.15)!important}
+#loginScreen .tfms-login-card h1{text-align:center;font-size:30px;margin-bottom:14px;color:#082f64}#loginScreen .tfms-login-card>p{text-align:center;color:#718099;line-height:1.6;margin-bottom:28px}
+#loginScreen input{height:52px;border-radius:10px!important;border-color:#cedaea!important;background:#fbfdff!important}#loginScreen .buttons .blue{width:100%;height:52px;background:linear-gradient(90deg,#0a4a96,#087f9e)!important;border-radius:10px!important;font-size:16px}#loginScreen .login-links{margin-top:18px}
+/* application header */
+#appHeader{position:sticky;top:0;z-index:1000;background:var(--tfms-navy)!important;box-shadow:0 7px 24px rgba(4,34,75,.2)}
+#appHeader .top{height:80px!important;background:linear-gradient(90deg,#062b63,#073a77)!important;padding:0 24px!important;border:0!important}
+#appHeader .logo{min-width:0;gap:18px}.logo img{width:250px!important;max-height:54px!important;object-fit:contain;background:#fff;padding:9px 13px;border-radius:8px}.logo-title b{font-size:27px!important;color:#fff!important}.logo-title small{color:#bcd2eb!important}.logo-title:after{content:'v45.0 Enterprise UX';display:inline-block;margin-left:12px;padding:6px 11px;border:1px solid rgba(80,230,220,.45);border-radius:999px;color:#d6fffa;background:rgba(15,163,163,.17);font-size:12px;font-weight:800;vertical-align:middle}
+#appHeader .user{color:#fff!important}.logout{background:#fff!important;color:#07366f!important}
+#appHeader nav{position:fixed!important;left:0;top:80px;bottom:0;width:245px;height:auto!important;display:flex!important;flex-direction:column;align-items:stretch!important;gap:4px!important;padding:18px 12px 100px!important;background:linear-gradient(180deg,#07366f 0%,#032653 100%)!important;overflow-y:auto!important;box-shadow:8px 0 28px rgba(4,37,80,.12);z-index:990}
+#appHeader .nav{position:relative;text-align:left!important;padding:13px 15px 13px 46px!important;border:0!important;border-radius:9px!important;color:#eaf3ff!important;font-size:14px!important;min-height:46px}.nav:hover,.nav.active{background:linear-gradient(90deg,#0f9ca8,#0c7ca5)!important;color:#fff!important;box-shadow:0 8px 18px rgba(12,132,156,.22)}.nav .tfms-nav-ico{position:absolute;left:15px;top:50%;transform:translateY(-50%);font-size:19px;width:22px;text-align:center}
+/* app content */
+#appLayout.layout{display:block!important;padding:24px 24px 48px 269px!important;min-height:calc(100vh - 80px);background:var(--tfms-bg)!important}
+#appLayout.hidden{display:none!important}#appLayout>aside{display:none!important}#appLayout>main{min-width:0!important;width:100%!important}
+.page{max-width:none!important}.title-row{margin-bottom:18px!important}.title-left h1{font-size:28px!important;color:#112541!important}.title-icon{background:linear-gradient(145deg,#0f9ca8,#155dcc)!important;color:#fff!important;border-radius:13px!important;box-shadow:0 8px 20px rgba(20,98,170,.18)}
+.panel,.stat,.summary-card,.quick,.side-card{border:1px solid var(--tfms-line)!important;border-radius:13px!important;box-shadow:0 7px 20px rgba(14,49,91,.055)!important;background:#fff!important}.panel{padding:18px!important}.section-title{font-size:17px!important}.section-title .dot{background:var(--tfms-teal)!important}
+#dashboard{display:grid!important;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:16px!important;align-items:start}
+#dashboard>.title-row,#dashboard>.stats,#dashboard>.dash-log-panel{grid-column:1/-1}
+#dashboard>.patch-note,#dashboard>.change-note,#dashboard>.guide-box,#dashboard>.dash-dept-panel,#dashboard>.dash-summary-panel,#dashboard>.dash-quick-panel{display:none!important}
+#dashboard>.dash-action-panel{grid-column:1}#dashboard>.dash-today-panel{grid-column:2;margin-top:0!important}
+#dashboard>.stats{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px!important;order:-1}.stat{position:relative;min-height:112px;padding:20px 20px 18px 76px!important}.stat:before{position:absolute;left:20px;top:24px;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#eef5ff;color:#1763c6;font-size:21px}.stat:nth-child(1):before{content:'📋'}.stat:nth-child(2):before{content:'◷'}.stat:nth-child(3):before{content:'✓';background:#ebfaf6;color:#0d9e7c}.stat:nth-child(4):before{content:'₩';background:#fff4e9;color:#ef7d18}.stat p{color:#5f7088!important;font-weight:700}.stat strong{font-size:28px!important;color:#0a376f!important}
+.action-panel{grid-template-columns:1fr!important}.primary-action{background:linear-gradient(135deg,#07366f,#0e929f)!important;border-radius:12px!important}.secondary-actions{grid-template-columns:repeat(2,minmax(0,1fr))!important}.secondary-action{border-radius:10px!important}
+.table{border-collapse:separate!important;border-spacing:0}.table th{background:#f5f8fc!important;color:#53647c!important}.table th:first-child{border-radius:8px 0 0 8px}.table th:last-child{border-radius:0 8px 8px 0}
+.btn.blue{background:linear-gradient(90deg,#0a56b6,#0a8c9a)!important}.current-scope{background:#eafbf7!important;color:#087a6e!important;border-color:#bcecdf!important}.live-dot{background:#1fcf96!important}
+#tfmsBrandFooter{margin-left:245px;padding:16px 24px;text-align:center;background:#062b63;color:#bfd0e4;font-size:12px}
+@media(max-width:1050px){#loginScreen.login-screen{grid-template-columns:1fr}.tfms-login-brand{display:none}#loginScreen .tfms-login-card{width:min(470px,92%)}#appHeader nav{width:210px}#appLayout.layout{padding-left:228px!important}#tfmsBrandFooter{margin-left:210px}#dashboard{grid-template-columns:1fr!important}#dashboard>*{grid-column:1!important}.logo img{width:190px!important}}
+@media(max-width:760px){#appHeader .top{height:68px!important;padding:0 12px!important}.logo img{width:145px!important}.logo-title small,.logo-title:after{display:none!important}#appHeader nav{position:static!important;width:100%;height:54px!important;flex-direction:row!important;padding:0 8px!important;overflow-x:auto!important}.nav{min-width:max-content!important;padding:15px 14px!important}.nav .tfms-nav-ico{display:none}#appLayout.layout{padding:15px!important}#tfmsBrandFooter{margin-left:0}#dashboard>.stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}.stat{padding-left:66px!important}}
 </style>
 </head>
 <body>
 <header class="hidden" id="appHeader">
 <div class="top">
 <div aria-label="대시보드 홈으로 이동" class="logo" onclick="goHome()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goHome();}" role="button" tabindex="0">
-<img alt="태백시시설관리공단 CI" src="taebaek_logo.png"/>
-<div class="logo-title"><span class="brand-name">TFMS</span><span class="brand-divider"></span><span class="v32-classic-note" id="tfmsVersionBadge" title="클릭하여 업데이트 내역 보기">v44.18</span><small>Taebaek Facility Management System</small></div>
+<img alt="태백시시설관리공단" src="data:image/png;base64,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"/>
+<div class="logo-title">TFMS <span class="v32-classic-note" id="tfmsVersionBadge" title="클릭하여 업데이트 내역 보기">v36.3 Stable</span><small>시설 유지관리 이력관리 시스템 · v36.3 Stable Enterprise</small></div>
 </div>
 <div class="user">
 <span class="current-role-badge" id="cloudTopBadge" style="background:#fff7ed;color:#9a3412;border-color:#fed7aa">로컬 저장</span><span>🔔</span><button class="link-btn" id="topUserLabel" onclick="navTo('myPage')" style="text-decoration:none">👤 로그인 사용자</button><span class="current-role-badge" id="roleBadge">권한 확인 중</span><button class="logout" id="topLoginBtn" onclick="toggleTopLogin()">로그아웃</button>
@@ -457,32 +415,20 @@ header#appHeader{background:var(--brand-navy);border:0;box-shadow:0 8px 28px rgb
 <button class="nav dev-nav" data-roles="admin" onclick="showPage('finalTest',this)">실전 테스트</button>
 </nav>
 </header>
-<section class="login-screen tfms-brand-login" id="loginScreen">
-<div class="login-brand-panel">
-  <div class="login-brand-head">
-    <img alt="태백시시설관리공단" src="taebaek_logo.png"/>
-    <span></span>
-    <div><strong>TFMS</strong><small>Taebaek Facility<br/>Management System</small></div>
-  </div>
-  <div class="login-city-illustration" aria-hidden="true">
-    <div class="mountain mountain-a"></div><div class="mountain mountain-b"></div>
-    <div class="building b1"></div><div class="building b2"></div><div class="building b3"></div>
-  </div>
-  <div class="login-brand-copy">
-    <strong>신뢰 · 효율 · 안전 · 혁신</strong>
-    <p>시민과 함께, <em>더 나은 시설관리</em></p>
-  </div>
+<section class="login-screen" id="loginScreen"><div class="tfms-login-brand"><div class="tfms-brand-lockup">
+<div class="tfms-corp-logo"><img alt="태백시시설관리공단" src="data:image/png;base64,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"/></div>
+<div class="tfms-brand-divider"></div>
+<div class="tfms-brand-name"><strong>TFMS</strong><span>Taebaek Facility<br/>Management System</span></div>
 </div>
-<div class="login-box brand-login-box">
-  <div class="login-mobile-logo"><img alt="태백시시설관리공단" src="taebaek_logo.png"/><strong>TFMS</strong></div>
-  <h1>로그인</h1>
-  <p>등록된 사용자 계정으로 접속해 주세요.</p>
-  <div class="field brand-input"><label>아이디</label><input autocomplete="username" id="loginId" onkeydown="if(event.key==='Enter') document.getElementById('loginPassword').focus()" placeholder="아이디를 입력해 주세요" type="text"/></div>
-  <div class="field brand-input" style="margin-top:14px"><label>비밀번호</label><input autocomplete="current-password" id="loginPassword" onkeydown="if(event.key==='Enter') stableLoginEnter()" placeholder="비밀번호를 입력해 주세요" type="password"/></div>
-  <div class="hidden" id="loginError" role="alert" style="margin-top:12px;padding:11px 13px;border:1px solid #fecaca;border-radius:9px;background:#fff5f5;color:#b91c1c;font-size:14px;font-weight:800">사용자 또는 비밀번호가 올바르지 않습니다.</div>
-  <div class="buttons brand-login-actions"><button class="btn blue" onclick="stableLoginEnter()">로그인</button></div>
-  <div class="login-links"><button class="link-btn" onclick="showAccountRequest()">계정 신청</button><span id="cloudLoginStatus">DB 연결 확인 중</span></div>
-  <div class="brand-login-footer">TFMS Enterprise System · Internal Pilot</div>
+<div aria-hidden="true" class="tfms-building-art"><div class="mountain m1"></div><div class="mountain m2"></div><div class="building b1"></div><div class="building b2"></div><div class="building b3"></div></div>
+<div class="tfms-motto"><strong>시민중심 · 안전중심 · 성장중심</strong><span>시민과 함께 만드는 더 나은 시설관리</span></div></div>
+<div class="login-box tfms-login-card">
+<h1>로그인</h1>
+<p>등록된 사용자와 비밀번호가 일치해야 접속할 수 있습니다. 권한은 계정에 따라 자동 적용됩니다.</p>
+<div class="field"><label>아이디</label><input autocomplete="username" id="loginId" onkeydown="if(event.key==='Enter') document.getElementById('loginPassword').focus()" placeholder="가입한 아이디 입력" type="text"/></div>
+<div class="field" style="margin-top:14px"><label>비밀번호</label><input autocomplete="current-password" id="loginPassword" onkeydown="if(event.key==='Enter') stableLoginEnter()" placeholder="비밀번호 입력" type="password"/></div>
+<div class="hidden" id="loginError" role="alert" style="margin-top:12px;padding:11px 13px;border:1px solid #fecaca;border-radius:9px;background:#fff5f5;color:#b91c1c;font-size:14px;font-weight:800">사용자 또는 비밀번호가 올바르지 않습니다.</div>
+<div class="buttons"><button class="btn blue" onclick="stableLoginEnter()">로그인</button></div><div class="login-links"><button class="link-btn" onclick="showAccountRequest()">계정 신청</button><span id="cloudLoginStatus" style="color:#667085;font-size:13px">DB 연결 확인 중</span></div>
 </div>
 </section>
 <section class="login-screen hidden" id="accountRequestScreen">
@@ -541,7 +487,7 @@ header#appHeader{background:var(--brand-navy);border:0;box-shadow:0 8px 28px rgb
 <div class="patch-note"><strong>Supabase 연결형</strong> · 화면은 v31 그대로 유지하며, DB 설정 후 시설·설비·점검주기·오늘업무·유지관리 이력을 Supabase에 공동 저장합니다.</div>
 <div class="patch-note" id="dbStatusPanel"><strong>v30 DB 상태</strong> · 화면 로딩 후 현재 데이터 수량을 표시합니다.</div>
 <div class="change-note"><strong>v31.1 로그인·홈 이동 안정화</strong> · 등록된 계정정보가 일치할 때만 로그인되며, 권한은 계정에 따라 고정 적용됩니다. 공단 CI·TFMS 로고를 누르면 대시보드 홈으로 이동합니다. 단, 조회전용 권한은 기존처럼 숨김 처리하고 삭제는 즉시삭제가 아닌 삭제요청 이력으로 남기는 구조를 유지합니다.</div>
-<div class="panel"><div class="section-title"><span class="dot"></span>관리부서별 현황</div><div class="dept-tabs"><button class="dept-tab active" onclick="filterDeptDash('전체',this)">전체</button><button class="dept-tab" onclick="filterDeptDash('체육운영팀',this)">체육운영팀</button><button class="dept-tab" onclick="filterDeptDash('관광운영팀',this)">관광운영팀</button><button class="dept-tab" onclick="filterDeptDash('복지주택팀',this)">복지주택팀</button><button class="dept-tab" onclick="filterDeptDash('안전·시설운영팀',this)">안전·시설운영팀</button></div><div class="notice" id="deptSummary">전체 시설 기준으로 표시 중입니다.</div></div>
+<div class="panel dash-dept-panel"><div class="section-title"><span class="dot"></span>관리부서별 현황</div><div class="dept-tabs"><button class="dept-tab active" onclick="filterDeptDash('전체',this)">전체</button><button class="dept-tab" onclick="filterDeptDash('체육운영팀',this)">체육운영팀</button><button class="dept-tab" onclick="filterDeptDash('관광운영팀',this)">관광운영팀</button><button class="dept-tab" onclick="filterDeptDash('복지주택팀',this)">복지주택팀</button><button class="dept-tab" onclick="filterDeptDash('안전·시설운영팀',this)">안전·시설운영팀</button></div><div class="notice" id="deptSummary">전체 시설 기준으로 표시 중입니다.</div></div>
 <div class="guide-box">
 <div class="guide-step"><b>1</b><strong>오늘 업무 확인</strong><p>출근 후 해야 할 점검을 먼저 확인합니다.</p></div>
 <div class="guide-step"><b>2</b><strong>정상 업무 체크</strong><p>반복점검은 업무일지에 간단히 저장합니다.</p></div>
@@ -549,7 +495,7 @@ header#appHeader{background:var(--brand-navy);border:0;box-shadow:0 8px 28px rgb
 <div class="guide-step"><b>4</b><strong>조회·확인</strong><p>등록된 이력은 조회 화면에서 바로 확인합니다.</p></div>
 <div class="guide-step"><b>5</b><strong>자료 출력</strong><p>필요 시 엑셀·경영평가 자료로 내려받습니다.</p></div>
 </div>
-<div class="panel">
+<div class="panel dash-action-panel">
 <div class="section-title"><span class="dot"></span>오늘 가장 먼저 할 일</div>
 <div class="action-panel">
 <button class="primary-action" onclick="navTo('today')"><h2>오늘의 업무 확인하기</h2><p>점검주기 기준으로 자동 생성된 오늘 업무를 확인하고, 완료 또는 이력등록으로 연결합니다.</p></button>
@@ -561,7 +507,7 @@ header#appHeader{background:var(--brand-navy);border:0;box-shadow:0 8px 28px rgb
 </div>
 </div>
 </div>
-<div class="panel">
+<div class="panel dash-today-panel">
 <div class="section-title"><span class="dot"></span>오늘 해야 하는 업무</div>
 <table class="table">
 <thead><tr><th>시설명</th><th>업무명</th><th>주기</th><th>기한</th><th>상태</th></tr></thead>
@@ -571,7 +517,7 @@ header#appHeader{background:var(--brand-navy);border:0;box-shadow:0 8px 28px rgb
 <div class="stats">
 <div class="stat"><p>금월 등록</p><strong id="dashTotal">0건</strong></div><div class="stat"><p>점검 예정</p><strong id="dashTodo">0건</strong></div><div class="stat"><p>미조치</p><strong id="dashOpen">0건</strong></div><div class="stat"><p>금월 집행금액</p><strong id="dashBudget">0천원</strong></div>
 </div>
-<div class="panel" style="margin-top:18px">
+<div class="panel dash-summary-panel" style="margin-top:18px">
 <div class="section-title"><span class="dot"></span>실시간 결과 요약</div>
 <div class="summary-grid">
 <div class="summary-card"><p>오늘 등록한 유지관리</p><strong id="dashTodayRegistered">0건</strong></div>
@@ -579,14 +525,14 @@ header#appHeader{background:var(--brand-navy);border:0;box-shadow:0 8px 28px rgb
 <div class="summary-card"><p>증빙자료 포함</p><strong id="dashEvidenceCount">0건</strong></div>
 </div>
 </div>
-<div class="panel" style="margin-top:18px">
+<div class="panel dash-log-panel" style="margin-top:18px">
 <div class="section-title"><span class="dot"></span>최근 업무일지</div>
 <table class="table">
 <thead><tr><th>근무일</th><th>시설명</th><th>근무자</th><th>업무건수</th><th>특이사항</th><th>관리</th></tr></thead>
 <tbody id="dashDailyBodyV322"><tr><td colspan="6"><div class="empty-state">저장된 업무일지가 없습니다.</div></td></tr></tbody>
 </table>
 </div>
-<div class="panel" style="margin-top:18px">
+<div class="panel dash-quick-panel" style="margin-top:18px">
 <div class="section-title"><span class="dot"></span>보조 메뉴</div>
 <div class="quick-grid">
 <div class="quick" onclick="navTo('register')"><div class="ico">＋</div><h3>유지관리 등록</h3><p>점검·보수·교체 이력 등록</p></div>
@@ -921,10 +867,10 @@ header#appHeader{background:var(--brand-navy);border:0;box-shadow:0 8px 28px rgb
 <div class="panel tfms-stats-main">
 <div class="section-title"><span class="dot"></span>유지관리 분석</div>
 <div class="tfms-four-charts">
-  <div class="tfms-mini-chart"><h3>월별 등록 추이</h3><div class="chart-wrap" id="monthlyChart"></div></div>
-  <div class="tfms-mini-chart"><h3>분야별 현황</h3><div class="chart-wrap" id="fieldChart"></div></div>
-  <div class="tfms-mini-chart"><h3>부서별 현황</h3><div class="chart-wrap" id="deptChart"></div></div>
-  <div class="tfms-mini-chart"><h3>처리상태 현황</h3><div class="chart-wrap" id="statusChartV443"></div></div>
+<div class="tfms-mini-chart"><h3>월별 등록 추이</h3><div class="chart-wrap" id="monthlyChart"></div></div>
+<div class="tfms-mini-chart"><h3>분야별 현황</h3><div class="chart-wrap" id="fieldChart"></div></div>
+<div class="tfms-mini-chart"><h3>부서별 현황</h3><div class="chart-wrap" id="deptChart"></div></div>
+<div class="tfms-mini-chart"><h3>처리상태 현황</h3><div class="chart-wrap" id="statusChartV443"></div></div>
 </div>
 <div class="tfms-stats-footnote">※ 등록된 유지관리 이력을 기준으로 집계하며, 카드와 그래프는 현재 선택 부서 기준으로 표시됩니다.</div>
 </div>
@@ -1124,7 +1070,6 @@ header#appHeader{background:var(--brand-navy);border:0;box-shadow:0 8px 28px rgb
           소방 관련 업무는 아래의 <b>소방 월간점검 기록표</b>를 기준으로 등록하며, 오늘의 업무에서 기록표 작성 화면으로 연결됩니다.
         </div>
 <div class="preset-grid">
-
 <div class="preset-card" onclick="applyPreset('전기','전기설비 정기점검','월간')"><strong>전기 정기점검</strong><span>분전반·조명·누전차단기 확인</span></div>
 <div class="preset-card" onclick="applyPreset('기계','보일러 및 펌프 점검','주간')"><strong>기계설비 점검</strong><span>보일러·펌프·배관 상태 확인</span></div>
 <div class="preset-card" onclick="applyPreset('수질','수영장 수질 확인','일일')"><strong>수질 일일확인</strong><span>수온·수질·밸런싱 탱크 확인</span></div>
@@ -1153,7 +1098,7 @@ header#appHeader{background:var(--brand-navy);border:0;box-shadow:0 8px 28px rgb
 </div>
 </section>
 </main>
-</div>
+</div><div id="tfmsBrandFooter">© 2026 태백시시설관리공단 TFMS Enterprise System</div>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
@@ -11626,7 +11571,6 @@ document.addEventListener('DOMContentLoaded',function(){
     },250);
   }
 </script>
-
 <!-- TFMS v44.5 Enterprise Stable UX: 대시보드 다이어트 1회차 -->
 <style id="tfms-v445-dashboard-diet">
 /* 기존 레이아웃과 기능을 유지하고 대시보드의 세로 여백만 보수적으로 축소 */
@@ -15619,7 +15563,6 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.addEventListener('DOMContentLoaded',applyVersionV423);
 })();
 </script>
-
 <style id="tfms-v425-fire-original-preview-style">
   /* v42.5: 별지 제12호서식 원본 이미지 위에 입력값만 중첩 */
   #firePreviewSheet.fire-original-sheet,
@@ -15645,9 +15588,6 @@ document.addEventListener('DOMContentLoaded',()=>{
     body.fire-printing #firePrintRoot .fire-original-sheet{page-break-inside:avoid!important;break-inside:avoid!important}
   }
 </style>
-
-
-
 <style id="tfms-v428-fire-record-final-style">
 /* v42.8: 법정서식 입력값 정렬 및 독립 인쇄문서 출력 */
 #firePreviewSheet.fire-original-sheet{
@@ -16020,7 +15960,6 @@ const oldShow=window.showPage;if(typeof oldShow==='function')window.showPage=fun
 const oldNav=window.navTo;if(typeof oldNav==='function')window.navTo=function(id){const r=oldNav.apply(this,arguments);if(id==='dashboard')setTimeout(setupDashboard,20);if(id==='fireMonthly')setTimeout(()=>{ensureHistory();window.loadFireHistoryV431?.()},100);return r};
 })();
 </script>
-
 <style id="tfms-v436-work-journal-fix">
   .dj-sheet.work-journal-sheet{padding:11mm 13mm!important}
   .work-journal-page{min-height:273mm;display:flex;flex-direction:column;box-sizing:border-box}
@@ -16053,8 +15992,6 @@ const oldNav=window.navTo;if(typeof oldNav==='function')window.navTo=function(id
 })();
 </script>
 <!-- TFMS v44.3 Enterprise UX Review: 일상근무일지 A4 출력 및 근무자 연동 개선 -->
-
-
 <style id="tfms-v440-ux-style">
 /* v44.2 UX Pilot: 기존 기능은 유지하고 화면 밀도와 통계 탐색만 개선 */
 .tfms-ux-page{padding-bottom:10px}
@@ -16098,7 +16035,6 @@ function switchStatsTabV440(name,btn){
  try{ if(typeof renderStatsCharts==='function') renderStatsCharts(); }catch(e){ console.warn('v44.0 stats tab refresh',e); }
 }
 </script>
-
 <style id="tfms-v443-ux-review-style">
 /* 오늘의 업무: 처리 버튼 한 줄 고정 */
 #today .table td:last-child{white-space:nowrap;min-width:285px}
@@ -16224,7 +16160,6 @@ const oldNav=window.navTo;if(typeof oldNav==='function')window.navTo=function(id
 document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayActionsV443();renderStatusChartV443();setupEquipmentTabsV443();normalizeFireCycleV443();},350)});
 })();
 </script>
-
 <!-- TFMS v44.5 Enterprise Stable UX: 대시보드 다이어트 1회차 -->
 <style id="tfms-v445-dashboard-diet">
 /* 기존 레이아웃과 기능을 유지하고 대시보드의 세로 여백만 보수적으로 축소 */
@@ -16269,8 +16204,6 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
  #dashboard.tfms-dashboard-v431>.title-row>div:last-child{flex-wrap:wrap;justify-content:flex-end}
 }
 </style>
-
-
 <!-- TFMS v44.6 Enterprise Stable UX: 오늘의 업무 다이어트 2회차 -->
 <style id="tfms-v446-today-actions-diet">
 /* 오늘의 업무 처리 버튼을 한 줄로 정렬 */
@@ -16379,11 +16312,9 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
   }
 })();
 </script>
-
 <script id="tfms-v447-version"><!--
 (function(){window.TFMS_BUILD=Object.freeze({version:'v44.15',channel:'Enterprise Pilot UX',buildDate:'2026.07.30',title:'소화기 구역별 일괄등록·QR 라벨 출력'});document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{const b=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');if(b)b.textContent='v44.15 Enterprise Pilot UX';},500)});})();
 //--></script>
-
 <!-- TFMS v44.9 Enterprise Stable UX: 설비관리 다이어트 5회차 + 사용자정보 자동연동 보완 -->
 <style id="tfms-v449-equipment-diet">
 /* 설비관리: 기존 기능과 데이터 구조를 유지한 채 화면 밀도와 탐색성만 개선 */
@@ -16552,9 +16483,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
  document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{setup();applyProfileAuto();},500));
 })();
 </script>
-
-
-<!-- TFMS v44.15 Enterprise Pilot UX: 코드 노출 복구 + 설비관리 시설범위 보완 + 내부 뒤로가기 -->
+ TFMS v45.0 Enterprise UX
 <script id="tfms-v4413-final-fix">
 (function(){
   'use strict';
@@ -16671,9 +16600,6 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
   else init();
 })();
 </script>
-
-
-
 <style id="tfms-v4416-export-preview-style">
 #excel .export-preview-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:14px 0 16px}
 #excel .export-summary-card{border:1px solid #dbe5f3;background:#f8fbff;border-radius:12px;padding:14px 16px}
@@ -16709,7 +16635,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 <script id="tfms-v4416-export-preview-controller">
 (function(){
   'use strict';
-  var BUILD='v44.16 Enterprise Pilot UX';
+  var BUILD='v45.0 Enterprise UX';
   function $(id){return document.getElementById(id)}
   function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]})}
   function val(id,fallback){var el=$(id);return el?el.value:(fallback||'')}
@@ -16798,16 +16724,23 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
   [500,1500,3000].forEach(function(ms){setTimeout(init,ms)});
 })();
 </script>
-<script id="tfms-v4418-brand-finalizer">
+
+<script id="tfms-v45-enterprise-ux-controller">
 (function(){
-  var BUILD='v44.18 Brand Preview';
+  'use strict';
+  var icons={
+    '대시보드':'⌂','오늘의 업무':'▣','유지관리 등록':'✚','유지관리 조회':'⌕','통계현황':'▥','엑셀 다운로드':'⇩','업무일지':'▤','QR점검':'▦','설비관리':'⚙','점검주기 관리':'◷','삭제·변경이력':'↶','내 정보':'♙','계정승인':'♧','예시자료':'◇','실전 테스트':'✓'
+  };
   function apply(){
-    document.title='TFMS '+BUILD;
-    var badge=document.getElementById('tfmsVersionBadge'); if(badge) badge.textContent='v44.18';
-    document.querySelectorAll('[data-tfms-build]').forEach(function(el){el.textContent=BUILD;});
+    document.querySelectorAll('#appHeader .nav').forEach(function(btn){
+      if(btn.querySelector('.tfms-nav-ico')) return;
+      var label=(btn.textContent||'').trim();
+      var sp=document.createElement('span');sp.className='tfms-nav-ico';sp.textContent=icons[label]||'•';btn.prepend(sp);
+    });
+    var brand=document.querySelector('#appHeader .logo-title b');if(brand) brand.textContent='TFMS';
+    var small=document.querySelector('#appHeader .logo-title small');if(small) small.textContent='Taebaek Facility Management System';
   }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
-  setTimeout(apply,600);
+  document.addEventListener('DOMContentLoaded',apply);setTimeout(apply,200);
 })();
 </script>
 </body></html>
