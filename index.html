@@ -16697,7 +16697,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 <script id="tfms-v4416-export-preview-controller">
 (function(){
   'use strict';
-  var BUILD='v45.1 Enterprise UX';
+  var BUILD='v45.2 Enterprise UX';
   function $(id){return document.getElementById(id)}
   function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]})}
   function val(id,fallback){var el=$(id);return el?el.value:(fallback||'')}
@@ -16803,6 +16803,110 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
     var small=document.querySelector('#appHeader .logo-title small');if(small) small.textContent='Taebaek Facility Management System';
   }
   document.addEventListener('DOMContentLoaded',apply);setTimeout(apply,200);
+})();
+</script>
+
+<style id="tfms-v452-header-dashboard-refinement">
+/* TFMS v45.2 - header contrast + one-screen dashboard refinement */
+#appHeader .top{height:76px!important;padding:0 20px!important}
+#appHeader .top .logo{display:flex!important;align-items:center!important;gap:16px!important;min-width:560px!important}
+#appHeader .top .logo img{width:270px!important;height:48px!important;max-height:48px!important;padding:7px 14px!important;object-fit:contain!important}
+#appHeader .logo-title{display:flex!important;align-items:center!important;gap:12px!important;color:#fff!important;font-size:28px!important;font-weight:900!important;line-height:1!important;white-space:nowrap!important}
+#appHeader .logo-title small{display:none!important}
+#appHeader .logo-title:after{display:none!important;content:none!important}
+#appHeader #tfmsVersionBadge{display:inline-flex!important;align-items:center!important;margin:0!important;padding:6px 10px!important;border:1px solid rgba(126,244,225,.55)!important;border-radius:999px!important;background:rgba(12,166,158,.22)!important;color:#dcfffa!important;font-size:11px!important;font-weight:900!important;line-height:1!important;box-shadow:none!important}
+#appHeader .user{display:flex!important;align-items:center!important;gap:10px!important;color:#fff!important;white-space:nowrap!important}
+#appHeader #topUserLabel{color:#fff!important;background:transparent!important;border:0!important;font-weight:800!important;opacity:1!important}
+#appHeader #roleBadge{background:#effff9!important;color:#075c4d!important;border:1px solid #8de3ca!important;box-shadow:none!important;font-weight:900!important}
+#appHeader #cloudTopBadge{background:#eafff1!important;color:#126035!important;border:1px solid #9ee1b5!important;font-weight:900!important}
+#appHeader .logout{background:#fff!important;color:#083a73!important;border:1px solid rgba(255,255,255,.72)!important;font-weight:900!important}
+#appHeader nav{top:76px!important}
+#appLayout.layout{padding-top:18px!important}
+
+/* Dashboard: fit key information in a 1920x1080 work screen */
+#dashboard.v451-renewed{padding-bottom:12px!important}
+#dashboard.v451-renewed .v451-dash-head{margin-bottom:10px!important;min-height:48px!important}
+#dashboard.v451-renewed .v451-dash-head h1{font-size:25px!important;margin-bottom:2px!important}
+#dashboard.v451-renewed .v451-dash-head p{font-size:12px!important}
+#dashboard.v451-renewed .v451-kpi-grid{gap:9px!important;margin-bottom:10px!important}
+#dashboard.v451-renewed .v451-kpi{min-height:92px!important;padding:12px 13px!important;gap:10px!important;border-radius:13px!important}
+#dashboard.v451-renewed .v451-kpi-icon{width:40px!important;height:40px!important;flex-basis:40px!important;font-size:18px!important}
+#dashboard.v451-renewed .v451-kpi b{font-size:12px!important}
+#dashboard.v451-renewed .v451-kpi strong{font-size:23px!important;margin:3px 0 1px!important}
+#dashboard.v451-renewed .v451-kpi small{font-size:10px!important}
+#dashboard.v451-renewed .v451-dashboard-grid{gap:10px!important;grid-template-columns:1.02fr 1.35fr 1fr!important;grid-template-rows:242px 160px 92px!important}
+#dashboard.v451-renewed .v451-card{border-radius:13px!important;min-height:0!important;overflow:hidden!important}
+#dashboard.v451-renewed .v451-card-head{padding:12px 14px 8px!important}
+#dashboard.v451-renewed .v451-card-head h2{font-size:15px!important}
+#dashboard.v451-renewed .v451-facility-content{gap:14px!important;padding:0 14px 13px!important;height:190px!important;box-sizing:border-box!important}
+#dashboard.v451-renewed .v451-donut{width:145px!important;height:145px!important;flex-basis:145px!important}
+#dashboard.v451-renewed .v451-donut:after{inset:27px!important}
+#dashboard.v451-renewed .v451-donut strong{font-size:23px!important}
+#dashboard.v451-renewed .v451-legend{gap:8px!important;min-width:120px!important}
+#dashboard.v451-renewed .v451-legend div{font-size:11px!important}
+#dashboard.v451-renewed .v451-table-wrap{padding:0 10px 8px!important;max-height:195px!important}
+#dashboard.v451-renewed .v451-table th{padding:7px 6px!important;font-size:10px!important}
+#dashboard.v451-renewed .v451-table td{padding:8px 6px!important;font-size:10.5px!important}
+#dashboard.v451-renewed .v451-recent-list{padding:0 12px 8px!important;max-height:355px!important;overflow:auto!important}
+#dashboard.v451-renewed .v451-recent-item{padding:8px 2px!important;grid-template-columns:30px 1fr auto!important;gap:8px!important}
+#dashboard.v451-renewed .v451-recent-icon{width:28px!important;height:28px!important;border-radius:8px!important;font-size:12px!important}
+#dashboard.v451-renewed .v451-recent-main b{font-size:11px!important;max-width:190px!important}
+#dashboard.v451-renewed .v451-recent-main small,#dashboard.v451-renewed .v451-recent-meta time{font-size:9.5px!important}
+#dashboard.v451-renewed .v451-mini-stats{padding:0 15px 10px!important;gap:6px!important}
+#dashboard.v451-renewed .v451-mini-stats div{font-size:11px!important}
+#dashboard.v451-renewed .v451-workflow-card{grid-column:1 / span 2!important;grid-row:3!important}
+#dashboard.v451-renewed .v451-workflow-card .v451-card-head{padding:8px 14px 2px!important}
+#dashboard.v451-renewed .v451-workflow{gap:9px!important;padding:2px 12px 8px!important}
+#dashboard.v451-renewed .v451-workflow button{gap:2px!important}
+#dashboard.v451-renewed .v451-workflow button span{width:31px!important;height:31px!important;border-radius:9px!important;font-size:14px!important}
+#dashboard.v451-renewed .v451-workflow button b{font-size:10px!important}
+#dashboard.v451-renewed .v451-daily-card .v451-table-wrap{max-height:105px!important}
+#dashboard.v451-renewed .v451-status-card{overflow:hidden!important}
+@media(max-width:1500px){
+ #appHeader .top .logo{min-width:455px!important}
+ #appHeader .top .logo img{width:220px!important}
+ #dashboard.v451-renewed .v451-dashboard-grid{grid-template-columns:1fr 1.25fr 1fr!important}
+}
+@media(max-width:1100px){
+ #appHeader .top .logo{min-width:0!important}
+ #appHeader #tfmsVersionBadge{display:none!important}
+ #dashboard.v451-renewed .v451-dashboard-grid{grid-template-rows:auto!important}
+}
+</style>
+<script id="tfms-v452-header-dashboard-controller">
+(function(){
+ 'use strict';
+ var BUILD='v45.2 Enterprise UX';
+ function cleanStrayBuildText(){
+   var walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+   var remove=[];
+   while(walker.nextNode()){
+     var n=walker.currentNode, t=(n.nodeValue||'').trim();
+     if(/^TFMS v45\.1 Enterprise UX$/.test(t) || /^v45\.1 Enterprise UX$/.test(t)) remove.push(n);
+   }
+   remove.forEach(function(n){n.nodeValue=''});
+ }
+ function refineHeader(){
+   var title=document.querySelector('#appHeader .logo-title');
+   if(title){
+     var badge=document.getElementById('tfmsVersionBadge');
+     Array.from(title.childNodes).forEach(function(n){
+       if(n.nodeType===Node.TEXT_NODE && (n.nodeValue||'').trim()) n.nodeValue='';
+     });
+     if(!title.querySelector('.tfms-v452-wordmark')){
+       var word=document.createElement('strong');word.className='tfms-v452-wordmark';word.textContent='TFMS';
+       title.insertBefore(word,title.firstChild);
+     }
+     if(badge){badge.textContent=BUILD;title.appendChild(badge)}
+     var small=title.querySelector('small');if(small)small.remove();
+   }
+   var role=document.getElementById('roleBadge');
+   if(role){role.style.background='#effff9';role.style.color='#075c4d';role.style.borderColor='#8de3ca'}
+   document.title='TFMS '+BUILD;
+ }
+ function apply(){cleanStrayBuildText();refineHeader()}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
+ [150,500,1200,2500].forEach(function(ms){setTimeout(apply,ms)});
 })();
 </script>
 </body></html>
