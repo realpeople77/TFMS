@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>TFMS v44.27 Enterprise UX</title>
+<title>TFMS v44.28 Enterprise UX</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -364,7 +364,7 @@ body{background:var(--tfms-bg)!important;color:var(--tfms-text)}
 /* application header */
 #appHeader{position:sticky;top:0;z-index:1000;background:var(--tfms-navy)!important;box-shadow:0 7px 24px rgba(4,34,75,.2)}
 #appHeader .top{height:80px!important;background:linear-gradient(90deg,#062b63,#073a77)!important;padding:0 24px!important;border:0!important}
-#appHeader .logo{min-width:0;gap:18px}.logo img{width:250px!important;max-height:54px!important;object-fit:contain;background:#fff;padding:9px 13px;border-radius:8px}.logo-title b{font-size:27px!important;color:#fff!important}.logo-title small{color:#bcd2eb!important}.logo-title:after{content:'v44.27 Enterprise UX';display:inline-block;margin-left:12px;padding:6px 11px;border:1px solid rgba(80,230,220,.45);border-radius:999px;color:#d6fffa;background:rgba(15,163,163,.17);font-size:12px;font-weight:800;vertical-align:middle}
+#appHeader .logo{min-width:0;gap:18px}.logo img{width:250px!important;max-height:54px!important;object-fit:contain;background:#fff;padding:9px 13px;border-radius:8px}.logo-title b{font-size:27px!important;color:#fff!important}.logo-title small{color:#bcd2eb!important}.logo-title:after{content:'v44.28 Enterprise UX';display:inline-block;margin-left:12px;padding:6px 11px;border:1px solid rgba(80,230,220,.45);border-radius:999px;color:#d6fffa;background:rgba(15,163,163,.17);font-size:12px;font-weight:800;vertical-align:middle}
 #appHeader .user{color:#fff!important}.logout{background:#fff!important;color:#07366f!important}
 #appHeader nav{position:fixed!important;left:0;top:80px;bottom:0;width:245px;height:auto!important;display:flex!important;flex-direction:column;align-items:stretch!important;gap:4px!important;padding:18px 12px 100px!important;background:linear-gradient(180deg,#07366f 0%,#032653 100%)!important;overflow-y:auto!important;box-shadow:8px 0 28px rgba(4,37,80,.12);z-index:990}
 #appHeader .nav{position:relative;text-align:left!important;padding:13px 15px 13px 46px!important;border:0!important;border-radius:9px!important;color:#eaf3ff!important;font-size:14px!important;min-height:46px}.nav:hover,.nav.active{background:linear-gradient(90deg,#0f9ca8,#0c7ca5)!important;color:#fff!important;box-shadow:0 8px 18px rgba(12,132,156,.22)}.nav .tfms-nav-ico{position:absolute;left:15px;top:50%;transform:translateY(-50%);font-size:19px;width:22px;text-align:center}
@@ -11929,8 +11929,8 @@ document.addEventListener('DOMContentLoaded',function(){
   if(typeof old==='function')window.renderDashboardData=function(){const r=old.apply(this,arguments);setTimeout(window.renderBrandDashboardV451,0);return r};
   document.addEventListener('DOMContentLoaded',()=>setTimeout(window.renderBrandDashboardV451,300));
   setTimeout(window.renderBrandDashboardV451,1000);
-  const badge=document.getElementById('tfmsVersionBadge');if(badge)badge.textContent='v44.27 Enterprise UX';
-  document.title='TFMS v44.27 Enterprise UX';
+  const badge=document.getElementById('tfmsVersionBadge');if(badge)badge.textContent='v44.28 Enterprise UX';
+  document.title='TFMS v44.28 Enterprise UX';
 })();
 </script>
 
@@ -15269,7 +15269,95 @@ window.printFireExtQrLabelsV447=async function(){
       labels.push({...row,qr:await qrDataUrlV447(url)});
     }
     const w=window.open('','_blank','width=1100,height=800');if(!w)throw new Error('팝업이 차단되었습니다.');
-    w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>${esc(facility)} 소화기 QR 라벨</title><style>@page{size:A4 portrait;margin:8mm}*{box-sizing:border-box}body{font-family:"Malgun Gothic",sans-serif;margin:0}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5mm}.label{border:1px solid #333;border-radius:3mm;min-height:82mm;padding:4mm;text-align:center;break-inside:avoid}.label img{width:42mm;height:42mm}.facility{font-weight:700;font-size:11pt}.code{font-size:15pt;font-weight:800;margin:2mm 0}.loc{font-size:9pt;min-height:12mm}.hint{font-size:7.5pt;color:#555;margin-top:1mm}@media print{.no-print{display:none}}</style></head><body><div class="no-print" style="padding:10px;text-align:center"><button onclick="print()">인쇄</button></div><div class="grid">${labels.map(x=>`<div class="label"><div class="facility">${esc(facility)}</div><div class="code">${esc(x.code)}</div><img src="${x.qr}"><div class="loc">${esc(x.location||'상세 위치 현장 입력')}</div><div class="hint">QR 촬영 후 현장점검</div></div>`).join('')}</div></body></html>`);
+    w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>${esc(facility)} 소화기 QR 라벨</title><style>@page{size:A4 portrait;margin:8mm}*{box-sizing:border-box}body{font-family:"Malgun Gothic",sans-serif;margin:0}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5mm}.label{border:1px solid #333;border-radius:3mm;min-height:82mm;padding:4mm;text-align:center;break-inside:avoid}.label img{width:42mm;height:42mm}.facility{font-weight:700;font-size:11pt}.code{font-size:15pt;font-weight:800;margin:2mm 0}.loc{font-size:9pt;min-height:12mm}.hint{font-size:7.5pt;color:#555;margin-top:1mm}@media print{.no-print{display:none}}</style></head><body><div class="no-print" style="padding:10px;text-align:center"><button onclick="print()">인쇄</button></div><div class="grid">${labels.map(x=>`<div class="label"><div class="facility">${esc(facility)}</div><div class="code">${esc(x.code)}</div><img src="${x.qr}"><div class="loc">${esc(x.location||'상세 위치 현장 입력')}</div><div class="hint">QR 촬영 후 현장점검</div></div>`).join('')}</div>
+<style id="tfms-v4428-stats-drill-style">
+#stats .tfms-mini-chart .bar-item{cursor:pointer;border-radius:9px;padding:4px 3px;transition:.16s ease}
+#stats .tfms-mini-chart .bar-item:hover{background:#eef6ff;transform:translateY(-2px)}
+#stats .tfms-mini-chart .bar-item:hover .bar{filter:brightness(1.08);box-shadow:0 7px 15px rgba(21,89,189,.2)}
+#stats .tfms-chart-hint{font-size:10px;color:#7a8da7;font-weight:600;margin-left:7px}
+#stats .v4428-insight-grid{display:grid;grid-template-columns:1.15fr .85fr .85fr 1.15fr;gap:8px;margin-top:9px;padding-top:9px;border-top:1px solid #e1e9f4}
+#stats .v4428-insight{border:1px solid #d9e4f1;border-radius:11px;background:linear-gradient(145deg,#fff,#f7faff);padding:8px 10px;min-width:0;cursor:pointer;transition:.16s ease}
+#stats .v4428-insight:hover{border-color:#8bb6ee;box-shadow:0 5px 14px rgba(20,73,135,.09);transform:translateY(-1px)}
+#stats .v4428-insight small{display:block;color:#71839b;font-size:10px;font-weight:700;margin-bottom:3px}
+#stats .v4428-insight strong{display:block;color:#0d376d;font-size:15px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#stats .v4428-insight em{display:block;color:#8090a4;font-size:9px;font-style:normal;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.v4428-modal-backdrop{position:fixed;inset:0;background:rgba(7,24,49,.56);z-index:99998;display:none;align-items:center;justify-content:center;padding:24px}
+.v4428-modal-backdrop.open{display:flex}
+.v4428-modal{width:min(1040px,95vw);max-height:86vh;background:#f5f8fc;border-radius:18px;box-shadow:0 28px 70px rgba(0,20,55,.35);overflow:hidden;display:flex;flex-direction:column}
+.v4428-modal-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:linear-gradient(135deg,#0a407e,#1262ad);color:#fff}
+.v4428-modal-head h2{font-size:19px;margin:0}.v4428-modal-head p{font-size:11px;margin:3px 0 0;color:#d8eaff}
+.v4428-modal-close{border:0;background:rgba(255,255,255,.16);color:#fff;width:34px;height:34px;border-radius:9px;font-size:20px;cursor:pointer}
+.v4428-modal-body{padding:16px;overflow:auto}
+.v4428-status-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:13px}
+.v4428-status-card{border:1px solid #d7e2ef;border-radius:12px;background:#fff;padding:11px;cursor:pointer;text-align:left}
+.v4428-status-card:hover{border-color:#4a8bd6;background:#f2f8ff}.v4428-status-card small{display:block;color:#71839a;font-weight:700}.v4428-status-card strong{font-size:22px;color:#124e91}.v4428-status-card span{font-size:10px;color:#8a99aa}
+.v4428-section{background:#fff;border:1px solid #dbe5f0;border-radius:13px;margin-top:10px;overflow:hidden}.v4428-section-title{padding:11px 13px;font-size:13px;font-weight:800;color:#183d69;border-bottom:1px solid #e5ebf3;background:#fafcff}
+.v4428-table{width:100%;border-collapse:collapse;font-size:12px}.v4428-table th{background:#f4f7fb;color:#53677f;text-align:left;padding:9px;border-bottom:1px solid #dfe7f1}.v4428-table td{padding:9px;border-bottom:1px solid #edf1f6;color:#243a55}.v4428-table tr:last-child td{border-bottom:0}.v4428-table tbody tr{cursor:pointer}.v4428-table tbody tr:hover{background:#f0f7ff}
+.v4428-chip{display:inline-flex;padding:4px 8px;border-radius:999px;background:#edf4fd;color:#245e9e;font-size:10px;font-weight:800}.v4428-empty{text-align:center;padding:35px;color:#8190a3}
+@media(max-width:1100px){#stats .v4428-insight-grid{grid-template-columns:repeat(2,1fr)}.v4428-status-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+<script id="tfms-v4428-stats-drill-controller">
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const normalizeStatus=v=>{const s=String(v||'');if(/완료|조치완료/.test(s))return'완료';if(/진행|처리중/.test(s))return'진행중';if(/미조치|예정|대기/.test(s))return'미조치';return'기타'};
+function selectedRecords(){const all=Array.isArray(window.records)?window.records:[];const dept=window.selectedDeptFilter||'전체';return dept==='전체'?all:all.filter(r=>r.dept===dept)}
+function ensureModal(){
+ if($('v4428StatsModal'))return;
+ const d=document.createElement('div');d.id='v4428StatsModal';d.className='v4428-modal-backdrop';d.innerHTML='<div class="v4428-modal"><div class="v4428-modal-head"><div><h2 id="v4428ModalTitle">상세 분석</h2><p id="v4428ModalSub">차트를 클릭하여 하위 정보를 확인합니다.</p></div><button class="v4428-modal-close" type="button">×</button></div><div class="v4428-modal-body" id="v4428ModalBody"></div></div>';
+ document.body.appendChild(d);d.querySelector('.v4428-modal-close').onclick=()=>d.classList.remove('open');d.onclick=e=>{if(e.target===d)d.classList.remove('open')};
+}
+function openModal(title,sub,html){ensureModal();$('v4428ModalTitle').textContent=title;$('v4428ModalSub').textContent=sub;$('v4428ModalBody').innerHTML=html;$('v4428StatsModal').classList.add('open')}
+function recordTable(list){
+ if(!list.length)return'<div class="v4428-empty">해당 조건의 유지관리 이력이 없습니다.</div>';
+ return '<div class="v4428-section"><div class="v4428-section-title">유지관리 상세 목록 · '+list.length+'건</div><table class="v4428-table"><thead><tr><th>등록일</th><th>부서</th><th>시설</th><th>분야</th><th>처리상태</th><th>내용</th><th>금액</th></tr></thead><tbody>'+list.slice(0,100).map(r=>'<tr><td>'+esc(r.rawDate||r.date||'-')+'</td><td>'+esc(r.dept||'-')+'</td><td>'+esc(r.facility||'-')+'</td><td>'+esc(r.field||'-')+'</td><td><span class="v4428-chip">'+esc(normalizeStatus(r.status))+'</span></td><td>'+esc(r.detail||'-')+'</td><td>'+Number(r.amount||0).toLocaleString('ko-KR')+'원</td></tr>').join('')+'</tbody></table></div>';
+}
+function showDept(dept){
+ const list=selectedRecords().filter(r=>r.dept===dept);const sts=['완료','진행중','미조치','기타'];
+ const cards=sts.map(st=>{const n=list.filter(r=>normalizeStatus(r.status)===st).length;return'<button class="v4428-status-card" data-st="'+st+'"><small>'+st+'</small><strong>'+n+'건</strong><span>클릭하여 상세 목록 확인</span></button>'}).join('');
+ const fac={};list.forEach(r=>{const f=r.facility||'미지정';fac[f]??={total:0,open:0};fac[f].total++;if(normalizeStatus(r.status)!=='완료')fac[f].open++});
+ const frows=Object.entries(fac).sort((a,b)=>b[1].open-a[1].open||b[1].total-a[1].total).map(([f,v])=>'<tr data-f="'+esc(f)+'"><td>'+esc(f)+'</td><td>'+v.total+'건</td><td>'+v.open+'건</td><td>'+Math.round((v.total-v.open)/Math.max(1,v.total)*100)+'%</td></tr>').join('');
+ openModal(dept+' 상세 현황','처리상태 카드 또는 시설을 클릭하면 해당 이력으로 내려갑니다.','<div class="v4428-status-grid">'+cards+'</div><div class="v4428-section"><div class="v4428-section-title">시설별 처리 현황</div><table class="v4428-table"><thead><tr><th>시설명</th><th>전체</th><th>미완료</th><th>완료율</th></tr></thead><tbody>'+frows+'</tbody></table></div>');
+ document.querySelectorAll('#v4428ModalBody [data-st]').forEach(b=>b.onclick=()=>showList(dept+' · '+b.dataset.st,list.filter(r=>normalizeStatus(r.status)===b.dataset.st)));
+ document.querySelectorAll('#v4428ModalBody [data-f]').forEach(tr=>tr.onclick=()=>showList(dept+' · '+tr.dataset.f,list.filter(r=>r.facility===tr.dataset.f)));
+}
+function showList(title,list){openModal(title,'선택 조건에 해당하는 유지관리 이력입니다.',recordTable(list))}
+function showField(field){
+ const list=selectedRecords().filter(r=>r.field===field),groups={};list.forEach(r=>groups[r.dept||'미지정']=(groups[r.dept||'미지정']||0)+1);
+ const rows=Object.entries(groups).sort((a,b)=>b[1]-a[1]).map(([d,n])=>'<tr data-dept="'+esc(d)+'"><td>'+esc(d)+'</td><td>'+n+'건</td><td>'+list.filter(r=>r.dept===d&&normalizeStatus(r.status)!=='완료').length+'건</td></tr>').join('');
+ openModal(field+' 분야 분석','부서별 등록 및 미완료 현황입니다.','<div class="v4428-section"><div class="v4428-section-title">부서별 '+esc(field)+' 분야 현황</div><table class="v4428-table"><thead><tr><th>부서</th><th>등록</th><th>미완료</th></tr></thead><tbody>'+rows+'</tbody></table></div>'+recordTable(list));
+ document.querySelectorAll('#v4428ModalBody [data-dept]').forEach(tr=>tr.onclick=()=>showList(field+' · '+tr.dataset.dept,list.filter(r=>r.dept===tr.dataset.dept)));
+}
+function ageDays(r){const v=r.rawDate||String(r.date||'').replaceAll('.','-');const d=new Date(v);return isNaN(d)?0:Math.max(0,Math.floor((Date.now()-d.getTime())/86400000))}
+function renderInsights(src){
+ let box=$('v4428InsightGrid');if(!box){box=document.createElement('div');box.id='v4428InsightGrid';box.className='v4428-insight-grid';document.querySelector('#stats .tfms-stats-main')?.appendChild(box)}if(!box)return;
+ const open=src.filter(r=>normalizeStatus(r.status)!=='완료');const overdue=open.filter(r=>ageDays(r)>=30).sort((a,b)=>ageDays(b)-ageDays(a));
+ const fac={};open.forEach(r=>fac[r.facility||'미지정']=(fac[r.facility||'미지정']||0)+1);const top=Object.entries(fac).sort((a,b)=>b[1]-a[1])[0]||['해당 없음',0];
+ const completed=src.filter(r=>normalizeStatus(r.status)==='완료');const avg=completed.length?Math.round(completed.reduce((s,r)=>s+ageDays(r),0)/completed.length):0;
+ const maxAge=overdue[0]?ageDays(overdue[0]):0;
+ box.innerHTML='<div class="v4428-insight" data-action="top"><small>미완료 집중 시설</small><strong>'+esc(top[0])+' · '+top[1]+'건</strong><em>클릭하여 해당 시설 이력 확인</em></div><div class="v4428-insight" data-action="open"><small>전체 미완료</small><strong>'+open.length+'건</strong><em>진행중·미조치·기타 합계</em></div><div class="v4428-insight" data-action="overdue"><small>30일 이상 미완료</small><strong>'+overdue.length+'건</strong><em>최장 '+maxAge+'일 경과</em></div><div class="v4428-insight" data-action="dept"><small>관리자 분석</small><strong>부서 → 상태 → 시설</strong><em>차트 클릭으로 단계별 상세 확인</em></div>';
+ box.querySelector('[data-action="top"]').onclick=()=>showList(top[0]+' 미완료',open.filter(r=>(r.facility||'미지정')===top[0]));box.querySelector('[data-action="open"]').onclick=()=>showList('전체 미완료',open);box.querySelector('[data-action="overdue"]').onclick=()=>showList('30일 이상 미완료',overdue);box.querySelector('[data-action="dept"]').onclick=()=>{const ds=[...new Set(src.map(r=>r.dept).filter(Boolean))];openModal('부서별 관리자 분석','부서를 선택하면 처리상태와 시설별 현황을 확인합니다.','<div class="v4428-status-grid">'+ds.map(d=>'<button class="v4428-status-card" data-dept="'+esc(d)+'"><small>관리부서</small><strong style="font-size:16px">'+esc(d)+'</strong><span>'+src.filter(r=>r.dept===d).length+'건 등록</span></button>').join('')+'</div>');document.querySelectorAll('#v4428ModalBody [data-dept]').forEach(b=>b.onclick=()=>showDept(b.dataset.dept))};
+}
+function renderClickableBars(elId,data,type){
+ const el=$(elId);if(!el)return;if(!data.length){el.innerHTML='<div class="empty-state" style="width:100%">표시할 통계자료가 없습니다.</div>';return}const max=Math.max(1,...data.map(x=>x.count));
+ el.innerHTML=data.map(d=>'<div class="bar-item" role="button" tabindex="0" data-key="'+esc(d.name)+'"><div class="bar-value">'+d.count+'</div><div class="bar" style="height:'+Math.max(8,Math.round(d.count/max*190))+'px"></div><div class="bar-label">'+esc(d.name)+'</div></div>').join('');
+ el.querySelectorAll('.bar-item').forEach(x=>{const go=()=>{const k=x.dataset.key;if(type==='dept')showDept(k);else if(type==='field')showField(k);else if(type==='month')showList(k+' 등록 이력',selectedRecords().filter(r=>String(r.date||'').slice(0,7)===k));else if(type==='status')showList(k+' 이력',selectedRecords().filter(r=>normalizeStatus(r.status)===k))};x.onclick=go;x.onkeydown=e=>{if(e.key==='Enter'||e.key===' ')go()}})
+}
+function renderV4428(){
+ const src=selectedRecords(),field={},dept={},month={},status={완료:0,진행중:0,미조치:0,기타:0};src.forEach(r=>{field[r.field||'기타']=(field[r.field||'기타']||0)+1;dept[r.dept||'미지정']=(dept[r.dept||'미지정']||0)+1;const m=String(r.date||'').slice(0,7);if(m)month[m]=(month[m]||0)+1;status[normalizeStatus(r.status)]++});
+ renderClickableBars('fieldChart',Object.entries(field).map(([name,count])=>({name,count})),'field');renderClickableBars('deptChart',Object.entries(dept).map(([name,count])=>({name,count})),'dept');renderClickableBars('monthlyChart',Object.entries(month).sort().map(([name,count])=>({name,count})),'month');renderClickableBars('statusChartV443',Object.entries(status).map(([name,count])=>({name,count})),'status');
+ try{window.renderCompareStats?.(src)}catch(e){}renderInsights(src);
+ document.querySelectorAll('#stats .tfms-mini-chart h3').forEach(h=>{if(!h.querySelector('.tfms-chart-hint'))h.insertAdjacentHTML('beforeend','<span class="tfms-chart-hint">클릭하여 상세보기</span>')});
+}
+const prior=window.renderStatsCharts;window.renderStatsCharts=function(){try{prior?.apply(this,arguments)}catch(e){}setTimeout(renderV4428,25)};
+const priorShow=window.showPage;window.showPage=function(id,btn){const r=priorShow?.apply(this,arguments);if(id==='stats')setTimeout(renderV4428,70);return r};
+document.addEventListener('DOMContentLoaded',()=>{ensureModal();setTimeout(()=>{if($('stats')?.classList.contains('active'))renderV4428()},700)});
+window.TFMS_BUILD=Object.freeze({version:'v44.28',channel:'Enterprise Stable UX',buildDate:'2026.08.05',title:'통계현황 관리자 Drill-down 분석'});
+})();
+</script>
+
+</body></html>`);
     w.document.close();setTimeout(()=>w.focus(),200);
   }catch(e){console.error(e);toast('QR 라벨 출력 준비 실패: '+(e?.message||e))}
 };
@@ -16083,6 +16171,94 @@ window.printFireRecordV420=async function(){
  #dashboard.tfms-dashboard-v431>.title-row>div:last-child{flex-wrap:wrap;justify-content:flex-end}
 }
 </style>
+
+<style id="tfms-v4428-stats-drill-style">
+#stats .tfms-mini-chart .bar-item{cursor:pointer;border-radius:9px;padding:4px 3px;transition:.16s ease}
+#stats .tfms-mini-chart .bar-item:hover{background:#eef6ff;transform:translateY(-2px)}
+#stats .tfms-mini-chart .bar-item:hover .bar{filter:brightness(1.08);box-shadow:0 7px 15px rgba(21,89,189,.2)}
+#stats .tfms-chart-hint{font-size:10px;color:#7a8da7;font-weight:600;margin-left:7px}
+#stats .v4428-insight-grid{display:grid;grid-template-columns:1.15fr .85fr .85fr 1.15fr;gap:8px;margin-top:9px;padding-top:9px;border-top:1px solid #e1e9f4}
+#stats .v4428-insight{border:1px solid #d9e4f1;border-radius:11px;background:linear-gradient(145deg,#fff,#f7faff);padding:8px 10px;min-width:0;cursor:pointer;transition:.16s ease}
+#stats .v4428-insight:hover{border-color:#8bb6ee;box-shadow:0 5px 14px rgba(20,73,135,.09);transform:translateY(-1px)}
+#stats .v4428-insight small{display:block;color:#71839b;font-size:10px;font-weight:700;margin-bottom:3px}
+#stats .v4428-insight strong{display:block;color:#0d376d;font-size:15px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#stats .v4428-insight em{display:block;color:#8090a4;font-size:9px;font-style:normal;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.v4428-modal-backdrop{position:fixed;inset:0;background:rgba(7,24,49,.56);z-index:99998;display:none;align-items:center;justify-content:center;padding:24px}
+.v4428-modal-backdrop.open{display:flex}
+.v4428-modal{width:min(1040px,95vw);max-height:86vh;background:#f5f8fc;border-radius:18px;box-shadow:0 28px 70px rgba(0,20,55,.35);overflow:hidden;display:flex;flex-direction:column}
+.v4428-modal-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:linear-gradient(135deg,#0a407e,#1262ad);color:#fff}
+.v4428-modal-head h2{font-size:19px;margin:0}.v4428-modal-head p{font-size:11px;margin:3px 0 0;color:#d8eaff}
+.v4428-modal-close{border:0;background:rgba(255,255,255,.16);color:#fff;width:34px;height:34px;border-radius:9px;font-size:20px;cursor:pointer}
+.v4428-modal-body{padding:16px;overflow:auto}
+.v4428-status-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:13px}
+.v4428-status-card{border:1px solid #d7e2ef;border-radius:12px;background:#fff;padding:11px;cursor:pointer;text-align:left}
+.v4428-status-card:hover{border-color:#4a8bd6;background:#f2f8ff}.v4428-status-card small{display:block;color:#71839a;font-weight:700}.v4428-status-card strong{font-size:22px;color:#124e91}.v4428-status-card span{font-size:10px;color:#8a99aa}
+.v4428-section{background:#fff;border:1px solid #dbe5f0;border-radius:13px;margin-top:10px;overflow:hidden}.v4428-section-title{padding:11px 13px;font-size:13px;font-weight:800;color:#183d69;border-bottom:1px solid #e5ebf3;background:#fafcff}
+.v4428-table{width:100%;border-collapse:collapse;font-size:12px}.v4428-table th{background:#f4f7fb;color:#53677f;text-align:left;padding:9px;border-bottom:1px solid #dfe7f1}.v4428-table td{padding:9px;border-bottom:1px solid #edf1f6;color:#243a55}.v4428-table tr:last-child td{border-bottom:0}.v4428-table tbody tr{cursor:pointer}.v4428-table tbody tr:hover{background:#f0f7ff}
+.v4428-chip{display:inline-flex;padding:4px 8px;border-radius:999px;background:#edf4fd;color:#245e9e;font-size:10px;font-weight:800}.v4428-empty{text-align:center;padding:35px;color:#8190a3}
+@media(max-width:1100px){#stats .v4428-insight-grid{grid-template-columns:repeat(2,1fr)}.v4428-status-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+<script id="tfms-v4428-stats-drill-controller">
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const normalizeStatus=v=>{const s=String(v||'');if(/완료|조치완료/.test(s))return'완료';if(/진행|처리중/.test(s))return'진행중';if(/미조치|예정|대기/.test(s))return'미조치';return'기타'};
+function selectedRecords(){const all=Array.isArray(window.records)?window.records:[];const dept=window.selectedDeptFilter||'전체';return dept==='전체'?all:all.filter(r=>r.dept===dept)}
+function ensureModal(){
+ if($('v4428StatsModal'))return;
+ const d=document.createElement('div');d.id='v4428StatsModal';d.className='v4428-modal-backdrop';d.innerHTML='<div class="v4428-modal"><div class="v4428-modal-head"><div><h2 id="v4428ModalTitle">상세 분석</h2><p id="v4428ModalSub">차트를 클릭하여 하위 정보를 확인합니다.</p></div><button class="v4428-modal-close" type="button">×</button></div><div class="v4428-modal-body" id="v4428ModalBody"></div></div>';
+ document.body.appendChild(d);d.querySelector('.v4428-modal-close').onclick=()=>d.classList.remove('open');d.onclick=e=>{if(e.target===d)d.classList.remove('open')};
+}
+function openModal(title,sub,html){ensureModal();$('v4428ModalTitle').textContent=title;$('v4428ModalSub').textContent=sub;$('v4428ModalBody').innerHTML=html;$('v4428StatsModal').classList.add('open')}
+function recordTable(list){
+ if(!list.length)return'<div class="v4428-empty">해당 조건의 유지관리 이력이 없습니다.</div>';
+ return '<div class="v4428-section"><div class="v4428-section-title">유지관리 상세 목록 · '+list.length+'건</div><table class="v4428-table"><thead><tr><th>등록일</th><th>부서</th><th>시설</th><th>분야</th><th>처리상태</th><th>내용</th><th>금액</th></tr></thead><tbody>'+list.slice(0,100).map(r=>'<tr><td>'+esc(r.rawDate||r.date||'-')+'</td><td>'+esc(r.dept||'-')+'</td><td>'+esc(r.facility||'-')+'</td><td>'+esc(r.field||'-')+'</td><td><span class="v4428-chip">'+esc(normalizeStatus(r.status))+'</span></td><td>'+esc(r.detail||'-')+'</td><td>'+Number(r.amount||0).toLocaleString('ko-KR')+'원</td></tr>').join('')+'</tbody></table></div>';
+}
+function showDept(dept){
+ const list=selectedRecords().filter(r=>r.dept===dept);const sts=['완료','진행중','미조치','기타'];
+ const cards=sts.map(st=>{const n=list.filter(r=>normalizeStatus(r.status)===st).length;return'<button class="v4428-status-card" data-st="'+st+'"><small>'+st+'</small><strong>'+n+'건</strong><span>클릭하여 상세 목록 확인</span></button>'}).join('');
+ const fac={};list.forEach(r=>{const f=r.facility||'미지정';fac[f]??={total:0,open:0};fac[f].total++;if(normalizeStatus(r.status)!=='완료')fac[f].open++});
+ const frows=Object.entries(fac).sort((a,b)=>b[1].open-a[1].open||b[1].total-a[1].total).map(([f,v])=>'<tr data-f="'+esc(f)+'"><td>'+esc(f)+'</td><td>'+v.total+'건</td><td>'+v.open+'건</td><td>'+Math.round((v.total-v.open)/Math.max(1,v.total)*100)+'%</td></tr>').join('');
+ openModal(dept+' 상세 현황','처리상태 카드 또는 시설을 클릭하면 해당 이력으로 내려갑니다.','<div class="v4428-status-grid">'+cards+'</div><div class="v4428-section"><div class="v4428-section-title">시설별 처리 현황</div><table class="v4428-table"><thead><tr><th>시설명</th><th>전체</th><th>미완료</th><th>완료율</th></tr></thead><tbody>'+frows+'</tbody></table></div>');
+ document.querySelectorAll('#v4428ModalBody [data-st]').forEach(b=>b.onclick=()=>showList(dept+' · '+b.dataset.st,list.filter(r=>normalizeStatus(r.status)===b.dataset.st)));
+ document.querySelectorAll('#v4428ModalBody [data-f]').forEach(tr=>tr.onclick=()=>showList(dept+' · '+tr.dataset.f,list.filter(r=>r.facility===tr.dataset.f)));
+}
+function showList(title,list){openModal(title,'선택 조건에 해당하는 유지관리 이력입니다.',recordTable(list))}
+function showField(field){
+ const list=selectedRecords().filter(r=>r.field===field),groups={};list.forEach(r=>groups[r.dept||'미지정']=(groups[r.dept||'미지정']||0)+1);
+ const rows=Object.entries(groups).sort((a,b)=>b[1]-a[1]).map(([d,n])=>'<tr data-dept="'+esc(d)+'"><td>'+esc(d)+'</td><td>'+n+'건</td><td>'+list.filter(r=>r.dept===d&&normalizeStatus(r.status)!=='완료').length+'건</td></tr>').join('');
+ openModal(field+' 분야 분석','부서별 등록 및 미완료 현황입니다.','<div class="v4428-section"><div class="v4428-section-title">부서별 '+esc(field)+' 분야 현황</div><table class="v4428-table"><thead><tr><th>부서</th><th>등록</th><th>미완료</th></tr></thead><tbody>'+rows+'</tbody></table></div>'+recordTable(list));
+ document.querySelectorAll('#v4428ModalBody [data-dept]').forEach(tr=>tr.onclick=()=>showList(field+' · '+tr.dataset.dept,list.filter(r=>r.dept===tr.dataset.dept)));
+}
+function ageDays(r){const v=r.rawDate||String(r.date||'').replaceAll('.','-');const d=new Date(v);return isNaN(d)?0:Math.max(0,Math.floor((Date.now()-d.getTime())/86400000))}
+function renderInsights(src){
+ let box=$('v4428InsightGrid');if(!box){box=document.createElement('div');box.id='v4428InsightGrid';box.className='v4428-insight-grid';document.querySelector('#stats .tfms-stats-main')?.appendChild(box)}if(!box)return;
+ const open=src.filter(r=>normalizeStatus(r.status)!=='완료');const overdue=open.filter(r=>ageDays(r)>=30).sort((a,b)=>ageDays(b)-ageDays(a));
+ const fac={};open.forEach(r=>fac[r.facility||'미지정']=(fac[r.facility||'미지정']||0)+1);const top=Object.entries(fac).sort((a,b)=>b[1]-a[1])[0]||['해당 없음',0];
+ const completed=src.filter(r=>normalizeStatus(r.status)==='완료');const avg=completed.length?Math.round(completed.reduce((s,r)=>s+ageDays(r),0)/completed.length):0;
+ const maxAge=overdue[0]?ageDays(overdue[0]):0;
+ box.innerHTML='<div class="v4428-insight" data-action="top"><small>미완료 집중 시설</small><strong>'+esc(top[0])+' · '+top[1]+'건</strong><em>클릭하여 해당 시설 이력 확인</em></div><div class="v4428-insight" data-action="open"><small>전체 미완료</small><strong>'+open.length+'건</strong><em>진행중·미조치·기타 합계</em></div><div class="v4428-insight" data-action="overdue"><small>30일 이상 미완료</small><strong>'+overdue.length+'건</strong><em>최장 '+maxAge+'일 경과</em></div><div class="v4428-insight" data-action="dept"><small>관리자 분석</small><strong>부서 → 상태 → 시설</strong><em>차트 클릭으로 단계별 상세 확인</em></div>';
+ box.querySelector('[data-action="top"]').onclick=()=>showList(top[0]+' 미완료',open.filter(r=>(r.facility||'미지정')===top[0]));box.querySelector('[data-action="open"]').onclick=()=>showList('전체 미완료',open);box.querySelector('[data-action="overdue"]').onclick=()=>showList('30일 이상 미완료',overdue);box.querySelector('[data-action="dept"]').onclick=()=>{const ds=[...new Set(src.map(r=>r.dept).filter(Boolean))];openModal('부서별 관리자 분석','부서를 선택하면 처리상태와 시설별 현황을 확인합니다.','<div class="v4428-status-grid">'+ds.map(d=>'<button class="v4428-status-card" data-dept="'+esc(d)+'"><small>관리부서</small><strong style="font-size:16px">'+esc(d)+'</strong><span>'+src.filter(r=>r.dept===d).length+'건 등록</span></button>').join('')+'</div>');document.querySelectorAll('#v4428ModalBody [data-dept]').forEach(b=>b.onclick=()=>showDept(b.dataset.dept))};
+}
+function renderClickableBars(elId,data,type){
+ const el=$(elId);if(!el)return;if(!data.length){el.innerHTML='<div class="empty-state" style="width:100%">표시할 통계자료가 없습니다.</div>';return}const max=Math.max(1,...data.map(x=>x.count));
+ el.innerHTML=data.map(d=>'<div class="bar-item" role="button" tabindex="0" data-key="'+esc(d.name)+'"><div class="bar-value">'+d.count+'</div><div class="bar" style="height:'+Math.max(8,Math.round(d.count/max*190))+'px"></div><div class="bar-label">'+esc(d.name)+'</div></div>').join('');
+ el.querySelectorAll('.bar-item').forEach(x=>{const go=()=>{const k=x.dataset.key;if(type==='dept')showDept(k);else if(type==='field')showField(k);else if(type==='month')showList(k+' 등록 이력',selectedRecords().filter(r=>String(r.date||'').slice(0,7)===k));else if(type==='status')showList(k+' 이력',selectedRecords().filter(r=>normalizeStatus(r.status)===k))};x.onclick=go;x.onkeydown=e=>{if(e.key==='Enter'||e.key===' ')go()}})
+}
+function renderV4428(){
+ const src=selectedRecords(),field={},dept={},month={},status={완료:0,진행중:0,미조치:0,기타:0};src.forEach(r=>{field[r.field||'기타']=(field[r.field||'기타']||0)+1;dept[r.dept||'미지정']=(dept[r.dept||'미지정']||0)+1;const m=String(r.date||'').slice(0,7);if(m)month[m]=(month[m]||0)+1;status[normalizeStatus(r.status)]++});
+ renderClickableBars('fieldChart',Object.entries(field).map(([name,count])=>({name,count})),'field');renderClickableBars('deptChart',Object.entries(dept).map(([name,count])=>({name,count})),'dept');renderClickableBars('monthlyChart',Object.entries(month).sort().map(([name,count])=>({name,count})),'month');renderClickableBars('statusChartV443',Object.entries(status).map(([name,count])=>({name,count})),'status');
+ try{window.renderCompareStats?.(src)}catch(e){}renderInsights(src);
+ document.querySelectorAll('#stats .tfms-mini-chart h3').forEach(h=>{if(!h.querySelector('.tfms-chart-hint'))h.insertAdjacentHTML('beforeend','<span class="tfms-chart-hint">클릭하여 상세보기</span>')});
+}
+const prior=window.renderStatsCharts;window.renderStatsCharts=function(){try{prior?.apply(this,arguments)}catch(e){}setTimeout(renderV4428,25)};
+const priorShow=window.showPage;window.showPage=function(id,btn){const r=priorShow?.apply(this,arguments);if(id==='stats')setTimeout(renderV4428,70);return r};
+document.addEventListener('DOMContentLoaded',()=>{ensureModal();setTimeout(()=>{if($('stats')?.classList.contains('active'))renderV4428()},700)});
+window.TFMS_BUILD=Object.freeze({version:'v44.28',channel:'Enterprise Stable UX',buildDate:'2026.08.05',title:'통계현황 관리자 Drill-down 분석'});
+})();
+</script>
+
 </body></html>`);doc.close();
   await new Promise(r=>{if(doc.readyState==='complete')r();else frame.onload=r;});
   const imgs=[...doc.images];await Promise.all(imgs.map(img=>img.complete?(img.decode?.().catch(()=>{})||Promise.resolve()):new Promise(res=>{img.onload=img.onerror=res;})));
@@ -16210,6 +16386,94 @@ window.printFireRecordV420=async function(){try{window.previewFireRecordV420();c
  #dashboard.tfms-dashboard-v431>.title-row>div:last-child{flex-wrap:wrap;justify-content:flex-end}
 }
 </style>
+
+<style id="tfms-v4428-stats-drill-style">
+#stats .tfms-mini-chart .bar-item{cursor:pointer;border-radius:9px;padding:4px 3px;transition:.16s ease}
+#stats .tfms-mini-chart .bar-item:hover{background:#eef6ff;transform:translateY(-2px)}
+#stats .tfms-mini-chart .bar-item:hover .bar{filter:brightness(1.08);box-shadow:0 7px 15px rgba(21,89,189,.2)}
+#stats .tfms-chart-hint{font-size:10px;color:#7a8da7;font-weight:600;margin-left:7px}
+#stats .v4428-insight-grid{display:grid;grid-template-columns:1.15fr .85fr .85fr 1.15fr;gap:8px;margin-top:9px;padding-top:9px;border-top:1px solid #e1e9f4}
+#stats .v4428-insight{border:1px solid #d9e4f1;border-radius:11px;background:linear-gradient(145deg,#fff,#f7faff);padding:8px 10px;min-width:0;cursor:pointer;transition:.16s ease}
+#stats .v4428-insight:hover{border-color:#8bb6ee;box-shadow:0 5px 14px rgba(20,73,135,.09);transform:translateY(-1px)}
+#stats .v4428-insight small{display:block;color:#71839b;font-size:10px;font-weight:700;margin-bottom:3px}
+#stats .v4428-insight strong{display:block;color:#0d376d;font-size:15px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#stats .v4428-insight em{display:block;color:#8090a4;font-size:9px;font-style:normal;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.v4428-modal-backdrop{position:fixed;inset:0;background:rgba(7,24,49,.56);z-index:99998;display:none;align-items:center;justify-content:center;padding:24px}
+.v4428-modal-backdrop.open{display:flex}
+.v4428-modal{width:min(1040px,95vw);max-height:86vh;background:#f5f8fc;border-radius:18px;box-shadow:0 28px 70px rgba(0,20,55,.35);overflow:hidden;display:flex;flex-direction:column}
+.v4428-modal-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:linear-gradient(135deg,#0a407e,#1262ad);color:#fff}
+.v4428-modal-head h2{font-size:19px;margin:0}.v4428-modal-head p{font-size:11px;margin:3px 0 0;color:#d8eaff}
+.v4428-modal-close{border:0;background:rgba(255,255,255,.16);color:#fff;width:34px;height:34px;border-radius:9px;font-size:20px;cursor:pointer}
+.v4428-modal-body{padding:16px;overflow:auto}
+.v4428-status-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:13px}
+.v4428-status-card{border:1px solid #d7e2ef;border-radius:12px;background:#fff;padding:11px;cursor:pointer;text-align:left}
+.v4428-status-card:hover{border-color:#4a8bd6;background:#f2f8ff}.v4428-status-card small{display:block;color:#71839a;font-weight:700}.v4428-status-card strong{font-size:22px;color:#124e91}.v4428-status-card span{font-size:10px;color:#8a99aa}
+.v4428-section{background:#fff;border:1px solid #dbe5f0;border-radius:13px;margin-top:10px;overflow:hidden}.v4428-section-title{padding:11px 13px;font-size:13px;font-weight:800;color:#183d69;border-bottom:1px solid #e5ebf3;background:#fafcff}
+.v4428-table{width:100%;border-collapse:collapse;font-size:12px}.v4428-table th{background:#f4f7fb;color:#53677f;text-align:left;padding:9px;border-bottom:1px solid #dfe7f1}.v4428-table td{padding:9px;border-bottom:1px solid #edf1f6;color:#243a55}.v4428-table tr:last-child td{border-bottom:0}.v4428-table tbody tr{cursor:pointer}.v4428-table tbody tr:hover{background:#f0f7ff}
+.v4428-chip{display:inline-flex;padding:4px 8px;border-radius:999px;background:#edf4fd;color:#245e9e;font-size:10px;font-weight:800}.v4428-empty{text-align:center;padding:35px;color:#8190a3}
+@media(max-width:1100px){#stats .v4428-insight-grid{grid-template-columns:repeat(2,1fr)}.v4428-status-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+<script id="tfms-v4428-stats-drill-controller">
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const normalizeStatus=v=>{const s=String(v||'');if(/완료|조치완료/.test(s))return'완료';if(/진행|처리중/.test(s))return'진행중';if(/미조치|예정|대기/.test(s))return'미조치';return'기타'};
+function selectedRecords(){const all=Array.isArray(window.records)?window.records:[];const dept=window.selectedDeptFilter||'전체';return dept==='전체'?all:all.filter(r=>r.dept===dept)}
+function ensureModal(){
+ if($('v4428StatsModal'))return;
+ const d=document.createElement('div');d.id='v4428StatsModal';d.className='v4428-modal-backdrop';d.innerHTML='<div class="v4428-modal"><div class="v4428-modal-head"><div><h2 id="v4428ModalTitle">상세 분석</h2><p id="v4428ModalSub">차트를 클릭하여 하위 정보를 확인합니다.</p></div><button class="v4428-modal-close" type="button">×</button></div><div class="v4428-modal-body" id="v4428ModalBody"></div></div>';
+ document.body.appendChild(d);d.querySelector('.v4428-modal-close').onclick=()=>d.classList.remove('open');d.onclick=e=>{if(e.target===d)d.classList.remove('open')};
+}
+function openModal(title,sub,html){ensureModal();$('v4428ModalTitle').textContent=title;$('v4428ModalSub').textContent=sub;$('v4428ModalBody').innerHTML=html;$('v4428StatsModal').classList.add('open')}
+function recordTable(list){
+ if(!list.length)return'<div class="v4428-empty">해당 조건의 유지관리 이력이 없습니다.</div>';
+ return '<div class="v4428-section"><div class="v4428-section-title">유지관리 상세 목록 · '+list.length+'건</div><table class="v4428-table"><thead><tr><th>등록일</th><th>부서</th><th>시설</th><th>분야</th><th>처리상태</th><th>내용</th><th>금액</th></tr></thead><tbody>'+list.slice(0,100).map(r=>'<tr><td>'+esc(r.rawDate||r.date||'-')+'</td><td>'+esc(r.dept||'-')+'</td><td>'+esc(r.facility||'-')+'</td><td>'+esc(r.field||'-')+'</td><td><span class="v4428-chip">'+esc(normalizeStatus(r.status))+'</span></td><td>'+esc(r.detail||'-')+'</td><td>'+Number(r.amount||0).toLocaleString('ko-KR')+'원</td></tr>').join('')+'</tbody></table></div>';
+}
+function showDept(dept){
+ const list=selectedRecords().filter(r=>r.dept===dept);const sts=['완료','진행중','미조치','기타'];
+ const cards=sts.map(st=>{const n=list.filter(r=>normalizeStatus(r.status)===st).length;return'<button class="v4428-status-card" data-st="'+st+'"><small>'+st+'</small><strong>'+n+'건</strong><span>클릭하여 상세 목록 확인</span></button>'}).join('');
+ const fac={};list.forEach(r=>{const f=r.facility||'미지정';fac[f]??={total:0,open:0};fac[f].total++;if(normalizeStatus(r.status)!=='완료')fac[f].open++});
+ const frows=Object.entries(fac).sort((a,b)=>b[1].open-a[1].open||b[1].total-a[1].total).map(([f,v])=>'<tr data-f="'+esc(f)+'"><td>'+esc(f)+'</td><td>'+v.total+'건</td><td>'+v.open+'건</td><td>'+Math.round((v.total-v.open)/Math.max(1,v.total)*100)+'%</td></tr>').join('');
+ openModal(dept+' 상세 현황','처리상태 카드 또는 시설을 클릭하면 해당 이력으로 내려갑니다.','<div class="v4428-status-grid">'+cards+'</div><div class="v4428-section"><div class="v4428-section-title">시설별 처리 현황</div><table class="v4428-table"><thead><tr><th>시설명</th><th>전체</th><th>미완료</th><th>완료율</th></tr></thead><tbody>'+frows+'</tbody></table></div>');
+ document.querySelectorAll('#v4428ModalBody [data-st]').forEach(b=>b.onclick=()=>showList(dept+' · '+b.dataset.st,list.filter(r=>normalizeStatus(r.status)===b.dataset.st)));
+ document.querySelectorAll('#v4428ModalBody [data-f]').forEach(tr=>tr.onclick=()=>showList(dept+' · '+tr.dataset.f,list.filter(r=>r.facility===tr.dataset.f)));
+}
+function showList(title,list){openModal(title,'선택 조건에 해당하는 유지관리 이력입니다.',recordTable(list))}
+function showField(field){
+ const list=selectedRecords().filter(r=>r.field===field),groups={};list.forEach(r=>groups[r.dept||'미지정']=(groups[r.dept||'미지정']||0)+1);
+ const rows=Object.entries(groups).sort((a,b)=>b[1]-a[1]).map(([d,n])=>'<tr data-dept="'+esc(d)+'"><td>'+esc(d)+'</td><td>'+n+'건</td><td>'+list.filter(r=>r.dept===d&&normalizeStatus(r.status)!=='완료').length+'건</td></tr>').join('');
+ openModal(field+' 분야 분석','부서별 등록 및 미완료 현황입니다.','<div class="v4428-section"><div class="v4428-section-title">부서별 '+esc(field)+' 분야 현황</div><table class="v4428-table"><thead><tr><th>부서</th><th>등록</th><th>미완료</th></tr></thead><tbody>'+rows+'</tbody></table></div>'+recordTable(list));
+ document.querySelectorAll('#v4428ModalBody [data-dept]').forEach(tr=>tr.onclick=()=>showList(field+' · '+tr.dataset.dept,list.filter(r=>r.dept===tr.dataset.dept)));
+}
+function ageDays(r){const v=r.rawDate||String(r.date||'').replaceAll('.','-');const d=new Date(v);return isNaN(d)?0:Math.max(0,Math.floor((Date.now()-d.getTime())/86400000))}
+function renderInsights(src){
+ let box=$('v4428InsightGrid');if(!box){box=document.createElement('div');box.id='v4428InsightGrid';box.className='v4428-insight-grid';document.querySelector('#stats .tfms-stats-main')?.appendChild(box)}if(!box)return;
+ const open=src.filter(r=>normalizeStatus(r.status)!=='완료');const overdue=open.filter(r=>ageDays(r)>=30).sort((a,b)=>ageDays(b)-ageDays(a));
+ const fac={};open.forEach(r=>fac[r.facility||'미지정']=(fac[r.facility||'미지정']||0)+1);const top=Object.entries(fac).sort((a,b)=>b[1]-a[1])[0]||['해당 없음',0];
+ const completed=src.filter(r=>normalizeStatus(r.status)==='완료');const avg=completed.length?Math.round(completed.reduce((s,r)=>s+ageDays(r),0)/completed.length):0;
+ const maxAge=overdue[0]?ageDays(overdue[0]):0;
+ box.innerHTML='<div class="v4428-insight" data-action="top"><small>미완료 집중 시설</small><strong>'+esc(top[0])+' · '+top[1]+'건</strong><em>클릭하여 해당 시설 이력 확인</em></div><div class="v4428-insight" data-action="open"><small>전체 미완료</small><strong>'+open.length+'건</strong><em>진행중·미조치·기타 합계</em></div><div class="v4428-insight" data-action="overdue"><small>30일 이상 미완료</small><strong>'+overdue.length+'건</strong><em>최장 '+maxAge+'일 경과</em></div><div class="v4428-insight" data-action="dept"><small>관리자 분석</small><strong>부서 → 상태 → 시설</strong><em>차트 클릭으로 단계별 상세 확인</em></div>';
+ box.querySelector('[data-action="top"]').onclick=()=>showList(top[0]+' 미완료',open.filter(r=>(r.facility||'미지정')===top[0]));box.querySelector('[data-action="open"]').onclick=()=>showList('전체 미완료',open);box.querySelector('[data-action="overdue"]').onclick=()=>showList('30일 이상 미완료',overdue);box.querySelector('[data-action="dept"]').onclick=()=>{const ds=[...new Set(src.map(r=>r.dept).filter(Boolean))];openModal('부서별 관리자 분석','부서를 선택하면 처리상태와 시설별 현황을 확인합니다.','<div class="v4428-status-grid">'+ds.map(d=>'<button class="v4428-status-card" data-dept="'+esc(d)+'"><small>관리부서</small><strong style="font-size:16px">'+esc(d)+'</strong><span>'+src.filter(r=>r.dept===d).length+'건 등록</span></button>').join('')+'</div>');document.querySelectorAll('#v4428ModalBody [data-dept]').forEach(b=>b.onclick=()=>showDept(b.dataset.dept))};
+}
+function renderClickableBars(elId,data,type){
+ const el=$(elId);if(!el)return;if(!data.length){el.innerHTML='<div class="empty-state" style="width:100%">표시할 통계자료가 없습니다.</div>';return}const max=Math.max(1,...data.map(x=>x.count));
+ el.innerHTML=data.map(d=>'<div class="bar-item" role="button" tabindex="0" data-key="'+esc(d.name)+'"><div class="bar-value">'+d.count+'</div><div class="bar" style="height:'+Math.max(8,Math.round(d.count/max*190))+'px"></div><div class="bar-label">'+esc(d.name)+'</div></div>').join('');
+ el.querySelectorAll('.bar-item').forEach(x=>{const go=()=>{const k=x.dataset.key;if(type==='dept')showDept(k);else if(type==='field')showField(k);else if(type==='month')showList(k+' 등록 이력',selectedRecords().filter(r=>String(r.date||'').slice(0,7)===k));else if(type==='status')showList(k+' 이력',selectedRecords().filter(r=>normalizeStatus(r.status)===k))};x.onclick=go;x.onkeydown=e=>{if(e.key==='Enter'||e.key===' ')go()}})
+}
+function renderV4428(){
+ const src=selectedRecords(),field={},dept={},month={},status={완료:0,진행중:0,미조치:0,기타:0};src.forEach(r=>{field[r.field||'기타']=(field[r.field||'기타']||0)+1;dept[r.dept||'미지정']=(dept[r.dept||'미지정']||0)+1;const m=String(r.date||'').slice(0,7);if(m)month[m]=(month[m]||0)+1;status[normalizeStatus(r.status)]++});
+ renderClickableBars('fieldChart',Object.entries(field).map(([name,count])=>({name,count})),'field');renderClickableBars('deptChart',Object.entries(dept).map(([name,count])=>({name,count})),'dept');renderClickableBars('monthlyChart',Object.entries(month).sort().map(([name,count])=>({name,count})),'month');renderClickableBars('statusChartV443',Object.entries(status).map(([name,count])=>({name,count})),'status');
+ try{window.renderCompareStats?.(src)}catch(e){}renderInsights(src);
+ document.querySelectorAll('#stats .tfms-mini-chart h3').forEach(h=>{if(!h.querySelector('.tfms-chart-hint'))h.insertAdjacentHTML('beforeend','<span class="tfms-chart-hint">클릭하여 상세보기</span>')});
+}
+const prior=window.renderStatsCharts;window.renderStatsCharts=function(){try{prior?.apply(this,arguments)}catch(e){}setTimeout(renderV4428,25)};
+const priorShow=window.showPage;window.showPage=function(id,btn){const r=priorShow?.apply(this,arguments);if(id==='stats')setTimeout(renderV4428,70);return r};
+document.addEventListener('DOMContentLoaded',()=>{ensureModal();setTimeout(()=>{if($('stats')?.classList.contains('active'))renderV4428()},700)});
+window.TFMS_BUILD=Object.freeze({version:'v44.28',channel:'Enterprise Stable UX',buildDate:'2026.08.05',title:'통계현황 관리자 Drill-down 분석'});
+})();
+</script>
+
 </body></html>`);doc.close();await new Promise(r=>setTimeout(r,100));if(doc.fonts?.ready)await doc.fonts.ready;await Promise.all([...doc.images].map(img=>img.complete?Promise.resolve():new Promise(r=>{img.onload=img.onerror=r})));await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));frame.contentWindow.focus();frame.contentWindow.print();setTimeout(()=>frame.remove(),5000);}catch(e){console.error(e);toast('PDF 출력 실패: '+(e?.message||e));}};
 function db(){try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||(typeof sb!=='undefined'?sb:null)}catch(e){return null}}
 async function facilityId(name){const sbc=db();const {data,error}=await sbc.from('facilities').select('id,name').eq('name',name).limit(1);if(error)throw error;if(!data?.length)throw new Error(`시설 DB에서 '${name}'을 찾지 못했습니다.`);return data[0].id;}
@@ -16703,7 +16967,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 })();
 </script>
 <script id="tfms-v447-version"><!--
-(function(){window.TFMS_BUILD=Object.freeze({version:'v44.25',channel:'Enterprise UX Preview',buildDate:'2026.07.30',title:'소화기 구역별 일괄등록·QR 라벨 출력'});document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{const b=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');if(b)b.textContent='v44.27 Enterprise UX';},500)});})();
+(function(){window.TFMS_BUILD=Object.freeze({version:'v44.25',channel:'Enterprise UX Preview',buildDate:'2026.07.30',title:'소화기 구역별 일괄등록·QR 라벨 출력'});document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{const b=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');if(b)b.textContent='v44.28 Enterprise UX';},500)});})();
 //--></script>
 <!-- TFMS v44.9 Enterprise Stable UX: 설비관리 다이어트 5회차 + 사용자정보 자동연동 보완 -->
 <style id="tfms-v449-equipment-diet">
@@ -16873,11 +17137,11 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
  document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{setup();applyProfileAuto();},500));
 })();
 </script>
- TFMS v44.27 Enterprise UX
+ TFMS v44.28 Enterprise UX
 <script id="tfms-v4413-final-fix">
 (function(){
   'use strict';
-  var BUILD_TEXT='v44.27 Enterprise UX';
+  var BUILD_TEXT='v44.28 Enterprise UX';
 
   function byId(id){return document.getElementById(id)}
   function readSession(){
@@ -17025,7 +17289,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 <script id="tfms-v4416-export-preview-controller">
 (function(){
   'use strict';
-  var BUILD='v44.27 Enterprise UX';
+  var BUILD='v44.28 Enterprise UX';
   function $(id){return document.getElementById(id)}
   function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]})}
   function val(id,fallback){var el=$(id);return el?el.value:(fallback||'')}
@@ -17204,7 +17468,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 <script id="tfms-v4420-header-dashboard-controller">
 (function(){
  'use strict';
- var BUILD='v44.27 Enterprise UX';
+ var BUILD='v44.28 Enterprise UX';
  function cleanStrayBuildText(){
    var walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
    var remove=[];
@@ -17241,7 +17505,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 <script id="tfms-v4420-version-normalizer">
 (function(){
   'use strict';
-  const BUILD='v44.27 Enterprise UX';
+  const BUILD='v44.28 Enterprise UX';
   function apply(){
     document.title='TFMS '+BUILD;
     const badge=document.getElementById('tfmsVersionBadge') || document.querySelector('.v32-classic-note');
@@ -17439,7 +17703,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 </style>
 <script id="tfms-v4426-version-fix">
 (function(){
- const BUILD='v44.27 Enterprise UX';
+ const BUILD='v44.28 Enterprise UX';
  function apply(){
    const b=document.getElementById('tfmsVersionBadge'); if(b)b.textContent=BUILD;
    document.title='TFMS '+BUILD;
@@ -17448,4 +17712,92 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
 })();
 </script>
+
+<style id="tfms-v4428-stats-drill-style">
+#stats .tfms-mini-chart .bar-item{cursor:pointer;border-radius:9px;padding:4px 3px;transition:.16s ease}
+#stats .tfms-mini-chart .bar-item:hover{background:#eef6ff;transform:translateY(-2px)}
+#stats .tfms-mini-chart .bar-item:hover .bar{filter:brightness(1.08);box-shadow:0 7px 15px rgba(21,89,189,.2)}
+#stats .tfms-chart-hint{font-size:10px;color:#7a8da7;font-weight:600;margin-left:7px}
+#stats .v4428-insight-grid{display:grid;grid-template-columns:1.15fr .85fr .85fr 1.15fr;gap:8px;margin-top:9px;padding-top:9px;border-top:1px solid #e1e9f4}
+#stats .v4428-insight{border:1px solid #d9e4f1;border-radius:11px;background:linear-gradient(145deg,#fff,#f7faff);padding:8px 10px;min-width:0;cursor:pointer;transition:.16s ease}
+#stats .v4428-insight:hover{border-color:#8bb6ee;box-shadow:0 5px 14px rgba(20,73,135,.09);transform:translateY(-1px)}
+#stats .v4428-insight small{display:block;color:#71839b;font-size:10px;font-weight:700;margin-bottom:3px}
+#stats .v4428-insight strong{display:block;color:#0d376d;font-size:15px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#stats .v4428-insight em{display:block;color:#8090a4;font-size:9px;font-style:normal;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.v4428-modal-backdrop{position:fixed;inset:0;background:rgba(7,24,49,.56);z-index:99998;display:none;align-items:center;justify-content:center;padding:24px}
+.v4428-modal-backdrop.open{display:flex}
+.v4428-modal{width:min(1040px,95vw);max-height:86vh;background:#f5f8fc;border-radius:18px;box-shadow:0 28px 70px rgba(0,20,55,.35);overflow:hidden;display:flex;flex-direction:column}
+.v4428-modal-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:linear-gradient(135deg,#0a407e,#1262ad);color:#fff}
+.v4428-modal-head h2{font-size:19px;margin:0}.v4428-modal-head p{font-size:11px;margin:3px 0 0;color:#d8eaff}
+.v4428-modal-close{border:0;background:rgba(255,255,255,.16);color:#fff;width:34px;height:34px;border-radius:9px;font-size:20px;cursor:pointer}
+.v4428-modal-body{padding:16px;overflow:auto}
+.v4428-status-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:13px}
+.v4428-status-card{border:1px solid #d7e2ef;border-radius:12px;background:#fff;padding:11px;cursor:pointer;text-align:left}
+.v4428-status-card:hover{border-color:#4a8bd6;background:#f2f8ff}.v4428-status-card small{display:block;color:#71839a;font-weight:700}.v4428-status-card strong{font-size:22px;color:#124e91}.v4428-status-card span{font-size:10px;color:#8a99aa}
+.v4428-section{background:#fff;border:1px solid #dbe5f0;border-radius:13px;margin-top:10px;overflow:hidden}.v4428-section-title{padding:11px 13px;font-size:13px;font-weight:800;color:#183d69;border-bottom:1px solid #e5ebf3;background:#fafcff}
+.v4428-table{width:100%;border-collapse:collapse;font-size:12px}.v4428-table th{background:#f4f7fb;color:#53677f;text-align:left;padding:9px;border-bottom:1px solid #dfe7f1}.v4428-table td{padding:9px;border-bottom:1px solid #edf1f6;color:#243a55}.v4428-table tr:last-child td{border-bottom:0}.v4428-table tbody tr{cursor:pointer}.v4428-table tbody tr:hover{background:#f0f7ff}
+.v4428-chip{display:inline-flex;padding:4px 8px;border-radius:999px;background:#edf4fd;color:#245e9e;font-size:10px;font-weight:800}.v4428-empty{text-align:center;padding:35px;color:#8190a3}
+@media(max-width:1100px){#stats .v4428-insight-grid{grid-template-columns:repeat(2,1fr)}.v4428-status-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+<script id="tfms-v4428-stats-drill-controller">
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const normalizeStatus=v=>{const s=String(v||'');if(/완료|조치완료/.test(s))return'완료';if(/진행|처리중/.test(s))return'진행중';if(/미조치|예정|대기/.test(s))return'미조치';return'기타'};
+function selectedRecords(){const all=Array.isArray(window.records)?window.records:[];const dept=window.selectedDeptFilter||'전체';return dept==='전체'?all:all.filter(r=>r.dept===dept)}
+function ensureModal(){
+ if($('v4428StatsModal'))return;
+ const d=document.createElement('div');d.id='v4428StatsModal';d.className='v4428-modal-backdrop';d.innerHTML='<div class="v4428-modal"><div class="v4428-modal-head"><div><h2 id="v4428ModalTitle">상세 분석</h2><p id="v4428ModalSub">차트를 클릭하여 하위 정보를 확인합니다.</p></div><button class="v4428-modal-close" type="button">×</button></div><div class="v4428-modal-body" id="v4428ModalBody"></div></div>';
+ document.body.appendChild(d);d.querySelector('.v4428-modal-close').onclick=()=>d.classList.remove('open');d.onclick=e=>{if(e.target===d)d.classList.remove('open')};
+}
+function openModal(title,sub,html){ensureModal();$('v4428ModalTitle').textContent=title;$('v4428ModalSub').textContent=sub;$('v4428ModalBody').innerHTML=html;$('v4428StatsModal').classList.add('open')}
+function recordTable(list){
+ if(!list.length)return'<div class="v4428-empty">해당 조건의 유지관리 이력이 없습니다.</div>';
+ return '<div class="v4428-section"><div class="v4428-section-title">유지관리 상세 목록 · '+list.length+'건</div><table class="v4428-table"><thead><tr><th>등록일</th><th>부서</th><th>시설</th><th>분야</th><th>처리상태</th><th>내용</th><th>금액</th></tr></thead><tbody>'+list.slice(0,100).map(r=>'<tr><td>'+esc(r.rawDate||r.date||'-')+'</td><td>'+esc(r.dept||'-')+'</td><td>'+esc(r.facility||'-')+'</td><td>'+esc(r.field||'-')+'</td><td><span class="v4428-chip">'+esc(normalizeStatus(r.status))+'</span></td><td>'+esc(r.detail||'-')+'</td><td>'+Number(r.amount||0).toLocaleString('ko-KR')+'원</td></tr>').join('')+'</tbody></table></div>';
+}
+function showDept(dept){
+ const list=selectedRecords().filter(r=>r.dept===dept);const sts=['완료','진행중','미조치','기타'];
+ const cards=sts.map(st=>{const n=list.filter(r=>normalizeStatus(r.status)===st).length;return'<button class="v4428-status-card" data-st="'+st+'"><small>'+st+'</small><strong>'+n+'건</strong><span>클릭하여 상세 목록 확인</span></button>'}).join('');
+ const fac={};list.forEach(r=>{const f=r.facility||'미지정';fac[f]??={total:0,open:0};fac[f].total++;if(normalizeStatus(r.status)!=='완료')fac[f].open++});
+ const frows=Object.entries(fac).sort((a,b)=>b[1].open-a[1].open||b[1].total-a[1].total).map(([f,v])=>'<tr data-f="'+esc(f)+'"><td>'+esc(f)+'</td><td>'+v.total+'건</td><td>'+v.open+'건</td><td>'+Math.round((v.total-v.open)/Math.max(1,v.total)*100)+'%</td></tr>').join('');
+ openModal(dept+' 상세 현황','처리상태 카드 또는 시설을 클릭하면 해당 이력으로 내려갑니다.','<div class="v4428-status-grid">'+cards+'</div><div class="v4428-section"><div class="v4428-section-title">시설별 처리 현황</div><table class="v4428-table"><thead><tr><th>시설명</th><th>전체</th><th>미완료</th><th>완료율</th></tr></thead><tbody>'+frows+'</tbody></table></div>');
+ document.querySelectorAll('#v4428ModalBody [data-st]').forEach(b=>b.onclick=()=>showList(dept+' · '+b.dataset.st,list.filter(r=>normalizeStatus(r.status)===b.dataset.st)));
+ document.querySelectorAll('#v4428ModalBody [data-f]').forEach(tr=>tr.onclick=()=>showList(dept+' · '+tr.dataset.f,list.filter(r=>r.facility===tr.dataset.f)));
+}
+function showList(title,list){openModal(title,'선택 조건에 해당하는 유지관리 이력입니다.',recordTable(list))}
+function showField(field){
+ const list=selectedRecords().filter(r=>r.field===field),groups={};list.forEach(r=>groups[r.dept||'미지정']=(groups[r.dept||'미지정']||0)+1);
+ const rows=Object.entries(groups).sort((a,b)=>b[1]-a[1]).map(([d,n])=>'<tr data-dept="'+esc(d)+'"><td>'+esc(d)+'</td><td>'+n+'건</td><td>'+list.filter(r=>r.dept===d&&normalizeStatus(r.status)!=='완료').length+'건</td></tr>').join('');
+ openModal(field+' 분야 분석','부서별 등록 및 미완료 현황입니다.','<div class="v4428-section"><div class="v4428-section-title">부서별 '+esc(field)+' 분야 현황</div><table class="v4428-table"><thead><tr><th>부서</th><th>등록</th><th>미완료</th></tr></thead><tbody>'+rows+'</tbody></table></div>'+recordTable(list));
+ document.querySelectorAll('#v4428ModalBody [data-dept]').forEach(tr=>tr.onclick=()=>showList(field+' · '+tr.dataset.dept,list.filter(r=>r.dept===tr.dataset.dept)));
+}
+function ageDays(r){const v=r.rawDate||String(r.date||'').replaceAll('.','-');const d=new Date(v);return isNaN(d)?0:Math.max(0,Math.floor((Date.now()-d.getTime())/86400000))}
+function renderInsights(src){
+ let box=$('v4428InsightGrid');if(!box){box=document.createElement('div');box.id='v4428InsightGrid';box.className='v4428-insight-grid';document.querySelector('#stats .tfms-stats-main')?.appendChild(box)}if(!box)return;
+ const open=src.filter(r=>normalizeStatus(r.status)!=='완료');const overdue=open.filter(r=>ageDays(r)>=30).sort((a,b)=>ageDays(b)-ageDays(a));
+ const fac={};open.forEach(r=>fac[r.facility||'미지정']=(fac[r.facility||'미지정']||0)+1);const top=Object.entries(fac).sort((a,b)=>b[1]-a[1])[0]||['해당 없음',0];
+ const completed=src.filter(r=>normalizeStatus(r.status)==='완료');const avg=completed.length?Math.round(completed.reduce((s,r)=>s+ageDays(r),0)/completed.length):0;
+ const maxAge=overdue[0]?ageDays(overdue[0]):0;
+ box.innerHTML='<div class="v4428-insight" data-action="top"><small>미완료 집중 시설</small><strong>'+esc(top[0])+' · '+top[1]+'건</strong><em>클릭하여 해당 시설 이력 확인</em></div><div class="v4428-insight" data-action="open"><small>전체 미완료</small><strong>'+open.length+'건</strong><em>진행중·미조치·기타 합계</em></div><div class="v4428-insight" data-action="overdue"><small>30일 이상 미완료</small><strong>'+overdue.length+'건</strong><em>최장 '+maxAge+'일 경과</em></div><div class="v4428-insight" data-action="dept"><small>관리자 분석</small><strong>부서 → 상태 → 시설</strong><em>차트 클릭으로 단계별 상세 확인</em></div>';
+ box.querySelector('[data-action="top"]').onclick=()=>showList(top[0]+' 미완료',open.filter(r=>(r.facility||'미지정')===top[0]));box.querySelector('[data-action="open"]').onclick=()=>showList('전체 미완료',open);box.querySelector('[data-action="overdue"]').onclick=()=>showList('30일 이상 미완료',overdue);box.querySelector('[data-action="dept"]').onclick=()=>{const ds=[...new Set(src.map(r=>r.dept).filter(Boolean))];openModal('부서별 관리자 분석','부서를 선택하면 처리상태와 시설별 현황을 확인합니다.','<div class="v4428-status-grid">'+ds.map(d=>'<button class="v4428-status-card" data-dept="'+esc(d)+'"><small>관리부서</small><strong style="font-size:16px">'+esc(d)+'</strong><span>'+src.filter(r=>r.dept===d).length+'건 등록</span></button>').join('')+'</div>');document.querySelectorAll('#v4428ModalBody [data-dept]').forEach(b=>b.onclick=()=>showDept(b.dataset.dept))};
+}
+function renderClickableBars(elId,data,type){
+ const el=$(elId);if(!el)return;if(!data.length){el.innerHTML='<div class="empty-state" style="width:100%">표시할 통계자료가 없습니다.</div>';return}const max=Math.max(1,...data.map(x=>x.count));
+ el.innerHTML=data.map(d=>'<div class="bar-item" role="button" tabindex="0" data-key="'+esc(d.name)+'"><div class="bar-value">'+d.count+'</div><div class="bar" style="height:'+Math.max(8,Math.round(d.count/max*190))+'px"></div><div class="bar-label">'+esc(d.name)+'</div></div>').join('');
+ el.querySelectorAll('.bar-item').forEach(x=>{const go=()=>{const k=x.dataset.key;if(type==='dept')showDept(k);else if(type==='field')showField(k);else if(type==='month')showList(k+' 등록 이력',selectedRecords().filter(r=>String(r.date||'').slice(0,7)===k));else if(type==='status')showList(k+' 이력',selectedRecords().filter(r=>normalizeStatus(r.status)===k))};x.onclick=go;x.onkeydown=e=>{if(e.key==='Enter'||e.key===' ')go()}})
+}
+function renderV4428(){
+ const src=selectedRecords(),field={},dept={},month={},status={완료:0,진행중:0,미조치:0,기타:0};src.forEach(r=>{field[r.field||'기타']=(field[r.field||'기타']||0)+1;dept[r.dept||'미지정']=(dept[r.dept||'미지정']||0)+1;const m=String(r.date||'').slice(0,7);if(m)month[m]=(month[m]||0)+1;status[normalizeStatus(r.status)]++});
+ renderClickableBars('fieldChart',Object.entries(field).map(([name,count])=>({name,count})),'field');renderClickableBars('deptChart',Object.entries(dept).map(([name,count])=>({name,count})),'dept');renderClickableBars('monthlyChart',Object.entries(month).sort().map(([name,count])=>({name,count})),'month');renderClickableBars('statusChartV443',Object.entries(status).map(([name,count])=>({name,count})),'status');
+ try{window.renderCompareStats?.(src)}catch(e){}renderInsights(src);
+ document.querySelectorAll('#stats .tfms-mini-chart h3').forEach(h=>{if(!h.querySelector('.tfms-chart-hint'))h.insertAdjacentHTML('beforeend','<span class="tfms-chart-hint">클릭하여 상세보기</span>')});
+}
+const prior=window.renderStatsCharts;window.renderStatsCharts=function(){try{prior?.apply(this,arguments)}catch(e){}setTimeout(renderV4428,25)};
+const priorShow=window.showPage;window.showPage=function(id,btn){const r=priorShow?.apply(this,arguments);if(id==='stats')setTimeout(renderV4428,70);return r};
+document.addEventListener('DOMContentLoaded',()=>{ensureModal();setTimeout(()=>{if($('stats')?.classList.contains('active'))renderV4428()},700)});
+window.TFMS_BUILD=Object.freeze({version:'v44.28',channel:'Enterprise Stable UX',buildDate:'2026.08.05',title:'통계현황 관리자 Drill-down 분석'});
+})();
+</script>
+
 </body></html>
