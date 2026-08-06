@@ -703,6 +703,7 @@ body{background:var(--tfms-bg)!important;color:var(--tfms-text)}
 }
 </style>
 
+<link rel="stylesheet" href="equipment_import.css?v=4429r1">
 </head>
 <body>
 <header class="hidden" id="appHeader">
@@ -17623,4 +17624,14 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 })();
 </script>
 
+
+<div id="tfmsEquipmentImportModalV4432" class="tfms-import-modal" onclick="if(event.target===this)closeEquipmentImportV4432()">
+  <div class="tfms-import-dialog">
+    <div class="tfms-import-head"><div><h2>장비이력카드 일괄등록</h2><p>엑셀의 설비정보와 사진을 분석한 뒤, 등록할 항목을 확인·수정할 수 있습니다.</p></div><button type="button" onclick="closeEquipmentImportV4432()" aria-label="닫기">×</button></div>
+    <div class="tfms-import-tools"><button type="button" onclick="toggleEquipmentImportAllV4432(true)">전체 선택</button><button type="button" onclick="toggleEquipmentImportAllV4432(false)">전체 해제</button><button type="button" onclick="resetEquipmentImportV4432()">원본값 복원</button><span class="tfms-import-summary" id="tfmsEquipmentImportSummaryV4432"></span></div>
+    <div class="tfms-import-list" id="tfmsEquipmentImportListV4432"></div>
+    <div class="tfms-import-foot"><span class="tfms-import-progress" id="tfmsEquipmentImportProgressV4432"></span><button type="button" onclick="closeEquipmentImportV4432()">취소</button><button class="primary" type="button" id="tfmsEquipmentImportRunV4432" onclick="runEquipmentImportV4432()">선택 설비 Supabase 등록</button></div>
+  </div>
+</div>
+<script src="equipment_import_excel.js?v=4429r1"></script>
 </body></html>
