@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 
 <html lang="ko">
+<!-- TFMS v44.29R2 Recovery Stable | 로그인 복구본 + 장비이력카드 일괄등록 단일파일 내장 | 2026-08-06 -->
 <!-- TFMS v36.3 Stable | 삭제관리 승인·삭제 버튼 복구 | 2026-07-20 -->
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>TFMS v44.29 Recovery Stable</title>
+<title>TFMS v44.29R2 Recovery Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -703,7 +704,31 @@ body{background:var(--tfms-bg)!important;color:var(--tfms-text)}
 }
 </style>
 
-<link rel="stylesheet" href="equipment_import.css?v=4429r1">
+<style id="tfms-equipment-import-inline-style">
+/* 장비이력카드 일괄등록 전용 스타일 - 단일파일 내장 */
+
+.tfms-equipment-import-toolbar{display:flex;justify-content:flex-end;align-items:center;margin:0 0 12px;gap:8px}
+.tfms-eq-import-btn{border:1px solid #b8d0ed;background:#f7fbff;color:#0b4fb3;border-radius:9px;padding:10px 14px;font-weight:900;cursor:pointer}
+.tfms-eq-import-btn:hover{background:#eef6ff;border-color:#7daee5}
+.tfms-import-modal{position:fixed;inset:0;z-index:12000;display:none;align-items:center;justify-content:center;background:rgba(15,23,42,.58);padding:22px}
+.tfms-import-modal.show{display:flex}
+.tfms-import-dialog{width:min(1480px,98vw);max-height:92vh;display:flex;flex-direction:column;background:#fff;border-radius:18px;box-shadow:0 28px 80px rgba(0,0,0,.32);overflow:hidden}
+.tfms-import-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:20px 22px;border-bottom:1px solid #e2e8f0;background:#f8fbff}
+.tfms-import-head h2{margin:0 0 7px;color:#0b376d}.tfms-import-head p{margin:0;color:#64748b;line-height:1.5}
+.tfms-import-head>button{border:0;background:#e8eef6;border-radius:9px;width:38px;height:38px;font-size:22px;cursor:pointer}
+.tfms-import-tools,.tfms-import-foot{display:flex;align-items:center;gap:8px;padding:12px 18px;border-bottom:1px solid #e2e8f0;background:#fff}
+.tfms-import-tools button,.tfms-import-foot button{border:1px solid #cbd5e1;background:#fff;border-radius:8px;padding:9px 13px;font-weight:800;cursor:pointer}
+.tfms-import-summary,.tfms-import-progress{margin-left:auto;color:#33516f;font-weight:800;font-size:13px}
+.tfms-import-list{overflow:auto;padding:14px 18px;display:grid;gap:10px;background:#f7f9fc}
+.tfms-import-card{display:grid;grid-template-columns:34px 120px minmax(180px,1.2fr) minmax(150px,.9fr) minmax(170px,1fr) minmax(190px,1.2fr);gap:10px;align-items:start;background:#fff;border:1px solid #dbe5f1;border-radius:12px;padding:12px}
+.tfms-import-card.off{opacity:.48}.tfms-import-card>input[type=checkbox]{margin-top:30px}
+.tfms-import-photo{height:98px;border:1px dashed #c7d5e5;border-radius:9px;display:flex;gap:3px;overflow:hidden;background:#f8fafc}.tfms-import-photo img{width:50%;height:100%;object-fit:cover}.tfms-import-photo img:only-child{width:100%}
+.tfms-import-field label{font-size:11px;color:#64748b;margin:0 0 4px}.tfms-import-field input,.tfms-import-field textarea{padding:8px;font-size:12px;border-radius:7px}.tfms-import-field textarea{min-height:70px}
+.tfms-import-tag{display:inline-block;margin-top:5px;background:#eef6ff;color:#0b4fb3;border-radius:999px;padding:3px 8px;font-size:10px;font-weight:900}
+.tfms-import-foot{border-top:1px solid #e2e8f0;border-bottom:0}.tfms-import-foot .primary{background:#0b4fb3;color:#fff;border-color:#0b4fb3}
+@media(max-width:1050px){.tfms-import-card{grid-template-columns:30px 100px 1fr 1fr}.tfms-import-field:nth-last-child(-n+2){grid-column:3/-1}}
+
+</style>
 </head>
 <body>
 <header class="hidden" id="appHeader">
@@ -17633,5 +17658,106 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     <div class="tfms-import-foot"><span class="tfms-import-progress" id="tfmsEquipmentImportProgressV4432"></span><button type="button" onclick="closeEquipmentImportV4432()">취소</button><button class="primary" type="button" id="tfmsEquipmentImportRunV4432" onclick="runEquipmentImportV4432()">선택 설비 Supabase 등록</button></div>
   </div>
 </div>
-<script src="equipment_import_excel.js?v=4429r1"></script>
+<script id="tfms-equipment-import-inline-controller">
+/* 장비이력카드 일괄등록 전용 기능 - 단일파일 내장 */
+(function(){'use strict';
+let source=null,rows=[],zipBook=null,objectUrls=[];
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+function client(){try{return (typeof window.getTfmsSupabaseClient==='function'&&window.getTfmsSupabaseClient())||window.tfmsSupabase||window.supabaseClient||window.sb||null}catch(e){console.error('Supabase client resolve failed',e);return null}}
+function toast(s){if(typeof window.showToast==='function')window.showToast(s);else alert(s)}
+function u16(v,o){return v.getUint16(o,true)} function u32(v,o){return v.getUint32(o,true)}
+function normPath(base,target){if(!target)return'';if(target[0]==='/')return target.slice(1);const a=(base+'/'+target).split('/'),out=[];for(const p of a){if(!p||p==='.')continue;if(p==='..')out.pop();else out.push(p)}return out.join('/')}
+class MiniZip{
+ constructor(buf){this.buf=buf;this.view=new DataView(buf);this.entries=new Map();this.parse()}
+ parse(){let p=this.view.byteLength-22,eocd=-1;for(;p>=Math.max(0,this.view.byteLength-66000);p--){if(u32(this.view,p)===0x06054b50){eocd=p;break}}if(eocd<0)throw new Error('올바른 XLSX(ZIP) 파일이 아닙니다.');let off=u32(this.view,eocd+16),count=u16(this.view,eocd+10);for(let i=0;i<count;i++){if(u32(this.view,off)!==0x02014b50)break;const method=u16(this.view,off+10),comp=u32(this.view,off+20),size=u32(this.view,off+24),nl=u16(this.view,off+28),el=u16(this.view,off+30),cl=u16(this.view,off+32),local=u32(this.view,off+42);const name=new TextDecoder().decode(new Uint8Array(this.buf,off+46,nl));this.entries.set(name,{name,method,comp,size,local});off+=46+nl+el+cl}}
+ names(){return [...this.entries.keys()]}
+ async bytes(name){const e=this.entries.get(name);if(!e)throw new Error('엑셀 내부 파일 누락: '+name);const nl=u16(this.view,e.local+26),el=u16(this.view,e.local+28),start=e.local+30+nl+el,raw=new Uint8Array(this.buf,start,e.comp);if(e.method===0)return new Uint8Array(raw);if(e.method===8){if(typeof DecompressionStream!=='function')throw new Error('현재 브라우저는 XLSX 압축 해제를 지원하지 않습니다. 최신 Chrome 또는 Edge를 사용해 주세요.');const ds=new DecompressionStream('deflate-raw');return new Uint8Array(await new Response(new Blob([raw]).stream().pipeThrough(ds)).arrayBuffer())}throw new Error('지원하지 않는 XLSX 압축 방식입니다: '+e.method)}
+ async text(name){return new TextDecoder('utf-8').decode(await this.bytes(name))}
+ async blob(name,type){return new Blob([await this.bytes(name)],{type:type||mime(name)})}
+}
+function mime(n){n=String(n).toLowerCase();if(n.endsWith('.png'))return'image/png';if(n.endsWith('.gif'))return'image/gif';if(n.endsWith('.webp'))return'image/webp';return'image/jpeg'}
+function xml(s){return new DOMParser().parseFromString(s,'application/xml')}
+function relMap(doc){const m={};doc.querySelectorAll('Relationship').forEach(r=>m[r.getAttribute('Id')]={target:r.getAttribute('Target'),type:r.getAttribute('Type')});return m}
+function cellRef(c){return c.getAttribute('r')||''}
+function colNum(ref){let n=0;for(const ch of (ref.match(/[A-Z]+/i)||[''])[0].toUpperCase())n=n*26+ch.charCodeAt(0)-64;return n}
+function rowNum(ref){return +(ref.match(/\d+/)||[0])[0]}
+function excelDate(v){const n=Number(v);if(!Number.isFinite(n)||n<20000||n>80000)return String(v||'');const d=new Date(Date.UTC(1899,11,30)+n*86400000);return `${d.getUTCFullYear()}.${String(d.getUTCMonth()+1).padStart(2,'0')}.${String(d.getUTCDate()).padStart(2,'0')}`}
+function clean(v){return String(v??'').replace(/\s+/g,' ').trim()}
+function category(name){name=String(name||'');if(/보일러|가스|버너/.test(name))return'보일러';if(/펌프|순환|급수|배수/.test(name))return'펌프';if(/열교환|탱크/.test(name))return'열교환·탱크';if(/AHU|휀|모터|공조/.test(name))return'공조';return'기계'}
+function get(map,ref){return clean(map[ref])}
+function findValue(map,label,start=1,end=200){for(const [ref,v] of Object.entries(map)){const r=rowNum(ref);if(r>=start&&r<=end&&clean(v).replace(/\s/g,'')===label.replace(/\s/g,'')){const c=colNum(ref);for(let dc=1;dc<=3;dc++){const rr=String.fromCharCode(64+c+dc)+r;if(get(map,rr))return get(map,rr)}}}return''}
+function nearestLabelValue(map,row,label){for(let r=Math.max(1,row-3);r<=row+5;r++){for(const [ref,v] of Object.entries(map)){if(rowNum(ref)===r&&clean(v).replace(/\s/g,'')===label.replace(/\s/g,'')){const c=colNum(ref);for(let dc=1;dc<=3;dc++){let x=c+dc,s='';while(x){s=String.fromCharCode(65+(x-1)%26)+s;x=Math.floor((x-1)/26)}const val=get(map,s+r);if(val)return val}}}}return''}
+function historyFromMap(map){let headerRow=0,dateCol=0,textCol=0,workerCol=0;for(const [ref,v] of Object.entries(map)){if(/보수\s*및\s*교체\s*내용/.test(clean(v))){headerRow=rowNum(ref);textCol=colNum(ref)}}if(!headerRow)return[];for(const [ref,v] of Object.entries(map)){if(rowNum(ref)!==headerRow)continue;if(/작업일자/.test(clean(v)))dateCol=colNum(ref);if(/작업자/.test(clean(v)))workerCol=colNum(ref)}
+ const ref=(c,r)=>{let s='';while(c){s=String.fromCharCode(65+(c-1)%26)+s;c=Math.floor((c-1)/26)}return s+r};const out=[];for(let r=headerRow+1;r<=headerRow+60;r++){let txt=get(map,ref(textCol,r));if(!txt)continue;let dt=get(map,ref(dateCol||Math.max(1,textCol-1),r));if(/^\d{5}(?:\.0+)?$/.test(dt))dt=excelDate(dt);let who=get(map,ref(workerCol||textCol+5,r));out.push([dt,txt,who])}return out}
+async function parseWorkbook(file){
+ const buf=await file.arrayBuffer(),z=new MiniZip(buf);zipBook=z;const shared=[];
+ if(z.entries.has('xl/sharedStrings.xml')){const d=xml(await z.text('xl/sharedStrings.xml'));d.querySelectorAll('si').forEach(si=>shared.push([...si.querySelectorAll('t')].map(t=>t.textContent||'').join('')))}
+ const wb=xml(await z.text('xl/workbook.xml')),wbr=relMap(xml(await z.text('xl/_rels/workbook.xml.rels'))),sheets=[];
+ wb.querySelectorAll('sheet').forEach(s=>{const rid=s.getAttribute('r:id')||s.getAttributeNS('http://schemas.openxmlformats.org/officeDocument/2006/relationships','id');const rel=wbr[rid];if(rel)sheets.push({name:s.getAttribute('name'),path:normPath('xl',rel.target)})});
+ const results=[];
+ for(const sh of sheets){const sd=xml(await z.text(sh.path)),map={};sd.querySelectorAll('c').forEach(c=>{const ref=cellRef(c),t=c.getAttribute('t'),v=c.querySelector('v'),is=c.querySelector('is');let val='';if(t==='s'&&v)val=shared[Number(v.textContent)]??'';else if(t==='inlineStr'&&is)val=[...is.querySelectorAll('t')].map(x=>x.textContent||'').join('');else if(v)val=v.textContent||'';if(clean(val))map[ref]=val});
+ const allText=Object.values(map).map(clean).join(' ');if(!/장비\s*이력카드/.test(allText))continue;if(!get(map,'D4')&&!get(map,'I5'))continue;
+ const recs=[];if(get(map,'I5')&&/보일러/.test(get(map,'I5'))){recs.push({name:get(map,'I5'),location:'지하1층 기계실',purpose:'관류보일러',qr_code:get(map,'I14'),model:get(map,'I6'),manufacturer:get(map,'I16'),serial:get(map,'I14'),capacity:get(map,'I7')?get(map,'I7')+' kg/h':'',installed_on:get(map,'I15'),manufacture_year:get(map,'I15'),remarks:'최고사용압력 '+get(map,'I8')+' MPa / 전열면적 '+get(map,'I10')+'㎡',category:'보일러',history:[],_start:5,_sheet:sh.name})}
+ else {
+  const primary={name:get(map,'D4'),location:get(map,'D5'),purpose:get(map,'D6'),qr_code:get(map,'G9'),model:get(map,'G10'),manufacturer:get(map,'G18'),serial:get(map,'G16'),capacity:get(map,'I9'),manufacture_year:get(map,'G17'),installed_on:'',remarks:'',category:category(get(map,'D4')),_start:4,_sheet:sh.name,history:historyFromMap(map)};if(primary.name)recs.push(primary);
+  const codeLabels=Object.entries(map).filter(([ref,v])=>clean(v).replace(/\s/g,'')==='관리번호'&&rowNum(ref)>12);
+  for(const [ref] of codeLabels){const r=rowNum(ref),code=nearestLabelValue(map,r,'관리번호');if(!code||recs.some(x=>x.qr_code===code))continue;let name=nearestLabelValue(map,r,'장비명')||nearestLabelValue(map,r,'명칭');if(!name){for(let rr=r-2;rr>=Math.max(1,r-5);rr--){name=get(map,'B'+rr)||get(map,'A'+rr);if(name)break}}if(!name)name=sh.name;recs.push({name,location:primary.location,purpose:nearestLabelValue(map,r,'용도')||primary.purpose,qr_code:code,model:nearestLabelValue(map,r,'모델')||nearestLabelValue(map,r,'형식'),manufacturer:nearestLabelValue(map,r,'업체명')||primary.manufacturer,serial:nearestLabelValue(map,r,'제조번호'),capacity:nearestLabelValue(map,r,'용량(KCAL/HR)')||nearestLabelValue(map,r,'가열량')||nearestLabelValue(map,r,'탱크용량'),manufacture_year:nearestLabelValue(map,r,'제조년도'),installed_on:nearestLabelValue(map,r,'설치날짜'),remarks:'',category:category(name),history:[],_start:r,_sheet:sh.name})}
+ }
+ // sheet images
+ const relPath=sh.path.replace('xl/worksheets/','xl/worksheets/_rels/')+'.rels';let imgs=[];
+ if(z.entries.has(relPath)){const sr=relMap(xml(await z.text(relPath)));const dr=Object.values(sr).find(x=>/drawing/.test(x.type||''));if(dr){const dp=normPath(sh.path.substring(0,sh.path.lastIndexOf('/')),dr.target);if(z.entries.has(dp)){const dd=xml(await z.text(dp)),drelPath=dp.replace(/([^/]+)$/,'_rels/$1.rels'),dm=z.entries.has(drelPath)?relMap(xml(await z.text(drelPath))):{};for(const a of dd.querySelectorAll('twoCellAnchor,oneCellAnchor')){const from=a.querySelector('from'),row=Number(from?.querySelector('row')?.textContent||0)+1;const bl=a.querySelector('blip'),rid=bl?.getAttribute('r:embed')||bl?.getAttributeNS('http://schemas.openxmlformats.org/officeDocument/2006/relationships','embed');const rel=dm[rid];if(rel){const p=normPath(dp.substring(0,dp.lastIndexOf('/')),rel.target);if(z.entries.has(p))imgs.push({path:p,row,name:p.split('/').pop()})}}}}}
+ for(const im of imgs){let best=recs[0];for(const r of recs)if(r._start<=im.row&&(!best||r._start>best._start))best=r;if(best){best.images=best.images||[];best.images.push(im)}}
+ results.push(...recs)
+ }
+ // attach boiler history sheets
+ const byName=new Map(results.map(x=>[x.name,x]));for(const sh of sheets){if(!/^보일러[AB]$/.test(sh.name))continue;const sd=xml(await z.text(sh.path)),map={};sd.querySelectorAll('c').forEach(c=>{const ref=cellRef(c),t=c.getAttribute('t'),v=c.querySelector('v');let val='';if(t==='s'&&v)val=shared[Number(v.textContent)]??'';else if(v)val=v.textContent||'';if(clean(val))map[ref]=val});const key=sh.name==='보일러A'?'콘덴싱 관류보일러 A':'콘덴싱 관류보일러 B';if(byName.get(key))byName.get(key).history=historyFromMap(map)}
+ const dedup=[];for(const r of results){r.name=clean(r.name);if(!r.name)continue;if(r.qr_code==='P5-A,B'&&/P6/.test(r._sheet))r.qr_code='P6-A,B';r.images=r.images||[];if(!dedup.some(x=>x.name===r.name&&x.qr_code===r.qr_code))dedup.push(r)}
+ if(!dedup.length)throw new Error('장비 정보를 찾지 못했습니다. 「장비 이력카드」 양식인지 확인해 주세요.');return{facility:'태백국민체육센터',fileName:file.name,assets:dedup};
+}
+function releaseUrls(){objectUrls.forEach(URL.revokeObjectURL);objectUrls=[]}
+async function imageSrc(im){if(im.url)return im.url;const b=await zipBook.blob(im.path);im.blob=b;im.url=URL.createObjectURL(b);objectUrls.push(im.url);return im.url}
+function summary(){const on=rows.filter(x=>x._on).length,photos=rows.filter(x=>x._on).reduce((n,x)=>n+(x.images||[]).length,0);$('tfmsEquipmentImportSummaryV4432').textContent=`선택 ${on}대 · 사진 ${photos}장 · ${esc(source?.fileName||'')}`}
+async function render(){const host=$('tfmsEquipmentImportListV4432');host.innerHTML=rows.map((x,i)=>`<div class="tfms-import-card ${x._on?'':'off'}" data-i="${i}"><input type="checkbox" ${x._on?'checked':''} onchange="updateEquipmentImportV4432(${i},'_on',this.checked)"><div class="tfms-import-photo" id="tfmsImpPhoto${i}"><span style="margin:auto;font-size:11px;color:#789">${(x.images||[]).length?'사진 로딩 중':'사진 없음'}</span></div><div class="tfms-import-field"><label>설비명</label><input value="${esc(x.name)}" oninput="updateEquipmentImportV4432(${i},'name',this.value)"><span class="tfms-import-tag">${esc(x.category)}</span></div><div class="tfms-import-field"><label>관리번호</label><input value="${esc(x.qr_code)}" oninput="updateEquipmentImportV4432(${i},'qr_code',this.value)"><label style="margin-top:5px">위치</label><input value="${esc(x.location)}" oninput="updateEquipmentImportV4432(${i},'location',this.value)"></div><div class="tfms-import-field"><label>모델 / 제조사</label><input value="${esc(x.model)}" oninput="updateEquipmentImportV4432(${i},'model',this.value)"><input style="margin-top:5px" value="${esc(x.manufacturer)}" oninput="updateEquipmentImportV4432(${i},'manufacturer',this.value)"></div><div class="tfms-import-field"><label>용도·비고</label><textarea oninput="updateEquipmentImportV4432(${i},'remarks',this.value)">${esc([x.purpose,x.remarks,(x.history||[]).length?'기존 이력 '+x.history.length+'건 포함':''].filter(Boolean).join(' / '))}</textarea></div></div>`).join('');summary();for(let i=0;i<rows.length;i++){const h=$('tfmsImpPhoto'+i),ims=(rows[i].images||[]).slice(0,2);if(!h||!ims.length)continue;h.innerHTML='';for(const im of ims){const img=document.createElement('img');img.src=await imageSrc(im);img.alt='장비사진';h.appendChild(img)}}}
+window.updateEquipmentImportV4432=(i,k,v)=>{rows[i][k]=v;if(k==='_on')document.querySelector(`.tfms-import-card[data-i="${i}"]`)?.classList.toggle('off',!v);summary()};
+window.toggleEquipmentImportAllV4432=v=>{rows.forEach(x=>x._on=v);render()};window.resetEquipmentImportV4432=()=>{rows=structuredClone(source.assets).map((x,i)=>({...x,_i:i,_on:true}));render()};
+async function chooseFile(){return new Promise(resolve=>{let inp=$('tfmsEquipmentExcelFileV4435');if(!inp){inp=document.createElement('input');inp.type='file';inp.id='tfmsEquipmentExcelFileV4435';inp.accept='.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';inp.style.display='none';document.body.appendChild(inp)}inp.value='';inp.onchange=()=>resolve(inp.files?.[0]||null);inp.click()})}
+window.openEquipmentImportV4432=async()=>{try{const file=await chooseFile();if(!file)return;$('tfmsEquipmentImportProgressV4432').textContent='엑셀 파일 분석 중...';source=await parseWorkbook(file);rows=structuredClone(source.assets).map((x,i)=>({...x,_i:i,_on:true}));await render();$('tfmsEquipmentImportModalV4432').classList.add('show');$('tfmsEquipmentImportProgressV4432').textContent=`분석 완료 · ${rows.length}대`}catch(e){console.error(e);toast('장비이력카드 분석 실패: '+(e.message||e))}};
+window.closeEquipmentImportV4432=()=>{$('tfmsEquipmentImportModalV4432').classList.remove('show')};
+async function importPhotos(c,assetId,x){const old=await c.from('asset_photos').select('file_name').eq('asset_id',assetId),names=new Set((old.data||[]).map(v=>v.file_name));for(let i=0;i<(x.images||[]).length;i++){const im=x.images[i],n=im.name;if(names.has(n))continue;const b=im.blob||await zipBook.blob(im.path),path=`${assetId}/card_${Date.now()}_${i}_${n}`;const up=await c.storage.from('tfms-equipment-photos').upload(path,b,{contentType:b.type||mime(n),upsert:false});if(up.error)throw up.error;const ins=await c.from('asset_photos').insert({asset_id:assetId,storage_path:path,file_name:n,mime_type:b.type||mime(n),photo_kind:i===0?'대표':'기타',photo_date:new Date().toISOString().slice(0,10),caption:'장비이력카드 엑셀 원본 사진'});if(ins.error){await c.storage.from('tfms-equipment-photos').remove([path]);throw ins.error}}}
+window.runEquipmentImportV4432=async()=>{const c=client(),selected=rows.filter(x=>x._on);if(!c){toast('Supabase 연결 상태를 확인해 주세요.');return}if(!selected.length){toast('등록할 설비를 선택해 주세요.');return}const btn=$('tfmsEquipmentImportRunV4432'),prog=$('tfmsEquipmentImportProgressV4432');btn.disabled=true;let added=0,updated=0,failed=0;try{const fr=await c.from('facilities').select('id,name').eq('name',source.facility).maybeSingle();if(fr.error||!fr.data)throw new Error('태백국민체육센터 시설정보를 찾지 못했습니다.');const ar=await c.from('assets').select('id,name,qr_code,asset_code').eq('facility_id',fr.data.id);if(ar.error)throw ar.error;const existing=ar.data||[];for(let i=0;i<selected.length;i++){const x=selected[i];prog.textContent=`${i+1}/${selected.length} · ${x.name}`;try{let found=existing.find(a=>x.qr_code&&clean(a.qr_code)===clean(x.qr_code))||existing.find(a=>clean(a.name)===clean(x.name));let assetId=found?.id;if(!assetId){const history=(x.history||[]).map(h=>`${h[0]} ${h[1]}${h[2]?' ('+h[2]+')':''}`).join('\n');const payload={facility_id:fr.data.id,asset_code:'CARD-'+String(Date.now()).slice(-8)+'-'+String(i+1).padStart(2,'0'),name:x.name,category:x.category||'기타',manufacturer:x.manufacturer||null,model_name:x.model||null,serial_number:x.serial||null,capacity:x.capacity||null,manufacture_year:x.manufacture_year||null,installed_on:null,location_detail:x.location||'기계실',operation_type:x.purpose||null,inspection_cycle:'수시',condition_status:'정상',importance:'중',risk_level:'양호',qr_code:x.qr_code||null,remarks:[x.remarks,history&&'기존 장비이력\n'+history].filter(Boolean).join('\n'),is_active:true,updated_at:new Date().toISOString()};const ins=await c.from('assets').insert(payload).select('id').single();if(ins.error)throw ins.error;assetId=ins.data.id;existing.push({id:assetId,name:x.name,qr_code:x.qr_code});added++}else updated++;await importPhotos(c,assetId,x)}catch(e){console.error('equipment import',x,e);failed++}}prog.textContent=`완료 · 신규 ${added}대 · 기존 ${updated}대 보완 · 실패 ${failed}대`;
+      toast(`장비이력카드 등록 완료: 신규 ${added}대, 기존 ${updated}대, 실패 ${failed}대`);
+      try{
+        if(typeof window.loadEnterpriseData==='function') await window.loadEnterpriseData();
+        else if(typeof window.loadAssetsFromDb==='function') await window.loadAssetsFromDb();
+      }catch(refreshError){ console.warn('설비목록 새로고침 실패',refreshError); }
+      setTimeout(()=>{
+        try{
+          window.renderAssetList?.();
+          if(window.selectedAssetKey) window.showAsset?.(window.selectedAssetKey);
+        }catch(e){console.warn('설비화면 갱신 실패',e)}
+      },350)}catch(e){console.error(e);toast('일괄등록 실패: '+(e.message||e))}finally{btn.disabled=false}};
+function inject(){
+ const page=$('equipment');if(!page)return;
+ try{if(typeof window.context==='function'&&!window.context().admin)return}catch(e){}
+ let host=page.querySelector('.tfms-equipment-tabs');
+ if(!host){
+   host=document.createElement('div');host.className='tfms-equipment-import-toolbar';
+   const first=page.querySelector(':scope > .panel');
+   if(first) first.before(host); else page.prepend(host);
+ }
+ if(host.querySelector('.tfms-eq-import-btn,.tfms-eq-import-menu'))return;
+ const b=document.createElement('button');
+ b.type='button';b.className='tfms-eq-import-btn';
+ b.textContent='장비이력카드 엑셀 가져오기';
+ b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();window.openEquipmentImportV4432?.()});
+ host.appendChild(b);
+}
+const oldShow=window.showPage;
+if(typeof oldShow==='function')window.showPage=function(id,btn){const r=oldShow.apply(this,arguments);if(id==='equipment')setTimeout(inject,80);return r};
+function init(){inject();[100,400,1000,2000].forEach(ms=>setTimeout(inject,ms))}
+document.readyState==='loading'?document.addEventListener('DOMContentLoaded',init):init();
+})();
+
+</script>
 </body></html>
