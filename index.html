@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>TFMS v44.38 Enterprise Dev</title>
+<title>TFMS v44.39 Enterprise Dev</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -364,7 +364,7 @@ body{background:var(--tfms-bg)!important;color:var(--tfms-text)}
 /* application header */
 #appHeader{position:sticky;top:0;z-index:1000;background:var(--tfms-navy)!important;box-shadow:0 7px 24px rgba(4,34,75,.2)}
 #appHeader .top{height:80px!important;background:linear-gradient(90deg,#062b63,#073a77)!important;padding:0 24px!important;border:0!important}
-#appHeader .logo{min-width:0;gap:18px}.logo img{width:250px!important;max-height:54px!important;object-fit:contain;background:#fff;padding:9px 13px;border-radius:8px}.logo-title b{font-size:27px!important;color:#fff!important}.logo-title small{color:#bcd2eb!important}.logo-title:after{content:'v44.38 Enterprise Dev';display:inline-block;margin-left:12px;padding:6px 11px;border:1px solid rgba(80,230,220,.45);border-radius:999px;color:#d6fffa;background:rgba(15,163,163,.17);font-size:12px;font-weight:800;vertical-align:middle}
+#appHeader .logo{min-width:0;gap:18px}.logo img{width:250px!important;max-height:54px!important;object-fit:contain;background:#fff;padding:9px 13px;border-radius:8px}.logo-title b{font-size:27px!important;color:#fff!important}.logo-title small{color:#bcd2eb!important}.logo-title:after{content:'v44.39 Enterprise Dev';display:inline-block;margin-left:12px;padding:6px 11px;border:1px solid rgba(80,230,220,.45);border-radius:999px;color:#d6fffa;background:rgba(15,163,163,.17);font-size:12px;font-weight:800;vertical-align:middle}
 #appHeader .user{color:#fff!important}.logout{background:#fff!important;color:#07366f!important}
 #appHeader nav{position:fixed!important;left:0;top:80px;bottom:0;width:245px;height:auto!important;display:flex!important;flex-direction:column;align-items:stretch!important;gap:4px!important;padding:18px 12px 100px!important;background:linear-gradient(180deg,#07366f 0%,#032653 100%)!important;overflow-y:auto!important;box-shadow:8px 0 28px rgba(4,37,80,.12);z-index:990}
 #appHeader .nav{position:relative;text-align:left!important;padding:13px 15px 13px 46px!important;border:0!important;border-radius:9px!important;color:#eaf3ff!important;font-size:14px!important;min-height:46px}.nav:hover,.nav.active{background:linear-gradient(90deg,#0f9ca8,#0c7ca5)!important;color:#fff!important;box-shadow:0 8px 18px rgba(12,132,156,.22)}.nav .tfms-nav-ico{position:absolute;left:15px;top:50%;transform:translateY(-50%);font-size:19px;width:22px;text-align:center}
@@ -11929,8 +11929,8 @@ document.addEventListener('DOMContentLoaded',function(){
   if(typeof old==='function')window.renderDashboardData=function(){const r=old.apply(this,arguments);setTimeout(window.renderBrandDashboardV451,0);return r};
   document.addEventListener('DOMContentLoaded',()=>setTimeout(window.renderBrandDashboardV451,300));
   setTimeout(window.renderBrandDashboardV451,1000);
-  const badge=document.getElementById('tfmsVersionBadge');if(badge)badge.textContent='v44.38 Enterprise Dev';
-  document.title='TFMS v44.38 Enterprise Dev';
+  const badge=document.getElementById('tfmsVersionBadge');if(badge)badge.textContent='v44.39 Enterprise Dev';
+  document.title='TFMS v44.39 Enterprise Dev';
 })();
 </script>
 
@@ -16704,7 +16704,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 })();
 </script>
 <script id="tfms-v447-version"><!--
-(function(){window.TFMS_BUILD=Object.freeze({version:'v44.25',channel:'Enterprise UX Preview',buildDate:'2026.07.30',title:'소화기 구역별 일괄등록·QR 라벨 출력'});document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{const b=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');if(b)b.textContent='v44.38 Enterprise Dev';},500)});})();
+(function(){window.TFMS_BUILD=Object.freeze({version:'v44.25',channel:'Enterprise UX Preview',buildDate:'2026.07.30',title:'소화기 구역별 일괄등록·QR 라벨 출력'});document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{const b=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');if(b)b.textContent='v44.39 Enterprise Dev';},500)});})();
 //--></script>
 <!-- TFMS v44.9 Enterprise Stable UX: 설비관리 다이어트 5회차 + 사용자정보 자동연동 보완 -->
 <style id="tfms-v449-equipment-diet">
@@ -16877,7 +16877,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 <script id="tfms-v4413-final-fix">
 (function(){
   'use strict';
-  var BUILD_TEXT='v44.38 Enterprise Dev';
+  var BUILD_TEXT='v44.39 Enterprise Dev';
 
   function byId(id){return document.getElementById(id)}
   function readSession(){
@@ -17025,7 +17025,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 <script id="tfms-v4416-export-preview-controller">
 (function(){
   'use strict';
-  var BUILD='v44.38 Enterprise Dev';
+  var BUILD='v44.39 Enterprise Dev';
   function $(id){return document.getElementById(id)}
   function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]})}
   function val(id,fallback){var el=$(id);return el?el.value:(fallback||'')}
@@ -17204,7 +17204,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 <script id="tfms-v4420-header-dashboard-controller">
 (function(){
  'use strict';
- var BUILD='v44.38 Enterprise Dev';
+ var BUILD='v44.39 Enterprise Dev';
  function cleanStrayBuildText(){
    var walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
    var remove=[];
@@ -17241,7 +17241,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 <script id="tfms-v4420-version-normalizer">
 (function(){
   'use strict';
-  const BUILD='v44.38 Enterprise Dev';
+  const BUILD='v44.39 Enterprise Dev';
   function apply(){
     document.title='TFMS '+BUILD;
     const badge=document.getElementById('tfmsVersionBadge') || document.querySelector('.v32-classic-note');
@@ -17439,7 +17439,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 </style>
 <script id="tfms-v4426-version-fix">
 (function(){
- const BUILD='v44.38 Enterprise Dev';
+ const BUILD='v44.39 Enterprise Dev';
  function apply(){
    const b=document.getElementById('tfmsVersionBadge'); if(b)b.textContent=BUILD;
    document.title='TFMS '+BUILD;
@@ -17473,7 +17473,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 <script id="tfms-v4428-stats-drilldown-script">
 (function(){
 'use strict';
-var VERSION='v44.38 Enterprise Dev';
+var VERSION='v44.39 Enterprise Dev';
 var drillState={kind:'',key:'',status:'전체',list:[]};
 function byId(id){return document.getElementById(id)}
 function safe(v){return String(v==null?'':v).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]})}
@@ -17498,7 +17498,7 @@ function filterBase(kind,key){var src=statsSource();if(kind==='month')return src
 function openDrill(kind,key,preset){var modal=ensureModal();drillState.kind=kind;drillState.key=key;drillState.status=preset||'전체';drillState.list=filterBase(kind,key);byId('tfmsDrillTitle').textContent=titleFor(kind,key);byId('tfmsDrillSub').textContent='처리상태를 선택하면 목록이 즉시 필터링됩니다.';renderDrill();modal.classList.add('show')}
 function renderDrill(){var base=drillState.list;var shown=base.filter(function(r){if(drillState.status==='전체')return true;if(drillState.status==='미완료')return normStatus(r)!=='완료';return normStatus(r)===drillState.status});var done=base.filter(function(r){return normStatus(r)==='완료'}).length;var open=base.length-done;var overdue=base.filter(function(r){return daysOpen(r)>=30}).length;var money=base.reduce(function(s,r){return s+amount(r)},0);byId('tfmsDrillKpis').innerHTML='<div class="tfms-drill-kpi"><span>전체 등록</span><strong>'+base.length+'건</strong></div><div class="tfms-drill-kpi"><span>미완료</span><strong>'+open+'건</strong></div><div class="tfms-drill-kpi"><span>완료율</span><strong>'+(base.length?Math.round(done/base.length*100):0)+'%</strong></div><div class="tfms-drill-kpi"><span>집행금액</span><strong>'+money.toLocaleString('ko-KR')+'원</strong></div>';var statuses=['전체','완료','진행중','미조치','미완료','기타'];var filter=byId('tfmsDrillFilter');filter.innerHTML=statuses.map(function(s){var c=s==='미완료'?open:base.filter(function(r){return s==='전체'||normStatus(r)===s}).length;return '<button class="tfms-drill-chip '+(drillState.status===s?'active':'')+'" type="button" data-status="'+s+'">'+s+' '+c+'</button>'}).join('')+'<span style="margin-left:auto;font-size:11px;color:#7b8da6;align-self:center">30일 이상 '+overdue+'건</span>';filter.querySelectorAll('button').forEach(function(b){b.addEventListener('click',function(){drillState.status=b.dataset.status;renderDrill()})});var body=shown.length?shown.map(function(r){var st=normStatus(r);var cls=st==='완료'?'done':(st==='진행중'?'open':'wait');return '<tr><td>'+safe(r.date||String(r.created_at||'').slice(0,10))+'</td><td>'+safe(recordDept(r))+'</td><td>'+safe(r.facility||'')+'</td><td>'+safe(r.field||'')+'</td><td>'+safe(r.title||r.content||r.task||r.work||'유지관리 이력')+'</td><td><span class="tfms-status-pill '+cls+'">'+st+'</span></td><td>'+daysOpen(r)+'일</td><td>'+amount(r).toLocaleString('ko-KR')+'원</td></tr>'}).join(''):'<tr><td colspan="8" style="text-align:center;padding:30px;color:#8796aa">조건에 맞는 유지관리 이력이 없습니다.</td></tr>';byId('tfmsDrillTable').innerHTML='<div class="tfms-drill-table-wrap"><table class="tfms-drill-table"><thead><tr><th>등록일</th><th>부서</th><th>시설</th><th>분야</th><th>주요내용</th><th>처리상태</th><th>경과일</th><th>금액</th></tr></thead><tbody>'+body+'</tbody></table></div>'}
 window.openStatsDrilldownV4428=openDrill;window.renderStatsCharts=renderAllStats;window.TFMS_BUILD=Object.freeze({version:'v44.29',channel:'Enterprise Stable',buildDate:'2026.08.05',title:'로그인 화면 하단 잔여 텍스트 제거 및 관리자 통계 Drill-down 안정화'});
-function init(){var b=byId('tfmsVersionBadge');if(b)b.textContent='v44.38 Enterprise Dev';document.title='TFMS v44.38 Enterprise Dev';setTimeout(renderAllStats,80)}
+function init(){var b=byId('tfmsVersionBadge');if(b)b.textContent='v44.39 Enterprise Dev';document.title='TFMS v44.39 Enterprise Dev';setTimeout(renderAllStats,80)}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
 </script>
@@ -17543,7 +17543,7 @@ window.deleteEquipmentPhotoV4431=async function(id){var row=currentRows.find(fun
 window.setEquipmentCoverV4431=async function(id){var row=currentRows.find(function(x){return String(x.id)===String(id)});if(!row||row.photo_kind==='대표')return;var c=sb();if(!c)return;if(!confirm('이 사진을 대표사진으로 설정하시겠습니까?'))return;var demote=await c.from('asset_photos').update({photo_kind:'기타'}).eq('asset_id',row.asset_id).eq('photo_kind','대표');if(demote.error){toast('대표사진 변경 실패: '+demote.error.message);return}var promote=await c.from('asset_photos').update({photo_kind:'대표'}).eq('id',id);if(promote.error){toast('대표사진 변경 실패: '+promote.error.message);return}await load();toast('대표사진을 변경했습니다.')}
 var fileInput=q('tfmsEqPhotoFileV4431');if(fileInput)fileInput.addEventListener('change',function(){var fresh=Array.from(this.files||[]);fresh.forEach(function(f){if(!pendingFiles.some(function(x){return x.name===f.name&&x.size===f.size&&x.lastModified===f.lastModified}))pendingFiles.push(f)});this.value='';renderPending()});
 var oldShowAsset=window.showAsset;window.showAsset=function(){var r=oldShowAsset&&oldShowAsset.apply(this,arguments);setTimeout(load,60);return r};var oldShowPage=window.showPage;window.showPage=function(id,btn){var r=oldShowPage&&oldShowPage.apply(this,arguments);if(id==='equipment')setTimeout(load,120);return r};document.addEventListener('keydown',function(e){if(e.key==='Escape'){window.closeEquipmentPhotoViewerV4431();window.closeEquipmentPhotoFormV4431()}});
-function init(){injectPanel();var b=q('tfmsVersionBadge');if(b)b.textContent='v44.38 Enterprise Dev';document.title='TFMS v44.38 Enterprise Dev';window.TFMS_BUILD=Object.freeze({version:'v44.31',channel:'Enterprise Dev',buildDate:'2026.08.06',title:'설비 사진 개별삭제·대표사진 지정'})}
+function init(){injectPanel();var b=q('tfmsVersionBadge');if(b)b.textContent='v44.39 Enterprise Dev';document.title='TFMS v44.39 Enterprise Dev';window.TFMS_BUILD=Object.freeze({version:'v44.31',channel:'Enterprise Dev',buildDate:'2026.08.06',title:'설비 사진 개별삭제·대표사진 지정'})}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
 </script>
@@ -17555,13 +17555,13 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <div id="tfmsEquipmentImportModalV4432" class="tfms-import-modal" onclick="if(event.target===this)closeEquipmentImportV4432()"><div class="tfms-import-dialog"><div class="tfms-import-head"><div><h2>장비이력카드 일괄등록</h2><p>선택한 장비이력카드 엑셀 파일에서 설비정보와 사진을 직접 분석합니다. 등록 전에 수정하거나 제외할 수 있습니다.</p></div><button type="button" onclick="closeEquipmentImportV4432()">×</button></div><div class="tfms-import-tools"><button type="button" onclick="toggleEquipmentImportAllV4432(true)">전체 선택</button><button type="button" onclick="toggleEquipmentImportAllV4432(false)">전체 해제</button><button type="button" onclick="resetEquipmentImportV4432()">원본값 복원</button><span class="tfms-import-summary" id="tfmsEquipmentImportSummaryV4432"></span></div><div class="tfms-import-list" id="tfmsEquipmentImportListV4432"></div><div class="tfms-import-foot"><span class="tfms-import-progress" id="tfmsEquipmentImportProgressV4432"></span><button type="button" onclick="closeEquipmentImportV4432()">취소</button><button class="primary" type="button" id="tfmsEquipmentImportRunV4432" onclick="runEquipmentImportV4432()">선택 설비 Supabase 등록</button></div></div></div>
 <script id="tfms-equipment-import-inline-v4437">
 (function(){'use strict';
-const BUILD='v44.38 Enterprise Dev';
+const BUILD='v44.39 Enterprise Dev';
 let source=null,rows=[],zipBook=null,objectUrls=[];
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-function client(){return window.supabaseClient||window.sb||window.supabase||null}
+function client(){try{return (typeof window.getTfmsSupabaseClient==='function'&&window.getTfmsSupabaseClient())||window.tfmsSupabase||window.supabaseClient||window.sb||null}catch(e){console.error('Supabase client resolve failed',e);return null}}
 function toast(s){if(typeof window.showToast==='function')window.showToast(s);else alert(s)}
-function applyVersion(){const b=$('tfmsVersionBadge');if(b&&b.textContent!==BUILD)b.textContent=BUILD;if(document.title!=='TFMS '+BUILD)document.title='TFMS '+BUILD;window.TFMS_BUILD=Object.freeze({version:'v44.38',channel:'Enterprise Dev',buildDate:'2026.08.06',title:'설비관리 간결 UI·관리도구 분리'});}
+function applyVersion(){const b=$('tfmsVersionBadge');if(b&&b.textContent!==BUILD)b.textContent=BUILD;if(document.title!=='TFMS '+BUILD)document.title='TFMS '+BUILD;window.TFMS_BUILD=Object.freeze({version:'v44.39',channel:'Enterprise Dev',buildDate:'2026.08.06',title:'장비이력카드 Supabase 클라이언트 연결 수정'});}
 function u16(v,o){return v.getUint16(o,true)} function u32(v,o){return v.getUint32(o,true)}
 function normPath(base,target){if(!target)return'';if(target[0]==='/')return target.slice(1);const a=(base+'/'+target).split('/'),out=[];for(const p of a){if(!p||p==='.')continue;if(p==='..')out.pop();else out.push(p)}return out.join('/')}
 class MiniZip{
