@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>TFMS v44.29 Enterprise Stable</title>
+<title>TFMS v44.40R1 Recovery Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -364,7 +364,7 @@ body{background:var(--tfms-bg)!important;color:var(--tfms-text)}
 /* application header */
 #appHeader{position:sticky;top:0;z-index:1000;background:var(--tfms-navy)!important;box-shadow:0 7px 24px rgba(4,34,75,.2)}
 #appHeader .top{height:80px!important;background:linear-gradient(90deg,#062b63,#073a77)!important;padding:0 24px!important;border:0!important}
-#appHeader .logo{min-width:0;gap:18px}.logo img{width:250px!important;max-height:54px!important;object-fit:contain;background:#fff;padding:9px 13px;border-radius:8px}.logo-title b{font-size:27px!important;color:#fff!important}.logo-title small{color:#bcd2eb!important}.logo-title:after{content:'v44.28 Enterprise Stable';display:inline-block;margin-left:12px;padding:6px 11px;border:1px solid rgba(80,230,220,.45);border-radius:999px;color:#d6fffa;background:rgba(15,163,163,.17);font-size:12px;font-weight:800;vertical-align:middle}
+#appHeader .logo{min-width:0;gap:18px}.logo img{width:250px!important;max-height:54px!important;object-fit:contain;background:#fff;padding:9px 13px;border-radius:8px}.logo-title b{font-size:27px!important;color:#fff!important}.logo-title small{color:#bcd2eb!important}.logo-title:after{content:'v44.40R1 Recovery Stable';display:inline-block;margin-left:12px;padding:6px 11px;border:1px solid rgba(80,230,220,.45);border-radius:999px;color:#d6fffa;background:rgba(15,163,163,.17);font-size:12px;font-weight:800;vertical-align:middle}
 #appHeader .user{color:#fff!important}.logout{background:#fff!important;color:#07366f!important}
 #appHeader nav{position:fixed!important;left:0;top:80px;bottom:0;width:245px;height:auto!important;display:flex!important;flex-direction:column;align-items:stretch!important;gap:4px!important;padding:18px 12px 100px!important;background:linear-gradient(180deg,#07366f 0%,#032653 100%)!important;overflow-y:auto!important;box-shadow:8px 0 28px rgba(4,37,80,.12);z-index:990}
 #appHeader .nav{position:relative;text-align:left!important;padding:13px 15px 13px 46px!important;border:0!important;border-radius:9px!important;color:#eaf3ff!important;font-size:14px!important;min-height:46px}.nav:hover,.nav.active{background:linear-gradient(90deg,#0f9ca8,#0c7ca5)!important;color:#fff!important;box-shadow:0 8px 18px rgba(12,132,156,.22)}.nav .tfms-nav-ico{position:absolute;left:15px;top:50%;transform:translateY(-50%);font-size:19px;width:22px;text-align:center}
@@ -11929,8 +11929,8 @@ document.addEventListener('DOMContentLoaded',function(){
   if(typeof old==='function')window.renderDashboardData=function(){const r=old.apply(this,arguments);setTimeout(window.renderBrandDashboardV451,0);return r};
   document.addEventListener('DOMContentLoaded',()=>setTimeout(window.renderBrandDashboardV451,300));
   setTimeout(window.renderBrandDashboardV451,1000);
-  const badge=document.getElementById('tfmsVersionBadge');if(badge)badge.textContent='v44.28 Enterprise Stable';
-  document.title='TFMS v44.29 Enterprise Stable';
+  const badge=document.getElementById('tfmsVersionBadge');if(badge)badge.textContent='v44.40R1 Recovery Stable';
+  document.title='TFMS v44.40R1 Recovery Stable';
 })();
 </script>
 
@@ -12207,6 +12207,7 @@ ${getPrintCssV401()}
 </head>
 <body>
 <div class="dj-sheet ${esc(sheetClass||'')}">${content}</div>
+
 
 
 
@@ -15269,57 +15270,7 @@ window.printFireExtQrLabelsV447=async function(){
       labels.push({...row,qr:await qrDataUrlV447(url)});
     }
     const w=window.open('','_blank','width=1100,height=800');if(!w)throw new Error('팝업이 차단되었습니다.');
-    w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>${esc(facility)} 소화기 QR 라벨</title><style>@page{size:A4 portrait;margin:8mm}*{box-sizing:border-box}body{font-family:"Malgun Gothic",sans-serif;margin:0}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5mm}.label{border:1px solid #333;border-radius:3mm;min-height:82mm;padding:4mm;text-align:center;break-inside:avoid}.label img{width:42mm;height:42mm}.facility{font-weight:700;font-size:11pt}.code{font-size:15pt;font-weight:800;margin:2mm 0}.loc{font-size:9pt;min-height:12mm}.hint{font-size:7.5pt;color:#555;margin-top:1mm}@media print{.no-print{display:none}}</style></head><body><div class="no-print" style="padding:10px;text-align:center"><button onclick="print()">인쇄</button></div><div class="grid">${labels.map(x=>`<div class="label"><div class="facility">${esc(facility)}</div><div class="code">${esc(x.code)}</div><img src="${x.qr}"><div class="loc">${esc(x.location||'상세 위치 현장 입력')}</div><div class="hint">QR 촬영 후 현장점검</div></div>`).join('')}</div>
-<style id="tfms-v4430-equipment-photo-style">
-#equipment .tfms-eq-photo-panel{margin-top:20px;border:1px solid #dfe8f2;border-radius:16px;background:#fff;overflow:hidden}
-#equipment .tfms-eq-photo-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 16px;border-bottom:1px solid #edf2f7;background:linear-gradient(180deg,#fbfdff,#f7faff)}
-#equipment .tfms-eq-photo-head h3{margin:0;font-size:16px;color:#17365d}
-#equipment .tfms-eq-photo-head p{margin:4px 0 0;font-size:11px;color:#6f8198}
-#equipment .tfms-eq-photo-actions{display:flex;gap:7px;flex-wrap:wrap}
-#equipment .tfms-eq-photo-actions button{border:1px solid #bfd0e3;background:#fff;color:#24476e;border-radius:10px;padding:8px 11px;font-weight:800;font-size:11px;cursor:pointer}
-#equipment .tfms-eq-photo-actions button.primary{background:#1458b5;color:#fff;border-color:#1458b5}
-#equipment .tfms-eq-photo-body{display:grid;grid-template-columns:280px 1fr;gap:16px;padding:16px}
-#equipment .tfms-eq-cover{min-height:210px;border-radius:14px;background:#eef4fa;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;border:1px solid #dce7f1}
-#equipment .tfms-eq-cover img{width:100%;height:100%;min-height:210px;object-fit:cover;cursor:zoom-in}
-#equipment .tfms-eq-cover-empty{color:#788ca4;text-align:center;font-size:12px;line-height:1.7;padding:20px}
-#equipment .tfms-eq-cover-badge{position:absolute;left:10px;top:10px;background:rgba(13,43,80,.82);color:#fff;border-radius:999px;padding:5px 8px;font-size:10px;font-weight:800}
-#equipment .tfms-eq-history{display:flex;flex-direction:column;gap:10px;max-height:330px;overflow:auto;padding-right:3px}
-#equipment .tfms-eq-photo-item{display:grid;grid-template-columns:86px 1fr auto;gap:11px;align-items:center;border:1px solid #e1e9f2;border-radius:12px;padding:9px;background:#fbfdff}
-#equipment .tfms-eq-photo-item img{width:86px;height:64px;object-fit:cover;border-radius:9px;cursor:zoom-in;background:#eef3f8}
-#equipment .tfms-eq-photo-meta strong{display:block;font-size:12px;color:#1f3f64;margin-bottom:4px}
-#equipment .tfms-eq-photo-meta span{display:block;font-size:10px;color:#71849a;line-height:1.5}
-#equipment .tfms-eq-photo-delete{border:0;background:#fff0f0;color:#b42318;border-radius:9px;padding:7px 9px;cursor:pointer;font-size:10px;font-weight:800}
-#equipment .tfms-eq-photo-empty{border:1px dashed #cbd8e6;border-radius:12px;padding:24px;text-align:center;color:#7c8fa5;font-size:12px}
-.tfms-eq-photo-modal{display:none;position:fixed;inset:0;background:rgba(3,14,30,.86);z-index:10080;align-items:center;justify-content:center;padding:24px}
-.tfms-eq-photo-modal.show{display:flex}
-.tfms-eq-photo-modal img{max-width:92vw;max-height:88vh;object-fit:contain;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
-.tfms-eq-photo-modal button{position:fixed;right:24px;top:20px;width:42px;height:42px;border:0;border-radius:50%;font-size:25px;background:#fff;color:#183a60;cursor:pointer}
-.tfms-eq-photo-form{display:none;position:fixed;inset:0;background:rgba(5,21,42,.58);z-index:10070;align-items:center;justify-content:center;padding:20px}
-.tfms-eq-photo-form.show{display:flex}
-.tfms-eq-photo-form-box{width:min(520px,96vw);background:#fff;border-radius:16px;box-shadow:0 24px 70px rgba(0,0,0,.22);overflow:hidden}
-.tfms-eq-photo-form-head{display:flex;justify-content:space-between;align-items:center;padding:15px 17px;border-bottom:1px solid #e7edf4}
-.tfms-eq-photo-form-head h3{margin:0;font-size:17px;color:#173b66}.tfms-eq-photo-form-head button{border:0;background:transparent;font-size:25px;cursor:pointer;color:#60748c}
-.tfms-eq-photo-form-body{padding:16px 17px}.tfms-eq-photo-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.tfms-eq-photo-field.wide{grid-column:1/-1}.tfms-eq-photo-field label{display:block;font-size:11px;font-weight:800;color:#405671;margin-bottom:6px}
-.tfms-eq-photo-field input,.tfms-eq-photo-field select,.tfms-eq-photo-field textarea{width:100%;box-sizing:border-box;border:1px solid #cbd7e5;border-radius:10px;padding:10px 11px;font-size:12px}.tfms-eq-photo-field textarea{min-height:78px;resize:vertical}
-.tfms-eq-photo-form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:15px}.tfms-eq-photo-form-actions button{border:1px solid #c6d3e2;background:#fff;border-radius:10px;padding:9px 13px;font-weight:800;cursor:pointer}.tfms-eq-photo-form-actions button.primary{background:#1458b5;border-color:#1458b5;color:#fff}
-@media(max-width:850px){#equipment .tfms-eq-photo-body{grid-template-columns:1fr}#equipment .tfms-eq-photo-form-grid{grid-template-columns:1fr}.tfms-eq-photo-field.wide{grid-column:auto}}
-</style>
-<div class="tfms-eq-photo-form" id="tfmsEqPhotoFormV4430" onclick="if(event.target===this)closeEquipmentPhotoFormV4430()">
-  <div class="tfms-eq-photo-form-box" role="dialog" aria-modal="true" aria-labelledby="tfmsEqPhotoFormTitleV4430">
-    <div class="tfms-eq-photo-form-head"><h3 id="tfmsEqPhotoFormTitleV4430">설비 사진 등록</h3><button type="button" onclick="closeEquipmentPhotoFormV4430()">×</button></div>
-    <div class="tfms-eq-photo-form-body">
-      <div class="tfms-eq-photo-form-grid">
-        <div class="tfms-eq-photo-field"><label>사진 구분</label><select id="tfmsEqPhotoKindV4430"><option value="대표">대표사진</option><option value="점검전">점검 전</option><option value="점검후">점검 후</option><option value="보수">보수·교체</option><option value="기타">기타</option></select></div>
-        <div class="tfms-eq-photo-field"><label>촬영·이력일</label><input id="tfmsEqPhotoDateV4430" type="date"></div>
-        <div class="tfms-eq-photo-field wide"><label>사진 파일</label><input id="tfmsEqPhotoFileV4430" type="file" accept="image/*" multiple></div>
-        <div class="tfms-eq-photo-field wide"><label>설명</label><textarea id="tfmsEqPhotoCaptionV4430" placeholder="예: 여과기 압력계 교체 후 상태"></textarea></div>
-      </div>
-      <div class="tfms-eq-photo-form-actions"><button type="button" onclick="closeEquipmentPhotoFormV4430()">취소</button><button class="primary" type="button" id="tfmsEqPhotoSaveV4430" onclick="saveEquipmentPhotosV4430()">Supabase에 저장</button></div>
-    </div>
-  </div>
-</div>
-<div class="tfms-eq-photo-modal" id="tfmsEqPhotoModalV4430" onclick="if(event.target===this)closeEquipmentPhotoViewerV4430()"><button type="button" onclick="closeEquipmentPhotoViewerV4430()">×</button><img id="tfmsEqPhotoViewerImgV4430" alt="설비 사진 확대"></div>
-</body></html>`);
+    w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>${esc(facility)} 소화기 QR 라벨</title><style>@page{size:A4 portrait;margin:8mm}*{box-sizing:border-box}body{font-family:"Malgun Gothic",sans-serif;margin:0}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5mm}.label{border:1px solid #333;border-radius:3mm;min-height:82mm;padding:4mm;text-align:center;break-inside:avoid}.label img{width:42mm;height:42mm}.facility{font-weight:700;font-size:11pt}.code{font-size:15pt;font-weight:800;margin:2mm 0}.loc{font-size:9pt;min-height:12mm}.hint{font-size:7.5pt;color:#555;margin-top:1mm}@media print{.no-print{display:none}}</style></head><body><div class="no-print" style="padding:10px;text-align:center"><button onclick="print()">인쇄</button></div><div class="grid">${labels.map(x=>`<div class="label"><div class="facility">${esc(facility)}</div><div class="code">${esc(x.code)}</div><img src="${x.qr}"><div class="loc">${esc(x.location||'상세 위치 현장 입력')}</div><div class="hint">QR 촬영 후 현장점검</div></div>`).join('')}</div></body></html>`);
     w.document.close();setTimeout(()=>w.focus(),200);
   }catch(e){console.error(e);toast('QR 라벨 출력 준비 실패: '+(e?.message||e))}
 };
@@ -16133,56 +16084,6 @@ window.printFireRecordV420=async function(){
  #dashboard.tfms-dashboard-v431>.title-row>div:last-child{flex-wrap:wrap;justify-content:flex-end}
 }
 </style>
-
-<style id="tfms-v4430-equipment-photo-style">
-#equipment .tfms-eq-photo-panel{margin-top:20px;border:1px solid #dfe8f2;border-radius:16px;background:#fff;overflow:hidden}
-#equipment .tfms-eq-photo-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 16px;border-bottom:1px solid #edf2f7;background:linear-gradient(180deg,#fbfdff,#f7faff)}
-#equipment .tfms-eq-photo-head h3{margin:0;font-size:16px;color:#17365d}
-#equipment .tfms-eq-photo-head p{margin:4px 0 0;font-size:11px;color:#6f8198}
-#equipment .tfms-eq-photo-actions{display:flex;gap:7px;flex-wrap:wrap}
-#equipment .tfms-eq-photo-actions button{border:1px solid #bfd0e3;background:#fff;color:#24476e;border-radius:10px;padding:8px 11px;font-weight:800;font-size:11px;cursor:pointer}
-#equipment .tfms-eq-photo-actions button.primary{background:#1458b5;color:#fff;border-color:#1458b5}
-#equipment .tfms-eq-photo-body{display:grid;grid-template-columns:280px 1fr;gap:16px;padding:16px}
-#equipment .tfms-eq-cover{min-height:210px;border-radius:14px;background:#eef4fa;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;border:1px solid #dce7f1}
-#equipment .tfms-eq-cover img{width:100%;height:100%;min-height:210px;object-fit:cover;cursor:zoom-in}
-#equipment .tfms-eq-cover-empty{color:#788ca4;text-align:center;font-size:12px;line-height:1.7;padding:20px}
-#equipment .tfms-eq-cover-badge{position:absolute;left:10px;top:10px;background:rgba(13,43,80,.82);color:#fff;border-radius:999px;padding:5px 8px;font-size:10px;font-weight:800}
-#equipment .tfms-eq-history{display:flex;flex-direction:column;gap:10px;max-height:330px;overflow:auto;padding-right:3px}
-#equipment .tfms-eq-photo-item{display:grid;grid-template-columns:86px 1fr auto;gap:11px;align-items:center;border:1px solid #e1e9f2;border-radius:12px;padding:9px;background:#fbfdff}
-#equipment .tfms-eq-photo-item img{width:86px;height:64px;object-fit:cover;border-radius:9px;cursor:zoom-in;background:#eef3f8}
-#equipment .tfms-eq-photo-meta strong{display:block;font-size:12px;color:#1f3f64;margin-bottom:4px}
-#equipment .tfms-eq-photo-meta span{display:block;font-size:10px;color:#71849a;line-height:1.5}
-#equipment .tfms-eq-photo-delete{border:0;background:#fff0f0;color:#b42318;border-radius:9px;padding:7px 9px;cursor:pointer;font-size:10px;font-weight:800}
-#equipment .tfms-eq-photo-empty{border:1px dashed #cbd8e6;border-radius:12px;padding:24px;text-align:center;color:#7c8fa5;font-size:12px}
-.tfms-eq-photo-modal{display:none;position:fixed;inset:0;background:rgba(3,14,30,.86);z-index:10080;align-items:center;justify-content:center;padding:24px}
-.tfms-eq-photo-modal.show{display:flex}
-.tfms-eq-photo-modal img{max-width:92vw;max-height:88vh;object-fit:contain;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
-.tfms-eq-photo-modal button{position:fixed;right:24px;top:20px;width:42px;height:42px;border:0;border-radius:50%;font-size:25px;background:#fff;color:#183a60;cursor:pointer}
-.tfms-eq-photo-form{display:none;position:fixed;inset:0;background:rgba(5,21,42,.58);z-index:10070;align-items:center;justify-content:center;padding:20px}
-.tfms-eq-photo-form.show{display:flex}
-.tfms-eq-photo-form-box{width:min(520px,96vw);background:#fff;border-radius:16px;box-shadow:0 24px 70px rgba(0,0,0,.22);overflow:hidden}
-.tfms-eq-photo-form-head{display:flex;justify-content:space-between;align-items:center;padding:15px 17px;border-bottom:1px solid #e7edf4}
-.tfms-eq-photo-form-head h3{margin:0;font-size:17px;color:#173b66}.tfms-eq-photo-form-head button{border:0;background:transparent;font-size:25px;cursor:pointer;color:#60748c}
-.tfms-eq-photo-form-body{padding:16px 17px}.tfms-eq-photo-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.tfms-eq-photo-field.wide{grid-column:1/-1}.tfms-eq-photo-field label{display:block;font-size:11px;font-weight:800;color:#405671;margin-bottom:6px}
-.tfms-eq-photo-field input,.tfms-eq-photo-field select,.tfms-eq-photo-field textarea{width:100%;box-sizing:border-box;border:1px solid #cbd7e5;border-radius:10px;padding:10px 11px;font-size:12px}.tfms-eq-photo-field textarea{min-height:78px;resize:vertical}
-.tfms-eq-photo-form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:15px}.tfms-eq-photo-form-actions button{border:1px solid #c6d3e2;background:#fff;border-radius:10px;padding:9px 13px;font-weight:800;cursor:pointer}.tfms-eq-photo-form-actions button.primary{background:#1458b5;border-color:#1458b5;color:#fff}
-@media(max-width:850px){#equipment .tfms-eq-photo-body{grid-template-columns:1fr}#equipment .tfms-eq-photo-form-grid{grid-template-columns:1fr}.tfms-eq-photo-field.wide{grid-column:auto}}
-</style>
-<div class="tfms-eq-photo-form" id="tfmsEqPhotoFormV4430" onclick="if(event.target===this)closeEquipmentPhotoFormV4430()">
-  <div class="tfms-eq-photo-form-box" role="dialog" aria-modal="true" aria-labelledby="tfmsEqPhotoFormTitleV4430">
-    <div class="tfms-eq-photo-form-head"><h3 id="tfmsEqPhotoFormTitleV4430">설비 사진 등록</h3><button type="button" onclick="closeEquipmentPhotoFormV4430()">×</button></div>
-    <div class="tfms-eq-photo-form-body">
-      <div class="tfms-eq-photo-form-grid">
-        <div class="tfms-eq-photo-field"><label>사진 구분</label><select id="tfmsEqPhotoKindV4430"><option value="대표">대표사진</option><option value="점검전">점검 전</option><option value="점검후">점검 후</option><option value="보수">보수·교체</option><option value="기타">기타</option></select></div>
-        <div class="tfms-eq-photo-field"><label>촬영·이력일</label><input id="tfmsEqPhotoDateV4430" type="date"></div>
-        <div class="tfms-eq-photo-field wide"><label>사진 파일</label><input id="tfmsEqPhotoFileV4430" type="file" accept="image/*" multiple></div>
-        <div class="tfms-eq-photo-field wide"><label>설명</label><textarea id="tfmsEqPhotoCaptionV4430" placeholder="예: 여과기 압력계 교체 후 상태"></textarea></div>
-      </div>
-      <div class="tfms-eq-photo-form-actions"><button type="button" onclick="closeEquipmentPhotoFormV4430()">취소</button><button class="primary" type="button" id="tfmsEqPhotoSaveV4430" onclick="saveEquipmentPhotosV4430()">Supabase에 저장</button></div>
-    </div>
-  </div>
-</div>
-<div class="tfms-eq-photo-modal" id="tfmsEqPhotoModalV4430" onclick="if(event.target===this)closeEquipmentPhotoViewerV4430()"><button type="button" onclick="closeEquipmentPhotoViewerV4430()">×</button><img id="tfmsEqPhotoViewerImgV4430" alt="설비 사진 확대"></div>
 </body></html>`);doc.close();
   await new Promise(r=>{if(doc.readyState==='complete')r();else frame.onload=r;});
   const imgs=[...doc.images];await Promise.all(imgs.map(img=>img.complete?(img.decode?.().catch(()=>{})||Promise.resolve()):new Promise(res=>{img.onload=img.onerror=res;})));
@@ -16310,56 +16211,6 @@ window.printFireRecordV420=async function(){try{window.previewFireRecordV420();c
  #dashboard.tfms-dashboard-v431>.title-row>div:last-child{flex-wrap:wrap;justify-content:flex-end}
 }
 </style>
-
-<style id="tfms-v4430-equipment-photo-style">
-#equipment .tfms-eq-photo-panel{margin-top:20px;border:1px solid #dfe8f2;border-radius:16px;background:#fff;overflow:hidden}
-#equipment .tfms-eq-photo-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 16px;border-bottom:1px solid #edf2f7;background:linear-gradient(180deg,#fbfdff,#f7faff)}
-#equipment .tfms-eq-photo-head h3{margin:0;font-size:16px;color:#17365d}
-#equipment .tfms-eq-photo-head p{margin:4px 0 0;font-size:11px;color:#6f8198}
-#equipment .tfms-eq-photo-actions{display:flex;gap:7px;flex-wrap:wrap}
-#equipment .tfms-eq-photo-actions button{border:1px solid #bfd0e3;background:#fff;color:#24476e;border-radius:10px;padding:8px 11px;font-weight:800;font-size:11px;cursor:pointer}
-#equipment .tfms-eq-photo-actions button.primary{background:#1458b5;color:#fff;border-color:#1458b5}
-#equipment .tfms-eq-photo-body{display:grid;grid-template-columns:280px 1fr;gap:16px;padding:16px}
-#equipment .tfms-eq-cover{min-height:210px;border-radius:14px;background:#eef4fa;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;border:1px solid #dce7f1}
-#equipment .tfms-eq-cover img{width:100%;height:100%;min-height:210px;object-fit:cover;cursor:zoom-in}
-#equipment .tfms-eq-cover-empty{color:#788ca4;text-align:center;font-size:12px;line-height:1.7;padding:20px}
-#equipment .tfms-eq-cover-badge{position:absolute;left:10px;top:10px;background:rgba(13,43,80,.82);color:#fff;border-radius:999px;padding:5px 8px;font-size:10px;font-weight:800}
-#equipment .tfms-eq-history{display:flex;flex-direction:column;gap:10px;max-height:330px;overflow:auto;padding-right:3px}
-#equipment .tfms-eq-photo-item{display:grid;grid-template-columns:86px 1fr auto;gap:11px;align-items:center;border:1px solid #e1e9f2;border-radius:12px;padding:9px;background:#fbfdff}
-#equipment .tfms-eq-photo-item img{width:86px;height:64px;object-fit:cover;border-radius:9px;cursor:zoom-in;background:#eef3f8}
-#equipment .tfms-eq-photo-meta strong{display:block;font-size:12px;color:#1f3f64;margin-bottom:4px}
-#equipment .tfms-eq-photo-meta span{display:block;font-size:10px;color:#71849a;line-height:1.5}
-#equipment .tfms-eq-photo-delete{border:0;background:#fff0f0;color:#b42318;border-radius:9px;padding:7px 9px;cursor:pointer;font-size:10px;font-weight:800}
-#equipment .tfms-eq-photo-empty{border:1px dashed #cbd8e6;border-radius:12px;padding:24px;text-align:center;color:#7c8fa5;font-size:12px}
-.tfms-eq-photo-modal{display:none;position:fixed;inset:0;background:rgba(3,14,30,.86);z-index:10080;align-items:center;justify-content:center;padding:24px}
-.tfms-eq-photo-modal.show{display:flex}
-.tfms-eq-photo-modal img{max-width:92vw;max-height:88vh;object-fit:contain;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
-.tfms-eq-photo-modal button{position:fixed;right:24px;top:20px;width:42px;height:42px;border:0;border-radius:50%;font-size:25px;background:#fff;color:#183a60;cursor:pointer}
-.tfms-eq-photo-form{display:none;position:fixed;inset:0;background:rgba(5,21,42,.58);z-index:10070;align-items:center;justify-content:center;padding:20px}
-.tfms-eq-photo-form.show{display:flex}
-.tfms-eq-photo-form-box{width:min(520px,96vw);background:#fff;border-radius:16px;box-shadow:0 24px 70px rgba(0,0,0,.22);overflow:hidden}
-.tfms-eq-photo-form-head{display:flex;justify-content:space-between;align-items:center;padding:15px 17px;border-bottom:1px solid #e7edf4}
-.tfms-eq-photo-form-head h3{margin:0;font-size:17px;color:#173b66}.tfms-eq-photo-form-head button{border:0;background:transparent;font-size:25px;cursor:pointer;color:#60748c}
-.tfms-eq-photo-form-body{padding:16px 17px}.tfms-eq-photo-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.tfms-eq-photo-field.wide{grid-column:1/-1}.tfms-eq-photo-field label{display:block;font-size:11px;font-weight:800;color:#405671;margin-bottom:6px}
-.tfms-eq-photo-field input,.tfms-eq-photo-field select,.tfms-eq-photo-field textarea{width:100%;box-sizing:border-box;border:1px solid #cbd7e5;border-radius:10px;padding:10px 11px;font-size:12px}.tfms-eq-photo-field textarea{min-height:78px;resize:vertical}
-.tfms-eq-photo-form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:15px}.tfms-eq-photo-form-actions button{border:1px solid #c6d3e2;background:#fff;border-radius:10px;padding:9px 13px;font-weight:800;cursor:pointer}.tfms-eq-photo-form-actions button.primary{background:#1458b5;border-color:#1458b5;color:#fff}
-@media(max-width:850px){#equipment .tfms-eq-photo-body{grid-template-columns:1fr}#equipment .tfms-eq-photo-form-grid{grid-template-columns:1fr}.tfms-eq-photo-field.wide{grid-column:auto}}
-</style>
-<div class="tfms-eq-photo-form" id="tfmsEqPhotoFormV4430" onclick="if(event.target===this)closeEquipmentPhotoFormV4430()">
-  <div class="tfms-eq-photo-form-box" role="dialog" aria-modal="true" aria-labelledby="tfmsEqPhotoFormTitleV4430">
-    <div class="tfms-eq-photo-form-head"><h3 id="tfmsEqPhotoFormTitleV4430">설비 사진 등록</h3><button type="button" onclick="closeEquipmentPhotoFormV4430()">×</button></div>
-    <div class="tfms-eq-photo-form-body">
-      <div class="tfms-eq-photo-form-grid">
-        <div class="tfms-eq-photo-field"><label>사진 구분</label><select id="tfmsEqPhotoKindV4430"><option value="대표">대표사진</option><option value="점검전">점검 전</option><option value="점검후">점검 후</option><option value="보수">보수·교체</option><option value="기타">기타</option></select></div>
-        <div class="tfms-eq-photo-field"><label>촬영·이력일</label><input id="tfmsEqPhotoDateV4430" type="date"></div>
-        <div class="tfms-eq-photo-field wide"><label>사진 파일</label><input id="tfmsEqPhotoFileV4430" type="file" accept="image/*" multiple></div>
-        <div class="tfms-eq-photo-field wide"><label>설명</label><textarea id="tfmsEqPhotoCaptionV4430" placeholder="예: 여과기 압력계 교체 후 상태"></textarea></div>
-      </div>
-      <div class="tfms-eq-photo-form-actions"><button type="button" onclick="closeEquipmentPhotoFormV4430()">취소</button><button class="primary" type="button" id="tfmsEqPhotoSaveV4430" onclick="saveEquipmentPhotosV4430()">Supabase에 저장</button></div>
-    </div>
-  </div>
-</div>
-<div class="tfms-eq-photo-modal" id="tfmsEqPhotoModalV4430" onclick="if(event.target===this)closeEquipmentPhotoViewerV4430()"><button type="button" onclick="closeEquipmentPhotoViewerV4430()">×</button><img id="tfmsEqPhotoViewerImgV4430" alt="설비 사진 확대"></div>
 </body></html>`);doc.close();await new Promise(r=>setTimeout(r,100));if(doc.fonts?.ready)await doc.fonts.ready;await Promise.all([...doc.images].map(img=>img.complete?Promise.resolve():new Promise(r=>{img.onload=img.onerror=r})));await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));frame.contentWindow.focus();frame.contentWindow.print();setTimeout(()=>frame.remove(),5000);}catch(e){console.error(e);toast('PDF 출력 실패: '+(e?.message||e));}};
 function db(){try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||(typeof sb!=='undefined'?sb:null)}catch(e){return null}}
 async function facilityId(name){const sbc=db();const {data,error}=await sbc.from('facilities').select('id,name').eq('name',name).limit(1);if(error)throw error;if(!data?.length)throw new Error(`시설 DB에서 '${name}'을 찾지 못했습니다.`);return data[0].id;}
@@ -16667,9 +16518,9 @@ function setupEquipmentTabsV443(){
  const panels=[...page.querySelectorAll(':scope > .panel')]; const reg=panels.find(x=>x.querySelector('.section-title')?.textContent.includes('설비 등록/수정'));
  if(!reg)return; reg.classList.add('tfms-eq-register-panel');
  panels.filter(x=>x!==reg).forEach(x=>x.classList.add('tfms-eq-overview-block'));
- const tabs=document.createElement('div');tabs.className='tfms-equipment-tabs';tabs.innerHTML='<button class="active" type="button" data-v="overview">설비 현황·이력</button><button type="button" data-v="edit">설비 등록·수정</button>';
+ const tabs=document.createElement('div');tabs.className='tfms-equipment-tabs';tabs.innerHTML='<button class="active" type="button" data-v="overview">설비 현황</button><button type="button" data-v="edit">설비 등록·수정</button><div class="tfms-eq-admin-tools"><button type="button" class="tfms-eq-admin-toggle" aria-expanded="false">관리 도구 <span>▾</span></button><div class="tfms-eq-admin-menu" hidden><button type="button" class="tfms-eq-import-menu">장비이력카드 엑셀 가져오기</button><small>관리자용 일괄 입력 기능</small></div></div>';
  const first=page.querySelector(':scope > .panel');first?.before(tabs);
- tabs.onclick=e=>{const b=e.target.closest('button');if(!b)return;page.dataset.eqView=b.dataset.v;tabs.querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));window.scrollTo({top:page.offsetTop-10,behavior:'smooth'});};
+ tabs.onclick=e=>{const b=e.target.closest('button');if(!b||!b.dataset.v)return;page.dataset.eqView=b.dataset.v;tabs.querySelectorAll('button[data-v]').forEach(x=>x.classList.toggle('active',x===b));window.scrollTo({top:page.offsetTop-10,behavior:'smooth'});};
 }
 
 // 소방 중복 프리셋 확실히 제거하고 기록표 카드만 유지
@@ -16853,7 +16704,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 })();
 </script>
 <script id="tfms-v447-version"><!--
-(function(){window.TFMS_BUILD=Object.freeze({version:'v44.25',channel:'Enterprise UX Preview',buildDate:'2026.07.30',title:'소화기 구역별 일괄등록·QR 라벨 출력'});document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{const b=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');if(b)b.textContent='v44.29 Enterprise Stable';},500)});})();
+(function(){window.TFMS_BUILD=Object.freeze({version:'v44.25',channel:'Enterprise UX Preview',buildDate:'2026.07.30',title:'소화기 구역별 일괄등록·QR 라벨 출력'});document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{const b=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');if(b)b.textContent='v44.40R1 Recovery Stable';},500)});})();
 //--></script>
 <!-- TFMS v44.9 Enterprise Stable UX: 설비관리 다이어트 5회차 + 사용자정보 자동연동 보완 -->
 <style id="tfms-v449-equipment-diet">
@@ -17026,7 +16877,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 <script id="tfms-v4413-final-fix">
 (function(){
   'use strict';
-  var BUILD_TEXT='v44.28 Enterprise Stable';
+  var BUILD_TEXT='v44.40R1 Recovery Stable';
 
   function byId(id){return document.getElementById(id)}
   function readSession(){
@@ -17174,7 +17025,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 <script id="tfms-v4416-export-preview-controller">
 (function(){
   'use strict';
-  var BUILD='v44.28 Enterprise Stable';
+  var BUILD='v44.40R1 Recovery Stable';
   function $(id){return document.getElementById(id)}
   function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]})}
   function val(id,fallback){var el=$(id);return el?el.value:(fallback||'')}
@@ -17353,7 +17204,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 <script id="tfms-v4420-header-dashboard-controller">
 (function(){
  'use strict';
- var BUILD='v44.28 Enterprise Stable';
+ var BUILD='v44.40R1 Recovery Stable';
  function cleanStrayBuildText(){
    var walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
    var remove=[];
@@ -17390,7 +17241,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 <script id="tfms-v4420-version-normalizer">
 (function(){
   'use strict';
-  const BUILD='v44.28 Enterprise Stable';
+  const BUILD='v44.40R1 Recovery Stable';
   function apply(){
     document.title='TFMS '+BUILD;
     const badge=document.getElementById('tfmsVersionBadge') || document.querySelector('.v32-classic-note');
@@ -17588,7 +17439,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 </style>
 <script id="tfms-v4426-version-fix">
 (function(){
- const BUILD='v44.28 Enterprise Stable';
+ const BUILD='v44.40R1 Recovery Stable';
  function apply(){
    const b=document.getElementById('tfmsVersionBadge'); if(b)b.textContent=BUILD;
    document.title='TFMS '+BUILD;
@@ -17622,7 +17473,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
 <script id="tfms-v4428-stats-drilldown-script">
 (function(){
 'use strict';
-var VERSION='v44.28 Enterprise Stable';
+var VERSION='v44.40R1 Recovery Stable';
 var drillState={kind:'',key:'',status:'전체',list:[]};
 function byId(id){return document.getElementById(id)}
 function safe(v){return String(v==null?'':v).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]})}
@@ -17647,118 +17498,253 @@ function filterBase(kind,key){var src=statsSource();if(kind==='month')return src
 function openDrill(kind,key,preset){var modal=ensureModal();drillState.kind=kind;drillState.key=key;drillState.status=preset||'전체';drillState.list=filterBase(kind,key);byId('tfmsDrillTitle').textContent=titleFor(kind,key);byId('tfmsDrillSub').textContent='처리상태를 선택하면 목록이 즉시 필터링됩니다.';renderDrill();modal.classList.add('show')}
 function renderDrill(){var base=drillState.list;var shown=base.filter(function(r){if(drillState.status==='전체')return true;if(drillState.status==='미완료')return normStatus(r)!=='완료';return normStatus(r)===drillState.status});var done=base.filter(function(r){return normStatus(r)==='완료'}).length;var open=base.length-done;var overdue=base.filter(function(r){return daysOpen(r)>=30}).length;var money=base.reduce(function(s,r){return s+amount(r)},0);byId('tfmsDrillKpis').innerHTML='<div class="tfms-drill-kpi"><span>전체 등록</span><strong>'+base.length+'건</strong></div><div class="tfms-drill-kpi"><span>미완료</span><strong>'+open+'건</strong></div><div class="tfms-drill-kpi"><span>완료율</span><strong>'+(base.length?Math.round(done/base.length*100):0)+'%</strong></div><div class="tfms-drill-kpi"><span>집행금액</span><strong>'+money.toLocaleString('ko-KR')+'원</strong></div>';var statuses=['전체','완료','진행중','미조치','미완료','기타'];var filter=byId('tfmsDrillFilter');filter.innerHTML=statuses.map(function(s){var c=s==='미완료'?open:base.filter(function(r){return s==='전체'||normStatus(r)===s}).length;return '<button class="tfms-drill-chip '+(drillState.status===s?'active':'')+'" type="button" data-status="'+s+'">'+s+' '+c+'</button>'}).join('')+'<span style="margin-left:auto;font-size:11px;color:#7b8da6;align-self:center">30일 이상 '+overdue+'건</span>';filter.querySelectorAll('button').forEach(function(b){b.addEventListener('click',function(){drillState.status=b.dataset.status;renderDrill()})});var body=shown.length?shown.map(function(r){var st=normStatus(r);var cls=st==='완료'?'done':(st==='진행중'?'open':'wait');return '<tr><td>'+safe(r.date||String(r.created_at||'').slice(0,10))+'</td><td>'+safe(recordDept(r))+'</td><td>'+safe(r.facility||'')+'</td><td>'+safe(r.field||'')+'</td><td>'+safe(r.title||r.content||r.task||r.work||'유지관리 이력')+'</td><td><span class="tfms-status-pill '+cls+'">'+st+'</span></td><td>'+daysOpen(r)+'일</td><td>'+amount(r).toLocaleString('ko-KR')+'원</td></tr>'}).join(''):'<tr><td colspan="8" style="text-align:center;padding:30px;color:#8796aa">조건에 맞는 유지관리 이력이 없습니다.</td></tr>';byId('tfmsDrillTable').innerHTML='<div class="tfms-drill-table-wrap"><table class="tfms-drill-table"><thead><tr><th>등록일</th><th>부서</th><th>시설</th><th>분야</th><th>주요내용</th><th>처리상태</th><th>경과일</th><th>금액</th></tr></thead><tbody>'+body+'</tbody></table></div>'}
 window.openStatsDrilldownV4428=openDrill;window.renderStatsCharts=renderAllStats;window.TFMS_BUILD=Object.freeze({version:'v44.29',channel:'Enterprise Stable',buildDate:'2026.08.05',title:'로그인 화면 하단 잔여 텍스트 제거 및 관리자 통계 Drill-down 안정화'});
-function init(){var b=byId('tfmsVersionBadge');if(b)b.textContent='v44.29 Enterprise Stable';document.title='TFMS v44.29 Enterprise Stable';setTimeout(renderAllStats,80)}
+function init(){var b=byId('tfmsVersionBadge');if(b)b.textContent='v44.40R1 Recovery Stable';document.title='TFMS v44.40R1 Recovery Stable';setTimeout(renderAllStats,80)}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
 </script>
 
 
-<style id="tfms-v4430-equipment-photo-style">
+<style id="tfms-v4431-equipment-photo-style">
 #equipment .tfms-eq-photo-panel{margin-top:20px;border:1px solid #dfe8f2;border-radius:16px;background:#fff;overflow:hidden}
 #equipment .tfms-eq-photo-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 16px;border-bottom:1px solid #edf2f7;background:linear-gradient(180deg,#fbfdff,#f7faff)}
-#equipment .tfms-eq-photo-head h3{margin:0;font-size:16px;color:#17365d}
-#equipment .tfms-eq-photo-head p{margin:4px 0 0;font-size:11px;color:#6f8198}
-#equipment .tfms-eq-photo-actions{display:flex;gap:7px;flex-wrap:wrap}
-#equipment .tfms-eq-photo-actions button{border:1px solid #bfd0e3;background:#fff;color:#24476e;border-radius:10px;padding:8px 11px;font-weight:800;font-size:11px;cursor:pointer}
-#equipment .tfms-eq-photo-actions button.primary{background:#1458b5;color:#fff;border-color:#1458b5}
-#equipment .tfms-eq-photo-body{display:grid;grid-template-columns:280px 1fr;gap:16px;padding:16px}
-#equipment .tfms-eq-cover{min-height:210px;border-radius:14px;background:#eef4fa;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;border:1px solid #dce7f1}
-#equipment .tfms-eq-cover img{width:100%;height:100%;min-height:210px;object-fit:cover;cursor:zoom-in}
-#equipment .tfms-eq-cover-empty{color:#788ca4;text-align:center;font-size:12px;line-height:1.7;padding:20px}
-#equipment .tfms-eq-cover-badge{position:absolute;left:10px;top:10px;background:rgba(13,43,80,.82);color:#fff;border-radius:999px;padding:5px 8px;font-size:10px;font-weight:800}
-#equipment .tfms-eq-history{display:flex;flex-direction:column;gap:10px;max-height:330px;overflow:auto;padding-right:3px}
-#equipment .tfms-eq-photo-item{display:grid;grid-template-columns:86px 1fr auto;gap:11px;align-items:center;border:1px solid #e1e9f2;border-radius:12px;padding:9px;background:#fbfdff}
-#equipment .tfms-eq-photo-item img{width:86px;height:64px;object-fit:cover;border-radius:9px;cursor:zoom-in;background:#eef3f8}
-#equipment .tfms-eq-photo-meta strong{display:block;font-size:12px;color:#1f3f64;margin-bottom:4px}
-#equipment .tfms-eq-photo-meta span{display:block;font-size:10px;color:#71849a;line-height:1.5}
-#equipment .tfms-eq-photo-delete{border:0;background:#fff0f0;color:#b42318;border-radius:9px;padding:7px 9px;cursor:pointer;font-size:10px;font-weight:800}
-#equipment .tfms-eq-photo-empty{border:1px dashed #cbd8e6;border-radius:12px;padding:24px;text-align:center;color:#7c8fa5;font-size:12px}
-.tfms-eq-photo-modal{display:none;position:fixed;inset:0;background:rgba(3,14,30,.86);z-index:10080;align-items:center;justify-content:center;padding:24px}
-.tfms-eq-photo-modal.show{display:flex}
-.tfms-eq-photo-modal img{max-width:92vw;max-height:88vh;object-fit:contain;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
-.tfms-eq-photo-modal button{position:fixed;right:24px;top:20px;width:42px;height:42px;border:0;border-radius:50%;font-size:25px;background:#fff;color:#183a60;cursor:pointer}
-.tfms-eq-photo-form{display:none;position:fixed;inset:0;background:rgba(5,21,42,.58);z-index:10070;align-items:center;justify-content:center;padding:20px}
-.tfms-eq-photo-form.show{display:flex}
-.tfms-eq-photo-form-box{width:min(520px,96vw);background:#fff;border-radius:16px;box-shadow:0 24px 70px rgba(0,0,0,.22);overflow:hidden}
-.tfms-eq-photo-form-head{display:flex;justify-content:space-between;align-items:center;padding:15px 17px;border-bottom:1px solid #e7edf4}
-.tfms-eq-photo-form-head h3{margin:0;font-size:17px;color:#173b66}.tfms-eq-photo-form-head button{border:0;background:transparent;font-size:25px;cursor:pointer;color:#60748c}
-.tfms-eq-photo-form-body{padding:16px 17px}.tfms-eq-photo-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.tfms-eq-photo-field.wide{grid-column:1/-1}.tfms-eq-photo-field label{display:block;font-size:11px;font-weight:800;color:#405671;margin-bottom:6px}
-.tfms-eq-photo-field input,.tfms-eq-photo-field select,.tfms-eq-photo-field textarea{width:100%;box-sizing:border-box;border:1px solid #cbd7e5;border-radius:10px;padding:10px 11px;font-size:12px}.tfms-eq-photo-field textarea{min-height:78px;resize:vertical}
-.tfms-eq-photo-form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:15px}.tfms-eq-photo-form-actions button{border:1px solid #c6d3e2;background:#fff;border-radius:10px;padding:9px 13px;font-weight:800;cursor:pointer}.tfms-eq-photo-form-actions button.primary{background:#1458b5;border-color:#1458b5;color:#fff}
-@media(max-width:850px){#equipment .tfms-eq-photo-body{grid-template-columns:1fr}#equipment .tfms-eq-photo-form-grid{grid-template-columns:1fr}.tfms-eq-photo-field.wide{grid-column:auto}}
+#equipment .tfms-eq-photo-head h3{margin:0;font-size:16px;color:#17365d}#equipment .tfms-eq-photo-head p{margin:4px 0 0;font-size:11px;color:#6f8198}
+#equipment .tfms-eq-photo-actions{display:flex;gap:7px;flex-wrap:wrap}#equipment .tfms-eq-photo-actions button{border:1px solid #bfd0e3;background:#fff;color:#24476e;border-radius:10px;padding:8px 11px;font-weight:800;font-size:11px;cursor:pointer}#equipment .tfms-eq-photo-actions button.primary{background:#1458b5;color:#fff;border-color:#1458b5}
+#equipment .tfms-eq-photo-body{display:grid;grid-template-columns:280px 1fr;gap:16px;padding:16px}#equipment .tfms-eq-cover{min-height:210px;border-radius:14px;background:#eef4fa;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;border:1px solid #dce7f1}#equipment .tfms-eq-cover img{width:100%;height:100%;min-height:210px;object-fit:cover;cursor:zoom-in}#equipment .tfms-eq-cover-empty{color:#788ca4;text-align:center;font-size:12px;line-height:1.7;padding:20px}#equipment .tfms-eq-cover-badge{position:absolute;left:10px;top:10px;background:rgba(13,43,80,.82);color:#fff;border-radius:999px;padding:5px 8px;font-size:10px;font-weight:800}
+#equipment .tfms-eq-history{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;max-height:390px;overflow:auto;padding-right:3px}#equipment .tfms-eq-photo-item{position:relative;display:grid;grid-template-columns:96px 1fr;gap:10px;align-items:center;border:1px solid #e1e9f2;border-radius:12px;padding:9px;background:#fbfdff;min-width:0}#equipment .tfms-eq-photo-item img{width:96px;height:72px;object-fit:cover;border-radius:9px;cursor:zoom-in;background:#eef3f8}#equipment .tfms-eq-photo-meta{min-width:0;padding-right:26px}#equipment .tfms-eq-photo-meta strong{display:block;font-size:12px;color:#1f3f64;margin-bottom:4px}#equipment .tfms-eq-photo-meta span{display:block;font-size:10px;color:#71849a;line-height:1.45;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#equipment .tfms-eq-photo-card-actions{display:flex;gap:5px;margin-top:7px;flex-wrap:wrap}#equipment .tfms-eq-photo-card-actions button{border:1px solid #c8d6e5;background:#fff;color:#365574;border-radius:8px;padding:5px 7px;font-size:9px;font-weight:800;cursor:pointer}#equipment .tfms-eq-photo-card-actions button.active{background:#fff7db;border-color:#f2cc58;color:#8a6400}#equipment .tfms-eq-photo-x{position:absolute;right:7px;top:7px;width:25px;height:25px;border:0;border-radius:50%;background:#fff0f0;color:#b42318;font-size:17px;font-weight:900;line-height:25px;padding:0;cursor:pointer;box-shadow:0 2px 7px rgba(107,25,25,.12)}#equipment .tfms-eq-photo-x:hover{background:#d92d20;color:#fff}#equipment .tfms-eq-photo-empty{grid-column:1/-1;border:1px dashed #cbd8e6;border-radius:12px;padding:24px;text-align:center;color:#7c8fa5;font-size:12px}
+.tfms-eq-photo-modal{display:none;position:fixed;inset:0;background:rgba(3,14,30,.86);z-index:10080;align-items:center;justify-content:center;padding:24px}.tfms-eq-photo-modal.show{display:flex}.tfms-eq-photo-modal img{max-width:92vw;max-height:88vh;object-fit:contain;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.35)}.tfms-eq-photo-modal button{position:fixed;right:24px;top:20px;width:42px;height:42px;border:0;border-radius:50%;font-size:25px;background:#fff;color:#183a60;cursor:pointer}
+.tfms-eq-photo-form{display:none;position:fixed;inset:0;background:rgba(5,21,42,.58);z-index:10070;align-items:center;justify-content:center;padding:20px}.tfms-eq-photo-form.show{display:flex}.tfms-eq-photo-form-box{width:min(620px,96vw);max-height:92vh;overflow:auto;background:#fff;border-radius:16px;box-shadow:0 24px 70px rgba(0,0,0,.22)}.tfms-eq-photo-form-head{display:flex;justify-content:space-between;align-items:center;padding:15px 17px;border-bottom:1px solid #e7edf4}.tfms-eq-photo-form-head h3{margin:0;font-size:17px;color:#173b66}.tfms-eq-photo-form-head button{border:0;background:transparent;font-size:25px;cursor:pointer;color:#60748c}.tfms-eq-photo-form-body{padding:16px 17px}.tfms-eq-photo-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.tfms-eq-photo-field.wide{grid-column:1/-1}.tfms-eq-photo-field label{display:block;font-size:11px;font-weight:800;color:#405671;margin-bottom:6px}.tfms-eq-photo-field input,.tfms-eq-photo-field select,.tfms-eq-photo-field textarea{width:100%;box-sizing:border-box;border:1px solid #cbd7e5;border-radius:10px;padding:10px 11px;font-size:12px}.tfms-eq-photo-field textarea{min-height:78px;resize:vertical}.tfms-eq-selected-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:9px}.tfms-eq-selected-item{position:relative;border:1px solid #d8e3ee;border-radius:11px;overflow:hidden;background:#f7faff}.tfms-eq-selected-item img{display:block;width:100%;height:104px;object-fit:cover}.tfms-eq-selected-item span{display:block;padding:7px 9px;font-size:9px;color:#60748a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tfms-eq-selected-remove{position:absolute;right:6px;top:6px;width:24px;height:24px;border:0;border-radius:50%;background:rgba(255,255,255,.94);color:#b42318;font-size:17px;font-weight:900;cursor:pointer;box-shadow:0 2px 7px rgba(0,0,0,.18)}.tfms-eq-photo-form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:15px}.tfms-eq-photo-form-actions button{border:1px solid #c6d3e2;background:#fff;border-radius:10px;padding:9px 13px;font-weight:800;cursor:pointer}.tfms-eq-photo-form-actions button.primary{background:#1458b5;border-color:#1458b5;color:#fff}
+@media(max-width:900px){#equipment .tfms-eq-photo-body{grid-template-columns:1fr}#equipment .tfms-eq-history{grid-template-columns:1fr}.tfms-eq-selected-list{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:560px){.tfms-eq-photo-form-grid{grid-template-columns:1fr}.tfms-eq-photo-field.wide{grid-column:auto}.tfms-eq-selected-list{grid-template-columns:1fr}}
 </style>
-<div class="tfms-eq-photo-form" id="tfmsEqPhotoFormV4430" onclick="if(event.target===this)closeEquipmentPhotoFormV4430()">
-  <div class="tfms-eq-photo-form-box" role="dialog" aria-modal="true" aria-labelledby="tfmsEqPhotoFormTitleV4430">
-    <div class="tfms-eq-photo-form-head"><h3 id="tfmsEqPhotoFormTitleV4430">설비 사진 등록</h3><button type="button" onclick="closeEquipmentPhotoFormV4430()">×</button></div>
-    <div class="tfms-eq-photo-form-body">
-      <div class="tfms-eq-photo-form-grid">
-        <div class="tfms-eq-photo-field"><label>사진 구분</label><select id="tfmsEqPhotoKindV4430"><option value="대표">대표사진</option><option value="점검전">점검 전</option><option value="점검후">점검 후</option><option value="보수">보수·교체</option><option value="기타">기타</option></select></div>
-        <div class="tfms-eq-photo-field"><label>촬영·이력일</label><input id="tfmsEqPhotoDateV4430" type="date"></div>
-        <div class="tfms-eq-photo-field wide"><label>사진 파일</label><input id="tfmsEqPhotoFileV4430" type="file" accept="image/*" multiple></div>
-        <div class="tfms-eq-photo-field wide"><label>설명</label><textarea id="tfmsEqPhotoCaptionV4430" placeholder="예: 여과기 압력계 교체 후 상태"></textarea></div>
-      </div>
-      <div class="tfms-eq-photo-form-actions"><button type="button" onclick="closeEquipmentPhotoFormV4430()">취소</button><button class="primary" type="button" id="tfmsEqPhotoSaveV4430" onclick="saveEquipmentPhotosV4430()">Supabase에 저장</button></div>
-    </div>
-  </div>
-</div>
-<div class="tfms-eq-photo-modal" id="tfmsEqPhotoModalV4430" onclick="if(event.target===this)closeEquipmentPhotoViewerV4430()"><button type="button" onclick="closeEquipmentPhotoViewerV4430()">×</button><img id="tfmsEqPhotoViewerImgV4430" alt="설비 사진 확대"></div>
-<script id="tfms-v4430-equipment-photo-controller">
+<div class="tfms-eq-photo-form" id="tfmsEqPhotoFormV4431" onclick="if(event.target===this)closeEquipmentPhotoFormV4431()"><div class="tfms-eq-photo-form-box" role="dialog" aria-modal="true"><div class="tfms-eq-photo-form-head"><h3>설비 사진 등록</h3><button type="button" onclick="closeEquipmentPhotoFormV4431()">×</button></div><div class="tfms-eq-photo-form-body"><div class="tfms-eq-photo-form-grid"><div class="tfms-eq-photo-field"><label>사진 구분</label><select id="tfmsEqPhotoKindV4431"><option value="대표">대표사진</option><option value="점검전">점검 전</option><option value="점검후">점검 후</option><option value="보수">보수·교체</option><option value="기타">기타</option></select></div><div class="tfms-eq-photo-field"><label>촬영·이력일</label><input id="tfmsEqPhotoDateV4431" type="date"></div><div class="tfms-eq-photo-field wide"><label>사진 파일</label><input id="tfmsEqPhotoFileV4431" type="file" accept="image/*" multiple><div class="tfms-eq-selected-list" id="tfmsEqSelectedListV4431"></div></div><div class="tfms-eq-photo-field wide"><label>설명</label><textarea id="tfmsEqPhotoCaptionV4431" placeholder="예: 여과기 압력계 교체 후 상태"></textarea></div></div><div class="tfms-eq-photo-form-actions"><button type="button" onclick="closeEquipmentPhotoFormV4431()">취소</button><button class="primary" type="button" id="tfmsEqPhotoSaveV4431" onclick="saveEquipmentPhotosV4431()">Supabase에 저장</button></div></div></div></div>
+<div class="tfms-eq-photo-modal" id="tfmsEqPhotoModalV4431" onclick="if(event.target===this)closeEquipmentPhotoViewerV4431()"><button type="button" onclick="closeEquipmentPhotoViewerV4431()">×</button><img id="tfmsEqPhotoViewerImgV4431" alt="설비 사진 확대"></div>
+<script id="tfms-v4431-equipment-photo-controller">
 (function(){
 'use strict';
-var BUCKET='tfms-equipment-photos';
-var currentAssetId='';
-var currentRows=[];
+var BUCKET='tfms-equipment-photos',currentAssetId='',currentRows=[],pendingFiles=[];
 function q(id){return document.getElementById(id)}
 function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
-function sb(){try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||null}catch(e){return null}}
-function selected(){try{var key=window.selectedAssetKey||(typeof selectedAssetKey!=='undefined'?selectedAssetKey:'');var data=window.assetData||(typeof assetData!=='undefined'?assetData:{});return data?.[key]||null}catch(e){return null}}
-function toast(m){try{window.showToast?.(m)}catch(e){console.log(m)}}
+function sb(){try{return (window.getTfmsSupabaseClient&&window.getTfmsSupabaseClient())||window.tfmsSupabase||window.sb||null}catch(e){return null}}
+function selected(){try{var key=window.selectedAssetKey||(typeof selectedAssetKey!=='undefined'?selectedAssetKey:'');var data=window.assetData||(typeof assetData!=='undefined'?assetData:{});return data&&data[key]?data[key]:null}catch(e){return null}}
+function toast(m){try{if(window.showToast)window.showToast(m);else alert(m)}catch(e){console.log(m)}}
 function today(){return new Date().toISOString().slice(0,10)}
 function safeName(name){return String(name||'photo').replace(/[^a-zA-Z0-9._-]/g,'_')}
-function panel(){return q('tfmsEqPhotoPanelV4430')}
-function injectPanel(){
-  var timeline=q('assetTimeline'); if(!timeline)return;
-  var detail=timeline.closest('.asset-detail'); if(!detail||panel())return;
-  var host=document.createElement('div'); host.id='tfmsEqPhotoPanelV4430'; host.className='tfms-eq-photo-panel';
-  host.innerHTML='<div class="tfms-eq-photo-head"><div><h3>설비 사진·이력</h3><p>사진은 Supabase Storage에 저장되며 동일 계정 사용자에게 공유됩니다.</p></div><div class="tfms-eq-photo-actions"><button type="button" onclick="refreshEquipmentPhotosV4430()">새로고침</button><button class="primary" type="button" onclick="openEquipmentPhotoFormV4430()">사진 등록</button></div></div><div class="tfms-eq-photo-body"><div class="tfms-eq-cover" id="tfmsEqCoverV4430"><div class="tfms-eq-cover-empty">설비를 선택하면<br>대표사진과 사진 이력이 표시됩니다.</div></div><div class="tfms-eq-history" id="tfmsEqHistoryV4430"><div class="tfms-eq-photo-empty">등록된 사진이 없습니다.</div></div></div>';
-  detail.appendChild(host);
-}
-async function signedUrl(path){var c=sb();if(!c||!path)return '';var r=await c.storage.from(BUCKET).createSignedUrl(path,3600);return r?.data?.signedUrl||''}
-async function load(){
-  injectPanel(); var a=selected(); currentAssetId=a?.dbId||'';
-  var cover=q('tfmsEqCoverV4430'), hist=q('tfmsEqHistoryV4430');
-  if(!cover||!hist)return;
-  if(!currentAssetId){cover.innerHTML='<div class="tfms-eq-cover-empty">DB에 저장된 설비를 선택해 주세요.</div>';hist.innerHTML='<div class="tfms-eq-photo-empty">설비 선택이 필요합니다.</div>';return}
-  var c=sb(); if(!c){cover.innerHTML='<div class="tfms-eq-cover-empty">Supabase 연결을 확인해 주세요.</div>';return}
-  hist.innerHTML='<div class="tfms-eq-photo-empty">사진을 불러오는 중입니다.</div>';
-  var r=await c.from('asset_photos').select('*').eq('asset_id',currentAssetId).order('photo_date',{ascending:false}).order('created_at',{ascending:false});
-  if(r.error){console.error(r.error);hist.innerHTML='<div class="tfms-eq-photo-empty">사진 테이블을 확인할 수 없습니다.<br>동봉된 SQL을 Supabase에서 1회 실행해 주세요.</div>';return}
-  currentRows=r.data||[];
-  var enriched=[];for(var row of currentRows){enriched.push(Object.assign({},row,{url:await signedUrl(row.storage_path)}))}
-  var coverRow=enriched.find(function(x){return x.photo_kind==='대표'})||enriched[0];
-  cover.innerHTML=coverRow&&coverRow.url?'<span class="tfms-eq-cover-badge">'+esc(coverRow.photo_kind||'사진')+'</span><img src="'+esc(coverRow.url)+'" alt="설비 대표사진" onclick="openEquipmentPhotoViewerV4430(this.src)">':'<div class="tfms-eq-cover-empty">등록된 대표사진이 없습니다.<br>사진 등록 버튼으로 추가하세요.</div>';
-  if(!enriched.length){hist.innerHTML='<div class="tfms-eq-photo-empty">등록된 사진이 없습니다.</div>';return}
-  hist.innerHTML=enriched.map(function(x){return '<div class="tfms-eq-photo-item">'+(x.url?'<img src="'+esc(x.url)+'" alt="설비 이력사진" onclick="openEquipmentPhotoViewerV4430(this.src)">':'<div></div>')+'<div class="tfms-eq-photo-meta"><strong>'+esc(x.photo_kind||'사진')+' · '+esc(x.photo_date||'')+'</strong><span>'+esc(x.caption||'설명 없음')+'</span><span>'+esc(x.file_name||'')+'</span></div><button class="tfms-eq-photo-delete" type="button" onclick="deleteEquipmentPhotoV4430(\''+esc(x.id)+'\')">삭제</button></div>'}).join('');
-}
-window.openEquipmentPhotoFormV4430=function(){var a=selected();if(!a?.dbId){toast('DB에 저장된 설비를 먼저 선택해 주세요.');return}q('tfmsEqPhotoDateV4430').value=today();q('tfmsEqPhotoCaptionV4430').value='';q('tfmsEqPhotoFileV4430').value='';q('tfmsEqPhotoFormV4430').classList.add('show')}
-window.closeEquipmentPhotoFormV4430=function(){q('tfmsEqPhotoFormV4430')?.classList.remove('show')}
-window.openEquipmentPhotoViewerV4430=function(url){q('tfmsEqPhotoViewerImgV4430').src=url||'';q('tfmsEqPhotoModalV4430').classList.add('show')}
-window.closeEquipmentPhotoViewerV4430=function(){q('tfmsEqPhotoModalV4430')?.classList.remove('show')}
-window.refreshEquipmentPhotosV4430=load;
-window.saveEquipmentPhotosV4430=async function(){
-  var a=selected(),c=sb(),files=Array.from(q('tfmsEqPhotoFileV4430')?.files||[]);if(!a?.dbId){toast('설비를 먼저 선택해 주세요.');return}if(!c){toast('Supabase 연결을 확인해 주세요.');return}if(!files.length){toast('사진 파일을 선택해 주세요.');return}
-  var kind=q('tfmsEqPhotoKindV4430').value||'기타',date=q('tfmsEqPhotoDateV4430').value||today(),caption=(q('tfmsEqPhotoCaptionV4430').value||'').trim();var btn=q('tfmsEqPhotoSaveV4430');btn.disabled=true;btn.textContent='저장 중';
-  try{for(var f of files){var path=a.dbId+'/'+Date.now()+'_'+Math.random().toString(36).slice(2,8)+'_'+safeName(f.name);var up=await c.storage.from(BUCKET).upload(path,f,{cacheControl:'3600',upsert:false,contentType:f.type||'image/jpeg'});if(up.error)throw up.error;var ins=await c.from('asset_photos').insert({asset_id:a.dbId,storage_path:path,file_name:f.name,mime_type:f.type||null,photo_kind:kind,photo_date:date,caption:caption||null});if(ins.error){await c.storage.from(BUCKET).remove([path]);throw ins.error}}
-    closeEquipmentPhotoFormV4430();await load();toast('설비 사진을 Supabase에 저장했습니다.');
-  }catch(e){console.error('TFMS v44.30 equipment photo save',e);toast('사진 저장 실패: '+(e?.message||e)+' · 동봉 SQL 실행 여부를 확인해 주세요.')}finally{btn.disabled=false;btn.textContent='Supabase에 저장'}
-}
-window.deleteEquipmentPhotoV4430=async function(id){if(!confirm('이 사진을 삭제하시겠습니까?'))return;var c=sb(),row=currentRows.find(function(x){return String(x.id)===String(id)});if(!c||!row)return;var del=await c.from('asset_photos').delete().eq('id',id);if(del.error){toast('사진정보 삭제 실패: '+del.error.message);return}var rem=await c.storage.from(BUCKET).remove([row.storage_path]);if(rem.error)console.warn(rem.error);await load();toast('사진을 삭제했습니다.')}
-var oldShowAsset=window.showAsset;window.showAsset=function(){var r=oldShowAsset?.apply(this,arguments);setTimeout(load,50);return r}
-var oldShowPage=window.showPage;window.showPage=function(id,btn){var r=oldShowPage?.apply(this,arguments);if(id==='equipment')setTimeout(load,100);return r}
-document.addEventListener('keydown',function(e){if(e.key==='Escape'){window.closeEquipmentPhotoViewerV4430();window.closeEquipmentPhotoFormV4430()}});
-function init(){injectPanel();var b=q('tfmsVersionBadge');if(b)b.textContent='v44.30 Enterprise Recovered Stable';document.title='TFMS v44.30 Enterprise Recovered Stable';window.TFMS_BUILD=Object.freeze({version:'v44.30',channel:'Enterprise Recovered Stable',buildDate:'2026.08.06',title:'Supabase 기반 설비 사진·이력 1차'});}
+function panel(){return q('tfmsEqPhotoPanelV4431')}
+function injectPanel(){var timeline=q('assetTimeline');if(!timeline)return;var detail=timeline.closest('.asset-detail');if(!detail||panel())return;var host=document.createElement('div');host.id='tfmsEqPhotoPanelV4431';host.className='tfms-eq-photo-panel';host.innerHTML='<div class="tfms-eq-photo-head"><div><h3>설비 사진·이력</h3><p>사진마다 확대, 대표사진 지정, 개별 삭제가 가능합니다.</p></div><div class="tfms-eq-photo-actions"><button type="button" onclick="refreshEquipmentPhotosV4431()">새로고침</button><button class="primary" type="button" onclick="openEquipmentPhotoFormV4431()">사진 등록</button></div></div><div class="tfms-eq-photo-body"><div class="tfms-eq-cover" id="tfmsEqCoverV4431"><div class="tfms-eq-cover-empty">설비를 선택하면 대표사진과 사진 이력이 표시됩니다.</div></div><div class="tfms-eq-history" id="tfmsEqHistoryV4431"><div class="tfms-eq-photo-empty">등록된 사진이 없습니다.</div></div></div>';detail.appendChild(host)}
+async function signedUrl(path){var c=sb();if(!c||!path)return '';var r=await c.storage.from(BUCKET).createSignedUrl(path,3600);return r&&r.data?r.data.signedUrl||'':''}
+async function load(){injectPanel();var a=selected();currentAssetId=a&&a.dbId?a.dbId:'';var cover=q('tfmsEqCoverV4431'),hist=q('tfmsEqHistoryV4431');if(!cover||!hist)return;if(!currentAssetId){cover.innerHTML='<div class="tfms-eq-cover-empty">DB에 저장된 설비를 선택해 주세요.</div>';hist.innerHTML='<div class="tfms-eq-photo-empty">설비 선택이 필요합니다.</div>';return}var c=sb();if(!c){cover.innerHTML='<div class="tfms-eq-cover-empty">Supabase 연결을 확인해 주세요.</div>';return}hist.innerHTML='<div class="tfms-eq-photo-empty">사진을 불러오는 중입니다.</div>';var r=await c.from('asset_photos').select('*').eq('asset_id',currentAssetId).order('photo_date',{ascending:false}).order('created_at',{ascending:false});if(r.error){console.error(r.error);hist.innerHTML='<div class="tfms-eq-photo-empty">사진 테이블을 확인할 수 없습니다.<br>동봉된 SQL을 Supabase에서 1회 실행해 주세요.</div>';return}currentRows=r.data||[];var enriched=[];for(var i=0;i<currentRows.length;i++){var row=currentRows[i];var url=await signedUrl(row.storage_path);enriched.push(Object.assign({},row,{url:url}))}var coverRow=enriched.find(function(x){return x.photo_kind==='대표'})||enriched[0];cover.innerHTML=coverRow&&coverRow.url?'<span class="tfms-eq-cover-badge">'+esc(coverRow.photo_kind||'사진')+'</span><img src="'+esc(coverRow.url)+'" alt="설비 대표사진" onclick="openEquipmentPhotoViewerV4431(this.src)">':'<div class="tfms-eq-cover-empty">등록된 대표사진이 없습니다.<br>사진 등록 버튼으로 추가하세요.</div>';if(!enriched.length){hist.innerHTML='<div class="tfms-eq-photo-empty">등록된 사진이 없습니다.</div>';return}hist.innerHTML=enriched.map(function(x){var active=x.photo_kind==='대표';return '<div class="tfms-eq-photo-item">'+(x.url?'<img src="'+esc(x.url)+'" alt="설비 이력사진" onclick="openEquipmentPhotoViewerV4431(this.src)">':'<div></div>')+'<div class="tfms-eq-photo-meta"><strong>'+esc(x.photo_kind||'사진')+' · '+esc(x.photo_date||'')+'</strong><span>'+esc(x.caption||'설명 없음')+'</span><span>'+esc(x.file_name||'')+'</span><div class="tfms-eq-photo-card-actions"><button type="button" class="'+(active?'active':'')+'" onclick="setEquipmentCoverV4431(\''+esc(x.id)+'\')">'+(active?'★ 대표사진':'☆ 대표사진으로')+'</button><button type="button" onclick="openEquipmentPhotoViewerV4431(\''+esc(x.url)+'\')">확대</button></div></div><button class="tfms-eq-photo-x" type="button" title="사진 삭제" aria-label="사진 삭제" onclick="deleteEquipmentPhotoV4431(\''+esc(x.id)+'\')">×</button></div>'}).join('')}
+function renderPending(){var host=q('tfmsEqSelectedListV4431');if(!host)return;host.innerHTML='';pendingFiles.forEach(function(f,idx){var item=document.createElement('div');item.className='tfms-eq-selected-item';var img=document.createElement('img');img.alt='등록 예정 사진';var url=URL.createObjectURL(f);img.src=url;img.onload=function(){URL.revokeObjectURL(url)};var name=document.createElement('span');name.textContent=f.name;var btn=document.createElement('button');btn.type='button';btn.className='tfms-eq-selected-remove';btn.title='선택 취소';btn.textContent='×';btn.onclick=function(){pendingFiles.splice(idx,1);renderPending()};item.appendChild(img);item.appendChild(name);item.appendChild(btn);host.appendChild(item)})}
+window.openEquipmentPhotoFormV4431=function(){var a=selected();if(!a||!a.dbId){toast('DB에 저장된 설비를 먼저 선택해 주세요.');return}pendingFiles=[];q('tfmsEqPhotoDateV4431').value=today();q('tfmsEqPhotoCaptionV4431').value='';q('tfmsEqPhotoFileV4431').value='';renderPending();q('tfmsEqPhotoFormV4431').classList.add('show')}
+window.closeEquipmentPhotoFormV4431=function(){q('tfmsEqPhotoFormV4431')&&q('tfmsEqPhotoFormV4431').classList.remove('show');pendingFiles=[];renderPending()}
+window.openEquipmentPhotoViewerV4431=function(url){q('tfmsEqPhotoViewerImgV4431').src=url||'';q('tfmsEqPhotoModalV4431').classList.add('show')}
+window.closeEquipmentPhotoViewerV4431=function(){q('tfmsEqPhotoModalV4431')&&q('tfmsEqPhotoModalV4431').classList.remove('show')}
+window.refreshEquipmentPhotosV4431=load;
+window.saveEquipmentPhotosV4431=async function(){var a=selected(),c=sb(),files=pendingFiles.slice();if(!a||!a.dbId){toast('설비를 먼저 선택해 주세요.');return}if(!c){toast('Supabase 연결을 확인해 주세요.');return}if(!files.length){toast('사진 파일을 선택해 주세요.');return}var kind=q('tfmsEqPhotoKindV4431').value||'기타',date=q('tfmsEqPhotoDateV4431').value||today(),caption=(q('tfmsEqPhotoCaptionV4431').value||'').trim(),btn=q('tfmsEqPhotoSaveV4431');btn.disabled=true;btn.textContent='저장 중';try{if(kind==='대표'){var old=await c.from('asset_photos').update({photo_kind:'기타'}).eq('asset_id',a.dbId).eq('photo_kind','대표');if(old.error)throw old.error}for(var i=0;i<files.length;i++){var f=files[i],path=a.dbId+'/'+Date.now()+'_'+Math.random().toString(36).slice(2,8)+'_'+safeName(f.name),up=await c.storage.from(BUCKET).upload(path,f,{cacheControl:'3600',upsert:false,contentType:f.type||'image/jpeg'});if(up.error)throw up.error;var rowKind=(kind==='대표'&&i>0)?'기타':kind;var ins=await c.from('asset_photos').insert({asset_id:a.dbId,storage_path:path,file_name:f.name,mime_type:f.type||null,photo_kind:rowKind,photo_date:date,caption:caption||null});if(ins.error){await c.storage.from(BUCKET).remove([path]);throw ins.error}}closeEquipmentPhotoFormV4431();await load();toast('설비 사진을 Supabase에 저장했습니다.')}catch(e){console.error('TFMS v44.31 equipment photo save',e);toast('사진 저장 실패: '+((e&&e.message)||e)+' · 동봉 SQL 실행 여부를 확인해 주세요.')}finally{btn.disabled=false;btn.textContent='Supabase에 저장'}}
+window.deleteEquipmentPhotoV4431=async function(id){var row=currentRows.find(function(x){return String(x.id)===String(id)});if(!row)return;if(!confirm('선택한 사진을 삭제하시겠습니까?\n삭제 후에는 복구할 수 없습니다.'))return;var c=sb();if(!c)return;var rem=await c.storage.from(BUCKET).remove([row.storage_path]);if(rem.error){toast('사진 파일 삭제 실패: '+rem.error.message);return}var del=await c.from('asset_photos').delete().eq('id',id);if(del.error){toast('사진정보 삭제 실패: '+del.error.message);return}await load();toast('사진을 삭제했습니다.')}
+window.setEquipmentCoverV4431=async function(id){var row=currentRows.find(function(x){return String(x.id)===String(id)});if(!row||row.photo_kind==='대표')return;var c=sb();if(!c)return;if(!confirm('이 사진을 대표사진으로 설정하시겠습니까?'))return;var demote=await c.from('asset_photos').update({photo_kind:'기타'}).eq('asset_id',row.asset_id).eq('photo_kind','대표');if(demote.error){toast('대표사진 변경 실패: '+demote.error.message);return}var promote=await c.from('asset_photos').update({photo_kind:'대표'}).eq('id',id);if(promote.error){toast('대표사진 변경 실패: '+promote.error.message);return}await load();toast('대표사진을 변경했습니다.')}
+var fileInput=q('tfmsEqPhotoFileV4431');if(fileInput)fileInput.addEventListener('change',function(){var fresh=Array.from(this.files||[]);fresh.forEach(function(f){if(!pendingFiles.some(function(x){return x.name===f.name&&x.size===f.size&&x.lastModified===f.lastModified}))pendingFiles.push(f)});this.value='';renderPending()});
+var oldShowAsset=window.showAsset;window.showAsset=function(){var r=oldShowAsset&&oldShowAsset.apply(this,arguments);setTimeout(load,60);return r};var oldShowPage=window.showPage;window.showPage=function(id,btn){var r=oldShowPage&&oldShowPage.apply(this,arguments);if(id==='equipment')setTimeout(load,120);return r};document.addEventListener('keydown',function(e){if(e.key==='Escape'){window.closeEquipmentPhotoViewerV4431();window.closeEquipmentPhotoFormV4431()}});
+function init(){injectPanel();var b=q('tfmsVersionBadge');if(b)b.textContent='v44.40R1 Recovery Stable';document.title='TFMS v44.40R1 Recovery Stable';window.TFMS_BUILD=Object.freeze({version:'v44.31',channel:'Enterprise Dev',buildDate:'2026.08.06',title:'설비 사진 개별삭제·대표사진 지정'})}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
 </script>
 
+
+<style id="tfms-v4432-equipment-import-css">
+.tfms-eq-import-btn{background:#0f766e!important;color:#fff!important;border-color:#0f766e!important}.tfms-import-modal{display:none;position:fixed;inset:0;background:rgba(10,25,47,.62);z-index:10080;padding:24px;overflow:auto}.tfms-import-modal.show{display:block}.tfms-import-dialog{max-width:1280px;margin:0 auto;background:#f7f9fc;border-radius:18px;box-shadow:0 25px 70px rgba(0,0,0,.28);overflow:hidden}.tfms-import-head{display:flex;justify-content:space-between;align-items:flex-start;padding:20px 24px;background:#fff;border-bottom:1px solid #dbe5f2}.tfms-import-head h2{margin:0 0 5px;color:#173b69}.tfms-import-head p{margin:0;color:#64748b;font-size:13px}.tfms-import-head button{border:0;background:#eef3f8;width:36px;height:36px;border-radius:50%;font-size:23px;cursor:pointer}.tfms-import-tools{display:flex;gap:9px;align-items:center;flex-wrap:wrap;padding:13px 20px;background:#eef5fb;border-bottom:1px solid #dbe5f2}.tfms-import-tools button{height:36px;border:1px solid #c9d7e8;background:#fff;border-radius:9px;padding:0 13px;font-weight:700;cursor:pointer}.tfms-import-tools .primary{background:#1559bd;color:#fff;border-color:#1559bd}.tfms-import-summary{margin-left:auto;font-size:12px;color:#52657c}.tfms-import-list{padding:16px 20px;display:grid;gap:10px}.tfms-import-card{background:#fff;border:1px solid #dbe5f2;border-radius:14px;padding:13px;display:grid;grid-template-columns:34px 128px minmax(190px,1.2fr) minmax(130px,.8fr) minmax(145px,.9fr) minmax(210px,1.4fr);gap:11px;align-items:center}.tfms-import-card.off{opacity:.5}.tfms-import-card input[type=checkbox]{width:18px;height:18px}.tfms-import-photo{height:82px;border-radius:10px;background:#eef3f8;overflow:hidden;display:flex;gap:3px}.tfms-import-photo img{width:100%;min-width:0;object-fit:cover}.tfms-import-field label{display:block;font-size:10px;font-weight:800;color:#6b7d92;margin-bottom:4px}.tfms-import-field input,.tfms-import-field select,.tfms-import-field textarea{width:100%;border:1px solid #ccd8e7;border-radius:8px;padding:8px;font-size:12px;background:#fff}.tfms-import-field textarea{height:58px;resize:vertical}.tfms-import-tag{display:inline-flex;border-radius:999px;padding:3px 8px;background:#e7f8f3;color:#0f766e;font-size:10px;font-weight:800;margin-top:5px}.tfms-import-foot{position:sticky;bottom:0;display:flex;justify-content:flex-end;gap:8px;padding:14px 20px;background:#fff;border-top:1px solid #dbe5f2}.tfms-import-foot button{height:40px;border:1px solid #c9d7e8;background:#fff;border-radius:10px;padding:0 17px;font-weight:800;cursor:pointer}.tfms-import-foot .primary{background:#1559bd;color:#fff;border-color:#1559bd}.tfms-import-progress{font-size:12px;color:#52657c;margin-right:auto;align-self:center}@media(max-width:900px){.tfms-import-card{grid-template-columns:28px 100px 1fr}.tfms-import-card .tfms-import-field:nth-child(n+4){grid-column:3}.tfms-import-summary{margin-left:0;width:100%}}
+</style>
+<div id="tfmsEquipmentImportModalV4432" class="tfms-import-modal" onclick="if(event.target===this)closeEquipmentImportV4432()"><div class="tfms-import-dialog"><div class="tfms-import-head"><div><h2>장비이력카드 일괄등록</h2><p>선택한 장비이력카드 엑셀 파일에서 설비정보와 사진을 직접 분석합니다. 등록 전에 수정하거나 제외할 수 있습니다.</p></div><button type="button" onclick="closeEquipmentImportV4432()">×</button></div><div class="tfms-import-tools"><button type="button" onclick="toggleEquipmentImportAllV4432(true)">전체 선택</button><button type="button" onclick="toggleEquipmentImportAllV4432(false)">전체 해제</button><button type="button" onclick="resetEquipmentImportV4432()">원본값 복원</button><span class="tfms-import-summary" id="tfmsEquipmentImportSummaryV4432"></span></div><div class="tfms-import-list" id="tfmsEquipmentImportListV4432"></div><div class="tfms-import-foot"><span class="tfms-import-progress" id="tfmsEquipmentImportProgressV4432"></span><button type="button" onclick="closeEquipmentImportV4432()">취소</button><button class="primary" type="button" id="tfmsEquipmentImportRunV4432" onclick="runEquipmentImportV4432()">선택 설비 Supabase 등록</button></div></div></div>
+<script id="tfms-equipment-import-inline-v4437">
+(function(){'use strict';
+const BUILD='v44.40R1 Recovery Stable';
+let source=null,rows=[],zipBook=null,objectUrls=[];
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+function client(){try{return (typeof window.getTfmsSupabaseClient==='function'&&window.getTfmsSupabaseClient())||window.tfmsSupabase||window.supabaseClient||window.sb||null}catch(e){console.error('Supabase client resolve failed',e);return null}}
+function toast(s){if(typeof window.showToast==='function')window.showToast(s);else alert(s)}
+function applyVersion(){const b=$('tfmsVersionBadge');if(b&&b.textContent!==BUILD)b.textContent=BUILD;if(document.title!=='TFMS '+BUILD)document.title='TFMS '+BUILD;window.TFMS_BUILD=Object.freeze({version:'v44.40',channel:'Enterprise Dev',buildDate:'2026.08.06',title:'장비이력카드 등록 후 DB 재조회·결과확인 수정'});}
+function u16(v,o){return v.getUint16(o,true)} function u32(v,o){return v.getUint32(o,true)}
+function normPath(base,target){if(!target)return'';if(target[0]==='/')return target.slice(1);const a=(base+'/'+target).split('/'),out=[];for(const p of a){if(!p||p==='.')continue;if(p==='..')out.pop();else out.push(p)}return out.join('/')}
+class MiniZip{
+ constructor(buf){this.buf=buf;this.view=new DataView(buf);this.entries=new Map();this.parse()}
+ parse(){let p=this.view.byteLength-22,eocd=-1;for(;p>=Math.max(0,this.view.byteLength-66000);p--){if(u32(this.view,p)===0x06054b50){eocd=p;break}}if(eocd<0)throw new Error('올바른 XLSX(ZIP) 파일이 아닙니다.');let off=u32(this.view,eocd+16),count=u16(this.view,eocd+10);for(let i=0;i<count;i++){if(u32(this.view,off)!==0x02014b50)break;const method=u16(this.view,off+10),comp=u32(this.view,off+20),size=u32(this.view,off+24),nl=u16(this.view,off+28),el=u16(this.view,off+30),cl=u16(this.view,off+32),local=u32(this.view,off+42);const name=new TextDecoder().decode(new Uint8Array(this.buf,off+46,nl));this.entries.set(name,{name,method,comp,size,local});off+=46+nl+el+cl}}
+ names(){return [...this.entries.keys()]}
+ async bytes(name){const e=this.entries.get(name);if(!e)throw new Error('엑셀 내부 파일 누락: '+name);const nl=u16(this.view,e.local+26),el=u16(this.view,e.local+28),start=e.local+30+nl+el,raw=new Uint8Array(this.buf,start,e.comp);if(e.method===0)return new Uint8Array(raw);if(e.method===8){if(typeof DecompressionStream!=='function')throw new Error('현재 브라우저는 XLSX 압축 해제를 지원하지 않습니다. 최신 Chrome 또는 Edge를 사용해 주세요.');const ds=new DecompressionStream('deflate-raw');return new Uint8Array(await new Response(new Blob([raw]).stream().pipeThrough(ds)).arrayBuffer())}throw new Error('지원하지 않는 XLSX 압축 방식입니다: '+e.method)}
+ async text(name){return new TextDecoder('utf-8').decode(await this.bytes(name))}
+ async blob(name,type){return new Blob([await this.bytes(name)],{type:type||mime(name)})}
+}
+function mime(n){n=String(n).toLowerCase();if(n.endsWith('.png'))return'image/png';if(n.endsWith('.gif'))return'image/gif';if(n.endsWith('.webp'))return'image/webp';return'image/jpeg'}
+function xml(s){return new DOMParser().parseFromString(s,'application/xml')}
+function relMap(doc){const m={};doc.querySelectorAll('Relationship').forEach(r=>m[r.getAttribute('Id')]={target:r.getAttribute('Target'),type:r.getAttribute('Type')});return m}
+function cellRef(c){return c.getAttribute('r')||''}
+function colNum(ref){let n=0;for(const ch of (ref.match(/[A-Z]+/i)||[''])[0].toUpperCase())n=n*26+ch.charCodeAt(0)-64;return n}
+function rowNum(ref){return +(ref.match(/\d+/)||[0])[0]}
+function excelDate(v){const n=Number(v);if(!Number.isFinite(n)||n<20000||n>80000)return String(v||'');const d=new Date(Date.UTC(1899,11,30)+n*86400000);return `${d.getUTCFullYear()}.${String(d.getUTCMonth()+1).padStart(2,'0')}.${String(d.getUTCDate()).padStart(2,'0')}`}
+function clean(v){return String(v??'').replace(/\s+/g,' ').trim()}
+function category(name){name=String(name||'');if(/보일러|가스|버너/.test(name))return'보일러';if(/펌프|순환|급수|배수/.test(name))return'펌프';if(/열교환|탱크/.test(name))return'열교환·탱크';if(/AHU|휀|모터|공조/.test(name))return'공조';return'기계'}
+function get(map,ref){return clean(map[ref])}
+function findValue(map,label,start=1,end=200){for(const [ref,v] of Object.entries(map)){const r=rowNum(ref);if(r>=start&&r<=end&&clean(v).replace(/\s/g,'')===label.replace(/\s/g,'')){const c=colNum(ref);for(let dc=1;dc<=3;dc++){const rr=String.fromCharCode(64+c+dc)+r;if(get(map,rr))return get(map,rr)}}}return''}
+function nearestLabelValue(map,row,label){for(let r=Math.max(1,row-3);r<=row+5;r++){for(const [ref,v] of Object.entries(map)){if(rowNum(ref)===r&&clean(v).replace(/\s/g,'')===label.replace(/\s/g,'')){const c=colNum(ref);for(let dc=1;dc<=3;dc++){let x=c+dc,s='';while(x){s=String.fromCharCode(65+(x-1)%26)+s;x=Math.floor((x-1)/26)}const val=get(map,s+r);if(val)return val}}}}return''}
+function historyFromMap(map){let headerRow=0,dateCol=0,textCol=0,workerCol=0;for(const [ref,v] of Object.entries(map)){if(/보수\s*및\s*교체\s*내용/.test(clean(v))){headerRow=rowNum(ref);textCol=colNum(ref)}}if(!headerRow)return[];for(const [ref,v] of Object.entries(map)){if(rowNum(ref)!==headerRow)continue;if(/작업일자/.test(clean(v)))dateCol=colNum(ref);if(/작업자/.test(clean(v)))workerCol=colNum(ref)}
+ const ref=(c,r)=>{let s='';while(c){s=String.fromCharCode(65+(c-1)%26)+s;c=Math.floor((c-1)/26)}return s+r};const out=[];for(let r=headerRow+1;r<=headerRow+60;r++){let txt=get(map,ref(textCol,r));if(!txt)continue;let dt=get(map,ref(dateCol||Math.max(1,textCol-1),r));if(/^\d{5}(?:\.0+)?$/.test(dt))dt=excelDate(dt);let who=get(map,ref(workerCol||textCol+5,r));out.push([dt,txt,who])}return out}
+async function parseWorkbook(file){
+ const buf=await file.arrayBuffer(),z=new MiniZip(buf);zipBook=z;const shared=[];
+ if(z.entries.has('xl/sharedStrings.xml')){const d=xml(await z.text('xl/sharedStrings.xml'));d.querySelectorAll('si').forEach(si=>shared.push([...si.querySelectorAll('t')].map(t=>t.textContent||'').join('')))}
+ const wb=xml(await z.text('xl/workbook.xml')),wbr=relMap(xml(await z.text('xl/_rels/workbook.xml.rels'))),sheets=[];
+ wb.querySelectorAll('sheet').forEach(s=>{const rid=s.getAttribute('r:id')||s.getAttributeNS('http://schemas.openxmlformats.org/officeDocument/2006/relationships','id');const rel=wbr[rid];if(rel)sheets.push({name:s.getAttribute('name'),path:normPath('xl',rel.target)})});
+ const results=[];
+ for(const sh of sheets){const sd=xml(await z.text(sh.path)),map={};sd.querySelectorAll('c').forEach(c=>{const ref=cellRef(c),t=c.getAttribute('t'),v=c.querySelector('v'),is=c.querySelector('is');let val='';if(t==='s'&&v)val=shared[Number(v.textContent)]??'';else if(t==='inlineStr'&&is)val=[...is.querySelectorAll('t')].map(x=>x.textContent||'').join('');else if(v)val=v.textContent||'';if(clean(val))map[ref]=val});
+ const allText=Object.values(map).map(clean).join(' ');if(!/장비\s*이력카드/.test(allText))continue;if(!get(map,'D4')&&!get(map,'I5'))continue;
+ const recs=[];if(get(map,'I5')&&/보일러/.test(get(map,'I5'))){recs.push({name:get(map,'I5'),location:'지하1층 기계실',purpose:'관류보일러',qr_code:get(map,'I14'),model:get(map,'I6'),manufacturer:get(map,'I16'),serial:get(map,'I14'),capacity:get(map,'I7')?get(map,'I7')+' kg/h':'',installed_on:get(map,'I15'),manufacture_year:get(map,'I15'),remarks:'최고사용압력 '+get(map,'I8')+' MPa / 전열면적 '+get(map,'I10')+'㎡',category:'보일러',history:[],_start:5,_sheet:sh.name})}
+ else {
+  const primary={name:get(map,'D4'),location:get(map,'D5'),purpose:get(map,'D6'),qr_code:get(map,'G9'),model:get(map,'G10'),manufacturer:get(map,'G18'),serial:get(map,'G16'),capacity:get(map,'I9'),manufacture_year:get(map,'G17'),installed_on:'',remarks:'',category:category(get(map,'D4')),_start:4,_sheet:sh.name,history:historyFromMap(map)};if(primary.name)recs.push(primary);
+  const codeLabels=Object.entries(map).filter(([ref,v])=>clean(v).replace(/\s/g,'')==='관리번호'&&rowNum(ref)>12);
+  for(const [ref] of codeLabels){const r=rowNum(ref),code=nearestLabelValue(map,r,'관리번호');if(!code||recs.some(x=>x.qr_code===code))continue;let name=nearestLabelValue(map,r,'장비명')||nearestLabelValue(map,r,'명칭');if(!name){for(let rr=r-2;rr>=Math.max(1,r-5);rr--){name=get(map,'B'+rr)||get(map,'A'+rr);if(name)break}}if(!name)name=sh.name;recs.push({name,location:primary.location,purpose:nearestLabelValue(map,r,'용도')||primary.purpose,qr_code:code,model:nearestLabelValue(map,r,'모델')||nearestLabelValue(map,r,'형식'),manufacturer:nearestLabelValue(map,r,'업체명')||primary.manufacturer,serial:nearestLabelValue(map,r,'제조번호'),capacity:nearestLabelValue(map,r,'용량(KCAL/HR)')||nearestLabelValue(map,r,'가열량')||nearestLabelValue(map,r,'탱크용량'),manufacture_year:nearestLabelValue(map,r,'제조년도'),installed_on:nearestLabelValue(map,r,'설치날짜'),remarks:'',category:category(name),history:[],_start:r,_sheet:sh.name})}
+ }
+ // sheet images
+ const relPath=sh.path.replace('xl/worksheets/','xl/worksheets/_rels/')+'.rels';let imgs=[];
+ if(z.entries.has(relPath)){const sr=relMap(xml(await z.text(relPath)));const dr=Object.values(sr).find(x=>/drawing/.test(x.type||''));if(dr){const dp=normPath(sh.path.substring(0,sh.path.lastIndexOf('/')),dr.target);if(z.entries.has(dp)){const dd=xml(await z.text(dp)),drelPath=dp.replace(/([^/]+)$/,'_rels/$1.rels'),dm=z.entries.has(drelPath)?relMap(xml(await z.text(drelPath))):{};for(const a of dd.querySelectorAll('twoCellAnchor,oneCellAnchor')){const from=a.querySelector('from'),row=Number(from?.querySelector('row')?.textContent||0)+1;const bl=a.querySelector('blip'),rid=bl?.getAttribute('r:embed')||bl?.getAttributeNS('http://schemas.openxmlformats.org/officeDocument/2006/relationships','embed');const rel=dm[rid];if(rel){const p=normPath(dp.substring(0,dp.lastIndexOf('/')),rel.target);if(z.entries.has(p))imgs.push({path:p,row,name:p.split('/').pop()})}}}}}
+ for(const im of imgs){let best=recs[0];for(const r of recs)if(r._start<=im.row&&(!best||r._start>best._start))best=r;if(best){best.images=best.images||[];best.images.push(im)}}
+ results.push(...recs)
+ }
+ // attach boiler history sheets
+ const byName=new Map(results.map(x=>[x.name,x]));for(const sh of sheets){if(!/^보일러[AB]$/.test(sh.name))continue;const sd=xml(await z.text(sh.path)),map={};sd.querySelectorAll('c').forEach(c=>{const ref=cellRef(c),t=c.getAttribute('t'),v=c.querySelector('v');let val='';if(t==='s'&&v)val=shared[Number(v.textContent)]??'';else if(v)val=v.textContent||'';if(clean(val))map[ref]=val});const key=sh.name==='보일러A'?'콘덴싱 관류보일러 A':'콘덴싱 관류보일러 B';if(byName.get(key))byName.get(key).history=historyFromMap(map)}
+ const dedup=[];for(const r of results){r.name=clean(r.name);if(!r.name)continue;if(r.qr_code==='P5-A,B'&&/P6/.test(r._sheet))r.qr_code='P6-A,B';r.images=r.images||[];if(!dedup.some(x=>x.name===r.name&&x.qr_code===r.qr_code))dedup.push(r)}
+ if(!dedup.length)throw new Error('장비 정보를 찾지 못했습니다. 「장비 이력카드」 양식인지 확인해 주세요.');return{facility:'태백국민체육센터',fileName:file.name,assets:dedup};
+}
+function releaseUrls(){objectUrls.forEach(URL.revokeObjectURL);objectUrls=[]}
+async function imageSrc(im){if(im.url)return im.url;const b=await zipBook.blob(im.path);im.blob=b;im.url=URL.createObjectURL(b);objectUrls.push(im.url);return im.url}
+function summary(){const on=rows.filter(x=>x._on).length,photos=rows.filter(x=>x._on).reduce((n,x)=>n+(x.images||[]).length,0);$('tfmsEquipmentImportSummaryV4432').textContent=`선택 ${on}대 · 사진 ${photos}장 · ${esc(source?.fileName||'')}`}
+async function render(){const host=$('tfmsEquipmentImportListV4432');host.innerHTML=rows.map((x,i)=>`<div class="tfms-import-card ${x._on?'':'off'}" data-i="${i}"><input type="checkbox" ${x._on?'checked':''} onchange="updateEquipmentImportV4432(${i},'_on',this.checked)"><div class="tfms-import-photo" id="tfmsImpPhoto${i}"><span style="margin:auto;font-size:11px;color:#789">${(x.images||[]).length?'사진 로딩 중':'사진 없음'}</span></div><div class="tfms-import-field"><label>설비명</label><input value="${esc(x.name)}" oninput="updateEquipmentImportV4432(${i},'name',this.value)"><span class="tfms-import-tag">${esc(x.category)}</span></div><div class="tfms-import-field"><label>관리번호</label><input value="${esc(x.qr_code)}" oninput="updateEquipmentImportV4432(${i},'qr_code',this.value)"><label style="margin-top:5px">위치</label><input value="${esc(x.location)}" oninput="updateEquipmentImportV4432(${i},'location',this.value)"></div><div class="tfms-import-field"><label>모델 / 제조사</label><input value="${esc(x.model)}" oninput="updateEquipmentImportV4432(${i},'model',this.value)"><input style="margin-top:5px" value="${esc(x.manufacturer)}" oninput="updateEquipmentImportV4432(${i},'manufacturer',this.value)"></div><div class="tfms-import-field"><label>용도·비고</label><textarea oninput="updateEquipmentImportV4432(${i},'remarks',this.value)">${esc([x.purpose,x.remarks,(x.history||[]).length?'기존 이력 '+x.history.length+'건 포함':''].filter(Boolean).join(' / '))}</textarea></div></div>`).join('');summary();for(let i=0;i<rows.length;i++){const h=$('tfmsImpPhoto'+i),ims=(rows[i].images||[]).slice(0,2);if(!h||!ims.length)continue;h.innerHTML='';for(const im of ims){const img=document.createElement('img');img.src=await imageSrc(im);img.alt='장비사진';h.appendChild(img)}}}
+window.updateEquipmentImportV4432=(i,k,v)=>{rows[i][k]=v;if(k==='_on')document.querySelector(`.tfms-import-card[data-i="${i}"]`)?.classList.toggle('off',!v);summary()};
+window.toggleEquipmentImportAllV4432=v=>{rows.forEach(x=>x._on=v);render()};window.resetEquipmentImportV4432=()=>{rows=structuredClone(source.assets).map((x,i)=>({...x,_i:i,_on:true}));render()};
+async function chooseFile(){return new Promise(resolve=>{let inp=$('tfmsEquipmentExcelFileV4435');if(!inp){inp=document.createElement('input');inp.type='file';inp.id='tfmsEquipmentExcelFileV4435';inp.accept='.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';inp.style.display='none';document.body.appendChild(inp)}inp.value='';inp.onchange=()=>resolve(inp.files?.[0]||null);inp.click()})}
+window.openEquipmentImportV4432=async()=>{try{const file=await chooseFile();if(!file)return;$('tfmsEquipmentImportProgressV4432').textContent='엑셀 파일 분석 중...';source=await parseWorkbook(file);rows=structuredClone(source.assets).map((x,i)=>({...x,_i:i,_on:true}));await render();$('tfmsEquipmentImportModalV4432').classList.add('show');$('tfmsEquipmentImportProgressV4432').textContent=`분석 완료 · ${rows.length}대`}catch(e){console.error(e);toast('장비이력카드 분석 실패: '+(e.message||e))}};
+window.closeEquipmentImportV4432=()=>{$('tfmsEquipmentImportModalV4432').classList.remove('show')};
+async function importPhotos(c,assetId,x){const old=await c.from('asset_photos').select('file_name').eq('asset_id',assetId),names=new Set((old.data||[]).map(v=>v.file_name));for(let i=0;i<(x.images||[]).length;i++){const im=x.images[i],n=im.name;if(names.has(n))continue;const b=im.blob||await zipBook.blob(im.path),path=`${assetId}/card_${Date.now()}_${i}_${n}`;const up=await c.storage.from('tfms-equipment-photos').upload(path,b,{contentType:b.type||mime(n),upsert:false});if(up.error)throw up.error;const ins=await c.from('asset_photos').insert({asset_id:assetId,storage_path:path,file_name:n,mime_type:b.type||mime(n),photo_kind:i===0?'대표':'기타',photo_date:new Date().toISOString().slice(0,10),caption:'장비이력카드 엑셀 원본 사진'});if(ins.error){await c.storage.from('tfms-equipment-photos').remove([path]);throw ins.error}}}
+window.runEquipmentImportV4432=async()=>{const c=client(),selected=rows.filter(x=>x._on);if(!c){toast('Supabase 연결 상태를 확인해 주세요.');return}if(!selected.length){toast('등록할 설비를 선택해 주세요.');return}const btn=$('tfmsEquipmentImportRunV4432'),prog=$('tfmsEquipmentImportProgressV4432');btn.disabled=true;let added=0,updated=0,failed=0;const importedIds=[],importedNames=[],failures=[];try{const fr=await c.from('facilities').select('id,name').eq('name',source.facility).maybeSingle();if(fr.error||!fr.data)throw new Error('태백국민체육센터 시설정보를 찾지 못했습니다.');const ar=await c.from('assets').select('id,name,qr_code,asset_code').eq('facility_id',fr.data.id);if(ar.error)throw ar.error;const existing=ar.data||[];for(let i=0;i<selected.length;i++){const x=selected[i];prog.textContent=`${i+1}/${selected.length} · ${x.name}`;try{let found=existing.find(a=>x.qr_code&&clean(a.qr_code)===clean(x.qr_code))||existing.find(a=>clean(a.name)===clean(x.name));let assetId=found?.id;if(!assetId){const history=(x.history||[]).map(h=>`${h[0]} ${h[1]}${h[2]?' ('+h[2]+')':''}`).join('\n');const assetCode='CARD-'+String(Date.now()).slice(-8)+'-'+String(i+1).padStart(2,'0');const payload={facility_id:fr.data.id,asset_code:assetCode,name:x.name,category:x.category||'기타',manufacturer:x.manufacturer||null,model_name:x.model||null,serial_number:x.serial||null,capacity:x.capacity||null,manufacture_year:x.manufacture_year||null,installed_on:null,location_detail:x.location||'기계실',operation_type:x.purpose||null,inspection_cycle:'수시',condition_status:'정상',importance:'중',risk_level:'양호',qr_code:x.qr_code||null,remarks:[x.remarks,history&&'기존 장비이력\n'+history].filter(Boolean).join('\n'),is_active:true,updated_at:new Date().toISOString()};const ins=await c.from('assets').insert(payload).select('id,asset_code,name').single();if(ins.error)throw ins.error;assetId=ins.data.id;found=ins.data;existing.push({id:assetId,name:x.name,qr_code:x.qr_code,asset_code:ins.data.asset_code});added++}else updated++;importedIds.push(assetId);importedNames.push(x.name);await importPhotos(c,assetId,x)}catch(e){console.error('equipment import',x,e);failed++;failures.push(`${x.name}: ${e?.message||e}`)}}prog.textContent=`DB 반영 확인 중 · 신규 ${added}대 · 기존 ${updated}대 · 실패 ${failed}대`;if(typeof window.loadEnterpriseData==='function'){await window.loadEnterpriseData()}else if(typeof loadEnterpriseData==='function'){await loadEnterpriseData()}const firstKey=Object.entries(window.assetData||assetData||{}).find(([,a])=>importedIds.includes(a?.dbId))?.[0]||Object.entries(window.assetData||assetData||{}).find(([,a])=>importedNames.some(n=>clean(n)===clean(a?.name)))?.[0]||'';try{if(firstKey){window.selectedAssetKey=firstKey;selectedAssetKey=firstKey}if(typeof window.showPage==='function')window.showPage('equipment');else if(typeof window.navTo==='function')window.navTo('equipment');window.renderAssetList?.();if(firstKey)window.showAsset?.(firstKey)}catch(e){console.warn('import result screen',e)}const verify=await c.from('assets').select('id,name,asset_code').in('id',importedIds.length?importedIds:['00000000-0000-0000-0000-000000000000']);const confirmed=verify.error?0:(verify.data||[]).length;prog.textContent=`완료 · 신규 ${added}대 · 기존 ${updated}대 보완 · 실패 ${failed}대 · DB 확인 ${confirmed}대`;const detail=failures.length?`\n실패 내역: ${failures.slice(0,3).join(' / ')}`:'';toast(`장비이력카드 등록 완료: 신규 ${added}대, 기존 ${updated}대, 실패 ${failed}대. 설비 현황을 새로 불러왔습니다.${detail}`);setTimeout(()=>{try{closeEquipmentImportV4432()}catch(e){}},900)}catch(e){console.error(e);toast('일괄등록 실패: '+(e.message||e))}finally{btn.disabled=false}};
+function inject(){if(typeof window.setupEquipmentAdminToolsV4438==='function')window.setupEquipmentAdminToolsV4438()}
+const oldShow=window.showPage;if(typeof oldShow==='function')window.showPage=function(id,btn){const r=oldShow.apply(this,arguments);if(id==='equipment')setTimeout(inject,100);return r};
+function init(){inject();applyVersion();const observer=new MutationObserver(()=>{applyVersion();inject()});observer.observe(document.documentElement,{subtree:true,childList:true,characterData:true});[50,200,500,1000,2000].forEach(ms=>setTimeout(()=>{inject();applyVersion()},ms))}
+document.readyState==='loading'?document.addEventListener('DOMContentLoaded',init):init();
+})();
+
+</script>
+
+<!-- TFMS v44.38: 설비관리 간결 UI / 관리자 기능 분리 -->
+<style id="tfms-v4438-equipment-clean-ui">
+#equipment .tfms-equipment-tabs{align-items:center;gap:7px;background:rgba(244,247,251,.96);backdrop-filter:blur(8px)}
+#equipment .tfms-equipment-tabs>button[data-v]{padding:8px 14px;font-size:12px}
+#equipment .tfms-eq-admin-tools{position:relative;margin-left:auto}
+#equipment .tfms-eq-admin-toggle{display:inline-flex;align-items:center;gap:7px!important;padding:8px 12px!important;background:#fff!important;color:#52657c!important;border-color:#d7e0eb!important;font-size:11px!important}
+#equipment .tfms-eq-admin-toggle:hover{background:#f8fbff!important;color:#174e8d!important}
+#equipment .tfms-eq-admin-toggle span{font-size:9px;transition:transform .16s ease}
+#equipment .tfms-eq-admin-toggle[aria-expanded="true"] span{transform:rotate(180deg)}
+#equipment .tfms-eq-admin-menu{position:absolute;right:0;top:calc(100% + 7px);z-index:40;width:245px;padding:8px;background:#fff;border:1px solid #d9e3ef;border-radius:12px;box-shadow:0 14px 35px rgba(23,54,93,.16)}
+#equipment .tfms-eq-admin-menu[hidden]{display:none!important}
+#equipment .tfms-eq-admin-menu button{display:block;width:100%;text-align:left;padding:10px 11px!important;border:0!important;border-radius:9px!important;background:#f7faff!important;color:#24476e!important;font-size:11px!important}
+#equipment .tfms-eq-admin-menu button:hover{background:#eaf3ff!important;color:#0e56aa!important}
+#equipment .tfms-eq-admin-menu small{display:block;padding:7px 9px 3px;color:#8190a3;font-size:9px}
+#equipment .tfms-eq-import-btn{display:none!important}
+/* 상단 현황은 정보는 유지하되 한 줄 요약으로 축소 */
+#equipment .tfms-eq-kpis{display:flex!important;gap:6px!important;margin-bottom:8px!important;overflow-x:auto}
+#equipment .tfms-eq-kpi{flex:1 1 0;min-width:118px;padding:7px 10px!important;border-radius:10px!important;box-shadow:none!important;display:flex;align-items:center;justify-content:space-between;gap:8px}
+#equipment .tfms-eq-kpi span{margin:0!important;font-size:10px!important;white-space:nowrap}
+#equipment .tfms-eq-kpi strong{font-size:15px!important}
+#equipment .tfms-eq-tools{padding:8px 10px!important;margin-bottom:8px!important;border-radius:11px!important;box-shadow:none!important}
+#equipment .tfms-eq-overview-block>.section-title .tfms-eq-help-toggle{font-size:12px}
+/* 안내문은 기본 접힘으로 두고 핵심 업무 화면을 먼저 표시 */
+#equipment .tfms-eq-overview-block:has(.tfms-eq-help-toggle) {padding:9px 12px!important}
+@media(max-width:760px){#equipment .tfms-equipment-tabs{flex-wrap:wrap}#equipment .tfms-eq-admin-tools{margin-left:0}#equipment .tfms-eq-admin-menu{left:0;right:auto}.tfms-eq-kpi{min-width:135px}}
+</style>
+<script id="tfms-v4438-equipment-clean-controller">
+(function(){
+'use strict';
+function setup(){
+ const page=document.getElementById('equipment'); if(!page)return;
+ const tabs=page.querySelector('.tfms-equipment-tabs'); if(!tabs)return;
+ // 이전 버전의 직접 노출 버튼 제거
+ tabs.querySelectorAll('.tfms-eq-import-btn').forEach(b=>b.remove());
+ let tools=tabs.querySelector('.tfms-eq-admin-tools');
+ if(!tools){
+   tools=document.createElement('div');tools.className='tfms-eq-admin-tools';
+   tools.innerHTML='<button type="button" class="tfms-eq-admin-toggle" aria-expanded="false">관리 도구 <span>▾</span></button><div class="tfms-eq-admin-menu" hidden><button type="button" class="tfms-eq-import-menu">장비이력카드 엑셀 가져오기</button><small>관리자용 일괄 입력 기능</small></div>';
+   tabs.appendChild(tools);
+ }
+ const toggle=tools.querySelector('.tfms-eq-admin-toggle'),menu=tools.querySelector('.tfms-eq-admin-menu'),imp=tools.querySelector('.tfms-eq-import-menu');
+ if(toggle&&!toggle.dataset.bound4438){toggle.dataset.bound4438='1';toggle.addEventListener('click',e=>{e.stopPropagation();const open=menu.hidden;menu.hidden=!open;toggle.setAttribute('aria-expanded',String(open));});}
+ if(imp&&!imp.dataset.bound4438){imp.dataset.bound4438='1';imp.addEventListener('click',async e=>{e.stopPropagation();menu.hidden=true;toggle.setAttribute('aria-expanded','false');if(typeof window.openEquipmentImportV4432==='function')await window.openEquipmentImportV4432();else (window.showToast||window.toast||alert)('가져오기 기능을 불러오지 못했습니다. 새로고침 후 다시 시도해 주세요.');});}
+ // 도움말 패널은 최초 1회 기본 접힘
+ page.querySelectorAll('.tfms-eq-help-body').forEach((body,i)=>{if(!body.dataset.clean4438){body.dataset.clean4438='1';body.hidden=true;const small=body.parentElement?.querySelector('.tfms-eq-help-toggle small');if(small)small.textContent='안내 펼치기';}});
+}
+window.setupEquipmentAdminToolsV4438=setup;
+document.addEventListener('click',()=>{document.querySelectorAll('#equipment .tfms-eq-admin-menu').forEach(m=>m.hidden=true);document.querySelectorAll('#equipment .tfms-eq-admin-toggle').forEach(b=>b.setAttribute('aria-expanded','false'));});
+const oldShow=window.showPage;if(typeof oldShow==='function')window.showPage=function(id,btn){const r=oldShow.apply(this,arguments);if(id==='equipment')setTimeout(setup,120);return r};
+const oldNav=window.navTo;if(typeof oldNav==='function')window.navTo=function(id){const r=oldNav.apply(this,arguments);if(id==='equipment')setTimeout(setup,120);return r};
+document.addEventListener('DOMContentLoaded',()=>setTimeout(setup,650));
+})();
+</script>
+
+<!-- TFMS v44.40R1 Recovery Stable: 설비 상세 표시 복구 브리지 -->
+<script id="tfms-v4440r1-detail-recovery">
+(function(){
+'use strict';
+const BUILD='v44.40R1 Recovery Stable';
+function val(v,fallback='-'){return (v===null||v===undefined||String(v).trim()==='')?fallback:v;}
+function text(id,v){const e=document.getElementById(id);if(e)e.textContent=val(v);}
+function currentAsset(key){
+  try{
+    const data=(typeof assetData!=='undefined'&&assetData)||window.assetData||{};
+    const k=key||(typeof selectedAssetKey!=='undefined'?selectedAssetKey:window.selectedAssetKey);
+    return {key:k,asset:data?.[k]||null};
+  }catch(e){return {key:'',asset:null};}
+}
+function syncDetail(key){
+  const {asset:a}=currentAsset(key); if(!a)return;
+  text('assetName',a.name);
+  text('assetYear',a.year||a.manufactureYear);
+  text('assetLife',a.life);
+  text('assetCheck',a.check);
+  text('assetHistory',a.history);
+  text('assetLocation',a.location||a.space);
+  text('assetCapacity',a.capacity);
+  text('assetOperation',a.operation);
+  text('assetQrId',a.qrId||a.assetCode);
+  text('lccRepair',a.repair);
+  text('lccReplace',a.replace);
+  text('lccRank',a.rank);
+  const risk=document.getElementById('assetRisk');
+  if(risk){risk.textContent=val(a.risk,'양호');risk.className='risk '+(a.riskClass||'good');}
+  const tl=document.getElementById('assetTimeline');
+  if(tl){
+    const rows=Array.isArray(a.timeline)?a.timeline:[];
+    tl.innerHTML=rows.length?rows.map(t=>`<div class="timeline-item"><strong>${String(t?.[0]||'')}</strong><span>${String(t?.[1]||'')}</span></div>`).join(''):'<div class="empty-state">등록된 이력이 없습니다.</div>';
+  }
+  try{if(typeof window.refreshEquipmentPhotosV4431==='function')window.refreshEquipmentPhotosV4431();}catch(e){console.warn('photo refresh',e)}
+}
+function wrapShowAsset(){
+  const fn=window.showAsset;
+  if(typeof fn!=='function'||fn.__tfmsR1)return;
+  function wrapped(key,el){
+    const result=fn.apply(this,arguments);
+    setTimeout(()=>syncDetail(key),0);
+    setTimeout(()=>syncDetail(key),120);
+    return result;
+  }
+  wrapped.__tfmsR1=true;
+  window.showAsset=wrapped;
+}
+function applyBuild(){
+  document.title='TFMS '+BUILD;
+  document.querySelectorAll('#tfmsVersionBadge,.tfms-version-badge').forEach(e=>e.textContent=BUILD);
+  window.TFMS_BUILD=Object.freeze({version:'v44.40R1',channel:'Recovery Stable',buildDate:'2026.08.06',title:'일괄등록·설비상세·사진연결 복구 기준본'});
+}
+function init(){
+  wrapShowAsset();applyBuild();
+  const ob=new MutationObserver(()=>{wrapShowAsset();applyBuild();});
+  ob.observe(document.documentElement,{subtree:true,childList:true});
+  [100,500,1200,2500].forEach(ms=>setTimeout(()=>{wrapShowAsset();applyBuild();syncDetail();},ms));
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
 </body></html>
