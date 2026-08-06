@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
 <html lang="ko">
-<!-- TFMS v44.29R2 Recovery Stable | 로그인 복구본 + 장비이력카드 일괄등록 단일파일 내장 | 2026-08-06 -->
+<!-- TFMS v44.29R3 Recovery Stable | 장비이력카드 버튼 중복 제거 | 2026-08-06 -->
 <!-- TFMS v36.3 Stable | 삭제관리 승인·삭제 버튼 복구 | 2026-07-20 -->
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>TFMS v44.29R2 Recovery Stable</title>
+<title>TFMS v44.29R3 Recovery Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -17740,22 +17740,33 @@ window.runEquipmentImportV4432=async()=>{const c=client(),selected=rows.filter(x
 function inject(){
  const page=$('equipment');if(!page)return;
  try{if(typeof window.context==='function'&&!window.context().admin)return}catch(e){}
- let host=page.querySelector('.tfms-equipment-tabs');
- if(!host){
-   host=document.createElement('div');host.className='tfms-equipment-import-toolbar';
-   const first=page.querySelector(':scope > .panel');
-   if(first) first.before(host); else page.prepend(host);
- }
- if(host.querySelector('.tfms-eq-import-btn,.tfms-eq-import-menu'))return;
+ // 과거 실행에서 남은 동일 버튼을 모두 정리한다.
+ [...page.querySelectorAll('button')].forEach(btn=>{
+   const text=String(btn.textContent||'').replace(/\s+/g,' ').trim();
+   if(text.includes('장비이력카드') && text.includes('가져오기')) btn.remove();
+ });
+ page.querySelectorAll('.tfms-equipment-import-toolbar').forEach(el=>{
+   if(!el.children.length) el.remove();
+ });
+ // 설비관리 탭이 만들어진 뒤 그 위치에 버튼 하나만 추가한다.
+ const host=page.querySelector('.tfms-equipment-tabs');
+ if(!host)return;
  const b=document.createElement('button');
- b.type='button';b.className='tfms-eq-import-btn';
+ b.type='button';b.className='tfms-eq-import-btn';b.dataset.v='import';
  b.textContent='장비이력카드 엑셀 가져오기';
  b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();window.openEquipmentImportV4432?.()});
  host.appendChild(b);
 }
 const oldShow=window.showPage;
 if(typeof oldShow==='function')window.showPage=function(id,btn){const r=oldShow.apply(this,arguments);if(id==='equipment')setTimeout(inject,80);return r};
-function init(){inject();[100,400,1000,2000].forEach(ms=>setTimeout(inject,ms))}
+function init(){
+ inject();[100,400,1000,2000].forEach(ms=>setTimeout(inject,ms));
+ const page=$('equipment');
+ if(page){
+   let timer=0;
+   new MutationObserver(()=>{clearTimeout(timer);timer=setTimeout(inject,80)}).observe(page,{childList:true,subtree:true});
+ }
+}
 document.readyState==='loading'?document.addEventListener('DOMContentLoaded',init):init();
 })();
 
