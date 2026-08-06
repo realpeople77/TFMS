@@ -15319,65 +15319,6 @@ window.printFireExtQrLabelsV447=async function(){
   </div>
 </div>
 <div class="tfms-eq-photo-modal" id="tfmsEqPhotoModalV4430" onclick="if(event.target===this)closeEquipmentPhotoViewerV4430()"><button type="button" onclick="closeEquipmentPhotoViewerV4430()">×</button><img id="tfmsEqPhotoViewerImgV4430" alt="설비 사진 확대"></div>
-<script id="tfms-v4430-equipment-photo-controller">
-(function(){
-'use strict';
-var BUCKET='tfms-equipment-photos';
-var currentAssetId='';
-var currentRows=[];
-function q(id){return document.getElementById(id)}
-function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
-function sb(){try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||null}catch(e){return null}}
-function selected(){try{var key=window.selectedAssetKey||(typeof selectedAssetKey!=='undefined'?selectedAssetKey:'');var data=window.assetData||(typeof assetData!=='undefined'?assetData:{});return data?.[key]||null}catch(e){return null}}
-function toast(m){try{window.showToast?.(m)}catch(e){console.log(m)}}
-function today(){return new Date().toISOString().slice(0,10)}
-function safeName(name){return String(name||'photo').replace(/[^a-zA-Z0-9._-]/g,'_')}
-function panel(){return q('tfmsEqPhotoPanelV4430')}
-function injectPanel(){
-  var timeline=q('assetTimeline'); if(!timeline)return;
-  var detail=timeline.closest('.asset-detail'); if(!detail||panel())return;
-  var host=document.createElement('div'); host.id='tfmsEqPhotoPanelV4430'; host.className='tfms-eq-photo-panel';
-  host.innerHTML='<div class="tfms-eq-photo-head"><div><h3>설비 사진·이력</h3><p>사진은 Supabase Storage에 저장되며 동일 계정 사용자에게 공유됩니다.</p></div><div class="tfms-eq-photo-actions"><button type="button" onclick="refreshEquipmentPhotosV4430()">새로고침</button><button class="primary" type="button" onclick="openEquipmentPhotoFormV4430()">사진 등록</button></div></div><div class="tfms-eq-photo-body"><div class="tfms-eq-cover" id="tfmsEqCoverV4430"><div class="tfms-eq-cover-empty">설비를 선택하면<br>대표사진과 사진 이력이 표시됩니다.</div></div><div class="tfms-eq-history" id="tfmsEqHistoryV4430"><div class="tfms-eq-photo-empty">등록된 사진이 없습니다.</div></div></div>';
-  detail.appendChild(host);
-}
-async function signedUrl(path){var c=sb();if(!c||!path)return '';var r=await c.storage.from(BUCKET).createSignedUrl(path,3600);return r?.data?.signedUrl||''}
-async function load(){
-  injectPanel(); var a=selected(); currentAssetId=a?.dbId||'';
-  var cover=q('tfmsEqCoverV4430'), hist=q('tfmsEqHistoryV4430');
-  if(!cover||!hist)return;
-  if(!currentAssetId){cover.innerHTML='<div class="tfms-eq-cover-empty">DB에 저장된 설비를 선택해 주세요.</div>';hist.innerHTML='<div class="tfms-eq-photo-empty">설비 선택이 필요합니다.</div>';return}
-  var c=sb(); if(!c){cover.innerHTML='<div class="tfms-eq-cover-empty">Supabase 연결을 확인해 주세요.</div>';return}
-  hist.innerHTML='<div class="tfms-eq-photo-empty">사진을 불러오는 중입니다.</div>';
-  var r=await c.from('asset_photos').select('*').eq('asset_id',currentAssetId).order('photo_date',{ascending:false}).order('created_at',{ascending:false});
-  if(r.error){console.error(r.error);hist.innerHTML='<div class="tfms-eq-photo-empty">사진 테이블을 확인할 수 없습니다.<br>동봉된 SQL을 Supabase에서 1회 실행해 주세요.</div>';return}
-  currentRows=r.data||[];
-  var enriched=[];for(var row of currentRows){enriched.push(Object.assign({},row,{url:await signedUrl(row.storage_path)}))}
-  var coverRow=enriched.find(function(x){return x.photo_kind==='대표'})||enriched[0];
-  cover.innerHTML=coverRow&&coverRow.url?'<span class="tfms-eq-cover-badge">'+esc(coverRow.photo_kind||'사진')+'</span><img src="'+esc(coverRow.url)+'" alt="설비 대표사진" onclick="openEquipmentPhotoViewerV4430(this.src)">':'<div class="tfms-eq-cover-empty">등록된 대표사진이 없습니다.<br>사진 등록 버튼으로 추가하세요.</div>';
-  if(!enriched.length){hist.innerHTML='<div class="tfms-eq-photo-empty">등록된 사진이 없습니다.</div>';return}
-  hist.innerHTML=enriched.map(function(x){return '<div class="tfms-eq-photo-item">'+(x.url?'<img src="'+esc(x.url)+'" alt="설비 이력사진" onclick="openEquipmentPhotoViewerV4430(this.src)">':'<div></div>')+'<div class="tfms-eq-photo-meta"><strong>'+esc(x.photo_kind||'사진')+' · '+esc(x.photo_date||'')+'</strong><span>'+esc(x.caption||'설명 없음')+'</span><span>'+esc(x.file_name||'')+'</span></div><button class="tfms-eq-photo-delete" type="button" onclick="deleteEquipmentPhotoV4430(\''+esc(x.id)+'\')">삭제</button></div>'}).join('');
-}
-window.openEquipmentPhotoFormV4430=function(){var a=selected();if(!a?.dbId){toast('DB에 저장된 설비를 먼저 선택해 주세요.');return}q('tfmsEqPhotoDateV4430').value=today();q('tfmsEqPhotoCaptionV4430').value='';q('tfmsEqPhotoFileV4430').value='';q('tfmsEqPhotoFormV4430').classList.add('show')}
-window.closeEquipmentPhotoFormV4430=function(){q('tfmsEqPhotoFormV4430')?.classList.remove('show')}
-window.openEquipmentPhotoViewerV4430=function(url){q('tfmsEqPhotoViewerImgV4430').src=url||'';q('tfmsEqPhotoModalV4430').classList.add('show')}
-window.closeEquipmentPhotoViewerV4430=function(){q('tfmsEqPhotoModalV4430')?.classList.remove('show')}
-window.refreshEquipmentPhotosV4430=load;
-window.saveEquipmentPhotosV4430=async function(){
-  var a=selected(),c=sb(),files=Array.from(q('tfmsEqPhotoFileV4430')?.files||[]);if(!a?.dbId){toast('설비를 먼저 선택해 주세요.');return}if(!c){toast('Supabase 연결을 확인해 주세요.');return}if(!files.length){toast('사진 파일을 선택해 주세요.');return}
-  var kind=q('tfmsEqPhotoKindV4430').value||'기타',date=q('tfmsEqPhotoDateV4430').value||today(),caption=(q('tfmsEqPhotoCaptionV4430').value||'').trim();var btn=q('tfmsEqPhotoSaveV4430');btn.disabled=true;btn.textContent='저장 중';
-  try{for(var f of files){var path=a.dbId+'/'+Date.now()+'_'+Math.random().toString(36).slice(2,8)+'_'+safeName(f.name);var up=await c.storage.from(BUCKET).upload(path,f,{cacheControl:'3600',upsert:false,contentType:f.type||'image/jpeg'});if(up.error)throw up.error;var ins=await c.from('asset_photos').insert({asset_id:a.dbId,storage_path:path,file_name:f.name,mime_type:f.type||null,photo_kind:kind,photo_date:date,caption:caption||null});if(ins.error){await c.storage.from(BUCKET).remove([path]);throw ins.error}}
-    closeEquipmentPhotoFormV4430();await load();toast('설비 사진을 Supabase에 저장했습니다.');
-  }catch(e){console.error('TFMS v44.30 equipment photo save',e);toast('사진 저장 실패: '+(e?.message||e)+' · 동봉 SQL 실행 여부를 확인해 주세요.')}finally{btn.disabled=false;btn.textContent='Supabase에 저장'}
-}
-window.deleteEquipmentPhotoV4430=async function(id){if(!confirm('이 사진을 삭제하시겠습니까?'))return;var c=sb(),row=currentRows.find(function(x){return String(x.id)===String(id)});if(!c||!row)return;var del=await c.from('asset_photos').delete().eq('id',id);if(del.error){toast('사진정보 삭제 실패: '+del.error.message);return}var rem=await c.storage.from(BUCKET).remove([row.storage_path]);if(rem.error)console.warn(rem.error);await load();toast('사진을 삭제했습니다.')}
-var oldShowAsset=window.showAsset;window.showAsset=function(){var r=oldShowAsset?.apply(this,arguments);setTimeout(load,50);return r}
-var oldShowPage=window.showPage;window.showPage=function(id,btn){var r=oldShowPage?.apply(this,arguments);if(id==='equipment')setTimeout(load,100);return r}
-document.addEventListener('keydown',function(e){if(e.key==='Escape'){window.closeEquipmentPhotoViewerV4430();window.closeEquipmentPhotoFormV4430()}});
-function init(){injectPanel();var b=q('tfmsVersionBadge');if(b)b.textContent='v44.30 Enterprise Dev';document.title='TFMS v44.30 Enterprise Dev';window.TFMS_BUILD=Object.freeze({version:'v44.30',channel:'Enterprise Dev',buildDate:'2026.08.06',title:'Supabase 기반 설비 사진·이력 1차'});}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
-})();
-</script>
-
 </body></html>`);
     w.document.close();setTimeout(()=>w.focus(),200);
   }catch(e){console.error(e);toast('QR 라벨 출력 준비 실패: '+(e?.message||e))}
@@ -16242,65 +16183,6 @@ window.printFireRecordV420=async function(){
   </div>
 </div>
 <div class="tfms-eq-photo-modal" id="tfmsEqPhotoModalV4430" onclick="if(event.target===this)closeEquipmentPhotoViewerV4430()"><button type="button" onclick="closeEquipmentPhotoViewerV4430()">×</button><img id="tfmsEqPhotoViewerImgV4430" alt="설비 사진 확대"></div>
-<script id="tfms-v4430-equipment-photo-controller">
-(function(){
-'use strict';
-var BUCKET='tfms-equipment-photos';
-var currentAssetId='';
-var currentRows=[];
-function q(id){return document.getElementById(id)}
-function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
-function sb(){try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||null}catch(e){return null}}
-function selected(){try{var key=window.selectedAssetKey||(typeof selectedAssetKey!=='undefined'?selectedAssetKey:'');var data=window.assetData||(typeof assetData!=='undefined'?assetData:{});return data?.[key]||null}catch(e){return null}}
-function toast(m){try{window.showToast?.(m)}catch(e){console.log(m)}}
-function today(){return new Date().toISOString().slice(0,10)}
-function safeName(name){return String(name||'photo').replace(/[^a-zA-Z0-9._-]/g,'_')}
-function panel(){return q('tfmsEqPhotoPanelV4430')}
-function injectPanel(){
-  var timeline=q('assetTimeline'); if(!timeline)return;
-  var detail=timeline.closest('.asset-detail'); if(!detail||panel())return;
-  var host=document.createElement('div'); host.id='tfmsEqPhotoPanelV4430'; host.className='tfms-eq-photo-panel';
-  host.innerHTML='<div class="tfms-eq-photo-head"><div><h3>설비 사진·이력</h3><p>사진은 Supabase Storage에 저장되며 동일 계정 사용자에게 공유됩니다.</p></div><div class="tfms-eq-photo-actions"><button type="button" onclick="refreshEquipmentPhotosV4430()">새로고침</button><button class="primary" type="button" onclick="openEquipmentPhotoFormV4430()">사진 등록</button></div></div><div class="tfms-eq-photo-body"><div class="tfms-eq-cover" id="tfmsEqCoverV4430"><div class="tfms-eq-cover-empty">설비를 선택하면<br>대표사진과 사진 이력이 표시됩니다.</div></div><div class="tfms-eq-history" id="tfmsEqHistoryV4430"><div class="tfms-eq-photo-empty">등록된 사진이 없습니다.</div></div></div>';
-  detail.appendChild(host);
-}
-async function signedUrl(path){var c=sb();if(!c||!path)return '';var r=await c.storage.from(BUCKET).createSignedUrl(path,3600);return r?.data?.signedUrl||''}
-async function load(){
-  injectPanel(); var a=selected(); currentAssetId=a?.dbId||'';
-  var cover=q('tfmsEqCoverV4430'), hist=q('tfmsEqHistoryV4430');
-  if(!cover||!hist)return;
-  if(!currentAssetId){cover.innerHTML='<div class="tfms-eq-cover-empty">DB에 저장된 설비를 선택해 주세요.</div>';hist.innerHTML='<div class="tfms-eq-photo-empty">설비 선택이 필요합니다.</div>';return}
-  var c=sb(); if(!c){cover.innerHTML='<div class="tfms-eq-cover-empty">Supabase 연결을 확인해 주세요.</div>';return}
-  hist.innerHTML='<div class="tfms-eq-photo-empty">사진을 불러오는 중입니다.</div>';
-  var r=await c.from('asset_photos').select('*').eq('asset_id',currentAssetId).order('photo_date',{ascending:false}).order('created_at',{ascending:false});
-  if(r.error){console.error(r.error);hist.innerHTML='<div class="tfms-eq-photo-empty">사진 테이블을 확인할 수 없습니다.<br>동봉된 SQL을 Supabase에서 1회 실행해 주세요.</div>';return}
-  currentRows=r.data||[];
-  var enriched=[];for(var row of currentRows){enriched.push(Object.assign({},row,{url:await signedUrl(row.storage_path)}))}
-  var coverRow=enriched.find(function(x){return x.photo_kind==='대표'})||enriched[0];
-  cover.innerHTML=coverRow&&coverRow.url?'<span class="tfms-eq-cover-badge">'+esc(coverRow.photo_kind||'사진')+'</span><img src="'+esc(coverRow.url)+'" alt="설비 대표사진" onclick="openEquipmentPhotoViewerV4430(this.src)">':'<div class="tfms-eq-cover-empty">등록된 대표사진이 없습니다.<br>사진 등록 버튼으로 추가하세요.</div>';
-  if(!enriched.length){hist.innerHTML='<div class="tfms-eq-photo-empty">등록된 사진이 없습니다.</div>';return}
-  hist.innerHTML=enriched.map(function(x){return '<div class="tfms-eq-photo-item">'+(x.url?'<img src="'+esc(x.url)+'" alt="설비 이력사진" onclick="openEquipmentPhotoViewerV4430(this.src)">':'<div></div>')+'<div class="tfms-eq-photo-meta"><strong>'+esc(x.photo_kind||'사진')+' · '+esc(x.photo_date||'')+'</strong><span>'+esc(x.caption||'설명 없음')+'</span><span>'+esc(x.file_name||'')+'</span></div><button class="tfms-eq-photo-delete" type="button" onclick="deleteEquipmentPhotoV4430(\''+esc(x.id)+'\')">삭제</button></div>'}).join('');
-}
-window.openEquipmentPhotoFormV4430=function(){var a=selected();if(!a?.dbId){toast('DB에 저장된 설비를 먼저 선택해 주세요.');return}q('tfmsEqPhotoDateV4430').value=today();q('tfmsEqPhotoCaptionV4430').value='';q('tfmsEqPhotoFileV4430').value='';q('tfmsEqPhotoFormV4430').classList.add('show')}
-window.closeEquipmentPhotoFormV4430=function(){q('tfmsEqPhotoFormV4430')?.classList.remove('show')}
-window.openEquipmentPhotoViewerV4430=function(url){q('tfmsEqPhotoViewerImgV4430').src=url||'';q('tfmsEqPhotoModalV4430').classList.add('show')}
-window.closeEquipmentPhotoViewerV4430=function(){q('tfmsEqPhotoModalV4430')?.classList.remove('show')}
-window.refreshEquipmentPhotosV4430=load;
-window.saveEquipmentPhotosV4430=async function(){
-  var a=selected(),c=sb(),files=Array.from(q('tfmsEqPhotoFileV4430')?.files||[]);if(!a?.dbId){toast('설비를 먼저 선택해 주세요.');return}if(!c){toast('Supabase 연결을 확인해 주세요.');return}if(!files.length){toast('사진 파일을 선택해 주세요.');return}
-  var kind=q('tfmsEqPhotoKindV4430').value||'기타',date=q('tfmsEqPhotoDateV4430').value||today(),caption=(q('tfmsEqPhotoCaptionV4430').value||'').trim();var btn=q('tfmsEqPhotoSaveV4430');btn.disabled=true;btn.textContent='저장 중';
-  try{for(var f of files){var path=a.dbId+'/'+Date.now()+'_'+Math.random().toString(36).slice(2,8)+'_'+safeName(f.name);var up=await c.storage.from(BUCKET).upload(path,f,{cacheControl:'3600',upsert:false,contentType:f.type||'image/jpeg'});if(up.error)throw up.error;var ins=await c.from('asset_photos').insert({asset_id:a.dbId,storage_path:path,file_name:f.name,mime_type:f.type||null,photo_kind:kind,photo_date:date,caption:caption||null});if(ins.error){await c.storage.from(BUCKET).remove([path]);throw ins.error}}
-    closeEquipmentPhotoFormV4430();await load();toast('설비 사진을 Supabase에 저장했습니다.');
-  }catch(e){console.error('TFMS v44.30 equipment photo save',e);toast('사진 저장 실패: '+(e?.message||e)+' · 동봉 SQL 실행 여부를 확인해 주세요.')}finally{btn.disabled=false;btn.textContent='Supabase에 저장'}
-}
-window.deleteEquipmentPhotoV4430=async function(id){if(!confirm('이 사진을 삭제하시겠습니까?'))return;var c=sb(),row=currentRows.find(function(x){return String(x.id)===String(id)});if(!c||!row)return;var del=await c.from('asset_photos').delete().eq('id',id);if(del.error){toast('사진정보 삭제 실패: '+del.error.message);return}var rem=await c.storage.from(BUCKET).remove([row.storage_path]);if(rem.error)console.warn(rem.error);await load();toast('사진을 삭제했습니다.')}
-var oldShowAsset=window.showAsset;window.showAsset=function(){var r=oldShowAsset?.apply(this,arguments);setTimeout(load,50);return r}
-var oldShowPage=window.showPage;window.showPage=function(id,btn){var r=oldShowPage?.apply(this,arguments);if(id==='equipment')setTimeout(load,100);return r}
-document.addEventListener('keydown',function(e){if(e.key==='Escape'){window.closeEquipmentPhotoViewerV4430();window.closeEquipmentPhotoFormV4430()}});
-function init(){injectPanel();var b=q('tfmsVersionBadge');if(b)b.textContent='v44.30 Enterprise Dev';document.title='TFMS v44.30 Enterprise Dev';window.TFMS_BUILD=Object.freeze({version:'v44.30',channel:'Enterprise Dev',buildDate:'2026.08.06',title:'Supabase 기반 설비 사진·이력 1차'});}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
-})();
-</script>
-
 </body></html>`);doc.close();
   await new Promise(r=>{if(doc.readyState==='complete')r();else frame.onload=r;});
   const imgs=[...doc.images];await Promise.all(imgs.map(img=>img.complete?(img.decode?.().catch(()=>{})||Promise.resolve()):new Promise(res=>{img.onload=img.onerror=res;})));
@@ -16478,65 +16360,6 @@ window.printFireRecordV420=async function(){try{window.previewFireRecordV420();c
   </div>
 </div>
 <div class="tfms-eq-photo-modal" id="tfmsEqPhotoModalV4430" onclick="if(event.target===this)closeEquipmentPhotoViewerV4430()"><button type="button" onclick="closeEquipmentPhotoViewerV4430()">×</button><img id="tfmsEqPhotoViewerImgV4430" alt="설비 사진 확대"></div>
-<script id="tfms-v4430-equipment-photo-controller">
-(function(){
-'use strict';
-var BUCKET='tfms-equipment-photos';
-var currentAssetId='';
-var currentRows=[];
-function q(id){return document.getElementById(id)}
-function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
-function sb(){try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||null}catch(e){return null}}
-function selected(){try{var key=window.selectedAssetKey||(typeof selectedAssetKey!=='undefined'?selectedAssetKey:'');var data=window.assetData||(typeof assetData!=='undefined'?assetData:{});return data?.[key]||null}catch(e){return null}}
-function toast(m){try{window.showToast?.(m)}catch(e){console.log(m)}}
-function today(){return new Date().toISOString().slice(0,10)}
-function safeName(name){return String(name||'photo').replace(/[^a-zA-Z0-9._-]/g,'_')}
-function panel(){return q('tfmsEqPhotoPanelV4430')}
-function injectPanel(){
-  var timeline=q('assetTimeline'); if(!timeline)return;
-  var detail=timeline.closest('.asset-detail'); if(!detail||panel())return;
-  var host=document.createElement('div'); host.id='tfmsEqPhotoPanelV4430'; host.className='tfms-eq-photo-panel';
-  host.innerHTML='<div class="tfms-eq-photo-head"><div><h3>설비 사진·이력</h3><p>사진은 Supabase Storage에 저장되며 동일 계정 사용자에게 공유됩니다.</p></div><div class="tfms-eq-photo-actions"><button type="button" onclick="refreshEquipmentPhotosV4430()">새로고침</button><button class="primary" type="button" onclick="openEquipmentPhotoFormV4430()">사진 등록</button></div></div><div class="tfms-eq-photo-body"><div class="tfms-eq-cover" id="tfmsEqCoverV4430"><div class="tfms-eq-cover-empty">설비를 선택하면<br>대표사진과 사진 이력이 표시됩니다.</div></div><div class="tfms-eq-history" id="tfmsEqHistoryV4430"><div class="tfms-eq-photo-empty">등록된 사진이 없습니다.</div></div></div>';
-  detail.appendChild(host);
-}
-async function signedUrl(path){var c=sb();if(!c||!path)return '';var r=await c.storage.from(BUCKET).createSignedUrl(path,3600);return r?.data?.signedUrl||''}
-async function load(){
-  injectPanel(); var a=selected(); currentAssetId=a?.dbId||'';
-  var cover=q('tfmsEqCoverV4430'), hist=q('tfmsEqHistoryV4430');
-  if(!cover||!hist)return;
-  if(!currentAssetId){cover.innerHTML='<div class="tfms-eq-cover-empty">DB에 저장된 설비를 선택해 주세요.</div>';hist.innerHTML='<div class="tfms-eq-photo-empty">설비 선택이 필요합니다.</div>';return}
-  var c=sb(); if(!c){cover.innerHTML='<div class="tfms-eq-cover-empty">Supabase 연결을 확인해 주세요.</div>';return}
-  hist.innerHTML='<div class="tfms-eq-photo-empty">사진을 불러오는 중입니다.</div>';
-  var r=await c.from('asset_photos').select('*').eq('asset_id',currentAssetId).order('photo_date',{ascending:false}).order('created_at',{ascending:false});
-  if(r.error){console.error(r.error);hist.innerHTML='<div class="tfms-eq-photo-empty">사진 테이블을 확인할 수 없습니다.<br>동봉된 SQL을 Supabase에서 1회 실행해 주세요.</div>';return}
-  currentRows=r.data||[];
-  var enriched=[];for(var row of currentRows){enriched.push(Object.assign({},row,{url:await signedUrl(row.storage_path)}))}
-  var coverRow=enriched.find(function(x){return x.photo_kind==='대표'})||enriched[0];
-  cover.innerHTML=coverRow&&coverRow.url?'<span class="tfms-eq-cover-badge">'+esc(coverRow.photo_kind||'사진')+'</span><img src="'+esc(coverRow.url)+'" alt="설비 대표사진" onclick="openEquipmentPhotoViewerV4430(this.src)">':'<div class="tfms-eq-cover-empty">등록된 대표사진이 없습니다.<br>사진 등록 버튼으로 추가하세요.</div>';
-  if(!enriched.length){hist.innerHTML='<div class="tfms-eq-photo-empty">등록된 사진이 없습니다.</div>';return}
-  hist.innerHTML=enriched.map(function(x){return '<div class="tfms-eq-photo-item">'+(x.url?'<img src="'+esc(x.url)+'" alt="설비 이력사진" onclick="openEquipmentPhotoViewerV4430(this.src)">':'<div></div>')+'<div class="tfms-eq-photo-meta"><strong>'+esc(x.photo_kind||'사진')+' · '+esc(x.photo_date||'')+'</strong><span>'+esc(x.caption||'설명 없음')+'</span><span>'+esc(x.file_name||'')+'</span></div><button class="tfms-eq-photo-delete" type="button" onclick="deleteEquipmentPhotoV4430(\''+esc(x.id)+'\')">삭제</button></div>'}).join('');
-}
-window.openEquipmentPhotoFormV4430=function(){var a=selected();if(!a?.dbId){toast('DB에 저장된 설비를 먼저 선택해 주세요.');return}q('tfmsEqPhotoDateV4430').value=today();q('tfmsEqPhotoCaptionV4430').value='';q('tfmsEqPhotoFileV4430').value='';q('tfmsEqPhotoFormV4430').classList.add('show')}
-window.closeEquipmentPhotoFormV4430=function(){q('tfmsEqPhotoFormV4430')?.classList.remove('show')}
-window.openEquipmentPhotoViewerV4430=function(url){q('tfmsEqPhotoViewerImgV4430').src=url||'';q('tfmsEqPhotoModalV4430').classList.add('show')}
-window.closeEquipmentPhotoViewerV4430=function(){q('tfmsEqPhotoModalV4430')?.classList.remove('show')}
-window.refreshEquipmentPhotosV4430=load;
-window.saveEquipmentPhotosV4430=async function(){
-  var a=selected(),c=sb(),files=Array.from(q('tfmsEqPhotoFileV4430')?.files||[]);if(!a?.dbId){toast('설비를 먼저 선택해 주세요.');return}if(!c){toast('Supabase 연결을 확인해 주세요.');return}if(!files.length){toast('사진 파일을 선택해 주세요.');return}
-  var kind=q('tfmsEqPhotoKindV4430').value||'기타',date=q('tfmsEqPhotoDateV4430').value||today(),caption=(q('tfmsEqPhotoCaptionV4430').value||'').trim();var btn=q('tfmsEqPhotoSaveV4430');btn.disabled=true;btn.textContent='저장 중';
-  try{for(var f of files){var path=a.dbId+'/'+Date.now()+'_'+Math.random().toString(36).slice(2,8)+'_'+safeName(f.name);var up=await c.storage.from(BUCKET).upload(path,f,{cacheControl:'3600',upsert:false,contentType:f.type||'image/jpeg'});if(up.error)throw up.error;var ins=await c.from('asset_photos').insert({asset_id:a.dbId,storage_path:path,file_name:f.name,mime_type:f.type||null,photo_kind:kind,photo_date:date,caption:caption||null});if(ins.error){await c.storage.from(BUCKET).remove([path]);throw ins.error}}
-    closeEquipmentPhotoFormV4430();await load();toast('설비 사진을 Supabase에 저장했습니다.');
-  }catch(e){console.error('TFMS v44.30 equipment photo save',e);toast('사진 저장 실패: '+(e?.message||e)+' · 동봉 SQL 실행 여부를 확인해 주세요.')}finally{btn.disabled=false;btn.textContent='Supabase에 저장'}
-}
-window.deleteEquipmentPhotoV4430=async function(id){if(!confirm('이 사진을 삭제하시겠습니까?'))return;var c=sb(),row=currentRows.find(function(x){return String(x.id)===String(id)});if(!c||!row)return;var del=await c.from('asset_photos').delete().eq('id',id);if(del.error){toast('사진정보 삭제 실패: '+del.error.message);return}var rem=await c.storage.from(BUCKET).remove([row.storage_path]);if(rem.error)console.warn(rem.error);await load();toast('사진을 삭제했습니다.')}
-var oldShowAsset=window.showAsset;window.showAsset=function(){var r=oldShowAsset?.apply(this,arguments);setTimeout(load,50);return r}
-var oldShowPage=window.showPage;window.showPage=function(id,btn){var r=oldShowPage?.apply(this,arguments);if(id==='equipment')setTimeout(load,100);return r}
-document.addEventListener('keydown',function(e){if(e.key==='Escape'){window.closeEquipmentPhotoViewerV4430();window.closeEquipmentPhotoFormV4430()}});
-function init(){injectPanel();var b=q('tfmsVersionBadge');if(b)b.textContent='v44.30 Enterprise Dev';document.title='TFMS v44.30 Enterprise Dev';window.TFMS_BUILD=Object.freeze({version:'v44.30',channel:'Enterprise Dev',buildDate:'2026.08.06',title:'Supabase 기반 설비 사진·이력 1차'});}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
-})();
-</script>
-
 </body></html>`);doc.close();await new Promise(r=>setTimeout(r,100));if(doc.fonts?.ready)await doc.fonts.ready;await Promise.all([...doc.images].map(img=>img.complete?Promise.resolve():new Promise(r=>{img.onload=img.onerror=r})));await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));frame.contentWindow.focus();frame.contentWindow.print();setTimeout(()=>frame.remove(),5000);}catch(e){console.error(e);toast('PDF 출력 실패: '+(e?.message||e));}};
 function db(){try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||(typeof sb!=='undefined'?sb:null)}catch(e){return null}}
 async function facilityId(name){const sbc=db();const {data,error}=await sbc.from('facilities').select('id,name').eq('name',name).limit(1);if(error)throw error;if(!data?.length)throw new Error(`시설 DB에서 '${name}'을 찾지 못했습니다.`);return data[0].id;}
@@ -17933,7 +17756,7 @@ window.deleteEquipmentPhotoV4430=async function(id){if(!confirm('이 사진을 �
 var oldShowAsset=window.showAsset;window.showAsset=function(){var r=oldShowAsset?.apply(this,arguments);setTimeout(load,50);return r}
 var oldShowPage=window.showPage;window.showPage=function(id,btn){var r=oldShowPage?.apply(this,arguments);if(id==='equipment')setTimeout(load,100);return r}
 document.addEventListener('keydown',function(e){if(e.key==='Escape'){window.closeEquipmentPhotoViewerV4430();window.closeEquipmentPhotoFormV4430()}});
-function init(){injectPanel();var b=q('tfmsVersionBadge');if(b)b.textContent='v44.30 Enterprise Dev';document.title='TFMS v44.30 Enterprise Dev';window.TFMS_BUILD=Object.freeze({version:'v44.30',channel:'Enterprise Dev',buildDate:'2026.08.06',title:'Supabase 기반 설비 사진·이력 1차'});}
+function init(){injectPanel();var b=q('tfmsVersionBadge');if(b)b.textContent='v44.30 Enterprise Recovered Stable';document.title='TFMS v44.30 Enterprise Recovered Stable';window.TFMS_BUILD=Object.freeze({version:'v44.30',channel:'Enterprise Recovered Stable',buildDate:'2026.08.06',title:'Supabase 기반 설비 사진·이력 1차'});}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
 </script>
