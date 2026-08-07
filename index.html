@@ -11916,251 +11916,12 @@ document.addEventListener('DOMContentLoaded',function(){
       <div class="dj-sheet ${esc(sheetClass||'')}">${content}</div>
       
 
-<style id="tfms-v4434-unified-detail-style">
-/* v44.34 - 설비 상세 중복 통합 + 전 그룹 선택 동기화 */
-#equipment .tfms-v4431-summary-card{display:none!important}
-#equipment .tfms-v4431-tabs{margin-top:0!important;border-top-left-radius:12px!important;border-top-right-radius:12px!important}
-#equipment .tfms-v4431-basic-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}
-#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item{min-height:66px;padding:11px 14px;border-right:1px solid #e7edf5;border-bottom:1px solid #e7edf5;box-sizing:border-box;background:#fff}
-#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item:nth-child(4n){border-right:0}
-#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item span{display:block;color:#74859a;font-size:11px;margin-bottom:5px}
-#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item strong{display:block;color:#102c4c;font-size:13px;line-height:1.35;word-break:break-word}
-#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.wide2{grid-column:span 2}
-#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.full{grid-column:1/-1;min-height:78px}
-#equipment .tfms-v4431-titlebar{margin-bottom:12px!important}
-#equipment .tfms-v4431-list .tree-item.active,#equipment .tfms-v4431-list .tree-item.selected{border-color:#2f7df4!important;background:#edf5ff!important;box-shadow:0 0 0 1px rgba(47,125,244,.08) inset}
-@media(max-width:1200px){#equipment .tfms-v4431-basic-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item:nth-child(4n){border-right:1px solid #e7edf5}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item:nth-child(2n){border-right:0}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.full{grid-column:1/-1}}
-@media(max-width:760px){#equipment .tfms-v4431-basic-grid{grid-template-columns:1fr!important}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item{border-right:0!important}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.wide2,#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.full{grid-column:auto}}
-</style>
-<script id="tfms-v4434-unified-detail-controller">
-(function(){
-'use strict';
-const BUILD='v44.34 Recovery Stable';
-const $=id=>document.getElementById(id);
-const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-function store(){
-  try{return window.assetData||(typeof assetData!=='undefined'?assetData:{});}catch(e){return {};}
-}
-function setKey(k){
-  k=String(k??'');
-  window.selectedAssetKey=k;
-  try{if(typeof selectedAssetKey!=='undefined'){selectedAssetKey=k;}}catch(e){}
-  return k;
-}
-function getKey(){
-  try{return String(window.selectedAssetKey||(typeof selectedAssetKey!=='undefined'?selectedAssetKey:'')||'');}
-  catch(e){return String(window.selectedAssetKey||'');}
-}
-function current(k=getKey()){return store()?.[k]||null;}
-function val(a,...ks){
-  for(const k of ks){const v=a?.[k];if(v!=null&&String(v).trim()!==''&&String(v)!=='undefined')return v;}
-  return '-';
-}
-function money(v){
-  if(v==null||v===''||v==='-')return '-';
-  const raw=String(v);
-  const n=Number(raw.replace(/[^0-9.-]/g,''));
-  return Number.isFinite(n)&&/\d/.test(raw)?n.toLocaleString('ko-KR')+'원':raw;
-}
-function rows(a){
-  return [
-    ['제조사',val(a,'manufacturer')],['모델명',val(a,'model')],['관리번호',val(a,'assetCode','asset_code')],['QR관리번호',val(a,'qrId','qr_code')],
-    ['설비분류',val(a,'category')],['공간/구역',val(a,'space')],['설치위치',val(a,'location','space')],['규모/용량',val(a,'capacity')],
-    ['제조번호',val(a,'serialNumber','serial_no','serial')],['제조년도',val(a,'manufactureYear','manufacturedYear')],['설치연도',val(a,'year','installYear')],['설치일',val(a,'installDate','installed_at')],
-    ['내용연수',val(a,'life')],['작동형태',val(a,'operation')],['점검주기',val(a,'cycle')],['관리상태',val(a,'status')],
-    ['중요도',val(a,'importance')],['위험도',val(a,'risk')],['최근점검일',val(a,'check','lastCheck')],['이력건수',Array.isArray(a?.timeline)?a.timeline.length+'건':val(a,'history')],
-    ['취득금액',money(val(a,'purchaseCost','acquisitionCost','acquisition_cost'))],['예상 교체비',money(val(a,'replacementCost','replacement_cost','replace'))],['담당자',val(a,'manager')],['비고',val(a,'remarks','note','memo')]
-  ];
-}
-function renderUnified(k=getKey()){
-  const a=current(k)||{};
-  const title=$('tfmsV4431Title');
-  if(title)title.textContent=a?.name||'설비를 선택해 주세요.';
-  const badge=$('tfmsV4431StatusBadge');
-  if(badge){
-    badge.textContent=val(a,'status','risk');
-    const t=String(a?.status||'')+String(a?.risk||'');
-    badge.style.background=/위험|수리|사용중지|폐기/.test(t)?'#ffe9e7':(/주의|점검필요|교체예정/.test(t)?'#fff2d8':'#e8f8ef');
-  }
-  const host=$('tfmsV4431Basic');
-  if(host){
-    host.innerHTML=rows(a).map(function(row,i){
-      const name=row[0], value=row[1];
-      const cls=i===23?' full':'';
-      return '<div class="tfms-v4434-detail-item'+cls+'"><span>'+esc(name)+'</span><strong>'+esc(value)+'</strong></div>';
-    }).join('');
-  }
-  document.querySelectorAll('#assetList .tree-item').forEach(function(el){
-    const oc=el.getAttribute('onclick')||'';
-    const m=oc.match(/showAsset\(['\"]([^'\"]+)/);
-    const kk=(m&&m[1])||el.dataset?.key||el.dataset?.assetKey||'';
-    const on=String(kk)===String(k);
-    el.classList.toggle('active',on);
-    el.classList.toggle('selected',on);
-  });
-}
-function syncBuild(){
-  const b=$('tfmsVersionBadge');if(b)b.textContent=BUILD;
-  document.title='TFMS '+BUILD+' · Enterprise UX';
-  window.TFMS_BUILD=Object.freeze({version:'v44.34',channel:'Recovery Stable',buildDate:'2026.08.07',title:'Unified Equipment Detail'});
-  try{const u=new URL(location.href);if(u.searchParams.get('v')!=='44.34'){u.searchParams.set('v','44.34');history.replaceState(history.state,'',u.pathname+u.search+u.hash);}}catch(e){}
-}
-const prevShow=window.showAsset;
-window.showAsset=function(k,el){
-  k=setKey(k);
-  let r;
-  try{if(typeof prevShow==='function')r=prevShow.call(this,k,el);}catch(e){console.warn('기존 설비 상세 렌더 오류를 보정합니다.',e);}
-  setKey(k);
-  renderUnified(k);
-  try{if(typeof window.refreshEquipmentPhotosV4430==='function')setTimeout(function(){window.refreshEquipmentPhotosV4430();},50);}catch(e){}
-  return r;
-};
-function bindList(){
-  const list=$('assetList');
-  if(!list||list.dataset.v4434Bound)return;
-  list.dataset.v4434Bound='1';
-  list.addEventListener('click',function(ev){
-    const item=ev.target.closest('.tree-item');
-    if(!item||!list.contains(item))return;
-    const oc=item.getAttribute('onclick')||'';
-    const m=oc.match(/showAsset\(['\"]([^'\"]+)/);
-    const k=(m&&m[1])||item.dataset?.key||item.dataset?.assetKey||'';
-    if(k)setKey(k);
-  },true);
-}
-const prevRender=window.renderAssetList;
-if(typeof prevRender==='function'){
-  window.renderAssetList=function(){
-    const r=prevRender.apply(this,arguments);
-    setTimeout(function(){bindList();renderUnified();},20);
-    return r;
-  };
-}
-function init(){
-  syncBuild();bindList();renderUnified();
-  [100,400,1000,2200].forEach(function(ms){setTimeout(function(){syncBuild();bindList();renderUnified();},ms);});
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
-})();
-</script>
 
 
-<style id="tfms-v4435-header-responsive">
-/* TFMS v44.35 - header logo visibility + responsive account actions */
-#appHeader .top{
-  height:72px!important;
-  min-width:0!important;
-  padding:0 18px!important;
-  gap:16px!important;
-}
-#appHeader .logo{
-  display:flex!important;
-  align-items:center!important;
-  flex:0 1 auto!important;
-  min-width:0!important;
-  gap:10px!important;
-  overflow:hidden!important;
-}
-#appHeader .logo img{
-  display:block!important;
-  flex:0 0 auto!important;
-  width:38px!important;
-  height:28px!important;
-  max-width:38px!important;
-  max-height:28px!important;
-  padding:0!important;
-  margin:0!important;
-  object-fit:contain!important;
-  object-position:center!important;
-  background:transparent!important;
-  border-radius:0!important;
-  filter:none!important;
-  opacity:1!important;
-}
-#appHeader .logo-title{
-  display:flex!important;
-  align-items:center!important;
-  gap:8px!important;
-  min-width:0!important;
-  color:#fff!important;
-  white-space:nowrap!important;
-}
-#appHeader .logo-title::after{display:none!important;content:none!important}
-#appHeader .logo-title small{display:none!important}
-#appHeader #tfmsVersionBadge{
-  flex:0 0 auto!important;
-  margin:0!important;
-}
-#appHeader .user{
-  display:flex!important;
-  align-items:center!important;
-  justify-content:flex-end!important;
-  flex:1 1 auto!important;
-  min-width:0!important;
-  gap:8px!important;
-  overflow:visible!important;
-  white-space:nowrap!important;
-}
-#appHeader #topUserLabel{
-  min-width:0!important;
-  max-width:270px!important;
-  overflow:hidden!important;
-  text-overflow:ellipsis!important;
-  white-space:nowrap!important;
-  padding:8px 6px!important;
-}
-#appHeader #cloudTopBadge,#appHeader #roleBadge{
-  flex:0 0 auto!important;
-  white-space:nowrap!important;
-}
-#appHeader #topLoginBtn{
-  flex:0 0 auto!important;
-  margin-right:0!important;
-  padding:10px 15px!important;
-  white-space:nowrap!important;
-}
-@media (max-width:1180px){
-  #appHeader .top{padding:0 12px!important;gap:10px!important}
-  #appHeader #cloudTopBadge{display:none!important}
-  #appHeader .user>span:nth-child(2){display:none!important}
-  #appHeader #topUserLabel{max-width:220px!important;font-size:13px!important}
-  #appHeader #roleBadge{font-size:12px!important;padding:8px 10px!important}
-  #appHeader #topLoginBtn{padding:9px 12px!important;font-size:13px!important}
-}
-@media (max-width:930px){
-  #appHeader .top{height:64px!important;padding:0 10px!important}
-  #appHeader .logo{gap:7px!important}
-  #appHeader .logo img{width:31px!important;height:23px!important;max-width:31px!important;max-height:23px!important}
-  #appHeader .logo-title{font-size:19px!important}
-  #appHeader #tfmsVersionBadge{display:none!important}
-  #appHeader #topUserLabel{max-width:180px!important}
-  #appHeader nav{top:64px!important}
-}
-@media (max-width:760px){
-  #appHeader #roleBadge{display:none!important}
-  #appHeader #topUserLabel{max-width:150px!important}
-}
-</style>
-<script id="tfms-v4435-header-patch">
-(function(){
- const BUILD='v44.35 Recovery Stable';
- function sync(){
-   const b=document.getElementById('tfmsVersionBadge');
-   if(b&&b.textContent!==BUILD)b.textContent=BUILD;
-   document.title='TFMS '+BUILD+' · Enterprise UX';
-   window.TFMS_BUILD=Object.freeze({version:'v44.35',channel:'Recovery Stable',buildDate:'2026.08.07',title:'Header Logo & Responsive Actions'});
-   try{
-     const u=new URL(location.href);
-     if(u.searchParams.get('v')!=='44.35'){
-       u.searchParams.set('v','44.35');
-       history.replaceState(history.state,'',u.pathname+u.search+u.hash);
-     }
-   }catch(e){}
- }
- document.addEventListener('DOMContentLoaded',()=>{sync();setTimeout(sync,400);setTimeout(sync,1300)});
- window.addEventListener('load',sync);
-})();
-</script>
+
+
+
+
 
 </body></html>`);
     win.document.close();
@@ -12496,122 +12257,8 @@ ${getPrintCssV401()}
 
 
 
-<style id="tfms-v4435-header-responsive">
-/* TFMS v44.35 - header logo visibility + responsive account actions */
-#appHeader .top{
-  height:72px!important;
-  min-width:0!important;
-  padding:0 18px!important;
-  gap:16px!important;
-}
-#appHeader .logo{
-  display:flex!important;
-  align-items:center!important;
-  flex:0 1 auto!important;
-  min-width:0!important;
-  gap:10px!important;
-  overflow:hidden!important;
-}
-#appHeader .logo img{
-  display:block!important;
-  flex:0 0 auto!important;
-  width:38px!important;
-  height:28px!important;
-  max-width:38px!important;
-  max-height:28px!important;
-  padding:0!important;
-  margin:0!important;
-  object-fit:contain!important;
-  object-position:center!important;
-  background:transparent!important;
-  border-radius:0!important;
-  filter:none!important;
-  opacity:1!important;
-}
-#appHeader .logo-title{
-  display:flex!important;
-  align-items:center!important;
-  gap:8px!important;
-  min-width:0!important;
-  color:#fff!important;
-  white-space:nowrap!important;
-}
-#appHeader .logo-title::after{display:none!important;content:none!important}
-#appHeader .logo-title small{display:none!important}
-#appHeader #tfmsVersionBadge{
-  flex:0 0 auto!important;
-  margin:0!important;
-}
-#appHeader .user{
-  display:flex!important;
-  align-items:center!important;
-  justify-content:flex-end!important;
-  flex:1 1 auto!important;
-  min-width:0!important;
-  gap:8px!important;
-  overflow:visible!important;
-  white-space:nowrap!important;
-}
-#appHeader #topUserLabel{
-  min-width:0!important;
-  max-width:270px!important;
-  overflow:hidden!important;
-  text-overflow:ellipsis!important;
-  white-space:nowrap!important;
-  padding:8px 6px!important;
-}
-#appHeader #cloudTopBadge,#appHeader #roleBadge{
-  flex:0 0 auto!important;
-  white-space:nowrap!important;
-}
-#appHeader #topLoginBtn{
-  flex:0 0 auto!important;
-  margin-right:0!important;
-  padding:10px 15px!important;
-  white-space:nowrap!important;
-}
-@media (max-width:1180px){
-  #appHeader .top{padding:0 12px!important;gap:10px!important}
-  #appHeader #cloudTopBadge{display:none!important}
-  #appHeader .user>span:nth-child(2){display:none!important}
-  #appHeader #topUserLabel{max-width:220px!important;font-size:13px!important}
-  #appHeader #roleBadge{font-size:12px!important;padding:8px 10px!important}
-  #appHeader #topLoginBtn{padding:9px 12px!important;font-size:13px!important}
-}
-@media (max-width:930px){
-  #appHeader .top{height:64px!important;padding:0 10px!important}
-  #appHeader .logo{gap:7px!important}
-  #appHeader .logo img{width:31px!important;height:23px!important;max-width:31px!important;max-height:23px!important}
-  #appHeader .logo-title{font-size:19px!important}
-  #appHeader #tfmsVersionBadge{display:none!important}
-  #appHeader #topUserLabel{max-width:180px!important}
-  #appHeader nav{top:64px!important}
-}
-@media (max-width:760px){
-  #appHeader #roleBadge{display:none!important}
-  #appHeader #topUserLabel{max-width:150px!important}
-}
-</style>
-<script id="tfms-v4435-header-patch">
-(function(){
- const BUILD='v44.35 Recovery Stable';
- function sync(){
-   const b=document.getElementById('tfmsVersionBadge');
-   if(b&&b.textContent!==BUILD)b.textContent=BUILD;
-   document.title='TFMS '+BUILD+' · Enterprise UX';
-   window.TFMS_BUILD=Object.freeze({version:'v44.35',channel:'Recovery Stable',buildDate:'2026.08.07',title:'Header Logo & Responsive Actions'});
-   try{
-     const u=new URL(location.href);
-     if(u.searchParams.get('v')!=='44.35'){
-       u.searchParams.set('v','44.35');
-       history.replaceState(history.state,'',u.pathname+u.search+u.hash);
-     }
-   }catch(e){}
- }
- document.addEventListener('DOMContentLoaded',()=>{sync();setTimeout(sync,400);setTimeout(sync,1300)});
- window.addEventListener('load',sync);
-})();
-</script>
+
+
 
 </body>
 </html>`);
@@ -15669,186 +15316,12 @@ window.printFireExtQrLabelsV447=async function(){
     w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>${esc(facility)} 소화기 QR 라벨</title><style>@page{size:A4 portrait;margin:8mm}*{box-sizing:border-box}body{font-family:"Malgun Gothic",sans-serif;margin:0}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5mm}.label{border:1px solid #333;border-radius:3mm;min-height:82mm;padding:4mm;text-align:center;break-inside:avoid}.label img{width:42mm;height:42mm}.facility{font-weight:700;font-size:11pt}.code{font-size:15pt;font-weight:800;margin:2mm 0}.loc{font-size:9pt;min-height:12mm}.hint{font-size:7.5pt;color:#555;margin-top:1mm}@media print{.no-print{display:none}}</style></head><body><div class="no-print" style="padding:10px;text-align:center"><button onclick="print()">인쇄</button></div><div class="grid">${labels.map(x=>`<div class="label"><div class="facility">${esc(facility)}</div><div class="code">${esc(x.code)}</div><img src="${x.qr}"><div class="loc">${esc(x.location||'상세 위치 현장 입력')}</div><div class="hint">QR 촬영 후 현장점검</div></div>`).join('')}</div>
 
 
-<style id="tfms-v4434-unified-detail-style">
-/* v44.34 - 설비 상세 중복 통합 + 전 그룹 선택 동기화 */
-#equipment .tfms-v4431-summary-card{display:none!important}
-#equipment .tfms-v4431-tabs{margin-top:0!important;border-top-left-radius:12px!important;border-top-right-radius:12px!important}
-#equipment .tfms-v4431-basic-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}
-#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item{min-height:66px;padding:11px 14px;border-right:1px solid #e7edf5;border-bottom:1px solid #e7edf5;box-sizing:border-box;background:#fff}
-#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item:nth-child(4n){border-right:0}
-#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item span{display:block;color:#74859a;font-size:11px;margin-bottom:5px}
-#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item strong{display:block;color:#102c4c;font-size:13px;line-height:1.35;word-break:break-word}
-#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.wide2{grid-column:span 2}
-#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.full{grid-column:1/-1;min-height:78px}
-#equipment .tfms-v4431-titlebar{margin-bottom:12px!important}
-#equipment .tfms-v4431-list .tree-item.active,#equipment .tfms-v4431-list .tree-item.selected{border-color:#2f7df4!important;background:#edf5ff!important;box-shadow:0 0 0 1px rgba(47,125,244,.08) inset}
-@media(max-width:1200px){#equipment .tfms-v4431-basic-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item:nth-child(4n){border-right:1px solid #e7edf5}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item:nth-child(2n){border-right:0}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.full{grid-column:1/-1}}
-@media(max-width:760px){#equipment .tfms-v4431-basic-grid{grid-template-columns:1fr!important}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item{border-right:0!important}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.wide2,#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.full{grid-column:auto}}
-</style>
-<script id="tfms-v4434-unified-detail-controller">
-(function(){
-'use strict';
-const BUILD='v44.34 Recovery Stable';
-const $=id=>document.getElementById(id);
-const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-function store(){try{return window.assetData||(typeof assetData!=='undefined'?assetData:{})}catch(e){return {}}}
-function setKey(k){k=String(k??'');window.selectedAssetKey=k;try{if(typeof selectedAssetKey!=='undefined')selectedAssetKey=k}catch(e){}return k}
-function getKey(){try{return String(window.selectedAssetKey||(typeof selectedAssetKey!=='undefined'?selectedAssetKey:'')||'')}catch(e){return String(window.selectedAssetKey||'')}}
-function current(k=getKey()){return store()?.[k]||null}
-function val(a,...ks){for(const k of ks){const v=a?.[k];if(v!=null&&String(v).trim()!==''&&String(v)!=='undefined')return v}return '-'}
-function money(v){if(v==null||v===''||v==='-')return '-';const n=Number(String(v).replace(/[^0-9.-]/g,''));return Number.isFinite(n)&&String(v).match(/\d/)?n.toLocaleString('ko-KR')+'원':String(v)}
-function rows(a){return [
- ['제조사',val(a,'manufacturer')],['모델명',val(a,'model')],['관리번호',val(a,'assetCode','asset_code')],['QR관리번호',val(a,'qrId','qr_code')],
- ['설비분류',val(a,'category')],['공간/구역',val(a,'space')],['설치위치',val(a,'location','space')],['규모/용량',val(a,'capacity')],
- ['제조번호',val(a,'serialNumber','serial_no','serial')],['제조년도',val(a,'manufactureYear','manufacturedYear')],['설치연도',val(a,'year','installYear')],['설치일',val(a,'installDate','installed_at')],
- ['내용연수',val(a,'life')],['작동형태',val(a,'operation')],['점검주기',val(a,'cycle')],['관리상태',val(a,'status')],
- ['중요도',val(a,'importance')],['위험도',val(a,'risk')],['최근점검일',val(a,'check','lastCheck')],['이력건수',Array.isArray(a?.timeline)?a.timeline.length+'건':val(a,'history')],
- ['취득금액',money(val(a,'purchaseCost','acquisitionCost','acquisition_cost'))],['예상 교체비',money(val(a,'replacementCost','replacement_cost','replace'))],['담당자',val(a,'manager')],['비고',val(a,'remarks','note','memo')]
- ]}
-function renderUnified(k=getKey()){
- const a=current(k)||{};
- const title=$('tfmsV4431Title');if(title)title.textContent=a?.name||'설비를 선택해 주세요.';
- const badge=$('tfmsV4431StatusBadge');if(badge){badge.textContent=val(a,'status','risk');const t=String(a?.status||'')+String(a?.risk||'');badge.style.background=/위험|수리|사용중지|폐기/.test(t)?'#ffe9e7':/주의|점검필요|교체예정/.test(t)?'#fff2d8':'#e8f8ef'}
- const host=$('tfmsV4431Basic');if(host){host.innerHTML=rows(a).map(([name,value],i)=>`<div class="tfms-v4434-detail-item ${i===23?'full':''}"><span>${esc(name)}</span><strong>${esc(value)}</strong></div>`).join('')}
- document.querySelectorAll('#assetList .tree-item').forEach(el=>{const oc=el.getAttribute('onclick')||'';const m=oc.match(/showAsset\(['\"]([^'\"]+)/);const kk=m?.[1]||el.dataset?.key||el.dataset?.assetKey||'';el.classList.toggle('active',String(kk)===String(k));el.classList.toggle('selected',String(kk)===String(k))});
-}
-function syncBuild(){const b=$('tfmsVersionBadge');if(b)b.textContent=BUILD;document.title='TFMS '+BUILD+' · Enterprise UX';window.TFMS_BUILD=Object.freeze({version:'v44.34',channel:'Recovery Stable',buildDate:'2026.08.07',title:'Unified Equipment Detail'});try{const u=new URL(location.href);if(u.searchParams.get('v')!=='44.34'){u.searchParams.set('v','44.34');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
-
-const prevShow=window.showAsset;
-window.showAsset=function(k,el){
- k=setKey(k);
- let r;
- try{if(typeof prevShow==='function')r=prevShow.call(this,k,el)}catch(e){console.warn('기존 설비 상세 렌더 오류를 보정합니다.',e)}
- setKey(k);renderUnified(k);
- try{if(typeof window.refreshEquipmentPhotosV4430==='function')setTimeout(()=>window.refreshEquipmentPhotosV4430(),50)}catch(e){}
- return r;
-};
-
-// 목록 전체에 캡처 이벤트를 두어, 그룹 위치와 관계없이 클릭 설비 key를 먼저 확정한다.
-function bindList(){const list=$('assetList');if(!list||list.dataset.v4434Bound)return;list.dataset.v4434Bound='1';list.addEventListener('click',function(ev){const item=ev.target.closest('.tree-item');if(!item||!list.contains(item))return;const oc=item.getAttribute('onclick')||'';const m=oc.match(/showAsset\(['\"]([^'\"]+)/);const k=m?.[1]||item.dataset?.key||item.dataset?.assetKey||'';if(k)setKey(k)},true)}
-const prevRender=window.renderAssetList;if(typeof prevRender==='function')window.renderAssetList=function(){const r=prevRender.apply(this,arguments);setTimeout(()=>{bindList();renderUnified()},20);return r};
-function init(){syncBuild();bindList();renderUnified();[100,400,1000,2200].forEach(ms=>setTimeout(()=>{syncBuild();bindList();renderUnified()},ms))}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
-})();
-</script>
 
 
-<style id="tfms-v4435-header-responsive">
-/* TFMS v44.35 - header logo visibility + responsive account actions */
-#appHeader .top{
-  height:72px!important;
-  min-width:0!important;
-  padding:0 18px!important;
-  gap:16px!important;
-}
-#appHeader .logo{
-  display:flex!important;
-  align-items:center!important;
-  flex:0 1 auto!important;
-  min-width:0!important;
-  gap:10px!important;
-  overflow:hidden!important;
-}
-#appHeader .logo img{
-  display:block!important;
-  flex:0 0 auto!important;
-  width:38px!important;
-  height:28px!important;
-  max-width:38px!important;
-  max-height:28px!important;
-  padding:0!important;
-  margin:0!important;
-  object-fit:contain!important;
-  object-position:center!important;
-  background:transparent!important;
-  border-radius:0!important;
-  filter:none!important;
-  opacity:1!important;
-}
-#appHeader .logo-title{
-  display:flex!important;
-  align-items:center!important;
-  gap:8px!important;
-  min-width:0!important;
-  color:#fff!important;
-  white-space:nowrap!important;
-}
-#appHeader .logo-title::after{display:none!important;content:none!important}
-#appHeader .logo-title small{display:none!important}
-#appHeader #tfmsVersionBadge{
-  flex:0 0 auto!important;
-  margin:0!important;
-}
-#appHeader .user{
-  display:flex!important;
-  align-items:center!important;
-  justify-content:flex-end!important;
-  flex:1 1 auto!important;
-  min-width:0!important;
-  gap:8px!important;
-  overflow:visible!important;
-  white-space:nowrap!important;
-}
-#appHeader #topUserLabel{
-  min-width:0!important;
-  max-width:270px!important;
-  overflow:hidden!important;
-  text-overflow:ellipsis!important;
-  white-space:nowrap!important;
-  padding:8px 6px!important;
-}
-#appHeader #cloudTopBadge,#appHeader #roleBadge{
-  flex:0 0 auto!important;
-  white-space:nowrap!important;
-}
-#appHeader #topLoginBtn{
-  flex:0 0 auto!important;
-  margin-right:0!important;
-  padding:10px 15px!important;
-  white-space:nowrap!important;
-}
-@media (max-width:1180px){
-  #appHeader .top{padding:0 12px!important;gap:10px!important}
-  #appHeader #cloudTopBadge{display:none!important}
-  #appHeader .user>span:nth-child(2){display:none!important}
-  #appHeader #topUserLabel{max-width:220px!important;font-size:13px!important}
-  #appHeader #roleBadge{font-size:12px!important;padding:8px 10px!important}
-  #appHeader #topLoginBtn{padding:9px 12px!important;font-size:13px!important}
-}
-@media (max-width:930px){
-  #appHeader .top{height:64px!important;padding:0 10px!important}
-  #appHeader .logo{gap:7px!important}
-  #appHeader .logo img{width:31px!important;height:23px!important;max-width:31px!important;max-height:23px!important}
-  #appHeader .logo-title{font-size:19px!important}
-  #appHeader #tfmsVersionBadge{display:none!important}
-  #appHeader #topUserLabel{max-width:180px!important}
-  #appHeader nav{top:64px!important}
-}
-@media (max-width:760px){
-  #appHeader #roleBadge{display:none!important}
-  #appHeader #topUserLabel{max-width:150px!important}
-}
-</style>
-<script id="tfms-v4435-header-patch">
-(function(){
- const BUILD='v44.35 Recovery Stable';
- function sync(){
-   const b=document.getElementById('tfmsVersionBadge');
-   if(b&&b.textContent!==BUILD)b.textContent=BUILD;
-   document.title='TFMS '+BUILD+' · Enterprise UX';
-   window.TFMS_BUILD=Object.freeze({version:'v44.35',channel:'Recovery Stable',buildDate:'2026.08.07',title:'Header Logo & Responsive Actions'});
-   try{
-     const u=new URL(location.href);
-     if(u.searchParams.get('v')!=='44.35'){
-       u.searchParams.set('v','44.35');
-       history.replaceState(history.state,'',u.pathname+u.search+u.hash);
-     }
-   }catch(e){}
- }
- document.addEventListener('DOMContentLoaded',()=>{sync();setTimeout(sync,400);setTimeout(sync,1300)});
- window.addEventListener('load',sync);
-})();
-</script>
+
+
+
+
 
 </body></html>`);
     w.document.close();setTimeout(()=>w.focus(),200);
@@ -16667,186 +16140,12 @@ window.printFireRecordV420=async function(){
 
 
 
-<style id="tfms-v4434-unified-detail-style">
-/* v44.34 - 설비 상세 중복 통합 + 전 그룹 선택 동기화 */
-#equipment .tfms-v4431-summary-card{display:none!important}
-#equipment .tfms-v4431-tabs{margin-top:0!important;border-top-left-radius:12px!important;border-top-right-radius:12px!important}
-#equipment .tfms-v4431-basic-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}
-#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item{min-height:66px;padding:11px 14px;border-right:1px solid #e7edf5;border-bottom:1px solid #e7edf5;box-sizing:border-box;background:#fff}
-#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item:nth-child(4n){border-right:0}
-#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item span{display:block;color:#74859a;font-size:11px;margin-bottom:5px}
-#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item strong{display:block;color:#102c4c;font-size:13px;line-height:1.35;word-break:break-word}
-#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.wide2{grid-column:span 2}
-#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.full{grid-column:1/-1;min-height:78px}
-#equipment .tfms-v4431-titlebar{margin-bottom:12px!important}
-#equipment .tfms-v4431-list .tree-item.active,#equipment .tfms-v4431-list .tree-item.selected{border-color:#2f7df4!important;background:#edf5ff!important;box-shadow:0 0 0 1px rgba(47,125,244,.08) inset}
-@media(max-width:1200px){#equipment .tfms-v4431-basic-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item:nth-child(4n){border-right:1px solid #e7edf5}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item:nth-child(2n){border-right:0}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.full{grid-column:1/-1}}
-@media(max-width:760px){#equipment .tfms-v4431-basic-grid{grid-template-columns:1fr!important}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item{border-right:0!important}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.wide2,#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.full{grid-column:auto}}
-</style>
-<script id="tfms-v4434-unified-detail-controller">
-(function(){
-'use strict';
-const BUILD='v44.34 Recovery Stable';
-const $=id=>document.getElementById(id);
-const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-function store(){try{return window.assetData||(typeof assetData!=='undefined'?assetData:{})}catch(e){return {}}}
-function setKey(k){k=String(k??'');window.selectedAssetKey=k;try{if(typeof selectedAssetKey!=='undefined')selectedAssetKey=k}catch(e){}return k}
-function getKey(){try{return String(window.selectedAssetKey||(typeof selectedAssetKey!=='undefined'?selectedAssetKey:'')||'')}catch(e){return String(window.selectedAssetKey||'')}}
-function current(k=getKey()){return store()?.[k]||null}
-function val(a,...ks){for(const k of ks){const v=a?.[k];if(v!=null&&String(v).trim()!==''&&String(v)!=='undefined')return v}return '-'}
-function money(v){if(v==null||v===''||v==='-')return '-';const n=Number(String(v).replace(/[^0-9.-]/g,''));return Number.isFinite(n)&&String(v).match(/\d/)?n.toLocaleString('ko-KR')+'원':String(v)}
-function rows(a){return [
- ['제조사',val(a,'manufacturer')],['모델명',val(a,'model')],['관리번호',val(a,'assetCode','asset_code')],['QR관리번호',val(a,'qrId','qr_code')],
- ['설비분류',val(a,'category')],['공간/구역',val(a,'space')],['설치위치',val(a,'location','space')],['규모/용량',val(a,'capacity')],
- ['제조번호',val(a,'serialNumber','serial_no','serial')],['제조년도',val(a,'manufactureYear','manufacturedYear')],['설치연도',val(a,'year','installYear')],['설치일',val(a,'installDate','installed_at')],
- ['내용연수',val(a,'life')],['작동형태',val(a,'operation')],['점검주기',val(a,'cycle')],['관리상태',val(a,'status')],
- ['중요도',val(a,'importance')],['위험도',val(a,'risk')],['최근점검일',val(a,'check','lastCheck')],['이력건수',Array.isArray(a?.timeline)?a.timeline.length+'건':val(a,'history')],
- ['취득금액',money(val(a,'purchaseCost','acquisitionCost','acquisition_cost'))],['예상 교체비',money(val(a,'replacementCost','replacement_cost','replace'))],['담당자',val(a,'manager')],['비고',val(a,'remarks','note','memo')]
- ]}
-function renderUnified(k=getKey()){
- const a=current(k)||{};
- const title=$('tfmsV4431Title');if(title)title.textContent=a?.name||'설비를 선택해 주세요.';
- const badge=$('tfmsV4431StatusBadge');if(badge){badge.textContent=val(a,'status','risk');const t=String(a?.status||'')+String(a?.risk||'');badge.style.background=/위험|수리|사용중지|폐기/.test(t)?'#ffe9e7':/주의|점검필요|교체예정/.test(t)?'#fff2d8':'#e8f8ef'}
- const host=$('tfmsV4431Basic');if(host){host.innerHTML=rows(a).map(([name,value],i)=>`<div class="tfms-v4434-detail-item ${i===23?'full':''}"><span>${esc(name)}</span><strong>${esc(value)}</strong></div>`).join('')}
- document.querySelectorAll('#assetList .tree-item').forEach(el=>{const oc=el.getAttribute('onclick')||'';const m=oc.match(/showAsset\(['\"]([^'\"]+)/);const kk=m?.[1]||el.dataset?.key||el.dataset?.assetKey||'';el.classList.toggle('active',String(kk)===String(k));el.classList.toggle('selected',String(kk)===String(k))});
-}
-function syncBuild(){const b=$('tfmsVersionBadge');if(b)b.textContent=BUILD;document.title='TFMS '+BUILD+' · Enterprise UX';window.TFMS_BUILD=Object.freeze({version:'v44.34',channel:'Recovery Stable',buildDate:'2026.08.07',title:'Unified Equipment Detail'});try{const u=new URL(location.href);if(u.searchParams.get('v')!=='44.34'){u.searchParams.set('v','44.34');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
-
-const prevShow=window.showAsset;
-window.showAsset=function(k,el){
- k=setKey(k);
- let r;
- try{if(typeof prevShow==='function')r=prevShow.call(this,k,el)}catch(e){console.warn('기존 설비 상세 렌더 오류를 보정합니다.',e)}
- setKey(k);renderUnified(k);
- try{if(typeof window.refreshEquipmentPhotosV4430==='function')setTimeout(()=>window.refreshEquipmentPhotosV4430(),50)}catch(e){}
- return r;
-};
-
-// 목록 전체에 캡처 이벤트를 두어, 그룹 위치와 관계없이 클릭 설비 key를 먼저 확정한다.
-function bindList(){const list=$('assetList');if(!list||list.dataset.v4434Bound)return;list.dataset.v4434Bound='1';list.addEventListener('click',function(ev){const item=ev.target.closest('.tree-item');if(!item||!list.contains(item))return;const oc=item.getAttribute('onclick')||'';const m=oc.match(/showAsset\(['\"]([^'\"]+)/);const k=m?.[1]||item.dataset?.key||item.dataset?.assetKey||'';if(k)setKey(k)},true)}
-const prevRender=window.renderAssetList;if(typeof prevRender==='function')window.renderAssetList=function(){const r=prevRender.apply(this,arguments);setTimeout(()=>{bindList();renderUnified()},20);return r};
-function init(){syncBuild();bindList();renderUnified();[100,400,1000,2200].forEach(ms=>setTimeout(()=>{syncBuild();bindList();renderUnified()},ms))}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
-})();
-</script>
 
 
-<style id="tfms-v4435-header-responsive">
-/* TFMS v44.35 - header logo visibility + responsive account actions */
-#appHeader .top{
-  height:72px!important;
-  min-width:0!important;
-  padding:0 18px!important;
-  gap:16px!important;
-}
-#appHeader .logo{
-  display:flex!important;
-  align-items:center!important;
-  flex:0 1 auto!important;
-  min-width:0!important;
-  gap:10px!important;
-  overflow:hidden!important;
-}
-#appHeader .logo img{
-  display:block!important;
-  flex:0 0 auto!important;
-  width:38px!important;
-  height:28px!important;
-  max-width:38px!important;
-  max-height:28px!important;
-  padding:0!important;
-  margin:0!important;
-  object-fit:contain!important;
-  object-position:center!important;
-  background:transparent!important;
-  border-radius:0!important;
-  filter:none!important;
-  opacity:1!important;
-}
-#appHeader .logo-title{
-  display:flex!important;
-  align-items:center!important;
-  gap:8px!important;
-  min-width:0!important;
-  color:#fff!important;
-  white-space:nowrap!important;
-}
-#appHeader .logo-title::after{display:none!important;content:none!important}
-#appHeader .logo-title small{display:none!important}
-#appHeader #tfmsVersionBadge{
-  flex:0 0 auto!important;
-  margin:0!important;
-}
-#appHeader .user{
-  display:flex!important;
-  align-items:center!important;
-  justify-content:flex-end!important;
-  flex:1 1 auto!important;
-  min-width:0!important;
-  gap:8px!important;
-  overflow:visible!important;
-  white-space:nowrap!important;
-}
-#appHeader #topUserLabel{
-  min-width:0!important;
-  max-width:270px!important;
-  overflow:hidden!important;
-  text-overflow:ellipsis!important;
-  white-space:nowrap!important;
-  padding:8px 6px!important;
-}
-#appHeader #cloudTopBadge,#appHeader #roleBadge{
-  flex:0 0 auto!important;
-  white-space:nowrap!important;
-}
-#appHeader #topLoginBtn{
-  flex:0 0 auto!important;
-  margin-right:0!important;
-  padding:10px 15px!important;
-  white-space:nowrap!important;
-}
-@media (max-width:1180px){
-  #appHeader .top{padding:0 12px!important;gap:10px!important}
-  #appHeader #cloudTopBadge{display:none!important}
-  #appHeader .user>span:nth-child(2){display:none!important}
-  #appHeader #topUserLabel{max-width:220px!important;font-size:13px!important}
-  #appHeader #roleBadge{font-size:12px!important;padding:8px 10px!important}
-  #appHeader #topLoginBtn{padding:9px 12px!important;font-size:13px!important}
-}
-@media (max-width:930px){
-  #appHeader .top{height:64px!important;padding:0 10px!important}
-  #appHeader .logo{gap:7px!important}
-  #appHeader .logo img{width:31px!important;height:23px!important;max-width:31px!important;max-height:23px!important}
-  #appHeader .logo-title{font-size:19px!important}
-  #appHeader #tfmsVersionBadge{display:none!important}
-  #appHeader #topUserLabel{max-width:180px!important}
-  #appHeader nav{top:64px!important}
-}
-@media (max-width:760px){
-  #appHeader #roleBadge{display:none!important}
-  #appHeader #topUserLabel{max-width:150px!important}
-}
-</style>
-<script id="tfms-v4435-header-patch">
-(function(){
- const BUILD='v44.35 Recovery Stable';
- function sync(){
-   const b=document.getElementById('tfmsVersionBadge');
-   if(b&&b.textContent!==BUILD)b.textContent=BUILD;
-   document.title='TFMS '+BUILD+' · Enterprise UX';
-   window.TFMS_BUILD=Object.freeze({version:'v44.35',channel:'Recovery Stable',buildDate:'2026.08.07',title:'Header Logo & Responsive Actions'});
-   try{
-     const u=new URL(location.href);
-     if(u.searchParams.get('v')!=='44.35'){
-       u.searchParams.set('v','44.35');
-       history.replaceState(history.state,'',u.pathname+u.search+u.hash);
-     }
-   }catch(e){}
- }
- document.addEventListener('DOMContentLoaded',()=>{sync();setTimeout(sync,400);setTimeout(sync,1300)});
- window.addEventListener('load',sync);
-})();
-</script>
+
+
+
+
 
 </body></html>`);doc.close();
   await new Promise(r=>{if(doc.readyState==='complete')r();else frame.onload=r;});
@@ -16978,186 +16277,12 @@ window.printFireRecordV420=async function(){try{window.previewFireRecordV420();c
 
 
 
-<style id="tfms-v4434-unified-detail-style">
-/* v44.34 - 설비 상세 중복 통합 + 전 그룹 선택 동기화 */
-#equipment .tfms-v4431-summary-card{display:none!important}
-#equipment .tfms-v4431-tabs{margin-top:0!important;border-top-left-radius:12px!important;border-top-right-radius:12px!important}
-#equipment .tfms-v4431-basic-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}
-#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item{min-height:66px;padding:11px 14px;border-right:1px solid #e7edf5;border-bottom:1px solid #e7edf5;box-sizing:border-box;background:#fff}
-#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item:nth-child(4n){border-right:0}
-#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item span{display:block;color:#74859a;font-size:11px;margin-bottom:5px}
-#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item strong{display:block;color:#102c4c;font-size:13px;line-height:1.35;word-break:break-word}
-#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.wide2{grid-column:span 2}
-#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.full{grid-column:1/-1;min-height:78px}
-#equipment .tfms-v4431-titlebar{margin-bottom:12px!important}
-#equipment .tfms-v4431-list .tree-item.active,#equipment .tfms-v4431-list .tree-item.selected{border-color:#2f7df4!important;background:#edf5ff!important;box-shadow:0 0 0 1px rgba(47,125,244,.08) inset}
-@media(max-width:1200px){#equipment .tfms-v4431-basic-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item:nth-child(4n){border-right:1px solid #e7edf5}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item:nth-child(2n){border-right:0}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.full{grid-column:1/-1}}
-@media(max-width:760px){#equipment .tfms-v4431-basic-grid{grid-template-columns:1fr!important}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item{border-right:0!important}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.wide2,#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.full{grid-column:auto}}
-</style>
-<script id="tfms-v4434-unified-detail-controller">
-(function(){
-'use strict';
-const BUILD='v44.34 Recovery Stable';
-const $=id=>document.getElementById(id);
-const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-function store(){try{return window.assetData||(typeof assetData!=='undefined'?assetData:{})}catch(e){return {}}}
-function setKey(k){k=String(k??'');window.selectedAssetKey=k;try{if(typeof selectedAssetKey!=='undefined')selectedAssetKey=k}catch(e){}return k}
-function getKey(){try{return String(window.selectedAssetKey||(typeof selectedAssetKey!=='undefined'?selectedAssetKey:'')||'')}catch(e){return String(window.selectedAssetKey||'')}}
-function current(k=getKey()){return store()?.[k]||null}
-function val(a,...ks){for(const k of ks){const v=a?.[k];if(v!=null&&String(v).trim()!==''&&String(v)!=='undefined')return v}return '-'}
-function money(v){if(v==null||v===''||v==='-')return '-';const n=Number(String(v).replace(/[^0-9.-]/g,''));return Number.isFinite(n)&&String(v).match(/\d/)?n.toLocaleString('ko-KR')+'원':String(v)}
-function rows(a){return [
- ['제조사',val(a,'manufacturer')],['모델명',val(a,'model')],['관리번호',val(a,'assetCode','asset_code')],['QR관리번호',val(a,'qrId','qr_code')],
- ['설비분류',val(a,'category')],['공간/구역',val(a,'space')],['설치위치',val(a,'location','space')],['규모/용량',val(a,'capacity')],
- ['제조번호',val(a,'serialNumber','serial_no','serial')],['제조년도',val(a,'manufactureYear','manufacturedYear')],['설치연도',val(a,'year','installYear')],['설치일',val(a,'installDate','installed_at')],
- ['내용연수',val(a,'life')],['작동형태',val(a,'operation')],['점검주기',val(a,'cycle')],['관리상태',val(a,'status')],
- ['중요도',val(a,'importance')],['위험도',val(a,'risk')],['최근점검일',val(a,'check','lastCheck')],['이력건수',Array.isArray(a?.timeline)?a.timeline.length+'건':val(a,'history')],
- ['취득금액',money(val(a,'purchaseCost','acquisitionCost','acquisition_cost'))],['예상 교체비',money(val(a,'replacementCost','replacement_cost','replace'))],['담당자',val(a,'manager')],['비고',val(a,'remarks','note','memo')]
- ]}
-function renderUnified(k=getKey()){
- const a=current(k)||{};
- const title=$('tfmsV4431Title');if(title)title.textContent=a?.name||'설비를 선택해 주세요.';
- const badge=$('tfmsV4431StatusBadge');if(badge){badge.textContent=val(a,'status','risk');const t=String(a?.status||'')+String(a?.risk||'');badge.style.background=/위험|수리|사용중지|폐기/.test(t)?'#ffe9e7':/주의|점검필요|교체예정/.test(t)?'#fff2d8':'#e8f8ef'}
- const host=$('tfmsV4431Basic');if(host){host.innerHTML=rows(a).map(([name,value],i)=>`<div class="tfms-v4434-detail-item ${i===23?'full':''}"><span>${esc(name)}</span><strong>${esc(value)}</strong></div>`).join('')}
- document.querySelectorAll('#assetList .tree-item').forEach(el=>{const oc=el.getAttribute('onclick')||'';const m=oc.match(/showAsset\(['\"]([^'\"]+)/);const kk=m?.[1]||el.dataset?.key||el.dataset?.assetKey||'';el.classList.toggle('active',String(kk)===String(k));el.classList.toggle('selected',String(kk)===String(k))});
-}
-function syncBuild(){const b=$('tfmsVersionBadge');if(b)b.textContent=BUILD;document.title='TFMS '+BUILD+' · Enterprise UX';window.TFMS_BUILD=Object.freeze({version:'v44.34',channel:'Recovery Stable',buildDate:'2026.08.07',title:'Unified Equipment Detail'});try{const u=new URL(location.href);if(u.searchParams.get('v')!=='44.34'){u.searchParams.set('v','44.34');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
-
-const prevShow=window.showAsset;
-window.showAsset=function(k,el){
- k=setKey(k);
- let r;
- try{if(typeof prevShow==='function')r=prevShow.call(this,k,el)}catch(e){console.warn('기존 설비 상세 렌더 오류를 보정합니다.',e)}
- setKey(k);renderUnified(k);
- try{if(typeof window.refreshEquipmentPhotosV4430==='function')setTimeout(()=>window.refreshEquipmentPhotosV4430(),50)}catch(e){}
- return r;
-};
-
-// 목록 전체에 캡처 이벤트를 두어, 그룹 위치와 관계없이 클릭 설비 key를 먼저 확정한다.
-function bindList(){const list=$('assetList');if(!list||list.dataset.v4434Bound)return;list.dataset.v4434Bound='1';list.addEventListener('click',function(ev){const item=ev.target.closest('.tree-item');if(!item||!list.contains(item))return;const oc=item.getAttribute('onclick')||'';const m=oc.match(/showAsset\(['\"]([^'\"]+)/);const k=m?.[1]||item.dataset?.key||item.dataset?.assetKey||'';if(k)setKey(k)},true)}
-const prevRender=window.renderAssetList;if(typeof prevRender==='function')window.renderAssetList=function(){const r=prevRender.apply(this,arguments);setTimeout(()=>{bindList();renderUnified()},20);return r};
-function init(){syncBuild();bindList();renderUnified();[100,400,1000,2200].forEach(ms=>setTimeout(()=>{syncBuild();bindList();renderUnified()},ms))}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
-})();
-</script>
 
 
-<style id="tfms-v4435-header-responsive">
-/* TFMS v44.35 - header logo visibility + responsive account actions */
-#appHeader .top{
-  height:72px!important;
-  min-width:0!important;
-  padding:0 18px!important;
-  gap:16px!important;
-}
-#appHeader .logo{
-  display:flex!important;
-  align-items:center!important;
-  flex:0 1 auto!important;
-  min-width:0!important;
-  gap:10px!important;
-  overflow:hidden!important;
-}
-#appHeader .logo img{
-  display:block!important;
-  flex:0 0 auto!important;
-  width:38px!important;
-  height:28px!important;
-  max-width:38px!important;
-  max-height:28px!important;
-  padding:0!important;
-  margin:0!important;
-  object-fit:contain!important;
-  object-position:center!important;
-  background:transparent!important;
-  border-radius:0!important;
-  filter:none!important;
-  opacity:1!important;
-}
-#appHeader .logo-title{
-  display:flex!important;
-  align-items:center!important;
-  gap:8px!important;
-  min-width:0!important;
-  color:#fff!important;
-  white-space:nowrap!important;
-}
-#appHeader .logo-title::after{display:none!important;content:none!important}
-#appHeader .logo-title small{display:none!important}
-#appHeader #tfmsVersionBadge{
-  flex:0 0 auto!important;
-  margin:0!important;
-}
-#appHeader .user{
-  display:flex!important;
-  align-items:center!important;
-  justify-content:flex-end!important;
-  flex:1 1 auto!important;
-  min-width:0!important;
-  gap:8px!important;
-  overflow:visible!important;
-  white-space:nowrap!important;
-}
-#appHeader #topUserLabel{
-  min-width:0!important;
-  max-width:270px!important;
-  overflow:hidden!important;
-  text-overflow:ellipsis!important;
-  white-space:nowrap!important;
-  padding:8px 6px!important;
-}
-#appHeader #cloudTopBadge,#appHeader #roleBadge{
-  flex:0 0 auto!important;
-  white-space:nowrap!important;
-}
-#appHeader #topLoginBtn{
-  flex:0 0 auto!important;
-  margin-right:0!important;
-  padding:10px 15px!important;
-  white-space:nowrap!important;
-}
-@media (max-width:1180px){
-  #appHeader .top{padding:0 12px!important;gap:10px!important}
-  #appHeader #cloudTopBadge{display:none!important}
-  #appHeader .user>span:nth-child(2){display:none!important}
-  #appHeader #topUserLabel{max-width:220px!important;font-size:13px!important}
-  #appHeader #roleBadge{font-size:12px!important;padding:8px 10px!important}
-  #appHeader #topLoginBtn{padding:9px 12px!important;font-size:13px!important}
-}
-@media (max-width:930px){
-  #appHeader .top{height:64px!important;padding:0 10px!important}
-  #appHeader .logo{gap:7px!important}
-  #appHeader .logo img{width:31px!important;height:23px!important;max-width:31px!important;max-height:23px!important}
-  #appHeader .logo-title{font-size:19px!important}
-  #appHeader #tfmsVersionBadge{display:none!important}
-  #appHeader #topUserLabel{max-width:180px!important}
-  #appHeader nav{top:64px!important}
-}
-@media (max-width:760px){
-  #appHeader #roleBadge{display:none!important}
-  #appHeader #topUserLabel{max-width:150px!important}
-}
-</style>
-<script id="tfms-v4435-header-patch">
-(function(){
- const BUILD='v44.35 Recovery Stable';
- function sync(){
-   const b=document.getElementById('tfmsVersionBadge');
-   if(b&&b.textContent!==BUILD)b.textContent=BUILD;
-   document.title='TFMS '+BUILD+' · Enterprise UX';
-   window.TFMS_BUILD=Object.freeze({version:'v44.35',channel:'Recovery Stable',buildDate:'2026.08.07',title:'Header Logo & Responsive Actions'});
-   try{
-     const u=new URL(location.href);
-     if(u.searchParams.get('v')!=='44.35'){
-       u.searchParams.set('v','44.35');
-       history.replaceState(history.state,'',u.pathname+u.search+u.hash);
-     }
-   }catch(e){}
- }
- document.addEventListener('DOMContentLoaded',()=>{sync();setTimeout(sync,400);setTimeout(sync,1300)});
- window.addEventListener('load',sync);
-})();
-</script>
+
+
+
+
 
 </body></html>`);doc.close();await new Promise(r=>setTimeout(r,100));if(doc.fonts?.ready)await doc.fonts.ready;await Promise.all([...doc.images].map(img=>img.complete?Promise.resolve():new Promise(r=>{img.onload=img.onerror=r})));await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));frame.contentWindow.focus();frame.contentWindow.print();setTimeout(()=>frame.remove(),5000);}catch(e){console.error(e);toast('PDF 출력 실패: '+(e?.message||e));}};
 function db(){try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||(typeof sb!=='undefined'?sb:null)}catch(e){return null}}
@@ -19332,4 +18457,74 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 })();
 </script>
 
+
+<style id="tfms-v4436-header-clean-responsive">
+/* v44.36 - keep user name + version visible, prioritize header actions */
+#appHeader .top{min-width:0!important;padding:0 16px!important;gap:12px!important}
+#appHeader .logo{flex:0 0 auto!important;overflow:visible!important;min-width:max-content!important}
+#appHeader .logo-title{overflow:visible!important;min-width:max-content!important;gap:7px!important}
+#appHeader #tfmsVersionBadge{
+  display:inline-flex!important;align-items:center!important;visibility:visible!important;
+  flex:0 0 auto!important;white-space:nowrap!important;margin:0!important;
+  max-width:none!important;overflow:visible!important;
+}
+#appHeader .user{flex:1 1 auto!important;min-width:0!important;gap:7px!important;overflow:visible!important}
+#appHeader #topUserLabel{
+  display:inline-flex!important;align-items:center!important;flex:0 0 auto!important;
+  min-width:max-content!important;max-width:none!important;width:auto!important;
+  overflow:visible!important;text-overflow:clip!important;white-space:nowrap!important;
+  padding:8px 6px 8px 34px!important;font-size:14px!important;
+}
+#appHeader #roleBadge,#appHeader #cloudTopBadge,#appHeader #topLoginBtn{flex:0 0 auto!important}
+#appHeader #topLoginBtn{white-space:nowrap!important;margin-right:0!important}
+@media(max-width:1250px){
+  #appHeader #cloudTopBadge{display:none!important}
+  #appHeader .user>span:nth-child(2){display:none!important}
+}
+@media(max-width:1030px){
+  #appHeader .top{padding:0 10px!important;gap:8px!important}
+  #appHeader #roleBadge{display:none!important}
+  #appHeader #topUserLabel{font-size:13px!important;padding-right:2px!important}
+  #appHeader #topLoginBtn{padding:9px 11px!important;font-size:13px!important}
+  #appHeader .logo img{width:31px!important;height:23px!important;max-width:31px!important;max-height:23px!important}
+  #appHeader .logo-title{font-size:19px!important}
+  #appHeader #tfmsVersionBadge{display:inline-flex!important;font-size:11px!important;padding:5px 8px!important}
+}
+@media(max-width:760px){
+  #appHeader .top{gap:6px!important}
+  #appHeader #topUserLabel{font-size:12px!important;padding-left:30px!important}
+  #appHeader #topUserLabel::before{left:5px!important;width:20px!important;height:20px!important;background-size:16px 16px!important}
+  #appHeader #topLoginBtn{padding:8px 9px!important;font-size:12px!important}
+  #appHeader #tfmsVersionBadge{font-size:10px!important;padding:4px 6px!important}
+}
+</style>
+<script id="tfms-v4436-header-clean-controller">
+(function(){
+ 'use strict';
+ const VER='v44.36';
+ const FULL='v44.36 Recovery Stable';
+ function syncVersion(){
+   const b=document.getElementById('tfmsVersionBadge');
+   if(b){
+     b.style.display='inline-flex';
+     b.textContent=window.innerWidth<=1100?VER:FULL;
+     b.title=FULL;
+   }
+   document.title='TFMS '+FULL+' · Enterprise UX';
+   window.TFMS_BUILD=Object.freeze({version:VER,channel:'Recovery Stable',buildDate:'2026.08.07',title:'Header Clean & Responsive'});
+   try{const u=new URL(location.href);if(u.searchParams.get('v')!=='44.36'){u.searchParams.set('v','44.36');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
+ }
+ function protectUserLabel(){
+   const u=document.getElementById('topUserLabel');if(!u)return;
+   const full=(u.textContent||'').replace(/^\s*[👤🧑‍💼]+\s*/u,'').trim();
+   if(full){u.textContent=full;u.title=full;}
+ }
+ let rt;
+ window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(syncVersion,50)});
+ document.addEventListener('DOMContentLoaded',()=>{syncVersion();protectUserLabel();setTimeout(()=>{syncVersion();protectUserLabel()},350);setTimeout(()=>{syncVersion();protectUserLabel()},1400)});
+ window.addEventListener('load',()=>{syncVersion();protectUserLabel()});
+ const mo=new MutationObserver(()=>protectUserLabel());
+ document.addEventListener('DOMContentLoaded',()=>{const u=document.getElementById('topUserLabel');if(u)mo.observe(u,{childList:true,subtree:true,characterData:true})});
+})();
+</script>
 </body></html>
