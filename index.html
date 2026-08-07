@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <html lang="ko">
-<!-- TFMS v44.29R3 Recovery Stable | 장비이력카드 버튼 중복 제거 | 2026-08-06 -->
+<!-- TFMS v44.30 Recovery Stable | 장비이력카드 버튼 동작 및 설비삭제 안정화 | 2026-08-07 -->
 <!-- TFMS v36.3 Stable | 삭제관리 승인·삭제 버튼 복구 | 2026-07-20 -->
 <head>
 <meta charset="utf-8"/>
@@ -1372,7 +1372,7 @@ body{background:var(--tfms-bg)!important;color:var(--tfms-text)}
 </div>
 <div class="panel" style="margin-top:18px">
 <div class="section-title"><span class="dot"></span>설비 등록/수정</div>
-<div class="asset-form-note"><b>설비명만 필수 입력</b>이며, 제조사·모델명·제조번호·용량·제조년도·설치일 등 해당하지 않는 항목은 공란으로 등록할 수 있습니다.<br/>QR관리번호는 비워두면 자동 생성되며, 삭제는 즉시삭제가 아니라 관리자 확인이 가능한 삭제요청으로 남깁니다.</div>
+<div class="asset-form-note"><b>설비명만 필수 입력</b>이며, 제조사·모델명·제조번호·용량·제조년도·설치일 등 해당하지 않는 항목은 공란으로 등록할 수 있습니다.<br/>QR관리번호는 비워두면 자동 생성되며, 일반담당자는 삭제요청으로 처리되며, 관리자는 확인 후 설비와 연결 사진을 즉시 삭제할 수 있습니다.</div>
 <div class="grid">
 <div class="field"><label>소속 시설 <b style="color:#d92d20">*</b></label><select id="assetInputFacility"></select></div>
 <div class="field"><label>공간/구역</label><input id="assetInputSpace" placeholder="예: 기계실, 전기실, 수영장"/></div>
@@ -1401,7 +1401,7 @@ body{background:var(--tfms-bg)!important;color:var(--tfms-text)}
 </div>
 <div class="buttons">
 <button class="btn light" onclick="clearAssetForm()">초기화</button>
-<button class="btn" onclick="deleteSelectedAsset()">삭제요청</button>
+<button class="btn" id="assetDeleteButtonV4430" onclick="deleteSelectedAsset()">설비 삭제</button>
 <button class="btn blue" onclick="saveAsset()">설비 등록/수정</button>
 </div>
 </div>
@@ -17740,35 +17740,98 @@ window.runEquipmentImportV4432=async()=>{const c=client(),selected=rows.filter(x
 function inject(){
  const page=$('equipment');if(!page)return;
  try{if(typeof window.context==='function'&&!window.context().admin)return}catch(e){}
- // 과거 실행에서 남은 동일 버튼을 모두 정리한다.
+ const host=page.querySelector('.tfms-equipment-tabs');
+ if(!host)return;
+ // 이미 정상 버튼이 있으면 절대 다시 만들지 않는다. 이전 버전의 무한 재생성 문제를 차단한다.
+ let b=host.querySelector('#tfmsEquipmentImportButtonV4430');
+ if(b)return;
+ // 구버전 중복 버튼만 1회 정리한다.
  [...page.querySelectorAll('button')].forEach(btn=>{
    const text=String(btn.textContent||'').replace(/\s+/g,' ').trim();
    if(text.includes('장비이력카드') && text.includes('가져오기')) btn.remove();
  });
- page.querySelectorAll('.tfms-equipment-import-toolbar').forEach(el=>{
-   if(!el.children.length) el.remove();
- });
- // 설비관리 탭이 만들어진 뒤 그 위치에 버튼 하나만 추가한다.
- const host=page.querySelector('.tfms-equipment-tabs');
- if(!host)return;
- const b=document.createElement('button');
- b.type='button';b.className='tfms-eq-import-btn';b.dataset.v='import';
+ b=document.createElement('button');
+ b.id='tfmsEquipmentImportButtonV4430';
+ b.type='button';b.className='tfms-eq-import-btn';
  b.textContent='장비이력카드 엑셀 가져오기';
- b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();window.openEquipmentImportV4432?.()});
+ b.onclick=function(e){
+   e.preventDefault();e.stopPropagation();
+   if(typeof window.openEquipmentImportV4432!=='function'){
+     toast('엑셀 가져오기 기능을 불러오지 못했습니다. 페이지를 새로고침해 주세요.');
+     return;
+   }
+   window.openEquipmentImportV4432();
+ };
  host.appendChild(b);
 }
 const oldShow=window.showPage;
-if(typeof oldShow==='function')window.showPage=function(id,btn){const r=oldShow.apply(this,arguments);if(id==='equipment')setTimeout(inject,80);return r};
-function init(){
- inject();[100,400,1000,2000].forEach(ms=>setTimeout(inject,ms));
- const page=$('equipment');
- if(page){
-   let timer=0;
-   new MutationObserver(()=>{clearTimeout(timer);timer=setTimeout(inject,80)}).observe(page,{childList:true,subtree:true});
- }
-}
+if(typeof oldShow==='function')window.showPage=function(id,btn){const r=oldShow.apply(this,arguments);if(id==='equipment')setTimeout(inject,50);return r};
+function init(){inject();[100,500,1200].forEach(ms=>setTimeout(inject,ms));}
 document.readyState==='loading'?document.addEventListener('DOMContentLoaded',init):init();
 })();
 
+</script>
+<script id="tfms-v4430-asset-delete-stable-controller">
+(function(){
+'use strict';
+const BUCKET='tfms-equipment-photos';
+function sb(){try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.supabaseClient||window.sb||null}catch(e){return null}}
+function role(){
+  let r='';
+  try{r=String(window.getTfmsCloudProfile?.()?.role||window.cloudProfile?.role||window.tfmsRole||'').trim().toLowerCase()}catch(e){}
+  if(!r){try{r=String(JSON.parse(sessionStorage.getItem('tfmsSession')||'{}').role||'').trim().toLowerCase()}catch(e){}}
+  return r==='관리자'?'admin':r;
+}
+function selected(){
+  const key=window.selectedAssetKey||(()=>{try{return selectedAssetKey||''}catch(e){return ''}})();
+  const data=window.assetData||(()=>{try{return assetData||{}}catch(e){return {}}})();
+  return {key,data,asset:data?.[key]};
+}
+function toast(m){if(typeof window.showToast==='function')window.showToast(m);else alert(m)}
+function updateLabel(){const b=document.getElementById('assetDeleteButtonV4430');if(b)b.textContent=role()==='admin'?'설비 삭제':'삭제요청'}
+async function refreshAfterDelete(data,key){
+  delete data[key];window.assetData=data;try{assetData=data}catch(e){}
+  const first=Object.keys(data)[0]||'';window.selectedAssetKey=first;try{selectedAssetKey=first}catch(e){}
+  try{if(typeof window.reloadAssets3313==='function')await window.reloadAssets3313(first?data[first]?.dbId:null)}catch(e){console.warn(e)}
+  try{window.renderAssetList?.();window.renderUserFlowNavigator?.();window.renderQrAssetOptions?.()}catch(e){}
+  if(first)window.showAsset?.(first);else{
+    const list=document.getElementById('assetList');if(list)list.innerHTML='<div class="empty-state">등록된 설비가 없습니다.</div>';
+    ['assetName','assetYear','assetLife','assetCheck','assetHistory','assetLocation','assetCapacity','assetOperation','assetQrId','lccRepair','lccReplace','lccRank'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='-'});
+    const tl=document.getElementById('assetTimeline');if(tl)tl.innerHTML='<div class="empty-state">등록된 설비가 없습니다.</div>';
+    window.refreshEquipmentPhotosV4430?.();
+  }
+}
+window.deleteSelectedAsset=async function(){
+  const {key,data,asset}=selected();
+  if(!asset?.dbId){toast('삭제할 설비를 목록에서 먼저 선택해 주세요.');return}
+  const isAdmin=role()==='admin';
+  if(!isAdmin){
+    const reason=prompt('삭제요청 사유를 입력하세요.');if(!reason?.trim())return;
+    const p=window.getTfmsCloudProfile?.()||window.cloudProfile||{};
+    const list=Array.isArray(window.deleteRequests)?window.deleteRequests:(()=>{try{return Array.isArray(deleteRequests)?deleteRequests:[]}catch(e){return []}})();
+    list.unshift({time:new Date().toLocaleString('ko-KR'),facility:asset.facility||'-',detail:'설비관리 / '+(asset.name||'-'),user:p.full_name||p.username||'현장 담당자',reason:reason.trim(),status:'승인대기',type:'asset',assetKey:key,assetDbId:asset.dbId});
+    window.deleteRequests=list;try{deleteRequests=list}catch(e){}
+    try{window.syncDB?.('설비 삭제요청 등록');window.renderDeleteRequests?.()}catch(e){console.warn(e)}
+    toast('설비 삭제요청을 등록했습니다.');return;
+  }
+  const c=sb();if(!c){toast('Supabase 연결 상태를 확인해 주세요.');return}
+  if(!confirm('「'+asset.name+'」 설비를 삭제하시겠습니까?\n연결된 설비 사진도 함께 삭제되며 복구할 수 없습니다.'))return;
+  const reason=prompt('삭제 사유를 입력하세요.');if(!reason?.trim())return;
+  try{
+    const photos=await c.from('asset_photos').select('id,storage_path').eq('asset_id',asset.dbId);
+    if(photos.error)throw photos.error;
+    const paths=(photos.data||[]).map(x=>x.storage_path).filter(Boolean);
+    if((photos.data||[]).length){const pd=await c.from('asset_photos').delete().eq('asset_id',asset.dbId);if(pd.error)throw pd.error}
+    if(paths.length){const rm=await c.storage.from(BUCKET).remove(paths);if(rm.error)console.warn('사진 파일 일부 삭제 실패',rm.error)}
+    const del=await c.from('assets').delete().eq('id',asset.dbId).select('id');
+    if(del.error)throw del.error;
+    await refreshAfterDelete(data,key);
+    toast('설비와 연결 사진을 Supabase에서 삭제했습니다.');
+  }catch(e){console.error('TFMS v44.30 asset delete',e);toast('설비 삭제 실패: '+(e?.message||e))}
+};
+const oldShow=window.showPage;
+if(typeof oldShow==='function')window.showPage=function(id,btn){const r=oldShow.apply(this,arguments);if(id==='equipment')setTimeout(updateLabel,60);return r};
+document.readyState==='loading'?document.addEventListener('DOMContentLoaded',updateLabel):updateLabel();
+})();
 </script>
 </body></html>
