@@ -18458,4 +18458,77 @@ function init(){brand();setTimeout(render,260);[800,1800].forEach(ms=>setTimeout
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
 </script>
+
+<style id="tfms-v456-asset-recovery-style">
+#tfmsAssetRecoveryModal{position:fixed;inset:0;background:rgba(15,23,42,.48);z-index:99999;display:none;align-items:center;justify-content:center;padding:24px}
+#tfmsAssetRecoveryModal.open{display:flex}
+#tfmsAssetRecoveryModal .v456-box{width:min(1050px,96vw);max-height:86vh;background:#fff;border-radius:18px;box-shadow:0 24px 70px rgba(15,23,42,.28);overflow:hidden;display:flex;flex-direction:column}
+#tfmsAssetRecoveryModal .v456-head{padding:18px 20px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;gap:12px;background:#f8fbff}
+#tfmsAssetRecoveryModal .v456-head h3{margin:0;font-size:18px;color:#0f2747;flex:1}
+#tfmsAssetRecoveryModal .v456-search{padding:14px 20px;border-bottom:1px solid #eef2f7;display:flex;gap:10px}
+#tfmsAssetRecoveryModal input{flex:1;border:1px solid #cbd5e1;border-radius:9px;padding:10px 12px;font-size:14px}
+#tfmsAssetRecoveryRows{overflow:auto;padding:10px 14px 18px}
+.v456-row{display:grid;grid-template-columns:minmax(220px,1.4fr) minmax(160px,1fr) minmax(150px,.8fr) auto;gap:10px;align-items:center;padding:11px 10px;border-bottom:1px solid #eef2f7}
+.v456-row:hover{background:#f8fbff}.v456-row strong{color:#0f2747}.v456-meta{font-size:12px;color:#64748b}.v456-actions{display:flex;gap:6px;white-space:nowrap}
+.v456-btn{border:0;border-radius:8px;padding:8px 10px;font-weight:800;cursor:pointer}.v456-select{background:#e8f1ff;color:#1769d2}.v456-delete{background:#fee2e2;color:#b91c1c}.v456-close{background:#e2e8f0;color:#334155}
+@media(max-width:760px){.v456-row{grid-template-columns:1fr}.v456-actions{justify-content:flex-end}}
+</style>
+<script id="tfms-v456-asset-recovery-controller">
+(function(){
+'use strict';
+const VERSION='v45.6 Enterprise Stable';
+function store(){try{if(typeof assetData!=='undefined'&&assetData)return assetData;if(window.assetData)return window.assetData;return {}}catch(e){return window.assetData||{}}}
+function entries(){return Object.entries(store()||{}).filter(([,a])=>a&&typeof a==='object')}
+function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function role(){let r='';try{r=String(window.getTfmsCloudProfile?.()?.role||window.cloudProfile?.role||window.tfmsRole||'').trim().toLowerCase()}catch(e){};if(!r){try{r=String(JSON.parse(sessionStorage.getItem('tfmsSession')||'{}').role||'').trim().toLowerCase()}catch(e){}}return r==='관리자'?'admin':r}
+function toast(m){window.showToast?.(m)||alert(m)}
+function setSelected(key){key=String(key||'');const a=store()[key];if(!a)return false;try{selectedAssetKey=key}catch(e){}window.selectedAssetKey=key;return true}
+function cleanName(item){const c=item.cloneNode(true);c.querySelectorAll('small,button').forEach(x=>x.remove());return (c.textContent||'').replace(/[💧⚙🔥⚡🌀🏢]/g,'').replace(/\s+/g,' ').trim()}
+function resolveKey(item){
+  if(!item)return '';
+  const d=item.dataset?.assetKey||item.dataset?.key;if(d&&store()[d])return String(d);
+  const oc=item.getAttribute('onclick')||'';const m=oc.match(/showAsset\(\s*['\"]((?:\\.|[^'\"])*)['\"]/);if(m){const k=m[1].replace(/\\'/g,"'").replace(/\\\"/g,'\"');if(store()[k])return k}
+  const name=cleanName(item);if(!name)return '';
+  let group='';let p=item.previousElementSibling;while(p){if(p.classList?.contains('tfms-v454-group-label')||(!p.classList?.contains('tree-item')&&p.textContent?.includes('·'))){group=(p.textContent||'').trim();break}p=p.previousElementSibling}
+  const hits=entries().filter(([,a])=>String(a.name||'').trim()===name);
+  if(hits.length===1)return String(hits[0][0]);
+  if(group){const h=hits.find(([,a])=>group.includes(String(a.facility||''))&&group.includes(String(a.space||a.location||'')));if(h)return String(h[0])}
+  return hits[0]?String(hits[0][0]):'';
+}
+function forceSelect(key,item){if(!setSelected(key))return;try{window.showAsset?.(key,item||null)}catch(e){console.warn('v45.6 showAsset',e)};setSelected(key);try{document.querySelectorAll('#equipment #assetList .tree-item').forEach(x=>x.classList.toggle('active',resolveKey(x)===key))}catch(e){};try{if(typeof loadAssetForm==='function')loadAssetForm(key)}catch(e){};try{if(typeof window.renderAssetBasicV45==='function')window.renderAssetBasicV45(key)}catch(e){}}
+async function deleteByKey(key){
+  const a=store()[key];if(!a)return toast('설비 정보를 찾지 못했습니다.');
+  if(role()!=='admin'){
+    const reason=prompt('삭제요청 사유를 입력하세요.');if(!reason?.trim())return;
+    const p=window.getTfmsCloudProfile?.()||window.cloudProfile||{};
+    let list=[];try{list=Array.isArray(window.deleteRequests)?window.deleteRequests:(Array.isArray(deleteRequests)?deleteRequests:[])}catch(e){}
+    list.unshift({time:new Date().toLocaleString('ko-KR'),facility:a.facility||'-',detail:'설비관리 / '+(a.name||'-'),user:p.full_name||p.username||'현장 담당자',reason:reason.trim(),status:'승인대기',type:'asset',assetKey:key,assetDbId:a.dbId||null});
+    window.deleteRequests=list;try{deleteRequests=list}catch(e){};try{window.syncDB?.('설비 삭제요청 등록');window.renderDeleteRequests?.()}catch(e){};toast('설비 삭제요청을 등록했습니다.');return;
+  }
+  if(!a.dbId)return toast('DB ID가 없는 설비라 직접 삭제할 수 없습니다.');
+  if(!confirm('「'+(a.name||key)+'」 설비를 삭제하시겠습니까?\n연결된 사진도 함께 삭제되며 복구할 수 없습니다.'))return;
+  const reason=prompt('삭제 사유를 입력하세요.');if(!reason?.trim())return;
+  const c=window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.supabaseClient||window.sb;if(!c)return toast('Supabase 연결 상태를 확인해 주세요.');
+  try{
+    const ph=await c.from('asset_photos').select('id,storage_path').eq('asset_id',a.dbId);if(ph.error)throw ph.error;
+    const paths=(ph.data||[]).map(x=>x.storage_path).filter(Boolean);
+    if((ph.data||[]).length){const pd=await c.from('asset_photos').delete().eq('asset_id',a.dbId);if(pd.error)throw pd.error}
+    if(paths.length){const rm=await c.storage.from('tfms-equipment-photos').remove(paths);if(rm.error)console.warn(rm.error)}
+    const del=await c.from('assets').delete().eq('id',a.dbId).select('id');if(del.error)throw del.error;
+    try{delete assetData[key]}catch(e){};try{if(window.assetData)delete window.assetData[key]}catch(e){};
+    toast('설비를 삭제했습니다.');renderRecovery();try{window.renderAssetList?.()}catch(e){}
+  }catch(e){console.error(e);toast('설비 삭제 실패: '+(e?.message||e))}
+}
+function ensureModal(){if(document.getElementById('tfmsAssetRecoveryModal'))return;const m=document.createElement('div');m.id='tfmsAssetRecoveryModal';m.innerHTML=`<div class="v456-box"><div class="v456-head"><h3>설비 정리 · 선택/삭제 우회 관리</h3><button class="v456-btn v456-close" type="button" onclick="closeAssetRecoveryV456()">닫기</button></div><div class="v456-search"><input id="tfmsAssetRecoverySearch" placeholder="설비명, 시설, 공간 검색"><button class="v456-btn v456-select" type="button" onclick="renderAssetRecoveryV456()">새로고침</button></div><div id="tfmsAssetRecoveryRows"></div></div>`;document.body.appendChild(m);m.addEventListener('click',e=>{if(e.target===m)closeAssetRecoveryV456()});m.querySelector('#tfmsAssetRecoverySearch').addEventListener('input',renderRecovery)}
+function renderRecovery(){ensureModal();const q=(document.getElementById('tfmsAssetRecoverySearch')?.value||'').trim().toLowerCase();const rows=entries().filter(([,a])=>!q||[a.name,a.facility,a.space,a.location,a.qrId].some(v=>String(v||'').toLowerCase().includes(q)));document.getElementById('tfmsAssetRecoveryRows').innerHTML=rows.map(([k,a])=>`<div class="v456-row"><div><strong>${esc(a.name||k)}</strong><div class="v456-meta">${esc(a.category||a.type||'설비')}</div></div><div>${esc(a.facility||'-')}<div class="v456-meta">${esc(a.space||a.location||'-')}</div></div><div>${esc(a.qrId||a.asset_code||'-')}<div class="v456-meta">${esc(a.dbId||'DB ID 없음')}</div></div><div class="v456-actions"><button class="v456-btn v456-select" type="button" data-v456-select="${esc(k)}">선택</button><button class="v456-btn v456-delete" type="button" data-v456-delete="${esc(k)}">${role()==='admin'?'삭제':'삭제요청'}</button></div></div>`).join('')||'<div class="empty-state">설비가 없습니다.</div>'}
+window.openAssetRecoveryV456=function(){ensureModal();renderRecovery();document.getElementById('tfmsAssetRecoveryModal').classList.add('open')};window.closeAssetRecoveryV456=function(){document.getElementById('tfmsAssetRecoveryModal')?.classList.remove('open')};window.renderAssetRecoveryV456=renderRecovery;
+document.addEventListener('click',e=>{const s=e.target.closest?.('[data-v456-select]');if(s){const k=s.dataset.v456Select;forceSelect(k,null);window.closeAssetRecoveryV456();return}const d=e.target.closest?.('[data-v456-delete]');if(d){deleteByKey(d.dataset.v456Delete);return}},true);
+// Any list renderer, old or new: capture every tree-item and resolve by key or by visible equipment name.
+document.addEventListener('click',e=>{const item=e.target.closest?.('#equipment #assetList .tree-item');if(!item)return;if(e.target.closest('button'))return;const k=resolveKey(item);if(!k)return;e.preventDefault();e.stopPropagation();forceSelect(k,item)},true);
+function addToolbarButton(){const root=document.getElementById('equipment');if(!root||root.querySelector('[data-v456-recovery]'))return;const anchor=[...root.querySelectorAll('button')].find(b=>(b.textContent||'').includes('설비 등록'));if(!anchor)return;const b=document.createElement('button');b.type='button';b.dataset.v456Recovery='1';b.className=anchor.className;b.textContent='설비 정리';b.onclick=openAssetRecoveryV456;anchor.parentElement?.appendChild(b)}
+function brand(){const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent=VERSION;document.title='TFMS '+VERSION;try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.6'){u.searchParams.set('v','45.6');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
+function init(){brand();ensureModal();addToolbarButton();const mo=new MutationObserver(()=>addToolbarButton());const eq=document.getElementById('equipment');if(eq)mo.observe(eq,{subtree:true,childList:true});[300,900,1800,3200].forEach(ms=>setTimeout(()=>{brand();addToolbarButton()},ms))}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
 </body></html>
