@@ -734,7 +734,7 @@ body{background:var(--tfms-bg)!important;color:var(--tfms-text)}
 <header class="hidden" id="appHeader">
 <div class="top">
 <div aria-label="대시보드 홈으로 이동" class="logo" onclick="goHome()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goHome();}" role="button" tabindex="0">
-<img alt="태백시시설관리공단" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASsAAAAsCAYAAAA91p64AAAQAElEQVR4Aex9B5wXxfX4m5nt+23Xjy5VQQQBkY5HEbEl+vNHjCZ2RVFRUzTRxHiJ0STmF3sLFuztYjSahFhQRHoRKYqxIeUoV79t+87Mf/bgyFE9Tozlf/PZt7P75r03b97MvHkz+z3A0J7aLdBugXYLfAMs0O6svgGd1K5iuwXaLQDQ7qzaR0G7Bdot8I2wQLuz+kZ008FXsl1iuwW+aRZod1Zf1x6bMoUAVLb3z977B+0d/TXCNvXf10KfttnqS9S/oqJC2mGZAxrfB0S8o4L27L9hgaoqKpwV+29UJepo24AWjF/Rxb+ieltfbVP/tZ78S6Rsm62+RP3nlJQ063RA4/tb56xGHHdB4ZBJlx82cOz0QQPGXzX4yGOv7j3k5J8Uf4mD4aCKHjr64kt7HX3xc71HXfnXHkMvuLZZ+MDR037c5ahpz3caPf35sqO/f0Ezvi35oDFTSnoN++HjvUZeUtVj5GVV/UddPCSSU1FxYefDjzrrL10Hff/F7qPOe7Tv2NN6R/gvAv2Hn1vRbdDZd/YZfdGMQ4486eYvIquZt//oH1b0HHrR7d0HX3BP9yNOubEZfzDyI0afWXDoURfed+jwC57pePhJTx425IQj9iZ3yJCpctnQ0+7oMnrq82WDLn6u+5Crnu0y8LKnC/uf83S56L/y4dc83XXEjx7resQpTbbdm4wvCzfkmDN+PGD4xfd073/WnYcOPON7u9Sz4yWKbroddf6dvUb++MVOR15W1WPQ9Oe6RfofceFTZUOnP1s87MpnOo+55Ikug449agfLwcjQYcdMva7jxrIne4z8ycu9hp437UCEfvnOqjLaykRwIGq1nrbflCnKwElnnzTguKn3HnXyNSstKP+EK52WU73LwgB3ms9xx2W+U/zhkONuXDHw2GvuO2ry5d8ZMWKK3voa/ruUji93BJI6FmtFJ3BVH9VcuxvKg3Wzw0TN6HC8LCcHNePbkodcDolSeGIs2fEUTSs62Q2VwkhOOh1Kqlk6ubxjv5NBKjzJ9vV4hP8iEHKlj2aU/yAW73iRohdM+SKymnk5ivWWjS4XqHqXMxQ5+d1m/MHIc15KDSA1PuDJ41JFvY4LILbXhS4e/5CrSuEIhgsnIKN8Qo7qE3G840QS73IMUztMiBd1Pdnl6qlITZQeDL0ORIbrxyeaqV4XGLFu56lqaq/OZs6cOVSWy0eFqONEpPQYbwWF4yWz2wRZ6zaWSaXjEkWHnOQz7WSsFBxM/Xmjw45U42Unh3LBCI/KB7QYfqnOatiEK8uGzoOnjj5BXTHs5N+9e9QJNy4bfNwvFw2d9KvFI4+9cckYAcMnXr1kzCm/WHbkCVcvGTTl2jVHXXDtx8Mu/clbQ88/fyLsJ/Udf2a3AcdPuwllO34UovIXKS6b5tD4ACYVpFxuGlQyVVBiGpWNBFdiBS7Sjwxw/BKXJp+z4t3fGzDpqt8OnXRpl/1U8aUV9ZtSqUCTE4c9tl9cUQmSDQyyDo5Pd4bJsirLIaPcCykQrH+hfrOcgGlmIbFdjBhWAUl6U1iODJNTYpCAGzgIdQYo1oSHL5AY0yVJTapADADp4KwRFKmY4xih2GCUYvYF1Nsrqw8KAyVFmBSXiBLHeyMSkz1EAbWpH1gsDGxNV+y8laeqklIdnyDbD1QtFkcEm3vl35vMZtyQIUPk5ue25BwnOEcJWYDCkbQPWZWI0zBHaZBzHMuWVcm2HCfkwgUjZCIvwFhTU8CZIc5O26LF3nkkWWEB5xwkRcOquQ/d9s57wIbcu5g9sRMmXFsU0KInApY43aeJAR5NDPR5fIgPhcN8Xni0z0uHurxwqBLrMjRtkyEWl4bShHF4jeT09MrksUFn6aXBP5oyeQ/JYpIfOnbKBWWd+60NoOA6jou6clRIGI8B5ToETIJQMFFhDwoUPOqDz6jAEeBIA0biKpdS3bFU8guQSlYNHHXJxVFILFi+lOvIYVNvGzX5xjsHjrv2zn5jf37fEROuf8FZb73V9w20ceCxN23oM/pnn/YdffGVzZUzRLETiNHvB4y3HCYEgR8yUBSFh7SZent+ZMX3KwaOu+Lh3iMueaTn0d+5ejsWoF+/KUr/Y86+7tBjLnlg4LgrH462xlEZlhTOuCQJJ4UYBxzuEOh5AXd9EBMtKo2zMNS+sLPCCsYIywZFEnAgLVsUqdImoAxxCgiLPiYM4T0cfpuE7mBC2Occc+yHlPsMkZDvWz7h1gsqsh4Ct/ZhZm+ZqRHnQcdOP6BLkFPFNAx9i4dheMD6LV++POg/7Myz+g2/8LqB46/+5YBjr72uz5jLru034bJrD6+Y9rMRk6+4dvDIqb8Yc+xl1w0bf8Z5O1TfmdGAYcow1s2Y5APbid/1oZIFdPMLmG17SNcyDzO/+hEZ5x9y7MYHctl0tiAe44EXhLqWOKg+goueg2iQI0mR5QNbdA+qIs3GGHb89IQl4WcDIBNDRCAQQz7goXAYITDMgEocXEIFcKjL2gCaArbkgKVnudQdYKPyGdQXNOh2OZvV8/wJ45rlDqk4o3jAgpoZitnzvq3bQl0hxYB5EjAYgJEmyERzUAgYPMDIAUK2A5ZcwCQALIoxEvOFqQBMB8ZiKdUsv6M+OOzRoRWXlsOBplbQJ4rK/zdn8elIik/X4kWXcCl+SlGHbsOxmuiIiNnZiBd3N2KJns2izGQCIUIwR6JLiVB6R4HnMxG2q9wTHkXCwQ7s9kxRC7v6zPihnuzwAywXTNqOBXj//arAZ8kxqlZ+LlYKz23M+52byxyXupyDRUVYwDilER6bMc6JFAVvISZKK8KgSmFR2O9kjGzOEKNMjAExf/yontbAkCFTxXTfByX3EUV2QMEJGYpG1z7odkE36boLZl8vRPE5l3wXi3G6L5oI/+nSZ+9Yv/D+X9WsfOCGzStn/Kp62e2/jJubKrlXgzBtkFRiM0UJdrHP0RPOLhp47BWnDvnuT888dMK5kwdMmmRGsnaHAMW/D1r5j3JB/JqMa1zt0IKrLTd5raR3+l02KLg50Drd6MqlN9kkcfLuvKYhccep970w4wTIFZbfnWL7+4blT9yxfsntv9y09E83bF59/682Lv/j9X30+sqORRJu2LZeljhlXtraRf/tnG2/45AxEIsxomEI+/Kj+xAfDbZ9FLUNPemsn5oeQ09mXDYhVlwKYvCDmHggJgYAx+KZAEUYQlGzjyn4OoMwCVDQW0RGBTmUVbdCXquFWlwLWdOGRP/SF3pe+p1xfc88t3dWN/+ZDrULsFYuI0hCEMhipigCCCAhUxKrN2kGjAEDAiLwEU5CRLwTQEgWeojoixEIKQGfqioiBWdSor5x+Jgf9IODnDhgKiK90PaDTDqfs+3As2ob6/NYiuoOWSA6Lp1pYM3V1tVVMy7iHtGlYd4Kdw40j6LQcd1AUwgOfbuZvCm3PcpcJvlba/N52SyxmpA7bj7ViM9UIc7wEsmipnqIpHLRH4FInDEmtgBRHACQs/KhFwZIFDIqkoLUnfXvELcz6z/0zGkjJjpLxxz/i9UDhp993c6C3R8IA+GswoDRkFJocoq7kzS/Hzn6fysGjD1/waBjpi1Wi6XnmvG75wwJZyLi5SgXnbnfyXT4Ud97dMCoqctGHe+s7jP89ON3l7X7u+14HDATeiIa+L5Qmu3TBrvzRu+HwCFhImZqpq5w33MDVfRzhG+GtC339GnsOZ8nn8w65PHAjXdsLmuZU45Q1nZcUHTkCBU8JPkewfmNdQ1b6sNgYz2l2RrfzecDsXVoySieGfW4qhERHjhMM/EB6b+8RyMLnLRaUhjnMrAgldrz2HLE+Cmd+o//35GHjvnBqP7jLx3Ze/Rlw/qMueToAZOuHNZv9NRhgyouP6rXkB8O7nX88apQZ5cLcTG8QrF6+dR1PRbsUvg5L/hzyg+ouKKiUqqpCx5HSsFJxCyAzdtqQPgI4SAQYLGnwVwBIoALM1BA4BGxRYs70KhUg5uqgzDVCDbZCmoRB274UBvWQTWtTSb7dnwtKNFf8ZPJwXKqFJyAQEAxyLIKHER7kZAmugRH7kjIR1QDFIozksAA7uvbIRCBAlPF2CZCJwxYEk2XZOCSBmqsGFSztK8kFz7Xf+TpO6McOAipenP1U4yzF/NW45yA2i/aduPDHLw/5ayaS+x8/aW+a1/OafB6c1VmQuZEQsy1vDCmlaul/S8si/U8tZRSRUUSwnmrIYztttUPvajU8BQjKTc0Mq3XmOklvQZNL+kz4kcdKdcMP0CeJ0J6O7d9laWhiQhGwCmjtuUFjY3Zku7DriwTZ0FdAGFhUM4JYz7sZ1WmxDwkhEQvIIWHMym5M2JrbkdzLmrhlAqPLPZD/3G9zaW75pgk4xwle0hG0VHCwXbbtfQ/bxhzsQSFCCMxCLAYSP8p2uNJUgp6qHrHwXlH6hFPlJW2JBgyZKrRf8KFZX0qphYfMXpawSFHnpuStETKdxGXQSeEqqAjXYysllz7f87lNiMix5HrERQGIn5wQ9SSo1AvDEML8liMz7hZ5kKo+i3Lo+cpU6aQ0En7sRhGftjoSnpoW6jO3mZvzOXktLs1+0mYNZywjta5lFhexNMSEIgFGSKvQLHj77J2tSTb5zMmgHzPEW2wqOc17KJ/xFRvh6e7Xur5AJX8tdHVXwqkwpetMP73xrz8T4aLZ+Vd9RWPaS+VBN32XPwZBowIQkhGCBvxaJyW9JsS6zFkSrLPkDOKI/n7AryvggPFD5k6VbbMxsedMHZqQx4JFyJBsqgIOBYLVeRMhECMECDR9QgYCHMAlW2IdSdg9pIgq9SDrzkAEoVsrhE8zwE9aUJO8WAzrSVyZ717UECJQyxAYsGXVQlEVCC6BIQ04dzQ9hyYeKZiNQ8pMAHAUFOdIBIDUYYiOgAe5RgBBRmckIiogoNulhyux8ureg44dZdBLVjbfJWo2u/DeOEPN3evPm3jvNhZVHOvM3X4M3Os12I6eT0ukTcKEh3ebq4gEIdGrp2lmqJS12VDJblonq51f5tRbZQXcKoqJqaBsF8zg8iRhLhlW0ySDLEn0vs31MNcrBWssWx1TsCl3gxjxsXMBiKIm64GoJ7POGWygnVJN4tuDrm61PJ4FWNYGI6zMHABuCus1MSwx43IsTBjMyPrcAhDLO1B0IwQqoaUB2HIxLkqE2/NBXvmmYxHxMGu4ocEe5QJBfakiTCYS2K4SwgjCQPCOMLtC/xAlhgV/jrUwQ1I0JIOG+inVlZamc1IaxocZQ1Titf4rvyKjM1uqhSTZVAwIIW35Nn+vP3er2JKrO/Ic24ceOyVdwyomHbbocde3jEe78h9wedTCVQtzvS4tosN0+k8kiRdKK+BnaNSAPIetquqqqKfrXrmlA/e+GPnTW/dXLq5YG1Xa97dPdTO3nFSufOvWD8zr3fjtlrGs4oW1MJuiQizuJ4HgDlyg12dZUvSfkL/I0aed2P/sZfeIaLP2/qNmtoVKy2wNQAAEABJREFUqqpYPJWSgUgyEuNFNxUEuyUkpXSsFKeQVFSUSHVOESmmYDmmSEpcIVJCDsXmN5Eojddlti+O0CIhoRQnEiKyamA1fuoWBy3Tk4esREr5+7GCkk97jtz33MNwkJJebd6dz+vfR6QUzEQXoEgDNxRjQzgqEdqAcC1NgEBEQeACRnnKlHRD3qiGtLYZLC0EB0kQujLEcBEUmkXgWGK8mgrU0nqxLawGqdyCZJcQ6vIfA5c9ISlyPgS44ItmAROekCEfuDirAklslSQLiOoAkh0AyRX4UPguDuJgFgLhrQKGBU4Bohgg63GwBUsYKoM6dun2h4NkFrCxVIXrM6/2qxswu/jI9ALZNt8OHeUNhLRXraw/O2Th22627urm+lQpBnHdQK6TxvG4ykRDTUxiZkgVUKVC4jkEKNN2mUC+WD0Z5yKC4TILZCNmlqUkUhiTlVQREyPD81zmeTaoKmmqhohtoNiecAVLVMIGlnAyhkmiMJEoT8iyLoIqwYWEl2+i3vuNYQmwZgQhx0BUdY8B/R8uDIwJt8iE2mKg/ge/55Oix5A4hFIDykPX98ieFM0YCWGkYozF6T0n+6kbQNNSPG9xFgQycxzckhYBSRbES7qXpcp7lRWU9Oyom+UdY/HSlEoMShgxCCdCkTTsK6lyPIHU2EVc0q+wKTkrDLTCOXNuoKDIxOMADBMSwq7tMJIGeMznlGAwYnFQPFVMkn3V0ITnwoFQ6cRjxlBz60zjEGeK3CnbJSN/KgXKthwhzuImqha3rNMIsqEgWTMhqRe3KNn1UVcL4qFedD7SS6+wmPq9fEhKBAWvdy1iUcok3cAusvfoByNWSENmiuYlaS6Xy+Ty6bq8lalrbGyora3dVocJqstkMnUKFpNRCGx5hdGxAOYoxEAChGSjsLPuQSJFzLIihxnxwlQvDPtI+yzYB/1e0UMnnH93QM2pklIEjKoQ+FhsMQgQpIiBCuK8CgnggIEBAR8kLpwIyiwhUmYGliwQxy2gaBL4YQiyYgBnBHJZByRJgoCKKFkDoIYHNOkATeUh3gOLKCwNLm4EHu1ahEOMco4d4FIeiABVyoEuWUJSIwjHCIBEGfaEY2PACBK5ADF2Q1EnpRR8Ea0QJS40NCFksXP7j/zhiXAQUiJuHqYo0lgGaGRpaVkfVdW7ijpLTS3WLZUq6oolqVwzxajdURfmMhZHU6CrMoR+HulxLJZ2l8sywpSGoarEEWNkB/X2TGuatJxjxGkybnAJYyRLoBhiwFIWekgiXFElEdJ72xnqADzPY5hIwhIYIYaQLCoQhTikgU9ZgHRDVggTQ0og93bZDg0cV7gqWfEbxJZ1bzQRjosoCHEs9iSAZEYj1D7BBwXENizHsCqFXPH2RShxhDAgLAMhEkItHdAeLFlPNE7RmUeZY8STLWm5G+SytlVLwyBne07GDn0ni4F7WESiofD64rgRCBZV7SF1OwJjiSt6SuNYByoWvu1YBHEpVMVuHnQpjKuyGFLbC5ruQnPOgHPGGIgIGauq3FKnJpqWt85TjiuMnzbq6mRX8oBZRnp7rIGFfn2eWbXvqNy98N8v/aOqJX30HAkkSALP8hF1SfQaofcAL9RZyA0ZKQmwKcKycKQRUTwOWlwH0Qt+Qtl1qEXFUF9fD7KwPvMCjzD/QwW5x+iQH59M0gmalpmAWM0YhQTj3ls88/0mhhY3YV/hEygPAs/yPNfD3AsIeCFmnhs3ZCuzbZM44m3B0OIRt3hu0+Oo4668jUnll/nMBNE8UIgEEiBQkAwQEtHfOhASh5BiiCIaoDZwP70iIWXPLDGlXxlUeli2EZggetVzgRMOSJdALPmilxFIYhBIQp4TWJAVTi5r5oF3pkDL68CLVQNCOcDcFVu5BteDhqUUNVwVsE1HgVvdCQXbOktu3WA3XX0ZZfllSJwEUOHcQnEcQ1kAGEKQiLANDwCJ+n0RulNSIGTFAEtl1w8RZxptMkoLpgA5HCk+hJy6jmcThjygKAjdwG8QB6hbmEIsB4KdHMLlECxckxFLKbaXW+26H0/EuPp/kJRehrEnSwQBIQqGFsmQNaQBSLrEeODUv8NJ/TDqVx9m5TaM1GX+ARWHVmKCSEAwitiCmIS1RFzzaMg93wo5s2+w7cbRIctfaHkZbCQ1lHMaqRxVFjHsBgMqLuyMSOxETTYlseMGRYuP7DrussN3I2t6RSiMYh9JRxyrnPIm5F5uvY6froaAT3UCriFi2gySvfsdc9VeD8RZkAeZi3iaIeGmd7VFS9G9R0+f6MvSIYHKsBwnsu27J/aYODXZTKOZjQ9qaNNwPfhkohasm4jCzZMRti/GGjCuMxworoR1MYibGXbLo0icgo45VRiEgWcwN7Iv17Mbf6XnP7nWDGtuQDhc25LN4p6wBAjhwCXOQxcaWxbv8lwypaKXVcTuczrgq3CpURzwkLKst83M4KcOycXOq3v8tWW7MOx4icsqgMWQwWNIFTNxB3qPjPoO1kgcUx/7fuB43G+M9AfsrK8k+XW/SEDmdwWY7+FwJORzBRhTeSgpfqO1aeFt1ZuXz9iwfu7d6zYsffjTjxc/uOlT8b5HhQKhsAArzMei5VTh9htaUH2S7H90fJD+YIKVXjPqw+VPi6VUEO7lwnvBtRo1fPz5lR6KXRVAHALhnDgIv8kZYOEIUMiEs6IgYQk4DcHQJfDdBqB++p2Y4Zy86MX7P1s+Y0agb2icbmT5jKAuB6WxQlAlGfJ1dWCouphbMpDIjQgTEoKbIjBfdsHX8xAUWiCVBeDJ9YDl3Acx2Z6iafrof7902x0f/OPB5Stee3jz8ldmbFn2+v0rPpz3wL3IVEfZmc1nyMh5XyE+RANek7CQTgEJ+YA5IKIAklRgxACsJIaFhvI/rTbGPghtJ/+zvJO52nbsm63AvtamzrQA+ecAYieBir8jnNh4oqsPNrNjLJGiwhKZUq5hwqzqpU+9u/XdJ5fqOmQwCzHGIAvHE2kMzckNAs4wl7zQC4kEzroFf1q/ZsEfP1n/zu1rhUNy46kUJpIiW27TZGpis3wHaQlNlSSQw9BZuXnZ71dgnJ9fUBjTbDuPZUkSn733dC79x17YN23Jz2tm/AggFImjMB5LJA/L5NgTPSsu6d8kvMUNSwpigQjiGAg3i0mLop2Pw46fngga8k+ZqdT3dLGzyrqBhUm8OGfL9w6uuPz0nYQ7HmRN4Ug0VJLF2JLoLrbYQQKHj7vyO3lffkjWNNOneRxwW1FU7WSwzScOm3BZUUS39NVnNq6Z88yy1W89tnD1gocXfrz4vkUA2QWebzu6rgJHDMS4xRHt3kDTUohSGbI5X0QJ4KiaxiO6JW/e8ccVc2f8/t23Hr1l2b+e+HeEawaJM6QpKiAahq5teyEG0lzWnFeID1VlJ0w6SUqmnnRlZTTRC/zaLTknsNU6gxb9fuvM2T/7uGrWHmdVsCO5jsfFQEGKLHNChNl34HfPIv1FfMByWTcvDOrGEyka0ax97Zk/rJr98M3LZj9y85uvPP1ehGsJpincFPUQwpQZuqq1LPu8Z2EjQCBiUVXRNR1q1i+7f8X65c++88k7Vcvfm/fCyv3x77Mj9scUlY04/tzrfaz9yucYQoSACUkci7ZKIWBCQRyHgEQY+H4aCLLA97ZATHfXY9Rw2sK/318dyYhg+YyX7Q62dlUHnPgLzbhiRaBQmCoD7nJgbiAcHQMhXsigQHgIPLBExOUANRmA2GEHBZm3IVF7zJqXb/37+1WVfiRzbxCVffbmPX9D+frxNLf1zVgUUQlZGCgACgVQYUJRX+S0JPGKJcCyfskU8WUGvkBycLjckYJHbc+736Lh8y5zV/mhG1rY7RUE7uGN+XRvQ9J3TjiCFGZZYllklAFDwqrbK+cBk+LxOLKyuVCV5e3IHXemKeAh8K0wJFnfN7uNua5D54GXdOo2/Jq+qh6LZS0b5xzHNWOGMBoAFmdWnAScMgfrhqZIhKNIlNiRYOZ7qippKAhEgMeUnfVH5UeLT9IYF89KlnQ5wgmzjuVtcfyg0XatnNK5rFtfjrTnB487Z5e/hcNYBV+YV1bjWCbGLvJApH6jzuqa96S/Jks7nRwgTrY0bHGFTTLEiNmyXlhYkw5vPmzE2WcK0p0Xkw1wKGeNrsWFn2hyEDsLxcPgist/mHOUB4rKunbNZmopp9mtmsSCMPAwwuZYXS7/27Djr+ksSPe4FKIRBYhChA+kNuWBK8409qDajvDEGqFqSeYjFftEkzJ+KG0v2fedizjTsx1VVYiIDQEkpUAMwF3p58ypDFNqyXCvnhTgfMqHhhTVaa+NMb/rLShfuuzQ71zesf+kS7uM+M6Peg069vyOu3IDiGUOUIywRi+N7dBq6tvdaaJ3LzAYkWLU8znizJRrGoTrjAo+BxzOcSi8rhX6kguyOebk648ZUDFteM8RPxw5dNIVI/tVTB09bNwVQ/Y2d3KOz4HIFKmyqFdsqT6nrpbFuOVLa5+HTr7w5w5N/kaLd0IUG2JOSSD6FihmAEjYXkx+jAKQRJ4U41OCPGDesIHgxlPenfPIZ7BbWnhblYO2NFxaymMvx3wJYlw4a5+BJPbFzaQIcUAgHArywMcWOIoDjmmD0QNpPJYNmuk+L18z+45tBQk4AzF7BUI+gNA3mqpM6MpBOEMBTNTDEAaOpf4fbksMgC+QDCX2soq0DyQNvyNjWCJL0mykkseAw60e8/9k6MZd9dnc1OYqAs8Twb4PREJUkVVh0O0lnhcEvu+GuiZzJ2/x7djt94znYkokUHSTqLGCIyzLfZuYiXfznv+669L+MTNF4rGYQsWqHnEQyeKqisQRoUddJxeK6CpCA8ulsakS0XwRUVHGZPk/TnHUxAuHA9ZeEGc03QARPZPbXBewmhusfPUlpobqPMtRY0qyj+fSh4eO/e7IJoHi5vlOoOuGUD7AnqhRoHZefYacXKwbpU+GoEzwKZMtN29rGqmKx/Wz6utrP2YYk8LyLl2Em77zsLFnnNPM6IYssDybJwuSqmIqYTM+yoeOuehcl2t3p4rLSj3fFmMmtxFD5oJM7fo7xNcHLuwg+y4bZVvsiZHjL+sW8bQEcVaIEHVD7vpQoJk0rsR2Tvbhx/9g1NCTrvjd4Ek/vWXoxGtvlJB2bc7yjEQiJet6LG7oRVf0O+bqXx85/sc3DBx3+W/6HzPtpqO/++PfHzH+3N+NmXTWj6J6VJxgimhkNp9jkqabDTa5stuYy38zeOJVvz167CWVY469bEJEB646NMaKyulWNU636klnvdK74SP4P78u+a8t1f6CgBd8mLPJKlkrfKqJvsUtJJxZNCcOrxUsm2Kk7SgbdNyZZw09+We/Pnz89b87ctwtN2GWuBZxHitIpmRTLYgZpPCSQ0ZfcUP/ydfccOjoa357xNhrfzd68vW/G3PCz249esK0myqEc2wSxSWsapoaSyRlP5QHfLw+PdO2zZcl1EFkNRwAABAASURBVOHvdVn5JdeNPf/Rpsa/rK8t2+NvWAMaiIXQ44yGQeSwm+S18oZbSbeTbMiJV013WcdKn3eBtJ0ChhPASBQyy0A5B8YYcBYAogEAtSGf3QZubstnEkl/Z8E/H3h3p6DdHlbcNatW22SdVxgYs2m9CwpoICsGANq+WImABwBTYDIFX/bBlWyw5DQ06nVDrdLsM0dMO7EAWpkWv3THNsVAl2fcxnqOADinokcFCIfFIBCuikLkfBGWkpziya0Uu1eyZKKgLJFIFSaTBd0LUiVdi4rLOxamyjrEkqkyw4wnMcYpCUvCa0JTwpJMMEYUGMWcCY/dhAXQNQ17dpbHTFWVtcjL7igQWcIsAOHV4rKkKxJRE7qeLCsqKC9KxUuKEmZKt7O2+MSHDRXpXJADDT0UuI6qERDDjnKV+MIKAJrmgsRcZkiUyBCCLMsReRPkrbynmwklDCPf4IYYp3+9beHDt1cvfeC5fHr9OTqBTYYitgdOIGMhsokpuqGQ08DhigwW575YhSJkEwAmEnc8JKt6ggW+lwu8zL1JM/+TbXN+uUjX0YUs9D+inMh6THy1YnLT1i3iDMAV9sCKsE+YzVlShGuGgAd+EFjig2IW4mZQ2yFBz93w9p9nb1v56PUoTN/kWnVuPI4gl9tocCMXNvPtzGmdbOqEGxiBn7cju+7cpuWQMW6rjS7Ky4kr0ly5YnPG+l9KPaLLWFZV1axvtL/rBfq0bM64lJBeVxLc6ye5dOnVCul9DWKdLo3qsAMARU8hJmEUIGSAVPg9SS671A/Na1yq/STvsIqIDjmarHlJVgqdlTJ2iN5Z6mP0Tg0pSqJOHcoSvcriapmKcUJH2ECVlZU44mkGLAdxovGgMbtNRsjd2Ymcqt/P2/xaRUv9nBDtatfxz+aBp2iYEF2KmXaGnYx5clo+DZdiHr+Mc+NyOy9d0VAXXur7+tRsjjX9BhERBYUhUxgFXFbaGRcWd+qm60XFRUVdClQ1WRRPFpSWlpcUBbJobLNSO/JUzOCaiiUcOkDAbxqPO4o+N9ulkZ9H3X/iRee7gXkzRUkVyQUQcg0oqMA5EZOdgIQkoQACggBkxECMWiiMS/UyeGcseeWJ/e5HQaQl97xQb9T53zMdMlvjClBXRGmMiMkFQKl4FjSMCEdCQqDIBwfbkGb1QMrlSeahhc+P/8XZnQRJq66lg/RFBNF/NhFzSbSh2W6sCYWwDJhoYCRT45sQbbwRYRMJE5CEPJkoIHEZMBARaeKsqDQvxGYdz9veOACUzef8opLClJnQdSIRD6I0ZKrsOZ6TSMQLGfdUgkGCFolxh6VM2fJytW7oZHLUzWYzdZvzoZ2u97N1DTpybA15aS+7pYnLSGKKvHxWRR5TZI+5fkaNClRVFtvMrWJhthjQTMj9RhThI1i58JkV6caNF+TS69+z0p+eW7/0+ScifASfLn7kn4HdeLrTWLMuVaBdv3j+S29G+AgQ9ykhru44tXFNZUqEa4YPlrxQTz1raj5b/67gv9WUw19/POsuPyrfPJetlCXnrMBqWGllGu+CePKeCB+BCkEQV6nEnEatwIzJEa4Z3p33yFO66t9qpTcstTPrv7vqjZnvNJe9P3/GzSho/H3o1W0uKFYuXfj3x6qby5pzhrKhY9dZLMj7sZjEhd/a3geCQNEVnCpMFVHOVSKhRGlhMp4U8zbI1viGFOLCpGqaBk4ompRwPFthGCGsqIAkGTuO09THihnnTuBzEbYC1gwUUjBl1TSjKAUIwhSCJptLYuGPYVkN63PiDN5xcKPr+dsynsmRz8Q+Mp3e6oWB5YvNuiec1fZBK3SMLkUSPjbMyamEBCqmOMJFEFN1rElExswHyrJyUQExFZL3rOwGX+IuLU4ltbhuGJqsmIHvELHycXFuCoau48D1SPOgU3noozAvGOucrdWfpq1MfR0N7Nqtmz6rY0Gu3nUy9elMbb3EvKa2RHU3Q+BlVA15MqFZBH56p22by/eX72zI/oiisqNPmHqh78s3S0SPYbHuMmEPL/SAMQqcISAMAxJOi4hQhYh5j3gImNpWumbjqe/Mf0QcXEKrktgSNhR46NwSUrBGCTXAkSMRc5MCAlETCPFNcpCoHwMHI65DdboGqlluXF0B2eMzbhPx3m6VlUzD/B6ZqwACEIhc1AMCOCMgRpOQroJt0QF7Y28tzso6k92se2xouROCbOYYt7bxMN/KpBI160rWFbxX8lHy30WUeb8T8kTHViIpYd65pW5zr/Wb13VhBP8SKiol6NEoHukvLT/XxXW9Lh5HvxX00YWGCEem4Pzrild3dBJn+5YW5PolUu4Ak+R76XjbgAJ1W3+ZNhzq1n/cr3sK3oiYVr36uFVkOBNDZ+thup7rj4qNJueSZJurC4vUETTIHFZUFIwpltmaiL4ZVs574O/FZv3kT+c/+mQzrjn/YOGdCzDKDF/85qPPN+NEjjTdXQa09nxVsb9PcGb67n80/u/F961WgobTSjzpps/mPOIKHi5AXJXskznK+7qSPbGE11wvnNjOgZ1QwuVu3cdn6Ch7hhTkrxLEu1y2tvlWM2ZN/mD2wwt3KRAvaxc9dAu1aoaueO3xvX5JW/HaM5u7lBVUINTYQzH8EZoszxFsTZfC7I16mF5RrHhrO2rhiliYeVfO1SwkzraFCt02D8L1C1z3kwWytnURV6oX2PTDBaH02dytmXdm+7BhaSQkbW1CDrUYQ4T7AWOqgt63c9ULPbfuLRo2LNRUf2NEp2vWzdTbcm5JjF5cpOQvMFDNOSWx3LngfHZeXKu72NDrzydK3XluetOfIvqWIAfu74PM1rMNsM4uNKRnmsu8XM1KjWXnMmfTgpjSsMC23p+PYeMSXa5brkiNS6m/bVE+v36JaPsCRc4scKzPFlq59fMkaHiTsMxCgvJNny67aOqdRtDQp8z0DilNWL06FId9dW9bv07lQb+ypNtXk/IDO3XQRy6d/UhTm5vrj/JOxeo0k1s9Y7ShX1HS/02Eay3g1hCOmnzhCRJKPRDTi8sIiGjKC4H7IZiqDEQ4JQI+EAiB0BBQ4IuIKA9iRaz2ctumrFryyM5fZ7emrohm8S1/3SRvyZ9YghJr4twEHemgiHplAQoVd0pAZxIYSAFRPSixGISqAo3cG3HkTRfPnPTTn5qRnM+DVa/esVhCKL890kHCuXLglAEPObAwyqMFiyQrTrkqBW1My165aenaOZWzP5lb+ea6uTe9vW7+LR9++vofssuXzwigqopGsGnhQw1CvJiklezDN26q3jDv9582LL5r07Z5t30KcyrDiGbd4ju2bZx/y+aP51RuWv/27dtDJOFmIznC+dSseeOuT9YK/IpZd9V+MPue+lUL7q/5YMlj9avn3df4ofi0/P7SR7bO2e4MRFUAS2c/9emauTM3LhdfTJsdwZw5c8JF/3hw7aq5D65b+urMjS3pm5jEbfGcv24S2V6vFW/P3P0LFV/xysMrP174UNWqN+9+ftW8516O6tiNmX+w6JHPonbshhevlWzlG/dXL1xY5YiXndeyVx9fs3bxU88sm33/M+8teu7lnQU7Hj6eNct775WqyKY7MLtmK+Y/s3lXzK5vr/z15i0L37iteu4/blk7a9ZdXnPp4hdmzlzy4h2DF794c783/vbbwUvm3Dp26YI/VqxedNe4Za/fN37V7JnjP5z3+PjVr90/7oPZ90z4ZM794/49645xmxY8M3Hl/BfOiuRosRBLcoAkCYsgB9wCjZ+zYd6fxq949ZaK9xY8OnHJ7Mf+HNEtfeWx11fOnvnsyjfufGHV3Ftf+mDRbS8ve/Omv61dcs8L775xd9Wq1/789OpXHnrqnTdnvhLRt4Rls59+be1bjz+++OX7H3/9xQd3Otulc//y84Wv3XPMirfuGTXvX7eOWj1/5rgVc2dMXDX//gkr5/5h4vsLbpn8yaL7J66de8+k9xfcM3ntkhnHrX3nkeMWvnXvcauWP3HiwjceWhLVE9lk+dsztix49f9qloixtvCV2xqWL59R97YYexFEfbZcjKuIdnd4e9bM2qVz7t26Yv7DmxfPejK7e/n+3vH+CqOysePPGevm4c/gyyAzTcQfGkR3KQQggQcadkFiFkjUAe7nQEEBpDQEGNLTVix6YBa0MS3/Q9UGYys7sWe8k2V4KhALQyzQIe6qUApxSLgyGEInHSUAMxVAOC/KMeS4f67SJ/XqKZWtdDDUW0E4A8wpIBYIh0uF4+ViG4sAIyTkIvDssBzanrhg3RsI9Fd7HT7mB/36jrlqcJ8J1w/tNWL6oMNGXzHk0FE/OqrvqOnDB4y5bPCI4y4o/Go1/PJqH3HS9KMPm3zViEPGXTnskHGXDes7cfrwfpN/MvqwyT+vOPS4a8b1P+mXFYNO/OnEkSde0v/446eLAXZguvSruOrIrsOuGNJp5KVHVkTRMWxPcmCLRTEXYpbnMVmMN08c0G4v+krvh446Pz6gYnrnAQPOMr+oIkdPOLvP0AlXDh054SdDx449q/sXldfMv19nNWDY8Z3FLL44HtM2lRQa78rIehfzhhUKTi8ujHsLJV6/ILCr5ysoPZ/QxgVlBcpy5tcvDPzas96Z9+c9VrzmSlubL//D4xvQhuzYIkeZ000rfbezVvJpV61kazlP1R8a65IfWNzb6mV2so8o7p0vR7Ga3gXl63qXdc7l6moOIUj5bmvqUVHudbFvX6yg7CIFW4tUbC/Sib1MJq74euct0jVpsR/6QWtkfdNodMm4h8RTr2E1Pl+Llb9i+8prerzsTawVvuYy9aVcnvf4prWptfo2pvlLFArfCEnRv3woe9Wmxa/WN5BZlkf+5oL8T4uj1ywgL+c9dMGsFtFVa+QfPua8fqEvv1pc2O2teKxs1np7w39+MMscn7mNm5ldswl7dXWM1YoVsTVSvxyaIcdN7XDoyItuB55aYPvSbCcZW9Bv/NQbOn+Bf0034NJUTs3ZnMWXeH7s5oOl+X6d1arFszbNff2xH8z5190j/vbsLwbNe/WmQfP/9avBi1/7xfC5L181csXsG0a9P+fW0Sv+dcuYd2b/fvTsv14zdNlbfxy5YPYdTxwsBd+unPnOyl8+OW75VTMHdy5q7CPVde1ymEw6FG2uL0p8lCzs63op9FG84Lt1HTu8ddH/9RheTVJvXXtn5+dvuOXR1ujw9qwbb1zyz6tHLJ91w4h3Zv16xDv/umFE99iq4d3jy4/uEl85evFrN1csf2PGJ62R9U2jwZJaIE5pkwEEcp7Z8YIOxck624oFshYDI2aCbHzTmtRqfePFBRKAoppyQTKpliYMVBAvSXWKSUSXJVWTsSZJLguBIYm2WugOQkRlT5LiMcYUtXZbDsx4YRRZN5W+9+azK8vLYEQhzg01UcOYNXOfaTqjair8L9/6f+fCMknp9KIW6z1dMbr2V82ufZBcfkTICyvjeufnhh3/g0RbVGJM0gJvs6SCAAAHLUlEQVSkKiHRIZDEF4a2CNkLz36d1V7o94WKOqMZ9kXzRfG86ntVdE5lZTjj4hlBVWWVX1VZ6UfPEa6yspJFFTTlCHj03EqIaCPYSV4lzpKaQSB3KRPvX6vriyjjuFZjGFh1nDo12XTt5q11W9KJwgLf8gKed6hvB9/KgLLJZCG1XNuprW2s27Axm9m0paZu3TaL1W+ttj+zG0F8RJUz4OoO0BgOmxgO4KZqKiTiCRJQcTSlGh5ADFqmJS88Vr949oPblsx+rL4l/r/9HDrqxVlHORqkAnBCknEZSlOuuUWl3Wguz0Y15s0L2qKTL5gChCAUQCXloEWOB8tZCfXar2+aBTiyLzUUehzNbplcVGCcZCrSRflsNitj2WaMU0WJfWsdtao0ntaplJ5ySNfwtNLO7mmlfcNTvNT660i3/KZc0ZY6u6ihMRerr69FG1cdaL+m0zZiEIJPnSDneEHW3f6zhQOV82XSDxFfkX1fOTUIcVDT0FgXQrBCVfENXuiu/uyzDTnDSCiabrbtP/hAPoTIYwGh4PKDt+C1O6svc0R8zWWvmfvs2vdeuWvl+oUPrfjo9dvXyr63SBaHDTLBpqmqBve9g7Yqft1Msej5mYuXVN2+cMnzty1bUfV/CzNydalfnL1c7kI7xLrKcaOIy3qcZgpT8h5/G/d5bSkrM7jjZUSA6uRVQ4ecQ3sMrvhRr1Hjrjy0/8hzekYH0J8n48sud+KSijjua5qmTAPHSaT0u0vthntlWXoAI2TJWDeZj3q3RQ+KOOdi5DCExRa4uFvPsZefPnDS9POHTp72wwHjLjpt5PgLurVFbruzaovVvqU8BtigcopNAuKrqIcURL+1kVVzF3b+0RRdm3rKb7Id2d20I+njqi5rzGzL1376yZsFLpsq5djaZtrW5pu3bKScu4ioFIeEFXJFv6e6MXyr1oK3iN7h7bocfay1svZJ9wUKpkR/71pS68uIpZnvgK7gQh7mTqgxoD8PvYkxTS+WQQEZ1HSbqhG+SngrGYEGmQzpJ/GOD0nQ5UEadnoosJMPKErxmLbIbXdWbbHat5THyueQzG1x3p4OY0oohlwefUub2tSsvqef3j/thH9L9Sm5GiXV0gAD83N2VuXSXzoaXc7/5KG/zn+/qio6gmmib+1N01IgggpBjuRUIqkZRrzQTJQkZSOVpJyUq7pZIAq/sis6j43axYPs85IUgqJg07HzUxrr0q8YCvkfEVUrrpXOykD3+PFva5QmIaYy50CAQ8Iw1YQRNzlFiPtMMRQ1BpRJrZGzOw3eHdH+/v+vBRDPKH5+04Ygt35jY82HGwhzv7Xjo/upJ05xiuGpZAe9wrMbvdzWxm35f9cs1/LxG7uwXj/fPOPpOqisbFP7864vU0os5jEvzPlZL+vlQ4oyGTtfbweZRp/b4tD9qx9nGkrfa9kN6xVTsRTF0IqSJaWmokHoZ0WAVbOWBumH26JlkPeyxLfq7YYNG+uqP/ioZusHHzfWfPRp4Gz6qGHb6g/y+fVtan+bOqMtDWjn+fpb4N+rXl23dvlfDn9v8VM91q16ccDKhVVNv1j++mt+4BoqhUXX5alUnGvkaadOqpGtgrdK4v2nup2PfKZzURE9cIn/4dj07lMfednqyTiorSBu9aTSmDNR4g2TTdU+QQXr2GQcnf4f6q/uaeX859+jQcNJ9fUb3nSyNXbgNebqt31Wx/2Gp2Kqf9by+TM2tEW7j1c8fcOaebeXf9x1Y/eNa+7ts37lPb3XrZ7Rc83SGX3WffjSgGULn3u6LXLbnVVktXbYqwWazjb2WvLNR/qNpDCsNwxnfQoHmzoUKJke41Fdx1nFy/iS9+e5Kw+d/IsNgxZbnxx17NTr2tLaT5Y9vmbd4vtWbVp+9+q1c25e8+nC21b/++37Vq19e+Y77/zj8QM+B2uLDq3h+WTBQ2u2dt36P6aeHVuWdE8xTee41fPvPevdxY981Br+/dJUVdH9lh9gYbuzOkCD/f9EHp1tfFvbqzJdVhwdJ8JiJeWV6Em/pFB3E73iNNW7UC3rqaNEFwXr3XAIXb+tNtjZLuFU1sx+cNXcl+9+Y/XcR1bvxH/NHtqd1desQ9rV+e9YwCSyZjAsJX2ODNujUi7rklw2C1YuUEPXb9y20XazDRlCuP3f0ai9ls+zQLuz+jwLtZd/Ky2gBO5jipd5MsZzTyeg4dk4z1TprOE5HdIveNamv/Q5pPBZFKb/JmN/+bfSAN/ARrU7q29gp7Wr/MUtsPClP1/14eyZF6169Y6p771519T33rrt4vfeuvWi9+feesEH8+45/7W//ub8dxc+ce7cV/f8t7u+eO3tEtpigXZn1RartfO0W6DdAv91C7Q7q/+6ydsrbLdAuwXaYoGD6KzaUn07T7sF2i3QboHWWaDdWbXOTu1U7RZot8BXbIF2Z/UVd0B79e0WaLdA6yzw/wAAAP//93MmNAAAAAZJREFUAwAYJEjQovjt+wAAAABJRU5ErkJggg=="/>
+<img alt="태백시시설관리공단" src="data:image/png;base64,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"/>
 <div class="logo-title">TFMS <span class="v32-classic-note" id="tfmsVersionBadge" title="클릭하여 업데이트 내역 보기">v36.3 Stable</span><small>시설 유지관리 이력관리 시스템 · v36.3 Stable Enterprise</small></div>
 </div>
 <div class="user">
@@ -11915,6 +11915,253 @@ document.addEventListener('DOMContentLoaded',function(){
       </style></head><body>
       <div class="dj-sheet ${esc(sheetClass||'')}">${content}</div>
       
+
+<style id="tfms-v4434-unified-detail-style">
+/* v44.34 - 설비 상세 중복 통합 + 전 그룹 선택 동기화 */
+#equipment .tfms-v4431-summary-card{display:none!important}
+#equipment .tfms-v4431-tabs{margin-top:0!important;border-top-left-radius:12px!important;border-top-right-radius:12px!important}
+#equipment .tfms-v4431-basic-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item{min-height:66px;padding:11px 14px;border-right:1px solid #e7edf5;border-bottom:1px solid #e7edf5;box-sizing:border-box;background:#fff}
+#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item:nth-child(4n){border-right:0}
+#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item span{display:block;color:#74859a;font-size:11px;margin-bottom:5px}
+#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item strong{display:block;color:#102c4c;font-size:13px;line-height:1.35;word-break:break-word}
+#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.wide2{grid-column:span 2}
+#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.full{grid-column:1/-1;min-height:78px}
+#equipment .tfms-v4431-titlebar{margin-bottom:12px!important}
+#equipment .tfms-v4431-list .tree-item.active,#equipment .tfms-v4431-list .tree-item.selected{border-color:#2f7df4!important;background:#edf5ff!important;box-shadow:0 0 0 1px rgba(47,125,244,.08) inset}
+@media(max-width:1200px){#equipment .tfms-v4431-basic-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item:nth-child(4n){border-right:1px solid #e7edf5}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item:nth-child(2n){border-right:0}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.full{grid-column:1/-1}}
+@media(max-width:760px){#equipment .tfms-v4431-basic-grid{grid-template-columns:1fr!important}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item{border-right:0!important}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.wide2,#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.full{grid-column:auto}}
+</style>
+<script id="tfms-v4434-unified-detail-controller">
+(function(){
+'use strict';
+const BUILD='v44.34 Recovery Stable';
+const $=id=>document.getElementById(id);
+const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+function store(){
+  try{return window.assetData||(typeof assetData!=='undefined'?assetData:{});}catch(e){return {};}
+}
+function setKey(k){
+  k=String(k??'');
+  window.selectedAssetKey=k;
+  try{if(typeof selectedAssetKey!=='undefined'){selectedAssetKey=k;}}catch(e){}
+  return k;
+}
+function getKey(){
+  try{return String(window.selectedAssetKey||(typeof selectedAssetKey!=='undefined'?selectedAssetKey:'')||'');}
+  catch(e){return String(window.selectedAssetKey||'');}
+}
+function current(k=getKey()){return store()?.[k]||null;}
+function val(a,...ks){
+  for(const k of ks){const v=a?.[k];if(v!=null&&String(v).trim()!==''&&String(v)!=='undefined')return v;}
+  return '-';
+}
+function money(v){
+  if(v==null||v===''||v==='-')return '-';
+  const raw=String(v);
+  const n=Number(raw.replace(/[^0-9.-]/g,''));
+  return Number.isFinite(n)&&/\d/.test(raw)?n.toLocaleString('ko-KR')+'원':raw;
+}
+function rows(a){
+  return [
+    ['제조사',val(a,'manufacturer')],['모델명',val(a,'model')],['관리번호',val(a,'assetCode','asset_code')],['QR관리번호',val(a,'qrId','qr_code')],
+    ['설비분류',val(a,'category')],['공간/구역',val(a,'space')],['설치위치',val(a,'location','space')],['규모/용량',val(a,'capacity')],
+    ['제조번호',val(a,'serialNumber','serial_no','serial')],['제조년도',val(a,'manufactureYear','manufacturedYear')],['설치연도',val(a,'year','installYear')],['설치일',val(a,'installDate','installed_at')],
+    ['내용연수',val(a,'life')],['작동형태',val(a,'operation')],['점검주기',val(a,'cycle')],['관리상태',val(a,'status')],
+    ['중요도',val(a,'importance')],['위험도',val(a,'risk')],['최근점검일',val(a,'check','lastCheck')],['이력건수',Array.isArray(a?.timeline)?a.timeline.length+'건':val(a,'history')],
+    ['취득금액',money(val(a,'purchaseCost','acquisitionCost','acquisition_cost'))],['예상 교체비',money(val(a,'replacementCost','replacement_cost','replace'))],['담당자',val(a,'manager')],['비고',val(a,'remarks','note','memo')]
+  ];
+}
+function renderUnified(k=getKey()){
+  const a=current(k)||{};
+  const title=$('tfmsV4431Title');
+  if(title)title.textContent=a?.name||'설비를 선택해 주세요.';
+  const badge=$('tfmsV4431StatusBadge');
+  if(badge){
+    badge.textContent=val(a,'status','risk');
+    const t=String(a?.status||'')+String(a?.risk||'');
+    badge.style.background=/위험|수리|사용중지|폐기/.test(t)?'#ffe9e7':(/주의|점검필요|교체예정/.test(t)?'#fff2d8':'#e8f8ef');
+  }
+  const host=$('tfmsV4431Basic');
+  if(host){
+    host.innerHTML=rows(a).map(function(row,i){
+      const name=row[0], value=row[1];
+      const cls=i===23?' full':'';
+      return '<div class="tfms-v4434-detail-item'+cls+'"><span>'+esc(name)+'</span><strong>'+esc(value)+'</strong></div>';
+    }).join('');
+  }
+  document.querySelectorAll('#assetList .tree-item').forEach(function(el){
+    const oc=el.getAttribute('onclick')||'';
+    const m=oc.match(/showAsset\(['\"]([^'\"]+)/);
+    const kk=(m&&m[1])||el.dataset?.key||el.dataset?.assetKey||'';
+    const on=String(kk)===String(k);
+    el.classList.toggle('active',on);
+    el.classList.toggle('selected',on);
+  });
+}
+function syncBuild(){
+  const b=$('tfmsVersionBadge');if(b)b.textContent=BUILD;
+  document.title='TFMS '+BUILD+' · Enterprise UX';
+  window.TFMS_BUILD=Object.freeze({version:'v44.34',channel:'Recovery Stable',buildDate:'2026.08.07',title:'Unified Equipment Detail'});
+  try{const u=new URL(location.href);if(u.searchParams.get('v')!=='44.34'){u.searchParams.set('v','44.34');history.replaceState(history.state,'',u.pathname+u.search+u.hash);}}catch(e){}
+}
+const prevShow=window.showAsset;
+window.showAsset=function(k,el){
+  k=setKey(k);
+  let r;
+  try{if(typeof prevShow==='function')r=prevShow.call(this,k,el);}catch(e){console.warn('기존 설비 상세 렌더 오류를 보정합니다.',e);}
+  setKey(k);
+  renderUnified(k);
+  try{if(typeof window.refreshEquipmentPhotosV4430==='function')setTimeout(function(){window.refreshEquipmentPhotosV4430();},50);}catch(e){}
+  return r;
+};
+function bindList(){
+  const list=$('assetList');
+  if(!list||list.dataset.v4434Bound)return;
+  list.dataset.v4434Bound='1';
+  list.addEventListener('click',function(ev){
+    const item=ev.target.closest('.tree-item');
+    if(!item||!list.contains(item))return;
+    const oc=item.getAttribute('onclick')||'';
+    const m=oc.match(/showAsset\(['\"]([^'\"]+)/);
+    const k=(m&&m[1])||item.dataset?.key||item.dataset?.assetKey||'';
+    if(k)setKey(k);
+  },true);
+}
+const prevRender=window.renderAssetList;
+if(typeof prevRender==='function'){
+  window.renderAssetList=function(){
+    const r=prevRender.apply(this,arguments);
+    setTimeout(function(){bindList();renderUnified();},20);
+    return r;
+  };
+}
+function init(){
+  syncBuild();bindList();renderUnified();
+  [100,400,1000,2200].forEach(function(ms){setTimeout(function(){syncBuild();bindList();renderUnified();},ms);});
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
+
+
+<style id="tfms-v4435-header-responsive">
+/* TFMS v44.35 - header logo visibility + responsive account actions */
+#appHeader .top{
+  height:72px!important;
+  min-width:0!important;
+  padding:0 18px!important;
+  gap:16px!important;
+}
+#appHeader .logo{
+  display:flex!important;
+  align-items:center!important;
+  flex:0 1 auto!important;
+  min-width:0!important;
+  gap:10px!important;
+  overflow:hidden!important;
+}
+#appHeader .logo img{
+  display:block!important;
+  flex:0 0 auto!important;
+  width:38px!important;
+  height:28px!important;
+  max-width:38px!important;
+  max-height:28px!important;
+  padding:0!important;
+  margin:0!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  background:transparent!important;
+  border-radius:0!important;
+  filter:none!important;
+  opacity:1!important;
+}
+#appHeader .logo-title{
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  min-width:0!important;
+  color:#fff!important;
+  white-space:nowrap!important;
+}
+#appHeader .logo-title::after{display:none!important;content:none!important}
+#appHeader .logo-title small{display:none!important}
+#appHeader #tfmsVersionBadge{
+  flex:0 0 auto!important;
+  margin:0!important;
+}
+#appHeader .user{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  flex:1 1 auto!important;
+  min-width:0!important;
+  gap:8px!important;
+  overflow:visible!important;
+  white-space:nowrap!important;
+}
+#appHeader #topUserLabel{
+  min-width:0!important;
+  max-width:270px!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+  padding:8px 6px!important;
+}
+#appHeader #cloudTopBadge,#appHeader #roleBadge{
+  flex:0 0 auto!important;
+  white-space:nowrap!important;
+}
+#appHeader #topLoginBtn{
+  flex:0 0 auto!important;
+  margin-right:0!important;
+  padding:10px 15px!important;
+  white-space:nowrap!important;
+}
+@media (max-width:1180px){
+  #appHeader .top{padding:0 12px!important;gap:10px!important}
+  #appHeader #cloudTopBadge{display:none!important}
+  #appHeader .user>span:nth-child(2){display:none!important}
+  #appHeader #topUserLabel{max-width:220px!important;font-size:13px!important}
+  #appHeader #roleBadge{font-size:12px!important;padding:8px 10px!important}
+  #appHeader #topLoginBtn{padding:9px 12px!important;font-size:13px!important}
+}
+@media (max-width:930px){
+  #appHeader .top{height:64px!important;padding:0 10px!important}
+  #appHeader .logo{gap:7px!important}
+  #appHeader .logo img{width:31px!important;height:23px!important;max-width:31px!important;max-height:23px!important}
+  #appHeader .logo-title{font-size:19px!important}
+  #appHeader #tfmsVersionBadge{display:none!important}
+  #appHeader #topUserLabel{max-width:180px!important}
+  #appHeader nav{top:64px!important}
+}
+@media (max-width:760px){
+  #appHeader #roleBadge{display:none!important}
+  #appHeader #topUserLabel{max-width:150px!important}
+}
+</style>
+<script id="tfms-v4435-header-patch">
+(function(){
+ const BUILD='v44.35 Recovery Stable';
+ function sync(){
+   const b=document.getElementById('tfmsVersionBadge');
+   if(b&&b.textContent!==BUILD)b.textContent=BUILD;
+   document.title='TFMS '+BUILD+' · Enterprise UX';
+   window.TFMS_BUILD=Object.freeze({version:'v44.35',channel:'Recovery Stable',buildDate:'2026.08.07',title:'Header Logo & Responsive Actions'});
+   try{
+     const u=new URL(location.href);
+     if(u.searchParams.get('v')!=='44.35'){
+       u.searchParams.set('v','44.35');
+       history.replaceState(history.state,'',u.pathname+u.search+u.hash);
+     }
+   }catch(e){}
+ }
+ document.addEventListener('DOMContentLoaded',()=>{sync();setTimeout(sync,400);setTimeout(sync,1300)});
+ window.addEventListener('load',sync);
+})();
+</script>
+
 </body></html>`);
     win.document.close();
     setTimeout(()=>win.focus(),200);
@@ -12247,6 +12494,124 @@ ${getPrintCssV401()}
 
 
 
+
+
+<style id="tfms-v4435-header-responsive">
+/* TFMS v44.35 - header logo visibility + responsive account actions */
+#appHeader .top{
+  height:72px!important;
+  min-width:0!important;
+  padding:0 18px!important;
+  gap:16px!important;
+}
+#appHeader .logo{
+  display:flex!important;
+  align-items:center!important;
+  flex:0 1 auto!important;
+  min-width:0!important;
+  gap:10px!important;
+  overflow:hidden!important;
+}
+#appHeader .logo img{
+  display:block!important;
+  flex:0 0 auto!important;
+  width:38px!important;
+  height:28px!important;
+  max-width:38px!important;
+  max-height:28px!important;
+  padding:0!important;
+  margin:0!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  background:transparent!important;
+  border-radius:0!important;
+  filter:none!important;
+  opacity:1!important;
+}
+#appHeader .logo-title{
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  min-width:0!important;
+  color:#fff!important;
+  white-space:nowrap!important;
+}
+#appHeader .logo-title::after{display:none!important;content:none!important}
+#appHeader .logo-title small{display:none!important}
+#appHeader #tfmsVersionBadge{
+  flex:0 0 auto!important;
+  margin:0!important;
+}
+#appHeader .user{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  flex:1 1 auto!important;
+  min-width:0!important;
+  gap:8px!important;
+  overflow:visible!important;
+  white-space:nowrap!important;
+}
+#appHeader #topUserLabel{
+  min-width:0!important;
+  max-width:270px!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+  padding:8px 6px!important;
+}
+#appHeader #cloudTopBadge,#appHeader #roleBadge{
+  flex:0 0 auto!important;
+  white-space:nowrap!important;
+}
+#appHeader #topLoginBtn{
+  flex:0 0 auto!important;
+  margin-right:0!important;
+  padding:10px 15px!important;
+  white-space:nowrap!important;
+}
+@media (max-width:1180px){
+  #appHeader .top{padding:0 12px!important;gap:10px!important}
+  #appHeader #cloudTopBadge{display:none!important}
+  #appHeader .user>span:nth-child(2){display:none!important}
+  #appHeader #topUserLabel{max-width:220px!important;font-size:13px!important}
+  #appHeader #roleBadge{font-size:12px!important;padding:8px 10px!important}
+  #appHeader #topLoginBtn{padding:9px 12px!important;font-size:13px!important}
+}
+@media (max-width:930px){
+  #appHeader .top{height:64px!important;padding:0 10px!important}
+  #appHeader .logo{gap:7px!important}
+  #appHeader .logo img{width:31px!important;height:23px!important;max-width:31px!important;max-height:23px!important}
+  #appHeader .logo-title{font-size:19px!important}
+  #appHeader #tfmsVersionBadge{display:none!important}
+  #appHeader #topUserLabel{max-width:180px!important}
+  #appHeader nav{top:64px!important}
+}
+@media (max-width:760px){
+  #appHeader #roleBadge{display:none!important}
+  #appHeader #topUserLabel{max-width:150px!important}
+}
+</style>
+<script id="tfms-v4435-header-patch">
+(function(){
+ const BUILD='v44.35 Recovery Stable';
+ function sync(){
+   const b=document.getElementById('tfmsVersionBadge');
+   if(b&&b.textContent!==BUILD)b.textContent=BUILD;
+   document.title='TFMS '+BUILD+' · Enterprise UX';
+   window.TFMS_BUILD=Object.freeze({version:'v44.35',channel:'Recovery Stable',buildDate:'2026.08.07',title:'Header Logo & Responsive Actions'});
+   try{
+     const u=new URL(location.href);
+     if(u.searchParams.get('v')!=='44.35'){
+       u.searchParams.set('v','44.35');
+       history.replaceState(history.state,'',u.pathname+u.search+u.hash);
+     }
+   }catch(e){}
+ }
+ document.addEventListener('DOMContentLoaded',()=>{sync();setTimeout(sync,400);setTimeout(sync,1300)});
+ window.addEventListener('load',sync);
+})();
+</script>
 
 </body>
 </html>`);
@@ -15303,6 +15668,188 @@ window.printFireExtQrLabelsV447=async function(){
     const w=window.open('','_blank','width=1100,height=800');if(!w)throw new Error('팝업이 차단되었습니다.');
     w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>${esc(facility)} 소화기 QR 라벨</title><style>@page{size:A4 portrait;margin:8mm}*{box-sizing:border-box}body{font-family:"Malgun Gothic",sans-serif;margin:0}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5mm}.label{border:1px solid #333;border-radius:3mm;min-height:82mm;padding:4mm;text-align:center;break-inside:avoid}.label img{width:42mm;height:42mm}.facility{font-weight:700;font-size:11pt}.code{font-size:15pt;font-weight:800;margin:2mm 0}.loc{font-size:9pt;min-height:12mm}.hint{font-size:7.5pt;color:#555;margin-top:1mm}@media print{.no-print{display:none}}</style></head><body><div class="no-print" style="padding:10px;text-align:center"><button onclick="print()">인쇄</button></div><div class="grid">${labels.map(x=>`<div class="label"><div class="facility">${esc(facility)}</div><div class="code">${esc(x.code)}</div><img src="${x.qr}"><div class="loc">${esc(x.location||'상세 위치 현장 입력')}</div><div class="hint">QR 촬영 후 현장점검</div></div>`).join('')}</div>
 
+
+<style id="tfms-v4434-unified-detail-style">
+/* v44.34 - 설비 상세 중복 통합 + 전 그룹 선택 동기화 */
+#equipment .tfms-v4431-summary-card{display:none!important}
+#equipment .tfms-v4431-tabs{margin-top:0!important;border-top-left-radius:12px!important;border-top-right-radius:12px!important}
+#equipment .tfms-v4431-basic-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item{min-height:66px;padding:11px 14px;border-right:1px solid #e7edf5;border-bottom:1px solid #e7edf5;box-sizing:border-box;background:#fff}
+#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item:nth-child(4n){border-right:0}
+#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item span{display:block;color:#74859a;font-size:11px;margin-bottom:5px}
+#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item strong{display:block;color:#102c4c;font-size:13px;line-height:1.35;word-break:break-word}
+#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.wide2{grid-column:span 2}
+#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.full{grid-column:1/-1;min-height:78px}
+#equipment .tfms-v4431-titlebar{margin-bottom:12px!important}
+#equipment .tfms-v4431-list .tree-item.active,#equipment .tfms-v4431-list .tree-item.selected{border-color:#2f7df4!important;background:#edf5ff!important;box-shadow:0 0 0 1px rgba(47,125,244,.08) inset}
+@media(max-width:1200px){#equipment .tfms-v4431-basic-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item:nth-child(4n){border-right:1px solid #e7edf5}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item:nth-child(2n){border-right:0}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.full{grid-column:1/-1}}
+@media(max-width:760px){#equipment .tfms-v4431-basic-grid{grid-template-columns:1fr!important}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item{border-right:0!important}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.wide2,#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.full{grid-column:auto}}
+</style>
+<script id="tfms-v4434-unified-detail-controller">
+(function(){
+'use strict';
+const BUILD='v44.34 Recovery Stable';
+const $=id=>document.getElementById(id);
+const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+function store(){try{return window.assetData||(typeof assetData!=='undefined'?assetData:{})}catch(e){return {}}}
+function setKey(k){k=String(k??'');window.selectedAssetKey=k;try{if(typeof selectedAssetKey!=='undefined')selectedAssetKey=k}catch(e){}return k}
+function getKey(){try{return String(window.selectedAssetKey||(typeof selectedAssetKey!=='undefined'?selectedAssetKey:'')||'')}catch(e){return String(window.selectedAssetKey||'')}}
+function current(k=getKey()){return store()?.[k]||null}
+function val(a,...ks){for(const k of ks){const v=a?.[k];if(v!=null&&String(v).trim()!==''&&String(v)!=='undefined')return v}return '-'}
+function money(v){if(v==null||v===''||v==='-')return '-';const n=Number(String(v).replace(/[^0-9.-]/g,''));return Number.isFinite(n)&&String(v).match(/\d/)?n.toLocaleString('ko-KR')+'원':String(v)}
+function rows(a){return [
+ ['제조사',val(a,'manufacturer')],['모델명',val(a,'model')],['관리번호',val(a,'assetCode','asset_code')],['QR관리번호',val(a,'qrId','qr_code')],
+ ['설비분류',val(a,'category')],['공간/구역',val(a,'space')],['설치위치',val(a,'location','space')],['규모/용량',val(a,'capacity')],
+ ['제조번호',val(a,'serialNumber','serial_no','serial')],['제조년도',val(a,'manufactureYear','manufacturedYear')],['설치연도',val(a,'year','installYear')],['설치일',val(a,'installDate','installed_at')],
+ ['내용연수',val(a,'life')],['작동형태',val(a,'operation')],['점검주기',val(a,'cycle')],['관리상태',val(a,'status')],
+ ['중요도',val(a,'importance')],['위험도',val(a,'risk')],['최근점검일',val(a,'check','lastCheck')],['이력건수',Array.isArray(a?.timeline)?a.timeline.length+'건':val(a,'history')],
+ ['취득금액',money(val(a,'purchaseCost','acquisitionCost','acquisition_cost'))],['예상 교체비',money(val(a,'replacementCost','replacement_cost','replace'))],['담당자',val(a,'manager')],['비고',val(a,'remarks','note','memo')]
+ ]}
+function renderUnified(k=getKey()){
+ const a=current(k)||{};
+ const title=$('tfmsV4431Title');if(title)title.textContent=a?.name||'설비를 선택해 주세요.';
+ const badge=$('tfmsV4431StatusBadge');if(badge){badge.textContent=val(a,'status','risk');const t=String(a?.status||'')+String(a?.risk||'');badge.style.background=/위험|수리|사용중지|폐기/.test(t)?'#ffe9e7':/주의|점검필요|교체예정/.test(t)?'#fff2d8':'#e8f8ef'}
+ const host=$('tfmsV4431Basic');if(host){host.innerHTML=rows(a).map(([name,value],i)=>`<div class="tfms-v4434-detail-item ${i===23?'full':''}"><span>${esc(name)}</span><strong>${esc(value)}</strong></div>`).join('')}
+ document.querySelectorAll('#assetList .tree-item').forEach(el=>{const oc=el.getAttribute('onclick')||'';const m=oc.match(/showAsset\(['\"]([^'\"]+)/);const kk=m?.[1]||el.dataset?.key||el.dataset?.assetKey||'';el.classList.toggle('active',String(kk)===String(k));el.classList.toggle('selected',String(kk)===String(k))});
+}
+function syncBuild(){const b=$('tfmsVersionBadge');if(b)b.textContent=BUILD;document.title='TFMS '+BUILD+' · Enterprise UX';window.TFMS_BUILD=Object.freeze({version:'v44.34',channel:'Recovery Stable',buildDate:'2026.08.07',title:'Unified Equipment Detail'});try{const u=new URL(location.href);if(u.searchParams.get('v')!=='44.34'){u.searchParams.set('v','44.34');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
+
+const prevShow=window.showAsset;
+window.showAsset=function(k,el){
+ k=setKey(k);
+ let r;
+ try{if(typeof prevShow==='function')r=prevShow.call(this,k,el)}catch(e){console.warn('기존 설비 상세 렌더 오류를 보정합니다.',e)}
+ setKey(k);renderUnified(k);
+ try{if(typeof window.refreshEquipmentPhotosV4430==='function')setTimeout(()=>window.refreshEquipmentPhotosV4430(),50)}catch(e){}
+ return r;
+};
+
+// 목록 전체에 캡처 이벤트를 두어, 그룹 위치와 관계없이 클릭 설비 key를 먼저 확정한다.
+function bindList(){const list=$('assetList');if(!list||list.dataset.v4434Bound)return;list.dataset.v4434Bound='1';list.addEventListener('click',function(ev){const item=ev.target.closest('.tree-item');if(!item||!list.contains(item))return;const oc=item.getAttribute('onclick')||'';const m=oc.match(/showAsset\(['\"]([^'\"]+)/);const k=m?.[1]||item.dataset?.key||item.dataset?.assetKey||'';if(k)setKey(k)},true)}
+const prevRender=window.renderAssetList;if(typeof prevRender==='function')window.renderAssetList=function(){const r=prevRender.apply(this,arguments);setTimeout(()=>{bindList();renderUnified()},20);return r};
+function init(){syncBuild();bindList();renderUnified();[100,400,1000,2200].forEach(ms=>setTimeout(()=>{syncBuild();bindList();renderUnified()},ms))}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
+
+
+<style id="tfms-v4435-header-responsive">
+/* TFMS v44.35 - header logo visibility + responsive account actions */
+#appHeader .top{
+  height:72px!important;
+  min-width:0!important;
+  padding:0 18px!important;
+  gap:16px!important;
+}
+#appHeader .logo{
+  display:flex!important;
+  align-items:center!important;
+  flex:0 1 auto!important;
+  min-width:0!important;
+  gap:10px!important;
+  overflow:hidden!important;
+}
+#appHeader .logo img{
+  display:block!important;
+  flex:0 0 auto!important;
+  width:38px!important;
+  height:28px!important;
+  max-width:38px!important;
+  max-height:28px!important;
+  padding:0!important;
+  margin:0!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  background:transparent!important;
+  border-radius:0!important;
+  filter:none!important;
+  opacity:1!important;
+}
+#appHeader .logo-title{
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  min-width:0!important;
+  color:#fff!important;
+  white-space:nowrap!important;
+}
+#appHeader .logo-title::after{display:none!important;content:none!important}
+#appHeader .logo-title small{display:none!important}
+#appHeader #tfmsVersionBadge{
+  flex:0 0 auto!important;
+  margin:0!important;
+}
+#appHeader .user{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  flex:1 1 auto!important;
+  min-width:0!important;
+  gap:8px!important;
+  overflow:visible!important;
+  white-space:nowrap!important;
+}
+#appHeader #topUserLabel{
+  min-width:0!important;
+  max-width:270px!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+  padding:8px 6px!important;
+}
+#appHeader #cloudTopBadge,#appHeader #roleBadge{
+  flex:0 0 auto!important;
+  white-space:nowrap!important;
+}
+#appHeader #topLoginBtn{
+  flex:0 0 auto!important;
+  margin-right:0!important;
+  padding:10px 15px!important;
+  white-space:nowrap!important;
+}
+@media (max-width:1180px){
+  #appHeader .top{padding:0 12px!important;gap:10px!important}
+  #appHeader #cloudTopBadge{display:none!important}
+  #appHeader .user>span:nth-child(2){display:none!important}
+  #appHeader #topUserLabel{max-width:220px!important;font-size:13px!important}
+  #appHeader #roleBadge{font-size:12px!important;padding:8px 10px!important}
+  #appHeader #topLoginBtn{padding:9px 12px!important;font-size:13px!important}
+}
+@media (max-width:930px){
+  #appHeader .top{height:64px!important;padding:0 10px!important}
+  #appHeader .logo{gap:7px!important}
+  #appHeader .logo img{width:31px!important;height:23px!important;max-width:31px!important;max-height:23px!important}
+  #appHeader .logo-title{font-size:19px!important}
+  #appHeader #tfmsVersionBadge{display:none!important}
+  #appHeader #topUserLabel{max-width:180px!important}
+  #appHeader nav{top:64px!important}
+}
+@media (max-width:760px){
+  #appHeader #roleBadge{display:none!important}
+  #appHeader #topUserLabel{max-width:150px!important}
+}
+</style>
+<script id="tfms-v4435-header-patch">
+(function(){
+ const BUILD='v44.35 Recovery Stable';
+ function sync(){
+   const b=document.getElementById('tfmsVersionBadge');
+   if(b&&b.textContent!==BUILD)b.textContent=BUILD;
+   document.title='TFMS '+BUILD+' · Enterprise UX';
+   window.TFMS_BUILD=Object.freeze({version:'v44.35',channel:'Recovery Stable',buildDate:'2026.08.07',title:'Header Logo & Responsive Actions'});
+   try{
+     const u=new URL(location.href);
+     if(u.searchParams.get('v')!=='44.35'){
+       u.searchParams.set('v','44.35');
+       history.replaceState(history.state,'',u.pathname+u.search+u.hash);
+     }
+   }catch(e){}
+ }
+ document.addEventListener('DOMContentLoaded',()=>{sync();setTimeout(sync,400);setTimeout(sync,1300)});
+ window.addEventListener('load',sync);
+})();
+</script>
+
 </body></html>`);
     w.document.close();setTimeout(()=>w.focus(),200);
   }catch(e){console.error(e);toast('QR 라벨 출력 준비 실패: '+(e?.message||e))}
@@ -16119,6 +16666,188 @@ window.printFireRecordV420=async function(){
 </style>
 
 
+
+<style id="tfms-v4434-unified-detail-style">
+/* v44.34 - 설비 상세 중복 통합 + 전 그룹 선택 동기화 */
+#equipment .tfms-v4431-summary-card{display:none!important}
+#equipment .tfms-v4431-tabs{margin-top:0!important;border-top-left-radius:12px!important;border-top-right-radius:12px!important}
+#equipment .tfms-v4431-basic-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item{min-height:66px;padding:11px 14px;border-right:1px solid #e7edf5;border-bottom:1px solid #e7edf5;box-sizing:border-box;background:#fff}
+#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item:nth-child(4n){border-right:0}
+#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item span{display:block;color:#74859a;font-size:11px;margin-bottom:5px}
+#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item strong{display:block;color:#102c4c;font-size:13px;line-height:1.35;word-break:break-word}
+#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.wide2{grid-column:span 2}
+#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.full{grid-column:1/-1;min-height:78px}
+#equipment .tfms-v4431-titlebar{margin-bottom:12px!important}
+#equipment .tfms-v4431-list .tree-item.active,#equipment .tfms-v4431-list .tree-item.selected{border-color:#2f7df4!important;background:#edf5ff!important;box-shadow:0 0 0 1px rgba(47,125,244,.08) inset}
+@media(max-width:1200px){#equipment .tfms-v4431-basic-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item:nth-child(4n){border-right:1px solid #e7edf5}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item:nth-child(2n){border-right:0}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.full{grid-column:1/-1}}
+@media(max-width:760px){#equipment .tfms-v4431-basic-grid{grid-template-columns:1fr!important}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item{border-right:0!important}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.wide2,#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.full{grid-column:auto}}
+</style>
+<script id="tfms-v4434-unified-detail-controller">
+(function(){
+'use strict';
+const BUILD='v44.34 Recovery Stable';
+const $=id=>document.getElementById(id);
+const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+function store(){try{return window.assetData||(typeof assetData!=='undefined'?assetData:{})}catch(e){return {}}}
+function setKey(k){k=String(k??'');window.selectedAssetKey=k;try{if(typeof selectedAssetKey!=='undefined')selectedAssetKey=k}catch(e){}return k}
+function getKey(){try{return String(window.selectedAssetKey||(typeof selectedAssetKey!=='undefined'?selectedAssetKey:'')||'')}catch(e){return String(window.selectedAssetKey||'')}}
+function current(k=getKey()){return store()?.[k]||null}
+function val(a,...ks){for(const k of ks){const v=a?.[k];if(v!=null&&String(v).trim()!==''&&String(v)!=='undefined')return v}return '-'}
+function money(v){if(v==null||v===''||v==='-')return '-';const n=Number(String(v).replace(/[^0-9.-]/g,''));return Number.isFinite(n)&&String(v).match(/\d/)?n.toLocaleString('ko-KR')+'원':String(v)}
+function rows(a){return [
+ ['제조사',val(a,'manufacturer')],['모델명',val(a,'model')],['관리번호',val(a,'assetCode','asset_code')],['QR관리번호',val(a,'qrId','qr_code')],
+ ['설비분류',val(a,'category')],['공간/구역',val(a,'space')],['설치위치',val(a,'location','space')],['규모/용량',val(a,'capacity')],
+ ['제조번호',val(a,'serialNumber','serial_no','serial')],['제조년도',val(a,'manufactureYear','manufacturedYear')],['설치연도',val(a,'year','installYear')],['설치일',val(a,'installDate','installed_at')],
+ ['내용연수',val(a,'life')],['작동형태',val(a,'operation')],['점검주기',val(a,'cycle')],['관리상태',val(a,'status')],
+ ['중요도',val(a,'importance')],['위험도',val(a,'risk')],['최근점검일',val(a,'check','lastCheck')],['이력건수',Array.isArray(a?.timeline)?a.timeline.length+'건':val(a,'history')],
+ ['취득금액',money(val(a,'purchaseCost','acquisitionCost','acquisition_cost'))],['예상 교체비',money(val(a,'replacementCost','replacement_cost','replace'))],['담당자',val(a,'manager')],['비고',val(a,'remarks','note','memo')]
+ ]}
+function renderUnified(k=getKey()){
+ const a=current(k)||{};
+ const title=$('tfmsV4431Title');if(title)title.textContent=a?.name||'설비를 선택해 주세요.';
+ const badge=$('tfmsV4431StatusBadge');if(badge){badge.textContent=val(a,'status','risk');const t=String(a?.status||'')+String(a?.risk||'');badge.style.background=/위험|수리|사용중지|폐기/.test(t)?'#ffe9e7':/주의|점검필요|교체예정/.test(t)?'#fff2d8':'#e8f8ef'}
+ const host=$('tfmsV4431Basic');if(host){host.innerHTML=rows(a).map(([name,value],i)=>`<div class="tfms-v4434-detail-item ${i===23?'full':''}"><span>${esc(name)}</span><strong>${esc(value)}</strong></div>`).join('')}
+ document.querySelectorAll('#assetList .tree-item').forEach(el=>{const oc=el.getAttribute('onclick')||'';const m=oc.match(/showAsset\(['\"]([^'\"]+)/);const kk=m?.[1]||el.dataset?.key||el.dataset?.assetKey||'';el.classList.toggle('active',String(kk)===String(k));el.classList.toggle('selected',String(kk)===String(k))});
+}
+function syncBuild(){const b=$('tfmsVersionBadge');if(b)b.textContent=BUILD;document.title='TFMS '+BUILD+' · Enterprise UX';window.TFMS_BUILD=Object.freeze({version:'v44.34',channel:'Recovery Stable',buildDate:'2026.08.07',title:'Unified Equipment Detail'});try{const u=new URL(location.href);if(u.searchParams.get('v')!=='44.34'){u.searchParams.set('v','44.34');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
+
+const prevShow=window.showAsset;
+window.showAsset=function(k,el){
+ k=setKey(k);
+ let r;
+ try{if(typeof prevShow==='function')r=prevShow.call(this,k,el)}catch(e){console.warn('기존 설비 상세 렌더 오류를 보정합니다.',e)}
+ setKey(k);renderUnified(k);
+ try{if(typeof window.refreshEquipmentPhotosV4430==='function')setTimeout(()=>window.refreshEquipmentPhotosV4430(),50)}catch(e){}
+ return r;
+};
+
+// 목록 전체에 캡처 이벤트를 두어, 그룹 위치와 관계없이 클릭 설비 key를 먼저 확정한다.
+function bindList(){const list=$('assetList');if(!list||list.dataset.v4434Bound)return;list.dataset.v4434Bound='1';list.addEventListener('click',function(ev){const item=ev.target.closest('.tree-item');if(!item||!list.contains(item))return;const oc=item.getAttribute('onclick')||'';const m=oc.match(/showAsset\(['\"]([^'\"]+)/);const k=m?.[1]||item.dataset?.key||item.dataset?.assetKey||'';if(k)setKey(k)},true)}
+const prevRender=window.renderAssetList;if(typeof prevRender==='function')window.renderAssetList=function(){const r=prevRender.apply(this,arguments);setTimeout(()=>{bindList();renderUnified()},20);return r};
+function init(){syncBuild();bindList();renderUnified();[100,400,1000,2200].forEach(ms=>setTimeout(()=>{syncBuild();bindList();renderUnified()},ms))}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
+
+
+<style id="tfms-v4435-header-responsive">
+/* TFMS v44.35 - header logo visibility + responsive account actions */
+#appHeader .top{
+  height:72px!important;
+  min-width:0!important;
+  padding:0 18px!important;
+  gap:16px!important;
+}
+#appHeader .logo{
+  display:flex!important;
+  align-items:center!important;
+  flex:0 1 auto!important;
+  min-width:0!important;
+  gap:10px!important;
+  overflow:hidden!important;
+}
+#appHeader .logo img{
+  display:block!important;
+  flex:0 0 auto!important;
+  width:38px!important;
+  height:28px!important;
+  max-width:38px!important;
+  max-height:28px!important;
+  padding:0!important;
+  margin:0!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  background:transparent!important;
+  border-radius:0!important;
+  filter:none!important;
+  opacity:1!important;
+}
+#appHeader .logo-title{
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  min-width:0!important;
+  color:#fff!important;
+  white-space:nowrap!important;
+}
+#appHeader .logo-title::after{display:none!important;content:none!important}
+#appHeader .logo-title small{display:none!important}
+#appHeader #tfmsVersionBadge{
+  flex:0 0 auto!important;
+  margin:0!important;
+}
+#appHeader .user{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  flex:1 1 auto!important;
+  min-width:0!important;
+  gap:8px!important;
+  overflow:visible!important;
+  white-space:nowrap!important;
+}
+#appHeader #topUserLabel{
+  min-width:0!important;
+  max-width:270px!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+  padding:8px 6px!important;
+}
+#appHeader #cloudTopBadge,#appHeader #roleBadge{
+  flex:0 0 auto!important;
+  white-space:nowrap!important;
+}
+#appHeader #topLoginBtn{
+  flex:0 0 auto!important;
+  margin-right:0!important;
+  padding:10px 15px!important;
+  white-space:nowrap!important;
+}
+@media (max-width:1180px){
+  #appHeader .top{padding:0 12px!important;gap:10px!important}
+  #appHeader #cloudTopBadge{display:none!important}
+  #appHeader .user>span:nth-child(2){display:none!important}
+  #appHeader #topUserLabel{max-width:220px!important;font-size:13px!important}
+  #appHeader #roleBadge{font-size:12px!important;padding:8px 10px!important}
+  #appHeader #topLoginBtn{padding:9px 12px!important;font-size:13px!important}
+}
+@media (max-width:930px){
+  #appHeader .top{height:64px!important;padding:0 10px!important}
+  #appHeader .logo{gap:7px!important}
+  #appHeader .logo img{width:31px!important;height:23px!important;max-width:31px!important;max-height:23px!important}
+  #appHeader .logo-title{font-size:19px!important}
+  #appHeader #tfmsVersionBadge{display:none!important}
+  #appHeader #topUserLabel{max-width:180px!important}
+  #appHeader nav{top:64px!important}
+}
+@media (max-width:760px){
+  #appHeader #roleBadge{display:none!important}
+  #appHeader #topUserLabel{max-width:150px!important}
+}
+</style>
+<script id="tfms-v4435-header-patch">
+(function(){
+ const BUILD='v44.35 Recovery Stable';
+ function sync(){
+   const b=document.getElementById('tfmsVersionBadge');
+   if(b&&b.textContent!==BUILD)b.textContent=BUILD;
+   document.title='TFMS '+BUILD+' · Enterprise UX';
+   window.TFMS_BUILD=Object.freeze({version:'v44.35',channel:'Recovery Stable',buildDate:'2026.08.07',title:'Header Logo & Responsive Actions'});
+   try{
+     const u=new URL(location.href);
+     if(u.searchParams.get('v')!=='44.35'){
+       u.searchParams.set('v','44.35');
+       history.replaceState(history.state,'',u.pathname+u.search+u.hash);
+     }
+   }catch(e){}
+ }
+ document.addEventListener('DOMContentLoaded',()=>{sync();setTimeout(sync,400);setTimeout(sync,1300)});
+ window.addEventListener('load',sync);
+})();
+</script>
+
 </body></html>`);doc.close();
   await new Promise(r=>{if(doc.readyState==='complete')r();else frame.onload=r;});
   const imgs=[...doc.images];await Promise.all(imgs.map(img=>img.complete?(img.decode?.().catch(()=>{})||Promise.resolve()):new Promise(res=>{img.onload=img.onerror=res;})));
@@ -16247,6 +16976,188 @@ window.printFireRecordV420=async function(){try{window.previewFireRecordV420();c
 }
 </style>
 
+
+
+<style id="tfms-v4434-unified-detail-style">
+/* v44.34 - 설비 상세 중복 통합 + 전 그룹 선택 동기화 */
+#equipment .tfms-v4431-summary-card{display:none!important}
+#equipment .tfms-v4431-tabs{margin-top:0!important;border-top-left-radius:12px!important;border-top-right-radius:12px!important}
+#equipment .tfms-v4431-basic-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item{min-height:66px;padding:11px 14px;border-right:1px solid #e7edf5;border-bottom:1px solid #e7edf5;box-sizing:border-box;background:#fff}
+#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item:nth-child(4n){border-right:0}
+#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item span{display:block;color:#74859a;font-size:11px;margin-bottom:5px}
+#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item strong{display:block;color:#102c4c;font-size:13px;line-height:1.35;word-break:break-word}
+#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.wide2{grid-column:span 2}
+#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.full{grid-column:1/-1;min-height:78px}
+#equipment .tfms-v4431-titlebar{margin-bottom:12px!important}
+#equipment .tfms-v4431-list .tree-item.active,#equipment .tfms-v4431-list .tree-item.selected{border-color:#2f7df4!important;background:#edf5ff!important;box-shadow:0 0 0 1px rgba(47,125,244,.08) inset}
+@media(max-width:1200px){#equipment .tfms-v4431-basic-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item:nth-child(4n){border-right:1px solid #e7edf5}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item:nth-child(2n){border-right:0}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.full{grid-column:1/-1}}
+@media(max-width:760px){#equipment .tfms-v4431-basic-grid{grid-template-columns:1fr!important}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item{border-right:0!important}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.wide2,#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.full{grid-column:auto}}
+</style>
+<script id="tfms-v4434-unified-detail-controller">
+(function(){
+'use strict';
+const BUILD='v44.34 Recovery Stable';
+const $=id=>document.getElementById(id);
+const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+function store(){try{return window.assetData||(typeof assetData!=='undefined'?assetData:{})}catch(e){return {}}}
+function setKey(k){k=String(k??'');window.selectedAssetKey=k;try{if(typeof selectedAssetKey!=='undefined')selectedAssetKey=k}catch(e){}return k}
+function getKey(){try{return String(window.selectedAssetKey||(typeof selectedAssetKey!=='undefined'?selectedAssetKey:'')||'')}catch(e){return String(window.selectedAssetKey||'')}}
+function current(k=getKey()){return store()?.[k]||null}
+function val(a,...ks){for(const k of ks){const v=a?.[k];if(v!=null&&String(v).trim()!==''&&String(v)!=='undefined')return v}return '-'}
+function money(v){if(v==null||v===''||v==='-')return '-';const n=Number(String(v).replace(/[^0-9.-]/g,''));return Number.isFinite(n)&&String(v).match(/\d/)?n.toLocaleString('ko-KR')+'원':String(v)}
+function rows(a){return [
+ ['제조사',val(a,'manufacturer')],['모델명',val(a,'model')],['관리번호',val(a,'assetCode','asset_code')],['QR관리번호',val(a,'qrId','qr_code')],
+ ['설비분류',val(a,'category')],['공간/구역',val(a,'space')],['설치위치',val(a,'location','space')],['규모/용량',val(a,'capacity')],
+ ['제조번호',val(a,'serialNumber','serial_no','serial')],['제조년도',val(a,'manufactureYear','manufacturedYear')],['설치연도',val(a,'year','installYear')],['설치일',val(a,'installDate','installed_at')],
+ ['내용연수',val(a,'life')],['작동형태',val(a,'operation')],['점검주기',val(a,'cycle')],['관리상태',val(a,'status')],
+ ['중요도',val(a,'importance')],['위험도',val(a,'risk')],['최근점검일',val(a,'check','lastCheck')],['이력건수',Array.isArray(a?.timeline)?a.timeline.length+'건':val(a,'history')],
+ ['취득금액',money(val(a,'purchaseCost','acquisitionCost','acquisition_cost'))],['예상 교체비',money(val(a,'replacementCost','replacement_cost','replace'))],['담당자',val(a,'manager')],['비고',val(a,'remarks','note','memo')]
+ ]}
+function renderUnified(k=getKey()){
+ const a=current(k)||{};
+ const title=$('tfmsV4431Title');if(title)title.textContent=a?.name||'설비를 선택해 주세요.';
+ const badge=$('tfmsV4431StatusBadge');if(badge){badge.textContent=val(a,'status','risk');const t=String(a?.status||'')+String(a?.risk||'');badge.style.background=/위험|수리|사용중지|폐기/.test(t)?'#ffe9e7':/주의|점검필요|교체예정/.test(t)?'#fff2d8':'#e8f8ef'}
+ const host=$('tfmsV4431Basic');if(host){host.innerHTML=rows(a).map(([name,value],i)=>`<div class="tfms-v4434-detail-item ${i===23?'full':''}"><span>${esc(name)}</span><strong>${esc(value)}</strong></div>`).join('')}
+ document.querySelectorAll('#assetList .tree-item').forEach(el=>{const oc=el.getAttribute('onclick')||'';const m=oc.match(/showAsset\(['\"]([^'\"]+)/);const kk=m?.[1]||el.dataset?.key||el.dataset?.assetKey||'';el.classList.toggle('active',String(kk)===String(k));el.classList.toggle('selected',String(kk)===String(k))});
+}
+function syncBuild(){const b=$('tfmsVersionBadge');if(b)b.textContent=BUILD;document.title='TFMS '+BUILD+' · Enterprise UX';window.TFMS_BUILD=Object.freeze({version:'v44.34',channel:'Recovery Stable',buildDate:'2026.08.07',title:'Unified Equipment Detail'});try{const u=new URL(location.href);if(u.searchParams.get('v')!=='44.34'){u.searchParams.set('v','44.34');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
+
+const prevShow=window.showAsset;
+window.showAsset=function(k,el){
+ k=setKey(k);
+ let r;
+ try{if(typeof prevShow==='function')r=prevShow.call(this,k,el)}catch(e){console.warn('기존 설비 상세 렌더 오류를 보정합니다.',e)}
+ setKey(k);renderUnified(k);
+ try{if(typeof window.refreshEquipmentPhotosV4430==='function')setTimeout(()=>window.refreshEquipmentPhotosV4430(),50)}catch(e){}
+ return r;
+};
+
+// 목록 전체에 캡처 이벤트를 두어, 그룹 위치와 관계없이 클릭 설비 key를 먼저 확정한다.
+function bindList(){const list=$('assetList');if(!list||list.dataset.v4434Bound)return;list.dataset.v4434Bound='1';list.addEventListener('click',function(ev){const item=ev.target.closest('.tree-item');if(!item||!list.contains(item))return;const oc=item.getAttribute('onclick')||'';const m=oc.match(/showAsset\(['\"]([^'\"]+)/);const k=m?.[1]||item.dataset?.key||item.dataset?.assetKey||'';if(k)setKey(k)},true)}
+const prevRender=window.renderAssetList;if(typeof prevRender==='function')window.renderAssetList=function(){const r=prevRender.apply(this,arguments);setTimeout(()=>{bindList();renderUnified()},20);return r};
+function init(){syncBuild();bindList();renderUnified();[100,400,1000,2200].forEach(ms=>setTimeout(()=>{syncBuild();bindList();renderUnified()},ms))}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
+
+
+<style id="tfms-v4435-header-responsive">
+/* TFMS v44.35 - header logo visibility + responsive account actions */
+#appHeader .top{
+  height:72px!important;
+  min-width:0!important;
+  padding:0 18px!important;
+  gap:16px!important;
+}
+#appHeader .logo{
+  display:flex!important;
+  align-items:center!important;
+  flex:0 1 auto!important;
+  min-width:0!important;
+  gap:10px!important;
+  overflow:hidden!important;
+}
+#appHeader .logo img{
+  display:block!important;
+  flex:0 0 auto!important;
+  width:38px!important;
+  height:28px!important;
+  max-width:38px!important;
+  max-height:28px!important;
+  padding:0!important;
+  margin:0!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  background:transparent!important;
+  border-radius:0!important;
+  filter:none!important;
+  opacity:1!important;
+}
+#appHeader .logo-title{
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  min-width:0!important;
+  color:#fff!important;
+  white-space:nowrap!important;
+}
+#appHeader .logo-title::after{display:none!important;content:none!important}
+#appHeader .logo-title small{display:none!important}
+#appHeader #tfmsVersionBadge{
+  flex:0 0 auto!important;
+  margin:0!important;
+}
+#appHeader .user{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  flex:1 1 auto!important;
+  min-width:0!important;
+  gap:8px!important;
+  overflow:visible!important;
+  white-space:nowrap!important;
+}
+#appHeader #topUserLabel{
+  min-width:0!important;
+  max-width:270px!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+  padding:8px 6px!important;
+}
+#appHeader #cloudTopBadge,#appHeader #roleBadge{
+  flex:0 0 auto!important;
+  white-space:nowrap!important;
+}
+#appHeader #topLoginBtn{
+  flex:0 0 auto!important;
+  margin-right:0!important;
+  padding:10px 15px!important;
+  white-space:nowrap!important;
+}
+@media (max-width:1180px){
+  #appHeader .top{padding:0 12px!important;gap:10px!important}
+  #appHeader #cloudTopBadge{display:none!important}
+  #appHeader .user>span:nth-child(2){display:none!important}
+  #appHeader #topUserLabel{max-width:220px!important;font-size:13px!important}
+  #appHeader #roleBadge{font-size:12px!important;padding:8px 10px!important}
+  #appHeader #topLoginBtn{padding:9px 12px!important;font-size:13px!important}
+}
+@media (max-width:930px){
+  #appHeader .top{height:64px!important;padding:0 10px!important}
+  #appHeader .logo{gap:7px!important}
+  #appHeader .logo img{width:31px!important;height:23px!important;max-width:31px!important;max-height:23px!important}
+  #appHeader .logo-title{font-size:19px!important}
+  #appHeader #tfmsVersionBadge{display:none!important}
+  #appHeader #topUserLabel{max-width:180px!important}
+  #appHeader nav{top:64px!important}
+}
+@media (max-width:760px){
+  #appHeader #roleBadge{display:none!important}
+  #appHeader #topUserLabel{max-width:150px!important}
+}
+</style>
+<script id="tfms-v4435-header-patch">
+(function(){
+ const BUILD='v44.35 Recovery Stable';
+ function sync(){
+   const b=document.getElementById('tfmsVersionBadge');
+   if(b&&b.textContent!==BUILD)b.textContent=BUILD;
+   document.title='TFMS '+BUILD+' · Enterprise UX';
+   window.TFMS_BUILD=Object.freeze({version:'v44.35',channel:'Recovery Stable',buildDate:'2026.08.07',title:'Header Logo & Responsive Actions'});
+   try{
+     const u=new URL(location.href);
+     if(u.searchParams.get('v')!=='44.35'){
+       u.searchParams.set('v','44.35');
+       history.replaceState(history.state,'',u.pathname+u.search+u.hash);
+     }
+   }catch(e){}
+ }
+ document.addEventListener('DOMContentLoaded',()=>{sync();setTimeout(sync,400);setTimeout(sync,1300)});
+ window.addEventListener('load',sync);
+})();
+</script>
 
 </body></html>`);doc.close();await new Promise(r=>setTimeout(r,100));if(doc.fonts?.ready)await doc.fonts.ready;await Promise.all([...doc.images].map(img=>img.complete?Promise.resolve():new Promise(r=>{img.onload=img.onerror=r})));await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));frame.contentWindow.focus();frame.contentWindow.print();setTimeout(()=>frame.remove(),5000);}catch(e){console.error(e);toast('PDF 출력 실패: '+(e?.message||e));}};
 function db(){try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||(typeof sb!=='undefined'?sb:null)}catch(e){return null}}
@@ -18236,6 +19147,188 @@ function observe(){
 }
 function init(){syncBuild();cleanUserLabel();hideLegacy();renderBasic();mountTabs();activate('basic');observe();[100,350,900,1800,3500].forEach(ms=>setTimeout(()=>{syncBuild();cleanUserLabel();hideLegacy();renderBasic();mountTabs()},ms))}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
+
+
+<style id="tfms-v4434-unified-detail-style">
+/* v44.34 - 설비 상세 중복 통합 + 전 그룹 선택 동기화 */
+#equipment .tfms-v4431-summary-card{display:none!important}
+#equipment .tfms-v4431-tabs{margin-top:0!important;border-top-left-radius:12px!important;border-top-right-radius:12px!important}
+#equipment .tfms-v4431-basic-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item{min-height:66px;padding:11px 14px;border-right:1px solid #e7edf5;border-bottom:1px solid #e7edf5;box-sizing:border-box;background:#fff}
+#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item:nth-child(4n){border-right:0}
+#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item span{display:block;color:#74859a;font-size:11px;margin-bottom:5px}
+#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item strong{display:block;color:#102c4c;font-size:13px;line-height:1.35;word-break:break-word}
+#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.wide2{grid-column:span 2}
+#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.full{grid-column:1/-1;min-height:78px}
+#equipment .tfms-v4431-titlebar{margin-bottom:12px!important}
+#equipment .tfms-v4431-list .tree-item.active,#equipment .tfms-v4431-list .tree-item.selected{border-color:#2f7df4!important;background:#edf5ff!important;box-shadow:0 0 0 1px rgba(47,125,244,.08) inset}
+@media(max-width:1200px){#equipment .tfms-v4431-basic-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item:nth-child(4n){border-right:1px solid #e7edf5}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item:nth-child(2n){border-right:0}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.full{grid-column:1/-1}}
+@media(max-width:760px){#equipment .tfms-v4431-basic-grid{grid-template-columns:1fr!important}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item{border-right:0!important}#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.wide2,#equipment .tfms-v4431-basic-grid .tfms-v4434-detail-item.full{grid-column:auto}}
+</style>
+<script id="tfms-v4434-unified-detail-controller">
+(function(){
+'use strict';
+const BUILD='v44.34 Recovery Stable';
+const $=id=>document.getElementById(id);
+const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+function store(){try{return window.assetData||(typeof assetData!=='undefined'?assetData:{})}catch(e){return {}}}
+function setKey(k){k=String(k??'');window.selectedAssetKey=k;try{if(typeof selectedAssetKey!=='undefined')selectedAssetKey=k}catch(e){}return k}
+function getKey(){try{return String(window.selectedAssetKey||(typeof selectedAssetKey!=='undefined'?selectedAssetKey:'')||'')}catch(e){return String(window.selectedAssetKey||'')}}
+function current(k=getKey()){return store()?.[k]||null}
+function val(a,...ks){for(const k of ks){const v=a?.[k];if(v!=null&&String(v).trim()!==''&&String(v)!=='undefined')return v}return '-'}
+function money(v){if(v==null||v===''||v==='-')return '-';const n=Number(String(v).replace(/[^0-9.-]/g,''));return Number.isFinite(n)&&String(v).match(/\d/)?n.toLocaleString('ko-KR')+'원':String(v)}
+function rows(a){return [
+ ['제조사',val(a,'manufacturer')],['모델명',val(a,'model')],['관리번호',val(a,'assetCode','asset_code')],['QR관리번호',val(a,'qrId','qr_code')],
+ ['설비분류',val(a,'category')],['공간/구역',val(a,'space')],['설치위치',val(a,'location','space')],['규모/용량',val(a,'capacity')],
+ ['제조번호',val(a,'serialNumber','serial_no','serial')],['제조년도',val(a,'manufactureYear','manufacturedYear')],['설치연도',val(a,'year','installYear')],['설치일',val(a,'installDate','installed_at')],
+ ['내용연수',val(a,'life')],['작동형태',val(a,'operation')],['점검주기',val(a,'cycle')],['관리상태',val(a,'status')],
+ ['중요도',val(a,'importance')],['위험도',val(a,'risk')],['최근점검일',val(a,'check','lastCheck')],['이력건수',Array.isArray(a?.timeline)?a.timeline.length+'건':val(a,'history')],
+ ['취득금액',money(val(a,'purchaseCost','acquisitionCost','acquisition_cost'))],['예상 교체비',money(val(a,'replacementCost','replacement_cost','replace'))],['담당자',val(a,'manager')],['비고',val(a,'remarks','note','memo')]
+ ]}
+function renderUnified(k=getKey()){
+ const a=current(k)||{};
+ const title=$('tfmsV4431Title');if(title)title.textContent=a?.name||'설비를 선택해 주세요.';
+ const badge=$('tfmsV4431StatusBadge');if(badge){badge.textContent=val(a,'status','risk');const t=String(a?.status||'')+String(a?.risk||'');badge.style.background=/위험|수리|사용중지|폐기/.test(t)?'#ffe9e7':/주의|점검필요|교체예정/.test(t)?'#fff2d8':'#e8f8ef'}
+ const host=$('tfmsV4431Basic');if(host){host.innerHTML=rows(a).map(([name,value],i)=>`<div class="tfms-v4434-detail-item ${i===23?'full':''}"><span>${esc(name)}</span><strong>${esc(value)}</strong></div>`).join('')}
+ document.querySelectorAll('#assetList .tree-item').forEach(el=>{const oc=el.getAttribute('onclick')||'';const m=oc.match(/showAsset\(['\"]([^'\"]+)/);const kk=m?.[1]||el.dataset?.key||el.dataset?.assetKey||'';el.classList.toggle('active',String(kk)===String(k));el.classList.toggle('selected',String(kk)===String(k))});
+}
+function syncBuild(){const b=$('tfmsVersionBadge');if(b)b.textContent=BUILD;document.title='TFMS '+BUILD+' · Enterprise UX';window.TFMS_BUILD=Object.freeze({version:'v44.34',channel:'Recovery Stable',buildDate:'2026.08.07',title:'Unified Equipment Detail'});try{const u=new URL(location.href);if(u.searchParams.get('v')!=='44.34'){u.searchParams.set('v','44.34');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
+
+const prevShow=window.showAsset;
+window.showAsset=function(k,el){
+ k=setKey(k);
+ let r;
+ try{if(typeof prevShow==='function')r=prevShow.call(this,k,el)}catch(e){console.warn('기존 설비 상세 렌더 오류를 보정합니다.',e)}
+ setKey(k);renderUnified(k);
+ try{if(typeof window.refreshEquipmentPhotosV4430==='function')setTimeout(()=>window.refreshEquipmentPhotosV4430(),50)}catch(e){}
+ return r;
+};
+
+// 목록 전체에 캡처 이벤트를 두어, 그룹 위치와 관계없이 클릭 설비 key를 먼저 확정한다.
+function bindList(){const list=$('assetList');if(!list||list.dataset.v4434Bound)return;list.dataset.v4434Bound='1';list.addEventListener('click',function(ev){const item=ev.target.closest('.tree-item');if(!item||!list.contains(item))return;const oc=item.getAttribute('onclick')||'';const m=oc.match(/showAsset\(['\"]([^'\"]+)/);const k=m?.[1]||item.dataset?.key||item.dataset?.assetKey||'';if(k)setKey(k)},true)}
+const prevRender=window.renderAssetList;if(typeof prevRender==='function')window.renderAssetList=function(){const r=prevRender.apply(this,arguments);setTimeout(()=>{bindList();renderUnified()},20);return r};
+function init(){syncBuild();bindList();renderUnified();[100,400,1000,2200].forEach(ms=>setTimeout(()=>{syncBuild();bindList();renderUnified()},ms))}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
+
+
+<style id="tfms-v4435-header-responsive">
+/* TFMS v44.35 - header logo visibility + responsive account actions */
+#appHeader .top{
+  height:72px!important;
+  min-width:0!important;
+  padding:0 18px!important;
+  gap:16px!important;
+}
+#appHeader .logo{
+  display:flex!important;
+  align-items:center!important;
+  flex:0 1 auto!important;
+  min-width:0!important;
+  gap:10px!important;
+  overflow:hidden!important;
+}
+#appHeader .logo img{
+  display:block!important;
+  flex:0 0 auto!important;
+  width:38px!important;
+  height:28px!important;
+  max-width:38px!important;
+  max-height:28px!important;
+  padding:0!important;
+  margin:0!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  background:transparent!important;
+  border-radius:0!important;
+  filter:none!important;
+  opacity:1!important;
+}
+#appHeader .logo-title{
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  min-width:0!important;
+  color:#fff!important;
+  white-space:nowrap!important;
+}
+#appHeader .logo-title::after{display:none!important;content:none!important}
+#appHeader .logo-title small{display:none!important}
+#appHeader #tfmsVersionBadge{
+  flex:0 0 auto!important;
+  margin:0!important;
+}
+#appHeader .user{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  flex:1 1 auto!important;
+  min-width:0!important;
+  gap:8px!important;
+  overflow:visible!important;
+  white-space:nowrap!important;
+}
+#appHeader #topUserLabel{
+  min-width:0!important;
+  max-width:270px!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+  padding:8px 6px!important;
+}
+#appHeader #cloudTopBadge,#appHeader #roleBadge{
+  flex:0 0 auto!important;
+  white-space:nowrap!important;
+}
+#appHeader #topLoginBtn{
+  flex:0 0 auto!important;
+  margin-right:0!important;
+  padding:10px 15px!important;
+  white-space:nowrap!important;
+}
+@media (max-width:1180px){
+  #appHeader .top{padding:0 12px!important;gap:10px!important}
+  #appHeader #cloudTopBadge{display:none!important}
+  #appHeader .user>span:nth-child(2){display:none!important}
+  #appHeader #topUserLabel{max-width:220px!important;font-size:13px!important}
+  #appHeader #roleBadge{font-size:12px!important;padding:8px 10px!important}
+  #appHeader #topLoginBtn{padding:9px 12px!important;font-size:13px!important}
+}
+@media (max-width:930px){
+  #appHeader .top{height:64px!important;padding:0 10px!important}
+  #appHeader .logo{gap:7px!important}
+  #appHeader .logo img{width:31px!important;height:23px!important;max-width:31px!important;max-height:23px!important}
+  #appHeader .logo-title{font-size:19px!important}
+  #appHeader #tfmsVersionBadge{display:none!important}
+  #appHeader #topUserLabel{max-width:180px!important}
+  #appHeader nav{top:64px!important}
+}
+@media (max-width:760px){
+  #appHeader #roleBadge{display:none!important}
+  #appHeader #topUserLabel{max-width:150px!important}
+}
+</style>
+<script id="tfms-v4435-header-patch">
+(function(){
+ const BUILD='v44.35 Recovery Stable';
+ function sync(){
+   const b=document.getElementById('tfmsVersionBadge');
+   if(b&&b.textContent!==BUILD)b.textContent=BUILD;
+   document.title='TFMS '+BUILD+' · Enterprise UX';
+   window.TFMS_BUILD=Object.freeze({version:'v44.35',channel:'Recovery Stable',buildDate:'2026.08.07',title:'Header Logo & Responsive Actions'});
+   try{
+     const u=new URL(location.href);
+     if(u.searchParams.get('v')!=='44.35'){
+       u.searchParams.set('v','44.35');
+       history.replaceState(history.state,'',u.pathname+u.search+u.hash);
+     }
+   }catch(e){}
+ }
+ document.addEventListener('DOMContentLoaded',()=>{sync();setTimeout(sync,400);setTimeout(sync,1300)});
+ window.addEventListener('load',sync);
 })();
 </script>
 
