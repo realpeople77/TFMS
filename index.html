@@ -6,7 +6,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>TFMS v45.3 Enterprise Stable</title>
+<title>TFMS v45.5 Enterprise Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -11915,6 +11915,10 @@ document.addEventListener('DOMContentLoaded',function(){
       </style></head><body>
       <div class="dj-sheet ${esc(sheetClass||'')}">${content}</div>
       
+
+<!-- TFMS v45.5 Enterprise Stable - Data Store Fix
+     Equipment UX reads live lexical assetData first; window.assetData is fallback only.
+     Login / photo loading / Supabase schema unchanged. -->
 </body></html>`);
     win.document.close();
     setTimeout(()=>win.focus(),200);
@@ -17968,7 +17972,7 @@ document.readyState==='loading'?document.addEventListener('DOMContentLoaded',upd
  const oldRender=window.renderAssetList;if(typeof oldRender==='function')window.renderAssetList=function(){const r=oldRender.apply(this,arguments);setTimeout(()=>{populateFilters();filterList();refresh()},40);return r};
  const oldSave=window.saveAsset;if(typeof oldSave==='function')window.saveAsset=function(){const r=oldSave.apply(this,arguments);setTimeout(()=>{refresh();closeAssetRegisterV4431()},450);return r};
  const oldNav=window.navTo;if(typeof oldNav==='function')window.navTo=function(id){const r=oldNav.apply(this,arguments);if(id==='equipment')setTimeout(()=>{ensureShell();movePhotos();refresh()},140);return r};
- function brand(){const small=document.querySelector('#appHeader .logo-title small');if(small)small.textContent='태백시시설관리공단 시설관리시스템';const b=$('tfmsVersionBadge');if(b)b.textContent='v45.3 Enterprise Stable';document.title='TFMS v45.3 Enterprise Stable';window.TFMS_BUILD=Object.freeze({version:'v45.3',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});}
+ function brand(){const small=document.querySelector('#appHeader .logo-title small');if(small)small.textContent='태백시시설관리공단 시설관리시스템';const b=$('tfmsVersionBadge');if(b)b.textContent='v45.5 Enterprise Stable';document.title='TFMS v45.5 Enterprise Stable';window.TFMS_BUILD=Object.freeze({version:'v45.5',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});}
  function init(){brand();ensureShell();movePhotos();refresh();[400,1000,2200].forEach(ms=>setTimeout(()=>{brand();ensureShell();movePhotos();refresh()},ms))}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
@@ -18007,9 +18011,9 @@ document.readyState==='loading'?document.addEventListener('DOMContentLoaded',upd
    try{const d=window.assetData||assetData||{};return d[selectedKey()]||null}catch(e){return null}
  }
  function syncVersion(){
-   const b=$('tfmsVersionBadge'); if(b)b.textContent='v45.3 Enterprise Stable';
-   document.title='TFMS v45.3 Enterprise Stable';
-   window.TFMS_BUILD=Object.freeze({version:'v45.3',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});
+   const b=$('tfmsVersionBadge'); if(b)b.textContent='v45.5 Enterprise Stable';
+   document.title='TFMS v45.5 Enterprise Stable';
+   window.TFMS_BUILD=Object.freeze({version:'v45.5',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});
  }
  function cleanupLegacyControls(){
    const p=$('equipment');if(!p)return;
@@ -18154,10 +18158,10 @@ body{background:#f4f8fc!important}
 <script id="tfms-v4433-equipment-ux-stabilize-controller">
 (function(){
 'use strict';
-const BUILD='v45.3 Enterprise Stable';
+const BUILD='v45.5 Enterprise Stable';
 const $=id=>document.getElementById(id);
 const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-function data(){try{return window.assetData||(typeof assetData!=='undefined'?assetData:{})}catch(e){return {}}}
+function data(){try{if(typeof assetData!=='undefined'&&assetData&&Object.keys(assetData).length)return assetData;if(window.assetData)return window.assetData;return {}}catch(e){return {}}}
 function key(){try{return String((typeof selectedAssetKey!=='undefined'&&selectedAssetKey)?selectedAssetKey:(window.selectedAssetKey||''))}catch(e){return String(window.selectedAssetKey||'')}}
 function asset(){return data()?.[key()]||null}
 function value(a,...ks){for(const k of ks){const v=a?.[k];if(v!=null&&String(v).trim()!==''&&String(v)!=='undefined')return v}return '-'}
@@ -18166,8 +18170,8 @@ function money(v){if(v==null||v===''||v==='-')return '-';if(typeof v==='number')
 function syncBuild(){
  const b=$('tfmsVersionBadge');if(b&&b.textContent!==BUILD)b.textContent=BUILD;
  const title='TFMS '+BUILD;if(document.title!==title)document.title=title;
- window.TFMS_BUILD=Object.freeze({version:'v45.3',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});
- try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.3'){u.searchParams.set('v','45.3');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
+ window.TFMS_BUILD=Object.freeze({version:'v45.5',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});
+ try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.5'){u.searchParams.set('v','45.5');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
 }
 function cleanUserLabel(){const el=$('topUserLabel');if(!el)return;const t=(el.textContent||'').replace(/^\s*[👤🧑‍💼]+\s*/u,'').trim();if(t&&t!==el.textContent.trim())el.textContent=t}
 function hideLegacy(){
@@ -18284,7 +18288,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 @media(max-width:760px){#tfmsVersionBadge{font-size:9px!important;padding:3px 6px!important}#appHeader .top{padding-left:12px!important;padding-right:10px!important}}
 </style>
 <script id="tfms-v450-build-guard">
-(function(){function apply(){const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent='v45.3 Enterprise Stable';document.title='TFMS v45.3 Enterprise Stable';try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.3'){u.searchParams.set('v','45.3');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();setTimeout(apply,500);})();
+(function(){function apply(){const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent='v45.5 Enterprise Stable';document.title='TFMS v45.5 Enterprise Stable';try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.5'){u.searchParams.set('v','45.5');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();setTimeout(apply,500);})();
 </script>
 
 
@@ -18293,7 +18297,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <script id="tfms-v451-equipment-click-fix">
 (function(){
 'use strict';
-function assetStore(){try{return window.assetData||(typeof assetData!=='undefined'?assetData:{});}catch(e){return {};}}
+function assetStore(){try{if(typeof assetData!=='undefined'&&assetData&&Object.keys(assetData).length)return assetData;if(window.assetData)return window.assetData;return {};}catch(e){return {};}}
 function setSelected(key){
   key=String(key||'');
   if(!key||!assetStore()[key]) return false;
@@ -18355,9 +18359,9 @@ function bind(){
   },true);
 }
 function version(){
- const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent='v45.3 Enterprise Stable';
- document.title='TFMS v45.3 Enterprise Stable';
- try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.3'){u.searchParams.set('v','45.3');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
+ const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent='v45.5 Enterprise Stable';
+ document.title='TFMS v45.5 Enterprise Stable';
+ try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.5'){u.searchParams.set('v','45.5');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
 }
 function init(){version();bind();[250,700,1500,3000].forEach(ms=>setTimeout(()=>{version();bind();},ms));}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
@@ -18378,8 +18382,8 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <script id="tfms-v454-list-click-core-controller">
 (function(){
 'use strict';
-const VERSION='v45.4 Enterprise Stable';
-function data(){try{return window.assetData||(typeof assetData!=='undefined'?assetData:{});}catch(e){return {};}}
+const VERSION='v45.5 Enterprise Stable';
+function data(){try{if(typeof assetData!=='undefined'&&assetData&&Object.keys(assetData).length)return assetData;if(window.assetData)return window.assetData;return {};}catch(e){return {};}}
 function entries(){
   try{
     if(typeof getAssetEntries==='function') return getAssetEntries();
@@ -18396,7 +18400,7 @@ function icon(a){
   return n.includes('펌프')?'💧':n.includes('분전반')?'⚡':n.includes('여과')?'🌀':'⚙';
 }
 function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
-function currentKey(){try{return String(window.selectedAssetKey||(typeof selectedAssetKey!=='undefined'?selectedAssetKey:'')||'');}catch(e){return String(window.selectedAssetKey||'');}}
+function currentKey(){try{return String((typeof selectedAssetKey!=='undefined'&&selectedAssetKey)?selectedAssetKey:(window.selectedAssetKey||''));}catch(e){return String(window.selectedAssetKey||'');}}
 function render(){
   const list=document.getElementById('assetList'); if(!list)return;
   const grouped=new Map();
@@ -18448,7 +18452,7 @@ if(typeof prevNav==='function')window.navTo=function(id){const r=prevNav.apply(t
 function brand(){
  const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent=VERSION;
  document.title='TFMS '+VERSION;
- try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.4'){u.searchParams.set('v','45.4');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
+ try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.5'){u.searchParams.set('v','45.5');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
 }
 function init(){brand();setTimeout(render,260);[800,1800].forEach(ms=>setTimeout(()=>{brand();render();},ms));}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
