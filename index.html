@@ -17974,4 +17974,138 @@ document.readyState==='loading'?document.addEventListener('DOMContentLoaded',upd
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
 </script>
+
+<style id="tfms-v4432-enterprise-equipment-cleanup-style">
+/* TFMS v44.32 Recovery Stable · Equipment UX cleanup */
+#equipment.tfms-v4431-ready>.tfms-equipment-tabs{display:none!important}
+#equipment.tfms-v4431-ready #tfmsEquipmentImportButtonV4430{display:none!important}
+#equipment .tfms-v4431-side-actions{grid-template-columns:1fr 1fr!important}
+#equipment .tfms-v4431-side-actions button{white-space:nowrap}
+#equipment .tfms-v4431-register-modal #tfmsAssetModeBanner{display:none!important}
+#equipment .tfms-v4431-register-modal>.section-title,
+#equipment .tfms-v4431-register-modal>.asset-form-note,
+#equipment .tfms-v4431-register-modal>.grid,
+#equipment .tfms-v4431-register-modal>.buttons{width:min(1240px,calc(100vw - 64px))!important;max-width:1240px!important;box-sizing:border-box!important}
+#equipment .tfms-v4431-register-modal>.buttons{position:sticky;bottom:0;z-index:2;box-shadow:0 -8px 20px rgba(9,31,59,.06)}
+#equipment .tfms-v4431-register-modal>.buttons .btn{min-width:110px}
+#equipment .tfms-v4431-register-modal>.buttons .btn.light{margin-right:auto}
+#equipment .tfms-v4431-register-modal{overflow-y:auto!important;overflow-x:hidden!important}
+#equipment .tfms-v4431-main{min-height:calc(100vh - 78px)}
+@media(max-width:1100px){
+ #equipment .tfms-v4431-shell{grid-template-columns:285px minmax(0,1fr)!important}
+ #equipment .tfms-v4431-summary-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+ #equipment .tfms-v4431-summary-item:nth-child(4n){border-right:1px solid #e8edf4!important}
+ #equipment .tfms-v4431-summary-item:nth-child(3n){border-right:0!important}
+}
+</style>
+<script id="tfms-v4432-enterprise-equipment-cleanup-controller">
+(function(){
+ 'use strict';
+ const $=id=>document.getElementById(id);
+ function text(v){return String(v??'').replace(/\s+/g,' ').trim()}
+ function selectedKey(){return window.selectedAssetKey||''}
+ function selectedAsset(){
+   try{const d=window.assetData||assetData||{};return d[selectedKey()]||null}catch(e){return null}
+ }
+ function syncVersion(){
+   const b=$('tfmsVersionBadge'); if(b)b.textContent='v44.32 Recovery Stable';
+   document.title='TFMS v44.32 Recovery Stable · Enterprise UX';
+   window.TFMS_BUILD=Object.freeze({version:'v44.32',channel:'Recovery Stable',buildDate:'2026.08.07',title:'Equipment UX Cleanup'});
+ }
+ function cleanupLegacyControls(){
+   const p=$('equipment');if(!p)return;
+   p.querySelectorAll('.tfms-equipment-tabs').forEach(x=>x.style.setProperty('display','none','important'));
+   p.querySelectorAll('#tfmsEquipmentImportButtonV4430').forEach(x=>x.style.setProperty('display','none','important'));
+   // 새 Enterprise UX 외부에 남은 과거 설비 등록/엑셀 버튼은 숨긴다.
+   [...p.querySelectorAll('button')].forEach(b=>{
+     if(b.closest('.tfms-v4431-side-actions,.tfms-v4431-main-actions,.tfms-v4431-register-modal,.tfms-import-modal'))return;
+     const t=text(b.textContent);
+     if(/장비이력카드.*가져오기|엑셀.*가져오기/.test(t)) b.style.setProperty('display','none','important');
+   });
+   const side=p.querySelector('.tfms-v4431-side-actions');
+   if(side){
+     const buttons=[...side.querySelectorAll('button')];
+     if(buttons[0]){buttons[0].textContent='＋ 설비 등록';buttons[0].title='설비 1건을 직접 등록합니다.'}
+     if(buttons[1]){buttons[1].textContent='⇩ 엑셀 일괄등록';buttons[1].title='엑셀 파일에서 여러 설비를 한 번에 등록합니다.'}
+   }
+   // 등록 모달 하단 버튼도 사용 목적이 한눈에 보이게 통일.
+   const modal=$('tfmsV4431RegisterModal');
+   if(modal){
+     const clear=[...modal.querySelectorAll('button')].find(b=>/clearAssetForm/.test(b.getAttribute('onclick')||''));
+     const save=[...modal.querySelectorAll('button')].find(b=>/saveAsset/.test(b.getAttribute('onclick')||''));
+     if(clear)clear.textContent='입력 초기화';
+     if(save)save.textContent=window.tfmsEditingAssetDbId?'수정 내용 저장':'설비 등록';
+   }
+ }
+ function updateModalTitle(edit){
+   const modal=$('tfmsV4431RegisterModal');if(!modal)return;
+   const title=modal.querySelector('.section-title');if(!title)return;
+   const dot=title.querySelector('.dot')?.outerHTML||'<span class="dot"></span>';
+   const close=title.querySelector('.tfms-v4431-modal-close')?.outerHTML||'<button type="button" class="tfms-v4431-modal-close" onclick="closeAssetRegisterV4431()">×</button>';
+   title.innerHTML=dot+(edit?'설비 정보 수정':'신규 설비 등록')+close;
+ }
+ // 핵심 버그 수정: 새 UI가 참조하는 window.selectedAssetKey를 클릭 즉시 동기화한다.
+ const previousShow=window.showAsset;
+ if(typeof previousShow==='function'){
+   window.showAsset=function(key,el){
+     if(key!=null&&key!=='') window.selectedAssetKey=String(key);
+     let r;
+     try{r=previousShow.apply(this,arguments)}catch(e){console.error('showAsset',e);throw e}
+     // 기존 렌더러가 lexical selectedAssetKey를 갱신한 뒤에도 window 값을 유지한다.
+     if(key!=null&&key!=='') window.selectedAssetKey=String(key);
+     setTimeout(()=>{
+       const list=$('assetList');
+       if(list){
+         [...list.children].forEach(x=>x.classList.remove('selected'));
+         if(el)el.classList.add('selected');
+       }
+       // v44.31 refresh wrapper가 window.selectedAssetKey를 읽도록 한 프레임 뒤 재호출 없이 동기화만 보장.
+       cleanupLegacyControls();
+     },0);
+     return r;
+   };
+ }
+ const previousOpen=window.openAssetRegisterV4431;
+ window.openAssetRegisterV4431=function(edit){
+   // 신규등록은 선택설비를 바꾸지 않고 폼만 초기화한다. 목록 상세 고정 문제와 분리.
+   if(!edit){
+     try{window.clearAssetForm?.()}catch(e){}
+     window.tfmsEditingAssetDbId=null;
+   }else{
+     // 수정은 현재 선택 설비를 기존 loadAssetForm으로 명시적으로 주입한다.
+     const a=selectedAsset();
+     try{
+       if(a?.dbId)window.tfmsEditingAssetDbId=a.dbId;
+       if(typeof window.loadAssetForm==='function'&&a)window.loadAssetForm(selectedKey());
+     }catch(e){console.warn('선택 설비 수정폼 로딩',e)}
+   }
+   if(typeof previousOpen==='function') previousOpen.call(this,!!edit);
+   else {const m=$('tfmsV4431RegisterModal');m?.classList.add('show');document.body.style.overflow='hidden'}
+   updateModalTitle(!!edit);cleanupLegacyControls();
+ };
+ const previousClose=window.closeAssetRegisterV4431;
+ window.closeAssetRegisterV4431=function(){
+   if(typeof previousClose==='function')previousClose.apply(this,arguments);
+   else {$('tfmsV4431RegisterModal')?.classList.remove('show');document.body.style.overflow=''}
+ };
+ // 엑셀 모달의 명칭을 사용자 관점에서 하나로 통일한다. 기존 파서/저장 로직은 건드리지 않는다.
+ function normalizeImportModal(){
+   const m=$('tfmsEquipmentImportModalV4432');if(!m)return;
+   const h=m.querySelector('.tfms-import-head h2');if(h)h.textContent='설비 엑셀 일괄등록';
+   const p=m.querySelector('.tfms-import-head p');if(p)p.textContent='엑셀의 설비정보를 확인한 뒤 선택한 항목을 한 번에 등록합니다.';
+ }
+ const previousImport=window.openEquipmentImportV4432;
+ if(typeof previousImport==='function')window.openEquipmentImportV4432=async function(){
+   normalizeImportModal();
+   const r=await previousImport.apply(this,arguments);
+   normalizeImportModal();cleanupLegacyControls();return r;
+ };
+ function init(){syncVersion();cleanupLegacyControls();normalizeImportModal();
+   // 초기 선택값이 있으면 window/lexical 간 상태를 한 번 맞춘다.
+   try{if(!window.selectedAssetKey&&typeof selectedAssetKey!=='undefined'&&selectedAssetKey)window.selectedAssetKey=selectedAssetKey}catch(e){}
+   [100,400,1000,2200].forEach(ms=>setTimeout(()=>{syncVersion();cleanupLegacyControls();normalizeImportModal()},ms));
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
 </body></html>
