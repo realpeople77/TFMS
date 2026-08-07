@@ -17834,4 +17834,144 @@ if(typeof oldShow==='function')window.showPage=function(id,btn){const r=oldShow.
 document.readyState==='loading'?document.addEventListener('DOMContentLoaded',updateLabel):updateLabel();
 })();
 </script>
+<style id="tfms-v4431-enterprise-equipment-ux-style">
+/* TFMS v44.31 Recovery Stable · Enterprise Equipment UX */
+#equipment.tfms-v4431-ready{padding:0!important;max-width:none!important}
+#equipment.tfms-v4431-ready>.title-row,
+#equipment.tfms-v4431-ready>.tfms-eq-kpis,
+#equipment.tfms-v4431-ready>.tfms-eq-tools,
+#equipment.tfms-v4431-ready>.tfms-eq-overview-block,
+#equipment.tfms-v4431-ready>.panel:not(.tfms-v4431-register-modal),
+#equipment.tfms-v4431-ready>.asset-tree{display:none!important}
+#equipment .tfms-v4431-shell{display:grid;grid-template-columns:335px minmax(0,1fr);min-height:calc(100vh - 78px);background:#f6f8fb;border-top:1px solid #e5ebf3}
+#equipment .tfms-v4431-sidebar{background:#fff;border-right:1px solid #dfe6ef;padding:22px 14px 16px;overflow:hidden}
+#equipment .tfms-v4431-side-head{display:flex;align-items:center;justify-content:space-between;margin:0 6px 16px}
+#equipment .tfms-v4431-side-head h2{margin:0;font-size:19px;color:#0d2342;letter-spacing:-.4px;display:flex;align-items:center;gap:9px}
+#equipment .tfms-v4431-side-head h2:before{content:'';width:10px;height:10px;border-radius:50%;background:#12a8a5}
+#equipment .tfms-v4431-side-count{font-size:12px;color:#718096;font-weight:800}
+#equipment .tfms-v4431-search{position:relative;margin:0 4px 10px}
+#equipment .tfms-v4431-search input{width:100%;height:38px;border:1px solid #d5dfeb;border-radius:8px;background:#fff;padding:0 38px 0 13px;font-size:12px;box-sizing:border-box}
+#equipment .tfms-v4431-search:after{content:'⌕';position:absolute;right:13px;top:8px;font-size:18px;color:#405a78}
+#equipment .tfms-v4431-filters{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 4px 12px}
+#equipment .tfms-v4431-filters select{height:37px;border:1px solid #d5dfeb;border-radius:8px;background:#fff;padding:0 10px;font-size:12px;color:#223b5b}
+#equipment .tfms-v4431-side-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 4px 14px}
+#equipment .tfms-v4431-side-actions button{height:38px;border-radius:8px;border:1px solid #cbd8e6;background:#fff;color:#28445f;font-weight:800;font-size:12px;cursor:pointer}
+#equipment .tfms-v4431-side-actions .primary{background:#1260d3;border-color:#1260d3;color:#fff}
+#equipment .tfms-v4431-list{height:calc(100vh - 310px);min-height:420px;overflow:auto;margin:0 -2px;padding:0 4px 20px}
+#equipment .tfms-v4431-list #assetList{display:block!important}
+#equipment .tfms-v4431-list #assetList>*{position:relative;border:0!important;border-bottom:1px solid #edf1f6!important;border-radius:0!important;margin:0!important;padding:15px 14px!important;background:#fff!important;box-shadow:none!important;transition:.15s ease;cursor:pointer}
+#equipment .tfms-v4431-list #assetList>*:hover{background:#f7faff!important}
+#equipment .tfms-v4431-list #assetList>*.active,#equipment .tfms-v4431-list #assetList>*.selected{background:#f2f7ff!important;box-shadow:inset 0 0 0 1.5px #4c8df5!important;border-radius:9px!important;margin:4px 0!important}
+#equipment .tfms-v4431-list .empty-state{border:1px dashed #cbd8e6!important;border-radius:10px!important;margin-top:12px!important;color:#8190a5!important;text-align:center!important}
+#equipment .tfms-v4431-main{padding:26px 28px 34px;overflow:auto;min-width:0}
+#equipment .tfms-v4431-titlebar{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:16px}
+#equipment .tfms-v4431-titlegroup{display:flex;align-items:center;gap:14px;min-width:0}
+#equipment .tfms-v4431-titlegroup h2{font-size:22px;margin:0;color:#091f3b;letter-spacing:-.6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:760px}
+#equipment .tfms-v4431-status{display:inline-flex;align-items:center;padding:7px 13px;border-radius:999px;background:#e8f8ef;color:#148253;font-size:12px;font-weight:900;white-space:nowrap}
+#equipment .tfms-v4431-main-actions{display:flex;gap:9px}
+#equipment .tfms-v4431-main-actions button{height:37px;padding:0 14px;border-radius:8px;border:1px solid #d1dbe8;background:#fff;color:#334e6f;font-size:12px;font-weight:800;cursor:pointer}
+#equipment .tfms-v4431-main-actions .danger{border-color:#ffc7c7;color:#d33b32;background:#fff9f9}
+#equipment .tfms-v4431-summary-card{border:1px solid #dfe7f1;border-radius:10px;background:#fff;padding:0 16px;margin-bottom:14px}
+#equipment .tfms-v4431-summary-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+#equipment .tfms-v4431-summary-item{padding:13px 20px;border-right:1px solid #e8edf4;border-bottom:1px solid #e8edf4;min-height:56px;box-sizing:border-box}
+#equipment .tfms-v4431-summary-item:nth-child(4n){border-right:0}
+#equipment .tfms-v4431-summary-item:nth-last-child(-n+4){border-bottom:0}
+#equipment .tfms-v4431-summary-item span{display:block;font-size:10px;color:#76869a;margin-bottom:5px}
+#equipment .tfms-v4431-summary-item strong{display:block;font-size:12px;color:#0c203b;word-break:break-word}
+#equipment .tfms-v4431-tabs{border:1px solid #dfe7f1;border-radius:10px;background:#fff;overflow:hidden}
+#equipment .tfms-v4431-tabbar{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid #e3eaf2;background:#fbfcfe}
+#equipment .tfms-v4431-tabbar button{height:42px;border:0;background:transparent;font-size:12px;color:#314b6a;font-weight:900;cursor:pointer;border-bottom:2px solid transparent}
+#equipment .tfms-v4431-tabbar button.active{color:#1260d3;border-bottom-color:#1260d3;background:#fff}
+#equipment .tfms-v4431-tabpane{display:none;padding:14px}
+#equipment .tfms-v4431-tabpane.active{display:block}
+#equipment .tfms-v4431-basic-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid #e5ebf3;border-radius:8px;overflow:hidden}
+#equipment .tfms-v4431-basic-grid .meta-item{min-height:58px!important;border:0!important;border-right:1px solid #edf1f6!important;border-bottom:1px solid #edf1f6!important;border-radius:0!important;background:#fff!important;padding:10px 12px!important}
+#equipment .tfms-v4431-basic-grid .meta-item:nth-child(4n){border-right:0!important}
+#equipment .tfms-v4431-basic-grid .meta-item span{font-size:10px!important;color:#77879b!important}
+#equipment .tfms-v4431-basic-grid .meta-item strong{font-size:12px!important;color:#0b213f!important}
+#equipment .tfms-v4431-bottom{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(360px,.8fr);gap:14px;margin-top:14px}
+#equipment .tfms-v4431-box{border:1px solid #dfe7f1;border-radius:10px;background:#fff;padding:14px;min-width:0}
+#equipment .tfms-v4431-box-head{font-size:15px;font-weight:900;color:#0d2442;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+#equipment .tfms-v4431-lcc .lcc-box{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:8px!important}
+#equipment .tfms-v4431-lcc .lcc-card{border:1px solid #e3eaf2!important;background:#fff!important;min-height:72px;padding:11px!important}
+#equipment .tfms-v4431-lcc .lcc-card p{font-size:10px!important;color:#76869a!important;margin:0 0 8px!important}
+#equipment .tfms-v4431-lcc .lcc-card strong{font-size:15px!important;color:#0d5dc9!important}
+#equipment .tfms-v4431-history #assetTimeline{max-height:150px;overflow:auto}
+#equipment .tfms-v4431-history .empty-state{height:100px;display:flex;align-items:center;justify-content:center;border:1px dashed #cbd8e6;border-radius:9px;color:#74859a;background:#fbfdff}
+#equipment .tfms-v4431-photos{margin-top:14px}
+#equipment .tfms-v4431-photos #tfmsEqPhotoPanelV4430{border:0!important;margin:0!important;border-radius:0!important;overflow:visible!important}
+#equipment .tfms-v4431-photos .tfms-eq-photo-head{padding:0 0 10px!important;background:#fff!important;border-bottom:0!important}
+#equipment .tfms-v4431-photos .tfms-eq-photo-head h3{font-size:15px!important;color:#0d2442!important}
+#equipment .tfms-v4431-photos .tfms-eq-photo-head p{display:none}
+#equipment .tfms-v4431-photos .tfms-eq-photo-body{grid-template-columns:265px 1fr!important;padding:0!important;gap:14px!important}
+#equipment .tfms-v4431-photos .tfms-eq-cover{min-height:145px!important;max-height:165px!important;border-radius:9px!important}
+#equipment .tfms-v4431-photos .tfms-eq-cover img{width:100%!important;height:165px!important;object-fit:cover!important;border-radius:9px!important}
+#equipment .tfms-v4431-photos .tfms-eq-history{max-height:165px!important;overflow:auto!important}
+#equipment .tfms-v4431-photos .tfms-eq-photo-item{grid-template-columns:74px 1fr auto!important;padding:7px!important}
+#equipment .tfms-v4431-photos .tfms-eq-photo-item img{width:74px!important;height:55px!important}
+#equipment .tfms-v4431-register-modal{display:none!important;position:fixed!important;inset:0!important;z-index:10030!important;background:rgba(5,22,44,.55)!important;margin:0!important;padding:26px!important;overflow:auto!important;border:0!important;border-radius:0!important}
+#equipment .tfms-v4431-register-modal.show{display:block!important}
+#equipment .tfms-v4431-register-modal>.section-title{max-width:1240px;margin:22px auto 0!important;background:#fff;padding:18px 22px;border-radius:14px 14px 0 0;border:1px solid #dfe7f1;border-bottom:0;font-size:18px}
+#equipment .tfms-v4431-register-modal>.asset-form-note,#equipment .tfms-v4431-register-modal>.grid,#equipment .tfms-v4431-register-modal>.buttons{max-width:1240px;margin-left:auto!important;margin-right:auto!important;background:#fff;box-sizing:border-box}
+#equipment .tfms-v4431-register-modal>.asset-form-note{margin-top:0!important;border-radius:0!important;border-left:1px solid #dfe7f1;border-right:1px solid #dfe7f1;padding:12px 22px!important}
+#equipment .tfms-v4431-register-modal>.grid{padding:12px 22px 4px;border-left:1px solid #dfe7f1;border-right:1px solid #dfe7f1}
+#equipment .tfms-v4431-register-modal>.buttons{padding:14px 22px 20px;border:1px solid #dfe7f1;border-top:0;border-radius:0 0 14px 14px;margin-top:0!important}
+#equipment .tfms-v4431-modal-close{float:right;border:0;background:#f2f5f8;width:30px;height:30px;border-radius:50%;font-size:18px;cursor:pointer;color:#405671}
+#appHeader .top{background:#061b38!important;height:58px!important;padding:0 24px!important;border-bottom:1px solid rgba(255,255,255,.08)!important}
+#appHeader .top .logo{min-width:420px!important;gap:9px!important}
+#appHeader .top .logo img{width:30px!important;height:30px!important;max-height:30px!important;background:transparent!important;padding:0!important;border-radius:0!important;object-fit:contain!important}
+#appHeader .logo-title{font-size:19px!important;display:flex!important;align-items:center!important;gap:8px!important;color:#fff!important}
+#appHeader .logo-title:after{content:'Enterprise'!important;margin:0!important;padding:3px 6px!important;border:0!important;border-radius:4px!important;background:#1260d3!important;color:#fff!important;font-size:10px!important}
+#appHeader .logo-title .v32-classic-note{display:none!important}
+#appHeader .logo-title small{display:block!important;color:#fff!important;font-size:13px!important;font-weight:700!important;margin:0 0 0 16px!important;opacity:.95!important}
+#appHeader nav{background:#061b38!important}
+#appHeader .nav{color:#eaf2fb!important;border-bottom:2px solid transparent!important}
+#appHeader .nav.active{color:#fff!important;border-bottom-color:#2b87ff!important;background:rgba(255,255,255,.02)!important}
+@media(max-width:1250px){#equipment .tfms-v4431-shell{grid-template-columns:285px minmax(0,1fr)}#equipment .tfms-v4431-summary-grid{grid-template-columns:repeat(2,1fr)}#equipment .tfms-v4431-summary-item:nth-child(4n){border-right:1px solid #e8edf4}#equipment .tfms-v4431-summary-item:nth-child(2n){border-right:0}#equipment .tfms-v4431-bottom{grid-template-columns:1fr}#equipment .tfms-v4431-basic-grid{grid-template-columns:repeat(2,1fr)}#equipment .tfms-v4431-lcc .lcc-box{grid-template-columns:repeat(3,1fr)!important}}
+@media(max-width:800px){#equipment .tfms-v4431-shell{grid-template-columns:1fr}#equipment .tfms-v4431-sidebar{border-right:0;border-bottom:1px solid #dfe6ef}#equipment .tfms-v4431-list{height:320px;min-height:0}#equipment .tfms-v4431-main{padding:18px 12px}#equipment .tfms-v4431-titlebar{align-items:flex-start;flex-direction:column}#equipment .tfms-v4431-summary-grid,#equipment .tfms-v4431-basic-grid{grid-template-columns:1fr}#equipment .tfms-v4431-summary-item,#equipment .tfms-v4431-basic-grid .meta-item{border-right:0!important}#equipment .tfms-v4431-tabbar{grid-template-columns:repeat(2,1fr)}#equipment .tfms-v4431-photos .tfms-eq-photo-body{grid-template-columns:1fr!important}#appHeader .logo-title small{display:none!important}}
+</style>
+<script id="tfms-v4431-enterprise-equipment-ux-controller">
+(function(){
+ 'use strict';
+ const $=id=>document.getElementById(id);
+ const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+ function entries(){try{return typeof getAssetEntries==='function'?getAssetEntries():Object.entries(window.assetData||assetData||{})}catch(e){return []}}
+ function current(){try{return (window.assetData||assetData||{})[window.selectedAssetKey||selectedAssetKey]||null}catch(e){return null}}
+ function statusClass(a){return /위험|수리|사용중지|폐기/.test(String(a?.status||'')+String(a?.risk||''))?'#ffe9e7':/주의|점검필요|교체예정/.test(String(a?.status||'')+String(a?.risk||''))?'#fff2d8':'#e8f8ef'}
+ function val(a,...keys){for(const k of keys){if(a&&a[k]!=null&&String(a[k]).trim()!=='')return a[k]}return '-'}
+ function ensureShell(){
+   const page=$('equipment'); if(!page||page.dataset.v4431)return;
+   page.dataset.v4431='1'; page.classList.add('tfms-v4431-ready');
+   const tree=page.querySelector('.asset-tree'); if(!tree)return;
+   const detail=tree.querySelector('.asset-detail'), list=tree.querySelector('#assetList');
+   const reg=[...page.querySelectorAll(':scope > .panel')].find(p=>p.querySelector('.section-title')?.textContent.includes('설비 등록/수정'));
+   if(reg){reg.classList.add('tfms-v4431-register-modal');reg.id='tfmsV4431RegisterModal';const t=reg.querySelector('.section-title');if(t&&!t.querySelector('.tfms-v4431-modal-close'))t.insertAdjacentHTML('beforeend','<button type="button" class="tfms-v4431-modal-close" onclick="closeAssetRegisterV4431()">×</button>');reg.addEventListener('click',e=>{if(e.target===reg)closeAssetRegisterV4431()});}
+   const shell=document.createElement('div');shell.className='tfms-v4431-shell';
+   shell.innerHTML=`<aside class="tfms-v4431-sidebar"><div class="tfms-v4431-side-head"><h2>설비 목록</h2><span class="tfms-v4431-side-count" id="tfmsV4431Count">총 0건</span></div><div class="tfms-v4431-search"><input id="tfmsV4431Search" placeholder="설비명, 모델명, 관리번호 검색..."></div><div class="tfms-v4431-filters"><select id="tfmsV4431Category"><option value="">전체 분류</option></select><select id="tfmsV4431Status"><option value="">전체 상태</option></select></div><div class="tfms-v4431-side-actions"><button class="primary" type="button" onclick="openAssetRegisterV4431(false)">＋ 설비 등록</button><button type="button" onclick="openEquipmentImportV4432()">⇩ 엑셀 가져오기</button></div><div class="tfms-v4431-list" id="tfmsV4431List"></div></aside><main class="tfms-v4431-main"><div class="tfms-v4431-titlebar"><div class="tfms-v4431-titlegroup"><h2 id="tfmsV4431Title">설비를 선택해 주세요.</h2><span class="tfms-v4431-status" id="tfmsV4431StatusBadge">-</span></div><div class="tfms-v4431-main-actions"><button type="button" onclick="openAssetRegisterV4431(true)">✎ 수정</button><button class="danger" type="button" onclick="deleteSelectedAsset()">⌫ 삭제</button><button type="button" onclick="document.querySelector('#tfmsV4431List')?.scrollTo({top:0,behavior:'smooth'})">☷ 목록</button></div></div><section class="tfms-v4431-summary-card"><div class="tfms-v4431-summary-grid" id="tfmsV4431Summary"></div></section><section class="tfms-v4431-tabs"><div class="tfms-v4431-tabbar"><button class="active" data-tab="basic">◉ 기본정보</button><button data-tab="lcc">▥ LCC·교체 검토</button><button data-tab="history">◷ 최근 이력</button><button data-tab="photos">▧ 설비 사진</button></div><div class="tfms-v4431-tabpane active" data-pane="basic"><div class="tfms-v4431-basic-grid" id="tfmsV4431Basic"></div></div><div class="tfms-v4431-tabpane" data-pane="lcc" id="tfmsV4431LccPane"></div><div class="tfms-v4431-tabpane" data-pane="history" id="tfmsV4431HistoryPane"></div><div class="tfms-v4431-tabpane" data-pane="photos" id="tfmsV4431PhotosPane"></div></section><div class="tfms-v4431-bottom"><section class="tfms-v4431-box tfms-v4431-lcc"><div class="tfms-v4431-box-head">LCC·교체 검토</div><div id="tfmsV4431LccQuick"></div></section><section class="tfms-v4431-box tfms-v4431-history"><div class="tfms-v4431-box-head">최근 이력 <button type="button" style="border:1px solid #d6e0eb;background:#fff;border-radius:7px;padding:5px 9px;font-size:10px;cursor:pointer" onclick="activateAssetTabV4431('history')">전체보기</button></div><div id="tfmsV4431HistoryQuick"></div></section></div><section class="tfms-v4431-box tfms-v4431-photos"><div id="tfmsV4431PhotosQuick"></div></section></main>`;
+   tree.insertAdjacentElement('beforebegin',shell);
+   $('tfmsV4431List').appendChild(list);
+   const meta=detail?.querySelector('.card-meta'); if(meta)$('tfmsV4431Basic').appendChild(meta);
+   const lcc=detail?.querySelector('.lcc-box'); if(lcc){$('tfmsV4431LccQuick').appendChild(lcc);$('tfmsV4431LccPane').innerHTML='<div class="tfms-v4431-box-head">LCC·교체 검토 상세</div><div id="tfmsV4431LccMount"></div>';}
+   const timeline=detail?.querySelector('#assetTimeline'); if(timeline){$('tfmsV4431HistoryQuick').appendChild(timeline);$('tfmsV4431HistoryPane').innerHTML='<div class="tfms-v4431-box-head">최근 이력</div><div id="tfmsV4431HistoryMirror"></div>';}
+   document.querySelectorAll('#equipment .tfms-v4431-tabbar button').forEach(b=>b.addEventListener('click',()=>activateAssetTabV4431(b.dataset.tab)));
+   $('tfmsV4431Search')?.addEventListener('input',filterList);$('tfmsV4431Category')?.addEventListener('change',filterList);$('tfmsV4431Status')?.addEventListener('change',filterList);
+   populateFilters(); setTimeout(movePhotos,200); setTimeout(refresh,260);
+ }
+ function populateFilters(){const data=entries().map(x=>x[1]).filter(Boolean);const cat=$('tfmsV4431Category'),st=$('tfmsV4431Status');if(cat){const p=cat.value;cat.innerHTML='<option value="">전체 분류</option>'+[...new Set(data.map(a=>a.category).filter(Boolean))].sort().map(v=>`<option>${esc(v)}</option>`).join('');cat.value=p}if(st){const p=st.value;st.innerHTML='<option value="">전체 상태</option>'+[...new Set(data.map(a=>a.status||'정상').filter(Boolean))].sort().map(v=>`<option>${esc(v)}</option>`).join('');st.value=p}}
+ function filterList(){const q=($('tfmsV4431Search')?.value||'').trim().toLowerCase(),cat=$('tfmsV4431Category')?.value||'',st=$('tfmsV4431Status')?.value||'';const allowed=new Set(entries().filter(([k,a])=>{const text=[a?.name,a?.model,a?.manufacturer,a?.qrId,a?.assetCode,a?.space].join(' ').toLowerCase();return(!q||text.includes(q))&&(!cat||String(a?.category||'')===cat)&&(!st||String(a?.status||'정상')===st)}).map(x=>x[0]));const list=$('assetList');if(list)[...list.children].forEach(el=>{const key=el.dataset?.key||el.getAttribute('data-key')||el.dataset?.assetKey||'';const txt=(el.textContent||'').toLowerCase();el.style.display=key?(allowed.has(key)?'':'none'):(!q||txt.includes(q)?'':'none')})}
+ function movePhotos(){const p=$('tfmsEqPhotoPanelV4430');if(p&&!$('tfmsV4431PhotosPane')?.contains(p))$('tfmsV4431PhotosQuick')?.appendChild(p);}
+ function summaryHtml(a){const items=[['제조사',val(a,'manufacturer')],['모델명',val(a,'model')],['관리번호',val(a,'assetCode','asset_code','qrId')],['QR관리번호',val(a,'qrId','qr_code')],['설치위치',val(a,'location','space')],['설비분류',val(a,'category')],['설치연도',val(a,'year','installYear')],['내용연수(년)',val(a,'life')],['작동형태',val(a,'operation')],['점검주기',val(a,'cycle')],['관리상태',val(a,'status')],['중요도 / 위험도',`${val(a,'importance')} / ${val(a,'risk')}`]];return items.map(([k,v])=>`<div class="tfms-v4431-summary-item"><span>${esc(k)}</span><strong>${esc(v)}</strong></div>`).join('')}
+ function refresh(){const a=current();const title=$('tfmsV4431Title'),badge=$('tfmsV4431StatusBadge');if(title)title.textContent=a?.name||'설비를 선택해 주세요.';if(badge){badge.textContent=a?.status||a?.risk||'-';badge.style.background=statusClass(a)}if($('tfmsV4431Summary'))$('tfmsV4431Summary').innerHTML=a?summaryHtml(a):summaryHtml({});const c=entries().length;if($('tfmsV4431Count'))$('tfmsV4431Count').textContent=`총 ${c.toLocaleString('ko-KR')}건`;populateFilters();filterList();const mirror=$('tfmsV4431HistoryMirror'),tl=$('assetTimeline');if(mirror&&tl)mirror.innerHTML=tl.innerHTML;setTimeout(()=>{try{refreshEquipmentPhotosV4430?.()}catch(e){}},80)}
+ window.activateAssetTabV4431=function(tab){document.querySelectorAll('#equipment .tfms-v4431-tabbar button').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));document.querySelectorAll('#equipment .tfms-v4431-tabpane').forEach(p=>p.classList.toggle('active',p.dataset.pane===tab));const photo=$('tfmsEqPhotoPanelV4430'),lcc=document.querySelector('#equipment .lcc-box');if(tab==='photos'){if(photo)$('tfmsV4431PhotosPane').appendChild(photo)}else if(photo&&!$('tfmsV4431PhotosQuick').contains(photo))$('tfmsV4431PhotosQuick').appendChild(photo);if(tab==='lcc'){if(lcc)$('tfmsV4431LccMount')?.appendChild(lcc)}else if(lcc&&!$('tfmsV4431LccQuick').contains(lcc))$('tfmsV4431LccQuick').appendChild(lcc);if(tab==='history'){const m=$('tfmsV4431HistoryMirror'),tl=$('assetTimeline');if(m&&tl)m.innerHTML=tl.innerHTML}}
+ window.openAssetRegisterV4431=function(edit){const m=$('tfmsV4431RegisterModal');if(!m)return;if(!edit&&typeof clearAssetForm==='function')clearAssetForm();m.classList.add('show');document.body.style.overflow='hidden'};
+ window.closeAssetRegisterV4431=function(){const m=$('tfmsV4431RegisterModal');m?.classList.remove('show');document.body.style.overflow=''};
+ const oldShow=window.showAsset;if(typeof oldShow==='function')window.showAsset=function(){const r=oldShow.apply(this,arguments);setTimeout(refresh,30);return r};
+ const oldRender=window.renderAssetList;if(typeof oldRender==='function')window.renderAssetList=function(){const r=oldRender.apply(this,arguments);setTimeout(()=>{populateFilters();filterList();refresh()},40);return r};
+ const oldSave=window.saveAsset;if(typeof oldSave==='function')window.saveAsset=function(){const r=oldSave.apply(this,arguments);setTimeout(()=>{refresh();closeAssetRegisterV4431()},450);return r};
+ const oldNav=window.navTo;if(typeof oldNav==='function')window.navTo=function(id){const r=oldNav.apply(this,arguments);if(id==='equipment')setTimeout(()=>{ensureShell();movePhotos();refresh()},140);return r};
+ function brand(){const small=document.querySelector('#appHeader .logo-title small');if(small)small.textContent='태백시시설관리공단 시설관리시스템';const b=$('tfmsVersionBadge');if(b)b.textContent='v44.31 Recovery Stable';document.title='TFMS v44.31 Recovery Stable · Enterprise UX';window.TFMS_BUILD=Object.freeze({version:'v44.31',channel:'Recovery Stable',buildDate:'2026.08.07',title:'Enterprise Equipment UX'});}
+ function init(){brand();ensureShell();movePhotos();refresh();[400,1000,2200].forEach(ms=>setTimeout(()=>{brand();ensureShell();movePhotos();refresh()},ms))}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
 </body></html>
