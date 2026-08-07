@@ -6,7 +6,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>TFMS v45.0 Enterprise Stable</title>
+<title>TFMS v45.1 Enterprise Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -17968,7 +17968,7 @@ document.readyState==='loading'?document.addEventListener('DOMContentLoaded',upd
  const oldRender=window.renderAssetList;if(typeof oldRender==='function')window.renderAssetList=function(){const r=oldRender.apply(this,arguments);setTimeout(()=>{populateFilters();filterList();refresh()},40);return r};
  const oldSave=window.saveAsset;if(typeof oldSave==='function')window.saveAsset=function(){const r=oldSave.apply(this,arguments);setTimeout(()=>{refresh();closeAssetRegisterV4431()},450);return r};
  const oldNav=window.navTo;if(typeof oldNav==='function')window.navTo=function(id){const r=oldNav.apply(this,arguments);if(id==='equipment')setTimeout(()=>{ensureShell();movePhotos();refresh()},140);return r};
- function brand(){const small=document.querySelector('#appHeader .logo-title small');if(small)small.textContent='태백시시설관리공단 시설관리시스템';const b=$('tfmsVersionBadge');if(b)b.textContent='v45.0 Enterprise Stable';document.title='TFMS v45.0 Enterprise Stable';window.TFMS_BUILD=Object.freeze({version:'v45.0',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});}
+ function brand(){const small=document.querySelector('#appHeader .logo-title small');if(small)small.textContent='태백시시설관리공단 시설관리시스템';const b=$('tfmsVersionBadge');if(b)b.textContent='v45.1 Enterprise Stable';document.title='TFMS v45.1 Enterprise Stable';window.TFMS_BUILD=Object.freeze({version:'v45.1',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});}
  function init(){brand();ensureShell();movePhotos();refresh();[400,1000,2200].forEach(ms=>setTimeout(()=>{brand();ensureShell();movePhotos();refresh()},ms))}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
@@ -18007,9 +18007,9 @@ document.readyState==='loading'?document.addEventListener('DOMContentLoaded',upd
    try{const d=window.assetData||assetData||{};return d[selectedKey()]||null}catch(e){return null}
  }
  function syncVersion(){
-   const b=$('tfmsVersionBadge'); if(b)b.textContent='v45.0 Enterprise Stable';
-   document.title='TFMS v45.0 Enterprise Stable';
-   window.TFMS_BUILD=Object.freeze({version:'v45.0',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});
+   const b=$('tfmsVersionBadge'); if(b)b.textContent='v45.1 Enterprise Stable';
+   document.title='TFMS v45.1 Enterprise Stable';
+   window.TFMS_BUILD=Object.freeze({version:'v45.1',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});
  }
  function cleanupLegacyControls(){
    const p=$('equipment');if(!p)return;
@@ -18154,7 +18154,7 @@ body{background:#f4f8fc!important}
 <script id="tfms-v4433-equipment-ux-stabilize-controller">
 (function(){
 'use strict';
-const BUILD='v45.0 Enterprise Stable';
+const BUILD='v45.1 Enterprise Stable';
 const $=id=>document.getElementById(id);
 const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 function data(){try{return window.assetData||(typeof assetData!=='undefined'?assetData:{})}catch(e){return {}}}
@@ -18166,8 +18166,8 @@ function money(v){if(v==null||v===''||v==='-')return '-';if(typeof v==='number')
 function syncBuild(){
  const b=$('tfmsVersionBadge');if(b&&b.textContent!==BUILD)b.textContent=BUILD;
  const title='TFMS '+BUILD;if(document.title!==title)document.title=title;
- window.TFMS_BUILD=Object.freeze({version:'v45.0',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});
- try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.0'){u.searchParams.set('v','45.0');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
+ window.TFMS_BUILD=Object.freeze({version:'v45.1',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});
+ try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.1'){u.searchParams.set('v','45.1');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
 }
 function cleanUserLabel(){const el=$('topUserLabel');if(!el)return;const t=(el.textContent||'').replace(/^\s*[👤🧑‍💼]+\s*/u,'').trim();if(t&&t!==el.textContent.trim())el.textContent=t}
 function hideLegacy(){
@@ -18261,7 +18261,83 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 @media(max-width:760px){#tfmsVersionBadge{font-size:9px!important;padding:3px 6px!important}#appHeader .top{padding-left:12px!important;padding-right:10px!important}}
 </style>
 <script id="tfms-v450-build-guard">
-(function(){function apply(){const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent='v45.0 Enterprise Stable';document.title='TFMS v45.0 Enterprise Stable';try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.0'){u.searchParams.set('v','45.0');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();setTimeout(apply,500);})();
+(function(){function apply(){const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent='v45.1 Enterprise Stable';document.title='TFMS v45.1 Enterprise Stable';try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.1'){u.searchParams.set('v','45.1');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();setTimeout(apply,500);})();
 </script>
 
+
+
+<!-- TFMS v45.1: equipment list click reliability patch only. Photo code intentionally untouched. -->
+<script id="tfms-v451-equipment-click-fix">
+(function(){
+'use strict';
+function assetStore(){try{return window.assetData||(typeof assetData!=='undefined'?assetData:{});}catch(e){return {};}}
+function setSelected(key){
+  key=String(key||'');
+  if(!key||!assetStore()[key]) return false;
+  try{selectedAssetKey=key;}catch(e){}
+  window.selectedAssetKey=key;
+  return true;
+}
+function extractKey(item){
+  const direct=item?.dataset?.assetKey||item?.dataset?.key||'';
+  if(direct&&assetStore()[String(direct)]) return String(direct);
+  const oc=item?.getAttribute('onclick')||'';
+  const m=oc.match(/showAsset\(\s*['\"]((?:\\.|[^'\"])*)['\"]/);
+  if(m){
+    const k=m[1].replace(/\\'/g,"'").replace(/\\\"/g,'\"');
+    if(assetStore()[k]) return k;
+  }
+  // Last-resort name match, scoped to the current list row.
+  const clone=item?.cloneNode(true); clone?.querySelectorAll('small').forEach(x=>x.remove());
+  let label=(clone?.textContent||'').replace(/[💧⚙🔥⚡🌀]/g,'').replace(/\s+/g,' ').trim();
+  const entries=Object.entries(assetStore());
+  const hit=entries.find(([,a])=>String(a?.name||'').trim()===label);
+  return hit?String(hit[0]):'';
+}
+function paintCore(key,item){
+  if(!setSelected(key)) return false;
+  const data=assetStore();
+  let a=data[key];
+  try{if(typeof ensureAssetDefaultsV29==='function')a=ensureAssetDefaultsV29(key)||a;}catch(e){}
+  if(!a)return false;
+  try{ufSelectedFacility=a.facility||ufSelectedFacility;}catch(e){}
+  try{ufSelectedSpace=a.space||ufSelectedSpace;}catch(e){}
+  document.querySelectorAll('#equipment .tree-item,#equipment .uf-item').forEach(x=>x.classList.remove('active'));
+  if(item)item.classList.add('active');
+  const set=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=(val==null||val==='')?'-':val;};
+  set('assetName',a.name);set('assetYear',a.year);set('assetLife',a.life);set('assetCheck',a.check);set('assetHistory',a.history);
+  set('assetLocation',a.location||a.space);set('assetCapacity',a.capacity);set('assetOperation',a.operation);set('assetQrId',a.qrId);
+  set('lccRepair',a.repair);set('lccReplace',a.replace);set('lccRank',a.rank);
+  const risk=document.getElementById('assetRisk');if(risk){risk.textContent=a.risk||'-';if(a.riskClass)risk.className='risk '+a.riskClass;}
+  const tl=document.getElementById('assetTimeline');if(tl)tl.innerHTML=(a.timeline||[]).map(t=>`<div class="timeline-item"><strong>${t[0]}</strong><span>${t[1]}</span></div>`).join('')||'<div class="empty-state">등록된 이력이 없습니다.</div>';
+  try{if(typeof loadAssetForm==='function')loadAssetForm(key);}catch(e){console.warn('v45.1 loadAssetForm',e);}
+  try{if(typeof updateUfAssetCard==='function')updateUfAssetCard(key);}catch(e){}
+  try{if(typeof renderQrAssetOptions==='function')renderQrAssetOptions();}catch(e){}
+  // Enterprise UX: update title/summary through the existing wrapper once selection is already synchronized.
+  try{if(typeof window.showAsset==='function')window.showAsset(key,item);}catch(e){console.warn('v45.1 wrapped showAsset fallback',e);}
+  // Reassert the requested selection in case an older wrapper tried to fall back to the first row.
+  setSelected(key);
+  return true;
+}
+function bind(){
+  const list=document.getElementById('assetList');
+  if(!list||list.dataset.v451ClickFix==='1')return;
+  list.dataset.v451ClickFix='1';
+  list.addEventListener('click',function(e){
+    const item=e.target.closest('.tree-item');
+    if(!item||!list.contains(item))return;
+    const key=extractKey(item);if(!key)return;
+    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+    paintCore(key,item);
+  },true);
+}
+function version(){
+ const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent='v45.1 Enterprise Stable';
+ document.title='TFMS v45.1 Enterprise Stable';
+ try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.1'){u.searchParams.set('v','45.1');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
+}
+function init(){version();bind();[250,700,1500,3000].forEach(ms=>setTimeout(()=>{version();bind();},ms));}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
 </body></html>
