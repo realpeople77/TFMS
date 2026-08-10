@@ -813,22 +813,42 @@ td, th, .card, .panel, .stat-card, .dashboard-card {
 </style>
 
 
-<style id="tfms-v4517-back-button">
-#tfmsBackButton{
-  position:fixed; top:66px; left:212px; z-index:900;
-  display:none; align-items:center; gap:6px;
-  height:36px; padding:0 13px;
-  border:1px solid #c9d8eb; border-radius:10px;
-  background:rgba(255,255,255,.96); color:#12345b;
-  font-size:13px; font-weight:800; cursor:pointer;
-  box-shadow:0 3px 12px rgba(15,47,82,.08);
-  white-space:nowrap;
+<style id="tfms-v4519-context-back">
+#tfmsBackButton{display:none !important}
+
+/* Context back button: lives inside the current sub-screen, never over the sidebar/header */
+.tfms-context-back{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  height:36px;
+  padding:0 12px;
+  margin:0 0 10px 0;
+  border:1px solid #c8d8eb;
+  border-radius:10px;
+  background:#fff;
+  color:#17436f;
+  font-size:13px;
+  font-weight:800;
+  cursor:pointer;
+  box-shadow:0 2px 8px rgba(15,47,82,.06);
 }
-#tfmsBackButton:hover{background:#f2f7ff;border-color:#91b9eb;}
-#tfmsBackButton:active{transform:translateY(1px);}
-@media(max-width:1250px){#tfmsBackButton{left:190px;}}
+.tfms-context-back:hover{background:#f3f8ff;border-color:#8db7e8}
+.tfms-context-back .arr{font-size:17px;line-height:1}
+
+/* QR/fire sub screens: don't jump underneath the fixed header */
+#fireMonthlyPage, #fireExtinguisherPage,
+[id*="fireMonthly"], [id*="extinguisherQr"], [id*="extinguisherQR"]{
+  scroll-margin-top:84px;
+}
+
+/* When a nested fire/QR panel becomes visible, keep its first content safely below the page header. */
+.tfms-subscreen-safe{
+  padding-top:4px !important;
+  margin-top:0 !important;
+}
 @media(max-width:900px){
-  #tfmsBackButton{left:auto;right:14px;top:62px;height:34px;padding:0 10px;}
+  .tfms-context-back{height:34px;padding:0 10px;font-size:12px}
 }
 </style>
 
@@ -18968,7 +18988,7 @@ if(typeof oldShowPage==='function'){
 <script id="tfms-v4515-register-fullwidth-script">
 (function(){
 'use strict';
-const VERSION='v45.17 Enterprise Stable';
+const VERSION='v45.19 Enterprise Stable';
 function apply(){
   const shell=document.querySelector('#register .v459-register-shell');
   if(shell){
@@ -18980,12 +19000,12 @@ function apply(){
   document.title='TFMS '+VERSION;
   try{
     const u=new URL(location.href);
-    if(u.searchParams.get('v')!=='45.17'){
-      u.searchParams.set('v','45.17');
+    if(u.searchParams.get('v')!=='45.19'){
+      u.searchParams.set('v','45.19');
       history.replaceState(history.state,'',u.pathname+u.search+u.hash);
     }
   }catch(e){}
-  try{window.TFMS_BUILD=Object.freeze({version:'v45.17',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'Back Button Restore'});}catch(e){}
+  try{window.TFMS_BUILD=Object.freeze({version:'v45.19',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'Context Back + QR Fix'});}catch(e){}
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
 [100,500,1200,2500].forEach(ms=>setTimeout(apply,ms));
@@ -18994,7 +19014,7 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
 })();
 </script>
 
-<script id="tfms-v4517-back-button-js">
+<script id="tfms-v4518-back-button-js">
 (function(){
   function installTfmsBackButton(){
     if(window.__tfmsBackButtonInstalled) return;
@@ -19092,6 +19112,106 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
     document.addEventListener('DOMContentLoaded',installTfmsBackButton,{once:true});
   }else{
     installTfmsBackButton();
+  }
+})();
+</script>
+
+
+<script id="tfms-v4519-context-back-js">
+(function(){
+  function visible(el){
+    if(!el) return false;
+    const st=getComputedStyle(el);
+    return st.display!=='none' && st.visibility!=='hidden' && !el.classList.contains('hidden');
+  }
+  function labelForParent(parentId){
+    const x=(parentId||'').toLowerCase();
+    if(x.includes('inspection') || x.includes('cycle')) return '점검주기 관리';
+    if(x.includes('asset')) return '설비 목록';
+    if(x.includes('daily') || x.includes('journal')) return '업무일지';
+    if(x.includes('maintenance')) return '유지관리';
+    return '이전 화면';
+  }
+  function findParentNavTarget(el){
+    const id=(el && el.id ? el.id : '').toLowerCase();
+    if(id.includes('fire') || id.includes('extinguisher')) return 'inspectionCycle';
+    if(id.includes('asset') && (id.includes('detail')||id.includes('photo'))) return 'assetManagement';
+    if(id.includes('daily') || id.includes('journal')) return 'dailyLog';
+    return '';
+  }
+  function navButtonFor(pageId){
+    return Array.from(document.querySelectorAll('.nav')).find(function(btn){
+      const oc=btn.getAttribute('onclick')||'';
+      return oc.includes("showPage('"+pageId+"'") || oc.includes('showPage("'+pageId+'"');
+    }) || null;
+  }
+  function goParent(parentId){
+    if(typeof window.showPage==='function' && parentId && document.getElementById(parentId)){
+      window.showPage(parentId,navButtonFor(parentId));
+      window.scrollTo({top:0,behavior:'smooth'});
+      return;
+    }
+    // For nested panels inside the same page, use an existing visible tab/button when possible.
+    const candidates=Array.from(document.querySelectorAll('button,[role="tab"],a'));
+    const target=candidates.find(function(b){
+      const t=(b.textContent||'').trim();
+      if(parentId==='inspectionCycle') return /일반 점검주기|점검주기 관리/.test(t);
+      if(parentId==='assetManagement') return /설비 목록|목록/.test(t);
+      if(parentId==='dailyLog') return /업무일지/.test(t);
+      return false;
+    });
+    if(target){ target.click(); window.scrollTo({top:0,behavior:'smooth'}); }
+  }
+  function installContextButtons(){
+    // Candidate nested pages/panels based on IDs and visible headings.
+    const candidates=Array.from(document.querySelectorAll('.page,section,div')).filter(function(el){
+      if(!visible(el)) return false;
+      const id=(el.id||'').toLowerCase();
+      if(id && (id.includes('fire')||id.includes('extinguisher')||id.includes('assetdetail'))) return true;
+      const h=el.querySelector(':scope > h1,:scope > h2,:scope > .page-title,:scope > .section-title');
+      const txt=h ? (h.textContent||'') : '';
+      return /소방 월간점검|소화기.*QR|설비 상세/.test(txt);
+    });
+
+    candidates.forEach(function(el){
+      if(el.dataset.tfmsContextBack==='1') return;
+      const parentId=findParentNavTarget(el);
+      if(!parentId) return;
+      el.dataset.tfmsContextBack='1';
+      el.classList.add('tfms-subscreen-safe');
+
+      const btn=document.createElement('button');
+      btn.type='button';
+      btn.className='tfms-context-back';
+      btn.innerHTML='<span class="arr">←</span><span>'+labelForParent(parentId)+'</span>';
+      btn.addEventListener('click',function(){goParent(parentId);});
+
+      const heading=el.querySelector('h1,h2,.page-title,.section-title');
+      if(heading && heading.parentNode){
+        heading.parentNode.insertBefore(btn,heading);
+      }else{
+        el.insertBefore(btn,el.firstChild);
+      }
+    });
+
+    // QR/fire screens often get revealed after a tab click. Keep them below the fixed header.
+    const fireHeading=Array.from(document.querySelectorAll('h1,h2,h3,.page-title,.section-title'))
+      .find(function(h){return visible(h) && /소방 월간점검|소화기.*QR/.test(h.textContent||'');});
+    if(fireHeading){
+      const rect=fireHeading.getBoundingClientRect();
+      if(rect.top < 62){
+        window.scrollBy({top:rect.top-82,behavior:'auto'});
+      }
+    }
+  }
+
+  const observer=new MutationObserver(function(){setTimeout(installContextButtons,0);});
+  observer.observe(document.body,{subtree:true,attributes:true,attributeFilter:['class','style']});
+  document.addEventListener('click',function(){setTimeout(installContextButtons,60);},true);
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',installContextButtons,{once:true});
+  }else{
+    installContextButtons();
   }
 })();
 </script>
