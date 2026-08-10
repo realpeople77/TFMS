@@ -812,6 +812,26 @@ td, th, .card, .panel, .stat-card, .dashboard-card {
 }
 </style>
 
+
+<style id="tfms-v4517-back-button">
+#tfmsBackButton{
+  position:fixed; top:66px; left:212px; z-index:900;
+  display:none; align-items:center; gap:6px;
+  height:36px; padding:0 13px;
+  border:1px solid #c9d8eb; border-radius:10px;
+  background:rgba(255,255,255,.96); color:#12345b;
+  font-size:13px; font-weight:800; cursor:pointer;
+  box-shadow:0 3px 12px rgba(15,47,82,.08);
+  white-space:nowrap;
+}
+#tfmsBackButton:hover{background:#f2f7ff;border-color:#91b9eb;}
+#tfmsBackButton:active{transform:translateY(1px);}
+@media(max-width:1250px){#tfmsBackButton{left:190px;}}
+@media(max-width:900px){
+  #tfmsBackButton{left:auto;right:14px;top:62px;height:34px;padding:0 10px;}
+}
+</style>
+
 </head>
 <body>
 <header class="hidden" id="appHeader">
@@ -18948,7 +18968,7 @@ if(typeof oldShowPage==='function'){
 <script id="tfms-v4515-register-fullwidth-script">
 (function(){
 'use strict';
-const VERSION='v45.16R Enterprise Stable';
+const VERSION='v45.17 Enterprise Stable';
 function apply(){
   const shell=document.querySelector('#register .v459-register-shell');
   if(shell){
@@ -18960,12 +18980,12 @@ function apply(){
   document.title='TFMS '+VERSION;
   try{
     const u=new URL(location.href);
-    if(u.searchParams.get('v')!=='45.16R'){
-      u.searchParams.set('v','45.16R');
+    if(u.searchParams.get('v')!=='45.17'){
+      u.searchParams.set('v','45.17');
       history.replaceState(history.state,'',u.pathname+u.search+u.hash);
     }
   }catch(e){}
-  try{window.TFMS_BUILD=Object.freeze({version:'v45.16R',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'Responsive Rollback Safe'});}catch(e){}
+  try{window.TFMS_BUILD=Object.freeze({version:'v45.17',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'Back Button Restore'});}catch(e){}
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
 [100,500,1200,2500].forEach(ms=>setTimeout(apply,ms));
@@ -18973,4 +18993,107 @@ const prev=window.showPage;
 if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,arguments);setTimeout(apply,30);return r;};
 })();
 </script>
+
+<script id="tfms-v4517-back-button-js">
+(function(){
+  function installTfmsBackButton(){
+    if(window.__tfmsBackButtonInstalled) return;
+    if(typeof window.showPage !== 'function'){
+      setTimeout(installTfmsBackButton,250);
+      return;
+    }
+    window.__tfmsBackButtonInstalled=true;
+
+    const stack=[];
+    let suppress=false;
+    const originalShowPage=window.showPage;
+
+    function activePageId(){
+      const p=document.querySelector('.page.active');
+      return p?p.id:'';
+    }
+    function navFor(id){
+      return Array.from(document.querySelectorAll('.nav')).find(function(btn){
+        const oc=btn.getAttribute('onclick')||'';
+        return oc.indexOf("showPage('"+id+"'")!==-1 ||
+               oc.indexOf('showPage("'+id+'"')!==-1;
+      })||null;
+    }
+    function loginVisible(){
+      const login=document.getElementById('loginScreen')||
+                  document.getElementById('loginPage')||
+                  document.querySelector('.login-page');
+      if(!login) return false;
+      const st=getComputedStyle(login);
+      return !login.classList.contains('hidden') &&
+             st.display!=='none' && st.visibility!=='hidden';
+    }
+
+    const btn=document.createElement('button');
+    btn.id='tfmsBackButton';
+    btn.type='button';
+    btn.setAttribute('aria-label','직전 메뉴로 돌아가기');
+    btn.innerHTML='<span aria-hidden="true">←</span><span>뒤로가기</span>';
+    document.body.appendChild(btn);
+
+    function refresh(){
+      const cur=activePageId();
+      btn.style.display=(stack.length>0 && cur && cur!=='dashboard' && !loginVisible())
+        ? 'inline-flex' : 'none';
+    }
+
+    window.showPage=function(id,navBtn){
+      const before=activePageId();
+      if(!suppress && before && before!==id){
+        if(stack[stack.length-1]!==before){
+          stack.push(before);
+          if(stack.length>30) stack.shift();
+        }
+      }
+      const result=originalShowPage.apply(this,arguments);
+      setTimeout(refresh,0);
+      return result;
+    };
+
+    btn.addEventListener('click',function(){
+      const current=activePageId();
+      let prev='';
+      while(stack.length){
+        const candidate=stack.pop();
+        if(candidate && candidate!==current && document.getElementById(candidate)){
+          prev=candidate;
+          break;
+        }
+      }
+      if(!prev){refresh();return;}
+      suppress=true;
+      try{
+        window.showPage(prev,navFor(prev));
+      }finally{
+        suppress=false;
+        setTimeout(refresh,0);
+      }
+    });
+
+    document.addEventListener('click',function(e){
+      const n=e.target.closest && e.target.closest('.nav');
+      if(!n) return;
+      const oc=n.getAttribute('onclick')||'';
+      if(oc.indexOf("showPage('dashboard'")!==-1){
+        stack.length=0;
+        setTimeout(refresh,0);
+      }
+    });
+
+    setTimeout(refresh,150);
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',installTfmsBackButton,{once:true});
+  }else{
+    installTfmsBackButton();
+  }
+})();
+</script>
+
 </body></html>
