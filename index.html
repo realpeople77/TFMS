@@ -18459,76 +18459,214 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 })();
 </script>
 
-<style id="tfms-v456-asset-recovery-style">
-#tfmsAssetRecoveryModal{position:fixed;inset:0;background:rgba(15,23,42,.48);z-index:99999;display:none;align-items:center;justify-content:center;padding:24px}
-#tfmsAssetRecoveryModal.open{display:flex}
-#tfmsAssetRecoveryModal .v456-box{width:min(1050px,96vw);max-height:86vh;background:#fff;border-radius:18px;box-shadow:0 24px 70px rgba(15,23,42,.28);overflow:hidden;display:flex;flex-direction:column}
-#tfmsAssetRecoveryModal .v456-head{padding:18px 20px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;gap:12px;background:#f8fbff}
-#tfmsAssetRecoveryModal .v456-head h3{margin:0;font-size:18px;color:#0f2747;flex:1}
-#tfmsAssetRecoveryModal .v456-search{padding:14px 20px;border-bottom:1px solid #eef2f7;display:flex;gap:10px}
-#tfmsAssetRecoveryModal input{flex:1;border:1px solid #cbd5e1;border-radius:9px;padding:10px 12px;font-size:14px}
-#tfmsAssetRecoveryRows{overflow:auto;padding:10px 14px 18px}
-.v456-row{display:grid;grid-template-columns:minmax(220px,1.4fr) minmax(160px,1fr) minmax(150px,.8fr) auto;gap:10px;align-items:center;padding:11px 10px;border-bottom:1px solid #eef2f7}
-.v456-row:hover{background:#f8fbff}.v456-row strong{color:#0f2747}.v456-meta{font-size:12px;color:#64748b}.v456-actions{display:flex;gap:6px;white-space:nowrap}
-.v456-btn{border:0;border-radius:8px;padding:8px 10px;font-weight:800;cursor:pointer}.v456-select{background:#e8f1ff;color:#1769d2}.v456-delete{background:#fee2e2;color:#b91c1c}.v456-close{background:#e2e8f0;color:#334155}
-@media(max-width:760px){.v456-row{grid-template-columns:1fr}.v456-actions{justify-content:flex-end}}
+<!-- TFMS v45.7 Enterprise Stable : Core UX Integration (v45.5 base, functional IDs preserved) -->
+<style id="tfms-v457-core-ux-style">
+:root{--ux-navy:#0b3a68;--ux-blue:#1766d2;--ux-teal:#10a7a7;--ux-border:#d8e3ef;--ux-soft:#f6f9fd;--ux-text:#102a43;--ux-muted:#66788f}
+#register,#history,#dailylog,#cycle{font-size:14px;color:var(--ux-text)}
+#register .title-row h1,#history .title-row h1,#dailylog .title-row h1,#cycle .title-row h1{font-size:26px;letter-spacing:-.5px}
+#register .breadcrumb,#history .breadcrumb,#dailylog .breadcrumb,#cycle .breadcrumb{font-size:13px;color:#71839a}
+#register .panel,#history .panel,#dailylog .panel,#cycle .panel{border:1px solid var(--ux-border);border-radius:14px;box-shadow:0 4px 15px rgba(15,44,82,.045);background:#fff}
+#register .section-title,#history .section-title,#dailylog .section-title,#cycle .section-title{font-size:16px;font-weight:900;color:#153354;margin-bottom:13px}
+#register label,#history label,#dailylog label,#cycle label{font-size:13px;font-weight:800;color:#334c68}
+#register input,#register select,#register textarea,#history input,#history select,#dailylog input,#dailylog select,#dailylog textarea,#cycle input,#cycle select{font-size:14px;min-height:42px;border-radius:9px;border-color:#cfdceb}
+#register textarea,#dailylog textarea{line-height:1.5}
+#register .btn,#history .btn,#dailylog .btn,#cycle .btn{min-height:42px;border-radius:9px;font-weight:800;padding-left:18px;padding-right:18px}
+#register .btn.blue,#history .btn.blue,#dailylog .btn.blue,#cycle .btn.blue{background:linear-gradient(135deg,#1766d2,#0f95a8);border-color:#1766d2}
+
+/* 유지관리 등록 : 기존 항목 100% 유지 + 세로 길이 다이어트 */
+#register .panel{padding:16px 18px}
+#register .section{padding:0 0 14px;margin-bottom:14px;border-bottom:1px solid #e7edf5}
+#register .section:last-of-type{border-bottom:0;margin-bottom:4px}
+#register .grid{gap:11px 12px}
+#register .field{gap:6px}
+#register .field textarea{min-height:76px}
+#register .upload-zone{min-height:82px;padding:12px}
+#register .preview{gap:7px;margin-top:8px}
+#register .thumb{height:62px}
+#register .eval{background:#fffaf0;border:1px solid #f3cc7c;border-radius:12px;padding:12px 14px}
+#register .eval h4{font-size:14px;margin:0 0 9px;color:#9a5800}
+#register .eval-grid{gap:10px 18px;grid-template-columns:repeat(4,minmax(105px,1fr))}
+#register .eval-grid label{font-size:13px;color:#26384d;white-space:nowrap}
+#register .notice{font-size:12px;line-height:1.5;padding:10px 12px}
+#register .buttons{position:sticky;bottom:8px;z-index:8;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);padding:9px 8px;border:1px solid #e0e8f2;border-radius:12px;box-shadow:0 5px 18px rgba(15,44,82,.08)}
+.v457-register-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 12px}
+.v457-step{display:flex;align-items:center;justify-content:center;gap:7px;padding:10px;border:1px solid #dbe5f0;border-radius:10px;background:#fff;font-size:12px;font-weight:900;color:#61738a}
+.v457-step b{display:grid;place-items:center;width:21px;height:21px;border-radius:50%;background:#eaf3ff;color:#1766d2}
+.v457-step.active{border-color:#aacbfa;background:#f4f9ff;color:#154b8e}
+
+/* 유지관리 조회 */
+#history>.panel:first-of-type{padding:16px 18px}
+#history>.panel:first-of-type .grid{gap:10px;align-items:end}
+#history>.panel:first-of-type .buttons{margin-top:12px}
+#history>.panel:nth-of-type(2){overflow:hidden;padding:0}
+#history .table{font-size:13px;margin:0}
+#history .table th{background:#f3f7fc;color:#536a84;font-size:12px;font-weight:900;padding:12px 10px;white-space:nowrap}
+#history .table td{padding:12px 10px;line-height:1.4;border-bottom:1px solid #edf2f7}
+#history .table tbody tr:hover{background:#f8fbff}
+.v457-history-head{display:flex;align-items:center;justify-content:space-between;padding:15px 18px 10px}
+.v457-history-head strong{font-size:16px}.v457-history-head span{font-size:12px;color:#6b7c91}
+
+/* 업무일지 : 큰 목적 2개로 먼저 구분 */
+.v457-daily-chooser{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.v457-daily-card{border:1px solid #d7e3ef;border-radius:15px;background:#fff;padding:18px;cursor:pointer;transition:.15s;display:grid;grid-template-columns:52px 1fr auto;gap:14px;align-items:center;text-align:left}
+.v457-daily-card:hover{border-color:#8dbaf2;box-shadow:0 7px 20px rgba(31,96,170,.09);transform:translateY(-1px)}
+.v457-daily-card.active{border:2px solid #1766d2;background:#f5f9ff}
+.v457-daily-card.machine.active{border-color:#24a36b;background:#f3fbf7}
+.v457-daily-icon{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;background:#eaf3ff;font-size:25px}.machine .v457-daily-icon{background:#e7f8ef}
+.v457-daily-card h3{font-size:18px;margin:0 0 4px;color:#173657}.v457-daily-card p{font-size:12px;line-height:1.5;color:#697c92;margin:0}.v457-daily-card em{font-style:normal;font-size:12px;font-weight:900;color:#1766d2}.machine em{color:#168457}
+#dailylog .dj-tabs{gap:8px;background:#f5f8fc;padding:7px;border-radius:12px;margin-top:14px}
+#dailylog .dj-tab{border-radius:9px!important;min-height:40px;font-size:13px!important;font-weight:900!important}
+#dailylog .dj-grid{gap:11px}
+#dailylog .dj-field label{font-size:12px;margin-bottom:5px}
+#dailylog .dj-form{padding:17px 18px}
+#dailylog table th{font-size:12px;white-space:nowrap}#dailylog table td{font-size:13px}
+#dailyV457General{display:none}
+.v457-general-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:11px}
+.v457-general-grid .span2{grid-column:span 2}.v457-general-grid .all{grid-column:1/-1}
+.v457-general-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}
+.v457-general-note{padding:10px 12px;background:#f7fbff;border:1px solid #d9e8f7;border-radius:10px;color:#5a708a;font-size:12px;line-height:1.5;margin-bottom:12px}
+
+/* 점검주기 관리 */
+.v457-cycle-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:0 0 12px}
+.v457-stat{border:1px solid #d9e4ef;border-radius:12px;padding:13px 15px;background:#fff}.v457-stat small{font-weight:900;color:#60758c}.v457-stat strong{display:block;font-size:24px;margin:5px 0 2px;color:#174f97}.v457-stat span{font-size:11px;color:#7b8da1}
+.v457-stat.ok{background:#f3fbf7;border-color:#c9ead8}.v457-stat.ok strong{color:#168457}.v457-stat.warn{background:#fff9f0;border-color:#f3d7a8}.v457-stat.warn strong{color:#c97700}.v457-stat.danger{background:#fff5f5;border-color:#f0caca}.v457-stat.danger strong{color:#d24141}
+.v457-cycle-tabs{display:flex;gap:8px;padding:7px;background:#f4f7fb;border:1px solid #e1e8f1;border-radius:12px;margin:0 0 13px;flex-wrap:wrap}
+.v457-cycle-tabs button{border:1px solid transparent;background:transparent;color:#51667e;border-radius:9px;min-height:40px;padding:0 16px;font-weight:900;cursor:pointer}.v457-cycle-tabs button.active{background:#fff;border-color:#a9c9f2;color:#175dac;box-shadow:0 2px 8px rgba(20,74,140,.07)}
+.v457-cycle-tabs button.fire{color:#aa4a2c}.v457-cycle-tabs button.qr{color:#177a68}
+#cycle .role-note{font-size:12px;border-radius:10px;padding:10px 12px}
+#cycle .preset-grid{gap:9px}#cycle .preset-card{border-radius:11px;padding:12px 13px;min-height:74px}#cycle .preset-card strong{font-size:13px}#cycle .preset-card span{font-size:11px;line-height:1.4}
+#cycle .panel{padding:16px 18px}#cycle .grid{gap:11px}
+#cycle .table th{font-size:12px;background:#f3f7fc}#cycle .table td{font-size:13px;padding:10px 8px}
+.v457-fire-quick{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:10px 0 0}.v457-fire-quick button{min-height:58px;text-align:left;border:1px solid #dce5ef;background:#fff;border-radius:11px;padding:10px 12px;cursor:pointer}.v457-fire-quick button:hover{background:#f7fbff;border-color:#a8c9ef}.v457-fire-quick strong{display:block;font-size:13px;color:#213c5b}.v457-fire-quick span{display:block;margin-top:3px;font-size:11px;color:#73869b}
+
+@media(max-width:1180px){#register .eval-grid{grid-template-columns:repeat(2,1fr)}.v457-general-grid{grid-template-columns:1fr 1fr}.v457-cycle-summary{grid-template-columns:1fr 1fr}}
+@media(max-width:760px){.v457-register-steps,.v457-daily-chooser,.v457-cycle-summary,.v457-fire-quick{grid-template-columns:1fr}.v457-general-grid{grid-template-columns:1fr}.v457-general-grid .span2{grid-column:auto}.v457-daily-card{grid-template-columns:44px 1fr}.v457-daily-card em{display:none}}
 </style>
-<script id="tfms-v456-asset-recovery-controller">
+<script id="tfms-v457-core-ux-controller">
 (function(){
-'use strict';
-const VERSION='v45.6 Enterprise Stable';
-function store(){try{if(typeof assetData!=='undefined'&&assetData)return assetData;if(window.assetData)return window.assetData;return {}}catch(e){return window.assetData||{}}}
-function entries(){return Object.entries(store()||{}).filter(([,a])=>a&&typeof a==='object')}
-function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-function role(){let r='';try{r=String(window.getTfmsCloudProfile?.()?.role||window.cloudProfile?.role||window.tfmsRole||'').trim().toLowerCase()}catch(e){};if(!r){try{r=String(JSON.parse(sessionStorage.getItem('tfmsSession')||'{}').role||'').trim().toLowerCase()}catch(e){}}return r==='관리자'?'admin':r}
-function toast(m){window.showToast?.(m)||alert(m)}
-function setSelected(key){key=String(key||'');const a=store()[key];if(!a)return false;try{selectedAssetKey=key}catch(e){}window.selectedAssetKey=key;return true}
-function cleanName(item){const c=item.cloneNode(true);c.querySelectorAll('small,button').forEach(x=>x.remove());return (c.textContent||'').replace(/[💧⚙🔥⚡🌀🏢]/g,'').replace(/\s+/g,' ').trim()}
-function resolveKey(item){
-  if(!item)return '';
-  const d=item.dataset?.assetKey||item.dataset?.key;if(d&&store()[d])return String(d);
-  const oc=item.getAttribute('onclick')||'';const m=oc.match(/showAsset\(\s*['\"]((?:\\.|[^'\"])*)['\"]/);if(m){const k=m[1].replace(/\\'/g,"'").replace(/\\\"/g,'\"');if(store()[k])return k}
-  const name=cleanName(item);if(!name)return '';
-  let group='';let p=item.previousElementSibling;while(p){if(p.classList?.contains('tfms-v454-group-label')||(!p.classList?.contains('tree-item')&&p.textContent?.includes('·'))){group=(p.textContent||'').trim();break}p=p.previousElementSibling}
-  const hits=entries().filter(([,a])=>String(a.name||'').trim()===name);
-  if(hits.length===1)return String(hits[0][0]);
-  if(group){const h=hits.find(([,a])=>group.includes(String(a.facility||''))&&group.includes(String(a.space||a.location||'')));if(h)return String(h[0])}
-  return hits[0]?String(hits[0][0]):'';
-}
-function forceSelect(key,item){if(!setSelected(key))return;try{window.showAsset?.(key,item||null)}catch(e){console.warn('v45.6 showAsset',e)};setSelected(key);try{document.querySelectorAll('#equipment #assetList .tree-item').forEach(x=>x.classList.toggle('active',resolveKey(x)===key))}catch(e){};try{if(typeof loadAssetForm==='function')loadAssetForm(key)}catch(e){};try{if(typeof window.renderAssetBasicV45==='function')window.renderAssetBasicV45(key)}catch(e){}}
-async function deleteByKey(key){
-  const a=store()[key];if(!a)return toast('설비 정보를 찾지 못했습니다.');
-  if(role()!=='admin'){
-    const reason=prompt('삭제요청 사유를 입력하세요.');if(!reason?.trim())return;
-    const p=window.getTfmsCloudProfile?.()||window.cloudProfile||{};
-    let list=[];try{list=Array.isArray(window.deleteRequests)?window.deleteRequests:(Array.isArray(deleteRequests)?deleteRequests:[])}catch(e){}
-    list.unshift({time:new Date().toLocaleString('ko-KR'),facility:a.facility||'-',detail:'설비관리 / '+(a.name||'-'),user:p.full_name||p.username||'현장 담당자',reason:reason.trim(),status:'승인대기',type:'asset',assetKey:key,assetDbId:a.dbId||null});
-    window.deleteRequests=list;try{deleteRequests=list}catch(e){};try{window.syncDB?.('설비 삭제요청 등록');window.renderDeleteRequests?.()}catch(e){};toast('설비 삭제요청을 등록했습니다.');return;
-  }
-  if(!a.dbId)return toast('DB ID가 없는 설비라 직접 삭제할 수 없습니다.');
-  if(!confirm('「'+(a.name||key)+'」 설비를 삭제하시겠습니까?\n연결된 사진도 함께 삭제되며 복구할 수 없습니다.'))return;
-  const reason=prompt('삭제 사유를 입력하세요.');if(!reason?.trim())return;
-  const c=window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.supabaseClient||window.sb;if(!c)return toast('Supabase 연결 상태를 확인해 주세요.');
-  try{
-    const ph=await c.from('asset_photos').select('id,storage_path').eq('asset_id',a.dbId);if(ph.error)throw ph.error;
-    const paths=(ph.data||[]).map(x=>x.storage_path).filter(Boolean);
-    if((ph.data||[]).length){const pd=await c.from('asset_photos').delete().eq('asset_id',a.dbId);if(pd.error)throw pd.error}
-    if(paths.length){const rm=await c.storage.from('tfms-equipment-photos').remove(paths);if(rm.error)console.warn(rm.error)}
-    const del=await c.from('assets').delete().eq('id',a.dbId).select('id');if(del.error)throw del.error;
-    try{delete assetData[key]}catch(e){};try{if(window.assetData)delete window.assetData[key]}catch(e){};
-    toast('설비를 삭제했습니다.');renderRecovery();try{window.renderAssetList?.()}catch(e){}
-  }catch(e){console.error(e);toast('설비 삭제 실패: '+(e?.message||e))}
-}
-function ensureModal(){if(document.getElementById('tfmsAssetRecoveryModal'))return;const m=document.createElement('div');m.id='tfmsAssetRecoveryModal';m.innerHTML=`<div class="v456-box"><div class="v456-head"><h3>설비 정리 · 선택/삭제 우회 관리</h3><button class="v456-btn v456-close" type="button" onclick="closeAssetRecoveryV456()">닫기</button></div><div class="v456-search"><input id="tfmsAssetRecoverySearch" placeholder="설비명, 시설, 공간 검색"><button class="v456-btn v456-select" type="button" onclick="renderAssetRecoveryV456()">새로고침</button></div><div id="tfmsAssetRecoveryRows"></div></div>`;document.body.appendChild(m);m.addEventListener('click',e=>{if(e.target===m)closeAssetRecoveryV456()});m.querySelector('#tfmsAssetRecoverySearch').addEventListener('input',renderRecovery)}
-function renderRecovery(){ensureModal();const q=(document.getElementById('tfmsAssetRecoverySearch')?.value||'').trim().toLowerCase();const rows=entries().filter(([,a])=>!q||[a.name,a.facility,a.space,a.location,a.qrId].some(v=>String(v||'').toLowerCase().includes(q)));document.getElementById('tfmsAssetRecoveryRows').innerHTML=rows.map(([k,a])=>`<div class="v456-row"><div><strong>${esc(a.name||k)}</strong><div class="v456-meta">${esc(a.category||a.type||'설비')}</div></div><div>${esc(a.facility||'-')}<div class="v456-meta">${esc(a.space||a.location||'-')}</div></div><div>${esc(a.qrId||a.asset_code||'-')}<div class="v456-meta">${esc(a.dbId||'DB ID 없음')}</div></div><div class="v456-actions"><button class="v456-btn v456-select" type="button" data-v456-select="${esc(k)}">선택</button><button class="v456-btn v456-delete" type="button" data-v456-delete="${esc(k)}">${role()==='admin'?'삭제':'삭제요청'}</button></div></div>`).join('')||'<div class="empty-state">설비가 없습니다.</div>'}
-window.openAssetRecoveryV456=function(){ensureModal();renderRecovery();document.getElementById('tfmsAssetRecoveryModal').classList.add('open')};window.closeAssetRecoveryV456=function(){document.getElementById('tfmsAssetRecoveryModal')?.classList.remove('open')};window.renderAssetRecoveryV456=renderRecovery;
-document.addEventListener('click',e=>{const s=e.target.closest?.('[data-v456-select]');if(s){const k=s.dataset.v456Select;forceSelect(k,null);window.closeAssetRecoveryV456();return}const d=e.target.closest?.('[data-v456-delete]');if(d){deleteByKey(d.dataset.v456Delete);return}},true);
-// Any list renderer, old or new: capture every tree-item and resolve by key or by visible equipment name.
-document.addEventListener('click',e=>{const item=e.target.closest?.('#equipment #assetList .tree-item');if(!item)return;if(e.target.closest('button'))return;const k=resolveKey(item);if(!k)return;e.preventDefault();e.stopPropagation();forceSelect(k,item)},true);
-function addToolbarButton(){const root=document.getElementById('equipment');if(!root||root.querySelector('[data-v456-recovery]'))return;const anchor=[...root.querySelectorAll('button')].find(b=>(b.textContent||'').includes('설비 등록'));if(!anchor)return;const b=document.createElement('button');b.type='button';b.dataset.v456Recovery='1';b.className=anchor.className;b.textContent='설비 정리';b.onclick=openAssetRecoveryV456;anchor.parentElement?.appendChild(b)}
-function brand(){const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent=VERSION;document.title='TFMS '+VERSION;try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.6'){u.searchParams.set('v','45.6');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
-function init(){brand();ensureModal();addToolbarButton();const mo=new MutationObserver(()=>addToolbarButton());const eq=document.getElementById('equipment');if(eq)mo.observe(eq,{subtree:true,childList:true});[300,900,1800,3200].forEach(ms=>setTimeout(()=>{brand();addToolbarButton()},ms))}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+ 'use strict';
+ const $=id=>document.getElementById(id);
+ const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+ const client=()=>{try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||null}catch(e){return null}};
+ const toast=m=>{try{window.showToast?.(m)}catch(e){alert(m)}};
+ function today(){return new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10)}
+
+ function applyVersion(){
+   document.title='TFMS v45.7 Enterprise Stable';
+   const b=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');if(b)b.textContent='v45.7 Enterprise Stable';
+   try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.7'){u.searchParams.set('v','45.7');history.replaceState(null,'',u)}}catch(e){}
+ }
+ function upgradeRegister(){
+   const p=$('register');if(!p||p.dataset.v457)return;p.dataset.v457='1';
+   const first=p.querySelector('.panel');if(first&&!p.querySelector('.v457-register-steps')){
+     const st=document.createElement('div');st.className='v457-register-steps';
+     st.innerHTML='<div class="v457-step active"><b>1</b>기본정보</div><div class="v457-step"><b>2</b>유지관리 내용</div><div class="v457-step"><b>3</b>경영평가 연계</div><div class="v457-step"><b>4</b>증빙·사진</div>';
+     first.prepend(st);
+   }
+   const notice=[...p.querySelectorAll('.notice')].find(x=>x.textContent.includes('업무일지 연계 추천'));
+   if(notice)notice.innerHTML='<strong>업무일지 연계 안내</strong><br>기계실·방재실의 반복 운전·점검은 업무일지에 기록하고, 보수·교체·비용·민원·사진증빙이 필요한 건만 유지관리 이력으로 등록하면 중복입력을 줄일 수 있습니다.';
+ }
+ function upgradeHistory(){
+   const p=$('history');if(!p||p.dataset.v457)return;p.dataset.v457='1';
+   const result=p.querySelectorAll('.panel')[1];if(result&&!result.querySelector('.v457-history-head')){
+     const h=document.createElement('div');h.className='v457-history-head';h.innerHTML='<div><strong>검색 결과</strong> <span>등록된 유지관리 이력을 확인합니다.</span></div><span>행을 선택하면 상세내용과 증빙을 확인할 수 있습니다.</span>';
+     result.prepend(h);
+   }
+ }
+
+ window.setDailyModeV457=function(mode){
+   const p=$('dailylog');if(!p)return;
+   p.dataset.dailyMode=mode;
+   p.querySelectorAll('.v457-daily-card').forEach(x=>x.classList.toggle('active',x.dataset.mode===mode));
+   const general=$('dailyV457General');if(general)general.style.display=mode==='general'?'block':'none';
+   [...p.children].forEach(el=>{
+     if(el===general||el.classList?.contains('title-row')||el.classList?.contains('v457-daily-chooser'))return;
+     if(el.classList?.contains('panel'))el.style.display=mode==='general'?'none':'';
+   });
+   if(mode==='facility'){
+     setTimeout(()=>{try{window.showDailyFormV390?.('work')}catch(e){}},20);
+   }
+ };
+ function buildGeneralDaily(){
+   let box=$('dailyV457General');if(box)return box;
+   box=document.createElement('div');box.id='dailyV457General';box.className='panel';
+   box.innerHTML=`<div class="section-title"><span class="dot"></span>일반 업무일지 작성</div>
+     <div class="v457-general-note">시설의 일일 주요업무와 특이사항을 간단히 기록합니다. 기계실·방재실의 운전·법정서식은 오른쪽 전용 업무일지를 사용하세요.</div>
+     <div class="v457-general-grid">
+       <div class="field"><label>시설명 <span class="req">*</span></label><select id="v457GeneralFacility"></select></div>
+       <div class="field"><label>작성일 <span class="req">*</span></label><input id="v457GeneralDate" type="date"></div>
+       <div class="field"><label>날씨</label><select id="v457GeneralWeather"><option>맑음</option><option>흐림</option><option>비</option><option>눈</option></select></div>
+       <div class="field"><label>작성자 <span class="req">*</span></label><input id="v457GeneralAuthor"></div>
+       <div class="field span2"><label>주요 업무 <span class="req">*</span></label><textarea id="v457GeneralWork" style="min-height:115px" placeholder="오늘 수행한 주요 업무를 입력하세요."></textarea></div>
+       <div class="field span2"><label>특이사항</label><textarea id="v457GeneralSpecial" style="min-height:115px" placeholder="민원, 이상사항, 인수인계 사항 등을 입력하세요."></textarea></div>
+     </div>
+     <div class="v457-general-actions"><button class="btn light" type="button" onclick="resetGeneralDailyV457()">초기화</button><button class="btn blue" type="button" onclick="saveGeneralDailyV457()">일반 업무일지 저장</button></div>`;
+   return box;
+ }
+ function fillGeneralBasics(){
+   const f=$('v457GeneralFacility');if(f&&!f.options.length){
+     let names=[];try{names=(window.facilityMasterStable||[]).map(x=>x.name).filter(Boolean)}catch(e){}
+     if(!names.length)names=['태백국민체육센터','장성국민체육센터','태백볼링장'];
+     f.innerHTML=names.map(n=>`<option>${esc(n)}</option>`).join('');
+   }
+   if($('v457GeneralDate')&&!$('v457GeneralDate').value)$('v457GeneralDate').value=today();
+   let ss={};try{ss=JSON.parse(sessionStorage.getItem('tfmsSession')||'{}')}catch(e){}
+   if($('v457GeneralAuthor')&&!$('v457GeneralAuthor').value)$('v457GeneralAuthor').value=ss.name||window.cloudProfile?.full_name||'';
+ }
+ window.resetGeneralDailyV457=function(){['v457GeneralWork','v457GeneralSpecial'].forEach(id=>{if($(id))$(id).value=''});if($('v457GeneralDate'))$('v457GeneralDate').value=today()};
+ window.saveGeneralDailyV457=async function(){
+   const sb=client();if(!sb){toast('DB 연결 정보를 확인하지 못했습니다.');return}
+   const facility=$('v457GeneralFacility')?.value||'',date=$('v457GeneralDate')?.value||'',weather=$('v457GeneralWeather')?.value||'',author=$('v457GeneralAuthor')?.value.trim()||'',work=$('v457GeneralWork')?.value.trim()||'',special=$('v457GeneralSpecial')?.value.trim()||'';
+   if(!facility||!date||!author||!work){toast('시설명, 작성일, 작성자, 주요 업무는 필수입니다.');return}
+   try{
+     let facilityId='';try{facilityId=window.facByName?.[facility]?.id||''}catch(e){}
+     if(!facilityId)try{facilityId=(window.facilityMasterStable||[]).find(x=>x.name===facility)?.id||''}catch(e){}
+     if(!facilityId)throw new Error('시설 DB 정보를 찾지 못했습니다.');
+     const {data:auth,error:ae}=await sb.auth.getUser();if(ae)throw ae;const uid=auth?.user?.id;if(!uid)throw new Error('로그인 세션을 확인할 수 없습니다.');
+     const payload={facility_id:facilityId,work_date:date,shift_type:'주간',title:`${facility} 일반 업무일지`,content:JSON.stringify({schema:'tfms-general-daily-v45.7',journalType:'general',data:{facility,date,weather,author,work,special}}),has_issue:Boolean(special),issue_detail:special||null,weather:weather||null,author_id:uid};
+     const {error}=await sb.from('daily_logs').insert(payload);if(error)throw error;
+     toast('일반 업무일지를 저장했습니다.');window.resetGeneralDailyV457();try{await window.loadDailyHistoryV322?.()}catch(e){}
+   }catch(e){console.error('v45.7 general daily save',e);toast('일반 업무일지 저장 실패: '+(e?.message||e))}
+ };
+ function upgradeDaily(){
+   const p=$('dailylog');if(!p)return;
+   const title=p.querySelector('.title-row');if(!title)return;
+   if(!p.querySelector('.v457-daily-chooser')){
+     const ch=document.createElement('div');ch.className='v457-daily-chooser';
+     ch.innerHTML=`<button type="button" class="v457-daily-card active" data-mode="general" onclick="setDailyModeV457('general')"><span class="v457-daily-icon">📋</span><span><h3>일반 업무일지</h3><p>일일 주요업무·특이사항을 간단하게 기록합니다.</p></span><em>일반시설</em></button><button type="button" class="v457-daily-card machine" data-mode="facility" onclick="setDailyModeV457('facility')"><span class="v457-daily-icon">⚙️</span><span><h3>기계실·방재실 업무일지</h3><p>기계실 운전·점검, 일상근무일지 PDF, 대기배출 법정서식을 사용합니다.</p></span><em>해당시설 전용</em></button>`;
+     title.insertAdjacentElement('afterend',ch);
+   }
+   const general=buildGeneralDaily();const chooser=p.querySelector('.v457-daily-chooser');if(general&&!general.parentNode)chooser.insertAdjacentElement('afterend',general);
+   const mach=$('djTabMachine'),air=$('djTabAir'),work=$('djTabWork');
+   if(mach)mach.textContent='기계실 상세기록';if(air)air.textContent='대기배출 운영기록부';if(work)work.textContent='일상근무일지(PDF)';
+   const notice=[...p.querySelectorAll('.notice')].find(n=>n.textContent.includes('기계실 업무일지'));
+   if(notice)notice.innerHTML='기계실·방재실 업무일지는 해당 시설에서 사용하는 전용 기록입니다. <b>일상근무일지(PDF)</b>, 기계실 상세기록, 대기배출 운영기록부의 기존 저장·미리보기·PDF 기능을 그대로 사용합니다.';
+   fillGeneralBasics();
+   if(!p.dataset.dailyMode)window.setDailyModeV457('general'); else window.setDailyModeV457(p.dataset.dailyMode);
+ }
+
+ function calcCycle(){
+   const rows=[...document.querySelectorAll('#cycleBody tr')].filter(r=>r.children.length>=6);let total=rows.length,ok=0,warn=0,danger=0;const now=new Date();now.setHours(0,0,0,0);
+   rows.forEach(r=>{const txt=r.children[5]?.textContent.trim();const d=txt?new Date(txt):null;if(!d||isNaN(d))return;d.setHours(0,0,0,0);const dd=Math.ceil((d-now)/86400000);if(dd<=7)danger++;else if(dd<=30)warn++;else ok++});
+   const set=(id,v)=>{const e=$(id);if(e)e.textContent=v};set('v457CycleTotal',total);set('v457CycleOk',ok);set('v457CycleWarn',warn);set('v457CycleDanger',danger);
+ }
+ window.openFireV457=function(kind){
+   try{window.navToFireV420?.()}catch(e){toast('소방 점검 화면을 열지 못했습니다.');return}
+   if(kind==='qr')setTimeout(()=>{const all=[...document.querySelectorAll('#fireMonthly *')];const t=all.find(e=>/소화기.*QR|QR.*소화기/.test(e.textContent||''));(t?.closest('.panel')||t)?.scrollIntoView?.({behavior:'smooth',block:'start'})},180);
+ };
+ function upgradeCycle(){
+   const p=$('cycle');if(!p||p.dataset.v457)return;p.dataset.v457='1';const title=p.querySelector('.title-row');
+   const sum=document.createElement('div');sum.className='v457-cycle-summary';sum.innerHTML='<div class="v457-stat"><small>등록 점검주기</small><strong><span id="v457CycleTotal">0</span>개</strong><span>현재 등록된 정기점검</span></div><div class="v457-stat ok"><small>정상 (30일 초과)</small><strong><span id="v457CycleOk">0</span>개</strong><span>다음 점검일까지 여유</span></div><div class="v457-stat warn"><small>주의 (8~30일)</small><strong><span id="v457CycleWarn">0</span>개</strong><span>점검일이 다가옴</span></div><div class="v457-stat danger"><small>경고 (7일 이내)</small><strong><span id="v457CycleDanger">0</span>개</strong><span>우선 확인 필요</span></div>';
+   const tabs=document.createElement('div');tabs.className='v457-cycle-tabs';tabs.innerHTML='<button class="active" type="button" onclick="document.querySelector(\'#cycle .panel:nth-of-type(2)\')?.scrollIntoView({behavior:\'smooth\'})">일반 점검주기</button><button class="fire" type="button" onclick="openFireV457(\'fire\')">🧯 소방 점검</button><button class="qr" type="button" onclick="openFireV457(\'qr\')">▦ 소화기 QR 점검</button>';
+   title.insertAdjacentElement('afterend',sum);sum.insertAdjacentElement('afterend',tabs);
+   const first=p.querySelector('.panel');if(first){const q=document.createElement('div');q.className='v457-fire-quick';q.innerHTML='<button type="button" onclick="openFireV457(\'fire\')"><strong>🧯 소방 월간점검</strong><span>소방안전관리자 업무 수행 기록표</span></button><button type="button" onclick="openFireV457(\'fire\')"><strong>📄 법정서식 미리보기·PDF</strong><span>기존 별지 제12호서식 기능 유지</span></button><button type="button" onclick="openFireV457(\'qr\')"><strong>▦ 소화기 QR 현장점검</strong><span>소화기 QR 등록·점검 이력 관리</span></button>';first.appendChild(q)}
+   calcCycle();
+ }
+ function applyAll(){applyVersion();upgradeRegister();upgradeHistory();upgradeDaily();upgradeCycle();setTimeout(calcCycle,120)}
+ const oldShow=window.showPage;if(typeof oldShow==='function')window.showPage=function(id,btn){const r=oldShow.apply(this,arguments);setTimeout(()=>{if(id==='dailylog')upgradeDaily();if(id==='cycle'){upgradeCycle();calcCycle()}if(id==='register')upgradeRegister();if(id==='history')upgradeHistory()},80);return r};
+ const oldNav=window.navTo;if(typeof oldNav==='function')window.navTo=function(id){const r=oldNav.apply(this,arguments);setTimeout(()=>{if(id==='dailylog')upgradeDaily();if(id==='cycle'){upgradeCycle();calcCycle()}if(id==='register')upgradeRegister();if(id==='history')upgradeHistory()},80);return r};
+ document.addEventListener('DOMContentLoaded',()=>setTimeout(applyAll,250));setTimeout(applyAll,700);
 })();
 </script>
+
 </body></html>
