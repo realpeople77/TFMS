@@ -6,7 +6,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>TFMS v45.5 Enterprise Stable</title>
+<title>TFMS v45.11 Enterprise Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -890,7 +890,7 @@ body{background:var(--tfms-bg)!important;color:var(--tfms-text)}
 <section class="page" id="register">
 <div class="title-row v459-title-row">
   <div class="title-left"><div class="title-icon">📝</div><div><h1>유지관리 등록</h1><div class="breadcrumb">홈 › 유지관리 등록 › 유지관리 이력 작성</div></div></div>
-  <div class="v459-top-actions"><button class="btn" type="button" onclick="saveDraftRecord()">임시저장</button><button class="btn" type="button" onclick="resetRegisterForm()">초기화</button><button class="btn blue" type="button" data-tfms-register-button="1" onclick="addRecordFromForm()">등록</button></div>
+  <div class="v459-top-actions"><button class="btn" type="button" onclick="resetRegisterForm()">초기화</button><button class="btn blue" type="button" data-tfms-register-button="1" onclick="addRecordFromForm()">등록</button></div>
 </div>
 <div class="v459-register-shell">
   <div class="panel v459-compact-panel">
@@ -11920,7 +11920,7 @@ document.addEventListener('DOMContentLoaded',function(){
       <div class="dj-sheet ${esc(sheetClass||'')}">${content}</div>
       
 
-<!-- TFMS v45.5 Enterprise Stable - Data Store Fix
+<!-- TFMS v45.11 Enterprise Stable - Data Store Fix
      Equipment UX reads live lexical assetData first; window.assetData is fallback only.
      Login / photo loading / Supabase schema unchanged. -->
 </body></html>`);
@@ -17976,7 +17976,7 @@ document.readyState==='loading'?document.addEventListener('DOMContentLoaded',upd
  const oldRender=window.renderAssetList;if(typeof oldRender==='function')window.renderAssetList=function(){const r=oldRender.apply(this,arguments);setTimeout(()=>{populateFilters();filterList();refresh()},40);return r};
  const oldSave=window.saveAsset;if(typeof oldSave==='function')window.saveAsset=function(){const r=oldSave.apply(this,arguments);setTimeout(()=>{refresh();closeAssetRegisterV4431()},450);return r};
  const oldNav=window.navTo;if(typeof oldNav==='function')window.navTo=function(id){const r=oldNav.apply(this,arguments);if(id==='equipment')setTimeout(()=>{ensureShell();movePhotos();refresh()},140);return r};
- function brand(){const small=document.querySelector('#appHeader .logo-title small');if(small)small.textContent='태백시시설관리공단 시설관리시스템';const b=$('tfmsVersionBadge');if(b)b.textContent='v45.5 Enterprise Stable';document.title='TFMS v45.5 Enterprise Stable';window.TFMS_BUILD=Object.freeze({version:'v45.5',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});}
+ function brand(){const small=document.querySelector('#appHeader .logo-title small');if(small)small.textContent='태백시시설관리공단 시설관리시스템';const b=$('tfmsVersionBadge');if(b)b.textContent='v45.11 Enterprise Stable';document.title='TFMS v45.11 Enterprise Stable';window.TFMS_BUILD=Object.freeze({version:'v45.5',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});}
  function init(){brand();ensureShell();movePhotos();refresh();[400,1000,2200].forEach(ms=>setTimeout(()=>{brand();ensureShell();movePhotos();refresh()},ms))}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
@@ -18015,8 +18015,8 @@ document.readyState==='loading'?document.addEventListener('DOMContentLoaded',upd
    try{const d=window.assetData||assetData||{};return d[selectedKey()]||null}catch(e){return null}
  }
  function syncVersion(){
-   const b=$('tfmsVersionBadge'); if(b)b.textContent='v45.5 Enterprise Stable';
-   document.title='TFMS v45.5 Enterprise Stable';
+   const b=$('tfmsVersionBadge'); if(b)b.textContent='v45.11 Enterprise Stable';
+   document.title='TFMS v45.11 Enterprise Stable';
    window.TFMS_BUILD=Object.freeze({version:'v45.5',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});
  }
  function cleanupLegacyControls(){
@@ -18162,7 +18162,7 @@ body{background:#f4f8fc!important}
 <script id="tfms-v4433-equipment-ux-stabilize-controller">
 (function(){
 'use strict';
-const BUILD='v45.5 Enterprise Stable';
+const BUILD='v45.11 Enterprise Stable';
 const $=id=>document.getElementById(id);
 const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 function data(){try{if(typeof assetData!=='undefined'&&assetData&&Object.keys(assetData).length)return assetData;if(window.assetData)return window.assetData;return {}}catch(e){return {}}}
@@ -18175,7 +18175,7 @@ function syncBuild(){
  const b=$('tfmsVersionBadge');if(b&&b.textContent!==BUILD)b.textContent=BUILD;
  const title='TFMS '+BUILD;if(document.title!==title)document.title=title;
  window.TFMS_BUILD=Object.freeze({version:'v45.5',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});
- try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.5'){u.searchParams.set('v','45.5');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
+ try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.11'){u.searchParams.set('v','45.11');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
 }
 function cleanUserLabel(){const el=$('topUserLabel');if(!el)return;const t=(el.textContent||'').replace(/^\s*[👤🧑‍💼]+\s*/u,'').trim();if(t&&t!==el.textContent.trim())el.textContent=t}
 function hideLegacy(){
@@ -18292,7 +18292,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 @media(max-width:760px){#tfmsVersionBadge{font-size:9px!important;padding:3px 6px!important}#appHeader .top{padding-left:12px!important;padding-right:10px!important}}
 </style>
 <script id="tfms-v450-build-guard">
-(function(){function apply(){const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent='v45.5 Enterprise Stable';document.title='TFMS v45.5 Enterprise Stable';try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.5'){u.searchParams.set('v','45.5');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();setTimeout(apply,500);})();
+(function(){function apply(){const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent='v45.11 Enterprise Stable';document.title='TFMS v45.11 Enterprise Stable';try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.11'){u.searchParams.set('v','45.11');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();setTimeout(apply,500);})();
 </script>
 
 
@@ -18363,9 +18363,9 @@ function bind(){
   },true);
 }
 function version(){
- const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent='v45.5 Enterprise Stable';
- document.title='TFMS v45.5 Enterprise Stable';
- try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.5'){u.searchParams.set('v','45.5');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
+ const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent='v45.11 Enterprise Stable';
+ document.title='TFMS v45.11 Enterprise Stable';
+ try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.11'){u.searchParams.set('v','45.11');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
 }
 function init(){version();bind();[250,700,1500,3000].forEach(ms=>setTimeout(()=>{version();bind();},ms));}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
@@ -18386,7 +18386,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <script id="tfms-v454-list-click-core-controller">
 (function(){
 'use strict';
-const VERSION='v45.5 Enterprise Stable';
+const VERSION='v45.11 Enterprise Stable';
 function data(){try{if(typeof assetData!=='undefined'&&assetData&&Object.keys(assetData).length)return assetData;if(window.assetData)return window.assetData;return {};}catch(e){return {};}}
 function entries(){
   try{
@@ -18456,7 +18456,7 @@ if(typeof prevNav==='function')window.navTo=function(id){const r=prevNav.apply(t
 function brand(){
  const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent=VERSION;
  document.title='TFMS '+VERSION;
- try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.5'){u.searchParams.set('v','45.5');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
+ try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.11'){u.searchParams.set('v','45.11');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
 }
 function init(){brand();setTimeout(render,260);[800,1800].forEach(ms=>setTimeout(()=>{brand();render();},ms));}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
@@ -18492,9 +18492,9 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <script id="tfms-v459-thumbnail-ux-controller">
 (function(){
 'use strict';
-const VERSION='v45.10 Enterprise Stable';
+const VERSION='v45.11 Enterprise Stable';
 const $=id=>document.getElementById(id);
-function brand(){const b=$('tfmsVersionBadge');if(b)b.textContent=VERSION;document.title='TFMS '+VERSION;try{window.TFMS_BUILD=Object.freeze({version:'v45.10',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'UX Refinement'});}catch(e){}try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.10'){u.searchParams.set('v','45.10');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
+function brand(){const b=$('tfmsVersionBadge');if(b)b.textContent=VERSION;document.title='TFMS '+VERSION;try{window.TFMS_BUILD=Object.freeze({version:'v45.11',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'UI Fixes & Weather UX'});}catch(e){}try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.11'){u.searchParams.set('v','45.11');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
 window.navToFireQrV459=function(){try{window.navToFireV420?.();setTimeout(()=>{const p=[...document.querySelectorAll('#fireMonthly .section-title')].find(x=>/소화기 월간점검 목록/.test(x.textContent||''));p?.scrollIntoView({behavior:'smooth',block:'start'});},180)}catch(e){window.navToFireV420?.();}};
 window.setDailyWeatherV4510=function(value,btn){const sel=$('dailyWeather');if(sel)sel.value=value;document.querySelectorAll('#v459GeneralDaily .v4510-weather-picks button').forEach(b=>b.classList.toggle('active',b===btn));};
 function fillGeneralFacility(){const sel=$('dailyFacility');if(!sel)return;let names=[];try{const s=JSON.parse(sessionStorage.getItem('tfmsSession')||'{}');const dept=s.dept||s.department||'';if(typeof facilities!=='undefined'&&facilities[dept])names=facilities[dept];else if(typeof facilities!=='undefined')names=Object.values(facilities).flat();}catch(e){}if(!names.length)names=['태백국민체육센터','장성국민체육센터'];const old=sel.value;sel.innerHTML=[...new Set(names)].map(n=>`<option>${n}</option>`).join('');if(old&&[...sel.options].some(o=>o.value===old))sel.value=old;}
@@ -18516,4 +18516,76 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 })();
 </script>
 
+
+<style id="tfms-v4511-ui-fix-style">
+/* v45.11 — top-gap alignment, document removable chips, journal weather icon UX */
+@media (min-width:761px){
+  #appHeader nav{top:58px!important;}
+  #appLayout.layout{padding-top:8px!important;min-height:calc(100vh - 58px)!important;}
+}
+#register .v459-top-actions{gap:8px!important;}
+#docCount.tfms-doc-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;color:inherit;font-size:12px;}
+.tfms-doc-chip{display:flex;align-items:center;gap:9px;min-width:210px;max-width:100%;padding:9px 10px 9px 12px;background:#f8fbff;border:1px solid #d7e3f2;border-radius:10px;}
+.tfms-doc-chip .tfms-doc-meta{min-width:0;display:flex;flex-direction:column;gap:2px;flex:1;}
+.tfms-doc-chip .tfms-doc-name{font-weight:800;color:#173b62;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:300px;}
+.tfms-doc-chip small{color:#7b8da3;font-size:10px;}
+.tfms-doc-remove{width:24px;height:24px;border:0;border-radius:50%;background:#fff1f1;color:#e33737;font-size:16px;font-weight:900;line-height:1;cursor:pointer;flex:0 0 auto;}
+.tfms-doc-remove:hover{background:#ffe1e1;}
+.tfms-journal-weather-icons{display:flex;align-items:center;gap:7px;min-height:44px;}
+.tfms-journal-weather-icons button{width:54px;height:43px;border:1px solid #d8e3f1;background:#fff;border-radius:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;cursor:pointer;transition:.15s;}
+.tfms-journal-weather-icons button span{font-size:19px;line-height:1;}
+.tfms-journal-weather-icons button small{font-size:9px;color:#71849a;font-weight:700;}
+.tfms-journal-weather-icons button:hover{background:#f6faff;border-color:#9bc0ee;}
+.tfms-journal-weather-icons button.active{background:#eef6ff;border-color:#5a9ce8;box-shadow:0 0 0 2px rgba(50,126,220,.08);}
+.tfms-journal-weather-icons button.active small{color:#145fae;}
+</style>
+<script id="tfms-v4511-ui-fix-controller">
+(function(){
+'use strict';
+const VERSION='v45.11 Enterprise Stable';
+const VERSION_PARAM='45.11';
+function syncVersion(){
+  const b=document.getElementById('tfmsVersionBadge'); if(b&&b.textContent!==VERSION)b.textContent=VERSION;
+  if(document.title!=='TFMS '+VERSION)document.title='TFMS '+VERSION;
+  try{const u=new URL(location.href);if(u.searchParams.get('v')!==VERSION_PARAM){u.searchParams.set('v',VERSION_PARAM);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
+}
+function fmtBytes(n){n=Number(n||0);if(n<1024)return n+' B';if(n<1048576)return (n/1024).toFixed(n<10240?1:0)+' KB';return (n/1048576).toFixed(1)+' MB';}
+function renderDocs(){
+  const input=document.getElementById('docInput'), box=document.getElementById('docCount'); if(!input||!box)return;
+  const files=Array.from(input.files||[]); box.classList.add('tfms-doc-list');
+  if(!files.length){box.classList.remove('tfms-doc-list');box.textContent='선택된 문서가 없습니다.';return;}
+  box.innerHTML=files.map((f,i)=>`<div class="tfms-doc-chip"><span aria-hidden="true">📄</span><span class="tfms-doc-meta"><span class="tfms-doc-name" title="${String(f.name).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;')}">${String(f.name).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</span><small>${fmtBytes(f.size)}</small></span><button type="button" class="tfms-doc-remove" data-remove-doc="${i}" title="첨부 문서 삭제" aria-label="${i+1}번째 첨부 문서 삭제">×</button></div>`).join('');
+}
+window.showDocCount=function(){renderDocs();};
+window.removeMaintenanceDocumentV4511=function(index){
+  const input=document.getElementById('docInput'); if(!input)return;
+  const files=Array.from(input.files||[]); if(index<0||index>=files.length)return;
+  try{const dt=new DataTransfer();files.forEach((f,i)=>{if(i!==index)dt.items.add(f)});input.files=dt.files;}catch(e){input.value='';}
+  renderDocs();
+};
+function bindDocRemove(){
+  const box=document.getElementById('docCount');if(!box||box.dataset.v4511Bound==='1')return;box.dataset.v4511Bound='1';
+  box.addEventListener('click',e=>{const btn=e.target.closest('[data-remove-doc]');if(!btn)return;e.preventDefault();e.stopPropagation();window.removeMaintenanceDocumentV4511(Number(btn.dataset.removeDoc));});
+}
+window.setJournalWeatherV4511=function(value,btn){
+  const sel=document.getElementById('djWeather');if(sel){sel.value=value;sel.dispatchEvent(new Event('change',{bubbles:true}));}
+  document.querySelectorAll('.tfms-journal-weather-icons button').forEach(b=>b.classList.toggle('active',b===btn));
+};
+function upgradeJournalWeather(){
+  const sel=document.getElementById('djWeather');if(!sel)return;
+  let wrap=sel.parentElement?.querySelector('.tfms-journal-weather-icons');
+  if(!wrap){
+    sel.style.display='none';
+    wrap=document.createElement('div');wrap.className='tfms-journal-weather-icons';
+    wrap.innerHTML=`<button type="button" data-weather="맑음" onclick="setJournalWeatherV4511('맑음',this)" title="맑음"><span>☀️</span><small>맑음</small></button><button type="button" data-weather="흐림" onclick="setJournalWeatherV4511('흐림',this)" title="흐림"><span>☁️</span><small>흐림</small></button><button type="button" data-weather="비" onclick="setJournalWeatherV4511('비',this)" title="비"><span>🌧️</span><small>비</small></button><button type="button" data-weather="눈" onclick="setJournalWeatherV4511('눈',this)" title="눈"><span>❄️</span><small>눈</small></button>`;
+    sel.insertAdjacentElement('afterend',wrap);
+  }
+  const val=sel.value||'맑음';wrap.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.weather===val));
+}
+function init(){syncVersion();bindDocRemove();renderDocs();upgradeJournalWeather();[120,350,800,1600,3200,6000].forEach(ms=>setTimeout(()=>{syncVersion();bindDocRemove();upgradeJournalWeather();},ms));}
+const oldShow=window.showPage;if(typeof oldShow==='function')window.showPage=function(id,btn){const r=oldShow.apply(this,arguments);setTimeout(()=>{syncVersion();if(id==='register'){bindDocRemove();renderDocs();}if(id==='dailylog')upgradeJournalWeather();},260);return r;};
+const oldNav=window.navTo;if(typeof oldNav==='function')window.navTo=function(id){const r=oldNav.apply(this,arguments);setTimeout(()=>{syncVersion();if(id==='register'){bindDocRemove();renderDocs();}if(id==='dailylog')upgradeJournalWeather();},260);return r;};
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
 </body></html>
