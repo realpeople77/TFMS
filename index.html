@@ -888,74 +888,80 @@ body{background:var(--tfms-bg)!important;color:var(--tfms-text)}
 </div>
 </section>
 <section class="page" id="register">
-<div class="title-row"><div class="title-left"><div class="title-icon">📝</div><div><h1>유지관리 등록</h1><div class="breadcrumb">홈 › 유지관리 등록 › 실무형 입력화면</div></div></div></div>
-<div class="panel">
-<div class="section">
-<div class="section-title"><span class="dot"></span>기본정보</div>
-<div class="grid">
-<div class="field"><label>관리부서 <span class="req">*</span></label><select id="dept" onchange="changeDept()"><option>체육운영팀</option><option>관광운영팀</option><option>복지주택팀</option><option>안전·시설운영팀</option></select></div>
-<div class="field"><label>시설명 <span class="req">*</span></label><select id="facility"></select></div>
-<div class="field"><label>등록일자 <span class="req">*</span></label><input id="regDate" type="date"/></div>
-<div class="field"><label>시행일자 <span class="req">*</span></label><input id="execDate" type="date"/></div>
-<div class="field wide"><label>접수구분 <span class="req">*</span></label><div class="choice-group" data-single="receipt"><button class="choice active" type="button">점검</button><button class="choice" type="button">보수</button><button class="choice" type="button">교체</button><button class="choice" type="button">민원</button><button class="choice" type="button">기타</button></div></div>
-<div class="field"><label>분야 <span class="req">*</span></label><select id="field" onchange="changeSubField()"><option>기계</option><option>전기</option><option>건축</option><option>토목</option><option>소방</option><option>통신</option><option>수질</option><option>환경정비</option><option>조경</option><option>기타</option></select></div>
-<div class="field"><label>세부분야 <span class="req">*</span></label><select id="subField"></select></div>
-<div class="field"><label>점검주기</label><select><option>수시</option><option>일일</option><option>주간</option><option>월 1회</option><option>분기 1회</option><option>반기 1회</option><option>연 1회</option></select></div>
-<div class="field"><label>유지관리 유형 <span class="req">*</span></label><select id="regType"><option>예방정비</option><option>법정점검</option><option>고장수리</option><option>노후교체</option><option>민원조치</option><option>안전조치</option><option>시설개선</option></select></div>
-<div class="field"><label>처리상태 <span class="req">*</span></label><select id="regStatus"><option>조치완료</option><option>진행중</option><option>미조치</option><option>예산반영 필요</option><option>외부업체 의뢰</option></select></div>
-<div class="field"><label>담당자 <span class="req">*</span></label><input value="윤호철"/></div>
-<div class="field"><label>연락처</label><input value="010-1234-5678"/></div>
-<div class="field wide"><label>중요도 <span class="req">*</span></label><div class="choice-group" data-single="level"><button class="choice red" type="button">긴급</button><button class="choice orange active" type="button">높음</button><button class="choice green" type="button">보통</button><button class="choice gray" type="button">낮음</button></div></div>
+<div class="title-row v459-title-row">
+  <div class="title-left"><div class="title-icon">📝</div><div><h1>유지관리 등록</h1><div class="breadcrumb">홈 › 유지관리 등록 › 유지관리 이력 작성</div></div></div>
+  <div class="v459-top-actions"><button class="btn" type="button" onclick="saveDraftRecord()">임시저장</button><button class="btn" type="button" onclick="resetRegisterForm()">초기화</button><button class="btn blue" type="button" data-tfms-register-button="1" onclick="addRecordFromForm()">등록</button></div>
 </div>
-</div>
-<div class="section">
-<div class="section-title"><span class="dot"></span>유지관리 내용</div>
-<div class="grid two">
-<div class="field wide"><label>세부내용 <span class="req">*</span></label><textarea id="regDetail" placeholder="유지관리 내용을 상세히 입력해주세요."></textarea></div>
-<div class="field"><label>조치내용 <span class="req">*</span></label><textarea placeholder="조치한 내용을 상세히 입력해주세요."></textarea></div>
-<div class="field">
-<label>조치결과</label>
-<div class="choice-group" data-single="result"><button class="choice green active" type="button">정상</button><button class="choice" type="button">일부 보완</button><button class="choice orange" type="button">보완 필요</button><button class="choice red" type="button">추가 조치 필요</button></div>
-<label style="margin-top:17px">진행구분</label>
-<div class="choice-group" data-single="progress"><button class="choice active" type="button">예산</button><button class="choice" type="button">일상경비</button><button class="choice" type="button">자체조치</button><button class="choice" type="button">기타</button></div>
-</div>
-<div class="field"><label>예산과목</label><select id="budgetSelect" onchange="toggleBudgetInput()"><option>운영관리비-수선유지비(214-05)</option><option>사무관리비(201-01)</option><option>공공운영비(201-02)</option><option>시설비(401-01)</option><option>해당없음</option><option>직접입력</option></select><input id="budgetCustom" placeholder="예: 체육시설운영사업-국민체육센터운영관리-수선유지비" style="display:none;margin-top:8px"/></div>
-<div class="field"><label>소요금액(원)</label><div class="money"><input id="regAmount" value="0"/><span class="unit">원</span></div></div>
-<div class="field wide"><label>향후계획</label><textarea placeholder="향후 계획 내용을 입력해주세요."></textarea></div>
-</div>
-</div>
-<div class="section">
-<div class="section-title"><span class="dot"></span>증빙자료 및 경영평가 연계</div>
-<div class="grid">
-<div class="field">
-<label>사진 첨부</label>
-<label class="upload-zone" for="photoInput"><div><strong>사진 첨부</strong><span class="file-btn">파일 선택</span> 또는 드래그<br/><small>최대 10장</small></div></label>
-<input accept="image/*" id="photoInput" multiple="" onchange="previewPhotos(event)" style="display:none" type="file"/>
-<div class="preview" id="photoPreview"><div class="thumb">사진1</div><div class="thumb">사진2</div><div class="thumb">사진3</div><div class="thumb">사진4</div></div>
-</div>
-<div class="field">
-<label>관련 문서 첨부</label>
-<label class="upload-zone" for="docInput"><div><strong>문서 첨부</strong><span class="file-btn">파일 선택</span> 또는 드래그<br/><small>견적서, 결과보고, 세금계산서 등</small></div></label>
-<input id="docInput" multiple="" onchange="showDocCount(event)" style="display:none" type="file"/>
-<div class="help" id="docCount" style="margin-top:10px">선택된 문서가 없습니다.</div>
-</div>
-<div class="field"><label>첨부 안내</label><div class="help">· jpg, png, pdf, hwp, xlsx 파일 업로드 가능<br/>· 사진은 썸네일로 즉시 확인<br/>· 첨부자료는 조회 및 엑셀 목록에 반영</div></div>
-<div class="field"><label>경영평가 연계</label><div class="eval"><h4>경영평가 분류</h4><div class="eval-grid"><label><input type="checkbox"/> 예방정비</label><label><input type="checkbox"/> 안전관리</label><label><input type="checkbox"/> 법정점검</label><label><input type="checkbox"/> 시설개선</label><label><input type="checkbox"/> 고객민원</label><label><input type="checkbox"/> 예산절감</label><label><input type="checkbox"/> ESG</label><label><input type="checkbox"/> 경영평가 증빙</label></div></div></div>
-</div>
-</div>
-<div class="notice" style="margin-top:4px">
-<strong>업무일지 연계 추천</strong><br/>
-          태백국민체육센터·장성국민체육센터처럼 매일 작성하는 기계실 업무일지는 TFMS에서 별도 중복 입력하지 않고,
-          오늘의 업무 체크 결과를 모아 <b>일상근무일지</b>로 자동 생성하는 구조를 추천합니다.
-          단순 반복점검은 업무일지로 처리하고, 비용·고장·보수·교체·민원·사진증빙이 필요한 건만 유지관리 이력으로 승격 등록하는 방식이 가장 효율적입니다.
-        </div>
-<div class="buttons"><button class="btn" onclick="resetRegisterForm()">초기화</button><button class="btn blue" onclick="addRecordFromForm()">등록</button><button class="btn" onclick="navTo('history')">목록</button></div>
+<div class="v459-register-shell">
+  <div class="v459-stepbar" aria-label="유지관리 등록 단계"><span class="active"><b>1</b>기본정보</span><span><b>2</b>유지관리 내용</span><span><b>3</b>경영평가 연계</span><span><b>4</b>증빙·사진</span></div>
+
+  <div class="panel v459-compact-panel">
+    <div class="section-title"><span class="dot"></span>기본정보</div>
+    <div class="v459-form-grid v459-form-grid-4">
+      <div class="field"><label>관리부서 <span class="req">*</span></label><select id="dept" onchange="changeDept()"><option>체육운영팀</option><option>관광운영팀</option><option>복지주택팀</option><option>안전·시설운영팀</option></select></div>
+      <div class="field"><label>시설명 <span class="req">*</span></label><select id="facility"></select></div>
+      <div class="field"><label>등록일자 <span class="req">*</span></label><input id="regDate" type="date"/></div>
+      <div class="field"><label>시행일자 <span class="req">*</span></label><input id="execDate" type="date"/></div>
+
+      <div class="field v459-span-2"><label>접수구분 <span class="req">*</span></label><div class="choice-group v459-choice-row" data-single="receipt"><button class="choice active" type="button">점검</button><button class="choice" type="button">보수</button><button class="choice" type="button">교체</button><button class="choice" type="button">민원</button><button class="choice" type="button">기타</button></div></div>
+      <div class="field"><label>분야 <span class="req">*</span></label><select id="field" onchange="changeSubField()"><option>기계</option><option>전기</option><option>건축</option><option>토목</option><option>소방</option><option>통신</option><option>수질</option><option>환경정비</option><option>조경</option><option>기타</option></select></div>
+      <div class="field"><label>세부분야 <span class="req">*</span></label><select id="subField"></select></div>
+
+      <div class="field"><label>점검주기</label><select><option>수시</option><option>일일</option><option>주간</option><option>월 1회</option><option>분기 1회</option><option>반기 1회</option><option>연 1회</option></select></div>
+      <div class="field"><label>유지관리 유형 <span class="req">*</span></label><select id="regType"><option>예방정비</option><option>법정점검</option><option>고장수리</option><option>노후교체</option><option>민원조치</option><option>안전조치</option><option>시설개선</option></select></div>
+      <div class="field"><label>처리상태 <span class="req">*</span></label><select id="regStatus"><option>조치완료</option><option>진행중</option><option>미조치</option><option>예산반영 필요</option><option>외부업체 의뢰</option></select></div>
+      <div class="field"><label>담당자 <span class="req">*</span></label><input value="윤호철"/></div>
+
+      <div class="field"><label>연락처</label><input value="010-1234-5678"/></div>
+      <div class="field v459-span-3"><label>중요도 <span class="req">*</span></label><div class="choice-group v459-choice-row" data-single="level"><button class="choice red" type="button">긴급</button><button class="choice orange active" type="button">높음</button><button class="choice green" type="button">보통</button><button class="choice gray" type="button">낮음</button></div></div>
+    </div>
+  </div>
+
+  <div class="panel v459-compact-panel">
+    <div class="section-title"><span class="dot"></span>유지관리 내용</div>
+    <div class="v459-form-grid v459-form-grid-2">
+      <div class="field"><label>세부내용 <span class="req">*</span></label><textarea id="regDetail" class="v459-main-textarea" placeholder="유지관리 내용을 상세히 입력해주세요."></textarea></div>
+      <div class="field"><label>조치내용 <span class="req">*</span></label><textarea class="v459-main-textarea" placeholder="조치한 내용을 상세히 입력해주세요."></textarea></div>
+      <div class="field"><label>조치결과</label><div class="choice-group v459-choice-row" data-single="result"><button class="choice green active" type="button">정상</button><button class="choice" type="button">일부 보완</button><button class="choice orange" type="button">보완 필요</button><button class="choice red" type="button">추가 조치 필요</button></div></div>
+      <div class="field"><label>진행구분</label><div class="choice-group v459-choice-row" data-single="progress"><button class="choice active" type="button">예산</button><button class="choice" type="button">일상경비</button><button class="choice" type="button">자체조치</button><button class="choice" type="button">기타</button></div></div>
+      <div class="field"><label>예산과목</label><select id="budgetSelect" onchange="toggleBudgetInput()"><option>운영관리비-수선유지비(214-05)</option><option>사무관리비(201-01)</option><option>공공운영비(201-02)</option><option>시설비(401-01)</option><option>해당없음</option><option>직접입력</option></select><input id="budgetCustom" placeholder="예: 체육시설운영사업-국민체육센터운영관리-수선유지비" style="display:none;margin-top:8px"/></div>
+      <div class="field"><label>소요금액(원)</label><div class="money"><input id="regAmount" value="0"/><span class="unit">원</span></div></div>
+      <div class="field v459-span-all"><label>향후계획</label><textarea class="v459-plan-textarea" placeholder="향후 계획 내용을 입력해주세요."></textarea></div>
+    </div>
+  </div>
+
+  <div class="v459-bottom-grid">
+    <div class="panel v459-compact-panel v459-eval-panel">
+      <div class="section-title"><span class="dot"></span>경영평가 연계</div>
+      <div class="v459-subhelp">해당 항목만 체크합니다. 복수 선택 가능합니다.</div>
+      <div class="eval v459-eval-box"><h4>경영평가 분류</h4><div class="eval-grid"><label><input type="checkbox"/> 예방정비</label><label><input type="checkbox"/> 안전관리</label><label><input type="checkbox"/> 법정점검</label><label><input type="checkbox"/> 시설개선</label><label><input type="checkbox"/> 고객민원</label><label><input type="checkbox"/> 예산절감</label><label><input type="checkbox"/> ESG</label><label><input type="checkbox"/> 경영평가 증빙</label></div></div>
+    </div>
+    <div class="panel v459-compact-panel">
+      <div class="section-title"><span class="dot"></span>증빙 및 사진</div>
+      <div class="v459-evidence-grid">
+        <div class="field"><label>관련 문서</label><label class="upload-zone v459-upload" for="docInput"><div><strong>문서 첨부</strong><span class="file-btn">파일 선택</span><br><small>견적서·결과보고·세금계산서 등</small></div></label><input id="docInput" multiple onchange="showDocCount(event)" style="display:none" type="file"/><div class="help" id="docCount">선택된 문서가 없습니다.</div></div>
+        <div class="field"><label>사진첨부 (최대 10장)</label><label class="upload-zone v459-upload" for="photoInput"><div><strong>현장사진 첨부</strong><span class="file-btn">파일 선택</span><br><small>JPG, PNG</small></div></label><input accept="image/*" id="photoInput" multiple onchange="previewPhotos(event)" style="display:none" type="file"/><div class="preview v459-preview" id="photoPreview"></div></div>
+      </div>
+    </div>
+  </div>
 </div>
 </section>
 <section class="page" id="history">
-<div class="title-row"><div class="title-left"><div class="title-icon">🔍</div><div><h1>유지관리 조회</h1><div class="breadcrumb">홈 › 유지관리 조회</div></div></div></div>
-<div class="panel"><div class="grid"><div><label>시설명</label><select id="historyFacility"><option>전체</option></select></div><div><label>분야</label><select id="historyField"><option>전체</option><option>기계</option><option>전기</option><option>건축</option><option>토목</option><option>소방</option><option>통신</option><option>수질</option><option>환경정비</option><option>조경</option><option>기타</option></select></div><div><label>상태</label><select id="historyStatus"><option>전체</option><option>조치완료</option><option>진행중</option><option>미조치</option><option>예산반영 필요</option><option>외부업체 의뢰</option></select></div><div><label>기간</label><input id="historyMonth" type="month"/></div></div><div class="buttons"><button class="btn" onclick="resetHistoryFilterV318()">초기화</button><button class="btn blue" onclick="renderHistoryV318()">검색</button></div></div>
-<div class="panel"><table class="table"><thead><tr><th>일자</th><th>시설명</th><th>분야</th><th>유형</th><th>내용</th><th>상태</th><th>증빙</th><th>관리</th></tr></thead><tbody id="historyBody"></tbody></table></div>
+<div class="title-row"><div class="title-left"><div class="title-icon">🔍</div><div><h1>유지관리 조회</h1><div class="breadcrumb">홈 › 유지관리 조회 › 등록 이력 검색</div></div></div></div>
+<div class="panel v459-search-panel">
+  <div class="section-title"><span class="dot"></span>검색 조건</div>
+  <div class="v459-search-grid">
+    <div class="field"><label>시설명</label><select id="historyFacility"><option>전체</option></select></div>
+    <div class="field"><label>분야</label><select id="historyField"><option>전체</option><option>기계</option><option>전기</option><option>건축</option><option>토목</option><option>소방</option><option>통신</option><option>수질</option><option>환경정비</option><option>조경</option><option>기타</option></select></div>
+    <div class="field"><label>처리상태</label><select id="historyStatus"><option>전체</option><option>조치완료</option><option>진행중</option><option>미조치</option><option>예산반영 필요</option><option>외부업체 의뢰</option></select></div>
+    <div class="field"><label>기간</label><input id="historyMonth" type="month"/></div>
+    <div class="v459-search-actions"><button class="btn" type="button" onclick="resetHistoryFilterV318()">초기화</button><button class="btn blue" type="button" onclick="renderHistoryV318()">조회</button></div>
+  </div>
+</div>
+<div class="panel v459-table-panel">
+  <div class="v459-list-head"><div><div class="section-title"><span class="dot"></span>검색 결과</div><small>등록된 유지관리 이력을 최신순으로 확인합니다.</small></div><button class="btn light" type="button" onclick="navTo('export')">엑셀 다운로드</button></div>
+  <div class="v459-table-scroll"><table class="table"><thead><tr><th>일자</th><th>시설명</th><th>분야</th><th>유형</th><th>내용</th><th>상태</th><th>증빙</th><th>관리</th></tr></thead><tbody id="historyBody"></tbody></table></div>
+</div>
 </section>
 <section class="page" id="myPage">
 <div class="title-row"><div class="title-left"><div class="title-icon">👤</div><div><h1>내 정보</h1><div class="breadcrumb">홈 › 내 정보 › 비밀번호 변경</div></div></div></div>
@@ -1407,40 +1413,40 @@ body{background:var(--tfms-bg)!important;color:var(--tfms-text)}
 </div>
 </section>
 <section class="page" id="cycle">
-<div class="title-row"><div class="title-left"><div class="title-icon">📅</div><div><h1>점검주기 관리</h1><div class="breadcrumb">홈 › 점검주기 관리 › 자동 생성 규칙</div></div></div></div>
-<div class="role-note"><strong>권한 기준</strong> · 관리자와 일반담당자는 점검주기 관리 메뉴를 사용할 수 있습니다. 조회전용 권한에서는 메뉴가 숨김 처리됩니다.</div>
-<div class="panel">
-<div class="section-title"><span class="dot"></span>정기점검 자동 생성 규칙</div>
-<div class="notice">
-          전기설비 정기점검, 보일러 점검처럼 반복되는 업무는 매번 입력하지 않고 여기서 <b>한 번만 등록</b>합니다.
-          소방 관련 업무는 아래의 <b>소방 월간점검 기록표</b>를 기준으로 등록하며, 오늘의 업무에서 기록표 작성 화면으로 연결됩니다.
-        </div>
-<div class="preset-grid">
-<div class="preset-card" onclick="applyPreset('전기','전기설비 정기점검','월간')"><strong>전기 정기점검</strong><span>분전반·조명·누전차단기 확인</span></div>
-<div class="preset-card" onclick="applyPreset('기계','보일러 및 펌프 점검','주간')"><strong>기계설비 점검</strong><span>보일러·펌프·배관 상태 확인</span></div>
-<div class="preset-card" onclick="applyPreset('수질','수영장 수질 확인','일일')"><strong>수질 일일확인</strong><span>수온·수질·밸런싱 탱크 확인</span></div>
-<div class="preset-card" onclick="applyPreset('건축','건축물 상태 점검','분기')"><strong>건축 분기점검</strong><span>누수·타일·창호·바닥 확인</span></div>
-<div class="preset-card" onclick="applyPreset('안전','시설물 안전점검','반기')"><strong>반기 안전점검</strong><span>난간·계단·외부 시설 확인</span></div>
+<div class="title-row"><div class="title-left"><div class="title-icon">📅</div><div><h1>점검주기 관리</h1><div class="breadcrumb">홈 › 점검주기 관리 › 예방점검·소방점검</div></div></div></div>
+<div class="v459-cycle-shortcuts">
+  <button type="button" class="active" onclick="document.getElementById('v459CycleForm')?.scrollIntoView({behavior:'smooth',block:'start'})"><span>📅</span><b>일반 점검주기</b><small>설비·시설 반복점검 일정 관리</small></button>
+  <button type="button" onclick="navToFireV420()"><span>🧯</span><b>소방 월간점검</b><small>업무 수행 기록표 작성·이력</small></button>
+  <button type="button" onclick="navToFireQrV459()"><span>▦</span><b>소화기 QR 점검</b><small>소화기 QR 등록·현장점검</small></button>
 </div>
+<div class="panel v459-compact-panel">
+  <div class="section-title"><span class="dot"></span>정기점검 빠른 설정</div>
+  <div class="v459-preset-grid">
+    <button type="button" onclick="applyPreset('전기','전기설비 정기점검','월간')"><b>전기 정기점검</b><span>분전반·조명·누전차단기</span></button>
+    <button type="button" onclick="applyPreset('기계','보일러 및 펌프 점검','주간')"><b>기계설비 점검</b><span>보일러·펌프·배관</span></button>
+    <button type="button" onclick="applyPreset('수질','수영장 수질 확인','일일')"><b>수질 일일확인</b><span>수온·수질·밸런싱 탱크</span></button>
+    <button type="button" onclick="applyPreset('건축','건축물 상태 점검','분기')"><b>건축 분기점검</b><span>누수·타일·창호·바닥</span></button>
+    <button type="button" onclick="applyPreset('안전','시설물 안전점검','반기')"><b>반기 안전점검</b><span>난간·계단·외부시설</span></button>
+  </div>
 </div>
-<div class="panel">
-<div class="section-title"><span class="dot"></span>점검주기 등록</div>
-<div class="grid">
-<div class="field"><label>시설명</label><select id="cycleFacility" onchange="renderCycleAssetOptions()"><option>태백국민체육센터</option><option>태백볼링장</option><option>장성국민체육센터</option><option>장성게스트하우스</option></select></div>
-<div class="field"><label>연계 설비</label><select id="cycleAsset"><option value="">시설 공통업무</option></select></div>
-<div class="field"><label>분야</label><select id="cycleField"><option>소방</option><option>전기</option><option>기계</option><option>수질</option><option>건축</option><option>안전</option><option>기타</option></select></div>
-<div class="field"><label>점검항목</label><input id="cycleTask" placeholder="예: 소화기 월별 점검"/></div>
-<div class="field"><label>점검주기</label><select id="cyclePeriod" onchange="previewNextDue()"><option>일일</option><option>주간</option><option>월간</option><option>분기</option><option>반기</option><option>연간</option></select></div>
-<div class="field"><label>기준일</label><input id="cycleDue" onchange="previewNextDue()" type="date"/></div>
-<div class="field"><label>담당자</label><input id="cycleManager" placeholder="로그인 사용자 성명 자동입력"/></div>
-<div class="field"><label>오늘의 업무 표시</label><select id="cycleActive"><option>사용</option><option>미사용</option></select></div>
-<div class="field"><label>다음 생성 예정일</label><div class="help"><span class="schedule-chip" id="nextDuePreview">-</span></div></div>
+<div class="panel v459-compact-panel" id="v459CycleForm">
+  <div class="v459-list-head"><div><div class="section-title"><span class="dot"></span>점검주기 등록</div><small>반복업무를 한 번 등록하면 오늘의 업무에 자동 생성됩니다.</small></div></div>
+  <div class="v459-form-grid v459-form-grid-4">
+    <div class="field"><label>시설명</label><select id="cycleFacility" onchange="renderCycleAssetOptions()"><option>태백국민체육센터</option><option>태백볼링장</option><option>장성국민체육센터</option><option>장성게스트하우스</option></select></div>
+    <div class="field"><label>연계 설비</label><select id="cycleAsset"><option value="">시설 공통업무</option></select></div>
+    <div class="field"><label>분야</label><select id="cycleField"><option>소방</option><option>전기</option><option>기계</option><option>수질</option><option>건축</option><option>안전</option><option>기타</option></select></div>
+    <div class="field"><label>점검항목</label><input id="cycleTask" placeholder="예: 보일러 주간 점검"/></div>
+    <div class="field"><label>점검주기</label><select id="cyclePeriod" onchange="previewNextDue()"><option>일일</option><option>주간</option><option>월간</option><option>분기</option><option>반기</option><option>연간</option></select></div>
+    <div class="field"><label>기준일</label><input id="cycleDue" onchange="previewNextDue()" type="date"/></div>
+    <div class="field"><label>담당자</label><input id="cycleManager" placeholder="로그인 사용자 성명 자동입력"/></div>
+    <div class="field"><label>오늘의 업무 표시</label><select id="cycleActive"><option>사용</option><option>미사용</option></select></div>
+    <div class="field v459-span-3"><label>다음 생성 예정일</label><div class="v459-next-due"><span class="schedule-chip" id="nextDuePreview">-</span><small>선택한 기준일과 점검주기를 기준으로 자동 계산됩니다.</small></div></div>
+    <div class="v459-cycle-actions"><button class="btn" type="button" onclick="resetCycleForm()">초기화</button><button class="btn blue" type="button" onclick="addCycleTask()">점검주기 등록</button></div>
+  </div>
 </div>
-<div class="buttons"><button class="btn light" onclick="resetCycleForm()">초기화</button><button class="btn blue" onclick="addCycleTask()">점검주기 등록</button></div>
-</div>
-<div class="panel">
-<div class="section-title"><span class="dot"></span>등록된 점검주기</div>
-<table class="table"><thead><tr><th>시설명</th><th>분야</th><th>점검항목</th><th>주기</th><th>담당자</th><th>다음 기한</th><th>표시</th><th>관리</th></tr></thead><tbody id="cycleBody"></tbody></table>
+<div class="panel v459-table-panel">
+  <div class="v459-list-head"><div><div class="section-title"><span class="dot"></span>등록된 점검주기</div><small>일반 정기점검 일정만 표시합니다. 소방 월간점검은 상단 전용 메뉴에서 관리합니다.</small></div></div>
+  <div class="v459-table-scroll"><table class="table"><thead><tr><th>시설명</th><th>분야</th><th>점검항목</th><th>주기</th><th>담당자</th><th>다음 기한</th><th>표시</th><th>관리</th></tr></thead><tbody id="cycleBody"></tbody></table></div>
 </div>
 </section>
 </main>
@@ -18459,127 +18465,50 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 })();
 </script>
 
-<!-- TFMS v45.8 Enterprise Stable : UX Cleanup (v45.5 base) -->
-<style id="tfms-v458-ux-cleanup-style">
-:root{--v458-navy:#0b3a68;--v458-blue:#1766d2;--v458-teal:#0ca7a4;--v458-border:#d7e3ef;--v458-soft:#f6f9fd;--v458-muted:#667b92;--v458-text:#132f4c}
-#register,#history,#dailylog,#cycle{font-size:14px;color:var(--v458-text)}
-#register .title-row h1,#history .title-row h1,#dailylog .title-row h1,#cycle .title-row h1{font-size:27px;letter-spacing:-.6px}
-#register .panel,#history .panel,#dailylog .panel,#cycle .panel{border:1px solid var(--v458-border);border-radius:14px;box-shadow:0 4px 14px rgba(20,48,80,.045);background:#fff}
-#register input,#register select,#register textarea,#history input,#history select,#dailylog input,#dailylog select,#dailylog textarea,#cycle input,#cycle select{min-height:42px;border-radius:9px;border-color:#ccd9e8;font-size:14px}
-#register label,#history label,#dailylog label,#cycle label{font-size:13px;font-weight:800;color:#304a66}
-#register .section-title,#history .section-title,#dailylog .section-title,#cycle .section-title{font-size:16px;font-weight:900;color:#173958}
-#register .btn,#history .btn,#dailylog .btn,#cycle .btn{min-height:40px;border-radius:9px;font-weight:800}
-
-/* 유지관리 등록 : 기존 필드 유지, 실제 배치만 압축 */
-#register>.panel{padding:14px 16px}
-#register .section{margin:0;padding:0;border:0}
-#register .section:first-child{padding-bottom:13px;margin-bottom:13px;border-bottom:1px solid #e6edf5}
-#register .section:first-child .grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:9px 11px}
-#register .section:first-child .field.wide{grid-column:span 2}
-#register .field{gap:5px}
-#register .choice-group{gap:7px;flex-wrap:wrap}
-#register .choice{min-height:38px;padding:0 15px}
-#register .v458-register-body{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(360px,.75fr);gap:13px;align-items:start}
-#register .v458-register-left,#register .v458-register-right{min-width:0}
-#register .v458-register-left>.section,#register .v458-register-right>.section{border:1px solid #e0e8f1;border-radius:12px;padding:13px 14px;background:#fff}
-#register .v458-register-right>.section{background:#fbfdff}
-#register .v458-register-left .grid.two{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px 11px}
-#register .v458-register-left .field.wide{grid-column:1/-1}
-#register .v458-register-left textarea{min-height:72px;line-height:1.45}
-#register .v458-register-right .grid{grid-template-columns:1fr;gap:9px}
-#register .v458-register-right .upload-zone{min-height:68px;padding:10px}
-#register .v458-register-right .preview{gap:6px;margin-top:6px}.v458-register-right .thumb{height:52px}
-#register .eval{background:#fffaf0;border:1px solid #f1cf8a;border-radius:11px;padding:11px 12px}
-#register .eval h4{margin:0 0 8px;font-size:14px;color:#9b5b00}
-#register .eval-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px 12px}
-#register .eval-grid label{white-space:nowrap;font-size:13px}
-#register .notice{margin-top:12px!important;font-size:12px;line-height:1.5;padding:9px 11px}
-#register>.panel>.buttons{position:sticky;bottom:8px;z-index:12;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border:1px solid #dce6f0;border-radius:11px;padding:8px;box-shadow:0 5px 18px rgba(23,66,110,.08)}
-.v458-register-guide{display:flex;align-items:center;gap:8px;margin:0 0 12px;padding:9px 11px;border:1px solid #dce7f2;border-radius:10px;background:#f8fbff;color:#5d7187;font-size:12px}
-.v458-register-guide b{color:#1766d2}.v458-register-guide span{color:#a4b0bd}
-
-/* 조회 */
-#history>.panel:first-of-type{padding:15px 16px}#history>.panel:first-of-type .grid{gap:10px;align-items:end}
-#history>.panel:nth-of-type(2){padding:0;overflow:hidden}#history .table{font-size:13px;margin:0}#history .table th{font-size:12px;background:#f3f7fb;padding:11px 9px}#history .table td{padding:11px 9px}
-
-/* 업무일지 : 큰 구분만 추가, 기존 기계실/PDF 기능은 그대로 */
-.v458-daily-selector{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:13px}
-.v458-daily-select{display:grid;grid-template-columns:48px 1fr auto;align-items:center;gap:13px;border:1px solid #d6e2ee;border-radius:14px;padding:15px 16px;background:#fff;cursor:pointer;text-align:left;transition:.15s}
-.v458-daily-select:hover{border-color:#90b8ed;box-shadow:0 5px 16px rgba(29,83,144,.08)}
-.v458-daily-select.active{border:2px solid #1766d2;background:#f5f9ff}.v458-daily-select.machine.active{border-color:#19945f;background:#f4fbf7}
-.v458-daily-select .ico{width:48px;height:48px;border-radius:13px;display:grid;place-items:center;background:#eaf3ff;font-size:23px}.v458-daily-select.machine .ico{background:#e8f7ef}
-.v458-daily-select h3{margin:0 0 3px;font-size:17px;color:#183958}.v458-daily-select p{margin:0;font-size:12px;line-height:1.45;color:#6b7f95}.v458-daily-select em{font-style:normal;font-size:11px;font-weight:900;color:#1766d2}.v458-daily-select.machine em{color:#16865a}
-#v458GeneralDaily{display:none}
-#v458GeneralDaily .grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}#v458GeneralDaily .wide2{grid-column:span 2}#v458GeneralDaily textarea{min-height:105px}
-#dailylog .dj-tabs{background:#f5f8fc;padding:6px;border-radius:11px;gap:7px}#dailylog .dj-tab{min-height:39px;border-radius:8px!important;font-size:13px!important;font-weight:900!important}
-
-/* 점검주기 : 중복 제거, 요약은 작은 상태칩 */
-.v458-cycle-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:0 0 12px}
-.v458-cycle-stats{display:flex;gap:7px;flex-wrap:wrap}.v458-cycle-chip{display:flex;align-items:center;gap:7px;border:1px solid #dbe5ef;border-radius:999px;background:#fff;padding:7px 11px;font-size:12px;color:#61758b}.v458-cycle-chip strong{font-size:15px;color:#174f95}.v458-cycle-chip.ok{background:#f3fbf7;border-color:#cde9d9}.v458-cycle-chip.ok strong{color:#168657}.v458-cycle-chip.warn{background:#fff9f1;border-color:#f1d7aa}.v458-cycle-chip.warn strong{color:#c87800}.v458-cycle-chip.danger{background:#fff5f5;border-color:#f0cccc}.v458-cycle-chip.danger strong{color:#d44242}
-.v458-cycle-actions{display:flex;gap:7px;flex-wrap:wrap}.v458-cycle-actions button{min-height:38px;border-radius:9px;padding:0 13px;border:1px solid #cfddeb;background:#fff;color:#31506f;font-weight:900;cursor:pointer}.v458-cycle-actions button.fire{border-color:#f2c9c9;color:#b63b3b;background:#fff8f8}.v458-cycle-actions button.qr{border-color:#bfe5d6;color:#167a55;background:#f7fcf9}
-#cycle .role-note{margin-bottom:12px}
-#cycle>.panel:first-of-type{padding:13px 15px}#cycle>.panel:first-of-type .notice{margin-bottom:11px}
-#cycle .preset-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}.preset-card{padding:11px 12px}.preset-card strong{font-size:13px}.preset-card span{font-size:11px}
-#cycle>.panel:nth-of-type(2){padding:14px 15px}#cycle>.panel:nth-of-type(2) .grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:9px 11px}
-#cycle>.panel:nth-of-type(3){padding:0;overflow:hidden}#cycle>.panel:nth-of-type(3) .section-title{padding:14px 16px 7px;margin:0}#cycle .table{font-size:13px;margin:0}#cycle .table th{font-size:12px;background:#f3f7fb;padding:11px 9px}#cycle .table td{padding:11px 9px}
-
-@media(max-width:1250px){#register .v458-register-body{grid-template-columns:1fr}#register .section:first-child .grid,#cycle>.panel:nth-of-type(2) .grid{grid-template-columns:repeat(2,minmax(0,1fr))}#cycle .preset-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:850px){.v458-daily-selector{grid-template-columns:1fr}#register .section:first-child .grid,#v458GeneralDaily .grid,#cycle>.panel:nth-of-type(2) .grid{grid-template-columns:1fr}#register .section:first-child .field.wide,#v458GeneralDaily .wide2{grid-column:auto}#cycle .preset-grid{grid-template-columns:1fr 1fr}}
+<style id="tfms-v459-thumbnail-ux-style">
+/* v45.9 — thumbnail UX applied to real controls. Existing IDs/functions remain unchanged. */
+#register,#history,#dailylog,#cycle{--v459-border:#d8e3f1;--v459-soft:#f7faff;--v459-blue:#1261cc;--v459-navy:#0c3d70}
+#register .panel,#history .panel,#cycle .panel,#dailylog .panel{border-color:var(--v459-border);box-shadow:0 4px 18px rgba(15,43,77,.045)}
+.v459-title-row{align-items:center}.v459-top-actions{display:flex;gap:8px;margin-left:auto}.v459-top-actions .btn{min-width:92px}
+.v459-register-shell{display:grid;gap:10px}.v459-stepbar{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;background:#fff;border:1px solid var(--v459-border);padding:8px;border-radius:14px}
+.v459-stepbar span{height:40px;display:flex;align-items:center;justify-content:center;gap:8px;border:1px solid #d9e3ef;border-radius:10px;font-size:13px;font-weight:800;color:#50647d;background:#fff}.v459-stepbar span.active{background:#f3f8ff;border-color:#8ebcff;color:#0e55ad}.v459-stepbar b{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#e9f2ff;color:#1261cc;font-size:12px}
+.v459-compact-panel{padding:15px 17px!important;margin:0!important}.v459-compact-panel .section-title{margin-bottom:12px!important}
+.v459-form-grid{display:grid;gap:11px 12px;align-items:end}.v459-form-grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}.v459-form-grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}.v459-form-grid .field{min-width:0}.v459-form-grid label,#history label,#dailylog label,#cycle label{font-size:13px;font-weight:800;color:#183451;margin-bottom:6px;display:block}.v459-form-grid input,.v459-form-grid select,#history input,#history select,#dailylog input,#dailylog select,#cycle input,#cycle select{min-height:43px;font-size:14px}.v459-form-grid textarea{font-size:14px;line-height:1.5}.v459-span-2{grid-column:span 2}.v459-span-3{grid-column:span 3}.v459-span-all{grid-column:1/-1}
+.v459-choice-row{display:flex!important;flex-wrap:wrap;gap:7px}.v459-choice-row .choice{min-height:38px;padding:8px 17px;white-space:nowrap}.v459-main-textarea{min-height:92px!important}.v459-plan-textarea{min-height:68px!important}
+.v459-bottom-grid{display:grid;grid-template-columns:minmax(310px,.82fr) minmax(0,1.18fr);gap:10px}.v459-subhelp{font-size:12px;color:#6b7e95;margin:-4px 0 10px}.v459-eval-box{border:1px solid #efca76!important;background:#fffaf0!important;border-radius:14px!important;padding:14px!important}.v459-eval-box h4{font-size:14px!important;margin:0 0 10px!important;color:#8a5600!important}.v459-eval-box .eval-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:11px 14px!important}.v459-eval-box .eval-grid label{font-size:14px!important;font-weight:800!important}.v459-evidence-grid{display:grid;grid-template-columns:1fr 1.25fr;gap:12px}.v459-upload{min-height:76px!important;padding:10px!important}.v459-preview{display:flex!important;gap:6px!important;min-height:0!important;overflow:auto}.v459-preview:empty{display:none!important}
+.v459-search-panel{padding:15px 17px!important}.v459-search-grid{display:grid;grid-template-columns:1.1fr 1fr 1fr 1fr auto;gap:10px;align-items:end}.v459-search-actions{display:flex;gap:7px;align-items:end}.v459-search-actions .btn{min-width:78px}.v459-table-panel{padding:14px 16px!important}.v459-list-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}.v459-list-head .section-title{margin-bottom:2px!important}.v459-list-head small{color:#70849a}.v459-table-scroll{overflow:auto}.v459-table-scroll .table{min-width:900px;margin:0}
+.v459-cycle-shortcuts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:10px}.v459-cycle-shortcuts button{display:grid;grid-template-columns:42px 1fr;grid-template-rows:auto auto;column-gap:11px;text-align:left;align-items:center;border:1px solid #d5e2f2;background:#fff;border-radius:14px;padding:12px 14px;cursor:pointer;color:#183451}.v459-cycle-shortcuts button:hover,.v459-cycle-shortcuts button.active{border-color:#8bb9f3;background:#f6faff}.v459-cycle-shortcuts button>span{grid-row:1/3;width:42px;height:42px;border-radius:12px;background:#eef5ff;display:grid;place-items:center;font-size:21px}.v459-cycle-shortcuts b{font-size:14px}.v459-cycle-shortcuts small{font-size:11px;color:#6e8197;margin-top:2px}.v459-preset-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}.v459-preset-grid button{border:1px solid #d9e3ef;background:#fff;border-radius:12px;padding:11px 12px;text-align:left;cursor:pointer;min-height:68px}.v459-preset-grid button:hover{border-color:#8cb8ef;background:#f7fbff}.v459-preset-grid b{display:block;font-size:13px;color:#183451;margin-bottom:5px}.v459-preset-grid span{font-size:11px;color:#71849a}.v459-next-due{min-height:43px;border:1px solid #d8e3f1;border-radius:10px;background:#f8fbff;display:flex;align-items:center;gap:10px;padding:7px 10px}.v459-next-due small{color:#71849a}.v459-cycle-actions{display:flex;gap:7px;justify-content:flex-end}
+/* Daily journal first-level separation */
+#dailylog .v459-daily-mode{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px}#dailylog .v459-daily-mode button{border:1px solid #d8e3f1;background:#fff;border-radius:16px;padding:18px;text-align:left;cursor:pointer;min-height:130px;display:grid;grid-template-columns:58px 1fr;grid-template-rows:auto auto auto;column-gap:14px}#dailylog .v459-daily-mode button:hover,#dailylog .v459-daily-mode button.active{border-color:#7fb3f1;box-shadow:0 4px 16px rgba(24,95,178,.08)}#dailylog .v459-daily-mode button.facility.active{border-color:#78c79c;background:#f7fffa}#dailylog .v459-daily-mode .ico{grid-row:1/4;width:58px;height:58px;border-radius:16px;background:#edf5ff;display:grid;place-items:center;font-size:28px}#dailylog .v459-daily-mode .facility .ico{background:#eaf9ef}#dailylog .v459-daily-mode b{font-size:19px;color:#123353}#dailylog .v459-daily-mode p{margin:5px 0;color:#61768f;font-size:12px;line-height:1.45}#dailylog .v459-daily-mode small{color:#7a8ba0;font-size:11px;font-weight:700}
+#dailylog[data-v459-mode="general"] .v459-facility-journal{display:none!important}#dailylog[data-v459-mode="facility"] #v459GeneralDaily{display:none!important}#dailylog[data-v459-mode="facility"] .v459-facility-journal{display:block}#dailylog .dj-tabs{gap:7px;flex-wrap:wrap}#dailylog .dj-tab{font-size:13px!important;padding:9px 13px!important}
+#v459GeneralDaily .v459-general-grid{display:grid;grid-template-columns:1.4fr .8fr .8fr 1fr;gap:10px}#v459GeneralDaily .table{margin-top:10px}#v459GeneralDaily .buttons{margin-top:10px}
+@media(max-width:1280px){.v459-form-grid-4{grid-template-columns:repeat(2,minmax(0,1fr))}.v459-span-3{grid-column:span 1}.v459-preset-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.v459-search-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.v459-search-actions{grid-column:1/-1;justify-content:flex-end}.v459-bottom-grid{grid-template-columns:1fr}}
+@media(max-width:850px){.v459-stepbar{grid-template-columns:1fr 1fr}.v459-form-grid-4,.v459-form-grid-2,.v459-evidence-grid,.v459-cycle-shortcuts,#dailylog .v459-daily-mode,#v459GeneralDaily .v459-general-grid{grid-template-columns:1fr}.v459-span-2,.v459-span-3{grid-column:auto}.v459-preset-grid{grid-template-columns:1fr 1fr}.v459-top-actions{flex-wrap:wrap}.v459-title-row{align-items:flex-start}.v459-search-grid{grid-template-columns:1fr}}
 </style>
-<script id="tfms-v458-ux-cleanup-script">
+<script id="tfms-v459-thumbnail-ux-controller">
 (function(){
- const $=id=>document.getElementById(id);
- const esc=s=>String(s??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]));
- function version(){document.title='TFMS v45.8 Enterprise Stable';const b=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');if(b)b.textContent='v45.8 Enterprise Stable';}
- function registerUX(){
-   const p=$('register');if(!p||p.dataset.v458)return;p.dataset.v458='1';
-   const panel=p.querySelector(':scope > .panel');if(!panel)return;
-   const sections=[...panel.querySelectorAll(':scope > .section')];if(sections.length<3)return;
-   const guide=document.createElement('div');guide.className='v458-register-guide';guide.innerHTML='<b>입력 흐름</b><span>›</span> 기본정보 <span>›</span> 유지관리 내용 <span>›</span> 경영평가·증빙';
-   sections[0].insertAdjacentElement('beforebegin',guide);
-   const body=document.createElement('div');body.className='v458-register-body';
-   const left=document.createElement('div');left.className='v458-register-left';
-   const right=document.createElement('div');right.className='v458-register-right';
-   body.append(left,right);sections[0].insertAdjacentElement('afterend',body);left.appendChild(sections[1]);right.appendChild(sections[2]);
-   const thirdTitle=sections[2].querySelector('.section-title');if(thirdTitle)thirdTitle.innerHTML='<span class="dot"></span>경영평가 연계 · 증빙자료';
- }
- function historyUX(){const p=$('history');if(!p||p.dataset.v458)return;p.dataset.v458='1';}
- function generalBox(){
-   let b=$('v458GeneralDaily');if(b)return b;b=document.createElement('div');b.id='v458GeneralDaily';b.className='panel';
-   b.innerHTML='<div class="section-title"><span class="dot"></span>일반 업무일지 작성</div><div class="grid"><div class="field"><label>시설명 <span class="req">*</span></label><select id="v458GenFacility"></select></div><div class="field"><label>작성일 <span class="req">*</span></label><input id="v458GenDate" type="date"></div><div class="field"><label>날씨</label><select id="v458GenWeather"><option>맑음</option><option>흐림</option><option>비</option><option>눈</option></select></div><div class="field"><label>작성자 <span class="req">*</span></label><input id="v458GenAuthor"></div><div class="field wide2"><label>주요업무 <span class="req">*</span></label><textarea id="v458GenWork" placeholder="오늘 수행한 주요업무를 입력하세요."></textarea></div><div class="field wide2"><label>특이사항</label><textarea id="v458GenSpecial" placeholder="민원, 이상사항, 인수인계 등을 입력하세요."></textarea></div></div><div class="buttons"><button class="btn light" type="button" onclick="resetGeneralDailyV458()">초기화</button><button class="btn blue" type="button" onclick="saveGeneralDailyV458()">일반 업무일지 저장</button></div>';
-   return b;
- }
- function fillGeneral(){
-   const f=$('v458GenFacility');if(f&&!f.options.length){let names=[];try{names=(window.facilityMasterStable||[]).map(x=>x.name).filter(Boolean)}catch(e){};if(!names.length)names=['태백국민체육센터','장성국민체육센터','태백볼링장'];f.innerHTML=names.map(n=>'<option>'+esc(n)+'</option>').join('')}
-   const d=$('v458GenDate');if(d&&!d.value)d.value=new Date().toISOString().slice(0,10);let ss={};try{ss=JSON.parse(sessionStorage.getItem('tfmsSession')||'{}')}catch(e){};const a=$('v458GenAuthor');if(a&&!a.value)a.value=ss.name||window.cloudProfile?.full_name||'';
- }
- window.resetGeneralDailyV458=function(){['v458GenWork','v458GenSpecial'].forEach(id=>{if($(id))$(id).value=''});if($('v458GenDate'))$('v458GenDate').value=new Date().toISOString().slice(0,10)};
- window.saveGeneralDailyV458=async function(){
-   const sb=window.supabaseClient||window.sb||window.supabase;if(!sb?.from){window.showToast?.('DB 연결 정보를 확인하지 못했습니다.');return}
-   const facility=$('v458GenFacility')?.value||'',date=$('v458GenDate')?.value||'',weather=$('v458GenWeather')?.value||'',author=$('v458GenAuthor')?.value.trim()||'',work=$('v458GenWork')?.value.trim()||'',special=$('v458GenSpecial')?.value.trim()||'';
-   if(!facility||!date||!author||!work){window.showToast?.('시설명, 작성일, 작성자, 주요업무는 필수입니다.');return}
-   try{let fid='';try{fid=window.facByName?.[facility]?.id||''}catch(e){};if(!fid)try{fid=(window.facilityMasterStable||[]).find(x=>x.name===facility)?.id||''}catch(e){};if(!fid)throw new Error('시설 DB 정보를 찾지 못했습니다.');const {data:auth,error:ae}=await sb.auth.getUser();if(ae)throw ae;const uid=auth?.user?.id;if(!uid)throw new Error('로그인 세션을 확인할 수 없습니다.');const payload={facility_id:fid,work_date:date,shift_type:'주간',title:facility+' 일반 업무일지',content:JSON.stringify({schema:'tfms-general-daily-v45.8',journalType:'general',data:{facility,date,weather,author,work,special}}),has_issue:Boolean(special),issue_detail:special||null,weather:weather||null,author_id:uid};const {error}=await sb.from('daily_logs').insert(payload);if(error)throw error;window.showToast?.('일반 업무일지를 저장했습니다.');window.resetGeneralDailyV458();try{await window.loadDailyHistoryV322?.()}catch(e){}}
-   catch(e){console.error('v45.8 general daily save',e);window.showToast?.('일반 업무일지 저장 실패: '+(e?.message||e))}
- };
- window.setDailyModeV458=function(mode){
-   const p=$('dailylog');if(!p)return;p.dataset.v458mode=mode;p.querySelectorAll('.v458-daily-select').forEach(x=>x.classList.toggle('active',x.dataset.mode===mode));const g=$('v458GeneralDaily');if(g)g.style.display=mode==='general'?'block':'none';[...p.children].forEach(el=>{if(el===g||el.classList?.contains('title-row')||el.classList?.contains('v458-daily-selector'))return;if(el.classList?.contains('panel'))el.style.display=mode==='general'?'none':''});if(mode==='machine')setTimeout(()=>{try{window.showDailyFormV390?.('work')}catch(e){}},20)
- };
- function dailyUX(){
-   const p=$('dailylog');if(!p)return;const title=p.querySelector('.title-row');if(!title)return;if(!p.querySelector('.v458-daily-selector')){const s=document.createElement('div');s.className='v458-daily-selector';s.innerHTML='<button type="button" class="v458-daily-select active" data-mode="general" onclick="setDailyModeV458(\'general\')"><span class="ico">📋</span><span><h3>일반 업무일지</h3><p>일일 주요업무·특이사항과 현장 기록을 간단히 작성합니다.</p></span><em>일반시설</em></button><button type="button" class="v458-daily-select machine" data-mode="machine" onclick="setDailyModeV458(\'machine\')"><span class="ico">⚙️</span><span><h3>기계실·방재실 업무일지</h3><p>기계실 운전·점검, 기존 일상근무일지 PDF 및 법정서식을 사용합니다.</p></span><em>해당시설 전용</em></button>';title.insertAdjacentElement('afterend',s);const g=generalBox();s.insertAdjacentElement('afterend',g)}
-   const work=$('djTabWork'),mach=$('djTabMachine'),air=$('djTabAir');if(work)work.textContent='일상근무일지(PDF)';if(mach)mach.textContent='기계실 상세기록';if(air)air.textContent='대기배출 운영기록부';fillGeneral();window.setDailyModeV458(p.dataset.v458mode||'general');
- }
- function cycleCounts(){
-   const rows=[...document.querySelectorAll('#cycleBody tr')].filter(r=>r.children.length>=6),now=new Date();now.setHours(0,0,0,0);let ok=0,warn=0,danger=0;rows.forEach(r=>{const t=r.children[5]?.textContent.trim(),d=t?new Date(t):null;if(!d||isNaN(d))return;d.setHours(0,0,0,0);const dd=Math.ceil((d-now)/86400000);if(dd<=7)danger++;else if(dd<=30)warn++;else ok++});[['v458CT',rows.length],['v458CO',ok],['v458CW',warn],['v458CD',danger]].forEach(([id,v])=>{const e=$(id);if(e)e.textContent=v})
- }
- window.openFireV458=function(kind){try{window.navToFireV420?.()}catch(e){window.showToast?.('소방 점검 화면을 열지 못했습니다.');return}if(kind==='qr')setTimeout(()=>{const all=[...document.querySelectorAll('#fireMonthly *')];const t=all.find(e=>/소화기.*QR|QR.*소화기/.test(e.textContent||''));(t?.closest('.panel')||t)?.scrollIntoView?.({behavior:'smooth',block:'start'})},180)};
- function cycleUX(){
-   const p=$('cycle');if(!p||p.dataset.v458)return;p.dataset.v458='1';const title=p.querySelector('.title-row');if(!title)return;const top=document.createElement('div');top.className='v458-cycle-top';top.innerHTML='<div class="v458-cycle-stats"><span class="v458-cycle-chip">등록 <strong id="v458CT">0</strong>개</span><span class="v458-cycle-chip ok">정상 <strong id="v458CO">0</strong></span><span class="v458-cycle-chip warn">주의 <strong id="v458CW">0</strong></span><span class="v458-cycle-chip danger">경고 <strong id="v458CD">0</strong></span></div><div class="v458-cycle-actions"><button type="button" class="fire" onclick="openFireV458(\'fire\')">🧯 소방 월간점검</button><button type="button" class="qr" onclick="openFireV458(\'qr\')">▦ 소화기 QR 점검</button></div>';title.insertAdjacentElement('afterend',top);
-   const first=p.querySelector('.panel');const st=first?.querySelector('.section-title');if(st)st.innerHTML='<span class="dot"></span>일반 정기점검 빠른등록';cycleCounts();
- }
- function apply(){version();registerUX();historyUX();dailyUX();cycleUX();setTimeout(cycleCounts,100)}
- const oldShow=window.showPage;if(typeof oldShow==='function')window.showPage=function(id,btn){const r=oldShow.apply(this,arguments);setTimeout(()=>{if(id==='register')registerUX();if(id==='history')historyUX();if(id==='dailylog')dailyUX();if(id==='cycle'){cycleUX();cycleCounts()}},60);return r};
- const oldNav=window.navTo;if(typeof oldNav==='function')window.navTo=function(id){const r=oldNav.apply(this,arguments);setTimeout(()=>{if(id==='register')registerUX();if(id==='history')historyUX();if(id==='dailylog')dailyUX();if(id==='cycle'){cycleUX();cycleCounts()}},60);return r};
- document.addEventListener('DOMContentLoaded',()=>setTimeout(apply,220));setTimeout(apply,650);
+'use strict';
+const VERSION='v45.9 Enterprise Stable';
+const $=id=>document.getElementById(id);
+function brand(){const b=$('tfmsVersionBadge');if(b)b.textContent=VERSION;document.title='TFMS '+VERSION;try{window.TFMS_BUILD=Object.freeze({version:'v45.9',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'Thumbnail UX Integration'});}catch(e){}try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.9'){u.searchParams.set('v','45.9');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
+window.navToFireQrV459=function(){try{window.navToFireV420?.();setTimeout(()=>{const p=[...document.querySelectorAll('#fireMonthly .section-title')].find(x=>/소화기 월간점검 목록/.test(x.textContent||''));p?.scrollIntoView({behavior:'smooth',block:'start'});},180)}catch(e){window.navToFireV420?.();}};
+function fillGeneralFacility(){const sel=$('dailyFacility');if(!sel)return;let names=[];try{const s=JSON.parse(sessionStorage.getItem('tfmsSession')||'{}');const dept=s.dept||s.department||'';if(typeof facilities!=='undefined'&&facilities[dept])names=facilities[dept];else if(typeof facilities!=='undefined')names=Object.values(facilities).flat();}catch(e){}if(!names.length)names=['태백국민체육센터','장성국민체육센터'];const old=sel.value;sel.innerHTML=[...new Set(names)].map(n=>`<option>${n}</option>`).join('');if(old&&[...sel.options].some(o=>o.value===old))sel.value=old;}
+window.setDailyModeV459=function(mode){const sec=$('dailylog');if(!sec)return;sec.dataset.v459Mode=mode;sec.querySelectorAll('.v459-daily-mode button').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));if(mode==='general'){fillGeneralFacility();try{if(!$('dailyDate')?.value)$('dailyDate').value=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);const sess=JSON.parse(sessionStorage.getItem('tfmsSession')||'{}');if($('dailyWorkers')&&!$('dailyWorkers').value)$('dailyWorkers').value=sess.name||'';window.renderDailyRows?.();}catch(e){}}else{try{window.showDailyFormV390?.('work');}catch(e){}}};
+function upgradeDaily(){const sec=$('dailylog');if(!sec||sec.dataset.v459==='1')return;/* let v39 rebuild finish first */if(!$('djFormMachine'))return;sec.dataset.v459='1';sec.dataset.v459Mode='general';
+ const title=sec.querySelector('.title-row');
+ const mode=document.createElement('div');mode.className='v459-daily-mode';mode.innerHTML=`<button type="button" class="active" data-mode="general" onclick="setDailyModeV459('general')"><span class="ico">📋</span><b>일반 업무일지</b><p>일일 주요업무, 특이사항 및 간단한 업무기록을 작성합니다.</p><small>일반 시설·부서 공통</small></button><button type="button" class="facility" data-mode="facility" onclick="setDailyModeV459('facility')"><span class="ico">⚙️</span><b>기계실·방재실 업무일지</b><p>기계실·방재실 근무시설의 설비운전·점검 및 기존 PDF 일지를 작성합니다.</p><small>기계실·방재실 운영시설 전용</small></button>`;title?.after(mode);
+ const general=document.createElement('div');general.id='v459GeneralDaily';general.className='panel';general.innerHTML=`<div class="section-title"><span class="dot"></span>일반 업무일지 작성</div><div class="v459-general-grid"><div class="field"><label>시설명</label><select id="dailyFacility"></select></div><div class="field"><label>근무일</label><input id="dailyDate" type="date"></div><div class="field"><label>날씨</label><select id="dailyWeather"><option>맑음</option><option>흐림</option><option>비</option><option>눈</option></select></div><div class="field"><label>근무자</label><input id="dailyWorkers"></div></div><div class="v459-list-head" style="margin-top:14px"><div><div class="section-title"><span class="dot"></span>업무 내용</div><small>필요한 만큼 행을 추가하고, 유지관리 이력 등록이 필요한 항목만 연계합니다.</small></div><div><button class="btn light" type="button" onclick="addDailyRow()">업무내용 추가</button> <button class="btn light" type="button" onclick="loadTodayToDaily()">오늘의 업무 불러오기</button></div></div><div class="v459-table-scroll"><table class="table"><thead><tr><th style="width:70px">선택</th><th>업무내용</th><th style="width:190px">비고</th><th style="width:180px">이력등록</th><th style="width:90px">관리</th></tr></thead><tbody id="dailyBody"></tbody></table></div><div class="buttons"><button class="btn blue" id="dailySaveBtnV322" type="button" onclick="saveDailyLogV322()">일반 업무일지 저장</button></div>`;mode.after(general);
+ const base=[...sec.querySelectorAll(':scope > .panel')].find(p=>p.querySelector('#djFacility'));if(base){base.classList.add('v459-facility-journal');const st=base.querySelector('.section-title');if(st)st.innerHTML='<span class="dot"></span>기계실·방재실 업무일지 기본정보';const notice=base.querySelector('.notice');if(notice)notice.innerHTML='기존에 사용하던 <b>일상근무일지(PDF)</b> 서식은 그대로 유지합니다. 필요 시 기계실 상세기록과 대기배출 운영기록부를 함께 작성할 수 있습니다.';}
+ ['djFormMachine','djFormAir','djFormWork'].forEach(id=>$(id)?.classList.add('v459-facility-journal'));
+ const tWork=$('djTabWork'),tMachine=$('djTabMachine'),tAir=$('djTabAir');if(tWork)tWork.textContent='기계실·방재실 업무일지(PDF)';if(tMachine)tMachine.textContent='기계실 상세기록';if(tAir)tAir.textContent='대기배출 운영기록부';const workTitle=$('djFormWork')?.querySelector('.section-title');if(workTitle)workTitle.innerHTML='<span class="dot"></span>기계실·방재실 업무일지 입력 (기존 PDF 서식)';
+ fillGeneralFacility();try{const d=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);if($('dailyDate'))$('dailyDate').value=d;const sess=JSON.parse(sessionStorage.getItem('tfmsSession')||'{}');if($('dailyWorkers'))$('dailyWorkers').value=sess.name||'';window.renderDailyRows?.();}catch(e){}
+ window.setDailyModeV459('general');}
+function cleanupCycle(){const page=$('cycle');if(!page)return;page.querySelectorAll('.fire-v420-card').forEach(x=>x.remove());}
+const oldShow=window.showPage;if(typeof oldShow==='function')window.showPage=function(id,btn){const r=oldShow.apply(this,arguments);if(id==='dailylog')setTimeout(upgradeDaily,180);if(id==='cycle')setTimeout(cleanupCycle,80);setTimeout(brand,20);return r;};
+const oldNav=window.navTo;if(typeof oldNav==='function')window.navTo=function(id){const r=oldNav.apply(this,arguments);if(id==='dailylog')setTimeout(upgradeDaily,180);if(id==='cycle')setTimeout(cleanupCycle,80);setTimeout(brand,20);return r;};
+function init(){brand();[250,700,1400,2600,5200].forEach(ms=>setTimeout(()=>{brand();upgradeDaily();cleanupCycle();},ms));}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
 </script>
+
 </body></html>
