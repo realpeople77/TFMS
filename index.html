@@ -6,7 +6,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>TFMS v45.14 Enterprise Stable</title>
+<title>TFMS v45.12 Enterprise Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -11920,7 +11920,7 @@ document.addEventListener('DOMContentLoaded',function(){
       <div class="dj-sheet ${esc(sheetClass||'')}">${content}</div>
       
 
-<!-- TFMS v45.14 Enterprise Stable - Data Store Fix
+<!-- TFMS v45.12 Enterprise Stable - Data Store Fix
      Equipment UX reads live lexical assetData first; window.assetData is fallback only.
      Login / photo loading / Supabase schema unchanged. -->
 </body></html>`);
@@ -17976,7 +17976,7 @@ document.readyState==='loading'?document.addEventListener('DOMContentLoaded',upd
  const oldRender=window.renderAssetList;if(typeof oldRender==='function')window.renderAssetList=function(){const r=oldRender.apply(this,arguments);setTimeout(()=>{populateFilters();filterList();refresh()},40);return r};
  const oldSave=window.saveAsset;if(typeof oldSave==='function')window.saveAsset=function(){const r=oldSave.apply(this,arguments);setTimeout(()=>{refresh();closeAssetRegisterV4431()},450);return r};
  const oldNav=window.navTo;if(typeof oldNav==='function')window.navTo=function(id){const r=oldNav.apply(this,arguments);if(id==='equipment')setTimeout(()=>{ensureShell();movePhotos();refresh()},140);return r};
- function brand(){const small=document.querySelector('#appHeader .logo-title small');if(small)small.textContent='태백시시설관리공단 시설관리시스템';const b=$('tfmsVersionBadge');if(b)b.textContent='v45.14 Enterprise Stable';document.title='TFMS v45.14 Enterprise Stable';window.TFMS_BUILD=Object.freeze({version:'v45.5',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});}
+ function brand(){const small=document.querySelector('#appHeader .logo-title small');if(small)small.textContent='태백시시설관리공단 시설관리시스템';const b=$('tfmsVersionBadge');if(b)b.textContent='v45.12 Enterprise Stable';document.title='TFMS v45.12 Enterprise Stable';window.TFMS_BUILD=Object.freeze({version:'v45.5',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});}
  function init(){brand();ensureShell();movePhotos();refresh();[400,1000,2200].forEach(ms=>setTimeout(()=>{brand();ensureShell();movePhotos();refresh()},ms))}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
@@ -18015,8 +18015,8 @@ document.readyState==='loading'?document.addEventListener('DOMContentLoaded',upd
    try{const d=window.assetData||assetData||{};return d[selectedKey()]||null}catch(e){return null}
  }
  function syncVersion(){
-   const b=$('tfmsVersionBadge'); if(b)b.textContent='v45.14 Enterprise Stable';
-   document.title='TFMS v45.14 Enterprise Stable';
+   const b=$('tfmsVersionBadge'); if(b)b.textContent='v45.12 Enterprise Stable';
+   document.title='TFMS v45.12 Enterprise Stable';
    window.TFMS_BUILD=Object.freeze({version:'v45.5',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});
  }
  function cleanupLegacyControls(){
@@ -18162,7 +18162,7 @@ body{background:#f4f8fc!important}
 <script id="tfms-v4433-equipment-ux-stabilize-controller">
 (function(){
 'use strict';
-const BUILD='v45.14 Enterprise Stable';
+const BUILD='v45.12 Enterprise Stable';
 const $=id=>document.getElementById(id);
 const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 function data(){try{if(typeof assetData!=='undefined'&&assetData&&Object.keys(assetData).length)return assetData;if(window.assetData)return window.assetData;return {}}catch(e){return {}}}
@@ -18175,7 +18175,7 @@ function syncBuild(){
  const b=$('tfmsVersionBadge');if(b&&b.textContent!==BUILD)b.textContent=BUILD;
  const title='TFMS '+BUILD;if(document.title!==title)document.title=title;
  window.TFMS_BUILD=Object.freeze({version:'v45.5',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});
- try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.14'){u.searchParams.set('v','45.14');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
+ try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.11'){u.searchParams.set('v','45.11');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
 }
 function cleanUserLabel(){const el=$('topUserLabel');if(!el)return;const t=(el.textContent||'').replace(/^\s*[👤🧑‍💼]+\s*/u,'').trim();if(t&&t!==el.textContent.trim())el.textContent=t}
 function hideLegacy(){
@@ -18292,7 +18292,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 @media(max-width:760px){#tfmsVersionBadge{font-size:9px!important;padding:3px 6px!important}#appHeader .top{padding-left:12px!important;padding-right:10px!important}}
 </style>
 <script id="tfms-v450-build-guard">
-(function(){function apply(){const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent='v45.14 Enterprise Stable';document.title='TFMS v45.14 Enterprise Stable';try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.14'){u.searchParams.set('v','45.14');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();setTimeout(apply,500);})();
+(function(){function apply(){const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent='v45.12 Enterprise Stable';document.title='TFMS v45.12 Enterprise Stable';try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.11'){u.searchParams.set('v','45.11');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();setTimeout(apply,500);})();
 </script>
 
 
@@ -18363,9 +18363,9 @@ function bind(){
   },true);
 }
 function version(){
- const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent='v45.14 Enterprise Stable';
- document.title='TFMS v45.14 Enterprise Stable';
- try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.14'){u.searchParams.set('v','45.14');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
+ const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent='v45.12 Enterprise Stable';
+ document.title='TFMS v45.12 Enterprise Stable';
+ try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.11'){u.searchParams.set('v','45.11');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
 }
 function init(){version();bind();[250,700,1500,3000].forEach(ms=>setTimeout(()=>{version();bind();},ms));}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
@@ -18386,7 +18386,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <script id="tfms-v454-list-click-core-controller">
 (function(){
 'use strict';
-const VERSION='v45.14 Enterprise Stable';
+const VERSION='v45.12 Enterprise Stable';
 function data(){try{if(typeof assetData!=='undefined'&&assetData&&Object.keys(assetData).length)return assetData;if(window.assetData)return window.assetData;return {};}catch(e){return {};}}
 function entries(){
   try{
@@ -18456,7 +18456,7 @@ if(typeof prevNav==='function')window.navTo=function(id){const r=prevNav.apply(t
 function brand(){
  const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent=VERSION;
  document.title='TFMS '+VERSION;
- try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.14'){u.searchParams.set('v','45.14');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
+ try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.11'){u.searchParams.set('v','45.11');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
 }
 function init(){brand();setTimeout(render,260);[800,1800].forEach(ms=>setTimeout(()=>{brand();render();},ms));}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
@@ -18492,9 +18492,9 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <script id="tfms-v459-thumbnail-ux-controller">
 (function(){
 'use strict';
-const VERSION='v45.14 Enterprise Stable';
+const VERSION='v45.12 Enterprise Stable';
 const $=id=>document.getElementById(id);
-function brand(){const b=$('tfmsVersionBadge');if(b)b.textContent=VERSION;document.title='TFMS '+VERSION;try{window.TFMS_BUILD=Object.freeze({version:'v45.11',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'UI Fixes & Weather UX'});}catch(e){}try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.14'){u.searchParams.set('v','45.14');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
+function brand(){const b=$('tfmsVersionBadge');if(b)b.textContent=VERSION;document.title='TFMS '+VERSION;try{window.TFMS_BUILD=Object.freeze({version:'v45.12',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'UI Fixes & Weather UX'});}catch(e){}try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.11'){u.searchParams.set('v','45.11');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
 window.navToFireQrV459=function(){try{window.navToFireV420?.();setTimeout(()=>{const p=[...document.querySelectorAll('#fireMonthly .section-title')].find(x=>/소화기 월간점검 목록/.test(x.textContent||''));p?.scrollIntoView({behavior:'smooth',block:'start'});},180)}catch(e){window.navToFireV420?.();}};
 window.setDailyWeatherV4510=function(value,btn){const sel=$('dailyWeather');if(sel)sel.value=value;document.querySelectorAll('#v459GeneralDaily .v4510-weather-picks button').forEach(b=>b.classList.toggle('active',b===btn));};
 function fillGeneralFacility(){const sel=$('dailyFacility');if(!sel)return;let names=[];try{const s=JSON.parse(sessionStorage.getItem('tfmsSession')||'{}');const dept=s.dept||s.department||'';if(typeof facilities!=='undefined'&&facilities[dept])names=facilities[dept];else if(typeof facilities!=='undefined')names=Object.values(facilities).flat();}catch(e){}if(!names.length)names=['태백국민체육센터','장성국민체육센터'];const old=sel.value;sel.innerHTML=[...new Set(names)].map(n=>`<option>${n}</option>`).join('');if(old&&[...sel.options].some(o=>o.value===old))sel.value=old;}
@@ -18518,7 +18518,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <style id="tfms-v4511-ui-fix-style">
-/* v45.11 — top-gap alignment, document removable chips, journal weather icon UX */
+/* v45.12 — top-gap alignment, document removable chips, journal weather icon UX */
 @media (min-width:761px){
   #appHeader nav{top:58px!important;}
   #appLayout.layout{padding-top:8px!important;min-height:calc(100vh - 58px)!important;}
@@ -18542,8 +18542,8 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <script id="tfms-v4511-ui-fix-controller">
 (function(){
 'use strict';
-const VERSION='v45.14 Enterprise Stable';
-const VERSION_PARAM='45.14';
+const VERSION='v45.12 Enterprise Stable';
+const VERSION_PARAM='45.11';
 function syncVersion(){
   const b=document.getElementById('tfmsVersionBadge'); if(b&&b.textContent!==VERSION)b.textContent=VERSION;
   if(document.title!=='TFMS '+VERSION)document.title='TFMS '+VERSION;
@@ -18588,169 +18588,29 @@ const oldNav=window.navTo;if(typeof oldNav==='function')window.navTo=function(id
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
 </script>
-
-<style id="tfms-v4512-equipment-header-style">
-/* v45.14 — equipment page heading aligned with other TFMS menus. */
-#equipment .tfms-equipment-page-header-v4512{margin-bottom:14px!important;}
-#equipment .tfms-equipment-page-header-v4512 .title-left{align-items:center;}
-#equipment .tfms-equipment-page-header-v4512 .title-icon{flex:0 0 54px;}
-#equipment .tfms-equipment-page-header-v4512 h1{font-size:28px;line-height:1.15;}
-#equipment .tfms-equipment-page-header-v4512 .breadcrumb{margin-top:3px;}
-@media(max-width:760px){
-  #equipment .tfms-equipment-page-header-v4512{margin:4px 2px 12px!important;}
-  #equipment .tfms-equipment-page-header-v4512 .title-icon{width:46px;height:46px;flex-basis:46px;font-size:22px;}
-  #equipment .tfms-equipment-page-header-v4512 h1{font-size:23px;}
-}
+\n<style id="tfms-v4512-equipment-header-style">
+#equipment .tfms-v4512-equipment-title{display:flex;align-items:center;gap:14px;margin:0 0 14px;padding:0 4px}
+#equipment .tfms-v4512-equipment-title .title-icon{width:54px;height:54px;flex:0 0 54px;border-radius:14px;background:linear-gradient(135deg,var(--blue),#2f7de1);color:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 7px 18px rgba(20,86,170,.12)}
+#equipment .tfms-v4512-equipment-title h1{margin:0;font-size:28px;line-height:1.1;letter-spacing:-1px;color:#071d3a}
+#equipment .tfms-v4512-equipment-title .breadcrumb{margin-top:4px;font-size:14px;color:var(--muted)}
+@media(max-width:800px){#equipment .tfms-v4512-equipment-title{margin-bottom:10px}#equipment .tfms-v4512-equipment-title .title-icon{width:48px;height:48px;flex-basis:48px;font-size:23px}#equipment .tfms-v4512-equipment-title h1{font-size:24px}}
 </style>
 <script id="tfms-v4512-equipment-header-controller">
 (function(){
-'use strict';
-const VERSION='v45.14 Enterprise Stable';
-const VERSION_PARAM='45.14';
-function syncVersion(){
-  const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent=VERSION;
-  document.title='TFMS '+VERSION;
-  try{const u=new URL(location.href);if(u.searchParams.get('v')!==VERSION_PARAM){u.searchParams.set('v',VERSION_PARAM);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
-}
-function ensureEquipmentHeader(){
-  const page=document.getElementById('equipment');if(!page)return;
-  let header=page.querySelector('#tfmsEquipmentPageHeaderV4512');
-  if(!header){
-    header=document.createElement('div');
-    header.id='tfmsEquipmentPageHeaderV4512';
-    header.className='title-row tfms-equipment-page-header-v4512';
-    header.innerHTML='<div class="title-left"><div class="title-icon">⚙️</div><div><h1>설비관리</h1><div class="breadcrumb">홈 › 설비관리 › 설비 기준정보 및 이력</div></div></div>';
-    const oldTitle=page.querySelector(':scope > .title-row:not(#tfmsEquipmentPageHeaderV4512)');
-    if(oldTitle){oldTitle.replaceWith(header);}else{page.insertBefore(header,page.firstChild);}
-  }
-}
-function refresh(){syncVersion();ensureEquipmentHeader();}
-const oldShow=window.showPage;if(typeof oldShow==='function')window.showPage=function(id,btn){const r=oldShow.apply(this,arguments);if(id==='equipment')setTimeout(refresh,80);else setTimeout(syncVersion,20);return r;};
-const oldNav=window.navTo;if(typeof oldNav==='function')window.navTo=function(id){const r=oldNav.apply(this,arguments);if(id==='equipment')setTimeout(refresh,80);else setTimeout(syncVersion,20);return r;};
-function init(){refresh();[250,700,1500,3200].forEach(ms=>setTimeout(refresh,ms));}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+ 'use strict';
+ function installEquipmentHeaderV4512(){
+   const page=document.getElementById('equipment');
+   if(!page || page.querySelector('.tfms-v4512-equipment-title')) return;
+   const shell=page.querySelector('.tfms-v4431-shell');
+   if(!shell) return;
+   const head=document.createElement('div');
+   head.className='tfms-v4512-equipment-title';
+   head.innerHTML='<div class="title-icon">⚙️</div><div><h1>설비관리</h1><div class="breadcrumb">홈 › 설비관리 › 설비 현황·이력</div></div>';
+   shell.parentNode.insertBefore(head,shell);
+ }
+ const run=()=>{installEquipmentHeaderV4512();setTimeout(installEquipmentHeaderV4512,300);setTimeout(installEquipmentHeaderV4512,1000)};
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
+ const oldNav=window.navTo;
+ if(typeof oldNav==='function')window.navTo=function(){const r=oldNav.apply(this,arguments);if(arguments[0]==='equipment')setTimeout(installEquipmentHeaderV4512,0);return r};
 })();
-</script>
-
-<style id="tfms-v4514-safe-back-style">
-/* v45.14 — safe contextual back navigation. No MutationObserver / no polling. */
-.tfms-context-back-v4514{
-  display:inline-flex;align-items:center;justify-content:center;gap:7px;
-  min-height:40px;padding:0 15px;border:1px solid #c9d7e8;border-radius:10px;
-  background:#fff;color:#174b7a;font-size:13px;font-weight:800;cursor:pointer;
-  box-shadow:0 1px 2px rgba(15,23,42,.04);white-space:nowrap;
-}
-.tfms-context-back-v4514:hover{background:#f5f9ff;border-color:#9fbee3;color:#0b5fc4}
-.tfms-context-back-v4514 .arr{font-size:16px;line-height:1}
-.page>.title-row.tfms-has-context-back-v4514{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.page>.title-row.tfms-has-context-back-v4514 .tfms-context-back-v4514{margin-left:auto;flex:0 0 auto}
-@media(max-width:760px){
-  .page>.title-row.tfms-has-context-back-v4514{align-items:flex-start;flex-wrap:wrap}
-  .page>.title-row.tfms-has-context-back-v4514 .tfms-context-back-v4514{width:100%;margin-left:0}
-}
-</style>
-<script id="tfms-v4514-safe-back-controller">
-(function(){
-'use strict';
-const VERSION='v45.14 Enterprise Stable';
-const VERSION_Q='45.14';
-const $=id=>document.getElementById(id);
-let lastMainPage='dashboard';
-const explicitParents={fireMonthly:{id:'cycle',label:'점검주기 관리'}};
-
-function navButtonFor(id){
-  return [...document.querySelectorAll('#appHeader nav .nav, nav .nav')].find(b=>{
-    const oc=b.getAttribute('onclick')||'';
-    return oc.includes("'"+id+"'")||oc.includes('"'+id+'"');
-  })||null;
-}
-function activePageId(){
-  const p=document.querySelector('.page.active');
-  return p?.id||lastMainPage||'dashboard';
-}
-function syncVersion(){
-  const b=$('tfmsVersionBadge');if(b)b.textContent=VERSION;
-  document.title='TFMS '+VERSION;
-  try{
-    const u=new URL(location.href);
-    if(u.searchParams.get('v')!==VERSION_Q){
-      u.searchParams.set('v',VERSION_Q);
-      history.replaceState(history.state,'',u.pathname+u.search+u.hash);
-    }
-  }catch(e){}
-}
-function goToPage(id){
-  if(typeof window.navTo==='function'){window.navTo(id);return;}
-  if(typeof window.showPage==='function'){window.showPage(id,navButtonFor(id));}
-}
-function removeBack(page){
-  if(!page)return;
-  page.querySelector(':scope > .title-row .tfms-context-back-v4514')?.remove();
-  page.querySelector(':scope > .title-row')?.classList.remove('tfms-has-context-back-v4514');
-}
-function ensureBack(pageId,fallbackParent){
-  const page=$(pageId);if(!page)return;
-  const explicit=explicitParents[pageId];
-  // Normal side-menu pages must never show a contextual back button.
-  if(!explicit && navButtonFor(pageId)){removeBack(page);return;}
-  const parent=explicit||{id:(fallbackParent&&fallbackParent!==pageId?fallbackParent:lastMainPage)||'dashboard',label:'이전 화면'};
-  const title=page.querySelector(':scope > .title-row');if(!title)return;
-  title.classList.add('tfms-has-context-back-v4514');
-  let btn=title.querySelector('.tfms-context-back-v4514');
-  if(!btn){
-    btn=document.createElement('button');btn.type='button';btn.className='tfms-context-back-v4514';title.appendChild(btn);
-  }
-  btn.innerHTML='<span class="arr">←</span><span>'+parent.label+'</span>';
-  btn.onclick=function(){goToPage(parent.id)};
-}
-
-// Explicit subview: cycle -> fire monthly / extinguisher QR area.
-const fireBase=window.navToFireV420;
-if(typeof fireBase==='function'){
-  window.navToFireV420=function(){
-    const prev=activePageId();
-    if(navButtonFor(prev))lastMainPage=prev;
-    const r=fireBase.apply(this,arguments);
-    ensureBack('fireMonthly','cycle');
-    syncVersion();
-    return r;
-  };
-}
-
-// General safe path: only run once when TFMS actually navigates; no DOM watching.
-const showBase=window.showPage;
-if(typeof showBase==='function'){
-  window.showPage=function(id,btn){
-    const prev=activePageId();
-    const r=showBase.apply(this,arguments);
-    if(navButtonFor(id)){
-      lastMainPage=id;
-      removeBack($(id));
-    }else{
-      ensureBack(id,prev);
-    }
-    syncVersion();
-    return r;
-  };
-}
-const navBase=window.navTo;
-if(typeof navBase==='function'){
-  window.navTo=function(id){
-    const prev=activePageId();
-    const r=navBase.apply(this,arguments);
-    if(navButtonFor(id))lastMainPage=id;
-    else ensureBack(id,prev);
-    syncVersion();
-    return r;
-  };
-}
-function init(){
-  syncVersion();
-  // The fire page is dynamically built earlier; only add the button if that page is currently active.
-  if($('fireMonthly')?.classList.contains('active'))ensureBack('fireMonthly','cycle');
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
-})();
-</script>
-
-</body></html>
+</script>\n</body></html>
