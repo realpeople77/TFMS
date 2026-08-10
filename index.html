@@ -852,6 +852,55 @@ td, th, .card, .panel, .stat-card, .dashboard-card {
 }
 </style>
 
+
+<style id="tfms-v4520-sidebar-scroll-fix">
+/* Keep the left navigation visually attached to the top while scrolling.
+   This is CSS-only and does not modify application logic. */
+.sidebar,
+.side-nav,
+#sidebar,
+#sideNav,
+nav.sidebar {
+  top: 0 !important;
+  height: 100vh !important;
+  max-height: 100vh !important;
+}
+
+/* If the layout uses a fixed top header, keep only the CONTENT below it,
+   not the sidebar itself. */
+@media (min-width: 901px) {
+  .sidebar,
+  .side-nav,
+  #sidebar,
+  #sideNav,
+  nav.sidebar {
+    padding-top: 12px !important;
+  }
+}
+
+/* Prevent accidental gap created by inherited margins on the sidebar wrapper. */
+.sidebar,
+.side-nav,
+#sidebar,
+#sideNav,
+nav.sidebar,
+.sidebar-wrap,
+.side-wrap {
+  margin-top: 0 !important;
+}
+
+/* Keep sidebar contents scrollable if the viewport is short. */
+.sidebar,
+.side-nav,
+#sidebar,
+#sideNav,
+nav.sidebar {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  overscroll-behavior: contain;
+}
+</style>
+
 </head>
 <body>
 <header class="hidden" id="appHeader">
@@ -3515,7 +3564,7 @@ loadDB(); refreshAllV30();
 
     assetData={};
     aRes.data.forEach(a=>{
-      const key=a.asset_code||a.id;
+      const key=a.id; // v45.21: DB UUID is the only internal asset key
       const installed=a.installed_on||'';
       const spaceName=a.space?.name||a.location_detail||'기본시설';
       assetData[key]={
@@ -7066,7 +7115,7 @@ document.addEventListener('DOMContentLoaded',function(){
     }
 
     const row=verify.data;
-    const key=row.asset_code||row.id;
+    const key=row.id; // v45.21: keep selection stable regardless of management number
     if(existingId && selectedAssetKey && selectedAssetKey!==key) delete assetData[selectedAssetKey];
     assetData[key]=buildLocalAsset(row,editingAsset||{});
     assetData[key].assetCode=row.asset_code;
@@ -18988,7 +19037,7 @@ if(typeof oldShowPage==='function'){
 <script id="tfms-v4515-register-fullwidth-script">
 (function(){
 'use strict';
-const VERSION='v45.19 Enterprise Stable';
+const VERSION='v45.21 Enterprise Stable';
 function apply(){
   const shell=document.querySelector('#register .v459-register-shell');
   if(shell){
@@ -19000,12 +19049,12 @@ function apply(){
   document.title='TFMS '+VERSION;
   try{
     const u=new URL(location.href);
-    if(u.searchParams.get('v')!=='45.19'){
-      u.searchParams.set('v','45.19');
+    if(u.searchParams.get('v')!=='45.21'){
+      u.searchParams.set('v','45.21');
       history.replaceState(history.state,'',u.pathname+u.search+u.hash);
     }
   }catch(e){}
-  try{window.TFMS_BUILD=Object.freeze({version:'v45.19',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'Context Back + QR Fix'});}catch(e){}
+  try{window.TFMS_BUILD=Object.freeze({version:'v45.21',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'Asset UUID Key Fix'});}catch(e){}
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
 [100,500,1200,2500].forEach(ms=>setTimeout(apply,ms));
@@ -19213,6 +19262,28 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
   }else{
     installContextButtons();
   }
+})();
+</script>
+
+
+<script id="tfms-v4521-version-enforcer">
+(function(){
+  const V='v45.21 Enterprise Stable';
+  function sync(){
+    const b=document.getElementById('tfmsVersionBadge');
+    if(b)b.textContent=V;
+    document.title='TFMS '+V;
+    try{
+      const u=new URL(location.href);
+      if(u.searchParams.get('v')!=='45.21'){
+        u.searchParams.set('v','45.21');
+        history.replaceState(history.state,'',u.pathname+u.search+u.hash);
+      }
+    }catch(e){}
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync,{once:true});
+  else sync();
+  [400,1200,2600].forEach(ms=>setTimeout(sync,ms));
 })();
 </script>
 
