@@ -901,6 +901,67 @@ nav.sidebar {
 }
 </style>
 
+
+<style id="tfms-v4524-cleanup-css">
+/* ===== v45.24 Enterprise Cleanup Stable =====
+   CSS-only navigation stabilization. No scroll JavaScript. */
+
+/* Actual TFMS sidebar selector. Header is 76px in the current stable UX. */
+@media (min-width:761px){
+  #appHeader nav{
+    position:fixed!important;
+    left:0!important;
+    top:76px!important;
+    bottom:0!important;
+    height:auto!important;
+    margin:0!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    overscroll-behavior:contain;
+  }
+}
+
+/* Let working areas shrink naturally rather than overflow the viewport. */
+#appLayout,
+#appLayout.layout,
+.page,
+.card,
+.panel,
+[class*="grid"]{
+  min-width:0;
+}
+
+/* Tables stay readable in a reduced browser window. */
+.table-wrap,
+.table-container,
+.table-responsive{
+  max-width:100%;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+}
+
+/* Equipment list should keep its own scroll position. */
+#equipment #assetList{
+  overflow-y:auto!important;
+  overscroll-behavior:contain;
+}
+#equipment #assetList .tree-item{
+  cursor:pointer!important;
+  pointer-events:auto!important;
+}
+#equipment #assetList .tree-item.active,
+#equipment #assetList .tree-item.selected{
+  border-color:#3b82f6!important;
+  background:#eef5ff!important;
+}
+
+@media (max-width:1250px) and (min-width:761px){
+  #equipment .tfms-v4431-shell{
+    grid-template-columns:280px minmax(0,1fr)!important;
+  }
+}
+</style>
+
 </head>
 <body>
 <header class="hidden" id="appHeader">
@@ -18463,178 +18524,13 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 @media(max-width:900px){#appHeader .top .logo{min-width:165px!important}#appHeader .db-badge,#appHeader .db-status,#dbStatusBadge{display:none!important}}
 @media(max-width:760px){#tfmsVersionBadge{font-size:9px!important;padding:3px 6px!important}#appHeader .top{padding-left:12px!important;padding-right:10px!important}}
 </style>
-<script id="tfms-v450-build-guard">
-(function(){function apply(){const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent='v45.14 Enterprise Stable';document.title='TFMS v45.14 Enterprise Stable';try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.11'){u.searchParams.set('v','45.11');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();setTimeout(apply,500);})();
-</script>
-
-
-
 <!-- TFMS v45.3: equipment selection core fix. Photo DB logic intentionally unchanged. -->
-<script id="tfms-v451-equipment-click-fix">
-(function(){
-'use strict';
-function assetStore(){try{if(typeof assetData!=='undefined'&&assetData&&Object.keys(assetData).length)return assetData;if(window.assetData)return window.assetData;return {};}catch(e){return {};}}
-function setSelected(key){
-  key=String(key||'');
-  if(!key||!assetStore()[key]) return false;
-  try{selectedAssetKey=key;}catch(e){}
-  window.selectedAssetKey=key;
-  return true;
-}
-function extractKey(item){
-  const direct=item?.dataset?.assetKey||item?.dataset?.key||'';
-  if(direct&&assetStore()[String(direct)]) return String(direct);
-  const oc=item?.getAttribute('onclick')||'';
-  const m=oc.match(/showAsset\(\s*['\"]((?:\\.|[^'\"])*)['\"]/);
-  if(m){
-    const k=m[1].replace(/\\'/g,"'").replace(/\\\"/g,'\"');
-    if(assetStore()[k]) return k;
-  }
-  // Last-resort name match, scoped to the current list row.
-  const clone=item?.cloneNode(true); clone?.querySelectorAll('small').forEach(x=>x.remove());
-  let label=(clone?.textContent||'').replace(/[💧⚙🔥⚡🌀]/g,'').replace(/\s+/g,' ').trim();
-  const entries=Object.entries(assetStore());
-  const hit=entries.find(([,a])=>String(a?.name||'').trim()===label);
-  return hit?String(hit[0]):'';
-}
-function paintCore(key,item){
-  if(!setSelected(key)) return false;
-  const data=assetStore();
-  let a=data[key];
-  try{if(typeof ensureAssetDefaultsV29==='function')a=ensureAssetDefaultsV29(key)||a;}catch(e){}
-  if(!a)return false;
-  try{ufSelectedFacility=a.facility||ufSelectedFacility;}catch(e){}
-  try{ufSelectedSpace=a.space||ufSelectedSpace;}catch(e){}
-  document.querySelectorAll('#equipment .tree-item,#equipment .uf-item').forEach(x=>x.classList.remove('active'));
-  if(item)item.classList.add('active');
-  const set=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=(val==null||val==='')?'-':val;};
-  set('assetName',a.name);set('assetYear',a.year);set('assetLife',a.life);set('assetCheck',a.check);set('assetHistory',a.history);
-  set('assetLocation',a.location||a.space);set('assetCapacity',a.capacity);set('assetOperation',a.operation);set('assetQrId',a.qrId);
-  set('lccRepair',a.repair);set('lccReplace',a.replace);set('lccRank',a.rank);
-  const risk=document.getElementById('assetRisk');if(risk){risk.textContent=a.risk||'-';if(a.riskClass)risk.className='risk '+a.riskClass;}
-  const tl=document.getElementById('assetTimeline');if(tl)tl.innerHTML=(a.timeline||[]).map(t=>`<div class="timeline-item"><strong>${t[0]}</strong><span>${t[1]}</span></div>`).join('')||'<div class="empty-state">등록된 이력이 없습니다.</div>';
-  try{if(typeof loadAssetForm==='function')loadAssetForm(key);}catch(e){console.warn('v45.1 loadAssetForm',e);}
-  try{if(typeof updateUfAssetCard==='function')updateUfAssetCard(key);}catch(e){}
-  try{if(typeof renderQrAssetOptions==='function')renderQrAssetOptions();}catch(e){}
-  // Enterprise UX: update title/summary through the existing wrapper once selection is already synchronized.
-  try{if(typeof window.showAsset==='function')window.showAsset(key,item);}catch(e){console.warn('v45.1 wrapped showAsset fallback',e);}
-  // Reassert the requested selection in case an older wrapper tried to fall back to the first row.
-  setSelected(key);
-  return true;
-}
-function bind(){
-  const list=document.getElementById('assetList');
-  if(!list||list.dataset.v451ClickFix==='1')return;
-  list.dataset.v451ClickFix='1';
-  list.addEventListener('click',function(e){
-    const item=e.target.closest('.tree-item');
-    if(!item||!list.contains(item))return;
-    const key=extractKey(item);if(!key)return;
-    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
-    paintCore(key,item);
-  },true);
-}
-function version(){
- const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent='v45.14 Enterprise Stable';
- document.title='TFMS v45.14 Enterprise Stable';
- try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.11'){u.searchParams.set('v','45.11');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
-}
-function init(){version();bind();[250,700,1500,3000].forEach(ms=>setTimeout(()=>{version();bind();},ms));}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
-})();
-</script>
-
-
-
-
-
-
 <style id="tfms-v454-list-click-core-style">
 /* v45.4: all equipment rows must remain clickable, including lower grouped rows. */
 #equipment #assetList{position:relative!important;z-index:2!important;pointer-events:auto!important}
 #equipment #assetList .tree-item[data-asset-key]{position:relative!important;z-index:3!important;pointer-events:auto!important;cursor:pointer!important;user-select:none}
 #equipment #assetList .tfms-v454-group-label{position:relative!important;z-index:1!important;pointer-events:none!important;font-size:12px;color:#667085;font-weight:900;margin:12px 4px 6px;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important}
 </style>
-<script id="tfms-v454-list-click-core-controller">
-(function(){
-'use strict';
-const VERSION='v45.14 Enterprise Stable';
-function data(){try{if(typeof assetData!=='undefined'&&assetData&&Object.keys(assetData).length)return assetData;if(window.assetData)return window.assetData;return {};}catch(e){return {};}}
-function entries(){
-  try{
-    if(typeof getAssetEntries==='function') return getAssetEntries();
-  }catch(e){}
-  return Object.entries(data());
-}
-function normalize(key,a){
-  try{if(typeof ensureAssetDefaultsV29==='function') return ensureAssetDefaultsV29(key)||a;}catch(e){}
-  return a||{};
-}
-function icon(a){
-  try{if(typeof assetIcon==='function')return assetIcon(a);}catch(e){}
-  const n=String(a?.name||'');
-  return n.includes('펌프')?'💧':n.includes('분전반')?'⚡':n.includes('여과')?'🌀':'⚙';
-}
-function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
-function currentKey(){try{return String((typeof selectedAssetKey!=='undefined'&&selectedAssetKey)?selectedAssetKey:(window.selectedAssetKey||''));}catch(e){return String(window.selectedAssetKey||'');}}
-function render(){
-  const list=document.getElementById('assetList'); if(!list)return;
-  const grouped=new Map();
-  for(const [key,raw] of entries()){
-    const a=normalize(key,raw);
-    const facility=String(a?.facility||'미지정 시설');
-    const space=String(a?.space||a?.location||'미지정 구역');
-    const g=facility+' · '+space;
-    if(!grouped.has(g))grouped.set(g,[]);
-    grouped.get(g).push([String(key),a]);
-  }
-  const selected=currentKey();
-  let html='';
-  for(const [group,items] of grouped){
-    html+=`<div class="tfms-v454-group-label">${esc(group)}</div>`;
-    for(const [key,a] of items){
-      const active=key===selected?' active':'';
-      html+=`<div class="tree-item${active}" data-asset-key="${esc(key)}" data-key="${esc(key)}">${icon(a)} ${esc(a?.name||key)}<br><small style="font-weight:500;color:#667085">${esc(a?.risk||'-')} · ${esc(a?.cycle||'-')} · ${esc(a?.qrId||'-')}</small></div>`;
-    }
-  }
-  list.innerHTML=html||'<div class="empty-state">등록된 설비가 없습니다.</div>';
-  try{if(typeof renderQrAssetOptions==='function')renderQrAssetOptions();}catch(e){}
-}
-function select(key,item){
-  key=String(key||''); if(!key||!data()[key])return;
-  try{selectedAssetKey=key;}catch(e){}
-  window.selectedAssetKey=key;
-  document.querySelectorAll('#equipment #assetList .tree-item').forEach(x=>x.classList.toggle('active',x.dataset.assetKey===key));
-  // v45.3 selection core already synchronizes title/basic/LCC/history. Call it once with explicit key.
-  try{if(typeof window.showAsset==='function')window.showAsset(key,item||null);}catch(e){console.error('v45.4 showAsset',e);}
-  try{selectedAssetKey=key;}catch(e){}
-  window.selectedAssetKey=key;
-}
-// Document-level delegation survives any later list re-render/replacement.
-document.addEventListener('click',function(e){
-  const item=e.target.closest?.('#equipment #assetList .tree-item[data-asset-key]');
-  if(!item)return;
-  const key=item.dataset.assetKey;
-  if(!key)return;
-  e.preventDefault();
-  e.stopPropagation();
-  select(key,item);
-},true);
-// Replace the list renderer with deterministic rows carrying explicit keys.
-window.renderAssetListV454=render;
-try{window.renderAssetList=render;}catch(e){}
-const prevNav=window.navTo;
-if(typeof prevNav==='function')window.navTo=function(id){const r=prevNav.apply(this,arguments);if(id==='equipment')setTimeout(render,180);return r;};
-function brand(){
- const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent=VERSION;
- document.title='TFMS '+VERSION;
- try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.11'){u.searchParams.set('v','45.11');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
-}
-function init(){brand();setTimeout(render,260);[800,1800].forEach(ms=>setTimeout(()=>{brand();render();},ms));}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
-})();
-</script>
-
 <style id="tfms-v459-thumbnail-ux-style">
 /* v45.9 — thumbnail UX applied to real controls. Existing IDs/functions remain unchanged. */
 #register,#history,#dailylog,#cycle{--v459-border:#d8e3f1;--v459-soft:#f7faff;--v459-blue:#1261cc;--v459-navy:#0c3d70}
@@ -19037,7 +18933,7 @@ if(typeof oldShowPage==='function'){
 <script id="tfms-v4515-register-fullwidth-script">
 (function(){
 'use strict';
-const VERSION='v45.22 Enterprise Stable';
+const VERSION='v45.24 Enterprise Cleanup Stable';
 function apply(){
   const shell=document.querySelector('#register .v459-register-shell');
   if(shell){
@@ -19266,287 +19162,293 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
 </script>
 
 
-<script id="tfms-v4521-version-enforcer">
+
+<script id="tfms-v4524-cleanup-core">
 (function(){
-  const V='v45.22 Enterprise Stable';
-  function sync(){
-    const b=document.getElementById('tfmsVersionBadge');
-    if(b)b.textContent=V;
-    document.title='TFMS '+V;
+  'use strict';
+
+  const BUILD = 'v45.24 Enterprise Cleanup Stable';
+
+  function assetStore(){
     try{
-      const u=new URL(location.href);
-      if(u.searchParams.get('v')!=='45.22'){
-        u.searchParams.set('v','45.22');
-        history.replaceState(history.state,'',u.pathname+u.search+u.hash);
-      }
+      if(typeof assetData !== 'undefined' && assetData) return assetData;
     }catch(e){}
+    return window.assetData || {};
   }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync,{once:true});
-  else sync();
-  [400,1200,2600].forEach(ms=>setTimeout(sync,ms));
-})();
-</script>
 
-
-<style id="tfms-v4522-asset-selection-style">
-/* v45.22: selection must never rebuild the asset list. */
-#equipment #assetList .tree-item{
-  cursor:pointer!important;
-  pointer-events:auto!important;
-}
-#equipment #assetList .tree-item.active,
-#equipment #assetList .tree-item.selected{
-  border-color:#3b82f6!important;
-  background:#eef5ff!important;
-}
-</style>
-<script id="tfms-v4522-asset-selection-core">
-(function(){
-  const BUILD='v45.22 Enterprise Stable';
-
-  function store(){
-    try{
-      if(typeof assetData!=='undefined' && assetData) return assetData;
-    }catch(e){}
-    return window.assetData||{};
+  function setSelectedKey(key){
+    key = String(key || '');
+    if(!key || !assetStore()[key]) return false;
+    try{ selectedAssetKey = key; }catch(e){}
+    window.selectedAssetKey = key;
+    return true;
   }
-  function esc(v){
-    return String(v??'').replace(/[&<>"']/g,m=>({
-      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-    }[m]));
-  }
-  function val(a,...keys){
+
+  function value(a){
+    const keys = Array.prototype.slice.call(arguments,1);
     for(const k of keys){
-      const v=a?.[k];
-      if(v!=null && String(v).trim()!=='' && String(v)!=='undefined') return v;
+      const v = a && a[k];
+      if(v !== undefined && v !== null && String(v).trim() !== '') return v;
     }
     return '-';
   }
-  function money(v){
-    if(v==null||v===''||v==='-') return '-';
-    const n=Number(String(v).replace(/[^\d.-]/g,''));
-    if(Number.isFinite(n) && String(v).match(/^\s*[\d,.\-]+\s*$/)) return n.toLocaleString('ko-KR')+'원';
-    return String(v);
+
+  function setText(id, val){
+    const el = document.getElementById(id);
+    if(el) el.textContent = (val === undefined || val === null || val === '') ? '-' : String(val);
   }
-  function setText(id,v){
-    const el=document.getElementById(id);
-    if(el) el.textContent=(v==null||v==='')?'-':String(v);
+
+  function escapeHtml(v){
+    return String(v == null ? '' : v).replace(/[&<>"']/g,function(m){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];
+    });
   }
-  function statusBg(a){
-    const t=String(a?.status||'')+' '+String(a?.risk||'');
-    if(/위험|수리|사용중지|폐기/.test(t)) return '#ffe9e7';
-    if(/주의|점검필요|교체예정/.test(t)) return '#fff2d8';
-    return '#e8f8ef';
-  }
+
   function keyFromRow(row){
     if(!row) return '';
-    const d=row.dataset?.assetKey||row.dataset?.key||'';
-    if(d && store()[d]) return String(d);
+    const direct = row.dataset.assetKey || row.dataset.key || '';
+    if(direct && assetStore()[String(direct)]) return String(direct);
 
-    const oc=row.getAttribute('onclick')||'';
-    const m=oc.match(/showAsset\(\s*['"]([^'"]+)['"]/);
-    if(m && store()[m[1]]) return m[1];
+    const oc = row.getAttribute('onclick') || '';
+    const match = oc.match(/showAsset\(\s*['"]([^'"]+)['"]/);
+    if(match && assetStore()[match[1]]) return String(match[1]);
 
-    const clone=row.cloneNode(true);
-    clone.querySelectorAll('small').forEach(x=>x.remove());
-    const label=(clone.textContent||'')
+    const copy = row.cloneNode(true);
+    copy.querySelectorAll('small').forEach(function(x){x.remove();});
+    const label = (copy.textContent || '')
       .replace(/[💧⚙🔥⚡🌀]/g,'')
       .replace(/\s+/g,' ')
       .trim();
-    const hit=Object.entries(store()).find(([,a])=>String(a?.name||'').trim()===label);
-    return hit?String(hit[0]):'';
+
+    const found = Object.entries(assetStore()).find(function(entry){
+      return String((entry[1] && entry[1].name) || '').trim() === label;
+    });
+    return found ? String(found[0]) : '';
   }
-  function setSelectedKey(key){
-    key=String(key||'');
-    if(!key || !store()[key]) return false;
-    try{ selectedAssetKey=key; }catch(e){}
-    window.selectedAssetKey=key;
-    return true;
+
+  function sanitizeRows(){
+    const list = document.getElementById('assetList');
+    if(!list) return;
+    list.querySelectorAll('.tree-item').forEach(function(row){
+      const key = keyFromRow(row);
+      if(key) row.dataset.assetKey = key;
+      /* remove inline showAsset so there is only one click path */
+      row.removeAttribute('onclick');
+    });
   }
+
   function renderSummary(a){
-    const host=document.getElementById('tfmsV4431Summary');
+    const host = document.getElementById('tfmsV4431Summary');
     if(!host) return;
-    const items=[
-      ['제조사',val(a,'manufacturer')],
-      ['모델명',val(a,'model')],
-      ['관리번호',val(a,'assetCode','asset_code','qrId')],
-      ['QR관리번호',val(a,'qrId','qr_code')],
-      ['설치위치',val(a,'location','space')],
-      ['설비분류',val(a,'category')],
-      ['설치연도',val(a,'year','installYear')],
-      ['내용연수(년)',val(a,'life')],
-      ['작동형태',val(a,'operation')],
-      ['점검주기',val(a,'cycle')],
-      ['관리상태',val(a,'status')],
-      ['중요도 / 위험도',val(a,'importance')+' / '+val(a,'risk')]
+    const items = [
+      ['제조사',value(a,'manufacturer')],
+      ['모델명',value(a,'model')],
+      ['관리번호',value(a,'assetCode','asset_code')],
+      ['QR관리번호',value(a,'qrId','qr_code')],
+      ['설치위치',value(a,'location','space')],
+      ['설비분류',value(a,'category')],
+      ['설치연도',value(a,'year','installYear')],
+      ['내용연수(년)',value(a,'life')],
+      ['작동형태',value(a,'operation')],
+      ['점검주기',value(a,'cycle')],
+      ['관리상태',value(a,'status')],
+      ['중요도 / 위험도',value(a,'importance')+' / '+value(a,'risk')]
     ];
-    host.innerHTML=items.map(([k,v])=>
-      `<div class="tfms-v4431-summary-item"><span>${esc(k)}</span><strong>${esc(v)}</strong></div>`
-    ).join('');
+    host.innerHTML = items.map(function(item){
+      return '<div class="tfms-v4431-summary-item"><span>'+escapeHtml(item[0])+
+             '</span><strong>'+escapeHtml(item[1])+'</strong></div>';
+    }).join('');
   }
+
   function renderBasic(a){
-    const host=document.getElementById('tfmsV4431Basic');
+    const host = document.getElementById('tfmsV4431Basic');
     if(!host) return;
-    const rows=[
-      ['제조사',val(a,'manufacturer')],['모델명',val(a,'model')],
-      ['제조번호',val(a,'serialNumber','serial_no','serial')],['규모/용량',val(a,'capacity')],
-      ['제조년도',val(a,'manufactureYear','manufacturedYear')],['설치연도',val(a,'year','installYear')],
-      ['설치일',val(a,'installDate','installed_at')],['내용연수',val(a,'life')],
-      ['설치위치',val(a,'location','space')],['작동형태',val(a,'operation')],
-      ['점검주기',val(a,'cycle')],['관리상태',val(a,'status')],
-      ['중요도',val(a,'importance')],['위험도',val(a,'risk')],
-      ['최근점검일',val(a,'check','lastCheck')],
-      ['이력건수',Array.isArray(a?.timeline)?a.timeline.length+'건':val(a,'history')],
-      ['관리번호',val(a,'assetCode','asset_code')],['QR관리번호',val(a,'qrId','qr_code')],
-      ['취득금액',money(val(a,'purchaseCost','acquisitionCost','acquisition_cost'))],
-      ['예상 교체비',money(val(a,'replace','replacementCost'))],
-      ['공간/구역',val(a,'space')],['설비분류',val(a,'category')],
-      ['담당자',val(a,'manager')],['비고',val(a,'remarks','note','memo')]
+    const rows = [
+      ['제조사',value(a,'manufacturer')],['모델명',value(a,'model')],
+      ['제조번호',value(a,'serialNumber','serial_no','serial')],['규모/용량',value(a,'capacity')],
+      ['제조년도',value(a,'manufactureYear','manufacturedYear')],['설치연도',value(a,'year','installYear')],
+      ['설치일',value(a,'installDate','installed_at')],['내용연수',value(a,'life')],
+      ['설치위치',value(a,'location','space')],['작동형태',value(a,'operation')],
+      ['점검주기',value(a,'cycle')],['관리상태',value(a,'status')],
+      ['중요도',value(a,'importance')],['위험도',value(a,'risk')],
+      ['최근점검일',value(a,'check','lastCheck')],
+      ['이력건수',Array.isArray(a && a.timeline)?a.timeline.length+'건':value(a,'history')],
+      ['관리번호',value(a,'assetCode','asset_code')],['QR관리번호',value(a,'qrId','qr_code')],
+      ['공간/구역',value(a,'space')],['설비분류',value(a,'category')],
+      ['담당자',value(a,'manager')],['비고',value(a,'remarks','note','memo')]
     ];
-    host.innerHTML=rows.map(([k,v],i)=>
-      `<div class="tfms-v4433-detail-item ${i===23?'wide':''}"><span>${esc(k)}</span><strong>${esc(v)}</strong></div>`
-    ).join('');
+    host.innerHTML = rows.map(function(item){
+      return '<div class="tfms-v4433-detail-item"><span>'+escapeHtml(item[0])+
+             '</span><strong>'+escapeHtml(item[1])+'</strong></div>';
+    }).join('');
   }
+
   function renderHistory(a){
-    const html=(a?.timeline||[]).map(t=>
-      `<div class="timeline-item"><strong>${esc(t?.[0]||'')}</strong><span>${esc(t?.[1]||'')}</span></div>`
-    ).join('') || '<div class="empty-state">등록된 이력이 없습니다.</div>';
-    const tl=document.getElementById('assetTimeline');
-    if(tl) tl.innerHTML=html;
-    const mirror=document.getElementById('tfmsV4431HistoryMirror');
-    if(mirror) mirror.innerHTML=html;
+    const html = (a && Array.isArray(a.timeline) ? a.timeline : []).map(function(t){
+      return '<div class="timeline-item"><strong>'+escapeHtml(t && t[0])+
+             '</strong><span>'+escapeHtml(t && t[1])+'</span></div>';
+    }).join('') || '<div class="empty-state">등록된 이력이 없습니다.</div>';
+
+    const tl = document.getElementById('assetTimeline');
+    if(tl) tl.innerHTML = html;
+    const mirror = document.getElementById('tfmsV4431HistoryMirror');
+    if(mirror) mirror.innerHTML = html;
   }
+
   function renderLcc(key,a){
     try{
-      const c=window.tfmsCalculateLccV4425?.(key,a);
-      if(c){
-        setText('lccRepair', Number(c.repair||0).toLocaleString('ko-KR')+'원');
-        setText('lccReplace', Number(c.replace||0).toLocaleString('ko-KR')+'원');
-        setText('lccElapsed', c.elapsed?c.elapsed.toFixed(1)+'년':'-');
-        setText('lccAgeText', c.life?`내용연수 ${c.life}년 · ${(c.ageRatio*100).toFixed(0)}% 경과`:'내용연수 입력 필요');
-        setText('lccYear', c.replacementYear==='-'?'-':c.replacementYear+'년');
-        const rank=document.getElementById('lccRank');
-        if(rank){rank.textContent=c.label;rank.className='tfms-lcc-status '+c.cls;}
-        setText('lccScore',`판단점수 ${c.score}점 · 보수비/교체비 ${(c.costRatio*100).toFixed(0)}%`);
-        const pct=Math.min(100,Math.max(0,c.ageRatio*100));
-        setText('lccProgressText',(Math.round(pct*10)/10)+'%');
-        const bar=document.getElementById('lccProgressBar');
-        if(bar) bar.style.width=pct+'%';
-        return;
+      if(typeof window.tfmsCalculateLccV4425 === 'function'){
+        const c = window.tfmsCalculateLccV4425(key,a);
+        if(c){
+          setText('lccRepair',Number(c.repair||0).toLocaleString('ko-KR')+'원');
+          setText('lccReplace',Number(c.replace||0).toLocaleString('ko-KR')+'원');
+          setText('lccElapsed',c.elapsed ? c.elapsed.toFixed(1)+'년' : '-');
+          setText('lccYear',c.replacementYear === '-' ? '-' : c.replacementYear+'년');
+          const rank = document.getElementById('lccRank');
+          if(rank){
+            rank.textContent = c.label;
+            rank.className = 'tfms-lcc-status '+c.cls;
+          }
+          return;
+        }
       }
-    }catch(e){console.warn('v45.22 LCC',e);}
-    setText('lccRepair',a?.repair);
-    setText('lccReplace',a?.replace);
-    setText('lccRank',a?.rank);
+    }catch(e){
+      console.warn('TFMS v45.24 LCC render',e);
+    }
+    setText('lccRepair',value(a,'repair'));
+    setText('lccReplace',value(a,'replace'));
+    setText('lccRank',value(a,'rank'));
   }
-  function paintRow(key,row){
-    document.querySelectorAll('#equipment #assetList .tree-item').forEach(x=>{
-      const k=x.dataset?.assetKey||x.dataset?.key||keyFromRow(x);
-      const on=String(k)===String(key);
+
+  function paintSelected(key,row){
+    document.querySelectorAll('#equipment #assetList .tree-item').forEach(function(x){
+      const on = String(x.dataset.assetKey || '') === String(key);
       x.classList.toggle('active',on);
       x.classList.toggle('selected',on);
     });
-    if(row){row.classList.add('active','selected');}
+    if(row) row.classList.add('active','selected');
   }
-  function selectAssetFinal(key,row){
-    const list=document.getElementById('assetList');
-    const side=document.querySelector('#equipment .tfms-v4431-sidebar');
-    const listTop=list?.scrollTop||0;
-    const sideTop=side?.scrollTop||0;
 
-    key=String(key||'');
-    const a=store()[key];
-    if(!a) return false;
-    if(!setSelectedKey(key)) return false;
+  function selectAsset(key,row){
+    key = String(key || '');
+    const a = assetStore()[key];
+    if(!a || !setSelectedKey(key)) return false;
 
-    paintRow(key,row);
+    const list = document.getElementById('assetList');
+    const scrollTop = list ? list.scrollTop : 0;
 
-    // Enterprise title/status
-    setText('tfmsV4431Title',a.name||'설비');
-    const badge=document.getElementById('tfmsV4431StatusBadge');
-    if(badge){
-      badge.textContent=a.status||a.risk||'-';
-      badge.style.background=statusBg(a);
-    }
+    paintSelected(key,row);
 
-    // Legacy detail fields still used by LCC/history/edit form.
-    setText('assetName',a.name);
-    setText('assetYear',a.year);
-    setText('assetLife',a.life);
-    setText('assetCheck',a.check);
-    setText('assetHistory',a.history);
-    setText('assetLocation',a.location||a.space);
-    setText('assetCapacity',a.capacity);
-    setText('assetOperation',a.operation);
-    setText('assetQrId',a.qrId);
-    const risk=document.getElementById('assetRisk');
+    setText('tfmsV4431Title',value(a,'name'));
+    setText('assetName',value(a,'name'));
+    setText('assetYear',value(a,'year'));
+    setText('assetLife',value(a,'life'));
+    setText('assetCheck',value(a,'check'));
+    setText('assetHistory',value(a,'history'));
+    setText('assetLocation',value(a,'location','space'));
+    setText('assetCapacity',value(a,'capacity'));
+    setText('assetOperation',value(a,'operation'));
+    setText('assetQrId',value(a,'qrId','qr_code'));
+
+    const risk = document.getElementById('assetRisk');
     if(risk){
-      risk.textContent=a.risk||'-';
-      if(a.riskClass) risk.className='risk '+a.riskClass;
+      risk.textContent = value(a,'risk');
+      if(a.riskClass) risk.className = 'risk '+a.riskClass;
     }
+
+    const badge = document.getElementById('tfmsV4431StatusBadge');
+    if(badge) badge.textContent = value(a,'status','risk');
 
     renderSummary(a);
     renderBasic(a);
     renderHistory(a);
     renderLcc(key,a);
 
-    // Keep edit form synchronized, but never rebuild the list.
-    try{ if(typeof loadAssetForm==='function') loadAssetForm(key); }catch(e){console.warn('v45.22 form',e);}
+    /* Keep the edit form synchronized. This function does not rebuild assetList. */
     try{
-      if(typeof ufSelectedFacility!=='undefined') ufSelectedFacility=a.facility||ufSelectedFacility;
-      if(typeof ufSelectedSpace!=='undefined') ufSelectedSpace=a.space||ufSelectedSpace;
-      if(typeof updateUfAssetCard==='function') updateUfAssetCard(key);
-    }catch(e){}
+      if(typeof loadAssetForm === 'function') loadAssetForm(key);
+    }catch(e){
+      console.warn('TFMS v45.24 form sync',e);
+    }
 
-    // Photo lookup only when the photo tab is actually open.
-    const photoActive=!!document.querySelector('#equipment .tfms-v4431-tabbar button[data-tab="photos"].active');
-    if(photoActive) setTimeout(()=>{try{window.refreshEquipmentPhotosV4430?.();}catch(e){}},20);
+    /* Photo DB lookup only when the photo tab is open. */
+    const photoTab = document.querySelector(
+      '#equipment .tfms-v4431-tabbar button[data-tab="photos"].active'
+    );
+    if(photoTab && typeof window.refreshEquipmentPhotosV4430 === 'function'){
+      setTimeout(function(){
+        try{window.refreshEquipmentPhotosV4430();}catch(e){}
+      },20);
+    }
 
-    // Restore the exact scroll position. Selection itself never calls renderAssetList().
-    requestAnimationFrame(()=>{
-      if(list) list.scrollTop=listTop;
-      if(side) side.scrollTop=sideTop;
-      requestAnimationFrame(()=>{
-        if(list) list.scrollTop=listTop;
-        if(side) side.scrollTop=sideTop;
-      });
-    });
+    if(list) list.scrollTop = scrollTop;
     return true;
   }
 
-  // Final public selector: intentionally does NOT call any older showAsset wrapper.
-  window.showAsset=selectAssetFinal;
-  try{ showAsset=selectAssetFinal; }catch(e){}
-  window.tfmsSelectAssetV4522=selectAssetFinal;
+  /* Final public showAsset. Older wrappers were removed above. */
+  window.showAsset = selectAsset;
+  try{ showAsset = selectAsset; }catch(e){}
+  window.tfmsSelectAssetStable = selectAsset;
 
-  // Intercept before old document/list capture handlers can run.
-  window.addEventListener('click',function(e){
-    const row=e.target?.closest?.('#equipment #assetList .tree-item');
-    if(!row) return;
-    const key=keyFromRow(row);
-    if(!key) return;
-    e.preventDefault();
-    e.stopPropagation();
-    e.stopImmediatePropagation();
-    selectAssetFinal(key,row);
-  },true);
+  /* Wrap renderAssetList ONCE to strip inline onclick after every list rebuild. */
+  const originalRenderAssetList =
+    (typeof window.renderAssetList === 'function') ? window.renderAssetList : null;
+
+  if(originalRenderAssetList){
+    window.renderAssetList = function(){
+      const out = originalRenderAssetList.apply(this,arguments);
+      sanitizeRows();
+      return out;
+    };
+    try{ renderAssetList = window.renderAssetList; }catch(e){}
+  }
+
+  function bindAssetList(){
+    const list = document.getElementById('assetList');
+    if(!list || list.dataset.tfmsStableBound === '1') return;
+    list.dataset.tfmsStableBound = '1';
+
+    sanitizeRows();
+
+    list.addEventListener('click',function(e){
+      const row = e.target.closest('.tree-item');
+      if(!row) return;
+      const key = row.dataset.assetKey || keyFromRow(row);
+      if(!key) return;
+      e.preventDefault();
+      selectAsset(key,row);
+    });
+  }
 
   function syncVersion(){
-    const b=document.getElementById('tfmsVersionBadge');
-    if(b)b.textContent=BUILD;
-    document.title='TFMS '+BUILD;
+    const badge = document.getElementById('tfmsVersionBadge');
+    if(badge) badge.textContent = BUILD;
+    document.title = 'TFMS '+BUILD;
     try{
-      const u=new URL(location.href);
-      if(u.searchParams.get('v')!=='45.22'){
-        u.searchParams.set('v','45.22');
+      const u = new URL(location.href);
+      if(u.searchParams.get('v') !== '45.24'){
+        u.searchParams.set('v','45.24');
         history.replaceState(history.state,'',u.pathname+u.search+u.hash);
       }
     }catch(e){}
   }
-  if(document.readyState==='loading'){
-    document.addEventListener('DOMContentLoaded',syncVersion,{once:true});
-  }else syncVersion();
-  [300,1000,2500].forEach(ms=>setTimeout(syncVersion,ms));
+
+  function init(){
+    bindAssetList();
+    syncVersion();
+    /* one delayed pass only for legacy UI initialization; no repeating watcher */
+    setTimeout(function(){
+      bindAssetList();
+      sanitizeRows();
+      syncVersion();
+    },700);
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded',init,{once:true});
+  }else{
+    init();
+  }
 })();
 </script>
 
