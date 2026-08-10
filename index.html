@@ -18829,4 +18829,65 @@ if(typeof oldShowPage==='function'){
 }
 })();
 </script>
+
+<style id="tfms-v4515-register-fullwidth-style">
+/* v45.15 — remove the obsolete register side-nav reservation and use full content width */
+#register .v459-register-shell{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  gap:10px!important;
+  width:100%!important;
+}
+#register .v459-register-shell>.panel,
+#register .v459-register-shell>.v459-bottom-grid{
+  grid-column:1!important;
+  width:100%!important;
+  margin:0 0 10px!important;
+}
+#register .v4513-register-nav{
+  display:none!important;
+  width:0!important;
+  min-width:0!important;
+  max-width:0!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  overflow:hidden!important;
+}
+@media(max-width:1250px){
+  #register .v459-register-shell{grid-template-columns:minmax(0,1fr)!important}
+}
+@media(max-width:820px){
+  #register .v459-register-shell{display:block!important}
+  #register .v4513-register-nav{display:none!important}
+}
+</style>
+<script id="tfms-v4515-register-fullwidth-script">
+(function(){
+'use strict';
+const VERSION='v45.15 Enterprise Stable';
+function apply(){
+  const shell=document.querySelector('#register .v459-register-shell');
+  if(shell){
+    const nav=shell.querySelector('.v4513-register-nav');
+    if(nav) nav.setAttribute('aria-hidden','true');
+  }
+  const b=document.getElementById('tfmsVersionBadge');
+  if(b)b.textContent=VERSION;
+  document.title='TFMS '+VERSION;
+  try{
+    const u=new URL(location.href);
+    if(u.searchParams.get('v')!=='45.15'){
+      u.searchParams.set('v','45.15');
+      history.replaceState(history.state,'',u.pathname+u.search+u.hash);
+    }
+  }catch(e){}
+  try{window.TFMS_BUILD=Object.freeze({version:'v45.15',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'Register Full Width Fix'});}catch(e){}
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
+[100,500,1200,2500].forEach(ms=>setTimeout(apply,ms));
+const prev=window.showPage;
+if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,arguments);setTimeout(apply,30);return r;};
+})();
+</script>
 </body></html>
