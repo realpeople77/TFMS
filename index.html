@@ -729,6 +729,89 @@ body{background:var(--tfms-bg)!important;color:var(--tfms-text)}
 @media(max-width:1050px){.tfms-import-card{grid-template-columns:30px 100px 1fr 1fr}.tfms-import-field:nth-last-child(-n+2){grid-column:3/-1}}
 
 </style>
+
+<style id="tfms-v4516r-responsive-safe">
+/* v45.16R — responsive CSS only. No application JS modified. */
+html, body { max-width:100%; overflow-x:hidden; }
+* { box-sizing:border-box; }
+img, canvas, svg { max-width:100%; }
+
+/* Let the main application area shrink instead of forcing overflow. */
+main, .main, .main-content, .content, .page-content, .content-area,
+#mainContent, #appContent, .app-main { min-width:0 !important; }
+
+/* Tables keep readable cells and scroll inside their own container. */
+table { max-width:100%; }
+.table-wrap, .table-container, .table-responsive,
+[class*="table-wrap"], [class*="table-container"] {
+  max-width:100%;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+}
+
+/* Long Korean facility names should wrap cleanly. */
+td, th, .card, .panel, .stat-card, .dashboard-card {
+  overflow-wrap:anywhere;
+  word-break:keep-all;
+}
+
+/* Medium desktop / split-screen */
+@media (max-width: 1250px) {
+  /* Common dashboard grids: prefer two readable columns. */
+  #dashboard [style*="grid-template-columns"],
+  #dashboard .dashboard-grid,
+  #dashboard .stats-grid,
+  #dashboard .kpi-grid,
+  #dashboard .summary-grid {
+    grid-template-columns:repeat(2, minmax(0,1fr)) !important;
+  }
+
+  #dashboard .card, #dashboard .panel,
+  #dashboard [class*="card"], #dashboard [class*="panel"] {
+    min-width:0 !important;
+  }
+
+  /* Keep header controls from being clipped. */
+  header, .topbar, .top-bar, .app-header {
+    min-width:0 !important;
+  }
+  header > *, .topbar > *, .top-bar > *, .app-header > * {
+    min-width:0;
+  }
+
+  /* Forms may wrap, but no field is removed. */
+  #register form [style*="grid-template-columns"],
+  #register .form-grid,
+  #register .grid-4,
+  #register .grid-3 {
+    grid-template-columns:repeat(2, minmax(0,1fr)) !important;
+  }
+}
+
+/* Narrow split-screen */
+@media (max-width: 900px) {
+  #dashboard [style*="grid-template-columns"],
+  #dashboard .dashboard-grid,
+  #dashboard .stats-grid,
+  #dashboard .kpi-grid,
+  #dashboard .summary-grid,
+  #register form [style*="grid-template-columns"],
+  #register .form-grid,
+  #register .grid-4,
+  #register .grid-3 {
+    grid-template-columns:1fr !important;
+  }
+
+  #dashboard table, #dailyLog table, #maintenanceList table {
+    min-width:620px;
+  }
+
+  input, select, textarea, button {
+    max-width:100%;
+  }
+}
+</style>
+
 </head>
 <body>
 <header class="hidden" id="appHeader">
@@ -11923,87 +12006,6 @@ document.addEventListener('DOMContentLoaded',function(){
 <!-- TFMS v45.14 Enterprise Stable - Data Store Fix
      Equipment UX reads live lexical assetData first; window.assetData is fallback only.
      Login / photo loading / Supabase schema unchanged. -->
-
-<style id="tfms-v4516-responsive-safe-style">
-/* v45.16 — responsive-only safety layer. No data/DB/application logic changes. */
-@media (max-width:1350px) and (min-width:761px){
-  #appHeader nav{width:190px!important}
-  #appLayout.layout{padding-left:208px!important;padding-right:16px!important}
-  #tfmsBrandFooter{margin-left:190px!important}
-  .v451-kpi-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:10px!important}
-  .v451-kpi{min-height:102px!important;padding:13px 12px!important;gap:10px!important}
-  .v451-kpi-icon{width:40px!important;height:40px!important;flex-basis:40px!important;font-size:18px!important}
-  .v451-kpi strong{font-size:23px!important;margin:4px 0 2px!important}
-  .v451-dashboard-grid{grid-template-columns:minmax(0,.95fr) minmax(0,1.25fr)!important;gap:10px!important}
-  .v451-facility-card{grid-column:1!important;grid-row:1!important}
-  .v451-today-card{grid-column:2!important;grid-row:1!important}
-  .v451-recent-card{grid-column:1!important;grid-row:2!important}
-  .v451-daily-card{grid-column:2!important;grid-row:2!important}
-  .v451-status-card{grid-column:1!important;grid-row:3!important}
-  .v451-workflow-card{grid-column:2!important;grid-row:3!important}
-  .v451-facility-content{gap:12px!important;padding:4px 12px 16px!important}
-  .v451-donut{width:145px!important;height:145px!important;flex-basis:145px!important}
-  .v451-donut:after{inset:27px!important}
-  .v451-donut strong{font-size:24px!important}
-  .v451-legend{min-width:0!important;gap:8px!important}
-  .v451-legend div{font-size:12px!important;min-width:0!important}
-  .v451-table{min-width:520px!important}
-  .v451-table-wrap{overflow-x:auto!important}
-  .v451-recent-main{min-width:0!important}
-  .v451-recent-main b{max-width:150px!important}
-  .v451-card-head{padding:14px 14px 10px!important}
-  .v451-card-head h2{font-size:15px!important}
-  .v451-workflow{gap:7px!important;padding:6px 10px 15px!important;flex-wrap:wrap!important}
-  .v451-workflow button span{width:36px!important;height:36px!important}
-}
-@media (max-width:1050px) and (min-width:761px){
-  #appHeader nav{width:176px!important}
-  #appLayout.layout{padding-left:192px!important;padding-right:12px!important}
-  #tfmsBrandFooter{margin-left:176px!important}
-  #appHeader .top{padding:0 12px!important}
-  #appHeader .top .logo img{width:155px!important;padding:5px 8px!important}
-  #appHeader .top .right{gap:6px!important;font-size:12px!important;white-space:nowrap!important}
-  #appHeader .top .right>*{flex-shrink:0!important}
-  .v451-dash-head h1{font-size:25px!important}
-  .v451-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
-  .v451-dashboard-grid{grid-template-columns:1fr!important}
-  .v451-dashboard-grid>*{grid-column:1!important;grid-row:auto!important}
-  .v451-facility-content{justify-content:flex-start!important}
-  .v451-recent-main b{max-width:none!important}
-}
-@media (max-width:760px){
-  #appHeader .top .right{gap:5px!important;min-width:0!important;overflow-x:auto!important;white-space:nowrap!important}
-  #appHeader .top .right>*{flex:0 0 auto!important}
-  #appLayout.layout{overflow-x:hidden!important}
-  .v451-dash-head{flex-wrap:wrap!important}
-  .v451-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
-  .v451-kpi{min-width:0!important;padding:12px 10px!important;gap:8px!important}
-  .v451-kpi b,.v451-kpi small{white-space:normal!important}
-  .v451-dashboard-grid{grid-template-columns:minmax(0,1fr)!important}
-  .v451-card{min-width:0!important}
-  .v451-table-wrap{overflow-x:auto!important;-webkit-overflow-scrolling:touch!important}
-  .v451-table{min-width:560px!important}
-}
-@media (max-width:520px){
-  .v451-kpi-grid{grid-template-columns:1fr!important}
-  .v451-dash-head h1{font-size:23px!important}
-}
-</style>
-<script id="tfms-v4516-responsive-safe-script">
-(function(){
-'use strict';
-const VERSION='v45.16 Enterprise Stable';
-function apply(){
- const b=document.getElementById('tfmsVersionBadge'); if(b)b.textContent=VERSION;
- document.title='TFMS '+VERSION;
- try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.16'){u.searchParams.set('v','45.16');history.replaceState(history.state,'',u.pathname+u.search+u.hash);}}catch(e){}
- try{window.TFMS_BUILD=Object.freeze({version:'v45.16',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'Responsive Safe Fix'});}catch(e){}
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
-setTimeout(apply,500);
-})();
-</script>
-
 </body></html>`);
     win.document.close();
     setTimeout(()=>win.focus(),200);
@@ -15392,87 +15394,6 @@ window.printFireExtQrLabelsV447=async function(){
     const w=window.open('','_blank','width=1100,height=800');if(!w)throw new Error('팝업이 차단되었습니다.');
     w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>${esc(facility)} 소화기 QR 라벨</title><style>@page{size:A4 portrait;margin:8mm}*{box-sizing:border-box}body{font-family:"Malgun Gothic",sans-serif;margin:0}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5mm}.label{border:1px solid #333;border-radius:3mm;min-height:82mm;padding:4mm;text-align:center;break-inside:avoid}.label img{width:42mm;height:42mm}.facility{font-weight:700;font-size:11pt}.code{font-size:15pt;font-weight:800;margin:2mm 0}.loc{font-size:9pt;min-height:12mm}.hint{font-size:7.5pt;color:#555;margin-top:1mm}@media print{.no-print{display:none}}</style></head><body><div class="no-print" style="padding:10px;text-align:center"><button onclick="print()">인쇄</button></div><div class="grid">${labels.map(x=>`<div class="label"><div class="facility">${esc(facility)}</div><div class="code">${esc(x.code)}</div><img src="${x.qr}"><div class="loc">${esc(x.location||'상세 위치 현장 입력')}</div><div class="hint">QR 촬영 후 현장점검</div></div>`).join('')}</div>
 
-
-<style id="tfms-v4516-responsive-safe-style">
-/* v45.16 — responsive-only safety layer. No data/DB/application logic changes. */
-@media (max-width:1350px) and (min-width:761px){
-  #appHeader nav{width:190px!important}
-  #appLayout.layout{padding-left:208px!important;padding-right:16px!important}
-  #tfmsBrandFooter{margin-left:190px!important}
-  .v451-kpi-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:10px!important}
-  .v451-kpi{min-height:102px!important;padding:13px 12px!important;gap:10px!important}
-  .v451-kpi-icon{width:40px!important;height:40px!important;flex-basis:40px!important;font-size:18px!important}
-  .v451-kpi strong{font-size:23px!important;margin:4px 0 2px!important}
-  .v451-dashboard-grid{grid-template-columns:minmax(0,.95fr) minmax(0,1.25fr)!important;gap:10px!important}
-  .v451-facility-card{grid-column:1!important;grid-row:1!important}
-  .v451-today-card{grid-column:2!important;grid-row:1!important}
-  .v451-recent-card{grid-column:1!important;grid-row:2!important}
-  .v451-daily-card{grid-column:2!important;grid-row:2!important}
-  .v451-status-card{grid-column:1!important;grid-row:3!important}
-  .v451-workflow-card{grid-column:2!important;grid-row:3!important}
-  .v451-facility-content{gap:12px!important;padding:4px 12px 16px!important}
-  .v451-donut{width:145px!important;height:145px!important;flex-basis:145px!important}
-  .v451-donut:after{inset:27px!important}
-  .v451-donut strong{font-size:24px!important}
-  .v451-legend{min-width:0!important;gap:8px!important}
-  .v451-legend div{font-size:12px!important;min-width:0!important}
-  .v451-table{min-width:520px!important}
-  .v451-table-wrap{overflow-x:auto!important}
-  .v451-recent-main{min-width:0!important}
-  .v451-recent-main b{max-width:150px!important}
-  .v451-card-head{padding:14px 14px 10px!important}
-  .v451-card-head h2{font-size:15px!important}
-  .v451-workflow{gap:7px!important;padding:6px 10px 15px!important;flex-wrap:wrap!important}
-  .v451-workflow button span{width:36px!important;height:36px!important}
-}
-@media (max-width:1050px) and (min-width:761px){
-  #appHeader nav{width:176px!important}
-  #appLayout.layout{padding-left:192px!important;padding-right:12px!important}
-  #tfmsBrandFooter{margin-left:176px!important}
-  #appHeader .top{padding:0 12px!important}
-  #appHeader .top .logo img{width:155px!important;padding:5px 8px!important}
-  #appHeader .top .right{gap:6px!important;font-size:12px!important;white-space:nowrap!important}
-  #appHeader .top .right>*{flex-shrink:0!important}
-  .v451-dash-head h1{font-size:25px!important}
-  .v451-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
-  .v451-dashboard-grid{grid-template-columns:1fr!important}
-  .v451-dashboard-grid>*{grid-column:1!important;grid-row:auto!important}
-  .v451-facility-content{justify-content:flex-start!important}
-  .v451-recent-main b{max-width:none!important}
-}
-@media (max-width:760px){
-  #appHeader .top .right{gap:5px!important;min-width:0!important;overflow-x:auto!important;white-space:nowrap!important}
-  #appHeader .top .right>*{flex:0 0 auto!important}
-  #appLayout.layout{overflow-x:hidden!important}
-  .v451-dash-head{flex-wrap:wrap!important}
-  .v451-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
-  .v451-kpi{min-width:0!important;padding:12px 10px!important;gap:8px!important}
-  .v451-kpi b,.v451-kpi small{white-space:normal!important}
-  .v451-dashboard-grid{grid-template-columns:minmax(0,1fr)!important}
-  .v451-card{min-width:0!important}
-  .v451-table-wrap{overflow-x:auto!important;-webkit-overflow-scrolling:touch!important}
-  .v451-table{min-width:560px!important}
-}
-@media (max-width:520px){
-  .v451-kpi-grid{grid-template-columns:1fr!important}
-  .v451-dash-head h1{font-size:23px!important}
-}
-</style>
-<script id="tfms-v4516-responsive-safe-script">
-(function(){
-'use strict';
-const VERSION='v45.16 Enterprise Stable';
-function apply(){
- const b=document.getElementById('tfmsVersionBadge'); if(b)b.textContent=VERSION;
- document.title='TFMS '+VERSION;
- try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.16'){u.searchParams.set('v','45.16');history.replaceState(history.state,'',u.pathname+u.search+u.hash);}}catch(e){}
- try{window.TFMS_BUILD=Object.freeze({version:'v45.16',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'Responsive Safe Fix'});}catch(e){}
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
-setTimeout(apply,500);
-})();
-</script>
-
 </body></html>`);
     w.document.close();setTimeout(()=>w.focus(),200);
   }catch(e){console.error(e);toast('QR 라벨 출력 준비 실패: '+(e?.message||e))}
@@ -16289,87 +16210,6 @@ window.printFireRecordV420=async function(){
 </style>
 
 
-
-<style id="tfms-v4516-responsive-safe-style">
-/* v45.16 — responsive-only safety layer. No data/DB/application logic changes. */
-@media (max-width:1350px) and (min-width:761px){
-  #appHeader nav{width:190px!important}
-  #appLayout.layout{padding-left:208px!important;padding-right:16px!important}
-  #tfmsBrandFooter{margin-left:190px!important}
-  .v451-kpi-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:10px!important}
-  .v451-kpi{min-height:102px!important;padding:13px 12px!important;gap:10px!important}
-  .v451-kpi-icon{width:40px!important;height:40px!important;flex-basis:40px!important;font-size:18px!important}
-  .v451-kpi strong{font-size:23px!important;margin:4px 0 2px!important}
-  .v451-dashboard-grid{grid-template-columns:minmax(0,.95fr) minmax(0,1.25fr)!important;gap:10px!important}
-  .v451-facility-card{grid-column:1!important;grid-row:1!important}
-  .v451-today-card{grid-column:2!important;grid-row:1!important}
-  .v451-recent-card{grid-column:1!important;grid-row:2!important}
-  .v451-daily-card{grid-column:2!important;grid-row:2!important}
-  .v451-status-card{grid-column:1!important;grid-row:3!important}
-  .v451-workflow-card{grid-column:2!important;grid-row:3!important}
-  .v451-facility-content{gap:12px!important;padding:4px 12px 16px!important}
-  .v451-donut{width:145px!important;height:145px!important;flex-basis:145px!important}
-  .v451-donut:after{inset:27px!important}
-  .v451-donut strong{font-size:24px!important}
-  .v451-legend{min-width:0!important;gap:8px!important}
-  .v451-legend div{font-size:12px!important;min-width:0!important}
-  .v451-table{min-width:520px!important}
-  .v451-table-wrap{overflow-x:auto!important}
-  .v451-recent-main{min-width:0!important}
-  .v451-recent-main b{max-width:150px!important}
-  .v451-card-head{padding:14px 14px 10px!important}
-  .v451-card-head h2{font-size:15px!important}
-  .v451-workflow{gap:7px!important;padding:6px 10px 15px!important;flex-wrap:wrap!important}
-  .v451-workflow button span{width:36px!important;height:36px!important}
-}
-@media (max-width:1050px) and (min-width:761px){
-  #appHeader nav{width:176px!important}
-  #appLayout.layout{padding-left:192px!important;padding-right:12px!important}
-  #tfmsBrandFooter{margin-left:176px!important}
-  #appHeader .top{padding:0 12px!important}
-  #appHeader .top .logo img{width:155px!important;padding:5px 8px!important}
-  #appHeader .top .right{gap:6px!important;font-size:12px!important;white-space:nowrap!important}
-  #appHeader .top .right>*{flex-shrink:0!important}
-  .v451-dash-head h1{font-size:25px!important}
-  .v451-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
-  .v451-dashboard-grid{grid-template-columns:1fr!important}
-  .v451-dashboard-grid>*{grid-column:1!important;grid-row:auto!important}
-  .v451-facility-content{justify-content:flex-start!important}
-  .v451-recent-main b{max-width:none!important}
-}
-@media (max-width:760px){
-  #appHeader .top .right{gap:5px!important;min-width:0!important;overflow-x:auto!important;white-space:nowrap!important}
-  #appHeader .top .right>*{flex:0 0 auto!important}
-  #appLayout.layout{overflow-x:hidden!important}
-  .v451-dash-head{flex-wrap:wrap!important}
-  .v451-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
-  .v451-kpi{min-width:0!important;padding:12px 10px!important;gap:8px!important}
-  .v451-kpi b,.v451-kpi small{white-space:normal!important}
-  .v451-dashboard-grid{grid-template-columns:minmax(0,1fr)!important}
-  .v451-card{min-width:0!important}
-  .v451-table-wrap{overflow-x:auto!important;-webkit-overflow-scrolling:touch!important}
-  .v451-table{min-width:560px!important}
-}
-@media (max-width:520px){
-  .v451-kpi-grid{grid-template-columns:1fr!important}
-  .v451-dash-head h1{font-size:23px!important}
-}
-</style>
-<script id="tfms-v4516-responsive-safe-script">
-(function(){
-'use strict';
-const VERSION='v45.16 Enterprise Stable';
-function apply(){
- const b=document.getElementById('tfmsVersionBadge'); if(b)b.textContent=VERSION;
- document.title='TFMS '+VERSION;
- try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.16'){u.searchParams.set('v','45.16');history.replaceState(history.state,'',u.pathname+u.search+u.hash);}}catch(e){}
- try{window.TFMS_BUILD=Object.freeze({version:'v45.16',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'Responsive Safe Fix'});}catch(e){}
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
-setTimeout(apply,500);
-})();
-</script>
-
 </body></html>`);doc.close();
   await new Promise(r=>{if(doc.readyState==='complete')r();else frame.onload=r;});
   const imgs=[...doc.images];await Promise.all(imgs.map(img=>img.complete?(img.decode?.().catch(()=>{})||Promise.resolve()):new Promise(res=>{img.onload=img.onerror=res;})));
@@ -16498,87 +16338,6 @@ window.printFireRecordV420=async function(){try{window.previewFireRecordV420();c
 }
 </style>
 
-
-
-<style id="tfms-v4516-responsive-safe-style">
-/* v45.16 — responsive-only safety layer. No data/DB/application logic changes. */
-@media (max-width:1350px) and (min-width:761px){
-  #appHeader nav{width:190px!important}
-  #appLayout.layout{padding-left:208px!important;padding-right:16px!important}
-  #tfmsBrandFooter{margin-left:190px!important}
-  .v451-kpi-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:10px!important}
-  .v451-kpi{min-height:102px!important;padding:13px 12px!important;gap:10px!important}
-  .v451-kpi-icon{width:40px!important;height:40px!important;flex-basis:40px!important;font-size:18px!important}
-  .v451-kpi strong{font-size:23px!important;margin:4px 0 2px!important}
-  .v451-dashboard-grid{grid-template-columns:minmax(0,.95fr) minmax(0,1.25fr)!important;gap:10px!important}
-  .v451-facility-card{grid-column:1!important;grid-row:1!important}
-  .v451-today-card{grid-column:2!important;grid-row:1!important}
-  .v451-recent-card{grid-column:1!important;grid-row:2!important}
-  .v451-daily-card{grid-column:2!important;grid-row:2!important}
-  .v451-status-card{grid-column:1!important;grid-row:3!important}
-  .v451-workflow-card{grid-column:2!important;grid-row:3!important}
-  .v451-facility-content{gap:12px!important;padding:4px 12px 16px!important}
-  .v451-donut{width:145px!important;height:145px!important;flex-basis:145px!important}
-  .v451-donut:after{inset:27px!important}
-  .v451-donut strong{font-size:24px!important}
-  .v451-legend{min-width:0!important;gap:8px!important}
-  .v451-legend div{font-size:12px!important;min-width:0!important}
-  .v451-table{min-width:520px!important}
-  .v451-table-wrap{overflow-x:auto!important}
-  .v451-recent-main{min-width:0!important}
-  .v451-recent-main b{max-width:150px!important}
-  .v451-card-head{padding:14px 14px 10px!important}
-  .v451-card-head h2{font-size:15px!important}
-  .v451-workflow{gap:7px!important;padding:6px 10px 15px!important;flex-wrap:wrap!important}
-  .v451-workflow button span{width:36px!important;height:36px!important}
-}
-@media (max-width:1050px) and (min-width:761px){
-  #appHeader nav{width:176px!important}
-  #appLayout.layout{padding-left:192px!important;padding-right:12px!important}
-  #tfmsBrandFooter{margin-left:176px!important}
-  #appHeader .top{padding:0 12px!important}
-  #appHeader .top .logo img{width:155px!important;padding:5px 8px!important}
-  #appHeader .top .right{gap:6px!important;font-size:12px!important;white-space:nowrap!important}
-  #appHeader .top .right>*{flex-shrink:0!important}
-  .v451-dash-head h1{font-size:25px!important}
-  .v451-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
-  .v451-dashboard-grid{grid-template-columns:1fr!important}
-  .v451-dashboard-grid>*{grid-column:1!important;grid-row:auto!important}
-  .v451-facility-content{justify-content:flex-start!important}
-  .v451-recent-main b{max-width:none!important}
-}
-@media (max-width:760px){
-  #appHeader .top .right{gap:5px!important;min-width:0!important;overflow-x:auto!important;white-space:nowrap!important}
-  #appHeader .top .right>*{flex:0 0 auto!important}
-  #appLayout.layout{overflow-x:hidden!important}
-  .v451-dash-head{flex-wrap:wrap!important}
-  .v451-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
-  .v451-kpi{min-width:0!important;padding:12px 10px!important;gap:8px!important}
-  .v451-kpi b,.v451-kpi small{white-space:normal!important}
-  .v451-dashboard-grid{grid-template-columns:minmax(0,1fr)!important}
-  .v451-card{min-width:0!important}
-  .v451-table-wrap{overflow-x:auto!important;-webkit-overflow-scrolling:touch!important}
-  .v451-table{min-width:560px!important}
-}
-@media (max-width:520px){
-  .v451-kpi-grid{grid-template-columns:1fr!important}
-  .v451-dash-head h1{font-size:23px!important}
-}
-</style>
-<script id="tfms-v4516-responsive-safe-script">
-(function(){
-'use strict';
-const VERSION='v45.16 Enterprise Stable';
-function apply(){
- const b=document.getElementById('tfmsVersionBadge'); if(b)b.textContent=VERSION;
- document.title='TFMS '+VERSION;
- try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.16'){u.searchParams.set('v','45.16');history.replaceState(history.state,'',u.pathname+u.search+u.hash);}}catch(e){}
- try{window.TFMS_BUILD=Object.freeze({version:'v45.16',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'Responsive Safe Fix'});}catch(e){}
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
-setTimeout(apply,500);
-})();
-</script>
 
 </body></html>`);doc.close();await new Promise(r=>setTimeout(r,100));if(doc.fonts?.ready)await doc.fonts.ready;await Promise.all([...doc.images].map(img=>img.complete?Promise.resolve():new Promise(r=>{img.onload=img.onerror=r})));await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));frame.contentWindow.focus();frame.contentWindow.print();setTimeout(()=>frame.remove(),5000);}catch(e){console.error(e);toast('PDF 출력 실패: '+(e?.message||e));}};
 function db(){try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||(typeof sb!=='undefined'?sb:null)}catch(e){return null}}
@@ -19189,7 +18948,7 @@ if(typeof oldShowPage==='function'){
 <script id="tfms-v4515-register-fullwidth-script">
 (function(){
 'use strict';
-const VERSION='v45.15 Enterprise Stable';
+const VERSION='v45.16R Enterprise Stable';
 function apply(){
   const shell=document.querySelector('#register .v459-register-shell');
   if(shell){
@@ -19201,12 +18960,12 @@ function apply(){
   document.title='TFMS '+VERSION;
   try{
     const u=new URL(location.href);
-    if(u.searchParams.get('v')!=='45.15'){
-      u.searchParams.set('v','45.15');
+    if(u.searchParams.get('v')!=='45.16R'){
+      u.searchParams.set('v','45.16R');
       history.replaceState(history.state,'',u.pathname+u.search+u.hash);
     }
   }catch(e){}
-  try{window.TFMS_BUILD=Object.freeze({version:'v45.15',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'Register Full Width Fix'});}catch(e){}
+  try{window.TFMS_BUILD=Object.freeze({version:'v45.16R',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'Responsive Rollback Safe'});}catch(e){}
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
 [100,500,1200,2500].forEach(ms=>setTimeout(apply,ms));
@@ -19214,85 +18973,4 @@ const prev=window.showPage;
 if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,arguments);setTimeout(apply,30);return r;};
 })();
 </script>
-
-<style id="tfms-v4516-responsive-safe-style">
-/* v45.16 — responsive-only safety layer. No data/DB/application logic changes. */
-@media (max-width:1350px) and (min-width:761px){
-  #appHeader nav{width:190px!important}
-  #appLayout.layout{padding-left:208px!important;padding-right:16px!important}
-  #tfmsBrandFooter{margin-left:190px!important}
-  .v451-kpi-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:10px!important}
-  .v451-kpi{min-height:102px!important;padding:13px 12px!important;gap:10px!important}
-  .v451-kpi-icon{width:40px!important;height:40px!important;flex-basis:40px!important;font-size:18px!important}
-  .v451-kpi strong{font-size:23px!important;margin:4px 0 2px!important}
-  .v451-dashboard-grid{grid-template-columns:minmax(0,.95fr) minmax(0,1.25fr)!important;gap:10px!important}
-  .v451-facility-card{grid-column:1!important;grid-row:1!important}
-  .v451-today-card{grid-column:2!important;grid-row:1!important}
-  .v451-recent-card{grid-column:1!important;grid-row:2!important}
-  .v451-daily-card{grid-column:2!important;grid-row:2!important}
-  .v451-status-card{grid-column:1!important;grid-row:3!important}
-  .v451-workflow-card{grid-column:2!important;grid-row:3!important}
-  .v451-facility-content{gap:12px!important;padding:4px 12px 16px!important}
-  .v451-donut{width:145px!important;height:145px!important;flex-basis:145px!important}
-  .v451-donut:after{inset:27px!important}
-  .v451-donut strong{font-size:24px!important}
-  .v451-legend{min-width:0!important;gap:8px!important}
-  .v451-legend div{font-size:12px!important;min-width:0!important}
-  .v451-table{min-width:520px!important}
-  .v451-table-wrap{overflow-x:auto!important}
-  .v451-recent-main{min-width:0!important}
-  .v451-recent-main b{max-width:150px!important}
-  .v451-card-head{padding:14px 14px 10px!important}
-  .v451-card-head h2{font-size:15px!important}
-  .v451-workflow{gap:7px!important;padding:6px 10px 15px!important;flex-wrap:wrap!important}
-  .v451-workflow button span{width:36px!important;height:36px!important}
-}
-@media (max-width:1050px) and (min-width:761px){
-  #appHeader nav{width:176px!important}
-  #appLayout.layout{padding-left:192px!important;padding-right:12px!important}
-  #tfmsBrandFooter{margin-left:176px!important}
-  #appHeader .top{padding:0 12px!important}
-  #appHeader .top .logo img{width:155px!important;padding:5px 8px!important}
-  #appHeader .top .right{gap:6px!important;font-size:12px!important;white-space:nowrap!important}
-  #appHeader .top .right>*{flex-shrink:0!important}
-  .v451-dash-head h1{font-size:25px!important}
-  .v451-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
-  .v451-dashboard-grid{grid-template-columns:1fr!important}
-  .v451-dashboard-grid>*{grid-column:1!important;grid-row:auto!important}
-  .v451-facility-content{justify-content:flex-start!important}
-  .v451-recent-main b{max-width:none!important}
-}
-@media (max-width:760px){
-  #appHeader .top .right{gap:5px!important;min-width:0!important;overflow-x:auto!important;white-space:nowrap!important}
-  #appHeader .top .right>*{flex:0 0 auto!important}
-  #appLayout.layout{overflow-x:hidden!important}
-  .v451-dash-head{flex-wrap:wrap!important}
-  .v451-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
-  .v451-kpi{min-width:0!important;padding:12px 10px!important;gap:8px!important}
-  .v451-kpi b,.v451-kpi small{white-space:normal!important}
-  .v451-dashboard-grid{grid-template-columns:minmax(0,1fr)!important}
-  .v451-card{min-width:0!important}
-  .v451-table-wrap{overflow-x:auto!important;-webkit-overflow-scrolling:touch!important}
-  .v451-table{min-width:560px!important}
-}
-@media (max-width:520px){
-  .v451-kpi-grid{grid-template-columns:1fr!important}
-  .v451-dash-head h1{font-size:23px!important}
-}
-</style>
-<script id="tfms-v4516-responsive-safe-script">
-(function(){
-'use strict';
-const VERSION='v45.16 Enterprise Stable';
-function apply(){
- const b=document.getElementById('tfmsVersionBadge'); if(b)b.textContent=VERSION;
- document.title='TFMS '+VERSION;
- try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.16'){u.searchParams.set('v','45.16');history.replaceState(history.state,'',u.pathname+u.search+u.hash);}}catch(e){}
- try{window.TFMS_BUILD=Object.freeze({version:'v45.16',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'Responsive Safe Fix'});}catch(e){}
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
-setTimeout(apply,500);
-})();
-</script>
-
 </body></html>
