@@ -903,7 +903,7 @@ nav.sidebar {
 
 
 <style id="tfms-v4524-cleanup-css">
-/* ===== v45.24 Enterprise Cleanup Stable =====
+/* ===== v45.25 Enterprise Cleanup Stable =====
    CSS-only navigation stabilization. No scroll JavaScript. */
 
 /* Actual TFMS sidebar selector. Header is 76px in the current stable UX. */
@@ -959,6 +959,37 @@ nav.sidebar {
   #equipment .tfms-v4431-shell{
     grid-template-columns:280px minmax(0,1fr)!important;
   }
+}
+</style>
+
+
+<style id="tfms-v4525-equipment-wheel-fix">
+/* v45.25 — equipment list wheel fix.
+   The OUTER .tfms-v4431-list is the only vertical scroll container. */
+#equipment .tfms-v4431-list{
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  overscroll-behavior-y:auto !important;
+  touch-action:pan-y !important;
+  scrollbar-gutter:stable;
+  -webkit-overflow-scrolling:touch;
+}
+
+#equipment .tfms-v4431-list #assetList,
+#equipment #assetList{
+  overflow:visible !important;
+  overflow-y:visible !important;
+  overflow-x:visible !important;
+  overscroll-behavior:auto !important;
+  height:auto !important;
+  max-height:none !important;
+  touch-action:auto !important;
+}
+
+/* Preserve row clicking/selection visuals only. */
+#equipment .tfms-v4431-list #assetList .tree-item{
+  pointer-events:auto !important;
+  cursor:pointer !important;
 }
 </style>
 
@@ -18933,7 +18964,7 @@ if(typeof oldShowPage==='function'){
 <script id="tfms-v4515-register-fullwidth-script">
 (function(){
 'use strict';
-const VERSION='v45.24 Enterprise Cleanup Stable';
+const VERSION='v45.25 Enterprise Cleanup Stable';
 function apply(){
   const shell=document.querySelector('#register .v459-register-shell');
   if(shell){
@@ -19167,7 +19198,7 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
 (function(){
   'use strict';
 
-  const BUILD = 'v45.24 Enterprise Cleanup Stable';
+  const BUILD = 'v45.25 Enterprise Cleanup Stable';
 
   function assetStore(){
     try{
@@ -19313,7 +19344,7 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
         }
       }
     }catch(e){
-      console.warn('TFMS v45.24 LCC render',e);
+      console.warn('TFMS v45.25 LCC render',e);
     }
     setText('lccRepair',value(a,'repair'));
     setText('lccReplace',value(a,'replace'));
@@ -19368,7 +19399,7 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
     try{
       if(typeof loadAssetForm === 'function') loadAssetForm(key);
     }catch(e){
-      console.warn('TFMS v45.24 form sync',e);
+      console.warn('TFMS v45.25 form sync',e);
     }
 
     /* Photo DB lookup only when the photo tab is open. */
@@ -19426,8 +19457,8 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
     document.title = 'TFMS '+BUILD;
     try{
       const u = new URL(location.href);
-      if(u.searchParams.get('v') !== '45.24'){
-        u.searchParams.set('v','45.24');
+      if(u.searchParams.get('v') !== '45.25'){
+        u.searchParams.set('v','45.25');
         history.replaceState(history.state,'',u.pathname+u.search+u.hash);
       }
     }catch(e){}
