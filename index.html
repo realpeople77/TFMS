@@ -6,7 +6,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>TFMS v45.31 Conflict Cleanup Stable</title>
+<title>TFMS v45.32 Shell Frame Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -903,7 +903,7 @@ nav.sidebar {
 
 
 <style id="tfms-v4524-cleanup-css">
-/* ===== v45.31 Conflict Cleanup Stable =====
+/* ===== v45.32 Shell Frame Stable =====
    CSS-only navigation stabilization. No scroll JavaScript. */
 
 /* Actual TFMS sidebar selector. Header is 76px in the current stable UX. */
@@ -964,7 +964,7 @@ nav.sidebar {
 
 
 <style id="tfms-v4525-equipment-wheel-fix">
-/* v45.31 Conflict Cleanup Stable — equipment list wheel fix.
+/* v45.32 Shell Frame Stable — equipment list wheel fix.
    The OUTER .tfms-v4431-list is the only vertical scroll container. */
 #equipment .tfms-v4431-list{
   overflow-y:auto !important;
@@ -12191,7 +12191,7 @@ document.addEventListener('DOMContentLoaded',function(){
       <div class="dj-sheet ${esc(sheetClass||'')}">${content}</div>
       
 
-<!-- TFMS v45.31 Conflict Cleanup Stable - Data Store Fix
+<!-- TFMS v45.32 Shell Frame Stable - Data Store Fix
      Equipment UX reads live lexical assetData first; window.assetData is fallback only.
      Login / photo loading / Supabase schema unchanged. -->
 </body></html>`);
@@ -16479,7 +16479,7 @@ window.printFireRecordV420=async function(){try{window.previewFireRecordV420();c
 </style>
 
 <style id="tfms-v4531-conflict-cleanup-css">
-/* ===== v45.31 Conflict Cleanup Stable ===== */
+/* ===== v45.32 Shell Frame Stable ===== */
 html{scroll-behavior:auto!important;}
 
 @media (min-width:761px){
@@ -16575,6 +16575,85 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{
 @media(max-width:1250px){
   #stats .compare-grid.tfms-compact-kpi{
     grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  }
+}
+</style>
+
+
+<style id="tfms-v4532-shell-frame-css">
+/* =========================================================
+   v45.32 Shell Frame Stable
+   ONLY shell/frame corrections.
+   No equipment/business/database logic touched.
+   ========================================================= */
+
+/* LOGIN:
+   appHeader is hidden before login, so footer must use the full width.
+   This directly removes the white 245px block at the lower-left. */
+#appHeader.hidden ~ #tfmsBrandFooter{
+  margin-left:0!important;
+  width:100%!important;
+  box-sizing:border-box!important;
+}
+
+/* LOGGED-IN DESKTOP:
+   keep the top bar on screen while the document scrolls.
+   The sidebar starts exactly beneath it, so no white upper-left hole. */
+@media (min-width:761px){
+  #appHeader:not(.hidden){
+    position:relative!important;
+    top:auto!important;
+    height:58px!important;
+    min-height:58px!important;
+    z-index:1200!important;
+    background:#061b38!important;
+  }
+
+  #appHeader:not(.hidden) .top{
+    position:fixed!important;
+    top:0!important;
+    left:0!important;
+    right:0!important;
+    height:58px!important;
+    min-height:58px!important;
+    z-index:1200!important;
+    background:#061b38!important;
+  }
+
+  #appHeader:not(.hidden) nav{
+    position:fixed!important;
+    left:0!important;
+    top:58px!important;
+    bottom:0!important;
+    width:245px!important;
+    height:auto!important;
+    min-height:0!important;
+    margin:0!important;
+    padding-top:10px!important;
+    background:#0b3764!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    z-index:1100!important;
+  }
+
+  /* Footer reserves sidebar width only after login. */
+  #appHeader:not(.hidden) ~ #tfmsBrandFooter{
+    margin-left:245px!important;
+    width:calc(100% - 245px)!important;
+    box-sizing:border-box!important;
+  }
+
+  /* Main workspace is reserved below fixed topbar, without extra top gap. */
+  #appLayout.layout:not(.hidden){
+    min-height:calc(100vh - 58px)!important;
+  }
+}
+
+/* On narrow screens there is no permanent sidebar reservation. */
+@media (max-width:760px){
+  #tfmsBrandFooter{
+    margin-left:0!important;
+    width:100%!important;
   }
 }
 </style>
@@ -18349,7 +18428,7 @@ document.readyState==='loading'?document.addEventListener('DOMContentLoaded',upd
  const oldRender=window.renderAssetList;if(typeof oldRender==='function')window.renderAssetList=function(){const r=oldRender.apply(this,arguments);setTimeout(()=>{populateFilters();filterList();refresh()},40);return r};
  const oldSave=window.saveAsset;if(typeof oldSave==='function')window.saveAsset=function(){const r=oldSave.apply(this,arguments);setTimeout(()=>{refresh();closeAssetRegisterV4431()},450);return r};
  const oldNav=window.navTo;if(typeof oldNav==='function')window.navTo=function(id){const r=oldNav.apply(this,arguments);if(id==='equipment')setTimeout(()=>{ensureShell();movePhotos();refresh()},140);return r};
- function brand(){const small=document.querySelector('#appHeader .logo-title small');if(small)small.textContent='태백시시설관리공단 시설관리시스템';const b=$('tfmsVersionBadge');if(b)b.textContent='v45.31 Conflict Cleanup Stable';document.title='TFMS v45.31 Conflict Cleanup Stable';window.TFMS_BUILD=Object.freeze({version:'v45.5',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});}
+ function brand(){const small=document.querySelector('#appHeader .logo-title small');if(small)small.textContent='태백시시설관리공단 시설관리시스템';const b=$('tfmsVersionBadge');if(b)b.textContent='v45.32 Shell Frame Stable';document.title='TFMS v45.32 Shell Frame Stable';window.TFMS_BUILD=Object.freeze({version:'v45.5',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});}
  function init(){brand();ensureShell();movePhotos();refresh();[400,1000,2200].forEach(ms=>setTimeout(()=>{brand();ensureShell();movePhotos();refresh()},ms))}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
@@ -18388,8 +18467,8 @@ document.readyState==='loading'?document.addEventListener('DOMContentLoaded',upd
    try{const d=window.assetData||assetData||{};return d[selectedKey()]||null}catch(e){return null}
  }
  function syncVersion(){
-   const b=$('tfmsVersionBadge'); if(b)b.textContent='v45.31 Conflict Cleanup Stable';
-   document.title='TFMS v45.31 Conflict Cleanup Stable';
+   const b=$('tfmsVersionBadge'); if(b)b.textContent='v45.32 Shell Frame Stable';
+   document.title='TFMS v45.32 Shell Frame Stable';
    window.TFMS_BUILD=Object.freeze({version:'v45.5',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});
  }
  function cleanupLegacyControls(){
@@ -18535,7 +18614,7 @@ body{background:#f4f8fc!important}
 <script id="tfms-v4433-equipment-ux-stabilize-controller">
 (function(){
 'use strict';
-const BUILD='v45.31 Conflict Cleanup Stable';
+const BUILD='v45.32 Shell Frame Stable';
 const $=id=>document.getElementById(id);
 const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 function data(){try{if(typeof assetData!=='undefined'&&assetData&&Object.keys(assetData).length)return assetData;if(window.assetData)return window.assetData;return {}}catch(e){return {}}}
@@ -18548,7 +18627,7 @@ function syncBuild(){
  const b=$('tfmsVersionBadge');if(b&&b.textContent!==BUILD)b.textContent=BUILD;
  const title='TFMS '+BUILD;if(document.title!==title)document.title=title;
  window.TFMS_BUILD=Object.freeze({version:'v45.5',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});
- try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.31'){u.searchParams.set('v','45.31');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
+ try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.32'){u.searchParams.set('v','45.32');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
 }
 function cleanUserLabel(){const el=$('topUserLabel');if(!el)return;const t=(el.textContent||'').replace(/^\s*[👤🧑‍💼]+\s*/u,'').trim();if(t&&t!==el.textContent.trim())el.textContent=t}
 function hideLegacy(){
@@ -18700,9 +18779,9 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <script id="tfms-v459-thumbnail-ux-controller">
 (function(){
 'use strict';
-const VERSION='v45.31 Conflict Cleanup Stable';
+const VERSION='v45.32 Shell Frame Stable';
 const $=id=>document.getElementById(id);
-function brand(){const b=$('tfmsVersionBadge');if(b)b.textContent=VERSION;document.title='TFMS '+VERSION;try{window.TFMS_BUILD=Object.freeze({version:'v45.31 Conflict Cleanup Stable',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'UI Fixes & Weather UX'});}catch(e){}try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.31'){u.searchParams.set('v','45.31');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
+function brand(){const b=$('tfmsVersionBadge');if(b)b.textContent=VERSION;document.title='TFMS '+VERSION;try{window.TFMS_BUILD=Object.freeze({version:'v45.32 Shell Frame Stable',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'UI Fixes & Weather UX'});}catch(e){}try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.32'){u.searchParams.set('v','45.32');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
 window.navToFireQrV459=function(){try{window.navToFireV420?.();setTimeout(()=>{const p=[...document.querySelectorAll('#fireMonthly .section-title')].find(x=>/소화기 월간점검 목록/.test(x.textContent||''));p?.scrollIntoView({behavior:'smooth',block:'start'});},180)}catch(e){window.navToFireV420?.();}};
 window.setDailyWeatherV4510=function(value,btn){const sel=$('dailyWeather');if(sel)sel.value=value;document.querySelectorAll('#v459GeneralDaily .v4510-weather-picks button').forEach(b=>b.classList.toggle('active',b===btn));};
 function fillGeneralFacility(){const sel=$('dailyFacility');if(!sel)return;let names=[];try{const s=JSON.parse(sessionStorage.getItem('tfmsSession')||'{}');const dept=s.dept||s.department||'';if(typeof facilities!=='undefined'&&facilities[dept])names=facilities[dept];else if(typeof facilities!=='undefined')names=Object.values(facilities).flat();}catch(e){}if(!names.length)names=['태백국민체육센터','장성국민체육센터'];const old=sel.value;sel.innerHTML=[...new Set(names)].map(n=>`<option>${n}</option>`).join('');if(old&&[...sel.options].some(o=>o.value===old))sel.value=old;}
@@ -18726,7 +18805,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <style id="tfms-v4511-ui-fix-style">
-/* v45.31 Conflict Cleanup Stable — top-gap alignment, document removable chips, journal weather icon UX */
+/* v45.32 Shell Frame Stable — top-gap alignment, document removable chips, journal weather icon UX */
 @media (min-width:761px){
   #appHeader nav{top:58px!important;}
   #appLayout.layout{padding-top:8px!important;min-height:calc(100vh - 58px)!important;}
@@ -18750,7 +18829,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <script id="tfms-v4511-ui-fix-controller">
 (function(){
 'use strict';
-const VERSION='v45.31 Conflict Cleanup Stable';
+const VERSION='v45.32 Shell Frame Stable';
 const VERSION_PARAM='45.11';
 function syncVersion(){
   const b=document.getElementById('tfmsVersionBadge'); if(b&&b.textContent!==VERSION)b.textContent=VERSION;
@@ -18823,7 +18902,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 })();
 </script>\n
 <style id="tfms-v4513-thumbnail-exact-style">
-/* v45.31 Conflict Cleanup Stable Thumbnail UX Exact - visual/ergonomic layer only; existing IDs/functions preserved */
+/* v45.32 Shell Frame Stable Thumbnail UX Exact - visual/ergonomic layer only; existing IDs/functions preserved */
 :root{--v4513-navy:#0b315f;--v4513-blue:#1769d2;--v4513-teal:#0da5a5;--v4513-bg:#f4f7fb;--v4513-line:#dbe5f1;--v4513-text:#10233f;--v4513-muted:#718096}
 body{background:var(--v4513-bg)}
 .page{padding-top:14px!important}.title-row{margin-bottom:12px!important}.title-row h1{font-size:28px!important;letter-spacing:-.04em}.breadcrumb{font-size:12px!important;color:#7b8aa1!important}
@@ -18879,11 +18958,11 @@ body{background:var(--v4513-bg)}
 (function(){
 'use strict';
 const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
-function safe(fn){try{fn();}catch(e){console.warn('[TFMS v45.31 Conflict Cleanup Stable UX]',e);}}
+function safe(fn){try{fn();}catch(e){console.warn('[TFMS v45.32 Shell Frame Stable UX]',e);}}
 function syncVersion(){
-  document.title='TFMS v45.31 Conflict Cleanup Stable';
+  document.title='TFMS v45.32 Shell Frame Stable';
   $$('*').filter(el=>el.children.length===0 && /v45\.13 Enterprise Stable/.test(el.textContent||'')).forEach(()=>{});
-  const u=new URL(location.href); if(u.searchParams.get('v')!=='45.31'){u.searchParams.set('v','45.31'); history.replaceState(null,'',u.pathname+u.search+u.hash);}
+  const u=new URL(location.href); if(u.searchParams.get('v')!=='45.32'){u.searchParams.set('v','45.32'); history.replaceState(null,'',u.pathname+u.search+u.hash);}
 }
 function registerNav(){
   const shell=$('#register .v459-register-shell'); if(!shell||shell.querySelector('.v4513-register-nav')) return;
@@ -18932,7 +19011,7 @@ setTimeout(init,1200);
 </script>
 
 <style id="tfms-v4514-compact-fix-style">
-/* v45.31 Conflict Cleanup Stable — compact density fix: dashboard, register form, daily weather */
+/* v45.32 Shell Frame Stable — compact density fix: dashboard, register form, daily weather */
 
 /* 1) Dashboard: use the full grid, no decorative dead zones */
 #dashboard .v451-dashboard-grid{
@@ -18993,7 +19072,7 @@ setTimeout(init,1200);
 <script id="tfms-v4514-compact-fix-script">
 (function(){
 'use strict';
-const VERSION='v45.31 Conflict Cleanup Stable';
+const VERSION='v45.32 Shell Frame Stable';
 function markRegisterFields(){
   document.querySelectorAll('#register .v459-form-grid-4 .field').forEach(function(f){
     const t=(f.querySelector('label')?.textContent||'').replace(/\s+/g,' ').trim();
@@ -19021,12 +19100,12 @@ function brand(){
   document.title='TFMS '+VERSION;
   try{
     const u=new URL(location.href);
-    if(u.searchParams.get('v')!=='45.31'){
-      u.searchParams.set('v','45.31');
+    if(u.searchParams.get('v')!=='45.32'){
+      u.searchParams.set('v','45.32');
       history.replaceState(history.state,'',u.pathname+u.search+u.hash);
     }
   }catch(e){}
-  try{window.TFMS_BUILD=Object.freeze({version:'v45.31 Conflict Cleanup Stable',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'UX Compact Fix'});}catch(e){}
+  try{window.TFMS_BUILD=Object.freeze({version:'v45.32 Shell Frame Stable',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'UX Compact Fix'});}catch(e){}
 }
 function apply(){markRegisterFields();dedupeWeather();brand();}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
@@ -19073,7 +19152,7 @@ if(typeof oldShowPage==='function'){
 <script id="tfms-v4515-register-fullwidth-script">
 (function(){
 'use strict';
-const VERSION='v45.31 Conflict Cleanup Stable';
+const VERSION='v45.32 Shell Frame Stable';
 function apply(){
   const shell=document.querySelector('#register .v459-register-shell');
   if(shell){
@@ -19085,12 +19164,12 @@ function apply(){
   document.title='TFMS '+VERSION;
   try{
     const u=new URL(location.href);
-    if(u.searchParams.get('v')!=='45.31'){
-      u.searchParams.set('v','45.31');
+    if(u.searchParams.get('v')!=='45.32'){
+      u.searchParams.set('v','45.32');
       history.replaceState(history.state,'',u.pathname+u.search+u.hash);
     }
   }catch(e){}
-  try{window.TFMS_BUILD=Object.freeze({version:'v45.31 Conflict Cleanup Stable',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'Asset Selection Final Core'});}catch(e){}
+  try{window.TFMS_BUILD=Object.freeze({version:'v45.32 Shell Frame Stable',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'Asset Selection Final Core'});}catch(e){}
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
 [100,500,1200,2500].forEach(ms=>setTimeout(apply,ms));
@@ -19307,7 +19386,7 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
 (function(){
   'use strict';
 
-  const BUILD = 'v45.31 Conflict Cleanup Stable';
+  const BUILD = 'v45.32 Shell Frame Stable';
 
   function assetStore(){
     try{
@@ -19453,7 +19532,7 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
         }
       }
     }catch(e){
-      console.warn('TFMS v45.31 Conflict Cleanup Stable LCC render',e);
+      console.warn('TFMS v45.32 Shell Frame Stable LCC render',e);
     }
     setText('lccRepair',value(a,'repair'));
     setText('lccReplace',value(a,'replace'));
@@ -19513,7 +19592,7 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
     try{
       if(typeof loadAssetForm === 'function') loadAssetForm(key);
     }catch(e){
-      console.warn('TFMS v45.31 Conflict Cleanup Stable form sync',e);
+      console.warn('TFMS v45.32 Shell Frame Stable form sync',e);
     }
 
     /* Photo DB lookup only when the photo tab is open. */
@@ -19580,8 +19659,8 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
     document.title = 'TFMS '+BUILD;
     try{
       const u = new URL(location.href);
-      if(u.searchParams.get('v')!=='45.31'){
-        u.searchParams.set('v','45.31');
+      if(u.searchParams.get('v')!=='45.32'){
+        u.searchParams.set('v','45.32');
         history.replaceState(history.state,'',u.pathname+u.search+u.hash);
       }
     }catch(e){}
@@ -19612,7 +19691,7 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
 <script id="tfms-v4531-conflict-cleanup-js">
 (function(){
   'use strict';
-  const BUILD='v45.31 Conflict Cleanup Stable';
+  const BUILD='v45.32 Shell Frame Stable';
 
   function removeOrphanEscapes(){
     try{
@@ -19634,7 +19713,7 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
     try{
       if(window.TFMS_BUILD){
         window.TFMS_BUILD=Object.freeze({
-          version:'v45.31',
+          version:'v45.32',
           channel:'Recovery Stable',
           buildDate:'2026.08.11',
           title:'Conflict Cleanup Stable'
@@ -19643,8 +19722,8 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
     }catch(e){}
     try{
       const u=new URL(location.href);
-      if(u.searchParams.get('v')!=='45.31'){
-        u.searchParams.set('v','45.31');
+      if(u.searchParams.get('v')!=='45.32'){
+        u.searchParams.set('v','45.32');
         history.replaceState(history.state,'',u.pathname+u.search+u.hash);
       }
     }catch(e){}
@@ -19661,6 +19740,28 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
 
   /* Legacy UI finishes a few delayed startup jobs; one final pass after those jobs only. */
   setTimeout(init,5600);
+})();
+</script>
+
+
+<script id="tfms-v4532-version-sync">
+(function(){
+  function sync(){
+    var label='v45.32 Shell Frame Stable';
+    var badge=document.getElementById('tfmsVersionBadge');
+    if(badge) badge.textContent=label;
+    document.title='TFMS '+label;
+    try{
+      var u=new URL(location.href);
+      if(u.searchParams.get('v')!=='45.32'){
+        u.searchParams.set('v','45.32');
+        history.replaceState(history.state,'',u.pathname+u.search+u.hash);
+      }
+    }catch(e){}
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',sync,{once:true});
+  }else sync();
 })();
 </script>
 
