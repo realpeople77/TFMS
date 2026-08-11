@@ -6,7 +6,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>TFMS v46.2 UI Surgery Phase 1</title>
+<title>TFMS v45.27 Enterprise Daily Stabilization Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -903,7 +903,7 @@ nav.sidebar {
 
 
 <style id="tfms-v4524-cleanup-css">
-/* ===== v46.2 UI Surgery Phase 1 =====
+/* ===== v45.27 Enterprise Daily Stabilization Stable =====
    CSS-only navigation stabilization. No scroll JavaScript. */
 
 /* Actual TFMS sidebar selector. Header is 76px in the current stable UX. */
@@ -1076,7 +1076,7 @@ input,select,textarea,button{
 
 
 <style id="tfms-v4527-stability-css">
-/* ===== v45.28 Daily Stabilization ===== */
+/* ===== v45.27 Daily Stabilization ===== */
 
 /* Fill the entire upper-left column with sidebar navy.
    Menu contents still begin below the 80px header. */
@@ -1140,169 +1140,6 @@ input,select,textarea,button{
 
 /* No animated document scrolling while entering data. */
 html{scroll-behavior:auto!important;}
-</style>
-
-
-<style id="tfms-v4528-statistics-admin-css">
-/* v45.28 — statistics admin dashboard refinement */
-#stats .tfms-v4528-stat-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin:0 0 14px}
-#stats .tfms-v4528-stat-sub{font-size:13px;color:#72809a;margin-top:3px}
-#stats .tfms-v4528-filterbar{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
-#stats .tfms-v4528-filterbar button{height:36px;border:1px solid #cfe0f4;border-radius:10px;background:#fff;padding:0 14px;font-weight:700;color:#24415f}
-#stats .tfms-v4528-filterbar button.primary{background:#1466c3;color:#fff;border-color:#1466c3}
-#stats .tfms-v4528-kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:12px}
-#stats .tfms-v4528-kpi{background:#fff;border:1px solid #d7e3f2;border-radius:14px;padding:15px 16px;min-height:92px;box-shadow:0 4px 16px rgba(23,63,105,.04)}
-#stats .tfms-v4528-kpi .lab{font-size:12px;color:#64748b;font-weight:700}
-#stats .tfms-v4528-kpi .val{font-size:25px;line-height:1.15;color:#082f5d;font-weight:900;margin:7px 0 3px}
-#stats .tfms-v4528-kpi .note{font-size:11px;color:#8491a5}
-#stats .tfms-v4528-grid{display:grid;grid-template-columns:1.35fr .85fr .85fr;gap:12px}
-#stats .tfms-v4528-card{background:#fff;border:1px solid #d7e3f2;border-radius:14px;padding:15px;min-width:0}
-#stats .tfms-v4528-title{display:flex;justify-content:space-between;align-items:center;font-size:15px;font-weight:900;color:#0a315d;margin-bottom:12px}
-#stats .tfms-v4528-bars{height:180px;display:flex;align-items:flex-end;justify-content:space-around;gap:10px;border-bottom:1px solid #dfe7f1;padding:12px 8px 0}
-#stats .tfms-v4528-barcol{height:100%;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:5px;font-size:11px;color:#64748b}
-#stats .tfms-v4528-bar{width:34px;min-height:5px;border-radius:8px 8px 2px 2px;background:linear-gradient(#2f82e9,#1255b7)}
-#stats .tfms-v4528-donut{width:145px;height:145px;border-radius:50%;margin:7px auto;background:conic-gradient(#1976d2 0 66%,#29b68b 66% 100%);display:grid;place-items:center}
-#stats .tfms-v4528-donut:after{content:"총 3건";width:92px;height:92px;border-radius:50%;background:#fff;display:grid;place-items:center;font-weight:900;color:#153b66}
-#stats .tfms-v4528-legend{font-size:12px;line-height:1.9;color:#42566f}
-#stats .tfms-v4528-money{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-#stats .tfms-v4528-money>div{border-radius:12px;background:#f7faff;padding:12px;min-height:85px}
-#stats .tfms-v4528-money b{display:block;font-size:20px;color:#0b3768;margin-top:10px}
-#stats .tfms-v4528-progress .row{display:grid;grid-template-columns:62px 1fr 60px;gap:8px;align-items:center;margin:13px 0;font-size:12px}
-#stats .tfms-v4528-track{height:9px;background:#edf2f8;border-radius:9px;overflow:hidden}
-#stats .tfms-v4528-fill{height:100%;background:#1976d2;border-radius:9px}
-#stats .tfms-v4528-bottom{display:grid;grid-template-columns:1.15fr 1fr 1fr;gap:12px;margin-top:12px}
-#stats .tfms-v4528-table{width:100%;border-collapse:collapse;font-size:11px}
-#stats .tfms-v4528-table th{background:#f4f7fb;color:#516177;text-align:left;padding:9px}
-#stats .tfms-v4528-table td{padding:10px 9px;border-bottom:1px solid #edf1f6;color:#334155}
-#stats .tfms-v4528-summary{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:12px}
-#stats .tfms-v4528-summary>div{background:#fff;border:1px solid #d7e3f2;border-radius:12px;padding:12px;text-align:center;font-size:11px;color:#64748b}
-#stats .tfms-v4528-summary b{display:block;color:#0a3769;font-size:18px;margin-top:4px}
-#stats .tfms-v4528-brand{margin-top:auto;padding:26px 16px 22px;text-align:center;color:#fff}
-#stats .tfms-v4528-brand .logo{font-size:21px;font-weight:900;letter-spacing:-1px}
-#stats .tfms-v4528-brand .corp{font-size:10px;opacity:.72;margin-top:5px}
-@media(max-width:1200px){
- #stats .tfms-v4528-kpis{grid-template-columns:repeat(3,1fr)}
- #stats .tfms-v4528-grid{grid-template-columns:1fr 1fr}
- #stats .tfms-v4528-grid>.wide{grid-column:1/-1}
- #stats .tfms-v4528-bottom{grid-template-columns:1fr}
-}
-@media(max-width:760px){
- #stats .tfms-v4528-kpis,#stats .tfms-v4528-grid,#stats .tfms-v4528-money,#stats .tfms-v4528-summary{grid-template-columns:1fr}
-}
-</style>
-
-
-<style id="tfms-v462-surgery-css">
-:root{
- --v46-navy:#0b3f73;--v46-blue:#1769d2;--v46-bg:#f3f7fb;--v46-card:#fff;
- --v46-line:#dbe5f1;--v46-text:#0d315c;--v46-muted:#72839a;
- --v46-shadow:0 8px 26px rgba(21,54,94,.055);
-}
-body{background:var(--v46-bg)!important}
-#appHeader .top{background:linear-gradient(90deg,#082f5d,#0b447b)!important}
-#appHeader nav{background:linear-gradient(180deg,#0d4479,#073662)!important}
-#appHeader nav .nav{border-radius:10px!important;margin:3px 8px!important}
-#appHeader nav .nav.active{background:linear-gradient(90deg,#1769d2,#1978d6)!important}
-.page{max-width:1680px!important;margin:0 auto!important;padding:18px 20px 36px!important}
-
-.v46-mast{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin:0 0 14px}
-.v46-mast-left{display:flex;align-items:center;gap:12px}
-.v46-mast-ico{width:50px;height:50px;border-radius:14px;display:grid;place-items:center;
- background:linear-gradient(145deg,#1aa7ad,#1769d2);color:#fff;font-size:23px;
- box-shadow:0 8px 20px rgba(20,103,190,.16)}
-.v46-mast h1{margin:0;font-size:28px;letter-spacing:-1.2px;color:var(--v46-text);font-weight:950}
-.v46-mast p{margin:4px 0 0;color:var(--v46-muted);font-size:12px}
-.v46-tools{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
-.v46-chip,.v46-btn{height:38px;padding:0 14px;border:1px solid #cbdced;border-radius:10px;background:#fff;
- color:#21466e;font-weight:800;display:inline-flex;align-items:center;justify-content:center}
-.v46-btn.primary{background:linear-gradient(90deg,#1769d2,#13959e);border-color:#1769d2;color:#fff}
-
-.v46-card{background:#fff;border:1px solid var(--v46-line);border-radius:15px;box-shadow:var(--v46-shadow)}
-.v46-card-head{padding:14px 16px 10px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.v46-card-head h2{margin:0;font-size:16px;color:#0b315c;font-weight:900}
-.v46-card-body{padding:0 16px 16px}
-.v46-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#10a5a6;margin-right:7px}
-
-/* Dashboard */
-#dashboard .v451-dash-head{display:none!important}
-#dashboard .v451-kpi-grid{display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:10px!important;margin-bottom:12px!important}
-#dashboard .v451-kpi{background:#fff!important;border:1px solid var(--v46-line)!important;border-radius:14px!important;
- min-height:104px!important;box-shadow:var(--v46-shadow)!important;padding:14px!important}
-#dashboard .v451-dashboard-grid{display:grid!important;grid-template-columns:1.05fr 1.35fr 1fr!important;gap:12px!important}
-#dashboard .v451-card{background:#fff!important;border:1px solid var(--v46-line)!important;border-radius:14px!important;box-shadow:var(--v46-shadow)!important}
-#dashboard .v451-facility-card{grid-row:span 2!important}
-#dashboard .v451-recent-card{grid-row:span 2!important}
-#dashboard .v451-flow-card{grid-column:1/-1!important}
-
-/* Today */
-#today>.title-row,#today>.panel{display:none!important}
-#today .v46-today-shell{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
-.v46-mini-kpi{padding:14px 15px;min-height:90px}
-.v46-mini-kpi span{display:block;color:#718198;font-size:11px;font-weight:800}
-.v46-mini-kpi strong{display:block;color:#0b315c;font-size:25px;margin-top:7px}
-#today .v46-today-main{grid-column:1/-1}
-#today .v46-today-table{overflow:auto;border-radius:12px;border:1px solid #e0e8f2}
-#today .v46-today-table table{margin:0!important}
-#today table thead th{background:#f2f6fb!important;color:#4d6077!important;padding:11px!important}
-#today table tbody td{padding:12px 11px!important;border-bottom:1px solid #edf2f7!important}
-
-/* Register */
-#register>.title-row,#register>.v459-register-shell{display:none!important}
-#register .v46-register-grid{display:grid;grid-template-columns:220px minmax(0,1fr);gap:12px;align-items:start}
-#register .v46-register-nav{position:sticky;top:94px;padding:10px}
-#register .v46-step{display:flex;gap:10px;padding:12px;border-radius:11px;color:#49627e;font-weight:850;font-size:12px}
-#register .v46-step.active{background:#edf5ff;color:#135eb9}
-#register .v46-step b{width:24px;height:24px;border-radius:50%;background:#edf3fa;display:grid;place-items:center;color:#1769d2}
-#register .v46-register-content{display:grid;gap:12px}
-#register .v46-register-section{padding:15px 16px}
-#register .v46-register-section .section-title{margin:0 0 12px!important}
-#register .v459-form-grid-4{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:10px 12px!important}
-#register .v459-form-grid-2{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px 12px!important}
-#register input,#register select,#register textarea{min-height:42px!important;border-radius:9px!important}
-#register .choice{min-height:38px!important;border-radius:9px!important}
-#register .v46-bottom-actions{display:flex;justify-content:flex-end;gap:8px}
-
-/* History */
-#history>.title-row,#history>.v459-search-panel,#history>.v459-table-panel{display:none!important}
-#history .v46-history-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:12px}
-#history .v46-history-kpi{padding:13px 15px}
-#history .v46-history-kpi span{font-size:11px;color:#718198;font-weight:800}
-#history .v46-history-kpi strong{display:block;font-size:23px;color:#0c315c;margin-top:5px}
-#history .v46-history-filter{padding:14px 15px;margin-bottom:12px}
-#history .v459-search-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:9px!important}
-#history .v459-search-actions{grid-column:1/-1!important;justify-content:flex-end!important}
-#history .v46-history-result{padding:0;overflow:hidden}
-#history .v46-history-result .v459-list-head{padding:14px 15px!important}
-#history .v46-history-result .v459-table-scroll{padding:0 14px 14px}
-
-/* Stats */
-#stats>.title-row,#stats>.panel{display:none!important}
-#stats .tfms-v4528-admin{display:block!important}
-#stats .tfms-v4528-kpis{grid-template-columns:repeat(5,minmax(0,1fr))!important}
-#stats .tfms-v4528-card,#stats .tfms-v4528-kpi{border:1px solid var(--v46-line)!important;box-shadow:var(--v46-shadow)!important}
-
-/* Sidebar brand */
-#tfmsV462Brand{position:fixed;left:18px;bottom:17px;width:190px;text-align:center;color:#fff;z-index:995;pointer-events:none}
-#tfmsV462Brand .symbol{font-size:29px;line-height:1;margin-bottom:6px}
-#tfmsV462Brand strong{display:block;font-size:14px}
-#tfmsV462Brand small{display:block;font-size:8px;opacity:.7;margin-top:3px}
-#tfmsV462Brand em{display:block;font-size:10px;font-style:normal;opacity:.88;margin-top:10px}
-
-.v46-card input,.v46-card select,.v46-card textarea{border:1px solid #cad9ea!important;border-radius:9px!important}
-.v46-card label{color:#173757!important;font-size:12px!important;font-weight:850!important}
-
-@media(max-width:1250px){
- #dashboard .v451-kpi-grid{grid-template-columns:repeat(3,1fr)!important}
- #dashboard .v451-dashboard-grid{grid-template-columns:1fr 1fr!important}
- #register .v46-register-grid{grid-template-columns:1fr!important}
- #register .v46-register-nav{position:static;display:grid;grid-template-columns:repeat(4,1fr)}
- #history .v46-history-kpis{grid-template-columns:repeat(2,1fr)}
-}
-@media(max-width:900px){
- #tfmsV462Brand{display:none}
- #dashboard .v451-dashboard-grid,#today .v46-today-shell,#history .v46-history-kpis{grid-template-columns:1fr!important}
- #register .v459-form-grid-4,#register .v459-form-grid-2,#history .v459-search-grid{grid-template-columns:1fr!important}
-}
 </style>
 
 </head>
@@ -12503,109 +12340,9 @@ document.addEventListener('DOMContentLoaded',function(){
       <div class="dj-sheet ${esc(sheetClass||'')}">${content}</div>
       
 
-<!-- TFMS v46.2 UI Surgery Phase 1 - Data Store Fix
+<!-- TFMS v45.27 Enterprise Daily Stabilization Stable - Data Store Fix
      Equipment UX reads live lexical assetData first; window.assetData is fallback only.
      Login / photo loading / Supabase schema unchanged. -->
-
-<script id="tfms-v4528-statistics-admin-js">
-(function(){
-  const money=n=>(Number(n)||0).toLocaleString('ko-KR')+'원';
-  const wonK=n=>Math.round((Number(n)||0)/1000).toLocaleString('ko-KR')+'천원';
-
-  function getRecords(){
-    try{
-      if(typeof window.tfmsGetMaintenanceRecords==='function') return window.tfmsGetMaintenanceRecords()||[];
-      if(Array.isArray(window.maintenanceRecords)) return window.maintenanceRecords;
-    }catch(e){}
-    return [];
-  }
-  function normalize(r){
-    const d=String(r?.date||r?.work_date||r?.action_date||r?.created_at||'');
-    return {
-      raw:r, date:d, amount:Number(r?.amount||r?.cost||r?.expense||0)||0,
-      field:String(r?.field||r?.category||r?.area||'기타'),
-      dept:String(r?.department||r?.dept||r?.department_name||'기타'),
-      status:String(r?.status||r?.process_status||r?.result||'완료'),
-      facility:String(r?.facility_name||r?.facility||''),
-      title:String(r?.title||r?.content||r?.detail||r?.work_content||'')
-    };
-  }
-  function currentMonthKey(){
-    const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
-  }
-  function render(){
-    const page=document.getElementById('stats');
-    if(!page || page.dataset.v4528==='1') return;
-    page.dataset.v4528='1';
-
-    const original=[...page.children];
-    original.forEach(x=>x.style.display='none');
-
-    const rows=getRecords().map(normalize);
-    const mk=currentMonthKey();
-    const month=rows.filter(x=>x.date.slice(0,7).replaceAll('.','-')===mk);
-    const monthAmt=month.reduce((a,b)=>a+b.amount,0);
-    const totalAmt=rows.reduce((a,b)=>a+b.amount,0);
-    const incomplete=rows.filter(x=>/진행|미조치|보완|추가/.test(x.status)).length;
-    const evidence=rows.filter(x=>x.raw?.photo_url||x.raw?.photos?.length||x.raw?.attachment_url||x.raw?.attachments?.length).length;
-    const done=rows.filter(x=>/완료|정상/.test(x.status)).length;
-
-    const months=[];
-    const now=new Date();
-    for(let i=5;i>=0;i--){
-      const d=new Date(now.getFullYear(),now.getMonth()-i,1);
-      const key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
-      const rr=rows.filter(x=>x.date.slice(0,7).replaceAll('.','-')===key);
-      months.push({label:String(d.getMonth()+1).padStart(2,'0')+'월',count:rr.length,amt:rr.reduce((a,b)=>a+b.amount,0)});
-    }
-    const maxCount=Math.max(1,...months.map(x=>x.count));
-
-    const wrap=document.createElement('div');
-    wrap.className='tfms-v4528-admin';
-    wrap.innerHTML=`
-      <div class="tfms-v4528-stat-head">
-        <div><div style="font-size:28px;font-weight:900;color:#082f5d">통계현황</div><div class="tfms-v4528-stat-sub">시설 유지관리 현황을 한눈에 확인합니다.</div></div>
-        <div class="tfms-v4528-filterbar"><button>${new Date().getFullYear()}. ${String(new Date().getMonth()+1).padStart(2,'0')}.</button><button>전체 시설</button><button>전체 부서</button><button class="primary" onclick="location.reload()">새로고침</button></div>
-      </div>
-      <div class="tfms-v4528-kpis">
-        <div class="tfms-v4528-kpi"><div class="lab">금월 등록</div><div class="val">${month.length}건</div><div class="note">현재 월 기준</div></div>
-        <div class="tfms-v4528-kpi"><div class="lab">금월 집행</div><div class="val">${wonK(monthAmt)}</div><div class="note">현재 월 집행금액</div></div>
-        <div class="tfms-v4528-kpi"><div class="lab">누적 집행</div><div class="val">${wonK(totalAmt)}</div><div class="note">전체 유지관리 누적</div></div>
-        <div class="tfms-v4528-kpi"><div class="lab">미조치·진행중</div><div class="val">${incomplete}건</div><div class="note">우선 확인 필요</div></div>
-        <div class="tfms-v4528-kpi"><div class="lab">증빙자료 포함</div><div class="val">${evidence}건</div><div class="note">사진·문서 첨부</div></div>
-      </div>
-      <div class="tfms-v4528-grid">
-        <div class="tfms-v4528-card wide"><div class="tfms-v4528-title"><span>월별 등록 및 집행 추이</span><small>최근 6개월</small></div><div class="tfms-v4528-bars">${months.map(x=>`<div class="tfms-v4528-barcol"><b>${x.count}</b><div class="tfms-v4528-bar" style="height:${Math.max(5,x.count/maxCount*120)}px"></div><span>${x.label}</span></div>`).join('')}</div></div>
-        <div class="tfms-v4528-card"><div class="tfms-v4528-title"><span>분야별 현황</span></div><div class="tfms-v4528-donut"></div><div class="tfms-v4528-legend">● 기계 · 유지관리 핵심 분야<br>● 전기 · 전기설비 분야<br>● 기타 · 수질·건축·안전 등</div></div>
-        <div class="tfms-v4528-card"><div class="tfms-v4528-title"><span>부서별 현황</span></div><div class="tfms-v4528-donut"></div><div class="tfms-v4528-legend">● 체육운영팀<br>● 관광운영팀<br>● 복지주택팀<br>● 안전·시설운영팀</div></div>
-        <div class="tfms-v4528-card wide"><div class="tfms-v4528-title"><span>집행 금액 현황</span></div><div class="tfms-v4528-money"><div>금월 집행<b>${wonK(monthAmt)}</b></div><div>누적 집행<b>${wonK(totalAmt)}</b></div><div>평균 건당<b>${wonK(rows.length?totalAmt/rows.length:0)}</b></div><div>전체 등록<b>${rows.length}건</b></div></div></div>
-        <div class="tfms-v4528-card"><div class="tfms-v4528-title"><span>처리상태 현황</span></div><div class="tfms-v4528-progress"><div class="row"><span>완료</span><div class="tfms-v4528-track"><div class="tfms-v4528-fill" style="width:${rows.length?done/rows.length*100:0}%"></div></div><b>${done}건</b></div><div class="row"><span>진행·미조치</span><div class="tfms-v4528-track"><div class="tfms-v4528-fill" style="width:${rows.length?incomplete/rows.length*100:0}%"></div></div><b>${incomplete}건</b></div></div></div>
-        <div class="tfms-v4528-card"><div class="tfms-v4528-title"><span>유형별 현황</span></div><div class="tfms-v4528-progress">${['예방정비','점검','보수','교체','민원'].map(k=>{let n=rows.filter(x=>String(x.raw?.maintenance_type||x.raw?.type||'').includes(k)).length;return `<div class="row"><span>${k}</span><div class="tfms-v4528-track"><div class="tfms-v4528-fill" style="width:${rows.length?n/rows.length*100:0}%"></div></div><b>${n}건</b></div>`}).join('')}</div></div>
-      </div>
-      <div class="tfms-v4528-bottom">
-        <div class="tfms-v4528-card"><div class="tfms-v4528-title"><span>최근 등록 내역</span><small>전체 보기 ›</small></div><table class="tfms-v4528-table"><thead><tr><th>시설명</th><th>업무명</th><th>분야</th><th>상태</th></tr></thead><tbody>${rows.slice(-4).reverse().map(x=>`<tr><td>${x.facility||'-'}</td><td>${x.title||'-'}</td><td>${x.field}</td><td>${x.status}</td></tr>`).join('')||'<tr><td colspan="4">등록 내역이 없습니다.</td></tr>'}</tbody></table></div>
-        <div class="tfms-v4528-card"><div class="tfms-v4528-title"><span>최근 미조치 내역</span><small>전체 보기 ›</small></div><table class="tfms-v4528-table"><tbody>${rows.filter(x=>/진행|미조치|보완|추가/.test(x.status)).slice(-4).reverse().map(x=>`<tr><td>${x.facility||'-'}</td><td>${x.title||'-'}</td><td>${x.status}</td></tr>`).join('')||'<tr><td>미조치 내역이 없습니다.</td></tr>'}</tbody></table></div>
-        <div class="tfms-v4528-card"><div class="tfms-v4528-title"><span>30일 이상 장기 미완료</span><small>관리 대상</small></div><div style="padding:28px 8px;text-align:center;color:#8794a8">장기 미완료 항목을 집중 관리합니다.</div></div>
-      </div>
-      <div class="tfms-v4528-summary"><div>전체 시설<b>17개</b></div><div>전체 등록(누적)<b>${rows.length}건</b></div><div>전체 집행(누적)<b>${wonK(totalAmt)}</b></div><div>전체 완료<b>${done}건</b></div><div>진행·미조치<b>${incomplete}건</b></div><div>증빙자료<b>${evidence}건</b></div></div>
-    `;
-    page.appendChild(wrap);
-
-    const nav=document.querySelector('#appHeader nav');
-    if(nav && !nav.querySelector('.tfms-v4528-brand')){
-      const brand=document.createElement('div');
-      brand.className='tfms-v4528-brand';
-      brand.innerHTML='<div class="logo">태백시시설관리공단</div><div class="corp">TAEBAEK FACILITY MANAGEMENT CORPORATION</div><div style="font-size:12px;margin-top:16px;opacity:.85">시민중심 · 안전중심 · 성장중심</div>';
-      nav.appendChild(brand);
-      nav.style.display='flex'; nav.style.flexDirection='column';
-    }
-  }
-  function boot(){ render(); }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot,{once:true}); else boot();
-  document.addEventListener('click',e=>{ if(e.target.closest?.('[data-page="stats"],[onclick*="stats"]')) setTimeout(render,80); },true);
-})();
-</script>
-
 </body></html>`);
     win.document.close();
     setTimeout(()=>win.focus(),200);
@@ -18659,7 +18396,7 @@ document.readyState==='loading'?document.addEventListener('DOMContentLoaded',upd
  const oldRender=window.renderAssetList;if(typeof oldRender==='function')window.renderAssetList=function(){const r=oldRender.apply(this,arguments);setTimeout(()=>{populateFilters();filterList();refresh()},40);return r};
  const oldSave=window.saveAsset;if(typeof oldSave==='function')window.saveAsset=function(){const r=oldSave.apply(this,arguments);setTimeout(()=>{refresh();closeAssetRegisterV4431()},450);return r};
  const oldNav=window.navTo;if(typeof oldNav==='function')window.navTo=function(id){const r=oldNav.apply(this,arguments);if(id==='equipment')setTimeout(()=>{ensureShell();movePhotos();refresh()},140);return r};
- function brand(){const small=document.querySelector('#appHeader .logo-title small');if(small)small.textContent='태백시시설관리공단 시설관리시스템';const b=$('tfmsVersionBadge');if(b)b.textContent='v46.2 UI Surgery Phase 1';document.title='TFMS v46.2 UI Surgery Phase 1';window.TFMS_BUILD=Object.freeze({version:'v45.5',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});}
+ function brand(){const small=document.querySelector('#appHeader .logo-title small');if(small)small.textContent='태백시시설관리공단 시설관리시스템';const b=$('tfmsVersionBadge');if(b)b.textContent='v45.27 Enterprise Daily Stabilization Stable';document.title='TFMS v45.27 Enterprise Daily Stabilization Stable';window.TFMS_BUILD=Object.freeze({version:'v45.5',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});}
  function init(){brand();ensureShell();movePhotos();refresh();[400,1000,2200].forEach(ms=>setTimeout(()=>{brand();ensureShell();movePhotos();refresh()},ms))}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
@@ -18698,8 +18435,8 @@ document.readyState==='loading'?document.addEventListener('DOMContentLoaded',upd
    try{const d=window.assetData||assetData||{};return d[selectedKey()]||null}catch(e){return null}
  }
  function syncVersion(){
-   const b=$('tfmsVersionBadge'); if(b)b.textContent='v46.2 UI Surgery Phase 1';
-   document.title='TFMS v46.2 UI Surgery Phase 1';
+   const b=$('tfmsVersionBadge'); if(b)b.textContent='v45.27 Enterprise Daily Stabilization Stable';
+   document.title='TFMS v45.27 Enterprise Daily Stabilization Stable';
    window.TFMS_BUILD=Object.freeze({version:'v45.5',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});
  }
  function cleanupLegacyControls(){
@@ -18845,7 +18582,7 @@ body{background:#f4f8fc!important}
 <script id="tfms-v4433-equipment-ux-stabilize-controller">
 (function(){
 'use strict';
-const BUILD='v46.2 UI Surgery Phase 1';
+const BUILD='v45.27 Enterprise Daily Stabilization Stable';
 const $=id=>document.getElementById(id);
 const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 function data(){try{if(typeof assetData!=='undefined'&&assetData&&Object.keys(assetData).length)return assetData;if(window.assetData)return window.assetData;return {}}catch(e){return {}}}
@@ -19010,9 +18747,9 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <script id="tfms-v459-thumbnail-ux-controller">
 (function(){
 'use strict';
-const VERSION='v46.2 UI Surgery Phase 1';
+const VERSION='v45.27 Enterprise Daily Stabilization Stable';
 const $=id=>document.getElementById(id);
-function brand(){const b=$('tfmsVersionBadge');if(b)b.textContent=VERSION;document.title='TFMS '+VERSION;try{window.TFMS_BUILD=Object.freeze({version:'v45.28',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'UI Fixes & Weather UX'});}catch(e){}try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.28'){u.searchParams.set('v','45.28');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
+function brand(){const b=$('tfmsVersionBadge');if(b)b.textContent=VERSION;document.title='TFMS '+VERSION;try{window.TFMS_BUILD=Object.freeze({version:'v45.27',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'UI Fixes & Weather UX'});}catch(e){}try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.27'){u.searchParams.set('v','45.27');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
 window.navToFireQrV459=function(){try{window.navToFireV420?.();setTimeout(()=>{const p=[...document.querySelectorAll('#fireMonthly .section-title')].find(x=>/소화기 월간점검 목록/.test(x.textContent||''));p?.scrollIntoView({behavior:'smooth',block:'start'});},180)}catch(e){window.navToFireV420?.();}};
 window.setDailyWeatherV4510=function(value,btn){const sel=$('dailyWeather');if(sel)sel.value=value;document.querySelectorAll('#v459GeneralDaily .v4510-weather-picks button').forEach(b=>b.classList.toggle('active',b===btn));};
 function fillGeneralFacility(){const sel=$('dailyFacility');if(!sel)return;let names=[];try{const s=JSON.parse(sessionStorage.getItem('tfmsSession')||'{}');const dept=s.dept||s.department||'';if(typeof facilities!=='undefined'&&facilities[dept])names=facilities[dept];else if(typeof facilities!=='undefined')names=Object.values(facilities).flat();}catch(e){}if(!names.length)names=['태백국민체육센터','장성국민체육센터'];const old=sel.value;sel.innerHTML=[...new Set(names)].map(n=>`<option>${n}</option>`).join('');if(old&&[...sel.options].some(o=>o.value===old))sel.value=old;}
@@ -19060,7 +18797,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <script id="tfms-v4511-ui-fix-controller">
 (function(){
 'use strict';
-const VERSION='v46.2 UI Surgery Phase 1';
+const VERSION='v45.27 Enterprise Daily Stabilization Stable';
 const VERSION_PARAM='45.11';
 function syncVersion(){
   const b=document.getElementById('tfmsVersionBadge'); if(b&&b.textContent!==VERSION)b.textContent=VERSION;
@@ -19191,9 +18928,9 @@ body{background:var(--v4513-bg)}
 const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
 function safe(fn){try{fn();}catch(e){console.warn('[TFMS v45.13 UX]',e);}}
 function syncVersion(){
-  document.title='TFMS v46.2 UI Surgery Phase 1';
+  document.title='TFMS v45.27 Enterprise Daily Stabilization Stable';
   $$('*').filter(el=>el.children.length===0 && /v45\.13 Enterprise Stable/.test(el.textContent||'')).forEach(()=>{});
-  const u=new URL(location.href); if(u.searchParams.get('v')!=='45.28'){u.searchParams.set('v','45.28'); history.replaceState(null,'',u.pathname+u.search+u.hash);}
+  const u=new URL(location.href); if(u.searchParams.get('v')!=='45.27'){u.searchParams.set('v','45.27'); history.replaceState(null,'',u.pathname+u.search+u.hash);}
 }
 function registerNav(){
   const shell=$('#register .v459-register-shell'); if(!shell||shell.querySelector('.v4513-register-nav')) return;
@@ -19303,7 +19040,7 @@ setTimeout(init,1200);
 <script id="tfms-v4514-compact-fix-script">
 (function(){
 'use strict';
-const VERSION='v46.2 UI Surgery Phase 1';
+const VERSION='v45.27 Enterprise Daily Stabilization Stable';
 function markRegisterFields(){
   document.querySelectorAll('#register .v459-form-grid-4 .field').forEach(function(f){
     const t=(f.querySelector('label')?.textContent||'').replace(/\s+/g,' ').trim();
@@ -19331,12 +19068,12 @@ function brand(){
   document.title='TFMS '+VERSION;
   try{
     const u=new URL(location.href);
-    if(u.searchParams.get('v')!=='45.28'){
-      u.searchParams.set('v','45.28');
+    if(u.searchParams.get('v')!=='45.27'){
+      u.searchParams.set('v','45.27');
       history.replaceState(history.state,'',u.pathname+u.search+u.hash);
     }
   }catch(e){}
-  try{window.TFMS_BUILD=Object.freeze({version:'v45.28',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'UX Compact Fix'});}catch(e){}
+  try{window.TFMS_BUILD=Object.freeze({version:'v45.27',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'UX Compact Fix'});}catch(e){}
 }
 function apply(){markRegisterFields();dedupeWeather();brand();}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
@@ -19383,7 +19120,7 @@ if(typeof oldShowPage==='function'){
 <script id="tfms-v4515-register-fullwidth-script">
 (function(){
 'use strict';
-const VERSION='v46.2 UI Surgery Phase 1';
+const VERSION='v45.27 Enterprise Daily Stabilization Stable';
 function apply(){
   const shell=document.querySelector('#register .v459-register-shell');
   if(shell){
@@ -19395,12 +19132,12 @@ function apply(){
   document.title='TFMS '+VERSION;
   try{
     const u=new URL(location.href);
-    if(u.searchParams.get('v')!=='45.28'){
-      u.searchParams.set('v','45.28');
+    if(u.searchParams.get('v')!=='45.27'){
+      u.searchParams.set('v','45.27');
       history.replaceState(history.state,'',u.pathname+u.search+u.hash);
     }
   }catch(e){}
-  try{window.TFMS_BUILD=Object.freeze({version:'v45.28',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'Asset Selection Final Core'});}catch(e){}
+  try{window.TFMS_BUILD=Object.freeze({version:'v45.27',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'Asset Selection Final Core'});}catch(e){}
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
 [100,500,1200,2500].forEach(ms=>setTimeout(apply,ms));
@@ -19617,7 +19354,7 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
 (function(){
   'use strict';
 
-  const BUILD = 'v46.2 UI Surgery Phase 1';
+  const BUILD = 'v45.27 Enterprise Daily Stabilization Stable';
 
   function assetStore(){
     try{
@@ -19763,7 +19500,7 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
         }
       }
     }catch(e){
-      console.warn('TFMS v46.2 LCC render',e);
+      console.warn('TFMS v45.27 LCC render',e);
     }
     setText('lccRepair',value(a,'repair'));
     setText('lccReplace',value(a,'replace'));
@@ -19821,7 +19558,7 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
     try{
       if(typeof loadAssetForm === 'function') loadAssetForm(key);
     }catch(e){
-      console.warn('TFMS v46.2 form sync',e);
+      console.warn('TFMS v45.27 form sync',e);
     }
 
     /* Photo DB lookup only when the photo tab is open. */
@@ -19890,7 +19627,7 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
     try{
       const u = new URL(location.href);
       if(u.searchParams.get('v') !== '45.25'){
-        u.searchParams.set('v','45.28');
+        u.searchParams.set('v','45.27');
         history.replaceState(history.state,'',u.pathname+u.search+u.hash);
       }
     }catch(e){}
@@ -19919,7 +19656,7 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
 <script id="tfms-v4526-daily-stabilization-js">
 (function(){
   'use strict';
-  const BUILD='v46.2 UI Surgery Phase 1';
+  const BUILD='v45.27 Enterprise Daily Stabilization Stable';
 
   function stabilizeRegister(){
     const dept=document.querySelector('#register #dept');
@@ -19939,8 +19676,8 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
     document.title='TFMS '+BUILD;
     try{
       const u=new URL(location.href);
-      if(u.searchParams.get('v')!=='45.28'){
-        u.searchParams.set('v','45.28');
+      if(u.searchParams.get('v')!=='45.27'){
+        u.searchParams.set('v','45.27');
         history.replaceState(history.state,'',u.pathname+u.search+u.hash);
       }
     }catch(e){}
@@ -19967,7 +19704,7 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
 <script id="tfms-v4527-stability-js">
 (function(){
   'use strict';
-  const BUILD='v46.2 UI Surgery Phase 1';
+  const BUILD='v45.27 Enterprise Daily Stabilization Stable';
 
   document.addEventListener('focusin',function(e){
     const el=e.target;
@@ -19996,8 +19733,8 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
 
     try{
       const u=new URL(location.href);
-      if(u.searchParams.get('v')!=='45.28'){
-        u.searchParams.set('v','45.28');
+      if(u.searchParams.get('v')!=='45.27'){
+        u.searchParams.set('v','45.27');
         history.replaceState(history.state,'',u.pathname+u.search+u.hash);
       }
     }catch(e){}
@@ -20009,169 +19746,6 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
 
   /* one late pass only, after legacy startup timers */
   setTimeout(stabilize,6500);
-})();
-</script>
-
-
-<script id="tfms-v462-surgery-js">
-(function(){
-'use strict';
-const BUILD='v46.2 UI Surgery Phase 1';
-
-function mast(icon,title,desc,toolsHtml){
- const el=document.createElement('div');
- el.className='v46-mast';
- el.innerHTML=
-   '<div class="v46-mast-left"><div class="v46-mast-ico">'+icon+'</div><div><h1>'+title+'</h1><p>'+desc+'</p></div></div>'+
-   '<div class="v46-tools">'+(toolsHtml||'')+'</div>';
- return el;
-}
-function card(title,bodyClass){
- const el=document.createElement('div');
- el.className='v46-card '+(bodyClass||'');
- el.innerHTML='<div class="v46-card-head"><h2><span class="v46-dot"></span>'+title+'</h2></div><div class="v46-card-body"></div>';
- return el;
-}
-function brand(){
- if(document.getElementById('tfmsV462Brand'))return;
- if(!document.querySelector('#appHeader nav'))return;
- const b=document.createElement('div');
- b.id='tfmsV462Brand';
- b.innerHTML='<div class="symbol">〽</div><strong>태백시시설관리공단</strong><small>TAEBAEK FACILITY MANAGEMENT CORP.</small><em>시민중심 · 안전중심 · 성장중심</em>';
- document.body.appendChild(b);
-}
-function buildDashboard(){
- const p=document.getElementById('dashboard');
- if(!p||p.dataset.v462)return;
- p.dataset.v462='1';
- const tools='<span class="v46-chip">전체 시설 기준</span><button class="v46-btn primary" onclick="renderDashboardData()">↻ 새로고침</button>';
- p.insertBefore(mast('▦','대시보드','시설 운영과 유지관리 핵심 현황을 한눈에 확인합니다.',tools),p.firstChild);
-}
-function buildToday(){
- const p=document.getElementById('today');
- if(!p||p.dataset.v462)return;
- p.dataset.v462='1';
- p.appendChild(mast('☑','오늘의 업무','점검주기에서 생성된 오늘의 할 일을 확인하고 처리합니다.',
-   '<button class="v46-btn" onclick="navTo(&quot;cycle&quot;)">점검주기 관리</button>'));
- const shell=document.createElement('div');
- shell.className='v46-today-shell';
- shell.innerHTML=
-   '<div class="v46-card v46-mini-kpi"><span>오늘 업무</span><strong id="v46TodayTotal">-</strong></div>'+
-   '<div class="v46-card v46-mini-kpi"><span>예정</span><strong id="v46TodayPlan">-</strong></div>'+
-   '<div class="v46-card v46-mini-kpi"><span>진행중</span><strong id="v46TodayDoing">-</strong></div>'+
-   '<div class="v46-card v46-mini-kpi"><span>완료</span><strong id="v46TodayDone">-</strong></div>';
- const main=card('오늘 해야 하는 업무','v46-today-main');
- main.querySelector('.v46-card-head').insertAdjacentHTML('beforeend',
-   '<button class="v46-btn" onclick="navTo(&quot;cycle&quot;)">점검주기 설정</button>');
- const body=main.querySelector('.v46-card-body');
- body.classList.add('v46-today-table');
- const old=p.querySelector('table');
- if(old)body.appendChild(old);
- shell.appendChild(main);
- p.appendChild(shell);
-}
-function buildRegister(){
- const p=document.getElementById('register');
- if(!p||p.dataset.v462)return;
- p.dataset.v462='1';
- p.appendChild(mast('📝','유지관리 등록','시설 유지관리 이력을 표준 양식으로 등록합니다.',
-   '<button class="v46-btn" onclick="resetRegisterForm()">초기화</button><button class="v46-btn primary" onclick="addRecordFromForm()">등록</button>'));
- const grid=document.createElement('div');
- grid.className='v46-register-grid';
- const nav=document.createElement('div');
- nav.className='v46-card v46-register-nav';
- nav.innerHTML=
-   '<div class="v46-step active"><b>1</b><span>기본정보</span></div>'+
-   '<div class="v46-step"><b>2</b><span>유지관리 내용</span></div>'+
-   '<div class="v46-step"><b>3</b><span>경영평가 연계</span></div>'+
-   '<div class="v46-step"><b>4</b><span>증빙·사진</span></div>';
- const content=document.createElement('div');
- content.className='v46-register-content';
- const oldPanels=[...p.querySelectorAll('.v459-register-shell>.panel')];
- oldPanels.forEach(function(op){
-   op.style.display='block';
-   op.classList.add('v46-card','v46-register-section');
-   content.appendChild(op);
- });
- const actions=document.createElement('div');
- actions.className='v46-bottom-actions';
- actions.innerHTML='<button class="v46-btn" onclick="resetRegisterForm()">초기화</button><button class="v46-btn primary" onclick="addRecordFromForm()">등록</button>';
- content.appendChild(actions);
- grid.appendChild(nav);
- grid.appendChild(content);
- p.appendChild(grid);
-}
-function buildHistory(){
- const p=document.getElementById('history');
- if(!p||p.dataset.v462)return;
- p.dataset.v462='1';
- p.appendChild(mast('⌕','유지관리 조회','등록 이력을 조건별로 빠르게 찾고 상태를 확인합니다.',
-   '<button class="v46-btn" onclick="navTo(&quot;excel&quot;)">엑셀 다운로드</button>'));
- const k=document.createElement('div');
- k.className='v46-history-kpis';
- k.innerHTML=
-   '<div class="v46-card v46-history-kpi"><span>전체 등록</span><strong>누적</strong></div>'+
-   '<div class="v46-card v46-history-kpi"><span>조치완료</span><strong>현황</strong></div>'+
-   '<div class="v46-card v46-history-kpi"><span>진행·미조치</span><strong>집중관리</strong></div>'+
-   '<div class="v46-card v46-history-kpi"><span>증빙자료</span><strong>확인</strong></div>';
- p.appendChild(k);
- const oldSearch=p.querySelector('.v459-search-panel');
- if(oldSearch){
-   oldSearch.style.display='block';
-   oldSearch.classList.add('v46-card','v46-history-filter');
-   p.appendChild(oldSearch);
- }
- const oldTable=p.querySelector('.v459-table-panel');
- if(oldTable){
-   oldTable.style.display='block';
-   oldTable.classList.add('v46-card','v46-history-result');
-   p.appendChild(oldTable);
- }
-}
-function buildStats(){
- const p=document.getElementById('stats');
- if(!p||p.dataset.v462)return;
- p.dataset.v462='1';
- p.insertBefore(mast('▥','통계현황','관리자 관점에서 유지관리·예산·처리상태를 종합 분석합니다.',
-   '<span class="v46-chip">관리자 분석 대시보드</span>'),p.firstChild);
-}
-function syncVersion(){
- const b=document.getElementById('tfmsVersionBadge');
- if(b)b.textContent=BUILD;
- document.title='TFMS '+BUILD;
- try{
-   const u=new URL(location.href);
-   if(u.searchParams.get('v')!=='46.2'){
-     u.searchParams.set('v','46.2');
-     history.replaceState(history.state,'',u.pathname+u.search+u.hash);
-   }
- }catch(e){}
-}
-function updateTodayKpis(){
- const rows=[...document.querySelectorAll('#todayBody tr')].filter(function(r){return r.cells.length>1});
- const text=rows.map(function(r){return r.textContent||''});
- function set(id,v){const e=document.getElementById(id);if(e)e.textContent=v+'건'}
- set('v46TodayTotal',rows.length);
- set('v46TodayPlan',text.filter(function(x){return /예정/.test(x)}).length);
- set('v46TodayDoing',text.filter(function(x){return /진행/.test(x)}).length);
- set('v46TodayDone',text.filter(function(x){return /완료/.test(x)}).length);
-}
-function init(){
- brand();
- syncVersion();
- buildDashboard();
- buildToday();
- buildRegister();
- buildHistory();
- buildStats();
- setTimeout(updateTodayKpis,250);
-}
-if(document.readyState==='loading'){
- document.addEventListener('DOMContentLoaded',init,{once:true});
-}else{
- init();
-}
-setTimeout(init,5500);
 })();
 </script>
 
