@@ -19945,4 +19945,33 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 })();
 </script>
 
+
+
+<!-- =========================================================
+     TFMS v45.37 Fire Radio Spacing Safe
+     Fire monthly result selector spacing only.
+     No DB, SQL, save, history, print or QR business logic changed.
+     ========================================================= -->
+<style id="tfms-v4537-fire-radio-spacing-safe">
+#fireMonthly .fire-result{gap:30px!important;padding-left:4px!important;}
+#fireMonthly .fire-result label{gap:8px!important;padding:3px 2px!important;cursor:pointer!important;}
+#fireMonthly .fire-result input[type="radio"]{width:16px!important;height:16px!important;}
+@media(max-width:1100px){#fireMonthly .fire-result{gap:24px!important;}}
+@media(max-width:900px){#fireMonthly .fire-result{gap:28px!important;padding-left:0!important;}}
+</style>
+<script id="tfms-v4537-version-sync">
+(function(){
+  'use strict';
+  var BUILD='v45.37 Fire Radio Spacing Safe';
+  function sync(){
+    var badge=document.getElementById('tfmsVersionBadge'); if(badge) badge.textContent=BUILD;
+    document.title='TFMS '+BUILD;
+    try{window.TFMS_BUILD=Object.freeze({version:'v45.37',channel:'Fire Radio Spacing Safe',buildDate:'2026.08.11',title:'Fire Radio Spacing Safe'});}catch(e){}
+    try{var u=new URL(location.href);if(u.searchParams.get('v')!=='45.37'){u.searchParams.set('v','45.37');history.replaceState(history.state,'',u.pathname+u.search+u.hash);}}catch(e){}
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',sync,{once:true}); else sync();
+  setTimeout(sync,7400);
+})();
+</script>
+
 </body></html>
