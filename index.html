@@ -6,7 +6,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>TFMS v46.0 UI System Stable</title>
+<title>TFMS v46.2 UI Surgery Phase 1</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -903,7 +903,7 @@ nav.sidebar {
 
 
 <style id="tfms-v4524-cleanup-css">
-/* ===== v46.0 UI System Stable =====
+/* ===== v46.2 UI Surgery Phase 1 =====
    CSS-only navigation stabilization. No scroll JavaScript. */
 
 /* Actual TFMS sidebar selector. Header is 76px in the current stable UX. */
@@ -1076,7 +1076,7 @@ input,select,textarea,button{
 
 
 <style id="tfms-v4527-stability-css">
-/* ===== v46.0 Daily Stabilization ===== */
+/* ===== v45.28 Daily Stabilization ===== */
 
 /* Fill the entire upper-left column with sidebar navy.
    Menu contents still begin below the 80px header. */
@@ -1144,7 +1144,7 @@ html{scroll-behavior:auto!important;}
 
 
 <style id="tfms-v4528-statistics-admin-css">
-/* v46.0 — statistics admin dashboard refinement */
+/* v45.28 — statistics admin dashboard refinement */
 #stats .tfms-v4528-stat-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin:0 0 14px}
 #stats .tfms-v4528-stat-sub{font-size:13px;color:#72809a;margin-top:3px}
 #stats .tfms-v4528-filterbar{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
@@ -1192,333 +1192,116 @@ html{scroll-behavior:auto!important;}
 </style>
 
 
-<style id="tfms-v460-ui-system">
+<style id="tfms-v462-surgery-css">
 :root{
-  --tfms-navy:#0b3f73;
-  --tfms-navy2:#082f5d;
-  --tfms-blue:#1769d2;
-  --tfms-blue2:#0f5bbb;
-  --tfms-mint:#18a88b;
-  --tfms-green:#22a06b;
-  --tfms-orange:#f28b2b;
-  --tfms-red:#e85b57;
-  --tfms-purple:#7757d7;
-  --tfms-bg:#f4f7fb;
-  --tfms-card:#fff;
-  --tfms-line:#dbe5f1;
-  --tfms-text:#102f55;
-  --tfms-muted:#6f8098;
-  --tfms-shadow:0 8px 28px rgba(23,55,96,.055);
+ --v46-navy:#0b3f73;--v46-blue:#1769d2;--v46-bg:#f3f7fb;--v46-card:#fff;
+ --v46-line:#dbe5f1;--v46-text:#0d315c;--v46-muted:#72839a;
+ --v46-shadow:0 8px 26px rgba(21,54,94,.055);
 }
+body{background:var(--v46-bg)!important}
+#appHeader .top{background:linear-gradient(90deg,#082f5d,#0b447b)!important}
+#appHeader nav{background:linear-gradient(180deg,#0d4479,#073662)!important}
+#appHeader nav .nav{border-radius:10px!important;margin:3px 8px!important}
+#appHeader nav .nav.active{background:linear-gradient(90deg,#1769d2,#1978d6)!important}
+.page{max-width:1680px!important;margin:0 auto!important;padding:18px 20px 36px!important}
 
-/* ---------- Global shell ---------- */
-html{scroll-behavior:auto!important;background:var(--tfms-bg)}
-body{background:var(--tfms-bg)!important;color:var(--tfms-text)!important}
-#appHeader .top{
-  background:linear-gradient(90deg,#082f5d 0%,#0b3f73 60%,#07355f 100%)!important;
-  box-shadow:0 2px 14px rgba(4,35,70,.16)!important;
-}
-#appHeader nav{
-  background:linear-gradient(180deg,#0d4479 0%,#073662 100%)!important;
-  border-right:1px solid rgba(255,255,255,.07)!important;
-}
-#appHeader nav .nav{
-  border-radius:10px!important;
-  margin:3px 8px!important;
-  min-height:44px!important;
-  color:#eef7ff!important;
-  font-size:14px!important;
-  font-weight:800!important;
-  transition:background .16s ease,border-color .16s ease!important;
-}
-#appHeader nav .nav:hover{background:rgba(255,255,255,.08)!important}
-#appHeader nav .nav.active{
-  background:linear-gradient(90deg,#1565c6,#1a73da)!important;
-  border-color:#5aa9ff!important;
-  box-shadow:0 6px 16px rgba(0,43,95,.18)!important;
-}
-#appLayout.layout{background:var(--tfms-bg)!important}
-.page{
-  max-width:1680px!important;
-  margin:0 auto!important;
-  padding-left:18px!important;
-  padding-right:18px!important;
-  padding-bottom:34px!important;
-}
+.v46-mast{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin:0 0 14px}
+.v46-mast-left{display:flex;align-items:center;gap:12px}
+.v46-mast-ico{width:50px;height:50px;border-radius:14px;display:grid;place-items:center;
+ background:linear-gradient(145deg,#1aa7ad,#1769d2);color:#fff;font-size:23px;
+ box-shadow:0 8px 20px rgba(20,103,190,.16)}
+.v46-mast h1{margin:0;font-size:28px;letter-spacing:-1.2px;color:var(--v46-text);font-weight:950}
+.v46-mast p{margin:4px 0 0;color:var(--v46-muted);font-size:12px}
+.v46-tools{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.v46-chip,.v46-btn{height:38px;padding:0 14px;border:1px solid #cbdced;border-radius:10px;background:#fff;
+ color:#21466e;font-weight:800;display:inline-flex;align-items:center;justify-content:center}
+.v46-btn.primary{background:linear-gradient(90deg,#1769d2,#13959e);border-color:#1769d2;color:#fff}
 
-/* ---------- Common title/header ---------- */
-.title-row,.v451-dash-head,.tfms-v4528-stat-head{
-  margin:0 0 14px!important;
-  padding:0!important;
-  min-height:62px;
-}
-.title-left{align-items:center!important;gap:12px!important}
-.title-icon{
-  width:50px!important;height:50px!important;
-  display:grid!important;place-items:center!important;
-  border-radius:13px!important;
-  background:linear-gradient(145deg,#15a8ad,#1769d2)!important;
-  color:#fff!important;font-size:24px!important;
-  box-shadow:0 8px 18px rgba(20,105,190,.16)!important
-}
-.title-row h1,.v451-dash-head h1,.tfms-v4528-stat-head>div>div:first-child{
-  font-size:28px!important;
-  letter-spacing:-1.2px!important;
-  line-height:1.1!important;
-  color:#0b315c!important;
-  font-weight:950!important;
-}
-.breadcrumb,.v451-dash-head p,.tfms-v4528-stat-sub{
-  color:#74859d!important;font-size:12px!important;margin-top:4px!important
-}
+.v46-card{background:#fff;border:1px solid var(--v46-line);border-radius:15px;box-shadow:var(--v46-shadow)}
+.v46-card-head{padding:14px 16px 10px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.v46-card-head h2{margin:0;font-size:16px;color:#0b315c;font-weight:900}
+.v46-card-body{padding:0 16px 16px}
+.v46-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#10a5a6;margin-right:7px}
 
-/* ---------- Cards / panels ---------- */
-.panel,.card,.v451-kpi,.v451-dashboard-card,
-.tfms-v4528-card,.tfms-v4528-kpi,
-.compare-card,.flow-card,.userflow-col{
-  border:1px solid var(--tfms-line)!important;
-  background:#fff!important;
-  border-radius:14px!important;
-  box-shadow:var(--tfms-shadow)!important;
-}
-.panel{
-  padding:16px!important;
-  margin-bottom:12px!important;
-}
-.section-title{
-  color:#0c315c!important;
-  font-size:16px!important;
-  font-weight:900!important;
-  margin-bottom:12px!important;
-}
-.section-title .dot,.dot{
-  background:#13a8a8!important;
-  width:9px!important;height:9px!important
-}
-.notice{
-  background:#f8fbff!important;
-  border:1px dashed #b8d6f5!important;
-  color:#4c6079!important;
-  border-radius:12px!important;
-  padding:12px 14px!important;
-  line-height:1.65!important;
-}
+/* Dashboard */
+#dashboard .v451-dash-head{display:none!important}
+#dashboard .v451-kpi-grid{display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:10px!important;margin-bottom:12px!important}
+#dashboard .v451-kpi{background:#fff!important;border:1px solid var(--v46-line)!important;border-radius:14px!important;
+ min-height:104px!important;box-shadow:var(--v46-shadow)!important;padding:14px!important}
+#dashboard .v451-dashboard-grid{display:grid!important;grid-template-columns:1.05fr 1.35fr 1fr!important;gap:12px!important}
+#dashboard .v451-card{background:#fff!important;border:1px solid var(--v46-line)!important;border-radius:14px!important;box-shadow:var(--v46-shadow)!important}
+#dashboard .v451-facility-card{grid-row:span 2!important}
+#dashboard .v451-recent-card{grid-row:span 2!important}
+#dashboard .v451-flow-card{grid-column:1/-1!important}
 
-/* ---------- Buttons ---------- */
-.btn,button.v451-tool-btn,.v459-top-actions button,.v459-search-actions button{
-  min-height:38px!important;
-  border-radius:9px!important;
-  border:1px solid #c9d8ea!important;
-  background:#fff!important;
-  color:#173d67!important;
-  font-weight:800!important;
-  box-shadow:none!important;
-}
-.btn:hover,button.v451-tool-btn:hover{background:#f4f8fd!important}
-.btn.primary,.btn.blue,.v459-top-actions .blue{
-  color:#fff!important;
-  background:linear-gradient(90deg,#1768c9,#1595a2)!important;
-  border-color:#1768c9!important;
-}
-.btn.danger,.btn.red{background:#fff5f4!important;color:#d94c45!important;border-color:#ffc5c1!important}
+/* Today */
+#today>.title-row,#today>.panel{display:none!important}
+#today .v46-today-shell{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.v46-mini-kpi{padding:14px 15px;min-height:90px}
+.v46-mini-kpi span{display:block;color:#718198;font-size:11px;font-weight:800}
+.v46-mini-kpi strong{display:block;color:#0b315c;font-size:25px;margin-top:7px}
+#today .v46-today-main{grid-column:1/-1}
+#today .v46-today-table{overflow:auto;border-radius:12px;border:1px solid #e0e8f2}
+#today .v46-today-table table{margin:0!important}
+#today table thead th{background:#f2f6fb!important;color:#4d6077!important;padding:11px!important}
+#today table tbody td{padding:12px 11px!important;border-bottom:1px solid #edf2f7!important}
 
-/* ---------- Inputs / forms ---------- */
-.field label,label{
-  color:#173757!important;font-size:12px!important;font-weight:850!important
-}
-input,select,textarea{
-  border:1px solid #cbd9ea!important;
-  border-radius:9px!important;
-  background:#fff!important;
-  color:#102f55!important;
-  min-height:42px!important;
-  font-size:13px!important;
-  box-shadow:none!important;
-}
-input:focus,select:focus,textarea:focus{
-  outline:none!important;
-  border-color:#4c91df!important;
-  box-shadow:0 0 0 3px rgba(41,122,216,.10)!important;
-}
-textarea{min-height:82px!important}
-.req{color:#db3c37!important}
+/* Register */
+#register>.title-row,#register>.v459-register-shell{display:none!important}
+#register .v46-register-grid{display:grid;grid-template-columns:220px minmax(0,1fr);gap:12px;align-items:start}
+#register .v46-register-nav{position:sticky;top:94px;padding:10px}
+#register .v46-step{display:flex;gap:10px;padding:12px;border-radius:11px;color:#49627e;font-weight:850;font-size:12px}
+#register .v46-step.active{background:#edf5ff;color:#135eb9}
+#register .v46-step b{width:24px;height:24px;border-radius:50%;background:#edf3fa;display:grid;place-items:center;color:#1769d2}
+#register .v46-register-content{display:grid;gap:12px}
+#register .v46-register-section{padding:15px 16px}
+#register .v46-register-section .section-title{margin:0 0 12px!important}
+#register .v459-form-grid-4{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:10px 12px!important}
+#register .v459-form-grid-2{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px 12px!important}
+#register input,#register select,#register textarea{min-height:42px!important;border-radius:9px!important}
+#register .choice{min-height:38px!important;border-radius:9px!important}
+#register .v46-bottom-actions{display:flex;justify-content:flex-end;gap:8px}
 
-/* ---------- Tables ---------- */
-.table,table{
-  border-collapse:separate!important;
-  border-spacing:0!important;
-}
-.table thead th,table thead th{
-  background:#f2f6fb!important;
-  color:#415873!important;
-  font-size:11px!important;
-  font-weight:900!important;
-  border-bottom:1px solid #d9e4ef!important;
-  padding:10px 10px!important;
-}
-.table tbody td,table tbody td{
-  color:#314a65!important;
-  font-size:12px!important;
-  border-bottom:1px solid #edf2f7!important;
-  padding:10px!important;
-  vertical-align:middle!important;
-}
-.table tbody tr:hover{background:#f8fbff!important}
-.empty-state{color:#8090a5!important;padding:26px!important}
+/* History */
+#history>.title-row,#history>.v459-search-panel,#history>.v459-table-panel{display:none!important}
+#history .v46-history-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:12px}
+#history .v46-history-kpi{padding:13px 15px}
+#history .v46-history-kpi span{font-size:11px;color:#718198;font-weight:800}
+#history .v46-history-kpi strong{display:block;font-size:23px;color:#0c315c;margin-top:5px}
+#history .v46-history-filter{padding:14px 15px;margin-bottom:12px}
+#history .v459-search-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:9px!important}
+#history .v459-search-actions{grid-column:1/-1!important;justify-content:flex-end!important}
+#history .v46-history-result{padding:0;overflow:hidden}
+#history .v46-history-result .v459-list-head{padding:14px 15px!important}
+#history .v46-history-result .v459-table-scroll{padding:0 14px 14px}
 
-/* ---------- Dashboard ---------- */
-#dashboard .v451-kpi-grid{
-  grid-template-columns:repeat(6,minmax(0,1fr))!important;
-  gap:10px!important;
-}
-#dashboard .v451-kpi{
-  min-height:102px!important;padding:14px!important;
-}
-#dashboard .v451-kpi strong{font-size:26px!important;color:#082f5d!important}
-#dashboard .v451-kpi small{font-size:11px!important;color:#8492a5!important}
-#dashboard .v451-kpi-icon{width:42px!important;height:42px!important;border-radius:50%!important}
-#dashboard .v451-dashboard-grid{gap:12px!important}
-#dashboard .v451-dashboard-card{padding:15px!important}
+/* Stats */
+#stats>.title-row,#stats>.panel{display:none!important}
+#stats .tfms-v4528-admin{display:block!important}
+#stats .tfms-v4528-kpis{grid-template-columns:repeat(5,minmax(0,1fr))!important}
+#stats .tfms-v4528-card,#stats .tfms-v4528-kpi{border:1px solid var(--v46-line)!important;box-shadow:var(--v46-shadow)!important}
 
-/* ---------- Today ---------- */
-#today .panel{padding:15px!important}
-#today .notice{margin-bottom:12px!important}
-#today .table{overflow:hidden;border-radius:11px;border:1px solid #dce6f2}
+/* Sidebar brand */
+#tfmsV462Brand{position:fixed;left:18px;bottom:17px;width:190px;text-align:center;color:#fff;z-index:995;pointer-events:none}
+#tfmsV462Brand .symbol{font-size:29px;line-height:1;margin-bottom:6px}
+#tfmsV462Brand strong{display:block;font-size:14px}
+#tfmsV462Brand small{display:block;font-size:8px;opacity:.7;margin-top:3px}
+#tfmsV462Brand em{display:block;font-size:10px;font-style:normal;opacity:.88;margin-top:10px}
 
-/* ---------- Register ---------- */
-#register .v459-register-shell{display:block!important}
-#register .v459-compact-panel{padding:16px!important}
-#register .v459-form-grid-4{
-  grid-template-columns:repeat(3,minmax(0,1fr))!important;
-  gap:11px 12px!important;
-}
-#register .v459-form-grid-4>.field{min-height:66px!important}
-#register .v459-top-actions{gap:7px!important}
-#register .v459-top-actions button{padding:0 18px!important}
-#register .panel textarea{min-height:88px!important}
+.v46-card input,.v46-card select,.v46-card textarea{border:1px solid #cad9ea!important;border-radius:9px!important}
+.v46-card label{color:#173757!important;font-size:12px!important;font-weight:850!important}
 
-/* ---------- History / search ---------- */
-#history .v459-search-panel{position:sticky;top:90px;z-index:20;background:rgba(255,255,255,.97)!important}
-#history .v459-search-grid{
-  display:grid!important;
-  grid-template-columns:repeat(4,minmax(0,1fr))!important;
-  gap:9px!important
-}
-#history .v459-search-actions{grid-column:1/-1;justify-content:flex-end!important}
-
-/* ---------- Equipment ---------- */
-#equipment>.panel:nth-of-type(1),
-#equipment>.panel:nth-of-type(2){display:none!important}
-#equipment .tfms-v4431-shell{
-  background:#fff!important;border:1px solid var(--tfms-line)!important;
-  border-radius:14px!important;overflow:hidden!important;box-shadow:var(--tfms-shadow)!important;
-}
-#equipment .tfms-v4431-sidebar{
-  background:#fbfdff!important;border-right:1px solid #dfe8f2!important
-}
-#equipment .tfms-v4431-list .tree-item{
-  border-bottom:1px solid #edf2f7!important;
-  border-radius:8px!important;margin:3px 5px!important;
-}
-#equipment .tfms-v4431-list .tree-item.active,
-#equipment .tfms-v4431-list .tree-item.selected{
-  background:#eaf3ff!important;border:1px solid #4d91e5!important;
-  box-shadow:inset 3px 0 0 #1769d2!important;
-}
-#equipment .tfms-v4431-main{background:#fff!important}
-
-/* ---------- Daily log ---------- */
-#dailylog .panel{padding:15px!important}
-#dailylog .grid{gap:10px!important}
-#dailylog .tfms-journal-mode,
-#dailylog .daily-type-tabs,
-#dailylog .journal-type-tabs{gap:8px!important}
-#dailylog .tfms-weather-choice button,
-#dailylog .weather-btn{
-  min-width:78px!important;height:36px!important;padding:0 10px!important;
-  border-radius:9px!important;font-size:12px!important;
-}
-
-/* ---------- Cycle ---------- */
-#cycle .v459-cycle-shortcuts{
-  display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:10px!important;
-  margin-bottom:12px!important
-}
-#cycle .v459-cycle-shortcuts button{
-  min-height:78px!important;border:1px solid #d6e3f1!important;border-radius:13px!important;
-  background:#fff!important;padding:13px!important;text-align:left!important;
-}
-#cycle .v459-cycle-shortcuts button.active{border-color:#5798e7!important;background:#edf5ff!important}
-#cycle .v459-preset-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:9px!important}
-#cycle .v459-preset-grid button{border-radius:11px!important;background:#fbfdff!important}
-
-/* ---------- Excel ---------- */
-#excel .panel>.grid{
-  display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:10px!important
-}
-#excel .notice{margin-bottom:4px!important}
-
-/* ---------- Delete / My Page / Account ---------- */
-#deleteManage .delete-request{border-radius:12px!important;background:#f8fbff!important;border-color:#cfe0f3!important}
-#myPage .grid.two{gap:10px!important}
-#accountAdmin .account-flow{
-  display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:10px!important
-}
-#accountAdmin .flow-card{padding:14px!important}
-
-/* ---------- Statistics: keep/admin version but normalize into v46 system ---------- */
-#stats .tfms-v4528-stat-head{min-height:58px!important}
-#stats .tfms-v4528-kpis{gap:10px!important}
-#stats .tfms-v4528-kpi{box-shadow:var(--tfms-shadow)!important}
-#stats .tfms-v4528-grid,#stats .tfms-v4528-bottom{gap:10px!important}
-#stats .tfms-v4528-card{box-shadow:var(--tfms-shadow)!important}
-#stats .tfms-v4528-summary>div{box-shadow:0 4px 18px rgba(25,55,90,.035)!important}
-
-/* ---------- Sidebar brand ---------- */
-#tfmsV460SidebarBrand{
-  position:fixed;left:14px;bottom:16px;width:196px;
-  color:#fff;text-align:center;z-index:995;pointer-events:none;
-}
-#tfmsV460SidebarBrand .mark{
-  width:54px;height:32px;margin:0 auto 8px;position:relative;
-}
-#tfmsV460SidebarBrand .mark:before,
-#tfmsV460SidebarBrand .mark:after{
-  content:"";position:absolute;border-radius:50% 50% 0 50%;transform:rotate(-28deg)
-}
-#tfmsV460SidebarBrand .mark:before{width:34px;height:13px;left:0;top:10px;background:#1f91dc}
-#tfmsV460SidebarBrand .mark:after{width:34px;height:13px;right:0;top:5px;background:#42b96d;transform:rotate(28deg)}
-#tfmsV460SidebarBrand strong{display:block;font-size:15px;letter-spacing:-.6px}
-#tfmsV460SidebarBrand small{display:block;font-size:8px;opacity:.72;margin-top:3px}
-#tfmsV460SidebarBrand em{display:block;font-size:11px;font-style:normal;opacity:.9;margin-top:12px}
-
-/* ---------- Login ---------- */
-.login-screen{background:linear-gradient(135deg,#edf4fb 0%,#fff 60%,#eef6fa 100%)!important}
-.tfms-login-card,.login-box{
-  border-radius:20px!important;border:1px solid #d9e5f2!important;
-  box-shadow:0 24px 70px rgba(13,48,86,.13)!important;
-}
-.tfms-login-card input,.login-box input{min-height:46px!important}
-.tfms-login-card button,.login-box button{min-height:46px!important;border-radius:10px!important}
-
-/* ---------- Responsive ---------- */
-@media(max-width:1320px){
-  #dashboard .v451-kpi-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
-  #register .v459-form-grid-4{grid-template-columns:repeat(2,minmax(0,1fr))!important}
-  #history .v459-search-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
-  #excel .panel>.grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
-  #accountAdmin .account-flow{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+@media(max-width:1250px){
+ #dashboard .v451-kpi-grid{grid-template-columns:repeat(3,1fr)!important}
+ #dashboard .v451-dashboard-grid{grid-template-columns:1fr 1fr!important}
+ #register .v46-register-grid{grid-template-columns:1fr!important}
+ #register .v46-register-nav{position:static;display:grid;grid-template-columns:repeat(4,1fr)}
+ #history .v46-history-kpis{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:900px){
-  #tfmsV460SidebarBrand{display:none}
-  #dashboard .v451-kpi-grid,
-  #register .v459-form-grid-4,
-  #history .v459-search-grid,
-  #cycle .v459-cycle-shortcuts,
-  #cycle .v459-preset-grid,
-  #excel .panel>.grid,
-  #accountAdmin .account-flow{grid-template-columns:1fr!important}
-  #history .v459-search-panel{position:static!important}
+ #tfmsV462Brand{display:none}
+ #dashboard .v451-dashboard-grid,#today .v46-today-shell,#history .v46-history-kpis{grid-template-columns:1fr!important}
+ #register .v459-form-grid-4,#register .v459-form-grid-2,#history .v459-search-grid{grid-template-columns:1fr!important}
 }
 </style>
 
@@ -12720,7 +12503,7 @@ document.addEventListener('DOMContentLoaded',function(){
       <div class="dj-sheet ${esc(sheetClass||'')}">${content}</div>
       
 
-<!-- TFMS v46.0 UI System Stable - Data Store Fix
+<!-- TFMS v46.2 UI Surgery Phase 1 - Data Store Fix
      Equipment UX reads live lexical assetData first; window.assetData is fallback only.
      Login / photo loading / Supabase schema unchanged. -->
 
@@ -18876,7 +18659,7 @@ document.readyState==='loading'?document.addEventListener('DOMContentLoaded',upd
  const oldRender=window.renderAssetList;if(typeof oldRender==='function')window.renderAssetList=function(){const r=oldRender.apply(this,arguments);setTimeout(()=>{populateFilters();filterList();refresh()},40);return r};
  const oldSave=window.saveAsset;if(typeof oldSave==='function')window.saveAsset=function(){const r=oldSave.apply(this,arguments);setTimeout(()=>{refresh();closeAssetRegisterV4431()},450);return r};
  const oldNav=window.navTo;if(typeof oldNav==='function')window.navTo=function(id){const r=oldNav.apply(this,arguments);if(id==='equipment')setTimeout(()=>{ensureShell();movePhotos();refresh()},140);return r};
- function brand(){const small=document.querySelector('#appHeader .logo-title small');if(small)small.textContent='태백시시설관리공단 시설관리시스템';const b=$('tfmsVersionBadge');if(b)b.textContent='v46.0 UI System Stable';document.title='TFMS v46.0 UI System Stable';window.TFMS_BUILD=Object.freeze({version:'v45.5',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});}
+ function brand(){const small=document.querySelector('#appHeader .logo-title small');if(small)small.textContent='태백시시설관리공단 시설관리시스템';const b=$('tfmsVersionBadge');if(b)b.textContent='v46.2 UI Surgery Phase 1';document.title='TFMS v46.2 UI Surgery Phase 1';window.TFMS_BUILD=Object.freeze({version:'v45.5',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});}
  function init(){brand();ensureShell();movePhotos();refresh();[400,1000,2200].forEach(ms=>setTimeout(()=>{brand();ensureShell();movePhotos();refresh()},ms))}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
@@ -18915,8 +18698,8 @@ document.readyState==='loading'?document.addEventListener('DOMContentLoaded',upd
    try{const d=window.assetData||assetData||{};return d[selectedKey()]||null}catch(e){return null}
  }
  function syncVersion(){
-   const b=$('tfmsVersionBadge'); if(b)b.textContent='v46.0 UI System Stable';
-   document.title='TFMS v46.0 UI System Stable';
+   const b=$('tfmsVersionBadge'); if(b)b.textContent='v46.2 UI Surgery Phase 1';
+   document.title='TFMS v46.2 UI Surgery Phase 1';
    window.TFMS_BUILD=Object.freeze({version:'v45.5',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});
  }
  function cleanupLegacyControls(){
@@ -19062,7 +18845,7 @@ body{background:#f4f8fc!important}
 <script id="tfms-v4433-equipment-ux-stabilize-controller">
 (function(){
 'use strict';
-const BUILD='v46.0 UI System Stable';
+const BUILD='v46.2 UI Surgery Phase 1';
 const $=id=>document.getElementById(id);
 const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 function data(){try{if(typeof assetData!=='undefined'&&assetData&&Object.keys(assetData).length)return assetData;if(window.assetData)return window.assetData;return {}}catch(e){return {}}}
@@ -19227,9 +19010,9 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <script id="tfms-v459-thumbnail-ux-controller">
 (function(){
 'use strict';
-const VERSION='v46.0 UI System Stable';
+const VERSION='v46.2 UI Surgery Phase 1';
 const $=id=>document.getElementById(id);
-function brand(){const b=$('tfmsVersionBadge');if(b)b.textContent=VERSION;document.title='TFMS '+VERSION;try{window.TFMS_BUILD=Object.freeze({version:'v46.0',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'UI Fixes & Weather UX'});}catch(e){}try{const u=new URL(location.href);if(u.searchParams.get('v')!=='46.0'){u.searchParams.set('v','46.0');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
+function brand(){const b=$('tfmsVersionBadge');if(b)b.textContent=VERSION;document.title='TFMS '+VERSION;try{window.TFMS_BUILD=Object.freeze({version:'v45.28',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'UI Fixes & Weather UX'});}catch(e){}try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.28'){u.searchParams.set('v','45.28');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
 window.navToFireQrV459=function(){try{window.navToFireV420?.();setTimeout(()=>{const p=[...document.querySelectorAll('#fireMonthly .section-title')].find(x=>/소화기 월간점검 목록/.test(x.textContent||''));p?.scrollIntoView({behavior:'smooth',block:'start'});},180)}catch(e){window.navToFireV420?.();}};
 window.setDailyWeatherV4510=function(value,btn){const sel=$('dailyWeather');if(sel)sel.value=value;document.querySelectorAll('#v459GeneralDaily .v4510-weather-picks button').forEach(b=>b.classList.toggle('active',b===btn));};
 function fillGeneralFacility(){const sel=$('dailyFacility');if(!sel)return;let names=[];try{const s=JSON.parse(sessionStorage.getItem('tfmsSession')||'{}');const dept=s.dept||s.department||'';if(typeof facilities!=='undefined'&&facilities[dept])names=facilities[dept];else if(typeof facilities!=='undefined')names=Object.values(facilities).flat();}catch(e){}if(!names.length)names=['태백국민체육센터','장성국민체육센터'];const old=sel.value;sel.innerHTML=[...new Set(names)].map(n=>`<option>${n}</option>`).join('');if(old&&[...sel.options].some(o=>o.value===old))sel.value=old;}
@@ -19277,7 +19060,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <script id="tfms-v4511-ui-fix-controller">
 (function(){
 'use strict';
-const VERSION='v46.0 UI System Stable';
+const VERSION='v46.2 UI Surgery Phase 1';
 const VERSION_PARAM='45.11';
 function syncVersion(){
   const b=document.getElementById('tfmsVersionBadge'); if(b&&b.textContent!==VERSION)b.textContent=VERSION;
@@ -19408,9 +19191,9 @@ body{background:var(--v4513-bg)}
 const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
 function safe(fn){try{fn();}catch(e){console.warn('[TFMS v45.13 UX]',e);}}
 function syncVersion(){
-  document.title='TFMS v46.0 UI System Stable';
+  document.title='TFMS v46.2 UI Surgery Phase 1';
   $$('*').filter(el=>el.children.length===0 && /v45\.13 Enterprise Stable/.test(el.textContent||'')).forEach(()=>{});
-  const u=new URL(location.href); if(u.searchParams.get('v')!=='46.0'){u.searchParams.set('v','46.0'); history.replaceState(null,'',u.pathname+u.search+u.hash);}
+  const u=new URL(location.href); if(u.searchParams.get('v')!=='45.28'){u.searchParams.set('v','45.28'); history.replaceState(null,'',u.pathname+u.search+u.hash);}
 }
 function registerNav(){
   const shell=$('#register .v459-register-shell'); if(!shell||shell.querySelector('.v4513-register-nav')) return;
@@ -19520,7 +19303,7 @@ setTimeout(init,1200);
 <script id="tfms-v4514-compact-fix-script">
 (function(){
 'use strict';
-const VERSION='v46.0 UI System Stable';
+const VERSION='v46.2 UI Surgery Phase 1';
 function markRegisterFields(){
   document.querySelectorAll('#register .v459-form-grid-4 .field').forEach(function(f){
     const t=(f.querySelector('label')?.textContent||'').replace(/\s+/g,' ').trim();
@@ -19548,12 +19331,12 @@ function brand(){
   document.title='TFMS '+VERSION;
   try{
     const u=new URL(location.href);
-    if(u.searchParams.get('v')!=='46.0'){
-      u.searchParams.set('v','46.0');
+    if(u.searchParams.get('v')!=='45.28'){
+      u.searchParams.set('v','45.28');
       history.replaceState(history.state,'',u.pathname+u.search+u.hash);
     }
   }catch(e){}
-  try{window.TFMS_BUILD=Object.freeze({version:'v46.0',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'UX Compact Fix'});}catch(e){}
+  try{window.TFMS_BUILD=Object.freeze({version:'v45.28',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'UX Compact Fix'});}catch(e){}
 }
 function apply(){markRegisterFields();dedupeWeather();brand();}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
@@ -19600,7 +19383,7 @@ if(typeof oldShowPage==='function'){
 <script id="tfms-v4515-register-fullwidth-script">
 (function(){
 'use strict';
-const VERSION='v46.0 UI System Stable';
+const VERSION='v46.2 UI Surgery Phase 1';
 function apply(){
   const shell=document.querySelector('#register .v459-register-shell');
   if(shell){
@@ -19612,12 +19395,12 @@ function apply(){
   document.title='TFMS '+VERSION;
   try{
     const u=new URL(location.href);
-    if(u.searchParams.get('v')!=='46.0'){
-      u.searchParams.set('v','46.0');
+    if(u.searchParams.get('v')!=='45.28'){
+      u.searchParams.set('v','45.28');
       history.replaceState(history.state,'',u.pathname+u.search+u.hash);
     }
   }catch(e){}
-  try{window.TFMS_BUILD=Object.freeze({version:'v46.0',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'Asset Selection Final Core'});}catch(e){}
+  try{window.TFMS_BUILD=Object.freeze({version:'v45.28',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'Asset Selection Final Core'});}catch(e){}
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
 [100,500,1200,2500].forEach(ms=>setTimeout(apply,ms));
@@ -19834,7 +19617,7 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
 (function(){
   'use strict';
 
-  const BUILD = 'v46.0 UI System Stable';
+  const BUILD = 'v46.2 UI Surgery Phase 1';
 
   function assetStore(){
     try{
@@ -19980,7 +19763,7 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
         }
       }
     }catch(e){
-      console.warn('TFMS v46.0 LCC render',e);
+      console.warn('TFMS v46.2 LCC render',e);
     }
     setText('lccRepair',value(a,'repair'));
     setText('lccReplace',value(a,'replace'));
@@ -20038,7 +19821,7 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
     try{
       if(typeof loadAssetForm === 'function') loadAssetForm(key);
     }catch(e){
-      console.warn('TFMS v46.0 form sync',e);
+      console.warn('TFMS v46.2 form sync',e);
     }
 
     /* Photo DB lookup only when the photo tab is open. */
@@ -20107,7 +19890,7 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
     try{
       const u = new URL(location.href);
       if(u.searchParams.get('v') !== '45.25'){
-        u.searchParams.set('v','46.0');
+        u.searchParams.set('v','45.28');
         history.replaceState(history.state,'',u.pathname+u.search+u.hash);
       }
     }catch(e){}
@@ -20136,7 +19919,7 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
 <script id="tfms-v4526-daily-stabilization-js">
 (function(){
   'use strict';
-  const BUILD='v46.0 UI System Stable';
+  const BUILD='v46.2 UI Surgery Phase 1';
 
   function stabilizeRegister(){
     const dept=document.querySelector('#register #dept');
@@ -20156,8 +19939,8 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
     document.title='TFMS '+BUILD;
     try{
       const u=new URL(location.href);
-      if(u.searchParams.get('v')!=='46.0'){
-        u.searchParams.set('v','46.0');
+      if(u.searchParams.get('v')!=='45.28'){
+        u.searchParams.set('v','45.28');
         history.replaceState(history.state,'',u.pathname+u.search+u.hash);
       }
     }catch(e){}
@@ -20184,7 +19967,7 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
 <script id="tfms-v4527-stability-js">
 (function(){
   'use strict';
-  const BUILD='v46.0 UI System Stable';
+  const BUILD='v46.2 UI Surgery Phase 1';
 
   document.addEventListener('focusin',function(e){
     const el=e.target;
@@ -20213,8 +19996,8 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
 
     try{
       const u=new URL(location.href);
-      if(u.searchParams.get('v')!=='46.0'){
-        u.searchParams.set('v','46.0');
+      if(u.searchParams.get('v')!=='45.28'){
+        u.searchParams.set('v','45.28');
         history.replaceState(history.state,'',u.pathname+u.search+u.hash);
       }
     }catch(e){}
@@ -20230,55 +20013,165 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
 </script>
 
 
-<script id="tfms-v460-ui-system-js">
+<script id="tfms-v462-surgery-js">
 (function(){
-  'use strict';
-  const BUILD='v46.0 UI System Stable';
+'use strict';
+const BUILD='v46.2 UI Surgery Phase 1';
 
-  function installBrand(){
-    if(document.getElementById('tfmsV460SidebarBrand')) return;
-    const nav=document.querySelector('#appHeader nav');
-    if(!nav) return;
-    const brand=document.createElement('div');
-    brand.id='tfmsV460SidebarBrand';
-    brand.innerHTML=
-      '<div class="mark"></div>'+
-      '<strong>태백시시설관리공단</strong>'+
-      '<small>TAEBAEK FACILITY MANAGEMENT CORP.</small>'+
-      '<em>시민중심 · 안전중심 · 성장중심</em>';
-    document.body.appendChild(brand);
-  }
-
-  function syncVersion(){
-    const badge=document.getElementById('tfmsVersionBadge');
-    if(badge) badge.textContent=BUILD;
-    document.title='TFMS '+BUILD;
-    try{
-      const u=new URL(location.href);
-      if(u.searchParams.get('v')!=='46.0'){
-        u.searchParams.set('v','46.0');
-        history.replaceState(history.state,'',u.pathname+u.search+u.hash);
-      }
-    }catch(e){}
-  }
-
-  function polishStaticLabels(){
-    /* keep functionality; only make wording match the v46 design language */
-    const stats=document.querySelector('#stats .tfms-v4528-stat-sub');
-    if(stats) stats.textContent='유지관리·시설·예산·처리현황을 한 화면에서 분석합니다.';
-  }
-
-  function init(){
-    installBrand();
-    syncVersion();
-    polishStaticLabels();
-  }
-  if(document.readyState==='loading'){
-    document.addEventListener('DOMContentLoaded',init,{once:true});
-  }else init();
-
-  /* one late pass only after legacy startup */
-  setTimeout(init,6500);
+function mast(icon,title,desc,toolsHtml){
+ const el=document.createElement('div');
+ el.className='v46-mast';
+ el.innerHTML=
+   '<div class="v46-mast-left"><div class="v46-mast-ico">'+icon+'</div><div><h1>'+title+'</h1><p>'+desc+'</p></div></div>'+
+   '<div class="v46-tools">'+(toolsHtml||'')+'</div>';
+ return el;
+}
+function card(title,bodyClass){
+ const el=document.createElement('div');
+ el.className='v46-card '+(bodyClass||'');
+ el.innerHTML='<div class="v46-card-head"><h2><span class="v46-dot"></span>'+title+'</h2></div><div class="v46-card-body"></div>';
+ return el;
+}
+function brand(){
+ if(document.getElementById('tfmsV462Brand'))return;
+ if(!document.querySelector('#appHeader nav'))return;
+ const b=document.createElement('div');
+ b.id='tfmsV462Brand';
+ b.innerHTML='<div class="symbol">〽</div><strong>태백시시설관리공단</strong><small>TAEBAEK FACILITY MANAGEMENT CORP.</small><em>시민중심 · 안전중심 · 성장중심</em>';
+ document.body.appendChild(b);
+}
+function buildDashboard(){
+ const p=document.getElementById('dashboard');
+ if(!p||p.dataset.v462)return;
+ p.dataset.v462='1';
+ const tools='<span class="v46-chip">전체 시설 기준</span><button class="v46-btn primary" onclick="renderDashboardData()">↻ 새로고침</button>';
+ p.insertBefore(mast('▦','대시보드','시설 운영과 유지관리 핵심 현황을 한눈에 확인합니다.',tools),p.firstChild);
+}
+function buildToday(){
+ const p=document.getElementById('today');
+ if(!p||p.dataset.v462)return;
+ p.dataset.v462='1';
+ p.appendChild(mast('☑','오늘의 업무','점검주기에서 생성된 오늘의 할 일을 확인하고 처리합니다.',
+   '<button class="v46-btn" onclick="navTo(&quot;cycle&quot;)">점검주기 관리</button>'));
+ const shell=document.createElement('div');
+ shell.className='v46-today-shell';
+ shell.innerHTML=
+   '<div class="v46-card v46-mini-kpi"><span>오늘 업무</span><strong id="v46TodayTotal">-</strong></div>'+
+   '<div class="v46-card v46-mini-kpi"><span>예정</span><strong id="v46TodayPlan">-</strong></div>'+
+   '<div class="v46-card v46-mini-kpi"><span>진행중</span><strong id="v46TodayDoing">-</strong></div>'+
+   '<div class="v46-card v46-mini-kpi"><span>완료</span><strong id="v46TodayDone">-</strong></div>';
+ const main=card('오늘 해야 하는 업무','v46-today-main');
+ main.querySelector('.v46-card-head').insertAdjacentHTML('beforeend',
+   '<button class="v46-btn" onclick="navTo(&quot;cycle&quot;)">점검주기 설정</button>');
+ const body=main.querySelector('.v46-card-body');
+ body.classList.add('v46-today-table');
+ const old=p.querySelector('table');
+ if(old)body.appendChild(old);
+ shell.appendChild(main);
+ p.appendChild(shell);
+}
+function buildRegister(){
+ const p=document.getElementById('register');
+ if(!p||p.dataset.v462)return;
+ p.dataset.v462='1';
+ p.appendChild(mast('📝','유지관리 등록','시설 유지관리 이력을 표준 양식으로 등록합니다.',
+   '<button class="v46-btn" onclick="resetRegisterForm()">초기화</button><button class="v46-btn primary" onclick="addRecordFromForm()">등록</button>'));
+ const grid=document.createElement('div');
+ grid.className='v46-register-grid';
+ const nav=document.createElement('div');
+ nav.className='v46-card v46-register-nav';
+ nav.innerHTML=
+   '<div class="v46-step active"><b>1</b><span>기본정보</span></div>'+
+   '<div class="v46-step"><b>2</b><span>유지관리 내용</span></div>'+
+   '<div class="v46-step"><b>3</b><span>경영평가 연계</span></div>'+
+   '<div class="v46-step"><b>4</b><span>증빙·사진</span></div>';
+ const content=document.createElement('div');
+ content.className='v46-register-content';
+ const oldPanels=[...p.querySelectorAll('.v459-register-shell>.panel')];
+ oldPanels.forEach(function(op){
+   op.style.display='block';
+   op.classList.add('v46-card','v46-register-section');
+   content.appendChild(op);
+ });
+ const actions=document.createElement('div');
+ actions.className='v46-bottom-actions';
+ actions.innerHTML='<button class="v46-btn" onclick="resetRegisterForm()">초기화</button><button class="v46-btn primary" onclick="addRecordFromForm()">등록</button>';
+ content.appendChild(actions);
+ grid.appendChild(nav);
+ grid.appendChild(content);
+ p.appendChild(grid);
+}
+function buildHistory(){
+ const p=document.getElementById('history');
+ if(!p||p.dataset.v462)return;
+ p.dataset.v462='1';
+ p.appendChild(mast('⌕','유지관리 조회','등록 이력을 조건별로 빠르게 찾고 상태를 확인합니다.',
+   '<button class="v46-btn" onclick="navTo(&quot;excel&quot;)">엑셀 다운로드</button>'));
+ const k=document.createElement('div');
+ k.className='v46-history-kpis';
+ k.innerHTML=
+   '<div class="v46-card v46-history-kpi"><span>전체 등록</span><strong>누적</strong></div>'+
+   '<div class="v46-card v46-history-kpi"><span>조치완료</span><strong>현황</strong></div>'+
+   '<div class="v46-card v46-history-kpi"><span>진행·미조치</span><strong>집중관리</strong></div>'+
+   '<div class="v46-card v46-history-kpi"><span>증빙자료</span><strong>확인</strong></div>';
+ p.appendChild(k);
+ const oldSearch=p.querySelector('.v459-search-panel');
+ if(oldSearch){
+   oldSearch.style.display='block';
+   oldSearch.classList.add('v46-card','v46-history-filter');
+   p.appendChild(oldSearch);
+ }
+ const oldTable=p.querySelector('.v459-table-panel');
+ if(oldTable){
+   oldTable.style.display='block';
+   oldTable.classList.add('v46-card','v46-history-result');
+   p.appendChild(oldTable);
+ }
+}
+function buildStats(){
+ const p=document.getElementById('stats');
+ if(!p||p.dataset.v462)return;
+ p.dataset.v462='1';
+ p.insertBefore(mast('▥','통계현황','관리자 관점에서 유지관리·예산·처리상태를 종합 분석합니다.',
+   '<span class="v46-chip">관리자 분석 대시보드</span>'),p.firstChild);
+}
+function syncVersion(){
+ const b=document.getElementById('tfmsVersionBadge');
+ if(b)b.textContent=BUILD;
+ document.title='TFMS '+BUILD;
+ try{
+   const u=new URL(location.href);
+   if(u.searchParams.get('v')!=='46.2'){
+     u.searchParams.set('v','46.2');
+     history.replaceState(history.state,'',u.pathname+u.search+u.hash);
+   }
+ }catch(e){}
+}
+function updateTodayKpis(){
+ const rows=[...document.querySelectorAll('#todayBody tr')].filter(function(r){return r.cells.length>1});
+ const text=rows.map(function(r){return r.textContent||''});
+ function set(id,v){const e=document.getElementById(id);if(e)e.textContent=v+'건'}
+ set('v46TodayTotal',rows.length);
+ set('v46TodayPlan',text.filter(function(x){return /예정/.test(x)}).length);
+ set('v46TodayDoing',text.filter(function(x){return /진행/.test(x)}).length);
+ set('v46TodayDone',text.filter(function(x){return /완료/.test(x)}).length);
+}
+function init(){
+ brand();
+ syncVersion();
+ buildDashboard();
+ buildToday();
+ buildRegister();
+ buildHistory();
+ buildStats();
+ setTimeout(updateTodayKpis,250);
+}
+if(document.readyState==='loading'){
+ document.addEventListener('DOMContentLoaded',init,{once:true});
+}else{
+ init();
+}
+setTimeout(init,5500);
 })();
 </script>
 
