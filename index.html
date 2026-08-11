@@ -19862,4 +19862,38 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
   setTimeout(sync,6800);
 })();
 </script>
+<style id="tfms-v4535-dashboard-responsive-safe">
+/* v45.35 — dashboard responsive safety patch only. No functional selectors/events changed. */
+@media (min-width:761px) and (max-width:1280px){
+  #appLayout.layout{padding-left:261px!important;padding-right:16px!important;}
+  #dashboard.tfms-dashboard-v451{width:100%!important;max-width:none!important;overflow:visible!important;}
+  #dashboard.tfms-dashboard-v451 .v451-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+  #dashboard.tfms-dashboard-v451 .v451-dashboard-grid{grid-template-columns:minmax(0,1fr)!important;}
+  #dashboard.tfms-dashboard-v451 .v451-dashboard-grid>*{grid-column:1!important;grid-row:auto!important;min-width:0!important;}
+  #dashboard.tfms-dashboard-v451 .v451-card{min-width:0!important;overflow:hidden!important;}
+  #dashboard.tfms-dashboard-v451 .v451-table-wrap{width:100%!important;max-width:100%!important;overflow-x:auto!important;-webkit-overflow-scrolling:touch;}
+  #dashboard.tfms-dashboard-v451 .v451-table{width:100%!important;min-width:560px;}
+  #dashboard.tfms-dashboard-v451 .v451-recent-list,#dashboard.tfms-dashboard-v451 .v451-legend{min-width:0!important;max-width:100%!important;}
+}
+@media (min-width:761px) and (max-width:900px){
+  #appLayout.layout{padding-left:257px!important;padding-right:12px!important;}
+  #dashboard.tfms-dashboard-v451 .v451-kpi-grid{grid-template-columns:1fr!important;}
+  #dashboard.tfms-dashboard-v451 .v451-dash-head{flex-wrap:wrap!important;}
+  #dashboard.tfms-dashboard-v451 .v451-kpi b,#dashboard.tfms-dashboard-v451 .v451-kpi small{white-space:normal!important;overflow:visible!important;text-overflow:clip!important;}
+}
+</style>
+<script id="tfms-v4535-version-sync">
+(function(){
+  'use strict';
+  var BUILD='v45.35 Dashboard Responsive Safe';
+  function sync(){
+    var badge=document.getElementById('tfmsVersionBadge'); if(badge) badge.textContent=BUILD;
+    document.title='TFMS '+BUILD;
+    try{window.TFMS_BUILD=Object.freeze({version:'v45.35',channel:'Dashboard Responsive Safe',buildDate:'2026.08.11',title:'Dashboard Responsive Safe'});}catch(e){}
+    try{var u=new URL(location.href);if(u.searchParams.get('v')!=='45.35'){u.searchParams.set('v','45.35');history.replaceState(history.state,'',u.pathname+u.search+u.hash);}}catch(e){}
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',sync,{once:true}); else sync();
+  setTimeout(sync,7000);
+})();
+</script>
 </body></html>
