@@ -19765,4 +19765,69 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
 })();
 </script>
 
+
+
+<!-- =========================================================
+     TFMS v45.33 Shell Visual Hotfix
+     Visual/shell only. No DB, SQL, business logic or equipment event logic changed.
+     ========================================================= -->
+<style id="tfms-v4533-shell-visual-hotfix">
+@media (min-width:761px){
+  #appHeader:not(.hidden){position:relative!important;height:58px!important;min-height:58px!important;background:#0b3764!important;z-index:1200!important;}
+  #appHeader:not(.hidden) .top{position:fixed!important;inset:0 0 auto 0!important;height:58px!important;min-height:58px!important;background:#0b3764!important;z-index:1200!important;}
+  #appHeader:not(.hidden) nav{position:fixed!important;left:0!important;top:58px!important;bottom:0!important;width:245px!important;height:auto!important;min-height:0!important;margin:0!important;padding-top:10px!important;background:#0b3764!important;overflow-y:auto!important;overflow-x:hidden!important;z-index:1100!important;}
+  #appLayout.layout:not(.hidden){min-height:calc(100vh - 58px)!important;}
+  #appHeader:not(.hidden) ~ #tfmsBrandFooter{margin-left:245px!important;width:calc(100% - 245px)!important;}
+}
+#appHeader.hidden ~ #tfmsBrandFooter,
+body:has(#loginScreen:not(.hidden)) #tfmsBrandFooter{margin-left:0!important;width:100%!important;box-sizing:border-box!important;}
+body:has(#loginScreen:not(.hidden)) #loginScreen.login-screen,
+body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:calc(100vh - 50px)!important;}
+
+#equipment.tfms-v4431-ready>.tfms-v4512-equipment-title{margin:14px 0 12px!important;padding:0 4px!important;min-height:54px!important;align-items:center!important;}
+#equipment.tfms-v4431-ready>.tfms-v4512-equipment-title .title-icon{width:54px!important;height:54px!important;flex:0 0 54px!important;}
+#equipment.tfms-v4431-ready>.tfms-v4512-equipment-title h1{font-size:28px!important;line-height:1.1!important;}
+
+#stats.tfms-ux-page{padding-bottom:6px!important;}
+#stats>.tfms-ux-title{margin-bottom:8px!important;min-height:54px!important;}
+#stats .tfms-stats-summary{padding:8px!important;margin-bottom:8px!important;}
+#stats .compare-grid.tfms-compact-kpi{display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:7px!important;margin-bottom:0!important;}
+#stats .compare-grid.tfms-compact-kpi .compare-card{min-height:58px!important;padding:8px 10px!important;border-radius:11px!important;box-shadow:none!important;}
+#stats .compare-grid.tfms-compact-kpi .compare-card p{font-size:10.5px!important;margin:0 0 2px!important;}
+#stats .compare-grid.tfms-compact-kpi .compare-card strong{font-size:17px!important;line-height:1.05!important;margin-top:2px!important;}
+#stats .compare-grid.tfms-compact-kpi .delta{font-size:9px!important;line-height:1!important;margin-top:4px!important;padding:4px 7px!important;}
+#stats .tfms-stats-main{padding:10px!important;margin-bottom:0!important;min-height:0!important;}
+#stats .tfms-stats-main>.section-title{margin:0 0 7px!important;font-size:16px!important;}
+#stats .tfms-four-charts{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:8px!important;}
+#stats .tfms-mini-chart{padding:8px!important;border-radius:11px!important;min-width:0!important;}
+#stats .tfms-mini-chart h3{font-size:11.5px!important;margin:0 0 4px!important;}
+#stats .tfms-mini-chart .chart-wrap{height:165px!important;min-height:165px!important;padding:4px 6px 0!important;overflow:hidden!important;}
+#stats .tfms-mini-chart .chart-wrap svg{max-height:160px!important;}
+#stats .tfms-stats-footnote{font-size:10px!important;padding-top:6px!important;margin-top:6px!important;}
+@media(max-width:1500px){
+  #stats .compare-grid.tfms-compact-kpi{grid-template-columns:repeat(3,minmax(0,1fr))!important;}
+  #stats .tfms-four-charts{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+  #stats .tfms-mini-chart .chart-wrap{height:150px!important;min-height:150px!important;}
+}
+@media(max-width:900px){
+  #stats .compare-grid.tfms-compact-kpi{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+  #stats .tfms-four-charts{grid-template-columns:1fr!important;}
+  #stats .tfms-mini-chart .chart-wrap{height:190px!important;min-height:190px!important;}
+}
+</style>
+<script id="tfms-v4533-version-sync">
+(function(){
+  'use strict';
+  var BUILD='v45.33 Shell Visual Hotfix';
+  function sync(){
+    var badge=document.getElementById('tfmsVersionBadge');if(badge) badge.textContent=BUILD;
+    document.title='TFMS '+BUILD;
+    try{window.TFMS_BUILD=Object.freeze({version:'v45.33',channel:'Shell Visual Hotfix',buildDate:'2026.08.11',title:'Shell Visual Hotfix'});}catch(e){}
+    try{var u=new URL(location.href);if(u.searchParams.get('v')!=='45.33'){u.searchParams.set('v','45.33');history.replaceState(history.state,'',u.pathname+u.search+u.hash);}}catch(e){}
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',sync,{once:true}); else sync();
+  setTimeout(sync,6500);
+})();
+</script>
+
 </body></html>
