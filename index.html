@@ -6,7 +6,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>TFMS v45.28 Enterprise Statistics Admin</title>
+<title>TFMS v46.0 UI System Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -903,7 +903,7 @@ nav.sidebar {
 
 
 <style id="tfms-v4524-cleanup-css">
-/* ===== v45.28 Enterprise Statistics Admin =====
+/* ===== v46.0 UI System Stable =====
    CSS-only navigation stabilization. No scroll JavaScript. */
 
 /* Actual TFMS sidebar selector. Header is 76px in the current stable UX. */
@@ -1076,7 +1076,7 @@ input,select,textarea,button{
 
 
 <style id="tfms-v4527-stability-css">
-/* ===== v45.28 Daily Stabilization ===== */
+/* ===== v46.0 Daily Stabilization ===== */
 
 /* Fill the entire upper-left column with sidebar navy.
    Menu contents still begin below the 80px header. */
@@ -1144,7 +1144,7 @@ html{scroll-behavior:auto!important;}
 
 
 <style id="tfms-v4528-statistics-admin-css">
-/* v45.28 — statistics admin dashboard refinement */
+/* v46.0 — statistics admin dashboard refinement */
 #stats .tfms-v4528-stat-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin:0 0 14px}
 #stats .tfms-v4528-stat-sub{font-size:13px;color:#72809a;margin-top:3px}
 #stats .tfms-v4528-filterbar{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
@@ -1188,6 +1188,337 @@ html{scroll-behavior:auto!important;}
 }
 @media(max-width:760px){
  #stats .tfms-v4528-kpis,#stats .tfms-v4528-grid,#stats .tfms-v4528-money,#stats .tfms-v4528-summary{grid-template-columns:1fr}
+}
+</style>
+
+
+<style id="tfms-v460-ui-system">
+:root{
+  --tfms-navy:#0b3f73;
+  --tfms-navy2:#082f5d;
+  --tfms-blue:#1769d2;
+  --tfms-blue2:#0f5bbb;
+  --tfms-mint:#18a88b;
+  --tfms-green:#22a06b;
+  --tfms-orange:#f28b2b;
+  --tfms-red:#e85b57;
+  --tfms-purple:#7757d7;
+  --tfms-bg:#f4f7fb;
+  --tfms-card:#fff;
+  --tfms-line:#dbe5f1;
+  --tfms-text:#102f55;
+  --tfms-muted:#6f8098;
+  --tfms-shadow:0 8px 28px rgba(23,55,96,.055);
+}
+
+/* ---------- Global shell ---------- */
+html{scroll-behavior:auto!important;background:var(--tfms-bg)}
+body{background:var(--tfms-bg)!important;color:var(--tfms-text)!important}
+#appHeader .top{
+  background:linear-gradient(90deg,#082f5d 0%,#0b3f73 60%,#07355f 100%)!important;
+  box-shadow:0 2px 14px rgba(4,35,70,.16)!important;
+}
+#appHeader nav{
+  background:linear-gradient(180deg,#0d4479 0%,#073662 100%)!important;
+  border-right:1px solid rgba(255,255,255,.07)!important;
+}
+#appHeader nav .nav{
+  border-radius:10px!important;
+  margin:3px 8px!important;
+  min-height:44px!important;
+  color:#eef7ff!important;
+  font-size:14px!important;
+  font-weight:800!important;
+  transition:background .16s ease,border-color .16s ease!important;
+}
+#appHeader nav .nav:hover{background:rgba(255,255,255,.08)!important}
+#appHeader nav .nav.active{
+  background:linear-gradient(90deg,#1565c6,#1a73da)!important;
+  border-color:#5aa9ff!important;
+  box-shadow:0 6px 16px rgba(0,43,95,.18)!important;
+}
+#appLayout.layout{background:var(--tfms-bg)!important}
+.page{
+  max-width:1680px!important;
+  margin:0 auto!important;
+  padding-left:18px!important;
+  padding-right:18px!important;
+  padding-bottom:34px!important;
+}
+
+/* ---------- Common title/header ---------- */
+.title-row,.v451-dash-head,.tfms-v4528-stat-head{
+  margin:0 0 14px!important;
+  padding:0!important;
+  min-height:62px;
+}
+.title-left{align-items:center!important;gap:12px!important}
+.title-icon{
+  width:50px!important;height:50px!important;
+  display:grid!important;place-items:center!important;
+  border-radius:13px!important;
+  background:linear-gradient(145deg,#15a8ad,#1769d2)!important;
+  color:#fff!important;font-size:24px!important;
+  box-shadow:0 8px 18px rgba(20,105,190,.16)!important
+}
+.title-row h1,.v451-dash-head h1,.tfms-v4528-stat-head>div>div:first-child{
+  font-size:28px!important;
+  letter-spacing:-1.2px!important;
+  line-height:1.1!important;
+  color:#0b315c!important;
+  font-weight:950!important;
+}
+.breadcrumb,.v451-dash-head p,.tfms-v4528-stat-sub{
+  color:#74859d!important;font-size:12px!important;margin-top:4px!important
+}
+
+/* ---------- Cards / panels ---------- */
+.panel,.card,.v451-kpi,.v451-dashboard-card,
+.tfms-v4528-card,.tfms-v4528-kpi,
+.compare-card,.flow-card,.userflow-col{
+  border:1px solid var(--tfms-line)!important;
+  background:#fff!important;
+  border-radius:14px!important;
+  box-shadow:var(--tfms-shadow)!important;
+}
+.panel{
+  padding:16px!important;
+  margin-bottom:12px!important;
+}
+.section-title{
+  color:#0c315c!important;
+  font-size:16px!important;
+  font-weight:900!important;
+  margin-bottom:12px!important;
+}
+.section-title .dot,.dot{
+  background:#13a8a8!important;
+  width:9px!important;height:9px!important
+}
+.notice{
+  background:#f8fbff!important;
+  border:1px dashed #b8d6f5!important;
+  color:#4c6079!important;
+  border-radius:12px!important;
+  padding:12px 14px!important;
+  line-height:1.65!important;
+}
+
+/* ---------- Buttons ---------- */
+.btn,button.v451-tool-btn,.v459-top-actions button,.v459-search-actions button{
+  min-height:38px!important;
+  border-radius:9px!important;
+  border:1px solid #c9d8ea!important;
+  background:#fff!important;
+  color:#173d67!important;
+  font-weight:800!important;
+  box-shadow:none!important;
+}
+.btn:hover,button.v451-tool-btn:hover{background:#f4f8fd!important}
+.btn.primary,.btn.blue,.v459-top-actions .blue{
+  color:#fff!important;
+  background:linear-gradient(90deg,#1768c9,#1595a2)!important;
+  border-color:#1768c9!important;
+}
+.btn.danger,.btn.red{background:#fff5f4!important;color:#d94c45!important;border-color:#ffc5c1!important}
+
+/* ---------- Inputs / forms ---------- */
+.field label,label{
+  color:#173757!important;font-size:12px!important;font-weight:850!important
+}
+input,select,textarea{
+  border:1px solid #cbd9ea!important;
+  border-radius:9px!important;
+  background:#fff!important;
+  color:#102f55!important;
+  min-height:42px!important;
+  font-size:13px!important;
+  box-shadow:none!important;
+}
+input:focus,select:focus,textarea:focus{
+  outline:none!important;
+  border-color:#4c91df!important;
+  box-shadow:0 0 0 3px rgba(41,122,216,.10)!important;
+}
+textarea{min-height:82px!important}
+.req{color:#db3c37!important}
+
+/* ---------- Tables ---------- */
+.table,table{
+  border-collapse:separate!important;
+  border-spacing:0!important;
+}
+.table thead th,table thead th{
+  background:#f2f6fb!important;
+  color:#415873!important;
+  font-size:11px!important;
+  font-weight:900!important;
+  border-bottom:1px solid #d9e4ef!important;
+  padding:10px 10px!important;
+}
+.table tbody td,table tbody td{
+  color:#314a65!important;
+  font-size:12px!important;
+  border-bottom:1px solid #edf2f7!important;
+  padding:10px!important;
+  vertical-align:middle!important;
+}
+.table tbody tr:hover{background:#f8fbff!important}
+.empty-state{color:#8090a5!important;padding:26px!important}
+
+/* ---------- Dashboard ---------- */
+#dashboard .v451-kpi-grid{
+  grid-template-columns:repeat(6,minmax(0,1fr))!important;
+  gap:10px!important;
+}
+#dashboard .v451-kpi{
+  min-height:102px!important;padding:14px!important;
+}
+#dashboard .v451-kpi strong{font-size:26px!important;color:#082f5d!important}
+#dashboard .v451-kpi small{font-size:11px!important;color:#8492a5!important}
+#dashboard .v451-kpi-icon{width:42px!important;height:42px!important;border-radius:50%!important}
+#dashboard .v451-dashboard-grid{gap:12px!important}
+#dashboard .v451-dashboard-card{padding:15px!important}
+
+/* ---------- Today ---------- */
+#today .panel{padding:15px!important}
+#today .notice{margin-bottom:12px!important}
+#today .table{overflow:hidden;border-radius:11px;border:1px solid #dce6f2}
+
+/* ---------- Register ---------- */
+#register .v459-register-shell{display:block!important}
+#register .v459-compact-panel{padding:16px!important}
+#register .v459-form-grid-4{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:11px 12px!important;
+}
+#register .v459-form-grid-4>.field{min-height:66px!important}
+#register .v459-top-actions{gap:7px!important}
+#register .v459-top-actions button{padding:0 18px!important}
+#register .panel textarea{min-height:88px!important}
+
+/* ---------- History / search ---------- */
+#history .v459-search-panel{position:sticky;top:90px;z-index:20;background:rgba(255,255,255,.97)!important}
+#history .v459-search-grid{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:9px!important
+}
+#history .v459-search-actions{grid-column:1/-1;justify-content:flex-end!important}
+
+/* ---------- Equipment ---------- */
+#equipment>.panel:nth-of-type(1),
+#equipment>.panel:nth-of-type(2){display:none!important}
+#equipment .tfms-v4431-shell{
+  background:#fff!important;border:1px solid var(--tfms-line)!important;
+  border-radius:14px!important;overflow:hidden!important;box-shadow:var(--tfms-shadow)!important;
+}
+#equipment .tfms-v4431-sidebar{
+  background:#fbfdff!important;border-right:1px solid #dfe8f2!important
+}
+#equipment .tfms-v4431-list .tree-item{
+  border-bottom:1px solid #edf2f7!important;
+  border-radius:8px!important;margin:3px 5px!important;
+}
+#equipment .tfms-v4431-list .tree-item.active,
+#equipment .tfms-v4431-list .tree-item.selected{
+  background:#eaf3ff!important;border:1px solid #4d91e5!important;
+  box-shadow:inset 3px 0 0 #1769d2!important;
+}
+#equipment .tfms-v4431-main{background:#fff!important}
+
+/* ---------- Daily log ---------- */
+#dailylog .panel{padding:15px!important}
+#dailylog .grid{gap:10px!important}
+#dailylog .tfms-journal-mode,
+#dailylog .daily-type-tabs,
+#dailylog .journal-type-tabs{gap:8px!important}
+#dailylog .tfms-weather-choice button,
+#dailylog .weather-btn{
+  min-width:78px!important;height:36px!important;padding:0 10px!important;
+  border-radius:9px!important;font-size:12px!important;
+}
+
+/* ---------- Cycle ---------- */
+#cycle .v459-cycle-shortcuts{
+  display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:10px!important;
+  margin-bottom:12px!important
+}
+#cycle .v459-cycle-shortcuts button{
+  min-height:78px!important;border:1px solid #d6e3f1!important;border-radius:13px!important;
+  background:#fff!important;padding:13px!important;text-align:left!important;
+}
+#cycle .v459-cycle-shortcuts button.active{border-color:#5798e7!important;background:#edf5ff!important}
+#cycle .v459-preset-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:9px!important}
+#cycle .v459-preset-grid button{border-radius:11px!important;background:#fbfdff!important}
+
+/* ---------- Excel ---------- */
+#excel .panel>.grid{
+  display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:10px!important
+}
+#excel .notice{margin-bottom:4px!important}
+
+/* ---------- Delete / My Page / Account ---------- */
+#deleteManage .delete-request{border-radius:12px!important;background:#f8fbff!important;border-color:#cfe0f3!important}
+#myPage .grid.two{gap:10px!important}
+#accountAdmin .account-flow{
+  display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:10px!important
+}
+#accountAdmin .flow-card{padding:14px!important}
+
+/* ---------- Statistics: keep/admin version but normalize into v46 system ---------- */
+#stats .tfms-v4528-stat-head{min-height:58px!important}
+#stats .tfms-v4528-kpis{gap:10px!important}
+#stats .tfms-v4528-kpi{box-shadow:var(--tfms-shadow)!important}
+#stats .tfms-v4528-grid,#stats .tfms-v4528-bottom{gap:10px!important}
+#stats .tfms-v4528-card{box-shadow:var(--tfms-shadow)!important}
+#stats .tfms-v4528-summary>div{box-shadow:0 4px 18px rgba(25,55,90,.035)!important}
+
+/* ---------- Sidebar brand ---------- */
+#tfmsV460SidebarBrand{
+  position:fixed;left:14px;bottom:16px;width:196px;
+  color:#fff;text-align:center;z-index:995;pointer-events:none;
+}
+#tfmsV460SidebarBrand .mark{
+  width:54px;height:32px;margin:0 auto 8px;position:relative;
+}
+#tfmsV460SidebarBrand .mark:before,
+#tfmsV460SidebarBrand .mark:after{
+  content:"";position:absolute;border-radius:50% 50% 0 50%;transform:rotate(-28deg)
+}
+#tfmsV460SidebarBrand .mark:before{width:34px;height:13px;left:0;top:10px;background:#1f91dc}
+#tfmsV460SidebarBrand .mark:after{width:34px;height:13px;right:0;top:5px;background:#42b96d;transform:rotate(28deg)}
+#tfmsV460SidebarBrand strong{display:block;font-size:15px;letter-spacing:-.6px}
+#tfmsV460SidebarBrand small{display:block;font-size:8px;opacity:.72;margin-top:3px}
+#tfmsV460SidebarBrand em{display:block;font-size:11px;font-style:normal;opacity:.9;margin-top:12px}
+
+/* ---------- Login ---------- */
+.login-screen{background:linear-gradient(135deg,#edf4fb 0%,#fff 60%,#eef6fa 100%)!important}
+.tfms-login-card,.login-box{
+  border-radius:20px!important;border:1px solid #d9e5f2!important;
+  box-shadow:0 24px 70px rgba(13,48,86,.13)!important;
+}
+.tfms-login-card input,.login-box input{min-height:46px!important}
+.tfms-login-card button,.login-box button{min-height:46px!important;border-radius:10px!important}
+
+/* ---------- Responsive ---------- */
+@media(max-width:1320px){
+  #dashboard .v451-kpi-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+  #register .v459-form-grid-4{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  #history .v459-search-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  #excel .panel>.grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  #accountAdmin .account-flow{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:900px){
+  #tfmsV460SidebarBrand{display:none}
+  #dashboard .v451-kpi-grid,
+  #register .v459-form-grid-4,
+  #history .v459-search-grid,
+  #cycle .v459-cycle-shortcuts,
+  #cycle .v459-preset-grid,
+  #excel .panel>.grid,
+  #accountAdmin .account-flow{grid-template-columns:1fr!important}
+  #history .v459-search-panel{position:static!important}
 }
 </style>
 
@@ -12389,7 +12720,7 @@ document.addEventListener('DOMContentLoaded',function(){
       <div class="dj-sheet ${esc(sheetClass||'')}">${content}</div>
       
 
-<!-- TFMS v45.28 Enterprise Statistics Admin - Data Store Fix
+<!-- TFMS v46.0 UI System Stable - Data Store Fix
      Equipment UX reads live lexical assetData first; window.assetData is fallback only.
      Login / photo loading / Supabase schema unchanged. -->
 
@@ -18545,7 +18876,7 @@ document.readyState==='loading'?document.addEventListener('DOMContentLoaded',upd
  const oldRender=window.renderAssetList;if(typeof oldRender==='function')window.renderAssetList=function(){const r=oldRender.apply(this,arguments);setTimeout(()=>{populateFilters();filterList();refresh()},40);return r};
  const oldSave=window.saveAsset;if(typeof oldSave==='function')window.saveAsset=function(){const r=oldSave.apply(this,arguments);setTimeout(()=>{refresh();closeAssetRegisterV4431()},450);return r};
  const oldNav=window.navTo;if(typeof oldNav==='function')window.navTo=function(id){const r=oldNav.apply(this,arguments);if(id==='equipment')setTimeout(()=>{ensureShell();movePhotos();refresh()},140);return r};
- function brand(){const small=document.querySelector('#appHeader .logo-title small');if(small)small.textContent='태백시시설관리공단 시설관리시스템';const b=$('tfmsVersionBadge');if(b)b.textContent='v45.28 Enterprise Statistics Admin';document.title='TFMS v45.28 Enterprise Statistics Admin';window.TFMS_BUILD=Object.freeze({version:'v45.5',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});}
+ function brand(){const small=document.querySelector('#appHeader .logo-title small');if(small)small.textContent='태백시시설관리공단 시설관리시스템';const b=$('tfmsVersionBadge');if(b)b.textContent='v46.0 UI System Stable';document.title='TFMS v46.0 UI System Stable';window.TFMS_BUILD=Object.freeze({version:'v45.5',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});}
  function init(){brand();ensureShell();movePhotos();refresh();[400,1000,2200].forEach(ms=>setTimeout(()=>{brand();ensureShell();movePhotos();refresh()},ms))}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
@@ -18584,8 +18915,8 @@ document.readyState==='loading'?document.addEventListener('DOMContentLoaded',upd
    try{const d=window.assetData||assetData||{};return d[selectedKey()]||null}catch(e){return null}
  }
  function syncVersion(){
-   const b=$('tfmsVersionBadge'); if(b)b.textContent='v45.28 Enterprise Statistics Admin';
-   document.title='TFMS v45.28 Enterprise Statistics Admin';
+   const b=$('tfmsVersionBadge'); if(b)b.textContent='v46.0 UI System Stable';
+   document.title='TFMS v46.0 UI System Stable';
    window.TFMS_BUILD=Object.freeze({version:'v45.5',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});
  }
  function cleanupLegacyControls(){
@@ -18731,7 +19062,7 @@ body{background:#f4f8fc!important}
 <script id="tfms-v4433-equipment-ux-stabilize-controller">
 (function(){
 'use strict';
-const BUILD='v45.28 Enterprise Statistics Admin';
+const BUILD='v46.0 UI System Stable';
 const $=id=>document.getElementById(id);
 const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 function data(){try{if(typeof assetData!=='undefined'&&assetData&&Object.keys(assetData).length)return assetData;if(window.assetData)return window.assetData;return {}}catch(e){return {}}}
@@ -18896,9 +19227,9 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <script id="tfms-v459-thumbnail-ux-controller">
 (function(){
 'use strict';
-const VERSION='v45.28 Enterprise Statistics Admin';
+const VERSION='v46.0 UI System Stable';
 const $=id=>document.getElementById(id);
-function brand(){const b=$('tfmsVersionBadge');if(b)b.textContent=VERSION;document.title='TFMS '+VERSION;try{window.TFMS_BUILD=Object.freeze({version:'v45.28',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'UI Fixes & Weather UX'});}catch(e){}try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.28'){u.searchParams.set('v','45.28');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
+function brand(){const b=$('tfmsVersionBadge');if(b)b.textContent=VERSION;document.title='TFMS '+VERSION;try{window.TFMS_BUILD=Object.freeze({version:'v46.0',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'UI Fixes & Weather UX'});}catch(e){}try{const u=new URL(location.href);if(u.searchParams.get('v')!=='46.0'){u.searchParams.set('v','46.0');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
 window.navToFireQrV459=function(){try{window.navToFireV420?.();setTimeout(()=>{const p=[...document.querySelectorAll('#fireMonthly .section-title')].find(x=>/소화기 월간점검 목록/.test(x.textContent||''));p?.scrollIntoView({behavior:'smooth',block:'start'});},180)}catch(e){window.navToFireV420?.();}};
 window.setDailyWeatherV4510=function(value,btn){const sel=$('dailyWeather');if(sel)sel.value=value;document.querySelectorAll('#v459GeneralDaily .v4510-weather-picks button').forEach(b=>b.classList.toggle('active',b===btn));};
 function fillGeneralFacility(){const sel=$('dailyFacility');if(!sel)return;let names=[];try{const s=JSON.parse(sessionStorage.getItem('tfmsSession')||'{}');const dept=s.dept||s.department||'';if(typeof facilities!=='undefined'&&facilities[dept])names=facilities[dept];else if(typeof facilities!=='undefined')names=Object.values(facilities).flat();}catch(e){}if(!names.length)names=['태백국민체육센터','장성국민체육센터'];const old=sel.value;sel.innerHTML=[...new Set(names)].map(n=>`<option>${n}</option>`).join('');if(old&&[...sel.options].some(o=>o.value===old))sel.value=old;}
@@ -18946,7 +19277,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <script id="tfms-v4511-ui-fix-controller">
 (function(){
 'use strict';
-const VERSION='v45.28 Enterprise Statistics Admin';
+const VERSION='v46.0 UI System Stable';
 const VERSION_PARAM='45.11';
 function syncVersion(){
   const b=document.getElementById('tfmsVersionBadge'); if(b&&b.textContent!==VERSION)b.textContent=VERSION;
@@ -19077,9 +19408,9 @@ body{background:var(--v4513-bg)}
 const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
 function safe(fn){try{fn();}catch(e){console.warn('[TFMS v45.13 UX]',e);}}
 function syncVersion(){
-  document.title='TFMS v45.28 Enterprise Statistics Admin';
+  document.title='TFMS v46.0 UI System Stable';
   $$('*').filter(el=>el.children.length===0 && /v45\.13 Enterprise Stable/.test(el.textContent||'')).forEach(()=>{});
-  const u=new URL(location.href); if(u.searchParams.get('v')!=='45.28'){u.searchParams.set('v','45.28'); history.replaceState(null,'',u.pathname+u.search+u.hash);}
+  const u=new URL(location.href); if(u.searchParams.get('v')!=='46.0'){u.searchParams.set('v','46.0'); history.replaceState(null,'',u.pathname+u.search+u.hash);}
 }
 function registerNav(){
   const shell=$('#register .v459-register-shell'); if(!shell||shell.querySelector('.v4513-register-nav')) return;
@@ -19189,7 +19520,7 @@ setTimeout(init,1200);
 <script id="tfms-v4514-compact-fix-script">
 (function(){
 'use strict';
-const VERSION='v45.28 Enterprise Statistics Admin';
+const VERSION='v46.0 UI System Stable';
 function markRegisterFields(){
   document.querySelectorAll('#register .v459-form-grid-4 .field').forEach(function(f){
     const t=(f.querySelector('label')?.textContent||'').replace(/\s+/g,' ').trim();
@@ -19217,12 +19548,12 @@ function brand(){
   document.title='TFMS '+VERSION;
   try{
     const u=new URL(location.href);
-    if(u.searchParams.get('v')!=='45.28'){
-      u.searchParams.set('v','45.28');
+    if(u.searchParams.get('v')!=='46.0'){
+      u.searchParams.set('v','46.0');
       history.replaceState(history.state,'',u.pathname+u.search+u.hash);
     }
   }catch(e){}
-  try{window.TFMS_BUILD=Object.freeze({version:'v45.28',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'UX Compact Fix'});}catch(e){}
+  try{window.TFMS_BUILD=Object.freeze({version:'v46.0',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'UX Compact Fix'});}catch(e){}
 }
 function apply(){markRegisterFields();dedupeWeather();brand();}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
@@ -19269,7 +19600,7 @@ if(typeof oldShowPage==='function'){
 <script id="tfms-v4515-register-fullwidth-script">
 (function(){
 'use strict';
-const VERSION='v45.28 Enterprise Statistics Admin';
+const VERSION='v46.0 UI System Stable';
 function apply(){
   const shell=document.querySelector('#register .v459-register-shell');
   if(shell){
@@ -19281,12 +19612,12 @@ function apply(){
   document.title='TFMS '+VERSION;
   try{
     const u=new URL(location.href);
-    if(u.searchParams.get('v')!=='45.28'){
-      u.searchParams.set('v','45.28');
+    if(u.searchParams.get('v')!=='46.0'){
+      u.searchParams.set('v','46.0');
       history.replaceState(history.state,'',u.pathname+u.search+u.hash);
     }
   }catch(e){}
-  try{window.TFMS_BUILD=Object.freeze({version:'v45.28',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'Asset Selection Final Core'});}catch(e){}
+  try{window.TFMS_BUILD=Object.freeze({version:'v46.0',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'Asset Selection Final Core'});}catch(e){}
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
 [100,500,1200,2500].forEach(ms=>setTimeout(apply,ms));
@@ -19503,7 +19834,7 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
 (function(){
   'use strict';
 
-  const BUILD = 'v45.28 Enterprise Statistics Admin';
+  const BUILD = 'v46.0 UI System Stable';
 
   function assetStore(){
     try{
@@ -19649,7 +19980,7 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
         }
       }
     }catch(e){
-      console.warn('TFMS v45.28 LCC render',e);
+      console.warn('TFMS v46.0 LCC render',e);
     }
     setText('lccRepair',value(a,'repair'));
     setText('lccReplace',value(a,'replace'));
@@ -19707,7 +20038,7 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
     try{
       if(typeof loadAssetForm === 'function') loadAssetForm(key);
     }catch(e){
-      console.warn('TFMS v45.28 form sync',e);
+      console.warn('TFMS v46.0 form sync',e);
     }
 
     /* Photo DB lookup only when the photo tab is open. */
@@ -19776,7 +20107,7 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
     try{
       const u = new URL(location.href);
       if(u.searchParams.get('v') !== '45.25'){
-        u.searchParams.set('v','45.28');
+        u.searchParams.set('v','46.0');
         history.replaceState(history.state,'',u.pathname+u.search+u.hash);
       }
     }catch(e){}
@@ -19805,7 +20136,7 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
 <script id="tfms-v4526-daily-stabilization-js">
 (function(){
   'use strict';
-  const BUILD='v45.28 Enterprise Statistics Admin';
+  const BUILD='v46.0 UI System Stable';
 
   function stabilizeRegister(){
     const dept=document.querySelector('#register #dept');
@@ -19825,8 +20156,8 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
     document.title='TFMS '+BUILD;
     try{
       const u=new URL(location.href);
-      if(u.searchParams.get('v')!=='45.28'){
-        u.searchParams.set('v','45.28');
+      if(u.searchParams.get('v')!=='46.0'){
+        u.searchParams.set('v','46.0');
         history.replaceState(history.state,'',u.pathname+u.search+u.hash);
       }
     }catch(e){}
@@ -19853,7 +20184,7 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
 <script id="tfms-v4527-stability-js">
 (function(){
   'use strict';
-  const BUILD='v45.28 Enterprise Statistics Admin';
+  const BUILD='v46.0 UI System Stable';
 
   document.addEventListener('focusin',function(e){
     const el=e.target;
@@ -19882,8 +20213,8 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
 
     try{
       const u=new URL(location.href);
-      if(u.searchParams.get('v')!=='45.28'){
-        u.searchParams.set('v','45.28');
+      if(u.searchParams.get('v')!=='46.0'){
+        u.searchParams.set('v','46.0');
         history.replaceState(history.state,'',u.pathname+u.search+u.hash);
       }
     }catch(e){}
@@ -19895,6 +20226,59 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
 
   /* one late pass only, after legacy startup timers */
   setTimeout(stabilize,6500);
+})();
+</script>
+
+
+<script id="tfms-v460-ui-system-js">
+(function(){
+  'use strict';
+  const BUILD='v46.0 UI System Stable';
+
+  function installBrand(){
+    if(document.getElementById('tfmsV460SidebarBrand')) return;
+    const nav=document.querySelector('#appHeader nav');
+    if(!nav) return;
+    const brand=document.createElement('div');
+    brand.id='tfmsV460SidebarBrand';
+    brand.innerHTML=
+      '<div class="mark"></div>'+
+      '<strong>태백시시설관리공단</strong>'+
+      '<small>TAEBAEK FACILITY MANAGEMENT CORP.</small>'+
+      '<em>시민중심 · 안전중심 · 성장중심</em>';
+    document.body.appendChild(brand);
+  }
+
+  function syncVersion(){
+    const badge=document.getElementById('tfmsVersionBadge');
+    if(badge) badge.textContent=BUILD;
+    document.title='TFMS '+BUILD;
+    try{
+      const u=new URL(location.href);
+      if(u.searchParams.get('v')!=='46.0'){
+        u.searchParams.set('v','46.0');
+        history.replaceState(history.state,'',u.pathname+u.search+u.hash);
+      }
+    }catch(e){}
+  }
+
+  function polishStaticLabels(){
+    /* keep functionality; only make wording match the v46 design language */
+    const stats=document.querySelector('#stats .tfms-v4528-stat-sub');
+    if(stats) stats.textContent='유지관리·시설·예산·처리현황을 한 화면에서 분석합니다.';
+  }
+
+  function init(){
+    installBrand();
+    syncVersion();
+    polishStaticLabels();
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',init,{once:true});
+  }else init();
+
+  /* one late pass only after legacy startup */
+  setTimeout(init,6500);
 })();
 </script>
 
