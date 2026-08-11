@@ -19830,4 +19830,36 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 })();
 </script>
 
+
+<!-- =========================================================
+     TFMS v45.34 Dashboard Compact KPI
+     Dashboard visual density only. No DB/SQL/business logic changed.
+     ========================================================= -->
+<style id="tfms-v4534-dashboard-compact-kpi">
+#dashboard.tfms-dashboard-v451 .v451-kpi-grid{gap:8px!important;margin-bottom:10px!important;}
+#dashboard.tfms-dashboard-v451 .v451-kpi{min-height:82px!important;padding:10px 12px!important;gap:10px!important;border-radius:12px!important;box-shadow:0 3px 10px rgba(15,45,85,.04)!important;}
+#dashboard.tfms-dashboard-v451 .v451-kpi:hover{transform:translateY(-1px)!important;box-shadow:0 6px 14px rgba(15,45,85,.07)!important;}
+#dashboard.tfms-dashboard-v451 .v451-kpi-icon{width:38px!important;height:38px!important;flex:0 0 38px!important;font-size:17px!important;}
+#dashboard.tfms-dashboard-v451 .v451-kpi b{font-size:12.5px!important;line-height:1.15!important;}
+#dashboard.tfms-dashboard-v451 .v451-kpi strong{font-size:22px!important;line-height:1.05!important;margin:4px 0 2px!important;}
+#dashboard.tfms-dashboard-v451 .v451-kpi small{font-size:10.5px!important;line-height:1.15!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}
+@media (min-width:1200px){#dashboard.tfms-dashboard-v451 .v451-kpi-grid{grid-template-columns:repeat(6,minmax(0,1fr))!important;}}
+@media (min-width:761px) and (max-width:1199px){#dashboard.tfms-dashboard-v451 .v451-kpi-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;}}
+@media (max-width:760px){#dashboard.tfms-dashboard-v451 .v451-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}#dashboard.tfms-dashboard-v451 .v451-kpi{min-height:76px!important;}}
+@media (max-width:520px){#dashboard.tfms-dashboard-v451 .v451-kpi-grid{grid-template-columns:1fr!important;}}
+</style>
+<script id="tfms-v4534-version-sync">
+(function(){
+  'use strict';
+  var BUILD='v45.34 Dashboard Compact KPI';
+  function sync(){
+    var badge=document.getElementById('tfmsVersionBadge'); if(badge) badge.textContent=BUILD;
+    document.title='TFMS '+BUILD;
+    try{window.TFMS_BUILD=Object.freeze({version:'v45.34',channel:'Dashboard Compact KPI',buildDate:'2026.08.11',title:'Dashboard Compact KPI'});}catch(e){}
+    try{var u=new URL(location.href);if(u.searchParams.get('v')!=='45.34'){u.searchParams.set('v','45.34');history.replaceState(history.state,'',u.pathname+u.search+u.hash);}}catch(e){}
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',sync,{once:true}); else sync();
+  setTimeout(sync,6800);
+})();
+</script>
 </body></html>
