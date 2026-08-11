@@ -16662,6 +16662,51 @@ window.printFireRecordV420=async function(){try{window.previewFireRecordV420();c
 }
 </style>
 
+
+<style id="tfms-v4528r-stat-css">
+#tfmsAdminStatsR{display:none;padding:0 0 28px}
+#tfmsAdminStatsR *{box-sizing:border-box}
+.tsr-head{display:flex;align-items:center;justify-content:space-between;gap:18px;margin:0 0 14px}
+.tsr-title{display:flex;align-items:center;gap:14px}
+.tsr-icon{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,#0b8fae,#1769d2);color:#fff;font-size:25px;box-shadow:0 8px 20px rgba(25,90,150,.18)}
+.tsr-title h1{margin:0;font-size:28px;color:#08274c;line-height:1.05}
+.tsr-title p{margin:5px 0 0;color:#72849c;font-size:12px}
+.tsr-filter{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.tsr-filter input,.tsr-filter select,.tsr-filter button{height:38px;border:1px solid #cfdaea;border-radius:9px;background:#fff;padding:0 12px;color:#173a62;font-weight:700}
+.tsr-filter button{background:#0d4f91;color:#fff;cursor:pointer}
+.tsr-grid5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:12px}
+.tsr-kpi{background:#fff;border:1px solid #d9e2ef;border-radius:13px;padding:15px 14px;display:flex;align-items:center;gap:13px;min-height:105px;box-shadow:0 3px 12px rgba(28,63,101,.035)}
+.tsr-kicon{width:54px;height:54px;border-radius:13px;display:grid;place-items:center;font-size:25px;background:#eef5ff}
+.tsr-kpi:nth-child(2) .tsr-kicon{background:#eaf9f1}.tsr-kpi:nth-child(3) .tsr-kicon{background:#f3efff}.tsr-kpi:nth-child(4) .tsr-kicon{background:#fff0f2}.tsr-kpi:nth-child(5) .tsr-kicon{background:#eafaf7}
+.tsr-klabel{font-size:13px;font-weight:800;color:#193858}.tsr-kvalue{font-size:27px;font-weight:900;color:#071f40;margin-top:3px}.tsr-ksub{font-size:11px;color:#8191a5;margin-top:3px}
+.tsr-row{display:grid;grid-template-columns:1.05fr 1.95fr;gap:12px;margin-bottom:12px}
+.tsr-row3{display:grid;grid-template-columns:1.05fr 1.2fr .95fr;gap:12px;margin-bottom:12px}
+.tsr-rowbottom{display:grid;grid-template-columns:1.05fr 1.35fr .95fr;gap:12px}
+.tsr-card{background:#fff;border:1px solid #d9e2ef;border-radius:13px;padding:13px;min-width:0;box-shadow:0 3px 12px rgba(28,63,101,.035)}
+.tsr-cardhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;font-size:15px;font-weight:900;color:#16395e}
+.tsr-muted{font-size:11px;color:#7c8da4;font-weight:600}
+.tsr-money{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tsr-moneybox{padding:12px 10px;border-right:1px solid #e5ebf3}.tsr-moneybox:last-child{border-right:0}
+.tsr-moneybox b{display:block;font-size:22px;color:#0b2e58;margin-top:8px}.tsr-moneybox span{font-size:12px;color:#71849d}
+.tsr-chart{height:122px;display:flex;align-items:flex-end;gap:16px;padding:8px 12px 18px;border-top:1px solid #edf1f6;position:relative}
+.tsr-barwrap{flex:1;min-width:22px;text-align:center;height:100%;display:flex;flex-direction:column;justify-content:flex-end;position:relative}
+.tsr-bar{width:68%;max-width:42px;margin:0 auto;border-radius:6px 6px 0 0;background:linear-gradient(#33d39a 0 35%,#2375df 35% 65%,#dfe6ef 65%);min-height:8px}
+.tsr-barlabel{position:absolute;bottom:-18px;width:100%;font-size:10px;color:#637891}
+.tsr-donutwrap{display:flex;align-items:center;gap:18px;padding:6px}
+.tsr-donut{width:132px;height:132px;border-radius:50%;background:conic-gradient(#176ad4 0 12%,#0eabc1 12% 41%,#34b98b 41% 82%,#9ba9bd 82%);position:relative;flex:0 0 auto}
+.tsr-donut:after{content:"";position:absolute;inset:27px;background:#fff;border-radius:50%}
+.tsr-donutcenter{position:absolute;inset:0;display:grid;place-items:center;z-index:1;text-align:center;color:#62758d;font-size:11px}.tsr-donutcenter b{display:block;font-size:24px;color:#0a315f}
+.tsr-legend{display:grid;gap:7px;font-size:12px;color:#3f5875;flex:1}.tsr-legend div{display:flex;justify-content:space-between;gap:8px}.tsr-dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:7px;background:#176ad4}
+.tsr-fieldgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.tsr-field{border-radius:11px;padding:15px 8px;text-align:center;background:#f1f7ff}.tsr-field:nth-child(2){background:#fff3ed}.tsr-field:nth-child(3){background:#eefaf5}.tsr-field:nth-child(4){background:#f5efff}.tsr-field b{display:block;font-size:22px;margin:7px 0;color:#0b315d}.tsr-field small{color:#788ba2}
+.tsr-list{display:grid}.tsr-item{display:grid;grid-template-columns:28px 1fr auto auto;align-items:center;gap:8px;padding:8px 3px;border-bottom:1px solid #edf1f6;font-size:12px}.tsr-item:last-child{border-bottom:0}.tsr-item b{color:#17395f}.tsr-item small{display:block;color:#8191a5;margin-top:2px}.tsr-pill{padding:5px 9px;border-radius:999px;background:#eaf9f1;color:#07884b;font-size:10px;font-weight:900}
+.tsr-line{height:118px;position:relative;padding:12px 8px}.tsr-line svg{width:100%;height:100%;overflow:visible}.tsr-line text{font-size:9px;fill:#6f8197}
+.tsr-table{width:100%;border-collapse:collapse;font-size:11px}.tsr-table th{background:#f4f7fb;color:#657890;text-align:left;padding:7px}.tsr-table td{padding:7px;border-bottom:1px solid #edf1f6;color:#314d6b}
+.tsr-quick{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.tsr-q{background:#f5f8fc;border-radius:12px;padding:12px 5px;text-align:center;font-size:11px;font-weight:800;color:#24496f}.tsr-q i{display:grid;place-items:center;margin:0 auto 7px;width:38px;height:38px;border-radius:11px;background:#e9f6ef;font-style:normal;font-size:19px}
+.tsr-foot{display:flex;justify-content:space-between;color:#8493a7;font-size:10px;margin-top:12px;padding:0 2px}
+@media(max-width:1200px){.tsr-grid5{grid-template-columns:repeat(3,1fr)}.tsr-row,.tsr-row3,.tsr-rowbottom{grid-template-columns:1fr}.tsr-fieldgrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){.tsr-grid5{grid-template-columns:1fr 1fr}.tsr-filter{display:none}.tsr-money{grid-template-columns:1fr}.tsr-moneybox{border-right:0;border-bottom:1px solid #e5ebf3}.tsr-quick{grid-template-columns:1fr 1fr}}
+</style>
+
 </head><body>${preview.outerHTML}
 
 
@@ -19823,4 +19868,111 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
 })();
 </script>
 
+
+<script id="tfms-v4528r-stat-js">
+(function(){
+ const $=id=>document.getElementById(id);
+ const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+ const money=n=>Number(n||0).toLocaleString('ko-KR')+'원';
+ function candidate(){
+   return document.querySelector('#statisticsPage,#statisticsView,#statisticsSection,#statsPage,[data-page="statistics"],.statistics-page,.stats-page');
+ }
+ function records(){
+   const pools=[
+     window.tfmsMaintenanceCache,window.maintenanceCache,window.maintenanceRecords,
+     window.allMaintenanceRecords,window.records,window.tfmsRecords
+   ];
+   for(const p of pools) if(Array.isArray(p)) return p;
+   return [];
+ }
+ function num(r,keys){for(const k of keys){let v=r?.[k]??r?.data?.[k];if(v!==undefined&&v!==null&&v!==''){v=String(v).replace(/[^\d.-]/g,'');return Number(v)||0}}return 0}
+ function txt(r,keys,def='-'){for(const k of keys){let v=r?.[k]??r?.data?.[k];if(v!==undefined&&v!==null&&String(v).trim())return String(v)}return def}
+ function dateOf(r){return txt(r,['work_date','execution_date','action_date','date','created_at'],'')}
+ function statusOf(r){return txt(r,['status','processing_status','result','action_result'],'완료')}
+ function fieldOf(r){return txt(r,['field','category','major_category'],'기타')}
+ function deptOf(r){return txt(r,['department','department_name','dept','management_department'],'체육운영팀')}
+ function facilityOf(r){let v=r?.facility?.name||r?.facility_name||r?.data?.facility||r?.facility;return typeof v==='string'?v:'태백국민체육센터'}
+ function titleOf(r){return txt(r,['title','detail','details','content','maintenance_content','description'],'유지관리 이력')}
+ function amountOf(r){return num(r,['amount','cost','expense','execution_amount','spent_amount'])}
+ function build(){
+   if($('tfmsAdminStatsR')) return $('tfmsAdminStatsR');
+   const host=document.createElement('section');host.id='tfmsAdminStatsR';
+   host.innerHTML=`
+    <div class="tsr-head">
+      <div class="tsr-title"><div class="tsr-icon">▥</div><div><h1>통계현황</h1><p>시설관리와 유지보수를 위한 수치가 만드는 더 나은 내일, TFMS가 함께합니다.</p></div></div>
+      <div class="tsr-filter"><span>▣ 조회기간</span><input id="tsrFrom" type="date"><span>~</span><input id="tsrTo" type="date"><select id="tsrFacility"><option>전체 시설</option></select><button id="tsrRefresh">⟳ 조회하기</button></div>
+    </div>
+    <div class="tsr-grid5">
+      <div class="tsr-kpi"><div class="tsr-kicon">⚙</div><div><div class="tsr-klabel">오늘의 업무</div><div class="tsr-kvalue" id="tsrToday">0건</div><div class="tsr-ksub">오늘 처리할 업무</div></div></div>
+      <div class="tsr-kpi"><div class="tsr-kicon">✓</div><div><div class="tsr-klabel">진행중 업무</div><div class="tsr-kvalue" id="tsrProgress">0건</div><div class="tsr-ksub">현재 처리 중</div></div></div>
+      <div class="tsr-kpi"><div class="tsr-kicon">◷</div><div><div class="tsr-klabel">완료 업무</div><div class="tsr-kvalue" id="tsrDone">0건</div><div class="tsr-ksub">조회기간 완료</div></div></div>
+      <div class="tsr-kpi"><div class="tsr-kicon">!</div><div><div class="tsr-klabel">미조치·진행중</div><div class="tsr-kvalue" id="tsrPending">0건</div><div class="tsr-ksub">조치가 필요한 업무</div></div></div>
+      <div class="tsr-kpi"><div class="tsr-kicon">▤</div><div><div class="tsr-klabel">경영평가 반영</div><div class="tsr-kvalue" id="tsrEval">0건</div><div class="tsr-ksub">평가 연계 이력</div></div></div>
+    </div>
+    <div class="tsr-row">
+      <div class="tsr-card"><div class="tsr-cardhead"><span>금일 집행금액 · 누적</span><span class="tsr-muted" id="tsrAsOf"></span></div><div class="tsr-money"><div class="tsr-moneybox"><span>💰 누적 집행</span><b id="tsrCum">0원</b><small>등록 이력 기준</small></div><div class="tsr-moneybox"><span>🪙 금일 집행</span><b id="tsrDayAmt">0원</b><small>시행일 기준</small></div><div class="tsr-moneybox"><span>📊 금월 집행</span><b id="tsrMonthAmt">0원</b><small>당월 누계</small></div></div></div>
+      <div class="tsr-card"><div class="tsr-cardhead"><span>기간별 집행 현황</span><span class="tsr-muted">최근 8개월</span></div><div class="tsr-chart" id="tsrBars"></div></div>
+    </div>
+    <div class="tsr-row3">
+      <div class="tsr-card"><div class="tsr-cardhead"><span>시설별 현황</span><span class="tsr-muted">등록 이력</span></div><div class="tsr-donutwrap"><div class="tsr-donut"><div class="tsr-donutcenter"><div>총 이력<b id="tsrTotal">0건</b></div></div></div><div class="tsr-legend" id="tsrFacilities"></div></div></div>
+      <div class="tsr-card"><div class="tsr-cardhead"><span>분야별 현황</span><span class="tsr-muted">주요 분야</span></div><div class="tsr-fieldgrid" id="tsrFields"></div></div>
+      <div class="tsr-card"><div class="tsr-cardhead"><span>최근 주요 업무</span><span class="tsr-muted">최근 3건</span></div><div class="tsr-list" id="tsrRecent"></div></div>
+    </div>
+    <div class="tsr-rowbottom">
+      <div class="tsr-card"><div class="tsr-cardhead"><span>처리율 추이</span><span class="tsr-muted">최근 8개월</span></div><div class="tsr-line" id="tsrLine"></div></div>
+      <div class="tsr-card"><div class="tsr-cardhead"><span>시설 운영현황</span><span class="tsr-muted">등록건수 기준</span></div><table class="tsr-table"><thead><tr><th>시설명</th><th>관리부서</th><th>이력수</th><th>최근 점검</th></tr></thead><tbody id="tsrTable"></tbody></table></div>
+      <div class="tsr-card"><div class="tsr-cardhead"><span>바로가기</span></div><div class="tsr-quick"><div class="tsr-q" data-go="maintenance"> <i>✓</i>유지관리 등록</div><div class="tsr-q" data-go="today"><i>♙</i>오늘의 업무</div><div class="tsr-q" data-go="excel"><i>▤</i>엑셀 다운로드</div><div class="tsr-q"><i>☎</i>고객센터<br><small>033-806-5044</small></div></div></div>
+    </div>
+    <div class="tsr-foot"><span>태백시시설관리공단　|　시민과 함께 만드는 더 나은 시설관리</span><span>© 2026 태백시시설관리공단 TFMS Enterprise System</span></div>`;
+   const main=document.querySelector('main,.main-content,#mainContent,.content-area,.page-content')||document.body;
+   main.appendChild(host);
+   $('tsrRefresh')?.addEventListener('click',render);
+   return host;
+ }
+ function render(){
+   const host=build(), all=records(), now=new Date(), today=now.toISOString().slice(0,10), ym=today.slice(0,7);
+   let from=$('tsrFrom')?.value,to=$('tsrTo')?.value;
+   const list=all.filter(r=>{const d=dateOf(r).slice(0,10);return (!from||d>=from)&&(!to||d<=to)});
+   const done=list.filter(r=>/완료|정상|조치완료/.test(statusOf(r))).length;
+   const prog=list.filter(r=>/진행|처리중/.test(statusOf(r))).length;
+   const pend=list.filter(r=>/미조치|보완|필요|진행/.test(statusOf(r))).length;
+   const evaln=list.filter(r=>{const x=JSON.stringify(r);return /경영평가|예방정비|안전관리|법정점검|시설개선|고객민원|ESG|증빙/.test(x)}).length;
+   const todayN=list.filter(r=>dateOf(r).slice(0,10)===today).length;
+   $('tsrToday').textContent=todayN+'건';$('tsrProgress').textContent=prog+'건';$('tsrDone').textContent=done+'건';$('tsrPending').textContent=pend+'건';$('tsrEval').textContent=evaln+'건';
+   const cum=list.reduce((a,r)=>a+amountOf(r),0), day=list.filter(r=>dateOf(r).slice(0,10)===today).reduce((a,r)=>a+amountOf(r),0), mon=list.filter(r=>dateOf(r).slice(0,7)===ym).reduce((a,r)=>a+amountOf(r),0);
+   $('tsrCum').textContent=money(cum);$('tsrDayAmt').textContent=money(day);$('tsrMonthAmt').textContent=money(mon);$('tsrAsOf').textContent=today.replaceAll('-','.')+' 기준';$('tsrTotal').textContent=list.length+'건';
+   const months=[];for(let i=7;i>=0;i--){let d=new Date(now.getFullYear(),now.getMonth()-i,1);months.push(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`)}
+   const mv=months.map(m=>list.filter(r=>dateOf(r).slice(0,7)===m).reduce((a,r)=>a+amountOf(r),0));const max=Math.max(...mv,1);
+   $('tsrBars').innerHTML=months.map((m,i)=>`<div class="tsr-barwrap"><div class="tsr-bar" style="height:${Math.max(8,mv[i]/max*92)}%"></div><div class="tsr-barlabel">${m.slice(5)}월</div></div>`).join('');
+   const fac={};list.forEach(r=>fac[facilityOf(r)]=(fac[facilityOf(r)]||0)+1);$('tsrFacilities').innerHTML=Object.entries(fac).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k,v],i)=>`<div><span><i class="tsr-dot" style="opacity:${1-i*.14}"></i>${esc(k)}</span><b>${v}건</b></div>`).join('')||'<div>등록 이력이 없습니다.</div>';
+   const fld={};list.forEach(r=>fld[fieldOf(r)]=(fld[fieldOf(r)]||0)+1);$('tsrFields').innerHTML=Object.entries(fld).sort((a,b)=>b[1]-a[1]).slice(0,4).map(([k,v],i)=>`<div class="tsr-field"><span>${['🔧','⚡','💧','⚙'][i]||'▣'} ${esc(k)}</span><b>${v}건</b><small>등록 이력</small></div>`).join('')||'<div class="tsr-field"><span>등록 없음</span><b>0건</b></div>';
+   $('tsrRecent').innerHTML=[...list].sort((a,b)=>dateOf(b).localeCompare(dateOf(a))).slice(0,3).map((r,i)=>`<div class="tsr-item"><b>0${i+1}</b><div><b>${esc(titleOf(r))}</b><small>${esc(facilityOf(r))}</small></div><span class="tsr-muted">${esc(dateOf(r).slice(0,10))}</span><span class="tsr-pill">${esc(statusOf(r))}</span></div>`).join('')||'<div class="tsr-muted">최근 등록 이력이 없습니다.</div>';
+   const rates=months.map(m=>{const a=list.filter(r=>dateOf(r).slice(0,7)===m);return a.length?Math.round(a.filter(r=>/완료|정상|조치완료/.test(statusOf(r))).length/a.length*100):0});
+   const pts=rates.map((v,i)=>`${10+i*(280/7)},${95-v*.75}`).join(' ');
+   $('tsrLine').innerHTML=`<svg viewBox="0 0 300 110" preserveAspectRatio="none"><line x1="10" y1="95" x2="290" y2="95" stroke="#dce5ef"/><polyline points="${pts}" fill="none" stroke="currentColor" stroke-width="3" style="color:#176ad4"/><g>${rates.map((v,i)=>`<circle cx="${10+i*(280/7)}" cy="${95-v*.75}" r="3" fill="#176ad4"/><text x="${10+i*(280/7)}" y="108" text-anchor="middle">${months[i].slice(5)}월</text>`).join('')}</g></svg>`;
+   const rows=Object.entries(fac).sort((a,b)=>b[1]-a[1]).slice(0,5);$('tsrTable').innerHTML=rows.map(([f,c])=>{const rs=list.filter(r=>facilityOf(r)===f).sort((a,b)=>dateOf(b).localeCompare(dateOf(a)));return `<tr><td>${esc(f)}</td><td>${esc(deptOf(rs[0]||{}))}</td><td>${c}건</td><td>${esc(dateOf(rs[0]||{}).slice(0,10)||'-')}</td></tr>`}).join('')||'<tr><td colspan="4">등록 이력이 없습니다.</td></tr>';
+ }
+ function activate(){
+   const host=build();
+   const old=candidate();
+   if(old && old!==host) old.style.display='none';
+   host.style.display='block';
+   render();
+ }
+ function hook(){
+   document.addEventListener('click',function(e){
+     const t=e.target.closest('a,button,[onclick],[data-page],[data-view],.menu-item,.nav-item');
+     if(!t)return;
+     const x=(t.textContent||'')+' '+(t.getAttribute('data-page')||'')+' '+(t.getAttribute('data-view')||'')+' '+(t.getAttribute('onclick')||'');
+     if(/통계현황|statistics|stats/i.test(x)) setTimeout(activate,120);
+     else if($('tfmsAdminStatsR')) $('tfmsAdminStatsR').style.display='none';
+   },true);
+   const h=location.hash; if(/stat/i.test(h)) setTimeout(activate,300);
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hook,{once:true});else hook();
+ window.tfmsOpenAdminStatisticsR=activate;
+})();
+</script>
+
+<script id="tfms-v4528r-version">(function(){function f(){var b=document.getElementById('tfmsVersionBadge');if(b)b.textContent='v45.28R Statistics Dashboard';try{var u=new URL(location.href);if(u.searchParams.get('v')!=='45.28R'){u.searchParams.set('v','45.28R');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',f,{once:true});else f()})();</script>
 </body></html>
