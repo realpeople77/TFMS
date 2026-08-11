@@ -6,7 +6,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>TFMS v45.32 Shell Frame Stable</title>
+<title>TFMS v45.40 Register Legacy UX LCC White CI</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -1152,110 +1152,60 @@ nav.sidebar {
 </div>
 </section>
 <section class="page" id="register">
-<div class="title-row v459-title-row v4538-register-title">
-  <div class="title-left"><div class="title-icon">🛠️</div><div><h1>유지관리 등록</h1><div class="breadcrumb">홈 › 유지관리 등록 › 유지관리 이력 작성</div></div></div>
+<div class="title-row v459-title-row">
+  <div class="title-left"><div class="title-icon">📝</div><div><h1>유지관리 등록</h1><div class="breadcrumb">홈 › 유지관리 등록 › 유지관리 이력 작성</div></div></div>
+  <div class="v459-top-actions"><button class="btn" type="button" onclick="resetRegisterForm()">초기화</button><button class="btn blue" type="button" data-tfms-register-button="1" onclick="addRecordFromForm()">등록</button></div>
 </div>
+<div class="v459-register-shell">
+  <div class="panel v459-compact-panel">
+    <div class="section-title"><span class="dot"></span>기본정보</div>
+    <div class="v459-form-grid v459-form-grid-4">
+      <div class="field"><label>관리부서 <span class="req">*</span></label><select id="dept" onchange="changeDept()"><option>체육운영팀</option><option>관광운영팀</option><option>복지주택팀</option><option>안전·시설운영팀</option></select></div>
+      <div class="field"><label>시설명 <span class="req">*</span></label><select id="facility"></select></div>
+      <div class="field"><label>등록일자 <span class="req">*</span></label><input id="regDate" type="date"/></div>
+      <div class="field"><label>시행일자 <span class="req">*</span></label><input id="execDate" type="date"/></div>
 
-<div class="v4538-guide-strip" aria-label="유지관리 등록 안내">
-  <div class="v4538-guide-item"><span class="v4538-guide-icon green">✓</span><div><b>필수항목 우선 입력</b><small><span class="req">*</span> 표시 항목은 필수 입력 항목입니다.</small></div></div>
-  <div class="v4538-guide-item"><span class="v4538-guide-icon blue">▣</span><div><b>사진·문서 첨부 가능</b><small>관련 증빙자료를 함께 등록할 수 있습니다.</small></div></div>
-  <div class="v4538-guide-item"><span class="v4538-guide-icon purple">↗</span><div><b>저장 후 조회에서 확인</b><small>등록된 이력은 유지관리 조회에서 확인합니다.</small></div></div>
-</div>
+      <div class="field v459-span-2"><label>접수구분 <span class="req">*</span></label><div class="choice-group v459-choice-row" data-single="receipt"><button class="choice active" type="button">점검</button><button class="choice" type="button">보수</button><button class="choice" type="button">교체</button><button class="choice" type="button">민원</button><button class="choice" type="button">기타</button></div></div>
+      <div class="field"><label>분야 <span class="req">*</span></label><select id="field" onchange="changeSubField()"><option>기계</option><option>전기</option><option>건축</option><option>토목</option><option>소방</option><option>통신</option><option>수질</option><option>환경정비</option><option>조경</option><option>기타</option></select></div>
+      <div class="field"><label>세부분야 <span class="req">*</span></label><select id="subField"></select></div>
 
-<div class="v4538-register-layout">
-  <div class="v4538-register-main">
-    <div class="panel v459-compact-panel v4538-section-card" data-v4538-section="basic">
-      <div class="section-title"><span class="dot"></span><b>1.</b> 기본 정보</div>
-      <div class="v459-form-grid v459-form-grid-4 v4538-basic-grid">
-        <div class="field"><label>관리부서 <span class="req">*</span></label><select id="dept" onchange="changeDept()"><option>체육운영팀</option><option>관광운영팀</option><option>복지주택팀</option><option>안전·시설운영팀</option></select></div>
-        <div class="field"><label>시설명 <span class="req">*</span></label><select id="facility"></select></div>
-        <div class="field"><label>등록일자 <span class="req">*</span></label><input id="regDate" type="date"/></div>
-        <div class="field"><label>시행일자 <span class="req">*</span></label><input id="execDate" type="date"/></div>
+      <div class="field"><label>점검주기</label><select><option>수시</option><option>일일</option><option>주간</option><option>월 1회</option><option>분기 1회</option><option>반기 1회</option><option>연 1회</option></select></div>
+      <div class="field"><label>유지관리 유형 <span class="req">*</span></label><select id="regType"><option>예방정비</option><option>법정점검</option><option>고장수리</option><option>노후교체</option><option>민원조치</option><option>안전조치</option><option>시설개선</option></select></div>
+      <div class="field"><label>처리상태 <span class="req">*</span></label><select id="regStatus"><option>조치완료</option><option>진행중</option><option>미조치</option><option>예산반영 필요</option><option>외부업체 의뢰</option></select></div>
+      <div class="field"><label>담당자 <span class="req">*</span></label><input value="윤호철"/></div>
 
-        <div class="field"><label>분야 <span class="req">*</span></label><select id="field" onchange="changeSubField()"><option>기계</option><option>전기</option><option>건축</option><option>토목</option><option>소방</option><option>통신</option><option>수질</option><option>환경정비</option><option>조경</option><option>기타</option></select></div>
-        <div class="field"><label>세부분야 <span class="req">*</span></label><select id="subField"></select></div>
-        <div class="field"><label>유지관리 유형 <span class="req">*</span></label><select id="regType"><option>예방정비</option><option>법정점검</option><option>고장수리</option><option>노후교체</option><option>민원조치</option><option>안전조치</option><option>시설개선</option></select></div>
-        <div class="field"><label>처리상태 <span class="req">*</span></label><select id="regStatus"><option>조치완료</option><option>진행중</option><option>미조치</option><option>예산반영 필요</option><option>외부업체 의뢰</option></select></div>
-
-        <div class="field v4538-receipt-field"><label>접수구분 <span class="req">*</span></label><div class="choice-group v459-choice-row" data-single="receipt"><button class="choice active" type="button">점검</button><button class="choice" type="button">보수</button><button class="choice" type="button">교체</button><button class="choice" type="button">민원</button><button class="choice" type="button">기타</button></div></div>
-        <div class="field"><label>점검주기</label><select><option>수시</option><option>일일</option><option>주간</option><option>월 1회</option><option>분기 1회</option><option>반기 1회</option><option>연 1회</option></select></div>
-        <div class="field"><label>담당자 <span class="req">*</span></label><input value="윤호철"/></div>
-        <div class="field"><label>연락처</label><input value="010-1234-5678"/></div>
-
-        <div class="field v4538-level-field"><label>중요도 <span class="req">*</span></label><div class="choice-group v459-choice-row" data-single="level"><button class="choice red" type="button">긴급</button><button class="choice orange active" type="button">높음</button><button class="choice green" type="button">보통</button><button class="choice gray" type="button">낮음</button></div></div>
-      </div>
-    </div>
-
-    <div class="panel v459-compact-panel v4538-section-card" data-v4538-section="detail">
-      <div class="section-title"><span class="dot"></span><b>2.</b> 유지관리 내용</div>
-      <div class="v4538-detail-grid">
-        <div class="field"><label>세부내용 / 작업명 <span class="req">*</span></label><textarea id="regDetail" class="v459-main-textarea" placeholder="유지관리 내용을 상세히 입력해주세요."></textarea></div>
-        <div class="field"><label>조치내용 <span class="req">*</span></label><textarea class="v459-main-textarea" placeholder="조치한 내용을 상세히 입력해주세요."></textarea></div>
-        <div class="field"><label>조치결과</label><div class="choice-group v459-choice-row" data-single="result"><button class="choice green active" type="button">정상</button><button class="choice" type="button">일부 보완</button><button class="choice orange" type="button">보완 필요</button><button class="choice red" type="button">추가 조치 필요</button></div></div>
-        <div class="field"><label>향후계획</label><textarea class="v459-plan-textarea" placeholder="향후 계획 내용을 입력해주세요."></textarea></div>
-      </div>
-    </div>
-
-    <div class="v4538-lower-grid">
-      <div class="panel v459-compact-panel v4538-section-card v4538-budget-card" data-v4538-section="budget">
-        <div class="section-title"><span class="dot"></span><b>3.</b> 예산 및 금액</div>
-        <div class="v4538-budget-grid">
-          <div class="field v4538-budget-account"><label>예산과목</label><select id="budgetSelect" onchange="toggleBudgetInput()"><option>운영관리비-수선유지비(214-05)</option><option>사무관리비(201-01)</option><option>공공운영비(201-02)</option><option>시설비(401-01)</option><option>해당없음</option><option>직접입력</option></select><input id="budgetCustom" placeholder="예: 체육시설운영사업-국민체육센터운영관리-수선유지비" style="display:none;margin-top:8px"/></div>
-          <div class="field"><label>소요금액(원)</label><div class="money"><input id="regAmount" value="0"/><span class="unit">원</span></div></div>
-          <div class="field v4538-progress-field"><label>진행구분</label><div class="choice-group v459-choice-row" data-single="progress"><button class="choice active" type="button">예산</button><button class="choice" type="button">일상경비</button><button class="choice" type="button">자체조치</button><button class="choice" type="button">기타</button></div></div>
-        </div>
-      </div>
-
-      <div class="panel v459-compact-panel v4538-section-card v4538-evidence-card" data-v4538-section="evidence">
-        <div class="section-title"><span class="dot"></span><b>4.</b> 첨부자료</div>
-        <div class="v459-evidence-grid v4538-evidence-grid">
-          <div class="field"><label>관련 문서</label><label class="upload-zone v459-upload" for="docInput"><div><strong>문서 첨부</strong><span class="file-btn">파일 선택</span><br><small>견적서·결과보고·세금계산서 등</small></div></label><input id="docInput" multiple onchange="showDocCount(event)" style="display:none" type="file"/><div class="help" id="docCount">선택된 문서가 없습니다.</div></div>
-          <div class="field"><label>사진첨부 (최대 10장)</label><label class="upload-zone v459-upload" for="photoInput"><div><strong>현장사진 첨부</strong><span class="file-btn">파일 선택</span><br><small>JPG, PNG</small></div></label><input accept="image/*" id="photoInput" multiple onchange="previewPhotos(event)" style="display:none" type="file"/><div class="preview v459-preview" id="photoPreview"></div></div>
-        </div>
-      </div>
-
-      <div class="panel v459-compact-panel v4538-section-card v459-eval-panel v4538-eval-panel" data-v4538-section="eval">
-        <div class="section-title"><span class="dot"></span><b>5.</b> 경영평가 연계</div>
-        <div class="v459-subhelp">해당 항목만 체크합니다. 복수 선택 가능합니다.</div>
-        <div class="eval v459-eval-box"><h4>경영평가 분류</h4><div class="eval-grid"><label><input type="checkbox"/> 예방정비</label><label><input type="checkbox"/> 안전관리</label><label><input type="checkbox"/> 법정점검</label><label><input type="checkbox"/> 시설개선</label><label><input type="checkbox"/> 고객민원</label><label><input type="checkbox"/> 예산절감</label><label><input type="checkbox"/> ESG</label><label><input type="checkbox"/> 경영평가 증빙</label></div></div>
-      </div>
-    </div>
-
-    <div class="v4538-actionbar">
-      <button class="btn" type="button" onclick="resetRegisterForm()">↻ 초기화</button>
-      <button class="btn blue v4538-submit" type="button" data-tfms-register-button="1" onclick="addRecordFromForm()">등록</button>
+      <div class="field"><label>연락처</label><input value="010-1234-5678"/></div>
+      <div class="field v459-span-3"><label>중요도 <span class="req">*</span></label><div class="choice-group v459-choice-row" data-single="level"><button class="choice red" type="button">긴급</button><button class="choice orange active" type="button">높음</button><button class="choice green" type="button">보통</button><button class="choice gray" type="button">낮음</button></div></div>
     </div>
   </div>
 
-  <aside class="v4538-register-aside" aria-label="입력 현황">
-    <div class="panel v4538-preview-card">
-      <div class="v4538-aside-head"><div class="section-title">입력 미리보기</div><span id="v4538RequiredCount">필수 확인</span></div>
-      <div class="v4538-preview-list">
-        <div><span>관리부서</span><b data-preview="dept">-</b></div>
-        <div><span>시설명</span><b data-preview="facility">-</b></div>
-        <div><span>등록일자</span><b data-preview="regDate">-</b></div>
-        <div><span>시행일자</span><b data-preview="execDate">-</b></div>
-        <div><span>분야 / 세부분야</span><b data-preview="fieldSub">-</b></div>
-        <div><span>유지관리 유형</span><b data-preview="regType">-</b></div>
-        <div><span>처리상태</span><b data-preview="regStatus">-</b></div>
-        <div><span>세부내용</span><b data-preview="detail">미입력</b></div>
-        <div><span>소요금액</span><b data-preview="amount">0원</b></div>
-        <div><span>경영평가 연계</span><b data-preview="eval">선택 없음</b></div>
-        <div><span>첨부자료</span><b data-preview="files">문서 0 · 사진 0</b></div>
+  <div class="panel v459-compact-panel">
+    <div class="section-title"><span class="dot"></span>유지관리 내용</div>
+    <div class="v459-form-grid v459-form-grid-2">
+      <div class="field"><label>세부내용 <span class="req">*</span></label><textarea id="regDetail" class="v459-main-textarea" placeholder="유지관리 내용을 상세히 입력해주세요."></textarea></div>
+      <div class="field"><label>조치내용 <span class="req">*</span></label><textarea class="v459-main-textarea" placeholder="조치한 내용을 상세히 입력해주세요."></textarea></div>
+      <div class="field"><label>조치결과</label><div class="choice-group v459-choice-row" data-single="result"><button class="choice green active" type="button">정상</button><button class="choice" type="button">일부 보완</button><button class="choice orange" type="button">보완 필요</button><button class="choice red" type="button">추가 조치 필요</button></div></div>
+      <div class="field"><label>진행구분</label><div class="choice-group v459-choice-row" data-single="progress"><button class="choice active" type="button">예산</button><button class="choice" type="button">일상경비</button><button class="choice" type="button">자체조치</button><button class="choice" type="button">기타</button></div></div>
+      <div class="field"><label>예산과목</label><select id="budgetSelect" onchange="toggleBudgetInput()"><option>운영관리비-수선유지비(214-05)</option><option>사무관리비(201-01)</option><option>공공운영비(201-02)</option><option>시설비(401-01)</option><option>해당없음</option><option>직접입력</option></select><input id="budgetCustom" placeholder="예: 체육시설운영사업-국민체육센터운영관리-수선유지비" style="display:none;margin-top:8px"/></div>
+      <div class="field"><label>소요금액(원)</label><div class="money"><input id="regAmount" value="0"/><span class="unit">원</span></div></div>
+      <div class="field v459-span-all"><label>향후계획</label><textarea class="v459-plan-textarea" placeholder="향후 계획 내용을 입력해주세요."></textarea></div>
+    </div>
+  </div>
+
+  <div class="v459-bottom-grid">
+    <div class="panel v459-compact-panel v459-eval-panel">
+      <div class="section-title"><span class="dot"></span>경영평가 연계</div>
+      <div class="v459-subhelp">해당 항목만 체크합니다. 복수 선택 가능합니다.</div>
+      <div class="eval v459-eval-box"><h4>경영평가 분류</h4><div class="eval-grid"><label><input type="checkbox"/> 예방정비</label><label><input type="checkbox"/> 안전관리</label><label><input type="checkbox"/> 법정점검</label><label><input type="checkbox"/> 시설개선</label><label><input type="checkbox"/> 고객민원</label><label><input type="checkbox"/> 예산절감</label><label><input type="checkbox"/> ESG</label><label><input type="checkbox"/> 경영평가 증빙</label></div></div>
+    </div>
+    <div class="panel v459-compact-panel">
+      <div class="section-title"><span class="dot"></span>증빙 및 사진</div>
+      <div class="v459-evidence-grid">
+        <div class="field"><label>관련 문서</label><label class="upload-zone v459-upload" for="docInput"><div><strong>문서 첨부</strong><span class="file-btn">파일 선택</span><br><small>견적서·결과보고·세금계산서 등</small></div></label><input id="docInput" multiple onchange="showDocCount(event)" style="display:none" type="file"/><div class="help" id="docCount">선택된 문서가 없습니다.</div></div>
+        <div class="field"><label>사진첨부 (최대 10장)</label><label class="upload-zone v459-upload" for="photoInput"><div><strong>현장사진 첨부</strong><span class="file-btn">파일 선택</span><br><small>JPG, PNG</small></div></label><input accept="image/*" id="photoInput" multiple onchange="previewPhotos(event)" style="display:none" type="file"/><div class="preview v459-preview" id="photoPreview"></div></div>
       </div>
     </div>
-    <div class="panel v4538-check-card">
-      <div class="section-title">등록 체크</div>
-      <div class="v4538-check-list">
-        <div data-check="basic"><i>✓</i><span>기본 정보</span></div>
-        <div data-check="detail"><i>✓</i><span>유지관리 내용</span></div>
-        <div data-check="budget"><i>✓</i><span>예산 및 금액</span></div>
-        <div data-check="evidence"><i>✓</i><span>첨부자료 <small>(선택)</small></span></div>
-        <div data-check="eval"><i>✓</i><span>경영평가 연계 <small>(선택)</small></span></div>
-      </div>
-      <p>기존 저장 구조는 그대로 유지하며 입력 현황만 요약합니다.</p>
-    </div>
-  </aside>
+  </div>
 </div>
 </section>
 <section class="page" id="history">
@@ -20025,90 +19975,629 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 </script>
 
 
-
 <!-- =========================================================
-     TFMS v45.38 Register Compact Safe
-     Maintenance registration layout/preview only.
-     Existing field IDs, choice groups, upload handlers and DB save logic preserved.
+     TFMS v45.38 Register ↔ Asset LCC Link Safe
+     Uses existing maintenance_records.asset_id only.
+     No DB schema / SQL changes. Existing register saver is wrapped, not rewritten.
      ========================================================= -->
-<style id="tfms-v4538-register-compact-proposal">
-#register{--v4538-line:#d9e5f2;--v4538-soft:#f7faff;--v4538-ink:#10233f;--v4538-muted:#6d8098;--v4538-blue:#1465cf;--v4538-teal:#0ea5a6;}
-#register .v4538-register-title{margin-bottom:10px!important;}
-#register .v4538-register-title .title-icon{background:linear-gradient(135deg,#0ca4aa,#1769d2)!important;color:#fff!important;box-shadow:0 7px 18px rgba(20,86,170,.12)!important;}
-#register .v4538-guide-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;background:#fff;border:1px solid var(--v4538-line);border-radius:14px;padding:9px 11px;margin:0 0 10px;box-shadow:0 3px 12px rgba(15,43,75,.035);}
-#register .v4538-guide-item{display:flex;align-items:center;gap:10px;min-width:0;padding:3px 6px;}
-#register .v4538-guide-item+ .v4538-guide-item{border-left:1px solid #edf2f7;padding-left:16px;}
-#register .v4538-guide-icon{width:30px;height:30px;flex:0 0 30px;border-radius:10px;display:grid;place-items:center;font-weight:900;font-size:13px;}
-#register .v4538-guide-icon.green{background:#e9f8f1;color:#16935e}#register .v4538-guide-icon.blue{background:#eaf3ff;color:#1769d2}#register .v4538-guide-icon.purple{background:#f3ecff;color:#8056d8}
-#register .v4538-guide-item b{display:block;font-size:12.5px;color:#193657;line-height:1.25;margin-bottom:2px;}#register .v4538-guide-item small{display:block;font-size:10.5px;color:#75879d;line-height:1.25;white-space:normal;}
-#register .v4538-register-layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:10px;align-items:start;}
-#register .v4538-register-main{min-width:0;display:grid;gap:9px;}
-#register .v4538-register-aside{min-width:0;display:grid;gap:9px;position:sticky;top:70px;}
-#register .v4538-section-card{padding:13px 14px!important;margin:0!important;box-shadow:none!important;}
-#register .v4538-section-card>.section-title{margin:0 0 10px!important;font-size:15px!important;display:flex;align-items:center;gap:5px;}#register .v4538-section-card>.section-title b{font-size:13px;color:#0d6db6;}
-#register .v4538-basic-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:9px 10px!important;align-items:end!important;}
-#register .v4538-basic-grid .field{min-width:0!important;}#register .v4538-receipt-field{grid-column:span 2;}#register .v4538-level-field{grid-column:span 2;}
-#register .v459-form-grid label,#register .v4538-detail-grid label,#register .v4538-budget-grid label,#register .v4538-evidence-grid label{font-size:11.5px!important;margin-bottom:4px!important;font-weight:800!important;color:#183451!important;}
-#register .v459-form-grid input,#register .v459-form-grid select,#register .v4538-budget-grid input,#register .v4538-budget-grid select{min-height:38px!important;height:38px!important;padding:7px 9px!important;font-size:13px!important;border-radius:8px!important;}
-#register .v459-choice-row{gap:5px!important;flex-wrap:wrap!important;}#register .v459-choice-row .choice{min-height:34px!important;padding:6px 10px!important;font-size:11.5px!important;border-radius:8px!important;}
-#register .v4538-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px 10px;align-items:start;}
-#register .v4538-detail-grid .field{min-width:0;}#register .v4538-detail-grid textarea{width:100%;font-size:13px!important;line-height:1.4!important;border-radius:9px!important;}
-#register .v4538-detail-grid .v459-main-textarea{min-height:70px!important;height:70px!important;}#register .v4538-detail-grid .v459-plan-textarea{min-height:42px!important;height:42px!important;resize:vertical;}
-#register .v4538-lower-grid{display:grid;grid-template-columns:minmax(260px,.9fr) minmax(320px,1.15fr) minmax(240px,.75fr);gap:9px;align-items:stretch;}
-#register .v4538-lower-grid>.panel{min-width:0;height:100%;}
-#register .v4538-budget-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:9px;align-items:end;}#register .v4538-budget-account{grid-column:1/-1;}#register .v4538-progress-field{grid-column:1/-1;}
-#register .v4538-evidence-grid{grid-template-columns:1fr 1fr!important;gap:9px!important;}#register .v459-upload{min-height:62px!important;padding:8px!important;border-radius:10px!important;}#register .v459-upload strong{font-size:12px!important;}#register .v459-upload small,#register #docCount{font-size:10px!important;}#register .v459-preview{max-height:58px!important;min-height:0!important;}
-#register .v4538-eval-panel{background:#fffdf8!important;border-color:#efd08b!important;}#register .v4538-eval-panel .v459-subhelp{font-size:10.5px!important;margin:-4px 0 7px!important;}#register .v4538-eval-panel .v459-eval-box{padding:10px!important;border-radius:10px!important;}#register .v4538-eval-panel .v459-eval-box h4{font-size:11.5px!important;margin-bottom:8px!important;}#register .v4538-eval-panel .eval-grid{gap:7px 9px!important;}#register .v4538-eval-panel .eval-grid label{font-size:11.5px!important;white-space:nowrap!important;}
-#register .v4538-preview-card,#register .v4538-check-card{padding:12px!important;margin:0!important;box-shadow:none!important;}#register .v4538-aside-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px;}#register .v4538-aside-head .section-title,#register .v4538-check-card>.section-title{font-size:14px!important;margin:0!important;color:#0b5fb9;}#register #v4538RequiredCount{font-size:10px;font-weight:900;color:#e45454;white-space:nowrap;}
-#register .v4538-preview-list{border:1px solid #e3ebf5;border-radius:10px;overflow:hidden;}#register .v4538-preview-list>div{display:grid;grid-template-columns:104px minmax(0,1fr);gap:8px;align-items:center;min-height:34px;padding:6px 9px;border-bottom:1px solid #edf2f7;}#register .v4538-preview-list>div:last-child{border-bottom:0;}#register .v4538-preview-list span{font-size:10.5px;color:#6f8299;font-weight:700;}#register .v4538-preview-list b{font-size:11px;color:#243b59;text-align:right;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-#register .v4538-check-list{display:grid;gap:5px;margin-top:9px;}#register .v4538-check-list>div{display:flex;align-items:center;gap:7px;min-height:28px;padding:4px 6px;border-radius:8px;color:#65788f;}#register .v4538-check-list i{width:18px;height:18px;border-radius:50%;display:grid;place-items:center;background:#edf2f7;color:#9aabba;font-size:10px;font-style:normal;font-weight:900;}#register .v4538-check-list span{font-size:11px;font-weight:800;}#register .v4538-check-list small{font-size:9px;font-weight:700;color:#9aa8b7;}#register .v4538-check-list>div.done{background:#f0fbf6;color:#287756;}#register .v4538-check-list>div.done i{background:#2fb37b;color:#fff;}#register .v4538-check-card p{font-size:9.5px;color:#8998aa;line-height:1.35;margin:8px 5px 0;}
-#register .v4538-actionbar{display:flex;justify-content:flex-end;gap:8px;background:#fff;border:1px solid var(--v4538-line);border-radius:13px;padding:9px 10px;margin-top:0;position:sticky;bottom:8px;z-index:15;box-shadow:0 7px 22px rgba(15,43,75,.08);}#register .v4538-actionbar .btn{min-width:104px!important;min-height:40px!important;}#register .v4538-actionbar .v4538-submit{min-width:132px!important;background:linear-gradient(135deg,#1261cc,#079ca8)!important;border-color:transparent!important;}
-@media(max-width:1500px){#register .v4538-register-layout{grid-template-columns:minmax(0,1fr) 270px;}#register .v4538-basic-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;}#register .v4538-receipt-field,#register .v4538-level-field{grid-column:span 2;}#register .v4538-lower-grid{grid-template-columns:1fr 1fr;}#register .v4538-eval-panel{grid-column:1/-1;}#register .v4538-eval-panel .eval-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;}}
-@media(max-width:1180px){#register .v4538-register-layout{grid-template-columns:1fr;}#register .v4538-register-aside{position:static;grid-template-columns:1fr 1fr;}#register .v4538-preview-card,#register .v4538-check-card{min-width:0;}#register .v4538-basic-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}#register .v4538-receipt-field,#register .v4538-level-field{grid-column:span 2;}#register .v4538-lower-grid{grid-template-columns:1fr 1fr;}#register .v4538-guide-strip{grid-template-columns:1fr 1fr 1fr;}}
-@media(max-width:760px){#register .v4538-guide-strip{grid-template-columns:1fr;}#register .v4538-guide-item+ .v4538-guide-item{border-left:0;border-top:1px solid #edf2f7;padding-left:6px;padding-top:9px;}#register .v4538-basic-grid,#register .v4538-detail-grid,#register .v4538-lower-grid,#register .v4538-register-aside,#register .v4538-budget-grid,#register .v4538-evidence-grid{grid-template-columns:1fr!important;}#register .v4538-receipt-field,#register .v4538-level-field,#register .v4538-budget-account,#register .v4538-progress-field,#register .v4538-eval-panel{grid-column:auto!important;}#register .v4538-eval-panel .eval-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}#register .v4538-actionbar{bottom:4px;}#register .v4538-actionbar .btn{flex:1;min-width:0!important;}}
+<style id="tfms-v4538-register-asset-lcc-link-safe">
+#register .v4538-asset-link{position:relative}
+#register .v4538-asset-link label{display:flex!important;align-items:center!important;gap:6px!important}
+#register .v4538-asset-link .v4538-lcc-chip{display:inline-flex;align-items:center;padding:2px 7px;border:1px solid #b7e4d7;border-radius:999px;background:#eefbf7;color:#087f6b;font-size:10px;font-weight:800;line-height:1.4;white-space:nowrap}
+#register .v4538-asset-link select{border-color:#b8d8ee!important;background:#fafdff!important}
+#register .v4538-asset-help{margin-top:5px;font-size:10.5px;line-height:1.35;color:#64748b;min-height:14px}
+#register .v4538-asset-help strong{color:#0f766e}
+#register .v4538-asset-help.is-linked{padding:5px 7px;border-radius:7px;background:#f0fdfa;color:#46606d}
+#equipment .v4538-lcc-note{margin-top:6px;font-size:10px;line-height:1.35;color:#64748b;text-align:center}
+@media(max-width:1100px){#register .v4538-asset-help{font-size:10px}}
 </style>
-<script id="tfms-v4538-register-compact-proposal-js">
+<script id="tfms-v4538-register-asset-lcc-link-controller">
 (function(){
   'use strict';
-  var BUILD='v45.38 Register Compact Safe';
-  function $(id){return document.getElementById(id)}
-  function clean(v){return String(v==null?'':v).trim()}
-  function fmtAmount(v){var n=Number(clean(v).replace(/[^0-9.-]/g,''));return Number.isFinite(n)?n.toLocaleString('ko-KR')+'원':'0원'}
-  function text(id){var e=$(id);return e?clean(e.value):''}
-  function preview(key,val){var e=document.querySelector('#register [data-preview="'+key+'"]');if(e)e.textContent=val||'-'}
-  function selectedEval(){return Array.from(document.querySelectorAll('#register .v4538-eval-panel input[type="checkbox"]:checked')).map(function(x){return clean(x.parentElement&&x.parentElement.textContent)}).filter(Boolean)}
-  function fileCount(id){var e=$(id);return e&&e.files?e.files.length:0}
-  function actionValue(){var e=document.querySelector('#register textarea[placeholder*="조치한 내용"]');return clean(e&&e.value)}
-  function update(){
+  const $=id=>document.getElementById(id);
+  const toast=m=>{try{window.showToast?.(m)}catch(e){}};
+  const client=()=>{try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||null}catch(e){return null}};
+  const cloudUser=()=>{try{return window.getTfmsCloudUser?.()||window.cloudUser||null}catch(e){return null}};
+  const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const money=n=>Number(n||0).toLocaleString('ko-KR')+'원';
+  let pendingAssetKey='';
+  let lccRequestSeq=0;
+
+  function assetEntries(){
+    try{return Object.entries(window.assetData||assetData||{}).filter(([,a])=>a&&a.name)}catch(e){return []}
+  }
+  function assetByKey(key){
+    try{return (window.assetData||assetData||{})[key]||null}catch(e){return null}
+  }
+  function currentFacility(){return String($('facility')?.value||'').trim()}
+  function linkedSelect(){return $('regAssetLinkV4538')}
+
+  function ensureRegisterAssetUI(){
+    const grid=document.querySelector('#register .v459-form-grid.v459-form-grid-4');
+    if(!grid||$('regAssetLinkV4538'))return;
+    const facility=$('facility');
+    const facilityField=facility?.closest('.field');
+    if(!facilityField)return;
+
+    const wrap=document.createElement('div');
+    wrap.className='field v4538-asset-link';
+    wrap.innerHTML=`
+      <label for="regAssetLinkV4538">연계 설비 <span class="v4538-lcc-chip">LCC 연계 · 선택</span></label>
+      <select id="regAssetLinkV4538"><option value="">시설 공통 / 미연계</option></select>
+      <div class="v4538-asset-help" id="regAssetLinkHelpV4538">설비를 선택하면 해당 설비의 유지관리 이력·누적비용에 반영됩니다.</div>`;
+    facilityField.insertAdjacentElement('afterend',wrap);
+    $('regAssetLinkV4538')?.addEventListener('change',updateRegisterAssetHelp);
+    facility?.addEventListener('change',()=>setTimeout(()=>renderRegisterAssetOptions(''),0));
+    $('dept')?.addEventListener('change',()=>setTimeout(()=>renderRegisterAssetOptions(''),40));
+    renderRegisterAssetOptions('');
+  }
+
+  function renderRegisterAssetOptions(preferKey){
+    ensureRegisterAssetUI();
+    const sel=linkedSelect(); if(!sel)return;
+    const facility=currentFacility();
+    const prev=preferKey||sel.value||'';
+    const entries=assetEntries().filter(([,a])=>String(a.facility||'')===facility);
+    sel.innerHTML='<option value="">시설 공통 / 미연계</option>'+entries.map(([key,a])=>{
+      const meta=[a.space||a.location||'',a.name,a.qrId&&a.qrId!=='-'?a.qrId:''].filter(Boolean).join(' · ');
+      return `<option value="${esc(key)}">${esc(meta)}</option>`;
+    }).join('');
+    if(prev&&entries.some(([key])=>key===prev))sel.value=prev;else sel.value='';
+    updateRegisterAssetHelp();
+  }
+
+  async function updateRegisterAssetHelp(){
+    const help=$('regAssetLinkHelpV4538'),sel=linkedSelect(); if(!help||!sel)return;
+    const key=sel.value,a=assetByKey(key);
+    if(!key||!a){
+      help.className='v4538-asset-help';
+      help.textContent='설비를 선택하면 해당 설비의 유지관리 이력·누적비용에 반영됩니다.';
+      return;
+    }
+    help.className='v4538-asset-help is-linked';
+    help.innerHTML=`<strong>${esc(a.name)}</strong> · ${esc(a.space||a.location||'위치 미지정')} · QR ${esc(a.qrId||'-')} · LCC 연계 예정`;
+  }
+
+  async function latestUserMaintenanceId(sb,userId){
+    if(!sb||!userId)return null;
+    const {data,error}=await sb.from('maintenance_records')
+      .select('id,created_at')
+      .eq('registered_by',userId)
+      .is('deleted_at',null)
+      .order('created_at',{ascending:false})
+      .limit(1);
+    if(error)throw error;
+    return data?.[0]?.id||null;
+  }
+
+  async function attachLatestMaintenanceToAsset(sb,userId,beforeId,assetKey){
+    const a=assetByKey(assetKey); if(!a)return false;
+    const assetId=a.dbId||assetKey;
+    const {data,error}=await sb.from('maintenance_records')
+      .select('id,created_at,asset_id')
+      .eq('registered_by',userId)
+      .is('deleted_at',null)
+      .order('created_at',{ascending:false})
+      .limit(1);
+    if(error)throw error;
+    const latest=data?.[0];
+    if(!latest?.id||latest.id===beforeId)return false;
+    if(latest.asset_id===assetId)return true;
+    const up=await sb.from('maintenance_records').update({asset_id:assetId}).eq('id',latest.id);
+    if(up.error)throw up.error;
+    return true;
+  }
+
+  async function loadAssetLccV4538(key){
+    const a=assetByKey(key),sb=client(); if(!a||!sb)return;
+    const seq=++lccRequestSeq;
+    const assetId=a.dbId||key;
     try{
-      preview('dept',text('dept'));preview('facility',text('facility'));preview('regDate',text('regDate'));preview('execDate',text('execDate'));
-      preview('fieldSub',[text('field'),text('subField')].filter(Boolean).join(' / '));preview('regType',text('regType'));preview('regStatus',text('regStatus'));
-      var d=text('regDetail');preview('detail',d?(d.length>24?d.slice(0,24)+'…':d):'미입력');preview('amount',fmtAmount(text('regAmount')));
-      var ev=selectedEval();preview('eval',ev.length?(ev.length===1?ev[0]:ev[0]+' 외 '+(ev.length-1)+'개'):'선택 없음');
-      var docs=fileCount('docInput'), photos=fileCount('photoInput');preview('files','문서 '+docs+' · 사진 '+photos);
-      var basic=[text('dept'),text('facility'),text('regDate'),text('execDate'),text('field'),text('subField'),text('regType'),text('regStatus')].filter(Boolean).length;
-      var detailOk=!!d && !!actionValue();
-      var req=$('v4538RequiredCount');if(req)req.textContent='필수 '+(basic+(detailOk?2:(d?1:0)))+'/10';
-      var set=function(k,on){var e=document.querySelector('#register [data-check="'+k+'"]');if(e)e.classList.toggle('done',!!on)};
-      set('basic',basic===8);set('detail',detailOk);set('budget',!!text('budgetSelect'));set('evidence',docs+photos>0);set('eval',ev.length>0);
-    }catch(e){console.warn('[TFMS v45.38 preview]',e)}
+      const {data,error}=await sb.from('maintenance_records')
+        .select('id,registered_on,executed_on,maintenance_type,receipt_category,detail,process_status,amount')
+        .eq('asset_id',assetId)
+        .is('deleted_at',null)
+        .order('registered_on',{ascending:false})
+        .order('created_at',{ascending:false});
+      if(error)throw error;
+      if(seq!==lccRequestSeq)return;
+      const list=data||[];
+      const total=list.reduce((sum,r)=>sum+Number(r.amount||0),0);
+      a.repair=money(total);
+      a.history=list.length+'건';
+      a.timeline=list.slice(0,20).map(r=>[
+        String(r.executed_on||r.registered_on||'').replaceAll('-','.'),
+        `${r.maintenance_type||r.receipt_category||'유지관리'} · ${r.detail||'-'}${Number(r.amount||0)>0?' · '+money(r.amount):''}`
+      ]);
+      const repair=$('lccRepair'); if(repair)repair.textContent=money(total);
+      const hist=$('assetHistory'); if(hist)hist.textContent=list.length+'건';
+      const timeline=$('assetTimeline');
+      if(timeline){
+        timeline.innerHTML=a.timeline.length?a.timeline.map(t=>`<div class="timeline-item"><strong>${esc(t[0])}</strong><span>${esc(t[1])}</span></div>`).join(''):'<div class="empty-state">연계된 유지관리 이력이 없습니다.</div>';
+      }
+      const mirror=$('tfmsV4431HistoryMirror'); if(mirror&&timeline)mirror.innerHTML=timeline.innerHTML;
+      const card=repair?.closest('.lcc-card');
+      if(card&&!card.querySelector('.v4538-lcc-note')){
+        const note=document.createElement('div');note.className='v4538-lcc-note';note.textContent='연계 유지관리 이력의 집행금액 합계';card.appendChild(note);
+      }
+    }catch(e){console.warn('TFMS v45.38 LCC 연계 조회',e)}
   }
-  function bind(){
-    var r=$('register');if(!r)return;
-    if(!r.dataset.v4538Bound){r.dataset.v4538Bound='1';r.addEventListener('input',update,true);r.addEventListener('change',update,true);r.addEventListener('click',function(){setTimeout(update,0)},true)}
-    update();
+
+  function hookRegisterSave(){
+    const base=window.addRecordFromForm;
+    if(typeof base!=='function'||base.__v4538Wrapped)return;
+    const wrapped=async function(){
+      const sel=linkedSelect();
+      const assetKey=String(sel?.value||'').trim();
+      const sb=client(),u=cloudUser();
+      let beforeId=null;
+      if(assetKey&&sb&&u?.id){
+        try{beforeId=await latestUserMaintenanceId(sb,u.id)}catch(e){console.warn(e)}
+      }
+      const result=await base.apply(this,arguments);
+      if(assetKey&&sb&&u?.id){
+        try{
+          const linked=await attachLatestMaintenanceToAsset(sb,u.id,beforeId,assetKey);
+          if(linked){
+            try{if(typeof window.loadEnterpriseData==='function')await window.loadEnterpriseData()}catch(e){}
+            await loadAssetLccV4538(assetKey);
+            toast('유지관리 이력을 설비 LCC와 연계했습니다.');
+          }
+        }catch(e){
+          console.error('TFMS v45.38 유지관리-설비 연계 실패',e);
+          toast('유지관리 이력은 저장됐지만 설비 LCC 연계에 실패했습니다: '+(e?.message||e));
+        }
+      }
+      return result;
+    };
+    wrapped.__v4538Wrapped=true;
+    window.addRecordFromForm=wrapped;
   }
-  function sync(){
-    var badge=$('tfmsVersionBadge');if(badge)badge.textContent=BUILD;
+
+  function hookAssetView(){
+    const base=window.showAsset;
+    if(typeof base!=='function'||base.__v4538Wrapped)return;
+    const wrapped=function(key){
+      const result=base.apply(this,arguments);
+      const resolved=(key&&assetByKey(key))?key:(window.selectedAssetKey||key);
+      if(resolved)setTimeout(()=>loadAssetLccV4538(resolved),80);
+      return result;
+    };
+    wrapped.__v4538Wrapped=true;
+    window.showAsset=wrapped;
+  }
+
+  function hookTodayFlow(){
+    const base=window.startRecordFromToday;
+    if(typeof base!=='function'||base.__v4538Wrapped)return;
+    const wrapped=function(i){
+      try{
+        const t=(window.todayTasks||todayTasks||[])[i];
+        pendingAssetKey=t?.assetKey||t?.asset_id||'';
+      }catch(e){pendingAssetKey=''}
+      const result=base.apply(this,arguments);
+      if(pendingAssetKey){setTimeout(()=>{renderRegisterAssetOptions(pendingAssetKey);pendingAssetKey='';},120)}
+      return result;
+    };
+    wrapped.__v4538Wrapped=true;
+    window.startRecordFromToday=wrapped;
+  }
+
+  function hookNavigation(){
+    const base=window.showPage;
+    if(typeof base!=='function'||base.__v4538LinkWrapped)return;
+    const wrapped=function(id){
+      const r=base.apply(this,arguments);
+      if(id==='register')setTimeout(()=>renderRegisterAssetOptions(pendingAssetKey||''),80);
+      if(id==='equipment')setTimeout(()=>{const k=window.selectedAssetKey||'';if(k)loadAssetLccV4538(k)},160);
+      return r;
+    };
+    wrapped.__v4538LinkWrapped=true;
+    window.showPage=wrapped;
+  }
+
+  function syncVersion(){
+    const BUILD='v45.38 Register Asset LCC Link Safe';
+    const badge=$('tfmsVersionBadge');if(badge)badge.textContent=BUILD;
     document.title='TFMS '+BUILD;
-    try{window.TFMS_BUILD=Object.freeze({version:'v45.38',channel:'Register Compact Safe',buildDate:'2026.08.11',title:'Register Compact Safe'});}catch(e){}
+    try{window.TFMS_BUILD=Object.freeze({version:'v45.38',channel:'Register Asset LCC Link Safe',buildDate:'2026.08.11',title:'Register Asset LCC Link Safe'});}catch(e){}
+    try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.38'){u.searchParams.set('v','45.38');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
+  }
+
+  function init(){
+    ensureRegisterAssetUI();
+    hookRegisterSave();
+    hookAssetView();
+    hookTodayFlow();
+    hookNavigation();
+    syncVersion();
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(init,0),{once:true});else setTimeout(init,0);
+  setTimeout(init,7800);
+})();
+</script>
+<script id="tfms-v4538-version-final-sync">
+(function(){
+  function sync(){
+    var label='v45.38 Register Asset LCC Link Safe';
+    var badge=document.getElementById('tfmsVersionBadge');if(badge)badge.textContent=label;
+    document.title='TFMS '+label;
     try{var u=new URL(location.href);if(u.searchParams.get('v')!=='45.38'){u.searchParams.set('v','45.38');history.replaceState(history.state,'',u.pathname+u.search+u.hash);}}catch(e){}
   }
-  function init(){bind();sync()}
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
-  [200,900,2500,7800].forEach(function(ms){setTimeout(init,ms)});
-  var prev=window.showPage;if(typeof prev==='function')window.showPage=function(){var r=prev.apply(this,arguments);if(arguments[0]==='register')setTimeout(bind,40);setTimeout(sync,60);return r};
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync,{once:true});else sync();
+  setTimeout(sync,8200);
 })();
 </script>
 
+
+
+
+<!-- =========================================================
+     TFMS v45.39 Register Compact LCC Safe
+     Visual density restoration only.
+     Keeps v45.38 Register ↔ Asset LCC link logic intact.
+     No DB / SQL / save-function rewrite.
+     ========================================================= -->
+<style id="tfms-v4539-register-compact-lcc-safe">
+/* 유지관리 등록: v45.38 LCC 연계는 유지하고, 입력 밀도만 복구 */
+#register{padding-top:12px!important}
+#register .title-row{margin-bottom:9px!important;align-items:center!important}
+#register .title-left{gap:12px!important}
+#register .title-icon{width:50px!important;height:50px!important;flex:0 0 50px!important;border-radius:13px!important;font-size:24px!important}
+#register .title-row h1{font-size:27px!important;line-height:1.08!important}
+#register .breadcrumb{margin-top:3px!important;font-size:11.5px!important}
+#register .v459-top-actions{gap:7px!important;flex-wrap:nowrap!important}
+#register .v459-top-actions .btn{min-height:38px!important;padding:7px 14px!important;min-width:auto!important}
+
+#register .v459-register-shell{gap:8px!important}
+#register .v459-register-shell>.panel,
+#register .v459-register-shell>.v459-bottom-grid{margin:0!important}
+#register .v459-compact-panel{padding:12px 14px!important;border-radius:13px!important}
+#register .v459-compact-panel .section-title{margin-bottom:9px!important;font-size:16px!important}
+
+/* 기본정보는 넓은 화면에서 4열. LCC 설비 선택은 2칸을 사용 */
+#register .v459-form-grid-4{
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:8px 10px!important;
+  align-items:end!important;
+}
+#register .v459-form-grid-4 .field{min-width:0!important}
+#register .v459-form-grid-4 label{margin-bottom:4px!important;font-size:11.5px!important;line-height:1.25!important}
+#register .v459-form-grid-4 input,
+#register .v459-form-grid-4 select{min-height:38px!important;height:38px!important;padding:6px 10px!important;font-size:13px!important;border-radius:8px!important}
+#register .v4539-asset{grid-column:span 2!important}
+#register .v4539-receipt{grid-column:span 2!important}
+#register .v4539-importance{grid-column:span 1!important}
+#register .v4539-contact{grid-column:span 1!important}
+#register .v4538-asset-help{margin-top:3px!important;min-height:0!important;font-size:9.8px!important;line-height:1.25!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#register .v4538-asset-help.is-linked{padding:3px 6px!important}
+#register .v4538-lcc-chip{padding:1px 6px!important;font-size:9px!important}
+
+#register .v459-choice-row{gap:5px!important;flex-wrap:nowrap!important}
+#register .v459-choice-row .choice{min-height:34px!important;height:34px!important;padding:5px 11px!important;font-size:12px!important;border-radius:8px!important;white-space:nowrap!important}
+#register .v4539-importance .v459-choice-row .choice{padding-left:8px!important;padding-right:8px!important;min-width:0!important;flex:1 1 0!important}
+
+/* 유지관리 내용: 긴 textarea를 업무에 필요한 정도로 축소 */
+#register .v459-form-grid-2{gap:8px 10px!important;align-items:start!important}
+#register .v459-form-grid-2 label{margin-bottom:4px!important;font-size:11.5px!important}
+#register .v459-main-textarea{min-height:78px!important;height:78px!important;padding:9px 10px!important;resize:vertical!important}
+#register .v459-plan-textarea{min-height:54px!important;height:54px!important;padding:8px 10px!important;resize:vertical!important}
+#register .v459-form-grid-2 input,
+#register .v459-form-grid-2 select{min-height:38px!important;height:38px!important;padding:6px 10px!important;font-size:13px!important}
+#register .money input{height:38px!important}
+
+/* 하단 경영평가/증빙도 한 화면 밀도 우선 */
+#register .v459-bottom-grid{grid-template-columns:.9fr 1.25fr!important;gap:8px!important}
+#register .v459-eval-box{padding:10px!important;border-radius:10px!important}
+#register .v459-eval-box h4{margin:0 0 7px!important;font-size:12px!important}
+#register .eval-grid{gap:6px 12px!important}
+#register .eval-grid label{font-size:11.5px!important;line-height:1.3!important}
+#register .v459-subhelp{margin:-3px 0 7px!important;font-size:10.5px!important}
+#register .v459-evidence-grid{gap:8px!important}
+#register .v459-upload{min-height:72px!important;padding:10px!important}
+#register .v459-preview{min-height:52px!important;gap:6px!important}
+#register #docCount{margin-top:4px!important;font-size:10px!important}
+
+/* v45.38 LCC 연계 UI는 시각적으로 기본정보와 자연스럽게 통합 */
+#register .v4538-asset-link select{background:#fbfdff!important;border-color:#c9d9eb!important}
+#register .v4538-asset-link:focus-within select{border-color:#75aef2!important;box-shadow:0 0 0 2px rgba(23,105,210,.08)!important}
+
+@media(max-width:1450px){
+  #register .v459-form-grid-4{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+  #register .v4539-asset{grid-column:span 1!important}
+  #register .v4539-receipt{grid-column:span 2!important}
+  #register .v4539-importance{grid-column:span 2!important}
+}
+@media(max-width:1120px){
+  #register .v459-form-grid-4{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  #register .v4539-asset,#register .v4539-receipt,#register .v4539-importance{grid-column:span 2!important}
+  #register .v459-bottom-grid{grid-template-columns:1fr!important}
+  #register .v4538-asset-help{white-space:normal!important}
+}
+@media(max-width:760px){
+  #register .title-row{align-items:flex-start!important}
+  #register .v459-top-actions{flex-wrap:wrap!important}
+  #register .v459-form-grid-4,#register .v459-form-grid-2{grid-template-columns:1fr!important}
+  #register .v4539-asset,#register .v4539-receipt,#register .v4539-importance{grid-column:span 1!important}
+  #register .v459-choice-row{flex-wrap:wrap!important}
+  #register .v4539-importance .v459-choice-row .choice{flex:0 0 auto!important}
+}
+</style>
+<script id="tfms-v4539-register-compact-lcc-controller">
+(function(){
+  'use strict';
+  const VERSION='v45.39 Register Compact LCC Safe';
+  function markFields(){
+    const grid=document.querySelector('#register .v459-form-grid.v459-form-grid-4');
+    if(!grid)return;
+    grid.querySelectorAll(':scope > .field').forEach(f=>{
+      const txt=(f.querySelector('label')?.textContent||'').replace(/\s+/g,' ').trim();
+      f.classList.remove('v4539-asset','v4539-receipt','v4539-importance','v4539-contact');
+      if(txt.startsWith('연계 설비'))f.classList.add('v4539-asset');
+      else if(txt.startsWith('접수구분'))f.classList.add('v4539-receipt');
+      else if(txt.startsWith('중요도'))f.classList.add('v4539-importance');
+      else if(txt.startsWith('연락처'))f.classList.add('v4539-contact');
+    });
+  }
+  function syncVersion(){
+    const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent=VERSION;
+    document.title='TFMS '+VERSION;
+    try{window.TFMS_BUILD=Object.freeze({version:'v45.39',channel:'Register Compact LCC Safe',buildDate:'2026.08.11',title:'Register Compact LCC Safe'});}catch(e){}
+    try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.39'){u.searchParams.set('v','45.39');history.replaceState(history.state,'',u.pathname+u.search+u.hash);}}catch(e){}
+  }
+  function apply(){markFields();syncVersion();}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();
+  [80,300,900,1800,4200,8500].forEach(ms=>setTimeout(apply,ms));
+  const prevShow=window.showPage;
+  if(typeof prevShow==='function'&&!prevShow.__v4539Wrapped){
+    const wrapped=function(){const r=prevShow.apply(this,arguments);if(arguments[0]==='register')setTimeout(apply,90);else setTimeout(syncVersion,40);return r;};
+    wrapped.__v4539Wrapped=true;window.showPage=wrapped;
+  }
+  const prevNav=window.navTo;
+  if(typeof prevNav==='function'&&!prevNav.__v4539Wrapped){
+    const wrapped=function(){const r=prevNav.apply(this,arguments);if(arguments[0]==='register')setTimeout(apply,90);else setTimeout(syncVersion,40);return r;};
+    wrapped.__v4539Wrapped=true;window.navTo=wrapped;
+  }
+})();
+</script>
+<script id="tfms-v4539-version-final-sync">
+(function(){
+  function sync(){
+    var label='v45.39 Register Compact LCC Safe';
+    var badge=document.getElementById('tfmsVersionBadge');if(badge)badge.textContent=label;
+    document.title='TFMS '+label;
+    try{var u=new URL(location.href);if(u.searchParams.get('v')!=='45.39'){u.searchParams.set('v','45.39');history.replaceState(history.state,'',u.pathname+u.search+u.hash);}}catch(e){}
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync,{once:true});else sync();
+  setTimeout(sync,9000);
+})();
+</script>
+<!-- =========================================================
+     TFMS v45.40 Register Legacy UX + LCC + White CI
+     Visual/ergonomic layer only. Existing IDs, save functions,
+     Supabase structure and v45.38 asset_id link are preserved.
+     ========================================================= -->
+<style id="tfms-v4540-register-legacy-ux-white-ci">
+/* ---------- Header brand: TFMS + white corporation CI ---------- */
+#appHeader .top .logo{
+  min-width:0!important;
+  gap:10px!important;
+  display:flex!important;
+  align-items:center!important;
+}
+#appHeader .logo-title{order:1!important;flex:0 0 auto!important}
+#appHeader .logo>img{
+  order:2!important;
+  display:block!important;
+  width:142px!important;
+  height:28px!important;
+  max-width:142px!important;
+  max-height:28px!important;
+  object-fit:contain!important;
+  object-position:left center!important;
+  padding:0!important;
+  margin:0 0 0 2px!important;
+  border-radius:0!important;
+  background:transparent!important;
+  filter:brightness(0) invert(1)!important;
+  opacity:.96!important;
+}
+#appHeader .logo-title small{display:none!important}
+@media(max-width:1120px){#appHeader .logo>img{width:112px!important;max-width:112px!important}}
+@media(max-width:900px){#appHeader .logo>img{display:none!important}}
+
+/* ---------- Register page: restore the previous compact UX ---------- */
+#register{padding-top:10px!important}
+#register .v459-title-row{margin-bottom:8px!important;min-height:56px!important;align-items:center!important}
+#register .v459-title-row .title-icon{width:52px!important;height:52px!important;border-radius:13px!important;font-size:24px!important}
+#register .v459-title-row h1{font-size:27px!important;margin:0 0 2px!important}
+#register .v459-title-row .breadcrumb{font-size:11px!important}
+#register .v459-top-actions{gap:7px!important}
+#register .v459-top-actions .btn{height:38px!important;padding:0 15px!important;border-radius:9px!important}
+
+#register .v4540-info-strip{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:0;background:#fff;border:1px solid #d7e3ef;border-radius:12px;
+  margin:0 0 10px;padding:8px 10px;box-shadow:0 4px 14px rgba(15,47,82,.035)
+}
+#register .v4540-info-item{display:flex;align-items:center;gap:10px;min-width:0;padding:2px 10px;border-right:1px solid #e7edf5}
+#register .v4540-info-item:last-child{border-right:0}
+#register .v4540-info-ico{width:30px;height:30px;display:grid;place-items:center;border-radius:10px;font-size:14px;font-weight:900;flex:0 0 30px}
+#register .v4540-info-item:nth-child(1) .v4540-info-ico{background:#eaf9f2;color:#06966d}
+#register .v4540-info-item:nth-child(2) .v4540-info-ico{background:#eef5ff;color:#1970da}
+#register .v4540-info-item:nth-child(3) .v4540-info-ico{background:#f4edff;color:#7d4ad9}
+#register .v4540-info-copy strong{display:block;font-size:11px;color:#183653;margin-bottom:2px}
+#register .v4540-info-copy span{display:block;font-size:9.5px;color:#77879b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+#register .v4540-register-layout{display:grid;grid-template-columns:minmax(0,1fr) 285px;gap:10px;align-items:start}
+#register .v4540-register-main{min-width:0}
+#register .v4540-register-side{display:grid;gap:10px;position:sticky;top:70px;align-self:start}
+#register .v4540-side-card{background:#fff;border:1px solid #d8e3ef;border-radius:12px;overflow:hidden;box-shadow:0 4px 14px rgba(15,47,82,.035)}
+#register .v4540-side-head{height:42px;padding:0 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e6edf5;color:#0761bd;font-size:13px;font-weight:900}
+#register .v4540-required{font-size:10px;color:#ef4444;font-weight:800}
+#register .v4540-preview-list{padding:3px 10px 7px}
+#register .v4540-preview-row{min-height:31px;display:grid;grid-template-columns:88px minmax(0,1fr);align-items:center;border-bottom:1px solid #edf2f7;font-size:10px;gap:6px}
+#register .v4540-preview-row:last-child{border-bottom:0}
+#register .v4540-preview-row span{color:#75869b}
+#register .v4540-preview-row strong{color:#183653;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#register .v4540-check-list{padding:9px 11px 11px;display:grid;gap:7px}
+#register .v4540-check-row{display:flex;align-items:center;gap:7px;font-size:10.5px;font-weight:800;color:#42566d}
+#register .v4540-check-dot{width:17px;height:17px;border-radius:50%;display:grid;place-items:center;background:#eef2f7;color:#9aa8b7;font-size:10px;flex:0 0 17px}
+#register .v4540-check-row.ok .v4540-check-dot{background:#ddf8eb;color:#079669}
+#register .v4540-side-note{font-size:9px;line-height:1.45;color:#8a98a8;padding:0 11px 11px}
+
+/* remove old left-side register navigator if a prior patch creates it */
+#register .v4513-register-nav{display:none!important}
+#register .v459-register-shell{display:grid!important;grid-template-columns:1fr!important;gap:8px!important;margin:0!important}
+#register .v459-register-shell>.panel,#register .v459-register-shell>.v459-bottom-grid{grid-column:1!important;margin:0!important}
+#register .panel.v459-compact-panel{padding:11px 12px!important;border-radius:12px!important;box-shadow:0 4px 14px rgba(15,47,82,.035)!important}
+#register .section-title{font-size:14px!important;margin:0 0 9px!important}
+#register .section-title .dot{width:9px!important;height:9px!important}
+
+#register .v459-form-grid{display:grid!important;gap:7px 9px!important}
+#register .v459-form-grid-4{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+#register .v459-form-grid-2{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+#register .v459-form-grid .field{min-width:0!important;margin:0!important}
+#register .field label{font-size:10px!important;margin-bottom:4px!important;font-weight:800!important}
+#register input,#register select{height:36px!important;min-height:36px!important;padding:0 10px!important;border-radius:8px!important;font-size:11px!important}
+#register textarea{border-radius:8px!important;font-size:11px!important;padding:9px 10px!important}
+#register .v459-main-textarea{height:66px!important;min-height:66px!important}
+#register .v459-plan-textarea{height:39px!important;min-height:39px!important}
+#register .v459-choice-row{display:flex!important;gap:5px!important;flex-wrap:wrap!important;align-items:center!important}
+#register .v459-choice-row .choice{height:34px!important;min-height:34px!important;padding:0 15px!important;border-radius:8px!important;font-size:10.5px!important;white-space:nowrap!important}
+#register .v459-span-2{grid-column:span 2!important}
+#register .v459-span-3{grid-column:span 3!important}
+#register .v459-span-all{grid-column:1/-1!important}
+
+/* LCC field: keep it visible but fit it into the compact basic-info block */
+#register .v4538-asset-link{grid-column:span 2!important}
+#register .v4538-asset-link select{height:36px!important}
+#register .v4538-asset-help{font-size:9px!important;margin-top:3px!important;min-height:11px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#register .v4538-lcc-chip{font-size:8.5px!important;padding:1px 6px!important}
+
+/* Reorder the basic information grid into a compact, predictable flow */
+#register #dept.closest-field{} /* harmless marker */
+
+#register .v459-bottom-grid{display:grid!important;grid-template-columns:.95fr 1.4fr!important;gap:8px!important}
+#register .v459-eval-panel{order:2!important}
+#register .v459-bottom-grid>.panel:not(.v459-eval-panel){order:1!important}
+#register .v459-evidence-grid{display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important}
+#register .v459-upload{min-height:66px!important;padding:8px!important;border-radius:9px!important}
+#register .v459-upload strong{font-size:10.5px!important}
+#register .v459-upload small,#register .help{font-size:8.5px!important}
+#register .file-btn{font-size:9px!important;padding:4px 7px!important}
+#register .v459-eval-box{padding:9px!important;border-radius:9px!important}
+#register .v459-eval-box h4{font-size:10px!important;margin:0 0 7px!important}
+#register .eval-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px 10px!important}
+#register .eval-grid label{font-size:10px!important;margin:0!important;display:flex!important;align-items:center!important;gap:5px!important}
+#register .eval-grid input{width:14px!important;height:14px!important;min-height:14px!important;padding:0!important}
+#register .v459-subhelp{font-size:9px!important;margin:-4px 0 6px!important}
+
+@media(max-width:1450px){
+  #register .v4540-register-layout{grid-template-columns:minmax(0,1fr) 255px}
+  #register .v459-form-grid-4{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+  #register .v4538-asset-link{grid-column:span 2!important}
+}
+@media(max-width:1180px){
+  #register .v4540-register-layout{grid-template-columns:1fr}
+  #register .v4540-register-side{position:static;grid-template-columns:1fr 1fr}
+  #register .v459-form-grid-4{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  #register .v4538-asset-link{grid-column:span 2!important}
+}
+@media(max-width:760px){
+  #register .v4540-info-strip{grid-template-columns:1fr}
+  #register .v4540-info-item{border-right:0;border-bottom:1px solid #e7edf5;padding:6px}
+  #register .v4540-info-item:last-child{border-bottom:0}
+  #register .v4540-register-side{grid-template-columns:1fr}
+  #register .v459-form-grid-4,#register .v459-form-grid-2,#register .v459-bottom-grid{grid-template-columns:1fr!important}
+  #register .v459-span-2,#register .v459-span-3,#register .v4538-asset-link{grid-column:span 1!important}
+}
+</style>
+<script id="tfms-v4540-register-legacy-controller">
+(function(){
+  'use strict';
+  const VERSION='v45.40 Register Legacy UX LCC White CI';
+  const $=id=>document.getElementById(id);
+  const q=s=>document.querySelector(s);
+  const txt=(el,fb='-')=>String(el?.value||el?.textContent||'').trim()||fb;
+  function selectedChoice(name){
+    const g=q(`#register [data-single="${name}"]`);
+    return (g?.querySelector('.choice.active')?.textContent||'-').trim();
+  }
+  function ensureLayout(){
+    const page=$('register'),shell=q('#register .v459-register-shell');
+    if(!page||!shell)return;
+    if(!q('#register .v4540-info-strip')){
+      const info=document.createElement('div');info.className='v4540-info-strip';
+      info.innerHTML=`
+        <div class="v4540-info-item"><div class="v4540-info-ico">✓</div><div class="v4540-info-copy"><strong>필수항목 우선 입력</strong><span>* 표시 항목은 필수 입력 항목입니다.</span></div></div>
+        <div class="v4540-info-item"><div class="v4540-info-ico">▣</div><div class="v4540-info-copy"><strong>사진·문서 첨부 가능</strong><span>관련 증빙자료를 함께 등록할 수 있습니다.</span></div></div>
+        <div class="v4540-info-item"><div class="v4540-info-ico">↗</div><div class="v4540-info-copy"><strong>저장 후 조회에서 확인</strong><span>등록된 이력은 유지관리 조회에서 확인합니다.</span></div></div>`;
+      shell.parentNode.insertBefore(info,shell);
+    }
+    if(!q('#register .v4540-register-layout')){
+      const layout=document.createElement('div');layout.className='v4540-register-layout';
+      const main=document.createElement('div');main.className='v4540-register-main';
+      const side=document.createElement('aside');side.className='v4540-register-side';
+      shell.parentNode.insertBefore(layout,shell);layout.append(main,side);main.appendChild(shell);
+      side.innerHTML=`
+        <div class="v4540-side-card">
+          <div class="v4540-side-head"><span>입력 미리보기</span><span class="v4540-required" id="v4540RequiredCount">필수 확인</span></div>
+          <div class="v4540-preview-list" id="v4540PreviewList"></div>
+        </div>
+        <div class="v4540-side-card">
+          <div class="v4540-side-head"><span>등록 체크</span><span></span></div>
+          <div class="v4540-check-list" id="v4540CheckList"></div>
+          <div class="v4540-side-note">기존 저장 구조는 그대로 유지하며 입력 현황만 요약합니다.</div>
+        </div>`;
+    }
+    // Keep current LCC injector alive; ask it to render if it already exists.
+    try{ if(typeof window.renderRegisterAssetOptions==='function') window.renderRegisterAssetOptions(''); }catch(e){}
+    updatePreview();
+  }
+  function row(label,value){return `<div class="v4540-preview-row"><span>${label}</span><strong title="${String(value).replace(/"/g,'&quot;')}">${value}</strong></div>`}
+  function updatePreview(){
+    const list=$('v4540PreviewList'); if(!list)return;
+    const asset=$('regAssetLinkV4538');
+    const amount=Number(String($('regAmount')?.value||'0').replace(/[^0-9.-]/g,''))||0;
+    const docs=$('docInput')?.files?.length||0,photos=$('photoInput')?.files?.length||0;
+    const evalCount=q('#register .eval-grid')?.querySelectorAll('input[type="checkbox"]:checked').length||0;
+    list.innerHTML=[
+      row('관리부서',txt($('dept'))),row('시설명',txt($('facility'))),
+      row('연계 설비',asset?.value?txt(asset.options[asset.selectedIndex]):'시설 공통 / 미연계'),
+      row('등록일자',txt($('regDate'))),row('시행일자',txt($('execDate'))),
+      row('분야 / 세부분야',`${txt($('field'))} / ${txt($('subField'))}`),
+      row('유지관리 유형',txt($('regType'))),row('처리상태',txt($('regStatus'))),
+      row('세부내용',txt($('regDetail'),'미입력')),row('소요금액',amount.toLocaleString('ko-KR')+'원'),
+      row('경영평가 연계',evalCount?evalCount+'개 선택':'선택 없음'),row('첨부자료',`문서 ${docs} · 사진 ${photos}`)
+    ].join('');
+    const checks=[
+      ['기본 정보',!!($('dept')?.value&&$('facility')?.value&&$('regDate')?.value&&$('execDate')?.value)],
+      ['유지관리 내용',!!$('regDetail')?.value?.trim()],
+      ['예산 및 금액',!!$('budgetSelect')?.value],
+      ['첨부자료 (선택)',docs+photos>0],
+      ['경영평가 연계 (선택)',evalCount>0],
+      ['LCC 설비 연계 (선택)',!!asset?.value]
+    ];
+    const c=$('v4540CheckList');if(c)c.innerHTML=checks.map(([n,ok])=>`<div class="v4540-check-row ${ok?'ok':''}"><span class="v4540-check-dot">${ok?'✓':'·'}</span><span>${n}</span></div>`).join('');
+    const required=[$('dept'),$('facility'),$('regDate'),$('execDate'),$('field'),$('subField'),$('regType'),$('regStatus'),$('regDetail')];
+    const done=required.filter(el=>String(el?.value||'').trim()).length;
+    const rc=$('v4540RequiredCount');if(rc)rc.textContent=`필수 ${done}/${required.length}`;
+  }
+  function syncVersion(){
+    try{
+      const badge=$('tfmsVersionBadge')||q('.v32-classic-note'); if(badge)badge.textContent='v45.40 Legacy UX LCC';
+      document.title='TFMS '+VERSION;
+      window.TFMS_BUILD=Object.freeze({version:'v45.40',channel:'Register Legacy UX LCC',buildDate:'2026.08.11',title:'Register Legacy UX + LCC + White CI'});
+      const u=new URL(location.href);if(u.searchParams.get('v')!=='45.40'){u.searchParams.set('v','45.40');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}
+    }catch(e){}
+  }
+  function init(){ensureLayout();syncVersion();updatePreview();
+    const page=$('register');if(page&&!page.__v4540Bound){page.addEventListener('input',()=>setTimeout(updatePreview,0),true);page.addEventListener('change',()=>setTimeout(updatePreview,0),true);page.addEventListener('click',()=>setTimeout(updatePreview,20),true);page.__v4540Bound=true;}
+    const icon=q('#register .title-icon');if(icon)icon.textContent='🛠️';
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+  [250,800,1800,4200,7600].forEach(ms=>setTimeout(()=>{init();syncVersion()},ms));
+})();
+</script>
 </body></html>
