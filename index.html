@@ -19875,7 +19875,8 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
  const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
  const money=n=>Number(n||0).toLocaleString('ko-KR')+'원';
  function candidate(){
-   return document.querySelector('#statisticsPage,#statisticsView,#statisticsSection,#statsPage,[data-page="statistics"],.statistics-page,.stats-page');
+   return document.getElementById('stats') ||
+     document.querySelector('#statisticsPage,#statisticsView,#statisticsSection,#statsPage,[data-page="statistics"],.statistics-page,.stats-page');
  }
  function records(){
    const pools=[
@@ -19924,8 +19925,16 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
       <div class="tsr-card"><div class="tsr-cardhead"><span>바로가기</span></div><div class="tsr-quick"><div class="tsr-q" data-go="maintenance"> <i>✓</i>유지관리 등록</div><div class="tsr-q" data-go="today"><i>♙</i>오늘의 업무</div><div class="tsr-q" data-go="excel"><i>▤</i>엑셀 다운로드</div><div class="tsr-q"><i>☎</i>고객센터<br><small>033-806-5044</small></div></div></div>
     </div>
     <div class="tsr-foot"><span>태백시시설관리공단　|　시민과 함께 만드는 더 나은 시설관리</span><span>© 2026 태백시시설관리공단 TFMS Enterprise System</span></div>`;
-   const main=document.querySelector('main,.main-content,#mainContent,.content-area,.page-content')||document.body;
-   main.appendChild(host);
+   const statsPage=document.getElementById('stats');
+   if(statsPage){
+     Array.from(statsPage.children).forEach(function(ch){
+       if(ch!==host) ch.style.display='none';
+     });
+     statsPage.appendChild(host);
+   }else{
+     const main=document.querySelector('main,.main-content,#mainContent,.content-area,.page-content')||document.body;
+     main.appendChild(host);
+   }
    $('tsrRefresh')?.addEventListener('click',render);
    return host;
  }
@@ -19953,9 +19962,14 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
    const rows=Object.entries(fac).sort((a,b)=>b[1]-a[1]).slice(0,5);$('tsrTable').innerHTML=rows.map(([f,c])=>{const rs=list.filter(r=>facilityOf(r)===f).sort((a,b)=>dateOf(b).localeCompare(dateOf(a)));return `<tr><td>${esc(f)}</td><td>${esc(deptOf(rs[0]||{}))}</td><td>${c}건</td><td>${esc(dateOf(rs[0]||{}).slice(0,10)||'-')}</td></tr>`}).join('')||'<tr><td colspan="4">등록 이력이 없습니다.</td></tr>';
  }
  function activate(){
+   const statsPage=document.getElementById('stats');
    const host=build();
-   const old=candidate();
-   if(old && old!==host) old.style.display='none';
+   if(statsPage){
+     statsPage.style.display='';
+     Array.from(statsPage.children).forEach(function(ch){
+       ch.style.display=(ch===host)?'block':'none';
+     });
+   }
    host.style.display='block';
    render();
  }
@@ -19974,5 +19988,131 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
 })();
 </script>
 
-<script id="tfms-v4528r-version">(function(){function f(){var b=document.getElementById('tfmsVersionBadge');if(b)b.textContent='v45.28R Statistics Dashboard';try{var u=new URL(location.href);if(u.searchParams.get('v')!=='45.28R'){u.searchParams.set('v','45.28R');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',f,{once:true});else f()})();</script>
+<script id="tfms-v4528r-version">(function(){function f(){var b=document.getElementById('tfmsVersionBadge');if(b)b.textContent='v45.28R3 Statistics Sidebar Stable';try{var u=new URL(location.href);if(u.searchParams.get('v')!=='45.28R3'){u.searchParams.set('v','45.28R3');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',f,{once:true});else f()})();</script>
+
+<script id="tfms-v4528r2-showpage-hook">
+(function(){
+  function install(){
+    if(window.__tfmsStatsR2Hooked) return;
+    if(typeof window.showPage!=='function'){setTimeout(install,250);return;}
+    window.__tfmsStatsR2Hooked=true;
+    const original=window.showPage;
+    window.showPage=function(id,btn){
+      const result=original.apply(this,arguments);
+      if(id==='stats'){
+        setTimeout(function(){
+          try{window.tfmsOpenAdminStatisticsR?.();}catch(e){console.error(e);}
+        },30);
+      }
+      return result;
+    };
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',install,{once:true});
+  }else install();
+})();
+</script>
+
+
+<style id="tfms-v4528r3-sidebar-fix">
+/* v45.28R3: left sidebar always fills the visible viewport below the top header.
+   Do not alter page/business logic. */
+:root{ --tfms-topbar-h: 50px; }
+
+#sidebar,
+.sidebar,
+aside.sidebar,
+nav.sidebar{
+  min-height: calc(100vh - var(--tfms-topbar-h)) !important;
+  height: calc(100vh - var(--tfms-topbar-h)) !important;
+  align-self: stretch !important;
+  background: #0f4778 !important;
+  box-sizing: border-box !important;
+}
+
+/* Common shell layouts: stretch the left column through the full viewport. */
+.app-shell,
+.main-shell,
+.layout,
+.app-body,
+.main-layout,
+#appBody,
+#mainLayout{
+  min-height: calc(100vh - var(--tfms-topbar-h)) !important;
+  align-items: stretch !important;
+}
+
+/* If sidebar is already sticky/fixed, keep its own scrolling instead of leaving a white tail. */
+#sidebar,
+.sidebar{
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  scrollbar-gutter: stable;
+}
+
+/* Prevent a transparent/white wrapper below the sidebar. */
+.sidebar-wrap,
+.sidebar-wrapper,
+#sidebarWrap,
+#sidebarWrapper{
+  min-height: calc(100vh - var(--tfms-topbar-h)) !important;
+  background: #0f4778 !important;
+  align-self: stretch !important;
+}
+</style>
+<script id="tfms-v4528r3-sidebar-runtime">
+(function(){
+  function fixSidebar(){
+    var top =
+      document.querySelector('header') ||
+      document.querySelector('.topbar') ||
+      document.querySelector('.top-bar') ||
+      document.querySelector('#topbar') ||
+      document.querySelector('#header');
+
+    var h = top ? Math.round(top.getBoundingClientRect().height) : 50;
+    if(h < 36 || h > 100) h = 50;
+    document.documentElement.style.setProperty('--tfms-topbar-h', h+'px');
+
+    var sb =
+      document.getElementById('sidebar') ||
+      document.querySelector('.sidebar') ||
+      document.querySelector('aside');
+
+    if(!sb) return;
+
+    sb.style.minHeight='calc(100vh - '+h+'px)';
+    sb.style.height='calc(100vh - '+h+'px)';
+    sb.style.background='#0f4778';
+    sb.style.boxSizing='border-box';
+
+    var p=sb.parentElement;
+    if(p){
+      p.style.minHeight='calc(100vh - '+h+'px)';
+      if(getComputedStyle(p).display==='flex') p.style.alignItems='stretch';
+    }
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',fixSidebar,{once:true});
+  }else fixSidebar();
+
+  window.addEventListener('resize',fixSidebar,{passive:true});
+  window.addEventListener('load',fixSidebar,{once:true});
+})();
+</script>
+
+
+<script id="tfms-v4528r3-version-sync">
+(function(){
+  try{
+    var u=new URL(location.href);
+    if(u.searchParams.get('v')!=='45.28R3'){
+      u.searchParams.set('v','45.28R3');
+      history.replaceState(null,'',u.pathname+u.search+u.hash);
+    }
+  }catch(e){}
+})();
+</script>
+
 </body></html>
