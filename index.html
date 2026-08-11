@@ -16663,48 +16663,84 @@ window.printFireRecordV420=async function(){try{window.previewFireRecordV420();c
 </style>
 
 
-<style id="tfms-v4528r-stat-css">
-#tfmsAdminStatsR{display:none;padding:0 0 28px}
-#tfmsAdminStatsR *{box-sizing:border-box}
-.tsr-head{display:flex;align-items:center;justify-content:space-between;gap:18px;margin:0 0 14px}
-.tsr-title{display:flex;align-items:center;gap:14px}
-.tsr-icon{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,#0b8fae,#1769d2);color:#fff;font-size:25px;box-shadow:0 8px 20px rgba(25,90,150,.18)}
-.tsr-title h1{margin:0;font-size:28px;color:#08274c;line-height:1.05}
-.tsr-title p{margin:5px 0 0;color:#72849c;font-size:12px}
-.tsr-filter{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.tsr-filter input,.tsr-filter select,.tsr-filter button{height:38px;border:1px solid #cfdaea;border-radius:9px;background:#fff;padding:0 12px;color:#173a62;font-weight:700}
-.tsr-filter button{background:#0d4f91;color:#fff;cursor:pointer}
-.tsr-grid5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:12px}
-.tsr-kpi{background:#fff;border:1px solid #d9e2ef;border-radius:13px;padding:15px 14px;display:flex;align-items:center;gap:13px;min-height:105px;box-shadow:0 3px 12px rgba(28,63,101,.035)}
-.tsr-kicon{width:54px;height:54px;border-radius:13px;display:grid;place-items:center;font-size:25px;background:#eef5ff}
-.tsr-kpi:nth-child(2) .tsr-kicon{background:#eaf9f1}.tsr-kpi:nth-child(3) .tsr-kicon{background:#f3efff}.tsr-kpi:nth-child(4) .tsr-kicon{background:#fff0f2}.tsr-kpi:nth-child(5) .tsr-kicon{background:#eafaf7}
-.tsr-klabel{font-size:13px;font-weight:800;color:#193858}.tsr-kvalue{font-size:27px;font-weight:900;color:#071f40;margin-top:3px}.tsr-ksub{font-size:11px;color:#8191a5;margin-top:3px}
-.tsr-row{display:grid;grid-template-columns:1.05fr 1.95fr;gap:12px;margin-bottom:12px}
-.tsr-row3{display:grid;grid-template-columns:1.05fr 1.2fr .95fr;gap:12px;margin-bottom:12px}
-.tsr-rowbottom{display:grid;grid-template-columns:1.05fr 1.35fr .95fr;gap:12px}
-.tsr-card{background:#fff;border:1px solid #d9e2ef;border-radius:13px;padding:13px;min-width:0;box-shadow:0 3px 12px rgba(28,63,101,.035)}
-.tsr-cardhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;font-size:15px;font-weight:900;color:#16395e}
-.tsr-muted{font-size:11px;color:#7c8da4;font-weight:600}
-.tsr-money{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.tsr-moneybox{padding:12px 10px;border-right:1px solid #e5ebf3}.tsr-moneybox:last-child{border-right:0}
-.tsr-moneybox b{display:block;font-size:22px;color:#0b2e58;margin-top:8px}.tsr-moneybox span{font-size:12px;color:#71849d}
-.tsr-chart{height:122px;display:flex;align-items:flex-end;gap:16px;padding:8px 12px 18px;border-top:1px solid #edf1f6;position:relative}
-.tsr-barwrap{flex:1;min-width:22px;text-align:center;height:100%;display:flex;flex-direction:column;justify-content:flex-end;position:relative}
-.tsr-bar{width:68%;max-width:42px;margin:0 auto;border-radius:6px 6px 0 0;background:linear-gradient(#33d39a 0 35%,#2375df 35% 65%,#dfe6ef 65%);min-height:8px}
-.tsr-barlabel{position:absolute;bottom:-18px;width:100%;font-size:10px;color:#637891}
-.tsr-donutwrap{display:flex;align-items:center;gap:18px;padding:6px}
-.tsr-donut{width:132px;height:132px;border-radius:50%;background:conic-gradient(#176ad4 0 12%,#0eabc1 12% 41%,#34b98b 41% 82%,#9ba9bd 82%);position:relative;flex:0 0 auto}
-.tsr-donut:after{content:"";position:absolute;inset:27px;background:#fff;border-radius:50%}
-.tsr-donutcenter{position:absolute;inset:0;display:grid;place-items:center;z-index:1;text-align:center;color:#62758d;font-size:11px}.tsr-donutcenter b{display:block;font-size:24px;color:#0a315f}
-.tsr-legend{display:grid;gap:7px;font-size:12px;color:#3f5875;flex:1}.tsr-legend div{display:flex;justify-content:space-between;gap:8px}.tsr-dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:7px;background:#176ad4}
-.tsr-fieldgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.tsr-field{border-radius:11px;padding:15px 8px;text-align:center;background:#f1f7ff}.tsr-field:nth-child(2){background:#fff3ed}.tsr-field:nth-child(3){background:#eefaf5}.tsr-field:nth-child(4){background:#f5efff}.tsr-field b{display:block;font-size:22px;margin:7px 0;color:#0b315d}.tsr-field small{color:#788ba2}
-.tsr-list{display:grid}.tsr-item{display:grid;grid-template-columns:28px 1fr auto auto;align-items:center;gap:8px;padding:8px 3px;border-bottom:1px solid #edf1f6;font-size:12px}.tsr-item:last-child{border-bottom:0}.tsr-item b{color:#17395f}.tsr-item small{display:block;color:#8191a5;margin-top:2px}.tsr-pill{padding:5px 9px;border-radius:999px;background:#eaf9f1;color:#07884b;font-size:10px;font-weight:900}
-.tsr-line{height:118px;position:relative;padding:12px 8px}.tsr-line svg{width:100%;height:100%;overflow:visible}.tsr-line text{font-size:9px;fill:#6f8197}
-.tsr-table{width:100%;border-collapse:collapse;font-size:11px}.tsr-table th{background:#f4f7fb;color:#657890;text-align:left;padding:7px}.tsr-table td{padding:7px;border-bottom:1px solid #edf1f6;color:#314d6b}
-.tsr-quick{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.tsr-q{background:#f5f8fc;border-radius:12px;padding:12px 5px;text-align:center;font-size:11px;font-weight:800;color:#24496f}.tsr-q i{display:grid;place-items:center;margin:0 auto 7px;width:38px;height:38px;border-radius:11px;background:#e9f6ef;font-style:normal;font-size:19px}
-.tsr-foot{display:flex;justify-content:space-between;color:#8493a7;font-size:10px;margin-top:12px;padding:0 2px}
-@media(max-width:1200px){.tsr-grid5{grid-template-columns:repeat(3,1fr)}.tsr-row,.tsr-row3,.tsr-rowbottom{grid-template-columns:1fr}.tsr-fieldgrid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:760px){.tsr-grid5{grid-template-columns:1fr 1fr}.tsr-filter{display:none}.tsr-money{grid-template-columns:1fr}.tsr-moneybox{border-right:0;border-bottom:1px solid #e5ebf3}.tsr-quick{grid-template-columns:1fr 1fr}}
+<style id="tfms-v4529r-dashboard-css">
+#dashboard .v451-dash-head,
+#dashboard .v451-kpi-grid,
+#dashboard .v451-dashboard-grid{display:none!important}
+#tfmsCompactDashR{display:none}
+#dashboard #tfmsCompactDashR{display:block}
+
+.tcd-head{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;margin-bottom:12px}
+.tcd-head h1{margin:0;font-size:27px;line-height:1.05;color:#0b315c;font-weight:900}
+.tcd-head p{margin:4px 0 0;font-size:12px;color:#71839b}
+.tcd-head-actions{display:flex;gap:8px;align-items:center}
+.tcd-chip,.tcd-btn{height:36px;border:1px solid #cad8e8;border-radius:9px;background:#fff;padding:0 13px;color:#1d456e;font-size:12px;font-weight:800}
+.tcd-chip{background:#ebfaf5;color:#087b60;border-color:#bcebdc}
+.tcd-btn{cursor:pointer}
+
+.tcd-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:10px}
+.tcd-kpi{background:#fff;border:1px solid #dbe5f1;border-radius:13px;padding:13px 14px;display:flex;align-items:center;gap:12px;min-height:88px;box-shadow:0 3px 14px rgba(22,55,92,.035)}
+.tcd-kicon{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:21px;background:#edf4ff;color:#1769d2;flex:0 0 auto}
+.tcd-kpi:nth-child(2) .tcd-kicon{background:#eaf9f4;color:#0aa080}
+.tcd-kpi:nth-child(3) .tcd-kicon{background:#eef8ef;color:#1f9d63}
+.tcd-kpi:nth-child(4) .tcd-kicon{background:#fff0f0;color:#e34b48}
+.tcd-klabel{font-size:12px;font-weight:800;color:#203c5c}
+.tcd-kvalue{font-size:25px;line-height:1.05;color:#08264a;font-weight:900;margin-top:3px}
+.tcd-ksub{font-size:10px;color:#8492a5;margin-top:3px}
+
+.tcd-grid{display:grid;grid-template-columns:1.05fr 1.25fr 1fr;gap:10px;margin-bottom:10px}
+.tcd-card{background:#fff;border:1px solid #dbe5f1;border-radius:13px;padding:13px;min-width:0;box-shadow:0 3px 14px rgba(22,55,92,.035)}
+.tcd-cardhead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px}
+.tcd-cardhead h2{margin:0;font-size:15px;color:#12395f;font-weight:900}
+.tcd-link{font-size:10px;color:#1769d2;font-weight:800}
+.tcd-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#0da7a7;margin-right:6px}
+
+.tcd-facility{display:flex;align-items:center;gap:16px}
+.tcd-donut{width:116px;height:116px;border-radius:50%;position:relative;flex:0 0 auto;background:conic-gradient(#1d6fd0 0 12%,#12a9b7 12% 41%,#33b88b 41% 82%,#9ba9bd 82%)}
+.tcd-donut:after{content:"";position:absolute;inset:24px;border-radius:50%;background:#fff}
+.tcd-donut-center{position:absolute;inset:0;display:grid;place-items:center;z-index:1;text-align:center;color:#6d7f95;font-size:10px}
+.tcd-donut-center b{display:block;font-size:23px;color:#0d315e}
+.tcd-legend{display:grid;gap:7px;flex:1;font-size:11px;color:#425b77}
+.tcd-legend-row{display:flex;justify-content:space-between;gap:8px}
+.tcd-legend-name i{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px;background:#1769d2}
+
+.tcd-table{width:100%;border-collapse:collapse;font-size:11px}
+.tcd-table th{background:#f3f6fa;color:#5c6f87;text-align:left;padding:8px;font-weight:800}
+.tcd-table td{padding:9px 8px;border-bottom:1px solid #edf2f7;color:#334e6a}
+.tcd-pill{display:inline-block;padding:4px 7px;border-radius:999px;background:#eaf3ff;color:#1769d2;font-size:9px;font-weight:900}
+.tcd-pill.done{background:#eaf9ef;color:#118a4e}
+.tcd-pill.warn{background:#fff3df;color:#d07a00}
+
+.tcd-list{display:grid}
+.tcd-item{display:grid;grid-template-columns:28px 1fr auto;gap:8px;align-items:center;padding:8px 2px;border-bottom:1px solid #edf2f7;font-size:11px}
+.tcd-item:last-child{border-bottom:0}
+.tcd-item .ico{width:27px;height:27px;border-radius:8px;display:grid;place-items:center;background:#eef4ff;color:#1769d2}
+.tcd-item b{color:#193c60}.tcd-item small{display:block;color:#8291a4;margin-top:2px}
+
+.tcd-bottom{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:10px}
+.tcd-line{height:118px}
+.tcd-line svg{width:100%;height:100%}
+.tcd-fields{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.tcd-field{border-radius:10px;padding:11px 5px;text-align:center;background:#f3f8ff;color:#174b7a}
+.tcd-field:nth-child(2){background:#fff5ec;color:#d97914}
+.tcd-field:nth-child(3){background:#eefaf5;color:#18885d}
+.tcd-field:nth-child(4){background:#f4efff;color:#7550c8}
+.tcd-field b{display:block;font-size:19px;margin-top:6px;color:inherit}
+.tcd-field small{font-size:9px;color:#7b899d}
+
+.tcd-quick{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}
+.tcd-q{background:#f6f9fc;border-radius:10px;padding:11px 7px;text-align:center;color:#294d72;font-size:10px;font-weight:800;cursor:pointer}
+.tcd-q i{display:grid;place-items:center;width:31px;height:31px;border-radius:9px;background:#eaf4ff;margin:0 auto 6px;font-style:normal;font-size:16px}
+.tcd-foot{margin-top:10px;font-size:10px;color:#8593a5;text-align:right}
+
+@media(max-width:1250px){
+  .tcd-kpis{grid-template-columns:repeat(2,1fr)}
+  .tcd-grid,.tcd-bottom{grid-template-columns:1fr 1fr}
+}
+@media(max-width:850px){
+  .tcd-kpis,.tcd-grid,.tcd-bottom{grid-template-columns:1fr}
+  .tcd-fields{grid-template-columns:repeat(2,1fr)}
+}
 </style>
 
 </head><body>${preview.outerHTML}
@@ -19869,249 +19905,209 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
 </script>
 
 
-<script id="tfms-v4528r-stat-js">
+<script id="tfms-v4529r-dashboard-js">
 (function(){
- const $=id=>document.getElementById(id);
- const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
- const money=n=>Number(n||0).toLocaleString('ko-KR')+'원';
- function candidate(){
-   return document.getElementById('stats') ||
-     document.querySelector('#statisticsPage,#statisticsView,#statisticsSection,#statsPage,[data-page="statistics"],.statistics-page,.stats-page');
- }
- function records(){
-   const pools=[
-     window.tfmsMaintenanceCache,window.maintenanceCache,window.maintenanceRecords,
-     window.allMaintenanceRecords,window.records,window.tfmsRecords
-   ];
-   for(const p of pools) if(Array.isArray(p)) return p;
-   return [];
- }
- function num(r,keys){for(const k of keys){let v=r?.[k]??r?.data?.[k];if(v!==undefined&&v!==null&&v!==''){v=String(v).replace(/[^\d.-]/g,'');return Number(v)||0}}return 0}
- function txt(r,keys,def='-'){for(const k of keys){let v=r?.[k]??r?.data?.[k];if(v!==undefined&&v!==null&&String(v).trim())return String(v)}return def}
- function dateOf(r){return txt(r,['work_date','execution_date','action_date','date','created_at'],'')}
- function statusOf(r){return txt(r,['status','processing_status','result','action_result'],'완료')}
- function fieldOf(r){return txt(r,['field','category','major_category'],'기타')}
- function deptOf(r){return txt(r,['department','department_name','dept','management_department'],'체육운영팀')}
- function facilityOf(r){let v=r?.facility?.name||r?.facility_name||r?.data?.facility||r?.facility;return typeof v==='string'?v:'태백국민체육센터'}
- function titleOf(r){return txt(r,['title','detail','details','content','maintenance_content','description'],'유지관리 이력')}
- function amountOf(r){return num(r,['amount','cost','expense','execution_amount','spent_amount'])}
- function build(){
-   if($('tfmsAdminStatsR')) return $('tfmsAdminStatsR');
-   const host=document.createElement('section');host.id='tfmsAdminStatsR';
-   host.innerHTML=`
-    <div class="tsr-head">
-      <div class="tsr-title"><div class="tsr-icon">▥</div><div><h1>통계현황</h1><p>시설관리와 유지보수를 위한 수치가 만드는 더 나은 내일, TFMS가 함께합니다.</p></div></div>
-      <div class="tsr-filter"><span>▣ 조회기간</span><input id="tsrFrom" type="date"><span>~</span><input id="tsrTo" type="date"><select id="tsrFacility"><option>전체 시설</option></select><button id="tsrRefresh">⟳ 조회하기</button></div>
-    </div>
-    <div class="tsr-grid5">
-      <div class="tsr-kpi"><div class="tsr-kicon">⚙</div><div><div class="tsr-klabel">오늘의 업무</div><div class="tsr-kvalue" id="tsrToday">0건</div><div class="tsr-ksub">오늘 처리할 업무</div></div></div>
-      <div class="tsr-kpi"><div class="tsr-kicon">✓</div><div><div class="tsr-klabel">진행중 업무</div><div class="tsr-kvalue" id="tsrProgress">0건</div><div class="tsr-ksub">현재 처리 중</div></div></div>
-      <div class="tsr-kpi"><div class="tsr-kicon">◷</div><div><div class="tsr-klabel">완료 업무</div><div class="tsr-kvalue" id="tsrDone">0건</div><div class="tsr-ksub">조회기간 완료</div></div></div>
-      <div class="tsr-kpi"><div class="tsr-kicon">!</div><div><div class="tsr-klabel">미조치·진행중</div><div class="tsr-kvalue" id="tsrPending">0건</div><div class="tsr-ksub">조치가 필요한 업무</div></div></div>
-      <div class="tsr-kpi"><div class="tsr-kicon">▤</div><div><div class="tsr-klabel">경영평가 반영</div><div class="tsr-kvalue" id="tsrEval">0건</div><div class="tsr-ksub">평가 연계 이력</div></div></div>
-    </div>
-    <div class="tsr-row">
-      <div class="tsr-card"><div class="tsr-cardhead"><span>금일 집행금액 · 누적</span><span class="tsr-muted" id="tsrAsOf"></span></div><div class="tsr-money"><div class="tsr-moneybox"><span>💰 누적 집행</span><b id="tsrCum">0원</b><small>등록 이력 기준</small></div><div class="tsr-moneybox"><span>🪙 금일 집행</span><b id="tsrDayAmt">0원</b><small>시행일 기준</small></div><div class="tsr-moneybox"><span>📊 금월 집행</span><b id="tsrMonthAmt">0원</b><small>당월 누계</small></div></div></div>
-      <div class="tsr-card"><div class="tsr-cardhead"><span>기간별 집행 현황</span><span class="tsr-muted">최근 8개월</span></div><div class="tsr-chart" id="tsrBars"></div></div>
-    </div>
-    <div class="tsr-row3">
-      <div class="tsr-card"><div class="tsr-cardhead"><span>시설별 현황</span><span class="tsr-muted">등록 이력</span></div><div class="tsr-donutwrap"><div class="tsr-donut"><div class="tsr-donutcenter"><div>총 이력<b id="tsrTotal">0건</b></div></div></div><div class="tsr-legend" id="tsrFacilities"></div></div></div>
-      <div class="tsr-card"><div class="tsr-cardhead"><span>분야별 현황</span><span class="tsr-muted">주요 분야</span></div><div class="tsr-fieldgrid" id="tsrFields"></div></div>
-      <div class="tsr-card"><div class="tsr-cardhead"><span>최근 주요 업무</span><span class="tsr-muted">최근 3건</span></div><div class="tsr-list" id="tsrRecent"></div></div>
-    </div>
-    <div class="tsr-rowbottom">
-      <div class="tsr-card"><div class="tsr-cardhead"><span>처리율 추이</span><span class="tsr-muted">최근 8개월</span></div><div class="tsr-line" id="tsrLine"></div></div>
-      <div class="tsr-card"><div class="tsr-cardhead"><span>시설 운영현황</span><span class="tsr-muted">등록건수 기준</span></div><table class="tsr-table"><thead><tr><th>시설명</th><th>관리부서</th><th>이력수</th><th>최근 점검</th></tr></thead><tbody id="tsrTable"></tbody></table></div>
-      <div class="tsr-card"><div class="tsr-cardhead"><span>바로가기</span></div><div class="tsr-quick"><div class="tsr-q" data-go="maintenance"> <i>✓</i>유지관리 등록</div><div class="tsr-q" data-go="today"><i>♙</i>오늘의 업무</div><div class="tsr-q" data-go="excel"><i>▤</i>엑셀 다운로드</div><div class="tsr-q"><i>☎</i>고객센터<br><small>033-806-5044</small></div></div></div>
-    </div>
-    <div class="tsr-foot"><span>태백시시설관리공단　|　시민과 함께 만드는 더 나은 시설관리</span><span>© 2026 태백시시설관리공단 TFMS Enterprise System</span></div>`;
-   const statsPage=document.getElementById('stats');
-   if(statsPage){
-     Array.from(statsPage.children).forEach(function(ch){
-       if(ch!==host) ch.style.display='none';
-     });
-     statsPage.appendChild(host);
-   }else{
-     const main=document.querySelector('main,.main-content,#mainContent,.content-area,.page-content')||document.body;
-     main.appendChild(host);
-   }
-   $('tsrRefresh')?.addEventListener('click',render);
-   return host;
- }
- function render(){
-   const host=build(), all=records(), now=new Date(), today=now.toISOString().slice(0,10), ym=today.slice(0,7);
-   let from=$('tsrFrom')?.value,to=$('tsrTo')?.value;
-   const list=all.filter(r=>{const d=dateOf(r).slice(0,10);return (!from||d>=from)&&(!to||d<=to)});
-   const done=list.filter(r=>/완료|정상|조치완료/.test(statusOf(r))).length;
-   const prog=list.filter(r=>/진행|처리중/.test(statusOf(r))).length;
-   const pend=list.filter(r=>/미조치|보완|필요|진행/.test(statusOf(r))).length;
-   const evaln=list.filter(r=>{const x=JSON.stringify(r);return /경영평가|예방정비|안전관리|법정점검|시설개선|고객민원|ESG|증빙/.test(x)}).length;
-   const todayN=list.filter(r=>dateOf(r).slice(0,10)===today).length;
-   $('tsrToday').textContent=todayN+'건';$('tsrProgress').textContent=prog+'건';$('tsrDone').textContent=done+'건';$('tsrPending').textContent=pend+'건';$('tsrEval').textContent=evaln+'건';
-   const cum=list.reduce((a,r)=>a+amountOf(r),0), day=list.filter(r=>dateOf(r).slice(0,10)===today).reduce((a,r)=>a+amountOf(r),0), mon=list.filter(r=>dateOf(r).slice(0,7)===ym).reduce((a,r)=>a+amountOf(r),0);
-   $('tsrCum').textContent=money(cum);$('tsrDayAmt').textContent=money(day);$('tsrMonthAmt').textContent=money(mon);$('tsrAsOf').textContent=today.replaceAll('-','.')+' 기준';$('tsrTotal').textContent=list.length+'건';
-   const months=[];for(let i=7;i>=0;i--){let d=new Date(now.getFullYear(),now.getMonth()-i,1);months.push(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`)}
-   const mv=months.map(m=>list.filter(r=>dateOf(r).slice(0,7)===m).reduce((a,r)=>a+amountOf(r),0));const max=Math.max(...mv,1);
-   $('tsrBars').innerHTML=months.map((m,i)=>`<div class="tsr-barwrap"><div class="tsr-bar" style="height:${Math.max(8,mv[i]/max*92)}%"></div><div class="tsr-barlabel">${m.slice(5)}월</div></div>`).join('');
-   const fac={};list.forEach(r=>fac[facilityOf(r)]=(fac[facilityOf(r)]||0)+1);$('tsrFacilities').innerHTML=Object.entries(fac).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k,v],i)=>`<div><span><i class="tsr-dot" style="opacity:${1-i*.14}"></i>${esc(k)}</span><b>${v}건</b></div>`).join('')||'<div>등록 이력이 없습니다.</div>';
-   const fld={};list.forEach(r=>fld[fieldOf(r)]=(fld[fieldOf(r)]||0)+1);$('tsrFields').innerHTML=Object.entries(fld).sort((a,b)=>b[1]-a[1]).slice(0,4).map(([k,v],i)=>`<div class="tsr-field"><span>${['🔧','⚡','💧','⚙'][i]||'▣'} ${esc(k)}</span><b>${v}건</b><small>등록 이력</small></div>`).join('')||'<div class="tsr-field"><span>등록 없음</span><b>0건</b></div>';
-   $('tsrRecent').innerHTML=[...list].sort((a,b)=>dateOf(b).localeCompare(dateOf(a))).slice(0,3).map((r,i)=>`<div class="tsr-item"><b>0${i+1}</b><div><b>${esc(titleOf(r))}</b><small>${esc(facilityOf(r))}</small></div><span class="tsr-muted">${esc(dateOf(r).slice(0,10))}</span><span class="tsr-pill">${esc(statusOf(r))}</span></div>`).join('')||'<div class="tsr-muted">최근 등록 이력이 없습니다.</div>';
-   const rates=months.map(m=>{const a=list.filter(r=>dateOf(r).slice(0,7)===m);return a.length?Math.round(a.filter(r=>/완료|정상|조치완료/.test(statusOf(r))).length/a.length*100):0});
-   const pts=rates.map((v,i)=>`${10+i*(280/7)},${95-v*.75}`).join(' ');
-   $('tsrLine').innerHTML=`<svg viewBox="0 0 300 110" preserveAspectRatio="none"><line x1="10" y1="95" x2="290" y2="95" stroke="#dce5ef"/><polyline points="${pts}" fill="none" stroke="currentColor" stroke-width="3" style="color:#176ad4"/><g>${rates.map((v,i)=>`<circle cx="${10+i*(280/7)}" cy="${95-v*.75}" r="3" fill="#176ad4"/><text x="${10+i*(280/7)}" y="108" text-anchor="middle">${months[i].slice(5)}월</text>`).join('')}</g></svg>`;
-   const rows=Object.entries(fac).sort((a,b)=>b[1]-a[1]).slice(0,5);$('tsrTable').innerHTML=rows.map(([f,c])=>{const rs=list.filter(r=>facilityOf(r)===f).sort((a,b)=>dateOf(b).localeCompare(dateOf(a)));return `<tr><td>${esc(f)}</td><td>${esc(deptOf(rs[0]||{}))}</td><td>${c}건</td><td>${esc(dateOf(rs[0]||{}).slice(0,10)||'-')}</td></tr>`}).join('')||'<tr><td colspan="4">등록 이력이 없습니다.</td></tr>';
- }
- function activate(){
-   const statsPage=document.getElementById('stats');
-   const host=build();
-   if(statsPage){
-     statsPage.style.display='';
-     Array.from(statsPage.children).forEach(function(ch){
-       ch.style.display=(ch===host)?'block':'none';
-     });
-   }
-   host.style.display='block';
-   render();
- }
- function hook(){
-   document.addEventListener('click',function(e){
-     const t=e.target.closest('a,button,[onclick],[data-page],[data-view],.menu-item,.nav-item');
-     if(!t)return;
-     const x=(t.textContent||'')+' '+(t.getAttribute('data-page')||'')+' '+(t.getAttribute('data-view')||'')+' '+(t.getAttribute('onclick')||'');
-     if(/통계현황|statistics|stats/i.test(x)) setTimeout(activate,120);
-     else if($('tfmsAdminStatsR')) $('tfmsAdminStatsR').style.display='none';
-   },true);
-   const h=location.hash; if(/stat/i.test(h)) setTimeout(activate,300);
- }
- if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hook,{once:true});else hook();
- window.tfmsOpenAdminStatisticsR=activate;
-})();
-</script>
+  const $=id=>document.getElementById(id);
+  const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 
-<script id="tfms-v4528r-version">(function(){function f(){var b=document.getElementById('tfmsVersionBadge');if(b)b.textContent='v45.28R3 Statistics Sidebar Stable';try{var u=new URL(location.href);if(u.searchParams.get('v')!=='45.28R3'){u.searchParams.set('v','45.28R3');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',f,{once:true});else f()})();</script>
+  function records(){
+    const pools=[window.tfmsMaintenanceCache,window.maintenanceCache,window.maintenanceRecords,window.allMaintenanceRecords,window.records,window.tfmsRecords];
+    for(const p of pools) if(Array.isArray(p)) return p;
+    return [];
+  }
+  function t(r,keys,def='-'){
+    for(const k of keys){
+      const v=r?.[k] ?? r?.data?.[k];
+      if(v!==undefined && v!==null && String(v).trim()) return String(v);
+    }
+    return def;
+  }
+  function d(r){return t(r,['work_date','execution_date','date','action_date','created_at'],'')}
+  function st(r){return t(r,['status','processing_status','result','action_result'],'완료')}
+  function fac(r){
+    const v=r?.facility?.name || r?.facility_name || r?.data?.facility || r?.facility;
+    return typeof v==='string' ? v : '태백국민체육센터';
+  }
+  function field(r){return t(r,['field','category','major_category'],'기타')}
+  function title(r){return t(r,['title','detail','details','content','maintenance_content'],'유지관리 이력')}
 
-<script id="tfms-v4528r2-showpage-hook">
-(function(){
-  function install(){
-    if(window.__tfmsStatsR2Hooked) return;
-    if(typeof window.showPage!=='function'){setTimeout(install,250);return;}
-    window.__tfmsStatsR2Hooked=true;
+  function build(){
+    if($('tfmsCompactDashR')) return $('tfmsCompactDashR');
+    const p=$('dashboard');
+    if(!p) return null;
+
+    const el=document.createElement('div');
+    el.id='tfmsCompactDashR';
+    el.innerHTML=`
+      <div class="tcd-head">
+        <div><h1>대시보드</h1><p>오늘도 안전하고 효율적인 시설관리를 응원합니다.</p></div>
+        <div class="tcd-head-actions"><span class="tcd-chip">전체 시설 기준</span><button class="tcd-btn" id="tcdRefresh">↻ 새로고침</button></div>
+      </div>
+
+      <div class="tcd-kpis">
+        <div class="tcd-kpi"><div class="tcd-kicon">▣</div><div><div class="tcd-klabel">오늘의 업무</div><div class="tcd-kvalue" id="tcdToday">0건</div><div class="tcd-ksub">오늘 처리할 업무</div></div></div>
+        <div class="tcd-kpi"><div class="tcd-kicon">◷</div><div><div class="tcd-klabel">진행중 업무</div><div class="tcd-kvalue" id="tcdDoing">0건</div><div class="tcd-ksub">현재 처리 중</div></div></div>
+        <div class="tcd-kpi"><div class="tcd-kicon">✓</div><div><div class="tcd-klabel">완료 업무</div><div class="tcd-kvalue" id="tcdDone">0건</div><div class="tcd-ksub">누적 완료</div></div></div>
+        <div class="tcd-kpi"><div class="tcd-kicon">⌕</div><div><div class="tcd-klabel">미조치 항목</div><div class="tcd-kvalue" id="tcdPending">0건</div><div class="tcd-ksub">우선 확인 필요</div></div></div>
+      </div>
+
+      <div class="tcd-grid">
+        <div class="tcd-card">
+          <div class="tcd-cardhead"><h2>시설 현황</h2><span class="tcd-link">상세보기 ›</span></div>
+          <div class="tcd-facility">
+            <div class="tcd-donut"><div class="tcd-donut-center"><div>총 시설<b>17개</b></div></div></div>
+            <div class="tcd-legend">
+              <div class="tcd-legend-row"><span class="tcd-legend-name"><i></i>체육운영팀</span><b>2개</b></div>
+              <div class="tcd-legend-row"><span class="tcd-legend-name"><i style="background:#10a9b7"></i>관광운영팀</span><b>5개</b></div>
+              <div class="tcd-legend-row"><span class="tcd-legend-name"><i style="background:#34b98b"></i>복지주택팀</span><b>7개</b></div>
+              <div class="tcd-legend-row"><span class="tcd-legend-name"><i style="background:#9ba9bd"></i>안전·시설운영팀</span><b>3개</b></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tcd-card">
+          <div class="tcd-cardhead"><h2><span class="tcd-dot"></span>오늘 해야 하는 업무</h2><span class="tcd-link">전체 보기 ›</span></div>
+          <table class="tcd-table"><thead><tr><th>시설명</th><th>업무명</th><th>주기</th><th>기한</th><th>상태</th></tr></thead><tbody id="tcdTodayRows"></tbody></table>
+        </div>
+
+        <div class="tcd-card">
+          <div class="tcd-cardhead"><h2><span class="tcd-dot"></span>최근 유지관리 내역</h2><span class="tcd-link">더보기 ›</span></div>
+          <div class="tcd-list" id="tcdRecent"></div>
+        </div>
+
+        <div class="tcd-card">
+          <div class="tcd-cardhead"><h2><span class="tcd-dot"></span>최근 업무일지</h2><span class="tcd-link">전체 보기 ›</span></div>
+          <table class="tcd-table"><thead><tr><th>근무일</th><th>시설명</th><th>근무자</th><th>업무건수</th></tr></thead><tbody><tr><td>2026-08-11</td><td>태백국민체육센터</td><td>-</td><td>1건</td></tr></tbody></table>
+        </div>
+      </div>
+
+      <div class="tcd-bottom">
+        <div class="tcd-card">
+          <div class="tcd-cardhead"><h2><span class="tcd-dot"></span>기간별 등록 추이</h2><span class="tcd-link">최근 8개월</span></div>
+          <div class="tcd-line" id="tcdTrend"></div>
+        </div>
+
+        <div class="tcd-card">
+          <div class="tcd-cardhead"><h2><span class="tcd-dot"></span>분야별 현황</h2><span class="tcd-link">상세보기 ›</span></div>
+          <div class="tcd-fields" id="tcdFields"></div>
+        </div>
+
+        <div class="tcd-card">
+          <div class="tcd-cardhead"><h2><span class="tcd-dot"></span>바로가기</h2></div>
+          <div class="tcd-quick">
+            <div class="tcd-q" data-go="register"><i>✓</i>유지관리 등록</div>
+            <div class="tcd-q" data-go="today"><i>▣</i>오늘의 업무</div>
+            <div class="tcd-q" data-go="excel"><i>⇩</i>엑셀 다운로드</div>
+            <div class="tcd-q"><i>☎</i>고객센터<br><small>033-806-5044</small></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tcd-foot">© 2026 태백시시설관리공단 TFMS Enterprise System</div>
+    `;
+
+    p.appendChild(el);
+    $('tcdRefresh')?.addEventListener('click',render);
+    return el;
+  }
+
+  function render(){
+    const el=build();
+    if(!el) return;
+    const list=records();
+    const today=new Date().toISOString().slice(0,10);
+
+    const done=list.filter(r=>/완료|정상|조치완료/.test(st(r))).length;
+    const doing=list.filter(r=>/진행|처리중/.test(st(r))).length;
+    const pending=list.filter(r=>/미조치|보완|필요/.test(st(r))).length;
+    const todayRows=list.filter(r=>d(r).slice(0,10)===today);
+
+    $('tcdToday').textContent=todayRows.length+'건';
+    $('tcdDoing').textContent=doing+'건';
+    $('tcdDone').textContent=done+'건';
+    $('tcdPending').textContent=pending+'건';
+
+    $('tcdTodayRows').innerHTML=
+      todayRows.slice(0,3).map(r=>`
+        <tr><td>${esc(fac(r))}</td><td>${esc(title(r))}</td><td>${esc(t(r,['cycle','inspection_cycle','period'],'-'))}</td><td>${esc(d(r).slice(0,10)||'-')}</td><td><span class="tcd-pill">${esc(st(r))}</span></td></tr>
+      `).join('') ||
+      '<tr><td colspan="5" style="text-align:center;color:#8a98aa">오늘 등록된 업무가 없습니다.</td></tr>';
+
+    $('tcdRecent').innerHTML=
+      [...list].sort((a,b)=>d(b).localeCompare(d(a))).slice(0,3).map((r,i)=>`
+        <div class="tcd-item"><div class="ico">${['⚙','◷','!'][i]||'•'}</div><div><b>${esc(title(r))}</b><small>${esc(fac(r))}</small></div><span class="tcd-pill ${/완료|정상/.test(st(r))?'done':'warn'}">${esc(st(r))}</span></div>
+      `).join('') ||
+      '<div style="font-size:11px;color:#8795a7">등록된 유지관리 이력이 없습니다.</div>';
+
+    const f={};
+    list.forEach(r=>f[field(r)]=(f[field(r)]||0)+1);
+    const fields=Object.entries(f).sort((a,b)=>b[1]-a[1]).slice(0,4);
+    $('tcdFields').innerHTML=(fields.length?fields:[['기계',0],['전기',0],['보일러',0],['공조',0]]).map(([k,v],i)=>`
+      <div class="tcd-field"><span>${['🔧','⚡','💧','❄'][i]||'▣'} ${esc(k)}</span><b>${v}건</b><small>등록 이력</small></div>
+    `).join('');
+
+    const now=new Date(), months=[];
+    for(let i=7;i>=0;i--){
+      const x=new Date(now.getFullYear(),now.getMonth()-i,1);
+      months.push(`${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}`);
+    }
+    const values=months.map(m=>list.filter(r=>d(r).slice(0,7)===m).length);
+    const max=Math.max(1,...values);
+    const pts=values.map((v,i)=>`${18+i*(284/7)},${96-(v/max)*65}`).join(' ');
+
+    $('tcdTrend').innerHTML=`
+      <svg viewBox="0 0 320 115" preserveAspectRatio="none">
+        <line x1="18" y1="96" x2="302" y2="96" stroke="#dce5ef"/>
+        <polyline points="${pts}" fill="none" stroke="#1769d2" stroke-width="3"/>
+        ${values.map((v,i)=>`
+          <circle cx="${18+i*(284/7)}" cy="${96-(v/max)*65}" r="3.2" fill="#1769d2"/>
+          <text x="${18+i*(284/7)}" y="111" text-anchor="middle" font-size="9" fill="#6c7f96">${months[i].slice(5)}월</text>
+        `).join('')}
+      </svg>`;
+  }
+
+  function activate(){
+    const p=$('dashboard');
+    if(!p) return;
+    const el=build();
+    el.style.display='block';
+    render();
+  }
+
+  function hook(){
     const original=window.showPage;
-    window.showPage=function(id,btn){
-      const result=original.apply(this,arguments);
-      if(id==='stats'){
-        setTimeout(function(){
-          try{window.tfmsOpenAdminStatisticsR?.();}catch(e){console.error(e);}
-        },30);
+    if(typeof original==='function' && !window.__tfmsCompactDashHooked){
+      window.__tfmsCompactDashHooked=true;
+      window.showPage=function(id,btn){
+        const result=original.apply(this,arguments);
+        if(id==='dashboard') setTimeout(activate,40);
+        return result;
+      };
+    }
+    setTimeout(activate,300);
+  }
+
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hook,{once:true});
+  else hook();
+})();
+</script>
+
+
+<script id="tfms-v4529r-version">
+(function(){
+  function sync(){
+    const b=document.getElementById('tfmsVersionBadge');
+    if(b)b.textContent='v45.29R Compact Dashboard';
+    try{
+      const u=new URL(location.href);
+      if(u.searchParams.get('v')!=='45.29R'){
+        u.searchParams.set('v','45.29R');
+        history.replaceState(history.state,'',u.pathname+u.search+u.hash);
       }
-      return result;
-    };
+    }catch(e){}
   }
-  if(document.readyState==='loading'){
-    document.addEventListener('DOMContentLoaded',install,{once:true});
-  }else install();
-})();
-</script>
-
-
-<style id="tfms-v4528r3-sidebar-fix">
-/* v45.28R3: left sidebar always fills the visible viewport below the top header.
-   Do not alter page/business logic. */
-:root{ --tfms-topbar-h: 50px; }
-
-#sidebar,
-.sidebar,
-aside.sidebar,
-nav.sidebar{
-  min-height: calc(100vh - var(--tfms-topbar-h)) !important;
-  height: calc(100vh - var(--tfms-topbar-h)) !important;
-  align-self: stretch !important;
-  background: #0f4778 !important;
-  box-sizing: border-box !important;
-}
-
-/* Common shell layouts: stretch the left column through the full viewport. */
-.app-shell,
-.main-shell,
-.layout,
-.app-body,
-.main-layout,
-#appBody,
-#mainLayout{
-  min-height: calc(100vh - var(--tfms-topbar-h)) !important;
-  align-items: stretch !important;
-}
-
-/* If sidebar is already sticky/fixed, keep its own scrolling instead of leaving a white tail. */
-#sidebar,
-.sidebar{
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  scrollbar-gutter: stable;
-}
-
-/* Prevent a transparent/white wrapper below the sidebar. */
-.sidebar-wrap,
-.sidebar-wrapper,
-#sidebarWrap,
-#sidebarWrapper{
-  min-height: calc(100vh - var(--tfms-topbar-h)) !important;
-  background: #0f4778 !important;
-  align-self: stretch !important;
-}
-</style>
-<script id="tfms-v4528r3-sidebar-runtime">
-(function(){
-  function fixSidebar(){
-    var top =
-      document.querySelector('header') ||
-      document.querySelector('.topbar') ||
-      document.querySelector('.top-bar') ||
-      document.querySelector('#topbar') ||
-      document.querySelector('#header');
-
-    var h = top ? Math.round(top.getBoundingClientRect().height) : 50;
-    if(h < 36 || h > 100) h = 50;
-    document.documentElement.style.setProperty('--tfms-topbar-h', h+'px');
-
-    var sb =
-      document.getElementById('sidebar') ||
-      document.querySelector('.sidebar') ||
-      document.querySelector('aside');
-
-    if(!sb) return;
-
-    sb.style.minHeight='calc(100vh - '+h+'px)';
-    sb.style.height='calc(100vh - '+h+'px)';
-    sb.style.background='#0f4778';
-    sb.style.boxSizing='border-box';
-
-    var p=sb.parentElement;
-    if(p){
-      p.style.minHeight='calc(100vh - '+h+'px)';
-      if(getComputedStyle(p).display==='flex') p.style.alignItems='stretch';
-    }
-  }
-
-  if(document.readyState==='loading'){
-    document.addEventListener('DOMContentLoaded',fixSidebar,{once:true});
-  }else fixSidebar();
-
-  window.addEventListener('resize',fixSidebar,{passive:true});
-  window.addEventListener('load',fixSidebar,{once:true});
-})();
-</script>
-
-
-<script id="tfms-v4528r3-version-sync">
-(function(){
-  try{
-    var u=new URL(location.href);
-    if(u.searchParams.get('v')!=='45.28R3'){
-      u.searchParams.set('v','45.28R3');
-      history.replaceState(null,'',u.pathname+u.search+u.hash);
-    }
-  }catch(e){}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync,{once:true});
+  else sync();
 })();
 </script>
 
