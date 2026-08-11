@@ -20230,4 +20230,146 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 </script>
 
 
+
+
+<!-- =========================================================
+     TFMS v45.39 Register Compact LCC Safe
+     Visual density restoration only.
+     Keeps v45.38 Register ↔ Asset LCC link logic intact.
+     No DB / SQL / save-function rewrite.
+     ========================================================= -->
+<style id="tfms-v4539-register-compact-lcc-safe">
+/* 유지관리 등록: v45.38 LCC 연계는 유지하고, 입력 밀도만 복구 */
+#register{padding-top:12px!important}
+#register .title-row{margin-bottom:9px!important;align-items:center!important}
+#register .title-left{gap:12px!important}
+#register .title-icon{width:50px!important;height:50px!important;flex:0 0 50px!important;border-radius:13px!important;font-size:24px!important}
+#register .title-row h1{font-size:27px!important;line-height:1.08!important}
+#register .breadcrumb{margin-top:3px!important;font-size:11.5px!important}
+#register .v459-top-actions{gap:7px!important;flex-wrap:nowrap!important}
+#register .v459-top-actions .btn{min-height:38px!important;padding:7px 14px!important;min-width:auto!important}
+
+#register .v459-register-shell{gap:8px!important}
+#register .v459-register-shell>.panel,
+#register .v459-register-shell>.v459-bottom-grid{margin:0!important}
+#register .v459-compact-panel{padding:12px 14px!important;border-radius:13px!important}
+#register .v459-compact-panel .section-title{margin-bottom:9px!important;font-size:16px!important}
+
+/* 기본정보는 넓은 화면에서 4열. LCC 설비 선택은 2칸을 사용 */
+#register .v459-form-grid-4{
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:8px 10px!important;
+  align-items:end!important;
+}
+#register .v459-form-grid-4 .field{min-width:0!important}
+#register .v459-form-grid-4 label{margin-bottom:4px!important;font-size:11.5px!important;line-height:1.25!important}
+#register .v459-form-grid-4 input,
+#register .v459-form-grid-4 select{min-height:38px!important;height:38px!important;padding:6px 10px!important;font-size:13px!important;border-radius:8px!important}
+#register .v4539-asset{grid-column:span 2!important}
+#register .v4539-receipt{grid-column:span 2!important}
+#register .v4539-importance{grid-column:span 1!important}
+#register .v4539-contact{grid-column:span 1!important}
+#register .v4538-asset-help{margin-top:3px!important;min-height:0!important;font-size:9.8px!important;line-height:1.25!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#register .v4538-asset-help.is-linked{padding:3px 6px!important}
+#register .v4538-lcc-chip{padding:1px 6px!important;font-size:9px!important}
+
+#register .v459-choice-row{gap:5px!important;flex-wrap:nowrap!important}
+#register .v459-choice-row .choice{min-height:34px!important;height:34px!important;padding:5px 11px!important;font-size:12px!important;border-radius:8px!important;white-space:nowrap!important}
+#register .v4539-importance .v459-choice-row .choice{padding-left:8px!important;padding-right:8px!important;min-width:0!important;flex:1 1 0!important}
+
+/* 유지관리 내용: 긴 textarea를 업무에 필요한 정도로 축소 */
+#register .v459-form-grid-2{gap:8px 10px!important;align-items:start!important}
+#register .v459-form-grid-2 label{margin-bottom:4px!important;font-size:11.5px!important}
+#register .v459-main-textarea{min-height:78px!important;height:78px!important;padding:9px 10px!important;resize:vertical!important}
+#register .v459-plan-textarea{min-height:54px!important;height:54px!important;padding:8px 10px!important;resize:vertical!important}
+#register .v459-form-grid-2 input,
+#register .v459-form-grid-2 select{min-height:38px!important;height:38px!important;padding:6px 10px!important;font-size:13px!important}
+#register .money input{height:38px!important}
+
+/* 하단 경영평가/증빙도 한 화면 밀도 우선 */
+#register .v459-bottom-grid{grid-template-columns:.9fr 1.25fr!important;gap:8px!important}
+#register .v459-eval-box{padding:10px!important;border-radius:10px!important}
+#register .v459-eval-box h4{margin:0 0 7px!important;font-size:12px!important}
+#register .eval-grid{gap:6px 12px!important}
+#register .eval-grid label{font-size:11.5px!important;line-height:1.3!important}
+#register .v459-subhelp{margin:-3px 0 7px!important;font-size:10.5px!important}
+#register .v459-evidence-grid{gap:8px!important}
+#register .v459-upload{min-height:72px!important;padding:10px!important}
+#register .v459-preview{min-height:52px!important;gap:6px!important}
+#register #docCount{margin-top:4px!important;font-size:10px!important}
+
+/* v45.38 LCC 연계 UI는 시각적으로 기본정보와 자연스럽게 통합 */
+#register .v4538-asset-link select{background:#fbfdff!important;border-color:#c9d9eb!important}
+#register .v4538-asset-link:focus-within select{border-color:#75aef2!important;box-shadow:0 0 0 2px rgba(23,105,210,.08)!important}
+
+@media(max-width:1450px){
+  #register .v459-form-grid-4{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+  #register .v4539-asset{grid-column:span 1!important}
+  #register .v4539-receipt{grid-column:span 2!important}
+  #register .v4539-importance{grid-column:span 2!important}
+}
+@media(max-width:1120px){
+  #register .v459-form-grid-4{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  #register .v4539-asset,#register .v4539-receipt,#register .v4539-importance{grid-column:span 2!important}
+  #register .v459-bottom-grid{grid-template-columns:1fr!important}
+  #register .v4538-asset-help{white-space:normal!important}
+}
+@media(max-width:760px){
+  #register .title-row{align-items:flex-start!important}
+  #register .v459-top-actions{flex-wrap:wrap!important}
+  #register .v459-form-grid-4,#register .v459-form-grid-2{grid-template-columns:1fr!important}
+  #register .v4539-asset,#register .v4539-receipt,#register .v4539-importance{grid-column:span 1!important}
+  #register .v459-choice-row{flex-wrap:wrap!important}
+  #register .v4539-importance .v459-choice-row .choice{flex:0 0 auto!important}
+}
+</style>
+<script id="tfms-v4539-register-compact-lcc-controller">
+(function(){
+  'use strict';
+  const VERSION='v45.39 Register Compact LCC Safe';
+  function markFields(){
+    const grid=document.querySelector('#register .v459-form-grid.v459-form-grid-4');
+    if(!grid)return;
+    grid.querySelectorAll(':scope > .field').forEach(f=>{
+      const txt=(f.querySelector('label')?.textContent||'').replace(/\s+/g,' ').trim();
+      f.classList.remove('v4539-asset','v4539-receipt','v4539-importance','v4539-contact');
+      if(txt.startsWith('연계 설비'))f.classList.add('v4539-asset');
+      else if(txt.startsWith('접수구분'))f.classList.add('v4539-receipt');
+      else if(txt.startsWith('중요도'))f.classList.add('v4539-importance');
+      else if(txt.startsWith('연락처'))f.classList.add('v4539-contact');
+    });
+  }
+  function syncVersion(){
+    const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent=VERSION;
+    document.title='TFMS '+VERSION;
+    try{window.TFMS_BUILD=Object.freeze({version:'v45.39',channel:'Register Compact LCC Safe',buildDate:'2026.08.11',title:'Register Compact LCC Safe'});}catch(e){}
+    try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.39'){u.searchParams.set('v','45.39');history.replaceState(history.state,'',u.pathname+u.search+u.hash);}}catch(e){}
+  }
+  function apply(){markFields();syncVersion();}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();
+  [80,300,900,1800,4200,8500].forEach(ms=>setTimeout(apply,ms));
+  const prevShow=window.showPage;
+  if(typeof prevShow==='function'&&!prevShow.__v4539Wrapped){
+    const wrapped=function(){const r=prevShow.apply(this,arguments);if(arguments[0]==='register')setTimeout(apply,90);else setTimeout(syncVersion,40);return r;};
+    wrapped.__v4539Wrapped=true;window.showPage=wrapped;
+  }
+  const prevNav=window.navTo;
+  if(typeof prevNav==='function'&&!prevNav.__v4539Wrapped){
+    const wrapped=function(){const r=prevNav.apply(this,arguments);if(arguments[0]==='register')setTimeout(apply,90);else setTimeout(syncVersion,40);return r;};
+    wrapped.__v4539Wrapped=true;window.navTo=wrapped;
+  }
+})();
+</script>
+<script id="tfms-v4539-version-final-sync">
+(function(){
+  function sync(){
+    var label='v45.39 Register Compact LCC Safe';
+    var badge=document.getElementById('tfmsVersionBadge');if(badge)badge.textContent=label;
+    document.title='TFMS '+label;
+    try{var u=new URL(location.href);if(u.searchParams.get('v')!=='45.39'){u.searchParams.set('v','45.39');history.replaceState(history.state,'',u.pathname+u.search+u.hash);}}catch(e){}
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync,{once:true});else sync();
+  setTimeout(sync,9000);
+})();
+</script>
 </body></html>
