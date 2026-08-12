@@ -21958,4 +21958,171 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 })();
 </script>
 
+
+
+<!-- =========================================================
+     TFMS v45.58 Daily Status Buttons Safe
+     Scope: 일반 업무일지 시설 상태 확인 UI only
+     Existing select values remain the storage source of truth.
+     No DB/SQL changes. No MutationObserver.
+     ========================================================= -->
+<style id="tfms-v4558-daily-status-buttons-style">
+#dailylog[data-v459-mode="general"] .v4555-condition-grid{
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  gap:10px!important;
+}
+#dailylog[data-v459-mode="general"] .v4555-field.tfms-d58-ready>select{
+  position:absolute!important;
+  width:1px!important;height:1px!important;
+  opacity:0!important;pointer-events:none!important;
+  clip:rect(0 0 0 0)!important;
+}
+#dailylog .tfms-d58-status-group{
+  display:flex;align-items:center;gap:5px;flex-wrap:wrap;
+  min-height:37px;
+}
+#dailylog .tfms-d58-status-btn{
+  appearance:none;border:1px solid #d4deea;background:#fff;color:#53667d;
+  min-height:34px;padding:0 9px;border-radius:9px;
+  display:inline-flex;align-items:center;justify-content:center;gap:5px;
+  font:inherit;font-size:10.5px;font-weight:850;letter-spacing:-.2px;
+  cursor:pointer;white-space:nowrap;transition:background .12s ease,border-color .12s ease,color .12s ease,box-shadow .12s ease,transform .12s ease;
+}
+#dailylog .tfms-d58-status-btn:hover{border-color:#aebfd2;background:#f9fbfd;transform:translateY(-1px)}
+#dailylog .tfms-d58-status-btn .d58-ico{
+  width:17px;height:17px;border-radius:50%;display:inline-grid;place-items:center;
+  font-size:10px;font-weight:950;background:#f0f4f8;color:#65778a;flex:0 0 auto;
+}
+#dailylog .tfms-d58-status-btn.is-active{box-shadow:0 0 0 2px rgba(24,114,195,.08)}
+#dailylog .tfms-d58-status-btn.good.is-active{background:#ecf9f2;border-color:#9edabd;color:#087248}
+#dailylog .tfms-d58-status-btn.good.is-active .d58-ico{background:#18a66f;color:#fff}
+#dailylog .tfms-d58-status-btn.warn.is-active{background:#fff7e9;border-color:#efcb83;color:#9a6505}
+#dailylog .tfms-d58-status-btn.warn.is-active .d58-ico{background:#e6a11c;color:#fff}
+#dailylog .tfms-d58-status-btn.bad.is-active{background:#fff0f1;border-color:#efadb4;color:#bb3442}
+#dailylog .tfms-d58-status-btn.bad.is-active .d58-ico{background:#df4b5a;color:#fff}
+#dailylog .tfms-d58-status-btn.neutral.is-active{background:#f1f5f9;border-color:#cbd5e1;color:#475569}
+#dailylog .tfms-d58-status-btn.neutral.is-active .d58-ico{background:#64748b;color:#fff}
+#dailylog .v4555-condition-box{padding:13px 14px!important}
+#dailylog .v4555-condition-grid .v4555-field label{margin-bottom:6px!important;font-size:10.5px!important}
+#dailylog .v4555-note{margin-top:10px!important}
+#dailylog .v4555-condition-help{padding-top:2px!important;line-height:1.45!important}
+@media(max-width:1500px){
+  #dailylog[data-v459-mode="general"] .v4555-condition-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+@media(max-width:980px){
+  #dailylog[data-v459-mode="general"] .v4555-condition-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:620px){
+  #dailylog[data-v459-mode="general"] .v4555-condition-grid{grid-template-columns:1fr!important}
+}
+</style>
+<script id="tfms-v4558-daily-status-buttons-controller">
+(function(){
+  'use strict';
+  const $=id=>document.getElementById(id);
+  const CONFIG={
+    dailyFacilityStatusV4555:[
+      ['양호','✓','good'],['점검필요','!','warn'],['이상발견','×','bad']
+    ],
+    dailyEquipmentStatusV4555:[
+      ['양호','✓','good'],['점검필요','!','warn'],['이상발견','×','bad']
+    ],
+    dailyCleanlinessStatusV4555:[
+      ['양호','✓','good'],['개선필요','!','warn'],['불량','×','bad']
+    ],
+    dailySafetyCheckV4555:[
+      ['완료','✓','good'],['미완료','!','bad'],['해당없음','–','neutral']
+    ],
+    dailyComplaintStatusV4555:[
+      ['없음','✓','good'],['있음','!','bad']
+    ]
+  };
+
+  function syncVersion(){
+    try{
+      const label='v45.58 Daily Status Buttons Safe';
+      const badge=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
+      if(badge)badge.textContent=label;
+      document.title='TFMS '+label;
+      window.TFMS_BUILD={version:'v45.58',channel:'Daily Status Buttons Safe',buildDate:'2026.08.12',title:'일반 업무일지 시설상태 버튼형 UX'};
+      const u=new URL(location.href);
+      if(u.searchParams.get('v')!=='45.58'){
+        u.searchParams.set('v','45.58');
+        history.replaceState(history.state,'',u.pathname+u.search+u.hash);
+      }
+    }catch(e){console.warn('[TFMS v45.58 version sync]',e)}
+  }
+
+  function updateGroup(select){
+    if(!select)return;
+    const group=select.parentElement?.querySelector('.tfms-d58-status-group');
+    if(!group)return;
+    group.querySelectorAll('.tfms-d58-status-btn').forEach(btn=>{
+      const on=btn.dataset.value===select.value;
+      btn.classList.toggle('is-active',on);
+      btn.setAttribute('aria-pressed',on?'true':'false');
+    });
+  }
+
+  function enhanceSelect(id,items){
+    const select=$(id); if(!select)return;
+    const field=select.closest('.v4555-field'); if(!field)return;
+    field.classList.add('tfms-d58-ready');
+    let group=field.querySelector('.tfms-d58-status-group');
+    if(!group){
+      group=document.createElement('div');
+      group.className='tfms-d58-status-group';
+      group.setAttribute('role','group');
+      group.setAttribute('aria-label',field.querySelector('label')?.textContent||'상태 선택');
+      items.forEach(([value,icon,tone])=>{
+        const b=document.createElement('button');
+        b.type='button';
+        b.className='tfms-d58-status-btn '+tone;
+        b.dataset.value=value;
+        b.innerHTML='<span class="d58-ico">'+icon+'</span><span>'+value+'</span>';
+        b.addEventListener('click',()=>{
+          select.value=value;
+          select.dispatchEvent(new Event('change',{bubbles:true}));
+          updateGroup(select);
+          if(/점검필요|이상발견|개선필요|불량|미완료|있음/.test(value)){
+            const note=$('dailyFacilityNoteV4555');
+            if(note&&!note.value)note.placeholder='선택한 상태의 이상·조치 필요사항을 간단히 입력하세요.';
+          }
+        });
+        group.appendChild(b);
+      });
+      select.insertAdjacentElement('afterend',group);
+      select.addEventListener('change',()=>updateGroup(select));
+    }
+    updateGroup(select);
+  }
+
+  function apply(){
+    syncVersion();
+    const page=$('dailylog');
+    if(!page||page.getAttribute('data-v459-mode')!=='general')return;
+    Object.entries(CONFIG).forEach(([id,items])=>enhanceSelect(id,items));
+  }
+
+  const oldMode=window.setDailyModeV459;
+  if(typeof oldMode==='function'&&!oldMode.__v4558){
+    const wrapped=function(){const r=oldMode.apply(this,arguments);if(arguments[0]==='general')setTimeout(apply,70);return r;};
+    wrapped.__v4558=true;window.setDailyModeV459=wrapped;
+  }
+  const oldShow=window.showPage;
+  if(typeof oldShow==='function'&&!oldShow.__v4558daily){
+    const wrapped=function(){const r=oldShow.apply(this,arguments);setTimeout(syncVersion,120);if(arguments[0]==='dailylog')setTimeout(apply,180);return r;};
+    wrapped.__v4558daily=true;window.showPage=wrapped;
+  }
+  const oldNav=window.navTo;
+  if(typeof oldNav==='function'&&!oldNav.__v4558daily){
+    const wrapped=function(){const r=oldNav.apply(this,arguments);setTimeout(syncVersion,120);if(arguments[0]==='dailylog')setTimeout(apply,200);return r;};
+    wrapped.__v4558daily=true;window.navTo=wrapped;
+  }
+
+  function init(){syncVersion();setTimeout(apply,420)}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+  [600,1800,4200,8200,12800,17800,22000].forEach(ms=>setTimeout(syncVersion,ms));
+})();
+</script>
 </body></html>
