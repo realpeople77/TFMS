@@ -21856,4 +21856,106 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
   [700,2000,5200,10000,15000].forEach(ms=>setTimeout(syncVersion,ms));
 })();
 </script>
+
+
+<!-- =========================================================
+     TFMS v45.57 UX Polish V1 Safe
+     VISUAL ONLY: Dashboard facility summary + Today compact guide/list controls.
+     No DB / SQL / data loader / maintenance / daily-log logic changes.
+     ========================================================= -->
+<style id="tfms-v4557-ux-polish-v1">
+/* 1) Dashboard > 우리 시설 현황 : small supporting summary, not a primary KPI */
+#dashboard .v451-status-card .v451-card-head{padding:11px 14px 6px!important;min-height:auto!important}
+#dashboard .v451-status-card .v451-card-head h2{font-size:14px!important;line-height:1.2!important;letter-spacing:-.15px!important;font-weight:900!important;color:#1e3654!important}
+#dashboard .v451-status-card .v451-mini-stats{padding:2px 14px 11px!important;gap:3px!important}
+#dashboard .v451-status-card .v451-mini-stats>div{min-height:27px!important;padding:2px 2px!important;font-size:11px!important;line-height:1.15!important;color:#66778c!important;border-bottom:1px solid #f0f3f7!important}
+#dashboard .v451-status-card .v451-mini-stats>div:last-child{border-bottom:0!important}
+#dashboard .v451-status-card .v451-mini-stats span{font-size:11px!important;font-weight:700!important;color:#64758a!important}
+#dashboard .v451-status-card .v451-mini-stats strong{font-size:13px!important;line-height:1!important;font-weight:900!important;color:#135daf!important;white-space:nowrap!important}
+
+/* 2) Today > system flow becomes a tiny explanation strip */
+#today .tfms-flow-guide-v4556{display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:6px!important;margin:8px 0 11px!important;padding:7px 10px!important;min-height:0!important;border:1px solid #dce7f1!important;border-radius:10px!important;background:#fbfdff!important;font-size:10px!important;color:#718197!important;box-shadow:none!important;overflow-x:auto!important}
+#today .tfms-flow-guide-v4556 .tfms-flow-label-v4557{font-weight:900;color:#3b5573;white-space:nowrap;margin-right:2px}
+#today .tfms-flow-guide-v4556 .src,#today .tfms-flow-guide-v4556 .dest,#today .tfms-flow-guide-v4556 .core{min-height:24px!important;height:24px!important;padding:0 8px!important;border-radius:999px!important;font-size:9.5px!important;box-shadow:none!important}
+#today .tfms-flow-guide-v4556 .src.auto{background:#eef6ff!important;color:#245ba1!important;border-color:#d4e3f5!important}
+#today .tfms-flow-guide-v4556 .src.manual{background:#f7f2ff!important;color:#6b50aa!important;border-color:#e5dbf7!important}
+#today .tfms-flow-guide-v4556 .dest.daily{background:#eef9f4!important;color:#29765b!important;border-color:#d2ecdf!important}
+#today .tfms-flow-guide-v4556 .dest.history{background:#fff6eb!important;color:#9b5d16!important;border-color:#f1ddbf!important}
+#today .tfms-flow-guide-v4556 i{font-size:10px!important;color:#a0adbc!important;white-space:nowrap}
+
+/* 3) Today list/filter controls: keep them in TFMS visual language for admin and user */
+#today .today-user-list-shell-v4553{border:1px solid #dce6ef!important;border-radius:13px!important;background:#fff!important;box-shadow:0 3px 12px rgba(18,48,83,.03)!important;overflow:hidden!important;margin-top:10px!important}
+#today .today-user-list-title-v4550{padding:11px 13px 8px!important;margin:0!important;border-bottom:1px solid #edf2f7!important;background:#fff!important;font-size:14px!important;color:#203a59!important}
+#today .today-user-list-title-v4550 small{font-size:9.5px!important;color:#8795a7!important}
+#today .today-user-filterbar-v4553{display:flex!important;align-items:center!important;gap:7px!important;padding:8px 12px!important;border-bottom:1px solid #edf2f7!important;background:#fafcff!important;flex-wrap:wrap!important}
+#today .today-user-filterbar-v4553 .meta{font-size:10.5px!important;color:#6c7e92!important;font-weight:800!important;margin-right:auto!important;white-space:nowrap!important}
+#today .today-user-filterbar-v4553 .tools{display:block!important;flex:0 0 auto!important}
+#today .today-user-filterbar-v4553 select,#today .today-user-filterbar-v4553 button{width:auto!important;min-width:108px!important;height:32px!important;padding:0 28px 0 10px!important;border:1px solid #d3dfeb!important;border-radius:8px!important;background-color:#fff!important;color:#38516e!important;font-size:10.5px!important;font-weight:800!important;box-shadow:none!important}
+#today .today-user-filterbar-v4553 button{min-width:auto!important;padding:0 11px!important;background:#f5f9fd!important;cursor:pointer!important}
+#today .today-user-table-wrap-v4553{padding:0 12px 8px!important;background:#fff!important;overflow:auto!important}
+#today .today-user-footnote-v4553{padding:6px 12px 11px!important;border-top:1px solid #f0f3f7!important;background:#fff!important;font-size:9.5px!important;color:#8391a2!important}
+#today .today-user-footnote-v4553 .legend span{padding:2px 6px!important;font-size:9px!important;background:#f8fafc!important}
+
+/* Existing base table when shell wasn't created yet: still look intentional */
+#today>.panel>table.table{border:1px solid #e1e8f0!important;border-radius:11px!important;overflow:hidden!important;margin-top:9px!important}
+#today>.panel>table.table thead th{background:#f5f8fb!important;color:#65758a!important;font-size:10.5px!important;padding:8px!important}
+#today>.panel>table.table tbody td{font-size:11px!important;padding:9px 8px!important}
+#today #todayBody .empty-state{min-height:90px!important;display:flex!important;align-items:center!important;justify-content:center!important;text-align:center!important;border:1px dashed #dce5ef!important;border-radius:10px!important;background:#fbfdff!important;color:#8290a1!important;font-size:11px!important;line-height:1.55!important;padding:18px!important}
+
+@media(max-width:900px){
+ #today .tfms-flow-guide-v4556{align-items:flex-start!important}
+ #today .today-user-filterbar-v4553 .meta{width:100%!important;margin-right:0!important}
+ #today .today-user-filterbar-v4553 select{min-width:130px!important}
+}
+</style>
+<script id="tfms-v4557-ux-polish-v1-controller">
+(function(){
+  'use strict';
+  const $=id=>document.getElementById(id);
+  function compactTodayGuide(){
+    const g=document.querySelector('#today .tfms-flow-guide-v4556');
+    if(!g)return;
+    if(g.dataset.v4557==='1')return;
+    g.dataset.v4557='1';
+    g.innerHTML='<span class="tfms-flow-label-v4557">업무 생성</span><span class="src auto">점검주기 자동</span><span class="src manual">직접등록</span><i>→</i><span class="tfms-flow-label-v4557">후속 처리</span><span class="dest daily">업무일지</span><span class="dest history">유지관리 이력</span>';
+  }
+  function improveTodayEmpty(){
+    document.querySelectorAll('#todayBody .empty-state').forEach(el=>{
+      const txt=(el.textContent||'').trim();
+      if(!txt||/오늘의 업무가 없습니다|등록된.*업무가 없습니다/.test(txt)){
+        el.innerHTML='<div><b style="display:block;color:#50657c;margin-bottom:5px">등록된 오늘의 업무가 없습니다.</b><span>점검주기에서 자동 생성하거나 위 직접등록 영역에서 업무를 추가할 수 있습니다.</span></div>';
+      }
+    });
+  }
+  function polish(){compactTodayGuide();improveTodayEmpty();syncVersion();}
+  function syncVersion(){
+    try{
+      const label='v45.57 UX Polish V1 Safe';
+      const badge=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
+      if(badge&&badge.textContent!==label)badge.textContent=label;
+      document.title='TFMS '+label;
+      window.TFMS_BUILD={version:'v45.57',channel:'UX Polish V1 Safe',buildDate:'2026.08.12',title:'Dashboard + Today visual polish'};
+      const u=new URL(location.href);
+      if(u.searchParams.get('v')!=='45.57'){
+        u.searchParams.set('v','45.57');
+        history.replaceState(history.state,'',u.pathname+u.search+u.hash);
+      }
+    }catch(e){console.warn('[TFMS v45.57 sync]',e)}
+  }
+  const oldShow=window.showPage;
+  if(typeof oldShow==='function'&&!oldShow.__v4557){
+    const wrapped=function(){const r=oldShow.apply(this,arguments);if(arguments[0]==='today')setTimeout(polish,140);else setTimeout(syncVersion,80);return r};
+    wrapped.__v4557=true;window.showPage=wrapped;
+  }
+  const oldNav=window.navTo;
+  if(typeof oldNav==='function'&&!oldNav.__v4557){
+    const wrapped=function(){const r=oldNav.apply(this,arguments);if(arguments[0]==='today')setTimeout(polish,160);else setTimeout(syncVersion,80);return r};
+    wrapped.__v4557=true;window.navTo=wrapped;
+  }
+  function init(){polish();}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+  [500,1800,4200,8200,12500,16500].forEach(ms=>setTimeout(syncVersion,ms));
+})();
+</script>
+
 </body></html>
