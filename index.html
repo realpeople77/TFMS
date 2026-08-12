@@ -1111,7 +1111,7 @@ nav.sidebar {
 </div>
 <div class="v451-dashboard-grid">
   <div class="v451-card v451-facility-card">
-    <div class="v451-card-head"><h2>시설 현황</h2><button onclick="navTo('equipment')">상세보기 ›</button></div>
+    <div class="v451-card-head"><h2>시설 현황</h2><button onclick="openFacilityOverviewV4556()">시설보기 ›</button></div>
     <div class="v451-facility-content">
       <div class="v451-donut" id="facilityDonutV451"><div><small>총 시설</small><strong id="facilityTotalV451">0개</strong></div></div>
       <div class="v451-legend" id="facilityLegendV451"></div>
@@ -15087,7 +15087,7 @@ document.addEventListener('DOMContentLoaded',()=>setTimeout(initialize,250));
       assetKey:t.asset_id||'',
       assetName:t.asset?.name||'시설 공통업무',
       task:t.title||'',
-      cycle:t.source_type==='inspection_cycle'?'점검주기':'직접등록',
+      cycle:(t.source_type==='inspection_cycle'||((window.cycleTasks||((typeof cycleTasks!=='undefined'&&Array.isArray(cycleTasks))?cycleTasks:[]))||[]).some(c=>String(c.task||c.title||'').trim()===String(t.title||'').trim()&&String(c.facility||'')===String(t.facility?.name||'')))?'점검주기':'직접등록',
       due:t.task_date===today()?'오늘':t.task_date,
       rawDate:t.task_date,
       status:t.task_status||'예정'
@@ -21704,4 +21704,156 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 })();
 </script>
 
+
+
+<!-- =========================================================
+     TFMS v45.56 System Flow + Facility Drilldown Safe
+     Scope: menu relationship UX only. No DB/SQL changes.
+     No MutationObserver. Existing records/assets/today functions retained.
+     ========================================================= -->
+<style id="tfms-v4556-system-flow-style">
+#today .tfms-flow-guide-v4556{display:grid;grid-template-columns:auto auto auto auto auto auto auto;align-items:center;gap:7px;margin:10px 0 12px;padding:10px 12px;border:1px solid #d9e6f2;border-radius:12px;background:linear-gradient(180deg,#fbfdff,#f7fbff);color:#51657c;font-size:10.5px;font-weight:800}
+#today .tfms-flow-guide-v4556 .src,#today .tfms-flow-guide-v4556 .dest{display:inline-flex;align-items:center;justify-content:center;min-height:30px;padding:0 10px;border-radius:9px;border:1px solid #d8e4f0;background:#fff;white-space:nowrap}
+#today .tfms-flow-guide-v4556 .src.auto{background:#eef6ff;color:#215fb6;border-color:#cfe0f7}
+#today .tfms-flow-guide-v4556 .src.manual{background:#f6f1ff;color:#6d4bc3;border-color:#e1d7fa}
+#today .tfms-flow-guide-v4556 .core{background:#eaf9f3;color:#137452;border-color:#c9ecd9;font-weight:900}
+#today .tfms-flow-guide-v4556 .dest.daily{background:#f5f8fb;color:#4f6379}
+#today .tfms-flow-guide-v4556 .dest.history{background:#fff5e9;color:#a65c08;border-color:#f7d9ae}
+#today .tfms-flow-guide-v4556 i{font-style:normal;color:#94a3b8;font-size:14px;text-align:center}
+#today .tfms-source-chip-v4556{display:inline-flex;align-items:center;padding:3px 7px;border-radius:999px;font-size:9.5px;font-weight:900;white-space:nowrap}
+#today .tfms-source-chip-v4556.auto{background:#eef6ff;color:#225fb7;border:1px solid #cfe0f7}
+#today .tfms-source-chip-v4556.manual{background:#f5f0ff;color:#704ac4;border:1px solid #ded2f8}
+@media(max-width:1050px){#today .tfms-flow-guide-v4556{grid-template-columns:1fr 1fr;gap:6px}#today .tfms-flow-guide-v4556 i{display:none}}
+
+#tfmsFacilityOverviewV4556{position:fixed;inset:0;z-index:100120;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,33,58,.48);backdrop-filter:blur(2px)}
+#tfmsFacilityOverviewV4556.show{display:flex}
+#tfmsFacilityOverviewV4556 .fo-modal{width:min(1180px,96vw);max-height:86vh;background:#fff;border-radius:18px;border:1px solid #d8e4ef;box-shadow:0 22px 70px rgba(15,38,66,.24);overflow:hidden;display:flex;flex-direction:column}
+#tfmsFacilityOverviewV4556 .fo-head{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:17px 19px;border-bottom:1px solid #e6edf5;background:linear-gradient(180deg,#fff,#fbfdff)}
+#tfmsFacilityOverviewV4556 .fo-head h2{margin:0;color:#163454;font-size:20px;letter-spacing:-.4px}
+#tfmsFacilityOverviewV4556 .fo-head p{margin:4px 0 0;color:#7a899a;font-size:11px}
+#tfmsFacilityOverviewV4556 .fo-close{width:34px;height:34px;border:1px solid #d7e2ed;background:#fff;border-radius:9px;color:#49627e;font-size:18px;cursor:pointer}
+#tfmsFacilityOverviewV4556 .fo-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;padding:13px 19px;background:#f8fbfe;border-bottom:1px solid #e9eff5}
+#tfmsFacilityOverviewV4556 .fo-kpi{background:#fff;border:1px solid #dce6ef;border-radius:12px;padding:10px 12px}
+#tfmsFacilityOverviewV4556 .fo-kpi span{display:block;font-size:10px;color:#77879a;font-weight:800;margin-bottom:3px}
+#tfmsFacilityOverviewV4556 .fo-kpi strong{font-size:19px;color:#173759}
+#tfmsFacilityOverviewV4556 .fo-table-wrap{overflow:auto;padding:0 19px 18px}
+#tfmsFacilityOverviewV4556 table{width:100%;border-collapse:separate;border-spacing:0 7px;min-width:900px;font-size:11.5px}
+#tfmsFacilityOverviewV4556 thead th{padding:9px 10px;text-align:left;color:#65768a;background:#f3f7fb;border-top:1px solid #e2eaf2;border-bottom:1px solid #e2eaf2;white-space:nowrap}
+#tfmsFacilityOverviewV4556 tbody td{padding:10px;background:#fff;border-top:1px solid #e5edf5;border-bottom:1px solid #e5edf5;color:#29415d;vertical-align:middle}
+#tfmsFacilityOverviewV4556 tbody td:first-child{border-left:1px solid #e5edf5;border-radius:11px 0 0 11px;font-weight:900;color:#173a60}
+#tfmsFacilityOverviewV4556 tbody td:last-child{border-right:1px solid #e5edf5;border-radius:0 11px 11px 0}
+#tfmsFacilityOverviewV4556 .fo-status{display:inline-flex;padding:4px 8px;border-radius:999px;background:#eaf8f1;color:#14724f;font-size:10px;font-weight:900;white-space:nowrap}
+#tfmsFacilityOverviewV4556 .fo-status.off{background:#fff2ed;color:#bd5231}
+#tfmsFacilityOverviewV4556 .fo-open{color:#d44d57;font-weight:900}
+#tfmsFacilityOverviewV4556 .fo-btn{height:31px;padding:0 10px;border-radius:8px;border:1px solid #cdddec;background:#f7fbff;color:#21558c;font-size:10.5px;font-weight:900;cursor:pointer;white-space:nowrap}
+#tfmsFacilityOverviewV4556 .fo-empty{padding:36px;text-align:center;color:#8a98a8}
+@media(max-width:800px){#tfmsFacilityOverviewV4556{padding:10px}#tfmsFacilityOverviewV4556 .fo-summary{grid-template-columns:1fr 1fr}}
+</style>
+<div id="tfmsFacilityOverviewV4556" onclick="if(event.target===this)closeFacilityOverviewV4556()">
+  <div class="fo-modal" role="dialog" aria-modal="true" aria-labelledby="tfmsFacilityOverviewTitleV4556">
+    <div class="fo-head">
+      <div><h2 id="tfmsFacilityOverviewTitleV4556">시설 현황</h2><p>시설을 먼저 확인한 뒤 필요한 경우 해당 시설의 설비관리로 이동합니다.</p></div>
+      <button class="fo-close" type="button" onclick="closeFacilityOverviewV4556()">×</button>
+    </div>
+    <div class="fo-summary" id="tfmsFacilityOverviewSummaryV4556"></div>
+    <div class="fo-table-wrap"><table><thead><tr><th>시설명</th><th>관리부서</th><th>운영상태</th><th>등록 설비</th><th>금월 이력</th><th>미조치</th><th>최근 이력</th><th>연결</th></tr></thead><tbody id="tfmsFacilityOverviewBodyV4556"></tbody></table></div>
+  </div>
+</div>
+<script id="tfms-v4556-system-flow-controller">
+(function(){
+  'use strict';
+  const $=id=>document.getElementById(id);
+  const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  function session(){try{return JSON.parse(sessionStorage.getItem('tfmsSession')||'{}')}catch(e){return {}}}
+  function role(){try{return String(window.cloudProfile?.role||window.tfmsRole||session().role||'').toLowerCase()}catch(e){return ''}}
+  function admin(){const r=role();return r==='admin'||r==='관리자'}
+  function dept(){try{return window.cloudProfile?.department?.name||window.cloudProfile?.department_name||window.cloudProfile?.dept||session().dept||window.tfmsUserDept||''}catch(e){return ''}}
+  function norm(v){return String(v||'').replace(/\s+/g,'').replace(/[ㆍ·]/g,'').trim()}
+  function facilities(){
+    let all=[];try{all=Array.isArray(facilityMasterStable)?facilityMasterStable:[]}catch(e){}
+    if(admin())return all;
+    const d=norm(dept());return all.filter(f=>norm(f.dept)===d);
+  }
+  function assetList(){
+    try{
+      const src=window.assetData||((typeof assetData!=='undefined')?assetData:{});
+      return Array.isArray(src)?src:Object.values(src||{});
+    }catch(e){return []}
+  }
+  function recordList(){try{return Array.isArray(window.records)?window.records:((typeof records!=='undefined'&&Array.isArray(records))?records:[])}catch(e){return []}}
+  function isComplete(r){return /완료|조치완료/.test(String(r?.status||r?.process_status||''))}
+  function recordDate(r){return String(r?.rawDate||r?.date||'').replaceAll('.','-').slice(0,10)}
+  function thisMonth(){const d=new Date(),m=String(d.getMonth()+1).padStart(2,'0');return `${d.getFullYear()}-${m}`}
+
+  function ensureTodayGuide(){
+    const page=$('today');if(!page||page.querySelector('.tfms-flow-guide-v4556'))return;
+    const panel=page.querySelector(':scope > .panel');if(!panel)return;
+    const notice=panel.querySelector('.notice');
+    const guide=document.createElement('div');guide.className='tfms-flow-guide-v4556';
+    guide.innerHTML='<span class="src auto">점검주기 자동생성</span><i>+</i><span class="src manual">직접등록</span><i>→</i><span class="src core">오늘의 업무</span><i>→</i><span class="dest daily">정상업무 · 업무일지</span><i>/</i><span class="dest history">이상·비용 · 유지관리 이력</span>';
+    if(notice)notice.insertAdjacentElement('afterend',guide);else panel.prepend(guide);
+  }
+
+  function decorateTodaySource(){
+    const arr=(()=>{try{return Array.isArray(window.todayTasks)?window.todayTasks:[]}catch(e){return []}})();
+    document.querySelectorAll('#todayBody tr').forEach((tr,i)=>{
+      const t=arr[i];if(!t||tr.children.length<4)return;
+      const cell=tr.children[3];if(!cell)return;
+      const auto=String(t.cycle||'').includes('점검주기');
+      cell.innerHTML=`<span class="tfms-source-chip-v4556 ${auto?'auto':'manual'}">${auto?'자동 · 점검주기':'직접등록'}</span>`;
+    });
+  }
+
+  window.openFacilityOverviewV4556=function(){
+    const modal=$('tfmsFacilityOverviewV4556'),body=$('tfmsFacilityOverviewBodyV4556'),summary=$('tfmsFacilityOverviewSummaryV4556');
+    if(!modal||!body||!summary)return;
+    const fs=facilities(),assets=assetList(),recs=recordList(),month=thisMonth();
+    let totalAssets=0,totalMonth=0,totalOpen=0;
+    const rows=fs.map(f=>{
+      const ac=assets.filter(a=>String(a?.facility||a?.facility_name||'')===String(f.name)).length;
+      const fr=recs.filter(r=>String(r?.facility||r?.facility_name||'')===String(f.name));
+      const mc=fr.filter(r=>recordDate(r).startsWith(month)).length;
+      const oc=fr.filter(r=>!isComplete(r)).length;
+      const latest=fr.map(recordDate).filter(Boolean).sort().reverse()[0]||'-';
+      totalAssets+=ac;totalMonth+=mc;totalOpen+=oc;
+      const off=!/운영중|정상/.test(String(f.status||''));
+      return `<tr><td>${esc(f.name)}</td><td>${esc(f.dept||'-')}</td><td><span class="fo-status ${off?'off':''}">${esc(f.status||'-')}</span></td><td>${ac}대</td><td>${mc}건</td><td class="${oc?'fo-open':''}">${oc}건</td><td>${esc(latest)}</td><td><button class="fo-btn" type="button" onclick="openFacilityEquipmentV4556('${esc(String(f.name).replaceAll("'","&#39;"))}')">설비보기</button></td></tr>`;
+    });
+    summary.innerHTML=`<div class="fo-kpi"><span>관리 시설</span><strong>${fs.length}개</strong></div><div class="fo-kpi"><span>등록 설비</span><strong>${totalAssets}대</strong></div><div class="fo-kpi"><span>금월 유지관리</span><strong>${totalMonth}건</strong></div><div class="fo-kpi"><span>미조치</span><strong>${totalOpen}건</strong></div>`;
+    body.innerHTML=rows.join('')||'<tr><td colspan="8"><div class="fo-empty">표시할 시설이 없습니다.</div></td></tr>';
+    modal.classList.add('show');document.body.style.overflow='hidden';
+  };
+  window.closeFacilityOverviewV4556=function(){const m=$('tfmsFacilityOverviewV4556');if(m)m.classList.remove('show');document.body.style.overflow=''};
+  window.openFacilityEquipmentV4556=function(name){
+    closeFacilityOverviewV4556();
+    try{window.navTo?.('equipment')}catch(e){}
+    const apply=()=>{
+      const sel=$('tfmsEqFacility');
+      if(!sel)return false;
+      const has=[...sel.options].some(o=>o.value===name||o.textContent===name);
+      if(!has)return false;
+      sel.value=name;sel.dispatchEvent(new Event('change',{bubbles:true}));return true;
+    };
+    [120,350,800,1600].some(ms=>{setTimeout(apply,ms);return false});
+  };
+
+  const oldRender=window.renderTodayTasks;
+  if(typeof oldRender==='function'&&!oldRender.__v4556){const wrapped=function(){const r=oldRender.apply(this,arguments);setTimeout(()=>{ensureTodayGuide();decorateTodaySource()},50);return r};wrapped.__v4556=true;window.renderTodayTasks=wrapped;}
+  const oldShow=window.showPage;
+  if(typeof oldShow==='function'&&!oldShow.__v4556){const wrapped=function(){const r=oldShow.apply(this,arguments);setTimeout(syncVersion,90);if(arguments[0]==='today')setTimeout(()=>{ensureTodayGuide();decorateTodaySource()},130);return r};wrapped.__v4556=true;window.showPage=wrapped;}
+  const oldNav=window.navTo;
+  if(typeof oldNav==='function'&&!oldNav.__v4556){const wrapped=function(){const r=oldNav.apply(this,arguments);setTimeout(syncVersion,90);if(arguments[0]==='today')setTimeout(()=>{ensureTodayGuide();decorateTodaySource()},150);return r};wrapped.__v4556=true;window.navTo=wrapped;}
+
+  function syncVersion(){
+    try{
+      const label='v45.56 System Flow Safe';const b=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');if(b)b.textContent=label;
+      document.title='TFMS '+label;window.TFMS_BUILD={version:'v45.56',channel:'System Flow Safe',buildDate:'2026.08.12',title:'업무흐름·시설현황 연결 정리'};
+      const u=new URL(location.href);if(u.searchParams.get('v')!=='45.56'){u.searchParams.set('v','45.56');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}
+    }catch(e){}
+  }
+  function init(){syncVersion();setTimeout(()=>{ensureTodayGuide();decorateTodaySource()},300)}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+  [700,2000,5200,10000,15000].forEach(ms=>setTimeout(syncVersion,ms));
+})();
+</script>
 </body></html>
