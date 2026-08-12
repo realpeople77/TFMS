@@ -9458,10 +9458,6 @@ document.addEventListener('DOMContentLoaded',function(){
 <option>노후교체</option><option>민원조치</option><option>안전조치</option><option>시설개선</option>
 </select>
 </div>
-<div class="edit-field v4543-edit-asset-field"><label for="editAssetLinkV4543">연계 설비 <span class="v4543-lcc-chip">LCC 연계 · 선택</span></label>
-<select id="editAssetLinkV4543"><option value="">시설 공통 / 미연계</option></select>
-<div class="v4543-edit-asset-help" id="editAssetLinkHelpV4543">설비를 선택하면 해당 이력의 비용·이력이 설비 LCC에 반영됩니다.</div>
-</div>
 <div class="edit-field"><label>분야</label>
 <select id="editFieldCategory">
 <option>기계</option><option>전기</option><option>건축</option><option>토목</option>
@@ -9615,7 +9611,7 @@ document.addEventListener('DOMContentLoaded',function(){
           id,registered_by,registered_on,executed_on,receipt_category,
           maintenance_type,field_category,subfield,priority,process_status,
           progress_type,detail,action_detail,action_result,future_plan,
-          budget_account,amount,evaluation_tags,asset_id,facility:facilities(name)
+          budget_account,amount,evaluation_tags
         `)
         .eq('id',id)
         .single();
@@ -9647,9 +9643,6 @@ document.addEventListener('DOMContentLoaded',function(){
       setVal('editEvaluationTags',
         Array.isArray(data.evaluation_tags)?data.evaluation_tags.join(', '):(data.evaluation_tags||'')
       );
-      if(typeof window.populateMaintenanceEditAssetV4543==='function'){
-        await window.populateMaintenanceEditAssetV4543(data.asset_id,data.facility?.name||'');
-      }
 
       $('maintenanceDetailModal')?.classList.remove('show');
       $('maintenanceEditModal')?.classList.add('show');
@@ -9702,7 +9695,6 @@ document.addEventListener('DOMContentLoaded',function(){
         future_plan:String($('editFuturePlan')?.value||'').trim()||null,
         budget_account:String($('editBudgetAccount')?.value||'').trim()||null,
         amount:parseAmount($('editAmount')?.value),
-        asset_id:String($('editAssetLinkV4543')?.value||'').trim()||null,
         evaluation_tags:String($('editEvaluationTags')?.value||'')
           .split(',')
           .map(v=>v.trim())
@@ -12250,74 +12242,6 @@ document.addEventListener('DOMContentLoaded',function(){
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply4542,{once:true});else apply4542();
   [200,800,1800,4000,8000,12000].forEach(ms=>setTimeout(apply4542,ms));
   try{new MutationObserver(()=>apply4542()).observe(document.documentElement,{childList:true,subtree:true})}catch(e){}
-})();
-</script>
-
-
-<!-- =========================================================
-     TFMS v45.43 Maintenance Edit ↔ Asset LCC Link Safe
-     Existing maintenance_records.asset_id only. No schema change.
-     ========================================================= -->
-<style id="tfms-v4543-maintenance-edit-asset-style">
-#maintenanceEditModal .v4543-edit-asset-field label{display:flex;align-items:center;gap:6px}
-#maintenanceEditModal .v4543-lcc-chip{display:inline-flex;align-items:center;padding:2px 7px;border:1px solid #b7e4d7;border-radius:999px;background:#eefbf7;color:#087f6b;font-size:10px;font-weight:800;line-height:1.35;white-space:nowrap}
-#maintenanceEditModal #editAssetLinkV4543{border-color:#b8d8ee;background:#fafdff}
-#maintenanceEditModal .v4543-edit-asset-help{margin-top:5px;min-height:14px;font-size:10.5px;line-height:1.35;color:#64748b}
-#maintenanceEditModal .v4543-edit-asset-help.is-linked{padding:5px 7px;border-radius:7px;background:#f0fdfa;color:#46606d}
-#maintenanceEditModal .v4543-edit-asset-help strong{color:#0f766e}
-</style>
-<script id="tfms-v4543-maintenance-edit-asset-controller">
-(function(){
-  'use strict';
-  const $=id=>document.getElementById(id);
-  const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-  const client=()=>{try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||null}catch(e){return null}};
-  function entries(){try{return Object.entries(window.assetData||assetData||{}).filter(([,a])=>a&&a.name)}catch(e){return []}}
-  function updateHelp(){
-    const sel=$('editAssetLinkV4543'),help=$('editAssetLinkHelpV4543'); if(!sel||!help)return;
-    const opt=sel.options[sel.selectedIndex];
-    if(!sel.value){help.className='v4543-edit-asset-help';help.textContent='설비를 선택하면 해당 이력의 비용·이력이 설비 LCC에 반영됩니다.';return;}
-    help.className='v4543-edit-asset-help is-linked';
-    help.innerHTML='<strong>'+esc(opt?.dataset?.assetName||opt?.textContent||'연계 설비')+'</strong> · 수정 저장 시 LCC 연계';
-  }
-  window.populateMaintenanceEditAssetV4543=async function(currentAssetId,facilityName){
-    const sel=$('editAssetLinkV4543'); if(!sel)return;
-    const current=String(currentAssetId||'').trim(), facility=String(facilityName||'').trim();
-    const list=entries().filter(([,a])=>!facility||String(a.facility||'').trim()===facility);
-    sel.innerHTML='<option value="">시설 공통 / 미연계</option>'+list.map(([key,a])=>{
-      const id=String(a.dbId||key||'');
-      const meta=[a.space||a.location||'',a.name,a.qrId&&a.qrId!=='-'?a.qrId:''].filter(Boolean).join(' · ');
-      return '<option value="'+esc(id)+'" data-asset-name="'+esc(a.name)+'">'+esc(meta)+'</option>';
-    }).join('');
-    if(current){
-      if(![...sel.options].some(o=>o.value===current)){
-        try{
-          const sb=client();
-          if(sb){
-            const {data}=await sb.from('assets').select('id,name,location_detail,qr_code').eq('id',current).maybeSingle();
-            if(data){const opt=document.createElement('option');opt.value=String(data.id);opt.dataset.assetName=data.name||'연계 설비';opt.textContent=[data.location_detail||'',data.name||'연계 설비',data.qr_code||''].filter(Boolean).join(' · ');sel.appendChild(opt);}
-          }
-        }catch(e){console.warn('TFMS v45.43 현재 연계설비 조회',e)}
-      }
-      if([...sel.options].some(o=>o.value===current))sel.value=current;
-    }
-    updateHelp();
-  };
-  function bind(){$('editAssetLinkV4543')?.addEventListener('change',updateHelp)}
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
-})();
-</script>
-<script id="tfms-v4543-final-version-sync">
-(function(){
-  const BUILD='v45.43';
-  function sync(){
-    const b=document.getElementById('tfmsVersionBadge'); if(b)b.textContent=BUILD+' Maintenance Edit LCC Safe';
-    document.title='TFMS '+BUILD+' Maintenance Edit LCC Safe';
-    try{window.TFMS_BUILD=Object.freeze({version:BUILD,channel:'Maintenance Edit LCC Safe',buildDate:'2026.08.12',title:'Maintenance Edit LCC Safe'});}catch(e){}
-    try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.43'){u.searchParams.set('v','45.43');history.replaceState(history.state,'',u.pathname+u.search+u.hash);}}catch(e){}
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync,{once:true});else sync();
-  setTimeout(sync,8200);
 })();
 </script>
 
