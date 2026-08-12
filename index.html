@@ -1210,19 +1210,30 @@ nav.sidebar {
 </section>
 <section class="page" id="history">
 <div class="title-row"><div class="title-left"><div class="title-icon">🔍</div><div><h1>유지관리 조회</h1><div class="breadcrumb">홈 › 유지관리 조회 › 등록 이력 검색</div></div></div></div>
-<div class="panel v459-search-panel">
-  <div class="section-title"><span class="dot"></span>검색 조건</div>
-  <div class="v459-search-grid">
+<div class="panel v4547-search-panel">
+  <div class="v4547-search-head"><div class="section-title"><span class="dot"></span>검색 조건</div><small>필요한 조건만 선택하면 바로 결과에 반영됩니다.</small></div>
+  <div class="v4547-search-grid">
     <div class="field"><label>시설명</label><select id="historyFacility"><option>전체</option></select></div>
     <div class="field"><label>분야</label><select id="historyField"><option>전체</option><option>기계</option><option>전기</option><option>건축</option><option>토목</option><option>소방</option><option>통신</option><option>수질</option><option>환경정비</option><option>조경</option><option>기타</option></select></div>
     <div class="field"><label>처리상태</label><select id="historyStatus"><option>전체</option><option>조치완료</option><option>진행중</option><option>미조치</option><option>예산반영 필요</option><option>외부업체 의뢰</option></select></div>
     <div class="field"><label>기간</label><input id="historyMonth" type="month"/></div>
-    <div class="v459-search-actions"><button class="btn" type="button" onclick="resetHistoryFilterV318()">초기화</button><button class="btn blue" type="button" onclick="renderHistoryV318()">조회</button></div>
+    <div class="field"><label>연계설비(LCC)</label><select id="historyLccFilter"><option value="all">전체</option><option value="linked">연계됨</option><option value="unlinked">미연계</option></select></div>
+    <div class="field"><label>경영평가 연계</label><select id="historyEvalFilter"><option value="all">전체</option><option value="linked">연계됨</option><option value="unlinked">미연계</option></select></div>
+    <div class="field"><label>증빙자료</label><select id="historyEvidenceFilter"><option value="all">전체</option><option value="yes">증빙 있음</option><option value="no">증빙 없음</option></select></div>
+    <div class="v4547-search-actions"><button class="btn" type="button" onclick="resetHistoryFilterV318()">초기화</button><button class="btn blue" type="button" onclick="renderHistoryV318()">조회</button></div>
   </div>
+  <div class="v4547-quickbar"><span>빠른 검색</span><button type="button" data-q="month">이번 달</button><button type="button" data-q="open">미조치</button><button type="button" data-q="lcc">LCC 연계</button><button type="button" data-q="eval">경영평가 연계</button><button type="button" data-q="evidence">증빙 있음</button></div>
 </div>
-<div class="panel v459-table-panel">
-  <div class="v459-list-head"><div><div class="section-title"><span class="dot"></span>검색 결과</div><small>등록된 유지관리 이력을 최신순으로 확인합니다.</small></div><button class="btn light" type="button" onclick="navTo('export')">엑셀 다운로드</button></div>
-  <div class="v459-table-scroll"><table class="table"><thead><tr><th>일자</th><th>시설명</th><th>분야</th><th>유형</th><th>내용</th><th>상태</th><th>증빙</th><th>관리</th></tr></thead><tbody id="historyBody"></tbody></table></div>
+<div class="v4547-summary" id="historySummaryV4547">
+  <div class="v4547-summary-card"><span>전체 이력</span><strong id="v4547Total">0건</strong></div>
+  <div class="v4547-summary-card warning"><span>미조치·진행중</span><strong id="v4547Open">0건</strong></div>
+  <div class="v4547-summary-card lcc"><span>LCC 연계</span><strong id="v4547Lcc">0건</strong></div>
+  <div class="v4547-summary-card evidence"><span>증빙 있음</span><strong id="v4547Evidence">0건</strong></div>
+  <div class="v4547-summary-card eval"><span>경영평가 연계</span><strong id="v4547Eval">0건</strong></div>
+</div>
+<div class="panel v4547-table-panel">
+  <div class="v459-list-head"><div><div class="section-title"><span class="dot"></span>검색 결과</div><small id="historyResultTextV4547">등록된 유지관리 이력을 최신순으로 확인합니다.</small></div><button class="btn light" type="button" onclick="navTo('export')">엑셀 다운로드</button></div>
+  <div class="v459-table-scroll"><table class="table v4547-history-table"><thead><tr><th>일자</th><th>시설명</th><th>분야</th><th>유형</th><th>내용</th><th>상태</th><th>증빙</th><th>연계설비</th><th>경영평가</th><th>관리</th></tr></thead><tbody id="historyBody"></tbody></table></div>
 </div>
 </section>
 <section class="page" id="myPage">
@@ -20869,4 +20880,141 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
   [300,1200,4000,9000].forEach(ms=>setTimeout(sync,ms));
 })();
 </script>
+
+<!-- =========================================================
+     TFMS v45.47 History UX Compact + Header Duplicate Fix
+     UI/read-layer only. No DB schema or SQL changes.
+     ========================================================= -->
+<style id="tfms-v4547-history-ux-style">
+/* Header: current corporation logo already contains the visible TFMS wordmark area; suppress duplicate text node. */
+#appHeader .tfms-head-name{display:none!important}
+#appHeader .logo-title{gap:0!important}
+
+#history .v4513-history-tools{display:none!important}
+#history .v4547-search-panel{padding:13px 14px 12px!important;margin-bottom:10px!important}
+#history .v4547-search-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:9px}
+#history .v4547-search-head .section-title{margin:0!important}
+#history .v4547-search-head small{color:#8391a5;font-size:10.5px}
+#history .v4547-search-grid{display:grid;grid-template-columns:1.1fr 1fr 1fr .9fr .95fr .95fr .9fr auto;gap:8px;align-items:end}
+#history .v4547-search-grid .field{min-width:0}
+#history .v4547-search-grid label{font-size:10.5px;margin-bottom:4px;color:#344054}
+#history .v4547-search-grid input,#history .v4547-search-grid select{height:36px!important;min-height:36px!important;padding:5px 9px!important;font-size:12px!important;border-radius:8px!important}
+#history .v4547-search-actions{display:flex;gap:6px;align-items:center}
+#history .v4547-search-actions .btn{height:36px!important;padding:0 16px!important;border-radius:8px!important;white-space:nowrap;font-size:12px}
+#history .v4547-quickbar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:9px;padding-top:9px;border-top:1px solid #edf2f7}
+#history .v4547-quickbar>span{font-size:10.5px;font-weight:900;color:#344054;margin-right:2px}
+#history .v4547-quickbar button{height:28px;border:1px solid #d6e2ef;background:#fff;color:#31506f;border-radius:999px;padding:0 10px;font-size:10.5px;font-weight:800;cursor:pointer}
+#history .v4547-quickbar button:hover,#history .v4547-quickbar button.active{border-color:#66a6e8;background:#eef7ff;color:#075fb9}
+
+#history .v4547-summary{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:0 0 10px}
+#history .v4547-summary-card{background:#fff;border:1px solid #dbe5ef;border-radius:11px;padding:10px 12px;min-height:58px;display:flex;flex-direction:column;justify-content:center;box-shadow:0 3px 10px rgba(20,50,80,.025)}
+#history .v4547-summary-card span{font-size:10.5px;color:#64748b;font-weight:700}
+#history .v4547-summary-card strong{margin-top:3px;font-size:18px;color:#0f3f82;line-height:1}
+#history .v4547-summary-card.warning strong{color:#c2410c}#history .v4547-summary-card.lcc strong{color:#047857}#history .v4547-summary-card.evidence strong{color:#0369a1}#history .v4547-summary-card.eval strong{color:#7c3aed}
+
+#history .v4547-table-panel{padding:13px 14px!important}
+#history .v459-list-head{margin-bottom:8px!important}
+#history .v459-list-head small{font-size:10.5px;color:#7b8794}
+#history .v4547-history-table{font-size:11.5px;table-layout:auto}
+#history .v4547-history-table th{padding:9px 9px!important;white-space:nowrap;font-size:10.5px}
+#history .v4547-history-table td{padding:10px 9px!important;vertical-align:middle}
+#history .v4547-history-table td:nth-child(1),#history .v4547-history-table td:nth-child(3),#history .v4547-history-table td:nth-child(4),#history .v4547-history-table td:nth-child(6),#history .v4547-history-table td:nth-child(7){white-space:nowrap}
+#history .v4547-history-title{display:block;border:0;background:none;padding:0;color:#075fc2;font-weight:900;font-size:11.5px;cursor:pointer;text-align:left;line-height:1.35}
+#history .v4547-history-sub{display:block;margin-top:3px;color:#8a97a8;font-size:9.5px;max-width:430px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#history .v4547-chip{display:inline-flex;align-items:center;max-width:145px;min-height:23px;padding:3px 7px;border-radius:999px;font-size:9.5px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#history .v4547-chip.lcc{background:#ecfdf5;color:#047857;border:1px solid #a7f3d0}
+#history .v4547-chip.none{background:#f8fafc;color:#94a3b8;border:1px solid #e2e8f0}
+#history .v4547-chip.eval{background:#f5f3ff;color:#6d28d9;border:1px solid #ddd6fe}
+#history .v4547-manage{display:flex;gap:4px;align-items:center;white-space:nowrap}
+#history .v4547-manage .small-btn{padding:6px 8px!important;font-size:10px!important;border-radius:7px!important}
+#history .v4547-detail-mini{color:#075fc2;border-color:#bfd8f5!important;background:#f8fbff!important}
+
+@media(max-width:1500px){#history .v4547-search-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.v4547-search-actions{justify-content:flex-end}#history .v4547-summary{grid-template-columns:repeat(5,1fr)}}
+@media(max-width:1050px){#history .v4547-search-grid{grid-template-columns:repeat(2,minmax(0,1fr))}#history .v4547-summary{grid-template-columns:repeat(3,1fr)}#history .v459-table-scroll{overflow-x:auto}#history .v4547-history-table{min-width:1100px}}
+@media(max-width:650px){#history .v4547-search-grid{grid-template-columns:1fr}#history .v4547-search-actions{justify-content:stretch}#history .v4547-search-actions .btn{flex:1}#history .v4547-summary{grid-template-columns:repeat(2,1fr)}#history .v4547-search-head small{display:none}}
+</style>
+<script id="tfms-v4547-history-ux-controller">
+(function(){
+  'use strict';
+  const $=id=>document.getElementById(id);
+  const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const db=()=>{try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||null}catch(e){return null}};
+  const role=()=>{try{return window.tfmsRole||window.cloudProfile?.role||JSON.parse(sessionStorage.getItem('tfmsSession')||'{}').role||'user'}catch(e){return 'user'}};
+  const deptName=()=>{try{const p=window.cloudProfile||{};const s=JSON.parse(sessionStorage.getItem('tfmsSession')||'{}');return p.department?.name||p.department_name||s.dept||''}catch(e){return ''}};
+  const statusClassSafe=s=>{try{return typeof window.statusClass==='function'?window.statusClass(s):''}catch(e){return ''}};
+
+  function selectedList(){
+    const facility=$('historyFacility')?.value||'전체', field=$('historyField')?.value||'전체', status=$('historyStatus')?.value||'전체', month=$('historyMonth')?.value||'';
+    const lcc=$('historyLccFilter')?.value||'all', ev=$('historyEvalFilter')?.value||'all', evidence=$('historyEvidenceFilter')?.value||'all';
+    let list=Array.isArray(window.records)?window.records.slice():[];
+    const dept=deptName();
+    if(role()!=='admin'&&dept)list=list.filter(r=>r.dept===dept);
+    if(facility!=='전체')list=list.filter(r=>r.facility===facility);
+    if(field!=='전체')list=list.filter(r=>r.field===field);
+    if(status!=='전체')list=list.filter(r=>r.status===status);
+    if(month)list=list.filter(r=>String(r.rawDate||'').slice(0,7)===month);
+    if(lcc==='linked')list=list.filter(r=>!!r.assetId); else if(lcc==='unlinked')list=list.filter(r=>!r.assetId);
+    if(ev==='linked')list=list.filter(r=>Array.isArray(r.evalTags)&&r.evalTags.length); else if(ev==='unlinked')list=list.filter(r=>!Array.isArray(r.evalTags)||!r.evalTags.length);
+    if(evidence==='yes')list=list.filter(r=>Number(r.evidenceCount||0)>0); else if(evidence==='no')list=list.filter(r=>Number(r.evidenceCount||0)===0);
+    return list;
+  }
+
+  function updateSummary(list){
+    const total=list.length, open=list.filter(r=>r.status!=='조치완료'&&r.status!=='완료').length, lcc=list.filter(r=>r.assetId).length, evid=list.filter(r=>Number(r.evidenceCount||0)>0).length, ev=list.filter(r=>Array.isArray(r.evalTags)&&r.evalTags.length).length;
+    if($('v4547Total'))$('v4547Total').textContent=total+'건'; if($('v4547Open'))$('v4547Open').textContent=open+'건'; if($('v4547Lcc'))$('v4547Lcc').textContent=lcc+'건'; if($('v4547Evidence'))$('v4547Evidence').textContent=evid+'건'; if($('v4547Eval'))$('v4547Eval').textContent=ev+'건';
+    if($('historyResultTextV4547'))$('historyResultTextV4547').textContent=`총 ${total}건 · 조건에 맞는 이력을 최신순으로 표시합니다.`;
+  }
+
+  async function currentUserId(){try{const c=db();const {data}=await c.auth.getUser();return data?.user?.id||''}catch(e){return ''}}
+
+  window.renderMaintenanceHistoryV361=async function(){
+    const body=$('historyBody');if(!body)return;
+    const list=selectedList(); updateSummary(list);
+    if(!list.length){body.innerHTML='<tr><td colspan="10"><div class="empty-state">선택한 조건에 등록된 유지관리 이력이 없습니다.</div></td></tr>';return;}
+    const uid=await currentUserId(), isAdmin=role()==='admin';
+    body.innerHTML=list.map(r=>{
+      const editable=isAdmin||Boolean(uid&&r.ownerId&&uid===r.ownerId);
+      const evalLabel=(r.evalTags||[]).slice(0,2).join(' · ')+(r.evalTags?.length>2?` +${r.evalTags.length-2}`:'');
+      const assetLabel=r.assetName||'';
+      return `<tr class="tfms-history-clickable" onclick="if(!event.target.closest('button'))openMaintenanceDetailV370('${esc(r.dbId)}')">
+        <td>${esc(r.date)}</td><td>${esc(r.facility)}</td><td>${esc(r.field)}</td><td>${esc(r.type)}</td>
+        <td><button type="button" class="v4547-history-title" onclick="event.stopPropagation();openMaintenanceDetailV370('${esc(r.dbId)}')">${esc(r.detail||'-')}</button><span class="v4547-history-sub">${esc(r.actionDetail||'상세내용 보기')}</span></td>
+        <td><span class="status ${statusClassSafe(r.status)}">${esc(r.status)}</span></td>
+        <td>${Number(r.evidenceCount||0)>0?`<span class="v4547-chip lcc">${Number(r.evidenceCount)}개</span>`:'<span class="v4547-chip none">0개</span>'}</td>
+        <td>${assetLabel?`<span class="v4547-chip lcc" title="${esc(assetLabel)}">${esc(assetLabel)}</span>`:'<span class="v4547-chip none">미연계</span>'}</td>
+        <td>${evalLabel?`<span class="v4547-chip eval" title="${esc((r.evalTags||[]).join(', '))}">${esc(evalLabel)}</span>`:'<span class="v4547-chip none">미연계</span>'}</td>
+        <td><div class="v4547-manage"><button type="button" class="small-btn v4547-detail-mini" onclick="event.stopPropagation();openMaintenanceDetailV370('${esc(r.dbId)}')">상세</button>${editable?`<button type="button" class="small-btn" onclick="event.stopPropagation();openMaintenanceEditV372('${esc(r.dbId)}')">수정</button><button type="button" class="small-btn blue" onclick="event.stopPropagation();openMaintenanceActionV380('${esc(r.dbId)}')">조치</button>`:''}<button type="button" class="small-btn red" onclick="event.stopPropagation();handleMaintenanceDeleteV363('${esc(r.dbId)}')">${isAdmin?'삭제':'삭제요청'}</button></div></td>
+      </tr>`;
+    }).join('');
+  };
+  window.renderHistory=window.renderMaintenanceHistoryV361;window.renderHistoryV318=window.renderMaintenanceHistoryV361;
+
+  window.loadMaintenanceHistoryV361=async function(){
+    const c=db(); if(!c)return;
+    const body=$('historyBody');if(body)body.innerHTML='<tr><td colspan="10"><div class="empty-state">유지관리 이력을 불러오는 중입니다.</div></td></tr>';
+    try{
+      const {data,error}=await c.from('maintenance_records').select(`id,registered_by,registered_on,receipt_category,field_category,detail,action_detail,process_status,amount,budget_account,evidence_count,evaluation_tags,asset_id,created_at,department:departments(id,name),facility:facilities(id,name)`).is('deleted_at',null).order('created_at',{ascending:false});
+      if(error)throw error;
+      const ids=[...new Set((data||[]).map(r=>r.asset_id).filter(Boolean))]; const amap={};
+      if(ids.length){const ar=await c.from('assets').select('id,name,asset_code').in('id',ids);if(!ar.error)(ar.data||[]).forEach(a=>amap[a.id]=a);}
+      window.records=(data||[]).map(r=>({dbId:r.id,ownerId:r.registered_by||'',rawDate:r.registered_on||'',date:String(r.registered_on||'').slice(0,10).replaceAll('-','.'),dept:r.department?.name||'',facility:r.facility?.name||'',field:r.field_category||'기타',type:r.receipt_category||'기타',detail:r.detail||'',actionDetail:r.action_detail||'',status:r.process_status||'진행중',amount:Number(r.amount||0),budget:r.budget_account||'해당없음',evidenceCount:Number(r.evidence_count||0),evidence:`${Number(r.evidence_count||0)}개`,evalTags:Array.isArray(r.evaluation_tags)?r.evaluation_tags:[],eval:Array.isArray(r.evaluation_tags)&&r.evaluation_tags.length?r.evaluation_tags.join(', '):'-',assetId:r.asset_id||'',assetName:r.asset_id?(amap[r.asset_id]?.name||'연계 설비'):''}));
+      try{window.records&&typeof records!=='undefined'&&(records=window.records)}catch(e){}
+      await window.renderMaintenanceHistoryV361();
+    }catch(e){console.error('TFMS v45.47 history load',e);if(body)body.innerHTML=`<tr><td colspan="10"><div class="empty-state" style="color:#b91c1c">조회 실패: ${esc(e?.message||e)}</div></td></tr>`;}
+  };
+
+  window.resetHistoryFilterV318=function(){
+    const m=$('historyMonth');if(m)m.value='';['historyFacility','historyField','historyStatus'].forEach(id=>{const e=$(id);if(e)e.selectedIndex=0});['historyLccFilter','historyEvalFilter','historyEvidenceFilter'].forEach(id=>{const e=$(id);if(e)e.value='all'});document.querySelectorAll('#history .v4547-quickbar button').forEach(b=>b.classList.remove('active'));window.renderMaintenanceHistoryV361();
+  };
+
+  function quickBind(){const bar=document.querySelector('#history .v4547-quickbar');if(!bar||bar.__bound)return;bar.__bound=true;bar.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const q=b.dataset.q;document.querySelectorAll('#history .v4547-quickbar button').forEach(x=>x.classList.toggle('active',x===b));if(q==='month'){const d=new Date();$('historyMonth').value=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')}if(q==='open'){$('historyStatus').value='미조치'}if(q==='lcc')$('historyLccFilter').value='linked';if(q==='eval')$('historyEvalFilter').value='linked';if(q==='evidence')$('historyEvidenceFilter').value='yes';window.renderMaintenanceHistoryV361();});}
+  function bind(){quickBind();['historyFacility','historyField','historyStatus','historyMonth','historyLccFilter','historyEvalFilter','historyEvidenceFilter'].forEach(id=>$(id)?.addEventListener('change',()=>window.renderMaintenanceHistoryV361()));}
+  function sync(){try{const b=$('tfmsVersionBadge');if(b)b.textContent='v45.47 History UX Stable';document.title='TFMS v45.47 History UX Stable';window.TFMS_BUILD=Object.freeze({version:'v45.47',channel:'History UX Stable',buildDate:'2026.08.12',title:'History UX Compact LCC'});const u=new URL(location.href);if(u.searchParams.get('v')!=='45.47'){u.searchParams.set('v','45.47');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
+  function init(){bind();sync();const old=document.querySelector('#history .v4513-history-tools');if(old)old.remove();}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+  [150,800,2200,5200,10500].forEach(ms=>setTimeout(()=>{init();sync()},ms));
+  const prevShow=window.showPage;if(typeof prevShow==='function'&&!prevShow.__v4547){const w=function(){const r=prevShow.apply(this,arguments);if(arguments[0]==='history')setTimeout(()=>window.loadMaintenanceHistoryV361(),60);setTimeout(sync,50);return r};w.__v4547=true;window.showPage=w;}
+})();
+</script>
+
 </body></html>
