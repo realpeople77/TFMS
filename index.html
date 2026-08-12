@@ -1105,7 +1105,8 @@ nav.sidebar {
   <button class="v451-kpi" onclick="navTo('today')"><span class="v451-kpi-icon mint">◷</span><span><b>진행중 업무</b><strong id="dashProgressV451">0건</strong><small>현재 처리 중</small></span></button>
   <button class="v451-kpi" onclick="navTo('history')"><span class="v451-kpi-icon green">✓</span><span><b>완료 업무</b><strong id="dashCompleteV451">0건</strong><small>전체 누적</small></span></button>
   <button class="v451-kpi" onclick="navTo('history')"><span class="v451-kpi-icon purple">▧</span><span><b>증빙자료 포함</b><strong id="dashEvidenceCount">0건</strong><small>사진·문서 확인</small></span></button>
-  <button class="v451-kpi" onclick="navTo('excel')"><span class="v451-kpi-icon orange">₩</span><span><b>금월 집행금액</b><strong id="dashBudget">0천원</strong><small>예산 집행 현황</small></span></button>
+  <button class="v451-kpi" onclick="navTo('excel')"><span class="v451-kpi-icon orange">₩</span><span><b>금월 집행금액</b><strong id="dashBudget">0천원</strong><small>이번 달 집행</small></span></button>
+  <button class="v451-kpi" onclick="navTo('excel')"><span class="v451-kpi-icon navy">∑</span><span><b>누적 집행금액</b><strong id="dashBudgetTotal">0천원</strong><small>전체 이력 누계</small></span></button>
   <button class="v451-kpi" onclick="navTo('history')"><span class="v451-kpi-icon red">⌕</span><span><b>미조치 항목</b><strong id="dashOpen">0건</strong><small>조치 필요</small></span></button>
 </div>
 <div class="v451-dashboard-grid">
@@ -2473,13 +2474,20 @@ function renderDashboardData(){
   const scopedRecords = (currentUserDept==='전체') ? records : records.filter(r=>r.dept===currentUserDept);
   const total = scopedRecords.length;
   const open = scopedRecords.filter(r=>r.status==='미조치' || r.status==='진행중' || r.status==='예산반영 필요').length;
-  const budget = scopedRecords.reduce((sum,r)=>sum+r.amount,0);
+  const totalBudget = scopedRecords.reduce((sum,r)=>sum+Number(r.amount||0),0);
+  const now = new Date();
+  const currentYM = String(now.getFullYear()) + String(now.getMonth()+1).padStart(2,'0');
+  const monthBudget = scopedRecords
+    .filter(r=>String(r.rawDate||r.date||'').replace(/\D/g,'').slice(0,6)===currentYM)
+    .reduce((sum,r)=>sum+Number(r.amount||0),0);
   const dashTotal=document.getElementById('dashTotal');
   if(dashTotal){
     dashTotal.textContent=total+'건';
     document.getElementById('dashTodo').textContent=todayTasks.length+'건';
     document.getElementById('dashOpen').textContent=open+'건';
-    document.getElementById('dashBudget').textContent=Math.round(budget/1000).toLocaleString('ko-KR')+'천원';
+    document.getElementById('dashBudget').textContent=Math.round(monthBudget/1000).toLocaleString('ko-KR')+'천원';
+    const dashBudgetTotal=document.getElementById('dashBudgetTotal');
+    if(dashBudgetTotal) dashBudgetTotal.textContent=Math.round(totalBudget/1000).toLocaleString('ko-KR')+'천원';
     const todayReg = scopedRecords.filter(r=>r.date===todayDot()).length;
     const evalCount = scopedRecords.filter(r=>String(r.eval).includes('경영평가') || String(r.eval).includes('안전관리') || String(r.eval).includes('예방정비')).length;
     const evidenceCount = scopedRecords.filter(r=>r.evidence && r.evidence !== '-').length;
@@ -21017,4 +21025,57 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 })();
 </script>
 
+
+
+<!-- TFMS v45.48 Dashboard Finance Split Safe: dashboard/header only -->
+<style id="tfms-v4548-dashboard-finance-css">
+/* Header spacing: corporation logo → TFMS → version */
+#appHeader .logo-title{gap:11px!important;}
+#appHeader #tfmsVersionBadge{margin-left:2px!important;}
+
+/* Dashboard: remove legacy spanning that created the blank second-row area. */
+#dashboard.tfms-dashboard-v451 .v451-kpi-grid > .v451-kpi{grid-column:auto!important;}
+#dashboard.tfms-dashboard-v451 .v451-kpi-icon.navy{background:#edf2f7!important;color:#315174!important;}
+@media (min-width:1400px){
+  #dashboard.tfms-dashboard-v451 .v451-kpi-grid{grid-template-columns:repeat(7,minmax(0,1fr))!important;}
+}
+@media (min-width:1000px) and (max-width:1399px){
+  #dashboard.tfms-dashboard-v451 .v451-kpi-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;}
+}
+@media (min-width:761px) and (max-width:999px){
+  #dashboard.tfms-dashboard-v451 .v451-kpi-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;}
+}
+</style>
+<script id="tfms-v4548-final-sync">
+(function(){
+  'use strict';
+  const LABEL='v45.48 Dashboard Finance Split Safe';
+  let syncing=false;
+  function syncVersion(){
+    if(syncing)return; syncing=true;
+    try{
+      const b=document.getElementById('tfmsVersionBadge');
+      if(b && b.textContent!==LABEL)b.textContent=LABEL;
+      if(document.title!=='TFMS '+LABEL)document.title='TFMS '+LABEL;
+      window.TFMS_BUILD=Object.freeze({version:'v45.48',channel:'Dashboard Finance Split Safe',buildDate:'2026.08.12',title:'Dashboard Monthly and Cumulative Finance Split'});
+      const u=new URL(location.href);
+      if(u.searchParams.get('v')!=='45.48'){
+        u.searchParams.set('v','45.48');
+        history.replaceState(history.state,'',u.pathname+u.search+u.hash);
+      }
+    }catch(e){} finally{syncing=false;}
+  }
+  function init(){
+    syncVersion();
+    const b=document.getElementById('tfmsVersionBadge');
+    if(b && !b.__v4548Observer){
+      const mo=new MutationObserver(()=>{if(b.textContent!==LABEL)syncVersion();});
+      mo.observe(b,{childList:true,characterData:true,subtree:true});
+      b.__v4548Observer=mo;
+    }
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+  [100,500,1500,4000,9000,15000].forEach(ms=>setTimeout(syncVersion,ms));
+})();
+</script>
 </body></html>
