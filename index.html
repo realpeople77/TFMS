@@ -6,7 +6,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>TFMS v45.41 Header Brand Logo Safe</title>
+<title>TFMS v45.42 Header Brand DOM Fix</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -9458,6 +9458,10 @@ document.addEventListener('DOMContentLoaded',function(){
 <option>노후교체</option><option>민원조치</option><option>안전조치</option><option>시설개선</option>
 </select>
 </div>
+<div class="edit-field v4543-edit-asset-field"><label for="editAssetLinkV4543">연계 설비 <span class="v4543-lcc-chip">LCC 연계 · 선택</span></label>
+<select id="editAssetLinkV4543"><option value="">시설 공통 / 미연계</option></select>
+<div class="v4543-edit-asset-help" id="editAssetLinkHelpV4543">설비를 선택하면 해당 이력의 비용·이력이 설비 LCC에 반영됩니다.</div>
+</div>
 <div class="edit-field"><label>분야</label>
 <select id="editFieldCategory">
 <option>기계</option><option>전기</option><option>건축</option><option>토목</option>
@@ -9611,7 +9615,7 @@ document.addEventListener('DOMContentLoaded',function(){
           id,registered_by,registered_on,executed_on,receipt_category,
           maintenance_type,field_category,subfield,priority,process_status,
           progress_type,detail,action_detail,action_result,future_plan,
-          budget_account,amount,evaluation_tags
+          budget_account,amount,evaluation_tags,asset_id,facility:facilities(name)
         `)
         .eq('id',id)
         .single();
@@ -9643,6 +9647,9 @@ document.addEventListener('DOMContentLoaded',function(){
       setVal('editEvaluationTags',
         Array.isArray(data.evaluation_tags)?data.evaluation_tags.join(', '):(data.evaluation_tags||'')
       );
+      if(typeof window.populateMaintenanceEditAssetV4543==='function'){
+        await window.populateMaintenanceEditAssetV4543(data.asset_id,data.facility?.name||'');
+      }
 
       $('maintenanceDetailModal')?.classList.remove('show');
       $('maintenanceEditModal')?.classList.add('show');
@@ -9695,6 +9702,7 @@ document.addEventListener('DOMContentLoaded',function(){
         future_plan:String($('editFuturePlan')?.value||'').trim()||null,
         budget_account:String($('editBudgetAccount')?.value||'').trim()||null,
         amount:parseAmount($('editAmount')?.value),
+        asset_id:String($('editAssetLinkV4543')?.value||'').trim()||null,
         evaluation_tags:String($('editEvaluationTags')?.value||'')
           .split(',')
           .map(v=>v.trim())
@@ -12194,6 +12202,125 @@ document.addEventListener('DOMContentLoaded',function(){
 <!-- TFMS v45.32 Shell Frame Stable - Data Store Fix
      Equipment UX reads live lexical assetData first; window.assetData is fallback only.
      Login / photo loading / Supabase schema unchanged. -->
+
+<!-- =========================================================
+     TFMS v45.42 Header Brand DOM Fix
+     Exact header DOM order: corporation logo -> TFMS -> version badge.
+     Header-only patch. No page/menu/DB logic changes.
+     ========================================================= -->
+<style id="tfms-v4542-header-brand-dom-fix">
+#appHeader .top .logo{display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:9px!important;min-width:0!important;white-space:nowrap!important}
+#appHeader .top .logo>.tfmc-header-ci{display:block!important;width:118px!important;height:38px!important;object-fit:contain!important;object-position:left center!important;flex:0 0 118px!important;margin:0 2px 0 0!important;padding:0!important;background:transparent!important;border:0!important;filter:none!important;opacity:1!important}
+#appHeader .top .logo>.tfms-brand-text{display:inline-flex!important;align-items:center!important;color:#fff!important;font-weight:900!important;font-size:22px!important;line-height:1!important;letter-spacing:-.4px!important;flex:0 0 auto!important}
+#appHeader .top .logo>#tfmsVersionBadge{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:25px!important;padding:4px 9px!important;margin:0!important;border-radius:999px!important;border:1px solid rgba(82,226,220,.58)!important;background:rgba(15,163,163,.18)!important;color:#e9fffc!important;font-size:10px!important;font-weight:800!important;line-height:1!important;white-space:nowrap!important;flex:0 0 auto!important}
+#appHeader .top .logo>.logo-title{display:none!important}
+@media(max-width:1200px){#appHeader .top .logo>.tfmc-header-ci{width:102px!important;flex-basis:102px!important;height:34px!important}#appHeader .top .logo>.tfms-brand-text{font-size:20px!important}#appHeader .top .logo>#tfmsVersionBadge{font-size:9px!important;padding:4px 7px!important}}
+@media(max-width:900px){#appHeader .top .logo>.tfmc-header-ci{width:86px!important;flex-basis:86px!important;height:30px!important}}
+</style>
+<script id="tfms-v4542-header-brand-dom-guard">
+(function(){
+  const LABEL='v45.42 Header Brand DOM Fix';
+  function apply4542(){
+    try{
+      const logo=document.querySelector('#appHeader .top .logo');
+      if(!logo)return;
+      let oldImg=logo.querySelector('img');
+      let ci=logo.querySelector('.tfmc-header-ci');
+      if(!ci){
+        ci=document.createElement('img');
+        ci.className='tfmc-header-ci';
+        ci.alt='태백시시설관리공단';
+        logo.insertBefore(ci,logo.firstChild);
+      }
+      ci.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXMAAAB2CAYAAAA6AHOVAAAFVklEQVR4nO3dy3biOhAFUHFX//8v04Mbut3GxvglVUl7TxIyCbGkQ6Ukw+P5fBYghOlifPw8nn6FVQ9hDreaBnIErxcFLxCdEeZwnR4Wk4BP6lfrJwCJRKuy77D0twn4BIQ5R639m7735xF9Cuueg3zNvJdPQNosfck8mC1CIvP1ikTAB6Ayz6Xn8Nn626Ybd6/Ha98f/R0cM7+uwr0BlXlsBofMhHpFKvOYhDg9sJlakTCPQ4Azgm/aYRwgzNsS4Iwq0+mmFIR5O4Kc0TnyeCFhXp8Qh3faLycJ8/sIbdhPqB/0X+sn0KFnEeRwljW0k8r8PJMO7qFK30GYHyfEoQ4bpV/QZtlPGwXasfZWCPN9TCRozzpcoM3yHZMHYvHmXjMq822CHOJ7zr4OR2X+2bATAxJaCvRhKnaV+TpBDvkNc2BBmL8bZvBhIN2vaW2Wv7ofbBhc1zchqcz/J8hhHF2ud2He6cACH3W37kdus3Q3mMAuXZ16GbUyF+RAV0arzIU4sCT95uhIlbkgB7akzYlRwjztAAHVpcyLUcIcYI90gd57zzzdgABhpDrtojIH2Bb+bT56DvPQFx5IKWyo9xrmIS820I1wGdNbmId91QS6EypretkADXVRgWGEudmoh8pckAOtNc+h7GHe/AIC/GiaR5nDXJAD0TTbt8sa5oIciKx6qGfbABXiAAuyVuYATGSpzFXkQEbz7LrtCGOGylyQA2yIHuaCHOjJbZkWNczdlg/06jn7eoksPXOAniwF+ql+erTKXEUOjOpU9kULcwAOiBTmKnJgdIdzMELPXIgD/LWUiY+fn6/21VuHuSAHeDcP7Y9BXkr7MAfg3e47R1v2zFXlAN/7mJmtKnNBDvC9pTbLP2fUI51mAWDZawP05e2zR1uEuaoc4JjXjZWPyeNSSnnWDnNBDnDcvNXy53GtnrkQBzhunqFvp130zAFyeZSFzdC7w9wbZwFcZ7VCV5kD5DE/1fLHnWGuIge41uoHW6jMAfK7bQNUVQ5Qzy0boIIcoLKrw1yQAzRwZZgLcoBGrgpzQQ7QkNMsAPldcppFVQ7Q2Nk32hLkAHVN3/72kvczF+QA9b19MEUpxytzQQ5QzzS4F/O31WeAArBt6XM/5z8rpTjNApDJYpCXcizMtVgA6vg6b4+E+eorAwCX+jpv9/bMVeUA99tdNOuZA3RAmAN0QJgDxHJoX3JPmOuXAwSlMgeI4/BpQWEOEMOpY997wtz5coB7nM5XPXOADmizALR1SddDmwWgjUe5MFdV5gD1XV4c65kDdODbMBfkANe4pWWtzQJQz217j9+Euaoc4LxbD5FshbkgBzjv9tOAnz6cQpADnFPtSPdaZS7IAc6pem/OUpgLcoBzqt9kOW+zCHKA45rdKT+tzAV5Ho+F7+eT6NJbhYGPmq+3x/P5LEWQRzSdGM9SZ6KYB3BM88LpV7GAI1mbELUmytrvMUdgXfMgL+Xz0UTqCDERNsyfo3CHYIR5GxkC/JOl5y/goaFfxcKsJXuAb5n3+IGK1irzo8FjEf/Ve3h/8vrbXxu35kVuxnBdmHX+Os1yh9EGP8ygBjXafMjuFeA2xf8Vdp3fGeZTPQ182MFMpKf5kNUd87jncQ2/7muF+VzGf7/DD2ZCmcY/uxbzN/P4plvvrcJ8TYQnM32RSTegiUUY+x5stUciWBrr6fNuNRciX7NN0cJ87srBnW7KTR+TQ+iJ2tBI8/jqOdDVtYse5p9Mq4/pH9HVALGqdRXXgrm9LPp/IlVkDnOY6zHghw8pvuMOUHqy9g6SayKGvvDmEGHOyLaC8+6wF9xc5jfjJAjH4eaD3QAAAABJRU5ErkJggg==';
+      if(oldImg && oldImg!==ci) oldImg.style.display='none';
+      let text=logo.querySelector('.tfms-brand-text');
+      if(!text){text=document.createElement('span');text.className='tfms-brand-text';text.textContent='TFMS';}
+      let badge=document.getElementById('tfmsVersionBadge');
+      if(!badge){badge=document.createElement('span');badge.id='tfmsVersionBadge';}
+      badge.textContent=LABEL;
+      // make all three direct siblings in exact requested order
+      logo.appendChild(ci); logo.appendChild(text); logo.appendChild(badge);
+      const legacy=logo.querySelector('.logo-title'); if(legacy)legacy.style.display='none';
+      document.title='TFMS '+LABEL;
+      try{window.TFMS_BUILD=Object.freeze({version:'v45.42',channel:'Header Brand DOM Fix',buildDate:'2026.08.12',title:'Header Brand DOM Fix'})}catch(e){}
+      try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.42'){u.searchParams.set('v','45.42');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
+    }catch(e){}
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply4542,{once:true});else apply4542();
+  [200,800,1800,4000,8000,12000].forEach(ms=>setTimeout(apply4542,ms));
+  try{new MutationObserver(()=>apply4542()).observe(document.documentElement,{childList:true,subtree:true})}catch(e){}
+})();
+</script>
+
+
+<!-- =========================================================
+     TFMS v45.43 Maintenance Edit ↔ Asset LCC Link Safe
+     Existing maintenance_records.asset_id only. No schema change.
+     ========================================================= -->
+<style id="tfms-v4543-maintenance-edit-asset-style">
+#maintenanceEditModal .v4543-edit-asset-field label{display:flex;align-items:center;gap:6px}
+#maintenanceEditModal .v4543-lcc-chip{display:inline-flex;align-items:center;padding:2px 7px;border:1px solid #b7e4d7;border-radius:999px;background:#eefbf7;color:#087f6b;font-size:10px;font-weight:800;line-height:1.35;white-space:nowrap}
+#maintenanceEditModal #editAssetLinkV4543{border-color:#b8d8ee;background:#fafdff}
+#maintenanceEditModal .v4543-edit-asset-help{margin-top:5px;min-height:14px;font-size:10.5px;line-height:1.35;color:#64748b}
+#maintenanceEditModal .v4543-edit-asset-help.is-linked{padding:5px 7px;border-radius:7px;background:#f0fdfa;color:#46606d}
+#maintenanceEditModal .v4543-edit-asset-help strong{color:#0f766e}
+</style>
+<script id="tfms-v4543-maintenance-edit-asset-controller">
+(function(){
+  'use strict';
+  const $=id=>document.getElementById(id);
+  const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const client=()=>{try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||null}catch(e){return null}};
+  function entries(){try{return Object.entries(window.assetData||assetData||{}).filter(([,a])=>a&&a.name)}catch(e){return []}}
+  function updateHelp(){
+    const sel=$('editAssetLinkV4543'),help=$('editAssetLinkHelpV4543'); if(!sel||!help)return;
+    const opt=sel.options[sel.selectedIndex];
+    if(!sel.value){help.className='v4543-edit-asset-help';help.textContent='설비를 선택하면 해당 이력의 비용·이력이 설비 LCC에 반영됩니다.';return;}
+    help.className='v4543-edit-asset-help is-linked';
+    help.innerHTML='<strong>'+esc(opt?.dataset?.assetName||opt?.textContent||'연계 설비')+'</strong> · 수정 저장 시 LCC 연계';
+  }
+  window.populateMaintenanceEditAssetV4543=async function(currentAssetId,facilityName){
+    const sel=$('editAssetLinkV4543'); if(!sel)return;
+    const current=String(currentAssetId||'').trim(), facility=String(facilityName||'').trim();
+    const list=entries().filter(([,a])=>!facility||String(a.facility||'').trim()===facility);
+    sel.innerHTML='<option value="">시설 공통 / 미연계</option>'+list.map(([key,a])=>{
+      const id=String(a.dbId||key||'');
+      const meta=[a.space||a.location||'',a.name,a.qrId&&a.qrId!=='-'?a.qrId:''].filter(Boolean).join(' · ');
+      return '<option value="'+esc(id)+'" data-asset-name="'+esc(a.name)+'">'+esc(meta)+'</option>';
+    }).join('');
+    if(current){
+      if(![...sel.options].some(o=>o.value===current)){
+        try{
+          const sb=client();
+          if(sb){
+            const {data}=await sb.from('assets').select('id,name,location_detail,qr_code').eq('id',current).maybeSingle();
+            if(data){const opt=document.createElement('option');opt.value=String(data.id);opt.dataset.assetName=data.name||'연계 설비';opt.textContent=[data.location_detail||'',data.name||'연계 설비',data.qr_code||''].filter(Boolean).join(' · ');sel.appendChild(opt);}
+          }
+        }catch(e){console.warn('TFMS v45.43 현재 연계설비 조회',e)}
+      }
+      if([...sel.options].some(o=>o.value===current))sel.value=current;
+    }
+    updateHelp();
+  };
+  function bind(){$('editAssetLinkV4543')?.addEventListener('change',updateHelp)}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
+})();
+</script>
+<script id="tfms-v4543-final-version-sync">
+(function(){
+  const BUILD='v45.43';
+  function sync(){
+    const b=document.getElementById('tfmsVersionBadge'); if(b)b.textContent=BUILD+' Maintenance Edit LCC Safe';
+    document.title='TFMS '+BUILD+' Maintenance Edit LCC Safe';
+    try{window.TFMS_BUILD=Object.freeze({version:BUILD,channel:'Maintenance Edit LCC Safe',buildDate:'2026.08.12',title:'Maintenance Edit LCC Safe'});}catch(e){}
+    try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.43'){u.searchParams.set('v','45.43');history.replaceState(history.state,'',u.pathname+u.search+u.hash);}}catch(e){}
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync,{once:true});else sync();
+  setTimeout(sync,8200);
+})();
+</script>
+
 </body></html>`);
     win.document.close();
     setTimeout(()=>win.focus(),200);
@@ -15582,6 +15709,57 @@ window.printFireExtQrLabelsV447=async function(){
     const w=window.open('','_blank','width=1100,height=800');if(!w)throw new Error('팝업이 차단되었습니다.');
     w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>${esc(facility)} 소화기 QR 라벨</title><style>@page{size:A4 portrait;margin:8mm}*{box-sizing:border-box}body{font-family:"Malgun Gothic",sans-serif;margin:0}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5mm}.label{border:1px solid #333;border-radius:3mm;min-height:82mm;padding:4mm;text-align:center;break-inside:avoid}.label img{width:42mm;height:42mm}.facility{font-weight:700;font-size:11pt}.code{font-size:15pt;font-weight:800;margin:2mm 0}.loc{font-size:9pt;min-height:12mm}.hint{font-size:7.5pt;color:#555;margin-top:1mm}@media print{.no-print{display:none}}</style></head><body><div class="no-print" style="padding:10px;text-align:center"><button onclick="print()">인쇄</button></div><div class="grid">${labels.map(x=>`<div class="label"><div class="facility">${esc(facility)}</div><div class="code">${esc(x.code)}</div><img src="${x.qr}"><div class="loc">${esc(x.location||'상세 위치 현장 입력')}</div><div class="hint">QR 촬영 후 현장점검</div></div>`).join('')}</div>
 
+
+<!-- =========================================================
+     TFMS v45.42 Header Brand DOM Fix
+     Exact header DOM order: corporation logo -> TFMS -> version badge.
+     Header-only patch. No page/menu/DB logic changes.
+     ========================================================= -->
+<style id="tfms-v4542-header-brand-dom-fix">
+#appHeader .top .logo{display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:9px!important;min-width:0!important;white-space:nowrap!important}
+#appHeader .top .logo>.tfmc-header-ci{display:block!important;width:118px!important;height:38px!important;object-fit:contain!important;object-position:left center!important;flex:0 0 118px!important;margin:0 2px 0 0!important;padding:0!important;background:transparent!important;border:0!important;filter:none!important;opacity:1!important}
+#appHeader .top .logo>.tfms-brand-text{display:inline-flex!important;align-items:center!important;color:#fff!important;font-weight:900!important;font-size:22px!important;line-height:1!important;letter-spacing:-.4px!important;flex:0 0 auto!important}
+#appHeader .top .logo>#tfmsVersionBadge{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:25px!important;padding:4px 9px!important;margin:0!important;border-radius:999px!important;border:1px solid rgba(82,226,220,.58)!important;background:rgba(15,163,163,.18)!important;color:#e9fffc!important;font-size:10px!important;font-weight:800!important;line-height:1!important;white-space:nowrap!important;flex:0 0 auto!important}
+#appHeader .top .logo>.logo-title{display:none!important}
+@media(max-width:1200px){#appHeader .top .logo>.tfmc-header-ci{width:102px!important;flex-basis:102px!important;height:34px!important}#appHeader .top .logo>.tfms-brand-text{font-size:20px!important}#appHeader .top .logo>#tfmsVersionBadge{font-size:9px!important;padding:4px 7px!important}}
+@media(max-width:900px){#appHeader .top .logo>.tfmc-header-ci{width:86px!important;flex-basis:86px!important;height:30px!important}}
+</style>
+<script id="tfms-v4542-header-brand-dom-guard">
+(function(){
+  const LABEL='v45.42 Header Brand DOM Fix';
+  function apply4542(){
+    try{
+      const logo=document.querySelector('#appHeader .top .logo');
+      if(!logo)return;
+      let oldImg=logo.querySelector('img');
+      let ci=logo.querySelector('.tfmc-header-ci');
+      if(!ci){
+        ci=document.createElement('img');
+        ci.className='tfmc-header-ci';
+        ci.alt='태백시시설관리공단';
+        logo.insertBefore(ci,logo.firstChild);
+      }
+      ci.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXMAAAB2CAYAAAA6AHOVAAAFVklEQVR4nO3dy3biOhAFUHFX//8v04Mbut3GxvglVUl7TxIyCbGkQ6Ukw+P5fBYghOlifPw8nn6FVQ9hDreaBnIErxcFLxCdEeZwnR4Wk4BP6lfrJwCJRKuy77D0twn4BIQ5R639m7735xF9Cuueg3zNvJdPQNosfck8mC1CIvP1ikTAB6Ayz6Xn8Nn626Ybd6/Ha98f/R0cM7+uwr0BlXlsBofMhHpFKvOYhDg9sJlakTCPQ4Azgm/aYRwgzNsS4Iwq0+mmFIR5O4Kc0TnyeCFhXp8Qh3faLycJ8/sIbdhPqB/0X+sn0KFnEeRwljW0k8r8PJMO7qFK30GYHyfEoQ4bpV/QZtlPGwXasfZWCPN9TCRozzpcoM3yHZMHYvHmXjMq822CHOJ7zr4OR2X+2bATAxJaCvRhKnaV+TpBDvkNc2BBmL8bZvBhIN2vaW2Wv7ofbBhc1zchqcz/J8hhHF2ud2He6cACH3W37kdus3Q3mMAuXZ16GbUyF+RAV0arzIU4sCT95uhIlbkgB7akzYlRwjztAAHVpcyLUcIcYI90gd57zzzdgABhpDrtojIH2Bb+bT56DvPQFx5IKWyo9xrmIS820I1wGdNbmId91QS6EypretkADXVRgWGEudmoh8pckAOtNc+h7GHe/AIC/GiaR5nDXJAD0TTbt8sa5oIciKx6qGfbABXiAAuyVuYATGSpzFXkQEbz7LrtCGOGylyQA2yIHuaCHOjJbZkWNczdlg/06jn7eoksPXOAniwF+ql+erTKXEUOjOpU9kULcwAOiBTmKnJgdIdzMELPXIgD/LWUiY+fn6/21VuHuSAHeDcP7Y9BXkr7MAfg3e47R1v2zFXlAN/7mJmtKnNBDvC9pTbLP2fUI51mAWDZawP05e2zR1uEuaoc4JjXjZWPyeNSSnnWDnNBDnDcvNXy53GtnrkQBzhunqFvp130zAFyeZSFzdC7w9wbZwFcZ7VCV5kD5DE/1fLHnWGuIge41uoHW6jMAfK7bQNUVQ5Qzy0boIIcoLKrw1yQAzRwZZgLcoBGrgpzQQ7QkNMsAPldcppFVQ7Q2Nk32hLkAHVN3/72kvczF+QA9b19MEUpxytzQQ5QzzS4F/O31WeAArBt6XM/5z8rpTjNApDJYpCXcizMtVgA6vg6b4+E+eorAwCX+jpv9/bMVeUA99tdNOuZA3RAmAN0QJgDxHJoX3JPmOuXAwSlMgeI4/BpQWEOEMOpY997wtz5coB7nM5XPXOADmizALR1SddDmwWgjUe5MFdV5gD1XV4c65kDdODbMBfkANe4pWWtzQJQz217j9+Euaoc4LxbD5FshbkgBzjv9tOAnz6cQpADnFPtSPdaZS7IAc6pem/OUpgLcoBzqt9kOW+zCHKA45rdKT+tzAV5Ho+F7+eT6NJbhYGPmq+3x/P5LEWQRzSdGM9SZ6KYB3BM88LpV7GAI1mbELUmytrvMUdgXfMgL+Xz0UTqCDERNsyfo3CHYIR5GxkC/JOl5y/goaFfxcKsJXuAb5n3+IGK1irzo8FjEf/Ve3h/8vrbXxu35kVuxnBdmHX+Os1yh9EGP8ygBjXafMjuFeA2xf8Vdp3fGeZTPQ182MFMpKf5kNUd87jncQ2/7muF+VzGf7/DD2ZCmcY/uxbzN/P4plvvrcJ8TYQnM32RSTegiUUY+x5stUciWBrr6fNuNRciX7NN0cJ87srBnW7KTR+TQ+iJ2tBI8/jqOdDVtYse5p9Mq4/pH9HVALGqdRXXgrm9LPp/IlVkDnOY6zHghw8pvuMOUHqy9g6SayKGvvDmEGHOyLaC8+6wF9xc5jfjJAjH4eaD3QAAAABJRU5ErkJggg==';
+      if(oldImg && oldImg!==ci) oldImg.style.display='none';
+      let text=logo.querySelector('.tfms-brand-text');
+      if(!text){text=document.createElement('span');text.className='tfms-brand-text';text.textContent='TFMS';}
+      let badge=document.getElementById('tfmsVersionBadge');
+      if(!badge){badge=document.createElement('span');badge.id='tfmsVersionBadge';}
+      badge.textContent=LABEL;
+      // make all three direct siblings in exact requested order
+      logo.appendChild(ci); logo.appendChild(text); logo.appendChild(badge);
+      const legacy=logo.querySelector('.logo-title'); if(legacy)legacy.style.display='none';
+      document.title='TFMS '+LABEL;
+      try{window.TFMS_BUILD=Object.freeze({version:'v45.42',channel:'Header Brand DOM Fix',buildDate:'2026.08.12',title:'Header Brand DOM Fix'})}catch(e){}
+      try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.42'){u.searchParams.set('v','45.42');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
+    }catch(e){}
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply4542,{once:true});else apply4542();
+  [200,800,1800,4000,8000,12000].forEach(ms=>setTimeout(apply4542,ms));
+  try{new MutationObserver(()=>apply4542()).observe(document.documentElement,{childList:true,subtree:true})}catch(e){}
+})();
+</script>
+
 </body></html>`);
     w.document.close();setTimeout(()=>w.focus(),200);
   }catch(e){console.error(e);toast('QR 라벨 출력 준비 실패: '+(e?.message||e))}
@@ -16398,6 +16576,57 @@ window.printFireRecordV420=async function(){
 </style>
 
 
+
+<!-- =========================================================
+     TFMS v45.42 Header Brand DOM Fix
+     Exact header DOM order: corporation logo -> TFMS -> version badge.
+     Header-only patch. No page/menu/DB logic changes.
+     ========================================================= -->
+<style id="tfms-v4542-header-brand-dom-fix">
+#appHeader .top .logo{display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:9px!important;min-width:0!important;white-space:nowrap!important}
+#appHeader .top .logo>.tfmc-header-ci{display:block!important;width:118px!important;height:38px!important;object-fit:contain!important;object-position:left center!important;flex:0 0 118px!important;margin:0 2px 0 0!important;padding:0!important;background:transparent!important;border:0!important;filter:none!important;opacity:1!important}
+#appHeader .top .logo>.tfms-brand-text{display:inline-flex!important;align-items:center!important;color:#fff!important;font-weight:900!important;font-size:22px!important;line-height:1!important;letter-spacing:-.4px!important;flex:0 0 auto!important}
+#appHeader .top .logo>#tfmsVersionBadge{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:25px!important;padding:4px 9px!important;margin:0!important;border-radius:999px!important;border:1px solid rgba(82,226,220,.58)!important;background:rgba(15,163,163,.18)!important;color:#e9fffc!important;font-size:10px!important;font-weight:800!important;line-height:1!important;white-space:nowrap!important;flex:0 0 auto!important}
+#appHeader .top .logo>.logo-title{display:none!important}
+@media(max-width:1200px){#appHeader .top .logo>.tfmc-header-ci{width:102px!important;flex-basis:102px!important;height:34px!important}#appHeader .top .logo>.tfms-brand-text{font-size:20px!important}#appHeader .top .logo>#tfmsVersionBadge{font-size:9px!important;padding:4px 7px!important}}
+@media(max-width:900px){#appHeader .top .logo>.tfmc-header-ci{width:86px!important;flex-basis:86px!important;height:30px!important}}
+</style>
+<script id="tfms-v4542-header-brand-dom-guard">
+(function(){
+  const LABEL='v45.42 Header Brand DOM Fix';
+  function apply4542(){
+    try{
+      const logo=document.querySelector('#appHeader .top .logo');
+      if(!logo)return;
+      let oldImg=logo.querySelector('img');
+      let ci=logo.querySelector('.tfmc-header-ci');
+      if(!ci){
+        ci=document.createElement('img');
+        ci.className='tfmc-header-ci';
+        ci.alt='태백시시설관리공단';
+        logo.insertBefore(ci,logo.firstChild);
+      }
+      ci.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXMAAAB2CAYAAAA6AHOVAAAFVklEQVR4nO3dy3biOhAFUHFX//8v04Mbut3GxvglVUl7TxIyCbGkQ6Ukw+P5fBYghOlifPw8nn6FVQ9hDreaBnIErxcFLxCdEeZwnR4Wk4BP6lfrJwCJRKuy77D0twn4BIQ5R639m7735xF9Cuueg3zNvJdPQNosfck8mC1CIvP1ikTAB6Ayz6Xn8Nn626Ybd6/Ha98f/R0cM7+uwr0BlXlsBofMhHpFKvOYhDg9sJlakTCPQ4Azgm/aYRwgzNsS4Iwq0+mmFIR5O4Kc0TnyeCFhXp8Qh3faLycJ8/sIbdhPqB/0X+sn0KFnEeRwljW0k8r8PJMO7qFK30GYHyfEoQ4bpV/QZtlPGwXasfZWCPN9TCRozzpcoM3yHZMHYvHmXjMq822CHOJ7zr4OR2X+2bATAxJaCvRhKnaV+TpBDvkNc2BBmL8bZvBhIN2vaW2Wv7ofbBhc1zchqcz/J8hhHF2ud2He6cACH3W37kdus3Q3mMAuXZ16GbUyF+RAV0arzIU4sCT95uhIlbkgB7akzYlRwjztAAHVpcyLUcIcYI90gd57zzzdgABhpDrtojIH2Bb+bT56DvPQFx5IKWyo9xrmIS820I1wGdNbmId91QS6EypretkADXVRgWGEudmoh8pckAOtNc+h7GHe/AIC/GiaR5nDXJAD0TTbt8sa5oIciKx6qGfbABXiAAuyVuYATGSpzFXkQEbz7LrtCGOGylyQA2yIHuaCHOjJbZkWNczdlg/06jn7eoksPXOAniwF+ql+erTKXEUOjOpU9kULcwAOiBTmKnJgdIdzMELPXIgD/LWUiY+fn6/21VuHuSAHeDcP7Y9BXkr7MAfg3e47R1v2zFXlAN/7mJmtKnNBDvC9pTbLP2fUI51mAWDZawP05e2zR1uEuaoc4JjXjZWPyeNSSnnWDnNBDnDcvNXy53GtnrkQBzhunqFvp130zAFyeZSFzdC7w9wbZwFcZ7VCV5kD5DE/1fLHnWGuIge41uoHW6jMAfK7bQNUVQ5Qzy0boIIcoLKrw1yQAzRwZZgLcoBGrgpzQQ7QkNMsAPldcppFVQ7Q2Nk32hLkAHVN3/72kvczF+QA9b19MEUpxytzQQ5QzzS4F/O31WeAArBt6XM/5z8rpTjNApDJYpCXcizMtVgA6vg6b4+E+eorAwCX+jpv9/bMVeUA99tdNOuZA3RAmAN0QJgDxHJoX3JPmOuXAwSlMgeI4/BpQWEOEMOpY997wtz5coB7nM5XPXOADmizALR1SddDmwWgjUe5MFdV5gD1XV4c65kDdODbMBfkANe4pWWtzQJQz217j9+Euaoc4LxbD5FshbkgBzjv9tOAnz6cQpADnFPtSPdaZS7IAc6pem/OUpgLcoBzqt9kOW+zCHKA45rdKT+tzAV5Ho+F7+eT6NJbhYGPmq+3x/P5LEWQRzSdGM9SZ6KYB3BM88LpV7GAI1mbELUmytrvMUdgXfMgL+Xz0UTqCDERNsyfo3CHYIR5GxkC/JOl5y/goaFfxcKsJXuAb5n3+IGK1irzo8FjEf/Ve3h/8vrbXxu35kVuxnBdmHX+Os1yh9EGP8ygBjXafMjuFeA2xf8Vdp3fGeZTPQ182MFMpKf5kNUd87jncQ2/7muF+VzGf7/DD2ZCmcY/uxbzN/P4plvvrcJ8TYQnM32RSTegiUUY+x5stUciWBrr6fNuNRciX7NN0cJ87srBnW7KTR+TQ+iJ2tBI8/jqOdDVtYse5p9Mq4/pH9HVALGqdRXXgrm9LPp/IlVkDnOY6zHghw8pvuMOUHqy9g6SayKGvvDmEGHOyLaC8+6wF9xc5jfjJAjH4eaD3QAAAABJRU5ErkJggg==';
+      if(oldImg && oldImg!==ci) oldImg.style.display='none';
+      let text=logo.querySelector('.tfms-brand-text');
+      if(!text){text=document.createElement('span');text.className='tfms-brand-text';text.textContent='TFMS';}
+      let badge=document.getElementById('tfmsVersionBadge');
+      if(!badge){badge=document.createElement('span');badge.id='tfmsVersionBadge';}
+      badge.textContent=LABEL;
+      // make all three direct siblings in exact requested order
+      logo.appendChild(ci); logo.appendChild(text); logo.appendChild(badge);
+      const legacy=logo.querySelector('.logo-title'); if(legacy)legacy.style.display='none';
+      document.title='TFMS '+LABEL;
+      try{window.TFMS_BUILD=Object.freeze({version:'v45.42',channel:'Header Brand DOM Fix',buildDate:'2026.08.12',title:'Header Brand DOM Fix'})}catch(e){}
+      try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.42'){u.searchParams.set('v','45.42');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
+    }catch(e){}
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply4542,{once:true});else apply4542();
+  [200,800,1800,4000,8000,12000].forEach(ms=>setTimeout(apply4542,ms));
+  try{new MutationObserver(()=>apply4542()).observe(document.documentElement,{childList:true,subtree:true})}catch(e){}
+})();
+</script>
+
 </body></html>`);doc.close();
   await new Promise(r=>{if(doc.readyState==='complete')r();else frame.onload=r;});
   const imgs=[...doc.images];await Promise.all(imgs.map(img=>img.complete?(img.decode?.().catch(()=>{})||Promise.resolve()):new Promise(res=>{img.onload=img.onerror=res;})));
@@ -16707,6 +16936,57 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{
 }
 </style>
 
+
+
+<!-- =========================================================
+     TFMS v45.42 Header Brand DOM Fix
+     Exact header DOM order: corporation logo -> TFMS -> version badge.
+     Header-only patch. No page/menu/DB logic changes.
+     ========================================================= -->
+<style id="tfms-v4542-header-brand-dom-fix">
+#appHeader .top .logo{display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:9px!important;min-width:0!important;white-space:nowrap!important}
+#appHeader .top .logo>.tfmc-header-ci{display:block!important;width:118px!important;height:38px!important;object-fit:contain!important;object-position:left center!important;flex:0 0 118px!important;margin:0 2px 0 0!important;padding:0!important;background:transparent!important;border:0!important;filter:none!important;opacity:1!important}
+#appHeader .top .logo>.tfms-brand-text{display:inline-flex!important;align-items:center!important;color:#fff!important;font-weight:900!important;font-size:22px!important;line-height:1!important;letter-spacing:-.4px!important;flex:0 0 auto!important}
+#appHeader .top .logo>#tfmsVersionBadge{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:25px!important;padding:4px 9px!important;margin:0!important;border-radius:999px!important;border:1px solid rgba(82,226,220,.58)!important;background:rgba(15,163,163,.18)!important;color:#e9fffc!important;font-size:10px!important;font-weight:800!important;line-height:1!important;white-space:nowrap!important;flex:0 0 auto!important}
+#appHeader .top .logo>.logo-title{display:none!important}
+@media(max-width:1200px){#appHeader .top .logo>.tfmc-header-ci{width:102px!important;flex-basis:102px!important;height:34px!important}#appHeader .top .logo>.tfms-brand-text{font-size:20px!important}#appHeader .top .logo>#tfmsVersionBadge{font-size:9px!important;padding:4px 7px!important}}
+@media(max-width:900px){#appHeader .top .logo>.tfmc-header-ci{width:86px!important;flex-basis:86px!important;height:30px!important}}
+</style>
+<script id="tfms-v4542-header-brand-dom-guard">
+(function(){
+  const LABEL='v45.42 Header Brand DOM Fix';
+  function apply4542(){
+    try{
+      const logo=document.querySelector('#appHeader .top .logo');
+      if(!logo)return;
+      let oldImg=logo.querySelector('img');
+      let ci=logo.querySelector('.tfmc-header-ci');
+      if(!ci){
+        ci=document.createElement('img');
+        ci.className='tfmc-header-ci';
+        ci.alt='태백시시설관리공단';
+        logo.insertBefore(ci,logo.firstChild);
+      }
+      ci.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXMAAAB2CAYAAAA6AHOVAAAFVklEQVR4nO3dy3biOhAFUHFX//8v04Mbut3GxvglVUl7TxIyCbGkQ6Ukw+P5fBYghOlifPw8nn6FVQ9hDreaBnIErxcFLxCdEeZwnR4Wk4BP6lfrJwCJRKuy77D0twn4BIQ5R639m7735xF9Cuueg3zNvJdPQNosfck8mC1CIvP1ikTAB6Ayz6Xn8Nn626Ybd6/Ha98f/R0cM7+uwr0BlXlsBofMhHpFKvOYhDg9sJlakTCPQ4Azgm/aYRwgzNsS4Iwq0+mmFIR5O4Kc0TnyeCFhXp8Qh3faLycJ8/sIbdhPqB/0X+sn0KFnEeRwljW0k8r8PJMO7qFK30GYHyfEoQ4bpV/QZtlPGwXasfZWCPN9TCRozzpcoM3yHZMHYvHmXjMq822CHOJ7zr4OR2X+2bATAxJaCvRhKnaV+TpBDvkNc2BBmL8bZvBhIN2vaW2Wv7ofbBhc1zchqcz/J8hhHF2ud2He6cACH3W37kdus3Q3mMAuXZ16GbUyF+RAV0arzIU4sCT95uhIlbkgB7akzYlRwjztAAHVpcyLUcIcYI90gd57zzzdgABhpDrtojIH2Bb+bT56DvPQFx5IKWyo9xrmIS820I1wGdNbmId91QS6EypretkADXVRgWGEudmoh8pckAOtNc+h7GHe/AIC/GiaR5nDXJAD0TTbt8sa5oIciKx6qGfbABXiAAuyVuYATGSpzFXkQEbz7LrtCGOGylyQA2yIHuaCHOjJbZkWNczdlg/06jn7eoksPXOAniwF+ql+erTKXEUOjOpU9kULcwAOiBTmKnJgdIdzMELPXIgD/LWUiY+fn6/21VuHuSAHeDcP7Y9BXkr7MAfg3e47R1v2zFXlAN/7mJmtKnNBDvC9pTbLP2fUI51mAWDZawP05e2zR1uEuaoc4JjXjZWPyeNSSnnWDnNBDnDcvNXy53GtnrkQBzhunqFvp130zAFyeZSFzdC7w9wbZwFcZ7VCV5kD5DE/1fLHnWGuIge41uoHW6jMAfK7bQNUVQ5Qzy0boIIcoLKrw1yQAzRwZZgLcoBGrgpzQQ7QkNMsAPldcppFVQ7Q2Nk32hLkAHVN3/72kvczF+QA9b19MEUpxytzQQ5QzzS4F/O31WeAArBt6XM/5z8rpTjNApDJYpCXcizMtVgA6vg6b4+E+eorAwCX+jpv9/bMVeUA99tdNOuZA3RAmAN0QJgDxHJoX3JPmOuXAwSlMgeI4/BpQWEOEMOpY997wtz5coB7nM5XPXOADmizALR1SddDmwWgjUe5MFdV5gD1XV4c65kDdODbMBfkANe4pWWtzQJQz217j9+Euaoc4LxbD5FshbkgBzjv9tOAnz6cQpADnFPtSPdaZS7IAc6pem/OUpgLcoBzqt9kOW+zCHKA45rdKT+tzAV5Ho+F7+eT6NJbhYGPmq+3x/P5LEWQRzSdGM9SZ6KYB3BM88LpV7GAI1mbELUmytrvMUdgXfMgL+Xz0UTqCDERNsyfo3CHYIR5GxkC/JOl5y/goaFfxcKsJXuAb5n3+IGK1irzo8FjEf/Ve3h/8vrbXxu35kVuxnBdmHX+Os1yh9EGP8ygBjXafMjuFeA2xf8Vdp3fGeZTPQ182MFMpKf5kNUd87jncQ2/7muF+VzGf7/DD2ZCmcY/uxbzN/P4plvvrcJ8TYQnM32RSTegiUUY+x5stUciWBrr6fNuNRciX7NN0cJ87srBnW7KTR+TQ+iJ2tBI8/jqOdDVtYse5p9Mq4/pH9HVALGqdRXXgrm9LPp/IlVkDnOY6zHghw8pvuMOUHqy9g6SayKGvvDmEGHOyLaC8+6wF9xc5jfjJAjH4eaD3QAAAABJRU5ErkJggg==';
+      if(oldImg && oldImg!==ci) oldImg.style.display='none';
+      let text=logo.querySelector('.tfms-brand-text');
+      if(!text){text=document.createElement('span');text.className='tfms-brand-text';text.textContent='TFMS';}
+      let badge=document.getElementById('tfmsVersionBadge');
+      if(!badge){badge=document.createElement('span');badge.id='tfmsVersionBadge';}
+      badge.textContent=LABEL;
+      // make all three direct siblings in exact requested order
+      logo.appendChild(ci); logo.appendChild(text); logo.appendChild(badge);
+      const legacy=logo.querySelector('.logo-title'); if(legacy)legacy.style.display='none';
+      document.title='TFMS '+LABEL;
+      try{window.TFMS_BUILD=Object.freeze({version:'v45.42',channel:'Header Brand DOM Fix',buildDate:'2026.08.12',title:'Header Brand DOM Fix'})}catch(e){}
+      try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.42'){u.searchParams.set('v','45.42');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
+    }catch(e){}
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply4542,{once:true});else apply4542();
+  [200,800,1800,4000,8000,12000].forEach(ms=>setTimeout(apply4542,ms));
+  try{new MutationObserver(()=>apply4542()).observe(document.documentElement,{childList:true,subtree:true})}catch(e){}
+})();
+</script>
 
 </body></html>`);doc.close();await new Promise(r=>setTimeout(r,100));if(doc.fonts?.ready)await doc.fonts.ready;await Promise.all([...doc.images].map(img=>img.complete?Promise.resolve():new Promise(r=>{img.onload=img.onerror=r})));await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));frame.contentWindow.focus();frame.contentWindow.print();setTimeout(()=>frame.remove(),5000);}catch(e){console.error(e);toast('PDF 출력 실패: '+(e?.message||e));}};
 function db(){try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||(typeof sb!=='undefined'?sb:null)}catch(e){return null}}
@@ -20693,4 +20973,55 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
   setTimeout(sync4541,1000);setTimeout(sync4541,10000);
 })();
 </script>
+
+<!-- =========================================================
+     TFMS v45.42 Header Brand DOM Fix
+     Exact header DOM order: corporation logo -> TFMS -> version badge.
+     Header-only patch. No page/menu/DB logic changes.
+     ========================================================= -->
+<style id="tfms-v4542-header-brand-dom-fix">
+#appHeader .top .logo{display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:9px!important;min-width:0!important;white-space:nowrap!important}
+#appHeader .top .logo>.tfmc-header-ci{display:block!important;width:118px!important;height:38px!important;object-fit:contain!important;object-position:left center!important;flex:0 0 118px!important;margin:0 2px 0 0!important;padding:0!important;background:transparent!important;border:0!important;filter:none!important;opacity:1!important}
+#appHeader .top .logo>.tfms-brand-text{display:inline-flex!important;align-items:center!important;color:#fff!important;font-weight:900!important;font-size:22px!important;line-height:1!important;letter-spacing:-.4px!important;flex:0 0 auto!important}
+#appHeader .top .logo>#tfmsVersionBadge{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:25px!important;padding:4px 9px!important;margin:0!important;border-radius:999px!important;border:1px solid rgba(82,226,220,.58)!important;background:rgba(15,163,163,.18)!important;color:#e9fffc!important;font-size:10px!important;font-weight:800!important;line-height:1!important;white-space:nowrap!important;flex:0 0 auto!important}
+#appHeader .top .logo>.logo-title{display:none!important}
+@media(max-width:1200px){#appHeader .top .logo>.tfmc-header-ci{width:102px!important;flex-basis:102px!important;height:34px!important}#appHeader .top .logo>.tfms-brand-text{font-size:20px!important}#appHeader .top .logo>#tfmsVersionBadge{font-size:9px!important;padding:4px 7px!important}}
+@media(max-width:900px){#appHeader .top .logo>.tfmc-header-ci{width:86px!important;flex-basis:86px!important;height:30px!important}}
+</style>
+<script id="tfms-v4542-header-brand-dom-guard">
+(function(){
+  const LABEL='v45.42 Header Brand DOM Fix';
+  function apply4542(){
+    try{
+      const logo=document.querySelector('#appHeader .top .logo');
+      if(!logo)return;
+      let oldImg=logo.querySelector('img');
+      let ci=logo.querySelector('.tfmc-header-ci');
+      if(!ci){
+        ci=document.createElement('img');
+        ci.className='tfmc-header-ci';
+        ci.alt='태백시시설관리공단';
+        logo.insertBefore(ci,logo.firstChild);
+      }
+      ci.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXMAAAB2CAYAAAA6AHOVAAAFVklEQVR4nO3dy3biOhAFUHFX//8v04Mbut3GxvglVUl7TxIyCbGkQ6Ukw+P5fBYghOlifPw8nn6FVQ9hDreaBnIErxcFLxCdEeZwnR4Wk4BP6lfrJwCJRKuy77D0twn4BIQ5R639m7735xF9Cuueg3zNvJdPQNosfck8mC1CIvP1ikTAB6Ayz6Xn8Nn626Ybd6/Ha98f/R0cM7+uwr0BlXlsBofMhHpFKvOYhDg9sJlakTCPQ4Azgm/aYRwgzNsS4Iwq0+mmFIR5O4Kc0TnyeCFhXp8Qh3faLycJ8/sIbdhPqB/0X+sn0KFnEeRwljW0k8r8PJMO7qFK30GYHyfEoQ4bpV/QZtlPGwXasfZWCPN9TCRozzpcoM3yHZMHYvHmXjMq822CHOJ7zr4OR2X+2bATAxJaCvRhKnaV+TpBDvkNc2BBmL8bZvBhIN2vaW2Wv7ofbBhc1zchqcz/J8hhHF2ud2He6cACH3W37kdus3Q3mMAuXZ16GbUyF+RAV0arzIU4sCT95uhIlbkgB7akzYlRwjztAAHVpcyLUcIcYI90gd57zzzdgABhpDrtojIH2Bb+bT56DvPQFx5IKWyo9xrmIS820I1wGdNbmId91QS6EypretkADXVRgWGEudmoh8pckAOtNc+h7GHe/AIC/GiaR5nDXJAD0TTbt8sa5oIciKx6qGfbABXiAAuyVuYATGSpzFXkQEbz7LrtCGOGylyQA2yIHuaCHOjJbZkWNczdlg/06jn7eoksPXOAniwF+ql+erTKXEUOjOpU9kULcwAOiBTmKnJgdIdzMELPXIgD/LWUiY+fn6/21VuHuSAHeDcP7Y9BXkr7MAfg3e47R1v2zFXlAN/7mJmtKnNBDvC9pTbLP2fUI51mAWDZawP05e2zR1uEuaoc4JjXjZWPyeNSSnnWDnNBDnDcvNXy53GtnrkQBzhunqFvp130zAFyeZSFzdC7w9wbZwFcZ7VCV5kD5DE/1fLHnWGuIge41uoHW6jMAfK7bQNUVQ5Qzy0boIIcoLKrw1yQAzRwZZgLcoBGrgpzQQ7QkNMsAPldcppFVQ7Q2Nk32hLkAHVN3/72kvczF+QA9b19MEUpxytzQQ5QzzS4F/O31WeAArBt6XM/5z8rpTjNApDJYpCXcizMtVgA6vg6b4+E+eorAwCX+jpv9/bMVeUA99tdNOuZA3RAmAN0QJgDxHJoX3JPmOuXAwSlMgeI4/BpQWEOEMOpY997wtz5coB7nM5XPXOADmizALR1SddDmwWgjUe5MFdV5gD1XV4c65kDdODbMBfkANe4pWWtzQJQz217j9+Euaoc4LxbD5FshbkgBzjv9tOAnz6cQpADnFPtSPdaZS7IAc6pem/OUpgLcoBzqt9kOW+zCHKA45rdKT+tzAV5Ho+F7+eT6NJbhYGPmq+3x/P5LEWQRzSdGM9SZ6KYB3BM88LpV7GAI1mbELUmytrvMUdgXfMgL+Xz0UTqCDERNsyfo3CHYIR5GxkC/JOl5y/goaFfxcKsJXuAb5n3+IGK1irzo8FjEf/Ve3h/8vrbXxu35kVuxnBdmHX+Os1yh9EGP8ygBjXafMjuFeA2xf8Vdp3fGeZTPQ182MFMpKf5kNUd87jncQ2/7muF+VzGf7/DD2ZCmcY/uxbzN/P4plvvrcJ8TYQnM32RSTegiUUY+x5stUciWBrr6fNuNRciX7NN0cJ87srBnW7KTR+TQ+iJ2tBI8/jqOdDVtYse5p9Mq4/pH9HVALGqdRXXgrm9LPp/IlVkDnOY6zHghw8pvuMOUHqy9g6SayKGvvDmEGHOyLaC8+6wF9xc5jfjJAjH4eaD3QAAAABJRU5ErkJggg==';
+      if(oldImg && oldImg!==ci) oldImg.style.display='none';
+      let text=logo.querySelector('.tfms-brand-text');
+      if(!text){text=document.createElement('span');text.className='tfms-brand-text';text.textContent='TFMS';}
+      let badge=document.getElementById('tfmsVersionBadge');
+      if(!badge){badge=document.createElement('span');badge.id='tfmsVersionBadge';}
+      badge.textContent=LABEL;
+      // make all three direct siblings in exact requested order
+      logo.appendChild(ci); logo.appendChild(text); logo.appendChild(badge);
+      const legacy=logo.querySelector('.logo-title'); if(legacy)legacy.style.display='none';
+      document.title='TFMS '+LABEL;
+      try{window.TFMS_BUILD=Object.freeze({version:'v45.42',channel:'Header Brand DOM Fix',buildDate:'2026.08.12',title:'Header Brand DOM Fix'})}catch(e){}
+      try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.42'){u.searchParams.set('v','45.42');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
+    }catch(e){}
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply4542,{once:true});else apply4542();
+  [200,800,1800,4000,8000,12000].forEach(ms=>setTimeout(apply4542,ms));
+  try{new MutationObserver(()=>apply4542()).observe(document.documentElement,{childList:true,subtree:true})}catch(e){}
+})();
+</script>
+
 </body></html>
