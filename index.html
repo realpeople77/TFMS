@@ -6,7 +6,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>TFMS v45.51 Stats Visual Safe</title>
+<title>TFMS v45.52 Asset Display Recovery Safe</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -903,7 +903,7 @@ nav.sidebar {
 
 
 <style id="tfms-v4524-cleanup-css">
-/* ===== v45.51 Stats Visual Safe =====
+/* ===== v45.52 Asset Display Recovery Safe =====
    CSS-only navigation stabilization. No scroll JavaScript. */
 
 /* Actual TFMS sidebar selector. Header is 76px in the current stable UX. */
@@ -964,7 +964,7 @@ nav.sidebar {
 
 
 <style id="tfms-v4525-equipment-wheel-fix">
-/* v45.51 Stats Visual Safe — equipment list wheel fix.
+/* v45.52 Asset Display Recovery Safe — equipment list wheel fix.
    The OUTER .tfms-v4431-list is the only vertical scroll container. */
 #equipment .tfms-v4431-list{
   overflow-y:auto !important;
@@ -3718,6 +3718,15 @@ loadDB(); refreshAllV30();
         timeline:[]
       };
     });
+    // v45.52 Asset Display Recovery: cloud asset store and Enterprise UI store must stay identical.
+    window.assetData = assetData;
+    try{
+      const keys=Object.keys(assetData||{});
+      if(keys.length){
+        if(!keys.includes(window.selectedAssetKey)) window.selectedAssetKey=keys[0];
+        try{ if(typeof selectedAssetKey!=='undefined' && !keys.includes(selectedAssetKey)) selectedAssetKey=keys[0]; }catch(e){}
+      }
+    }catch(e){ console.warn('TFMS v45.52 asset store sync',e); }
 
     cycleTasks=cRes.data.map(c=>({
       dbId:c.id,facility:c.facility?.name||'',asset:c.asset?.name||'시설 공통',
@@ -3748,6 +3757,15 @@ loadDB(); refreshAllV30();
       renderFacilityListStable();renderUserFlowNavigator();renderCycleTasks();
       renderTodayTasks();renderDashboardData();renderHistory();renderExportPreview();
       renderDailyRows();filterDeptDash(selectedDeptFilter);
+      // v45.52: the equipment shell may have rendered before cloud assets arrived; redraw it now.
+      try{ renderAssetList?.(); }catch(e){ console.warn('TFMS v45.52 renderAssetList',e); }
+      try{ renderAssetFacilityOptions?.(); }catch(e){}
+      try{ renderQrAssetOptions?.(); }catch(e){}
+      try{
+        const first=Object.keys(assetData||{})[0]||'';
+        const key=(window.selectedAssetKey&&assetData?.[window.selectedAssetKey])?window.selectedAssetKey:first;
+        if(key) showAsset?.(key);
+      }catch(e){ console.warn('TFMS v45.52 showAsset',e); }
     }catch(e){console.warn(e)}
 
     if(tfmsRole==='admin') await loadAccountAdmin();
@@ -16502,7 +16520,7 @@ window.printFireRecordV420=async function(){try{window.previewFireRecordV420();c
 </style>
 
 <style id="tfms-v4531-conflict-cleanup-css">
-/* ===== v45.51 Stats Visual Safe ===== */
+/* ===== v45.52 Asset Display Recovery Safe ===== */
 html{scroll-behavior:auto!important;}
 
 @media (min-width:761px){
@@ -16605,7 +16623,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{
 
 <style id="tfms-v4532-shell-frame-css">
 /* =========================================================
-   v45.51 Stats Visual Safe
+   v45.52 Asset Display Recovery Safe
    ONLY shell/frame corrections.
    No equipment/business/database logic touched.
    ========================================================= */
@@ -18451,7 +18469,7 @@ document.readyState==='loading'?document.addEventListener('DOMContentLoaded',upd
  const oldRender=window.renderAssetList;if(typeof oldRender==='function')window.renderAssetList=function(){const r=oldRender.apply(this,arguments);setTimeout(()=>{populateFilters();filterList();refresh()},40);return r};
  const oldSave=window.saveAsset;if(typeof oldSave==='function')window.saveAsset=function(){const r=oldSave.apply(this,arguments);setTimeout(()=>{refresh();closeAssetRegisterV4431()},450);return r};
  const oldNav=window.navTo;if(typeof oldNav==='function')window.navTo=function(id){const r=oldNav.apply(this,arguments);if(id==='equipment')setTimeout(()=>{ensureShell();movePhotos();refresh()},140);return r};
- function brand(){const small=document.querySelector('#appHeader .logo-title small');if(small)small.textContent='태백시시설관리공단 시설관리시스템';const b=$('tfmsVersionBadge');if(b)b.textContent='v45.51 Stats Visual Safe';document.title='TFMS v45.51 Stats Visual Safe';window.TFMS_BUILD=Object.freeze({version:'v45.5',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});}
+ function brand(){const small=document.querySelector('#appHeader .logo-title small');if(small)small.textContent='태백시시설관리공단 시설관리시스템';const b=$('tfmsVersionBadge');if(b)b.textContent='v45.52 Asset Display Recovery Safe';document.title='TFMS v45.52 Asset Display Recovery Safe';window.TFMS_BUILD=Object.freeze({version:'v45.5',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});}
  function init(){brand();ensureShell();movePhotos();refresh();[400,1000,2200].forEach(ms=>setTimeout(()=>{brand();ensureShell();movePhotos();refresh()},ms))}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
@@ -18490,8 +18508,8 @@ document.readyState==='loading'?document.addEventListener('DOMContentLoaded',upd
    try{const d=window.assetData||assetData||{};return d[selectedKey()]||null}catch(e){return null}
  }
  function syncVersion(){
-   const b=$('tfmsVersionBadge'); if(b)b.textContent='v45.51 Stats Visual Safe';
-   document.title='TFMS v45.51 Stats Visual Safe';
+   const b=$('tfmsVersionBadge'); if(b)b.textContent='v45.52 Asset Display Recovery Safe';
+   document.title='TFMS v45.52 Asset Display Recovery Safe';
    window.TFMS_BUILD=Object.freeze({version:'v45.5',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});
  }
  function cleanupLegacyControls(){
@@ -18637,7 +18655,7 @@ body{background:#f4f8fc!important}
 <script id="tfms-v4433-equipment-ux-stabilize-controller">
 (function(){
 'use strict';
-const BUILD='v45.51 Stats Visual Safe';
+const BUILD='v45.52 Asset Display Recovery Safe';
 const $=id=>document.getElementById(id);
 const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 function data(){try{if(typeof assetData!=='undefined'&&assetData&&Object.keys(assetData).length)return assetData;if(window.assetData)return window.assetData;return {}}catch(e){return {}}}
@@ -18650,7 +18668,7 @@ function syncBuild(){
  const b=$('tfmsVersionBadge');if(b&&b.textContent!==BUILD)b.textContent=BUILD;
  const title='TFMS '+BUILD;if(document.title!==title)document.title=title;
  window.TFMS_BUILD=Object.freeze({version:'v45.5',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});
- try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.51'){u.searchParams.set('v','45.51');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
+ try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.52'){u.searchParams.set('v','45.52');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
 }
 function cleanUserLabel(){const el=$('topUserLabel');if(!el)return;const t=(el.textContent||'').replace(/^\s*[👤🧑‍💼]+\s*/u,'').trim();if(t&&t!==el.textContent.trim())el.textContent=t}
 function hideLegacy(){
@@ -18802,9 +18820,9 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <script id="tfms-v459-thumbnail-ux-controller">
 (function(){
 'use strict';
-const VERSION='v45.51 Stats Visual Safe';
+const VERSION='v45.52 Asset Display Recovery Safe';
 const $=id=>document.getElementById(id);
-function brand(){const b=$('tfmsVersionBadge');if(b)b.textContent=VERSION;document.title='TFMS '+VERSION;try{window.TFMS_BUILD=Object.freeze({version:'v45.51 Stats Visual Safe',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'UI Fixes & Weather UX'});}catch(e){}try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.51'){u.searchParams.set('v','45.51');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
+function brand(){const b=$('tfmsVersionBadge');if(b)b.textContent=VERSION;document.title='TFMS '+VERSION;try{window.TFMS_BUILD=Object.freeze({version:'v45.52 Asset Display Recovery Safe',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'UI Fixes & Weather UX'});}catch(e){}try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.52'){u.searchParams.set('v','45.52');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
 window.navToFireQrV459=function(){try{window.navToFireV420?.();setTimeout(()=>{const p=[...document.querySelectorAll('#fireMonthly .section-title')].find(x=>/소화기 월간점검 목록/.test(x.textContent||''));p?.scrollIntoView({behavior:'smooth',block:'start'});},180)}catch(e){window.navToFireV420?.();}};
 window.setDailyWeatherV4510=function(value,btn){const sel=$('dailyWeather');if(sel)sel.value=value;document.querySelectorAll('#v459GeneralDaily .v4510-weather-picks button').forEach(b=>b.classList.toggle('active',b===btn));};
 function fillGeneralFacility(){const sel=$('dailyFacility');if(!sel)return;let names=[];try{const s=JSON.parse(sessionStorage.getItem('tfmsSession')||'{}');const dept=s.dept||s.department||'';if(typeof facilities!=='undefined'&&facilities[dept])names=facilities[dept];else if(typeof facilities!=='undefined')names=Object.values(facilities).flat();}catch(e){}if(!names.length)names=['태백국민체육센터','장성국민체육센터'];const old=sel.value;sel.innerHTML=[...new Set(names)].map(n=>`<option>${n}</option>`).join('');if(old&&[...sel.options].some(o=>o.value===old))sel.value=old;}
@@ -18828,7 +18846,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <style id="tfms-v4511-ui-fix-style">
-/* v45.51 Stats Visual Safe — top-gap alignment, document removable chips, journal weather icon UX */
+/* v45.52 Asset Display Recovery Safe — top-gap alignment, document removable chips, journal weather icon UX */
 @media (min-width:761px){
   #appHeader nav{top:58px!important;}
   #appLayout.layout{padding-top:8px!important;min-height:calc(100vh - 58px)!important;}
@@ -18852,7 +18870,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <script id="tfms-v4511-ui-fix-controller">
 (function(){
 'use strict';
-const VERSION='v45.51 Stats Visual Safe';
+const VERSION='v45.52 Asset Display Recovery Safe';
 const VERSION_PARAM='45.11';
 function syncVersion(){
   const b=document.getElementById('tfmsVersionBadge'); if(b&&b.textContent!==VERSION)b.textContent=VERSION;
@@ -18925,7 +18943,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 })();
 </script>\n
 <style id="tfms-v4513-thumbnail-exact-style">
-/* v45.51 Stats Visual Safe Thumbnail UX Exact - visual/ergonomic layer only; existing IDs/functions preserved */
+/* v45.52 Asset Display Recovery Safe Thumbnail UX Exact - visual/ergonomic layer only; existing IDs/functions preserved */
 :root{--v4513-navy:#0b315f;--v4513-blue:#1769d2;--v4513-teal:#0da5a5;--v4513-bg:#f4f7fb;--v4513-line:#dbe5f1;--v4513-text:#10233f;--v4513-muted:#718096}
 body{background:var(--v4513-bg)}
 .page{padding-top:14px!important}.title-row{margin-bottom:12px!important}.title-row h1{font-size:28px!important;letter-spacing:-.04em}.breadcrumb{font-size:12px!important;color:#7b8aa1!important}
@@ -18981,11 +18999,11 @@ body{background:var(--v4513-bg)}
 (function(){
 'use strict';
 const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
-function safe(fn){try{fn();}catch(e){console.warn('[TFMS v45.51 Stats Visual Safe UX]',e);}}
+function safe(fn){try{fn();}catch(e){console.warn('[TFMS v45.52 Asset Display Recovery Safe UX]',e);}}
 function syncVersion(){
-  document.title='TFMS v45.51 Stats Visual Safe';
+  document.title='TFMS v45.52 Asset Display Recovery Safe';
   $$('*').filter(el=>el.children.length===0 && /v45\.13 Enterprise Stable/.test(el.textContent||'')).forEach(()=>{});
-  const u=new URL(location.href); if(u.searchParams.get('v')!=='45.51'){u.searchParams.set('v','45.51'); history.replaceState(null,'',u.pathname+u.search+u.hash);}
+  const u=new URL(location.href); if(u.searchParams.get('v')!=='45.52'){u.searchParams.set('v','45.52'); history.replaceState(null,'',u.pathname+u.search+u.hash);}
 }
 function registerNav(){
   const shell=$('#register .v459-register-shell'); if(!shell||shell.querySelector('.v4513-register-nav')) return;
@@ -19034,7 +19052,7 @@ setTimeout(init,1200);
 </script>
 
 <style id="tfms-v4514-compact-fix-style">
-/* v45.51 Stats Visual Safe — compact density fix: dashboard, register form, daily weather */
+/* v45.52 Asset Display Recovery Safe — compact density fix: dashboard, register form, daily weather */
 
 /* 1) Dashboard: use the full grid, no decorative dead zones */
 #dashboard .v451-dashboard-grid{
@@ -19095,7 +19113,7 @@ setTimeout(init,1200);
 <script id="tfms-v4514-compact-fix-script">
 (function(){
 'use strict';
-const VERSION='v45.51 Stats Visual Safe';
+const VERSION='v45.52 Asset Display Recovery Safe';
 function markRegisterFields(){
   document.querySelectorAll('#register .v459-form-grid-4 .field').forEach(function(f){
     const t=(f.querySelector('label')?.textContent||'').replace(/\s+/g,' ').trim();
@@ -19123,12 +19141,12 @@ function brand(){
   document.title='TFMS '+VERSION;
   try{
     const u=new URL(location.href);
-    if(u.searchParams.get('v')!=='45.51'){
-      u.searchParams.set('v','45.51');
+    if(u.searchParams.get('v')!=='45.52'){
+      u.searchParams.set('v','45.52');
       history.replaceState(history.state,'',u.pathname+u.search+u.hash);
     }
   }catch(e){}
-  try{window.TFMS_BUILD=Object.freeze({version:'v45.51 Stats Visual Safe',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'UX Compact Fix'});}catch(e){}
+  try{window.TFMS_BUILD=Object.freeze({version:'v45.52 Asset Display Recovery Safe',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'UX Compact Fix'});}catch(e){}
 }
 function apply(){markRegisterFields();dedupeWeather();brand();}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
@@ -19175,7 +19193,7 @@ if(typeof oldShowPage==='function'){
 <script id="tfms-v4515-register-fullwidth-script">
 (function(){
 'use strict';
-const VERSION='v45.51 Stats Visual Safe';
+const VERSION='v45.52 Asset Display Recovery Safe';
 function apply(){
   const shell=document.querySelector('#register .v459-register-shell');
   if(shell){
@@ -19187,12 +19205,12 @@ function apply(){
   document.title='TFMS '+VERSION;
   try{
     const u=new URL(location.href);
-    if(u.searchParams.get('v')!=='45.51'){
-      u.searchParams.set('v','45.51');
+    if(u.searchParams.get('v')!=='45.52'){
+      u.searchParams.set('v','45.52');
       history.replaceState(history.state,'',u.pathname+u.search+u.hash);
     }
   }catch(e){}
-  try{window.TFMS_BUILD=Object.freeze({version:'v45.51 Stats Visual Safe',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'Asset Selection Final Core'});}catch(e){}
+  try{window.TFMS_BUILD=Object.freeze({version:'v45.52 Asset Display Recovery Safe',channel:'Enterprise Stable',buildDate:'2026.08.10',title:'Asset Selection Final Core'});}catch(e){}
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
 [100,500,1200,2500].forEach(ms=>setTimeout(apply,ms));
@@ -19409,7 +19427,7 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
 (function(){
   'use strict';
 
-  const BUILD = 'v45.51 Stats Visual Safe';
+  const BUILD = 'v45.52 Asset Display Recovery Safe';
 
   function assetStore(){
     try{
@@ -19555,7 +19573,7 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
         }
       }
     }catch(e){
-      console.warn('TFMS v45.51 Stats Visual Safe LCC render',e);
+      console.warn('TFMS v45.52 Asset Display Recovery Safe LCC render',e);
     }
     setText('lccRepair',value(a,'repair'));
     setText('lccReplace',value(a,'replace'));
@@ -19615,7 +19633,7 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
     try{
       if(typeof loadAssetForm === 'function') loadAssetForm(key);
     }catch(e){
-      console.warn('TFMS v45.51 Stats Visual Safe form sync',e);
+      console.warn('TFMS v45.52 Asset Display Recovery Safe form sync',e);
     }
 
     /* Photo DB lookup only when the photo tab is open. */
@@ -19682,8 +19700,8 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
     document.title = 'TFMS '+BUILD;
     try{
       const u = new URL(location.href);
-      if(u.searchParams.get('v')!=='45.51'){
-        u.searchParams.set('v','45.51');
+      if(u.searchParams.get('v')!=='45.52'){
+        u.searchParams.set('v','45.52');
         history.replaceState(history.state,'',u.pathname+u.search+u.hash);
       }
     }catch(e){}
@@ -19714,7 +19732,7 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
 <script id="tfms-v4531-conflict-cleanup-js">
 (function(){
   'use strict';
-  const BUILD='v45.51 Stats Visual Safe';
+  const BUILD='v45.52 Asset Display Recovery Safe';
 
   function removeOrphanEscapes(){
     try{
@@ -19745,8 +19763,8 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
     }catch(e){}
     try{
       const u=new URL(location.href);
-      if(u.searchParams.get('v')!=='45.51'){
-        u.searchParams.set('v','45.51');
+      if(u.searchParams.get('v')!=='45.52'){
+        u.searchParams.set('v','45.52');
         history.replaceState(history.state,'',u.pathname+u.search+u.hash);
       }
     }catch(e){}
@@ -19770,14 +19788,14 @@ if(typeof prev==='function')window.showPage=function(){const r=prev.apply(this,a
 <script id="tfms-v4532-version-sync">
 (function(){
   function sync(){
-    var label='v45.51 Stats Visual Safe';
+    var label='v45.52 Asset Display Recovery Safe';
     var badge=document.getElementById('tfmsVersionBadge');
     if(badge) badge.textContent=label;
     document.title='TFMS '+label;
     try{
       var u=new URL(location.href);
-      if(u.searchParams.get('v')!=='45.51'){
-        u.searchParams.set('v','45.51');
+      if(u.searchParams.get('v')!=='45.52'){
+        u.searchParams.set('v','45.52');
         history.replaceState(history.state,'',u.pathname+u.search+u.hash);
       }
     }catch(e){}
@@ -21017,7 +21035,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 
   function quickBind(){const bar=document.querySelector('#history .v4547-quickbar');if(!bar||bar.__bound)return;bar.__bound=true;bar.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const q=b.dataset.q;document.querySelectorAll('#history .v4547-quickbar button').forEach(x=>x.classList.toggle('active',x===b));if(q==='month'){const d=new Date();$('historyMonth').value=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')}if(q==='open'){$('historyStatus').value='미조치'}if(q==='lcc')$('historyLccFilter').value='linked';if(q==='eval')$('historyEvalFilter').value='linked';if(q==='evidence')$('historyEvidenceFilter').value='yes';window.renderMaintenanceHistoryV361();});}
   function bind(){quickBind();['historyFacility','historyField','historyStatus','historyMonth','historyLccFilter','historyEvalFilter','historyEvidenceFilter'].forEach(id=>$(id)?.addEventListener('change',()=>window.renderMaintenanceHistoryV361()));}
-  function sync(){try{const b=$('tfmsVersionBadge');if(b)b.textContent='v45.51 Stats Visual Safe';document.title='TFMS v45.51 Stats Visual Safe';window.TFMS_BUILD=Object.freeze({version:'v45.51',channel:'Stats Visual Safe',buildDate:'2026.08.12',title:'History UX Compact LCC'});const u=new URL(location.href);if(u.searchParams.get('v')!=='45.51'){u.searchParams.set('v','45.51');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
+  function sync(){try{const b=$('tfmsVersionBadge');if(b)b.textContent='v45.52 Asset Display Recovery Safe';document.title='TFMS v45.52 Asset Display Recovery Safe';window.TFMS_BUILD=Object.freeze({version:'v45.51',channel:'Stats Visual Safe',buildDate:'2026.08.12',title:'History UX Compact LCC'});const u=new URL(location.href);if(u.searchParams.get('v')!=='45.52'){u.searchParams.set('v','45.52');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
   function init(){bind();sync();const old=document.querySelector('#history .v4513-history-tools');if(old)old.remove();}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
   [150,800,2200,5200,10500].forEach(ms=>setTimeout(()=>{init();sync()},ms));
@@ -21027,7 +21045,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 
 
 
-<!-- TFMS v45.51 Stats Visual Safe: dashboard/header only -->
+<!-- TFMS v45.52 Asset Display Recovery Safe: dashboard/header only -->
 <style id="tfms-v4549-dashboard-finance-css">
 /* Header spacing: corporation logo → TFMS → version */
 #appHeader .logo-title{gap:14px!important;}
@@ -21049,7 +21067,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 <script id="tfms-v4549-final-sync">
 (function(){
   'use strict';
-  const LABEL='v45.51 Stats Visual Safe';
+  const LABEL='v45.52 Asset Display Recovery Safe';
   function syncVersion(){
     try{
       const b=document.getElementById('tfmsVersionBadge');
@@ -21058,8 +21076,8 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
       if(document.title!==title)document.title=title;
       window.TFMS_BUILD={version:'v45.51',channel:'Stats Visual Safe',buildDate:'2026.08.12',title:'Dashboard Finance Split + Freeze Recovery'};
       const u=new URL(location.href);
-      if(u.searchParams.get('v')!=='45.51'){
-        u.searchParams.set('v','45.51');
+      if(u.searchParams.get('v')!=='45.52'){
+        u.searchParams.set('v','45.52');
         history.replaceState(history.state,'',u.pathname+u.search+u.hash);
       }
     }catch(e){console.warn('[TFMS v45.49 version sync]',e);}
@@ -21073,7 +21091,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 
 
 <!-- =========================================================
-     TFMS v45.51 Stats Visual Safe
+     TFMS v45.52 Asset Display Recovery Safe
      General-user presentation only. Admin Today page remains functionally unchanged.
      No DB schema / SQL changes. No MutationObserver added.
      ========================================================= -->
@@ -21228,11 +21246,11 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 
   function syncVersion(){
     try{
-      const label='v45.51 Stats Visual Safe';
+      const label='v45.52 Asset Display Recovery Safe';
       const b=$('tfmsVersionBadge');if(b&&b.textContent!==label)b.textContent=label;
       document.title='TFMS '+label;
       window.TFMS_BUILD={version:'v45.51',channel:'Stats Visual Safe',buildDate:'2026.08.12',title:'Statistics Visual Safe Pass 1'};
-      const u=new URL(location.href);if(u.searchParams.get('v')!=='45.51'){u.searchParams.set('v','45.51');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}
+      const u=new URL(location.href);if(u.searchParams.get('v')!=='45.52'){u.searchParams.set('v','45.52');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}
     }catch(e){}
   }
   function init(){syncVersion();setTimeout(ensureUserStructure,250)}
@@ -21243,7 +21261,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 
 
 <!-- =========================================================
-     TFMS v45.51 Stats Visual Safe - PASS 1
+     TFMS v45.52 Asset Display Recovery Safe - PASS 1
      VISUAL ONLY for #stats. No statistics/Supabase/drill-down logic touched.
      No MutationObserver. No render function replacement.
      ========================================================= -->
