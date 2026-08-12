@@ -6,7 +6,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>TFMS v45.49 Dashboard Freeze Recovery Safe</title>
+<title>TFMS v45.50 Today User UX Safe</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -21017,7 +21017,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 
   function quickBind(){const bar=document.querySelector('#history .v4547-quickbar');if(!bar||bar.__bound)return;bar.__bound=true;bar.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const q=b.dataset.q;document.querySelectorAll('#history .v4547-quickbar button').forEach(x=>x.classList.toggle('active',x===b));if(q==='month'){const d=new Date();$('historyMonth').value=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')}if(q==='open'){$('historyStatus').value='미조치'}if(q==='lcc')$('historyLccFilter').value='linked';if(q==='eval')$('historyEvalFilter').value='linked';if(q==='evidence')$('historyEvidenceFilter').value='yes';window.renderMaintenanceHistoryV361();});}
   function bind(){quickBind();['historyFacility','historyField','historyStatus','historyMonth','historyLccFilter','historyEvalFilter','historyEvidenceFilter'].forEach(id=>$(id)?.addEventListener('change',()=>window.renderMaintenanceHistoryV361()));}
-  function sync(){try{const b=$('tfmsVersionBadge');if(b)b.textContent='v45.49 Dashboard Freeze Recovery Safe';document.title='TFMS v45.49 Dashboard Freeze Recovery Safe';window.TFMS_BUILD=Object.freeze({version:'v45.49',channel:'Dashboard Freeze Recovery Safe',buildDate:'2026.08.12',title:'History UX Compact LCC'});const u=new URL(location.href);if(u.searchParams.get('v')!=='45.49'){u.searchParams.set('v','45.49');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
+  function sync(){try{const b=$('tfmsVersionBadge');if(b)b.textContent='v45.50 Today User UX Safe';document.title='TFMS v45.50 Today User UX Safe';window.TFMS_BUILD=Object.freeze({version:'v45.50',channel:'Today User UX Safe',buildDate:'2026.08.12',title:'History UX Compact LCC'});const u=new URL(location.href);if(u.searchParams.get('v')!=='45.50'){u.searchParams.set('v','45.50');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
   function init(){bind();sync();const old=document.querySelector('#history .v4513-history-tools');if(old)old.remove();}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
   [150,800,2200,5200,10500].forEach(ms=>setTimeout(()=>{init();sync()},ms));
@@ -21027,7 +21027,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 
 
 
-<!-- TFMS v45.49 Dashboard Freeze Recovery Safe: dashboard/header only -->
+<!-- TFMS v45.50 Today User UX Safe: dashboard/header only -->
 <style id="tfms-v4549-dashboard-finance-css">
 /* Header spacing: corporation logo → TFMS → version */
 #appHeader .logo-title{gap:14px!important;}
@@ -21049,17 +21049,17 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 <script id="tfms-v4549-final-sync">
 (function(){
   'use strict';
-  const LABEL='v45.49 Dashboard Freeze Recovery Safe';
+  const LABEL='v45.50 Today User UX Safe';
   function syncVersion(){
     try{
       const b=document.getElementById('tfmsVersionBadge');
       if(b && b.textContent!==LABEL)b.textContent=LABEL;
       const title='TFMS '+LABEL;
       if(document.title!==title)document.title=title;
-      window.TFMS_BUILD={version:'v45.49',channel:'Dashboard Freeze Recovery Safe',buildDate:'2026.08.12',title:'Dashboard Finance Split + Freeze Recovery'};
+      window.TFMS_BUILD={version:'v45.50',channel:'Today User UX Safe',buildDate:'2026.08.12',title:'Dashboard Finance Split + Freeze Recovery'};
       const u=new URL(location.href);
-      if(u.searchParams.get('v')!=='45.49'){
-        u.searchParams.set('v','45.49');
+      if(u.searchParams.get('v')!=='45.50'){
+        u.searchParams.set('v','45.50');
         history.replaceState(history.state,'',u.pathname+u.search+u.hash);
       }
     }catch(e){console.warn('[TFMS v45.49 version sync]',e);}
@@ -21068,6 +21068,176 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
   // Finite retries only. No MutationObserver on the version badge.
   [120,700,1800,4500,9000].forEach(ms=>setTimeout(syncVersion,ms));
+})();
+</script>
+
+
+<!-- =========================================================
+     TFMS v45.50 Today User UX Safe
+     General-user presentation only. Admin Today page remains functionally unchanged.
+     No DB schema / SQL changes. No MutationObserver added.
+     ========================================================= -->
+<style id="tfms-v4550-today-user-style">
+/* Common compacting that is harmless to admin as well */
+#today .notice{padding:11px 14px!important;border-radius:11px!important;font-size:12px!important;line-height:1.45!important}
+#today .notice .btn{height:34px!important;padding:0 13px!important;font-size:11px!important;border-radius:8px!important}
+
+/* General user only */
+#today.tfms-today-user .title-row{margin-bottom:10px!important}
+#today.tfms-today-user .title-icon{width:48px!important;height:48px!important;font-size:23px!important}
+#today.tfms-today-user .title-left h1{font-size:27px!important}
+#today.tfms-today-user>.panel{padding:14px!important}
+#today.tfms-today-user .today-user-summary-v4550{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:12px 0}
+#today.tfms-today-user .today-user-kpi-v4550{min-height:68px;background:#fff;border:1px solid #dbe5ef;border-radius:12px;padding:10px 13px;display:flex;align-items:center;gap:11px;box-shadow:0 3px 12px rgba(21,52,86,.035)}
+#today.tfms-today-user .today-user-kpi-v4550 .ico{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:#eef5ff;color:#1260c3;font-size:18px;flex:0 0 auto}
+#today.tfms-today-user .today-user-kpi-v4550.progress .ico{background:#fff5e8;color:#e67e13}
+#today.tfms-today-user .today-user-kpi-v4550.done .ico{background:#eaf9f2;color:#059669}
+#today.tfms-today-user .today-user-kpi-v4550.late .ico{background:#fff0f1;color:#e5484d}
+#today.tfms-today-user .today-user-kpi-v4550 span{display:block;font-size:10.5px;font-weight:800;color:#637389;margin-bottom:2px}
+#today.tfms-today-user .today-user-kpi-v4550 strong{font-size:21px;line-height:1;color:#102d55}
+
+#today.tfms-today-user .today-manual-panel{margin:0 0 12px!important;padding:12px 14px!important;background:#fff!important;border-radius:12px!important;border:1px solid #dbe5ef!important}
+#today.tfms-today-user .today-manual-panel .section-title{margin-bottom:9px!important;font-size:15px!important}
+#today.tfms-today-user .today-manual-grid{grid-template-columns:1.05fr 1.05fr 1.65fr .82fr auto!important;gap:8px!important}
+#today.tfms-today-user .today-manual-grid label{font-size:10.5px!important;margin-bottom:4px!important;color:#45566d!important}
+#today.tfms-today-user .today-manual-grid input,#today.tfms-today-user .today-manual-grid select{height:36px!important;min-height:36px!important;padding:5px 9px!important;border-radius:8px!important;font-size:12px!important}
+#today.tfms-today-user .today-manual-grid .btn{height:36px!important;padding:0 17px!important;white-space:nowrap!important;font-size:12px!important;border-radius:8px!important}
+
+#today.tfms-today-user .today-user-list-title-v4550{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:3px 0 7px;font-weight:900;color:#163253;font-size:15px}
+#today.tfms-today-user .today-user-list-title-v4550 small{font-weight:700;color:#8996a8;font-size:10px}
+#today.tfms-today-user table.table{margin-top:0!important;font-size:11.5px!important;table-layout:auto!important}
+#today.tfms-today-user table.table thead th{height:36px!important;padding:7px 9px!important;font-size:10.5px!important;white-space:nowrap!important;background:#f5f8fc!important}
+#today.tfms-today-user table.table tbody td{padding:10px 9px!important;vertical-align:middle!important;border-bottom:1px solid #edf1f6!important}
+#today.tfms-today-user table.table tbody tr:last-child td{border-bottom:0!important}
+#today.tfms-today-user table.table td:nth-child(1),#today.tfms-today-user table.table td:nth-child(4),#today.tfms-today-user table.table td:nth-child(5),#today.tfms-today-user table.table td:nth-child(6){white-space:nowrap!important}
+#today.tfms-today-user .status{font-size:10px!important;padding:5px 8px!important;border-radius:999px!important}
+#today.tfms-today-user .today-lcc-badge-v4550{display:inline-flex;margin-left:5px;padding:2px 6px;border:1px solid #bfdbfe;border-radius:999px;background:#eff6ff;color:#1d4ed8;font-size:9px;font-weight:900;vertical-align:middle;white-space:nowrap}
+#today.tfms-today-user .today-overdue-v4550{color:#dc2626!important;font-weight:900!important}
+#today.tfms-today-user td:last-child .btn,#today.tfms-today-user td:last-child .small-btn,#today.tfms-today-user td:last-child button{min-height:29px!important;padding:5px 8px!important;margin:2px 2px!important;font-size:10px!important;border-radius:7px!important}
+#today.tfms-today-user .today-action-line-v446,#today.tfms-today-user .today-flow-actions{display:inline-flex!important;gap:4px!important;align-items:center!important;flex-wrap:wrap!important}
+
+@media(max-width:1200px){
+  #today.tfms-today-user .today-user-summary-v4550{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #today.tfms-today-user .today-manual-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  #today.tfms-today-user .today-manual-grid>div:nth-child(3){grid-column:1/-1}
+}
+@media(max-width:760px){
+  #today.tfms-today-user .today-user-summary-v4550{grid-template-columns:1fr 1fr}
+  #today.tfms-today-user .today-manual-grid{grid-template-columns:1fr!important}
+  #today.tfms-today-user .today-manual-grid>div:nth-child(3){grid-column:auto}
+  #today.tfms-today-user .panel{overflow-x:auto}
+  #today.tfms-today-user table.table{min-width:900px}
+}
+</style>
+<script id="tfms-v4550-today-user-controller">
+(function(){
+  'use strict';
+  const $=id=>document.getElementById(id);
+  function session(){try{return JSON.parse(sessionStorage.getItem('tfmsSession')||'{}')}catch(e){return {}}}
+  function role(){try{return String(window.cloudProfile?.role||window.tfmsRole||session().role||'').toLowerCase()}catch(e){return ''}}
+  function isAdmin(){const r=role();return r==='admin'||r==='관리자'}
+  function localToday(){const d=new Date(),o=d.getTimezoneOffset();return new Date(d.getTime()-o*60000).toISOString().slice(0,10)}
+  function list(){try{return Array.isArray(window.todayTasks)?window.todayTasks:((typeof todayTasks!=='undefined'&&Array.isArray(todayTasks))?todayTasks:[])}catch(e){return []}}
+  function isDone(t){return /완료|조치완료/.test(String(t?.status||''))}
+  function isProgress(t){return /진행/.test(String(t?.status||''))}
+  function rawDate(t){return String(t?.rawDate||((t?.due&&t.due!=='오늘')?t.due:'')||'').slice(0,10)}
+  function isLate(t){const d=rawDate(t);return !!d&&d<localToday()&&!isDone(t)}
+
+  function ensureUserStructure(){
+    const page=$('today'); if(!page)return;
+    const admin=isAdmin();
+    page.classList.toggle('tfms-today-user',!admin);
+    if(admin){document.querySelector('.today-user-summary-v4550')?.remove();document.querySelector('.today-user-list-title-v4550')?.remove();return;}
+
+    const panel=page.querySelector(':scope > .panel'); if(!panel)return;
+    const manual=$('todayManualPanelV416');
+    const table=panel.querySelector('table');
+    if(!table)return;
+
+    let summary=page.querySelector('.today-user-summary-v4550');
+    if(!summary){
+      summary=document.createElement('div');
+      summary.className='today-user-summary-v4550';
+      summary.innerHTML=`
+        <div class="today-user-kpi-v4550"><div class="ico">▣</div><div><span>오늘 할 업무</span><strong id="todayUserTotalV4550">0건</strong></div></div>
+        <div class="today-user-kpi-v4550 progress"><div class="ico">◔</div><div><span>진행중</span><strong id="todayUserProgressV4550">0건</strong></div></div>
+        <div class="today-user-kpi-v4550 done"><div class="ico">✓</div><div><span>완료</span><strong id="todayUserDoneV4550">0건</strong></div></div>
+        <div class="today-user-kpi-v4550 late"><div class="ico">!</div><div><span>기한초과</span><strong id="todayUserLateV4550">0건</strong></div></div>`;
+      const notice=panel.querySelector('.notice');
+      if(notice)notice.insertAdjacentElement('afterend',summary); else panel.prepend(summary);
+    }
+
+    if(manual){
+      const fac=$('todayManualFacilityV416');
+      if(fac&&fac.options.length===1)fac.disabled=true;
+      const title=manual.querySelector('.section-title');if(title)title.innerHTML='<span class="dot"></span>오늘의 업무 직접 등록';
+    }
+
+    let listTitle=page.querySelector('.today-user-list-title-v4550');
+    if(!listTitle){
+      listTitle=document.createElement('div');listTitle.className='today-user-list-title-v4550';
+      listTitle.innerHTML='<span><span class="dot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#139ca1;margin-right:7px"></span>내 업무 목록</span><small>소속 시설의 업무만 표시됩니다.</small>';
+      table.insertAdjacentElement('beforebegin',listTitle);
+    }
+    updateSummaryAndRows();
+  }
+
+  function updateSummaryAndRows(){
+    if(isAdmin())return;
+    const arr=list();
+    const total=arr.filter(t=>!isDone(t)).length;
+    const progress=arr.filter(isProgress).length;
+    const done=arr.filter(isDone).length;
+    const late=arr.filter(isLate).length;
+    const set=(id,n)=>{const e=$(id);if(e)e.textContent=n+'건'};
+    set('todayUserTotalV4550',total);set('todayUserProgressV4550',progress);set('todayUserDoneV4550',done);set('todayUserLateV4550',late);
+
+    const rows=[...document.querySelectorAll('#todayBody tr')];
+    rows.forEach((tr,i)=>{
+      const t=arr[i]; if(!t||tr.children.length<6)return;
+      const assetCell=tr.children[1];
+      if(assetCell&&t.assetName&&!/시설\s*공통/.test(t.assetName)&&!assetCell.querySelector('.today-lcc-badge-v4550')){
+        assetCell.insertAdjacentHTML('beforeend','<span class="today-lcc-badge-v4550">LCC 연계</span>');
+      }
+      const dueCell=tr.children[4]; if(dueCell)dueCell.classList.toggle('today-overdue-v4550',isLate(t));
+    });
+  }
+
+  const oldRender=window.renderTodayTasks;
+  if(typeof oldRender==='function'&&!oldRender.__v4550){
+    const wrapped=function(){const r=oldRender.apply(this,arguments);setTimeout(()=>{ensureUserStructure();updateSummaryAndRows()},20);return r};
+    wrapped.__v4550=true;window.renderTodayTasks=wrapped;
+  }
+
+  const oldEnsure=window.ensureManualTodayUI;
+  if(typeof oldEnsure==='function'&&!oldEnsure.__v4550){
+    const wrapped=function(){const r=oldEnsure.apply(this,arguments);setTimeout(ensureUserStructure,20);return r};
+    wrapped.__v4550=true;window.ensureManualTodayUI=wrapped;
+  }
+
+  const oldShow=window.showPage;
+  if(typeof oldShow==='function'&&!oldShow.__v4550today){
+    const wrapped=function(){const r=oldShow.apply(this,arguments);if(arguments[0]==='today')setTimeout(ensureUserStructure,120);return r};
+    wrapped.__v4550today=true;window.showPage=wrapped;
+  }
+  const oldNav=window.navTo;
+  if(typeof oldNav==='function'&&!oldNav.__v4550today){
+    const wrapped=function(){const r=oldNav.apply(this,arguments);if(arguments[0]==='today')setTimeout(ensureUserStructure,140);return r};
+    wrapped.__v4550today=true;window.navTo=wrapped;
+  }
+
+  function syncVersion(){
+    try{
+      const label='v45.50 Today User UX Safe';
+      const b=$('tfmsVersionBadge');if(b&&b.textContent!==label)b.textContent=label;
+      document.title='TFMS '+label;
+      window.TFMS_BUILD={version:'v45.50',channel:'Today User UX Safe',buildDate:'2026.08.12',title:'General User Today UX'};
+      const u=new URL(location.href);if(u.searchParams.get('v')!=='45.50'){u.searchParams.set('v','45.50');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}
+    }catch(e){}
+  }
+  function init(){syncVersion();setTimeout(ensureUserStructure,250)}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+  [500,1800,5000,11500].forEach(ms=>setTimeout(syncVersion,ms));
 })();
 </script>
 </body></html>
