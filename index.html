@@ -6,7 +6,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>TFMS v45.46 Header + LCC Fix</title>
+<title>TFMS v45.49 Dashboard Freeze Recovery Safe</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -18748,7 +18748,7 @@ const oldShow=window.showAsset;if(typeof oldShow==='function')window.showAsset=f
 const oldRender=window.renderAssetList;if(typeof oldRender==='function')window.renderAssetList=function(){const r=oldRender.apply(this,arguments);setTimeout(()=>{hideLegacy();renderBasic();mountTabs()},30);return r};
 
 function observe(){
- const b=$('tfmsVersionBadge');if(b)new MutationObserver(syncBuild).observe(b,{childList:true,subtree:true,characterData:true});
+ // v45.49: version badge MutationObserver intentionally disabled to prevent version-sync ping-pong/freezing.
  const u=$('topUserLabel');if(u)new MutationObserver(cleanUserLabel).observe(u,{childList:true,subtree:true,characterData:true});
 }
 function init(){syncBuild();cleanUserLabel();hideLegacy();renderBasic();mountTabs();activate('basic');observe();[100,350,900,1800,3500].forEach(ms=>setTimeout(()=>{syncBuild();cleanUserLabel();hideLegacy();renderBasic();mountTabs()},ms))}
@@ -21008,7 +21008,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
       window.records=(data||[]).map(r=>({dbId:r.id,ownerId:r.registered_by||'',rawDate:r.registered_on||'',date:String(r.registered_on||'').slice(0,10).replaceAll('-','.'),dept:r.department?.name||'',facility:r.facility?.name||'',field:r.field_category||'기타',type:r.receipt_category||'기타',detail:r.detail||'',actionDetail:r.action_detail||'',status:r.process_status||'진행중',amount:Number(r.amount||0),budget:r.budget_account||'해당없음',evidenceCount:Number(r.evidence_count||0),evidence:`${Number(r.evidence_count||0)}개`,evalTags:Array.isArray(r.evaluation_tags)?r.evaluation_tags:[],eval:Array.isArray(r.evaluation_tags)&&r.evaluation_tags.length?r.evaluation_tags.join(', '):'-',assetId:r.asset_id||'',assetName:r.asset_id?(amap[r.asset_id]?.name||'연계 설비'):''}));
       try{window.records&&typeof records!=='undefined'&&(records=window.records)}catch(e){}
       await window.renderMaintenanceHistoryV361();
-    }catch(e){console.error('TFMS v45.47 history load',e);if(body)body.innerHTML=`<tr><td colspan="10"><div class="empty-state" style="color:#b91c1c">조회 실패: ${esc(e?.message||e)}</div></td></tr>`;}
+    }catch(e){console.error('TFMS v45.49 history load',e);if(body)body.innerHTML=`<tr><td colspan="10"><div class="empty-state" style="color:#b91c1c">조회 실패: ${esc(e?.message||e)}</div></td></tr>`;}
   };
 
   window.resetHistoryFilterV318=function(){
@@ -21017,7 +21017,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 
   function quickBind(){const bar=document.querySelector('#history .v4547-quickbar');if(!bar||bar.__bound)return;bar.__bound=true;bar.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const q=b.dataset.q;document.querySelectorAll('#history .v4547-quickbar button').forEach(x=>x.classList.toggle('active',x===b));if(q==='month'){const d=new Date();$('historyMonth').value=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')}if(q==='open'){$('historyStatus').value='미조치'}if(q==='lcc')$('historyLccFilter').value='linked';if(q==='eval')$('historyEvalFilter').value='linked';if(q==='evidence')$('historyEvidenceFilter').value='yes';window.renderMaintenanceHistoryV361();});}
   function bind(){quickBind();['historyFacility','historyField','historyStatus','historyMonth','historyLccFilter','historyEvalFilter','historyEvidenceFilter'].forEach(id=>$(id)?.addEventListener('change',()=>window.renderMaintenanceHistoryV361()));}
-  function sync(){try{const b=$('tfmsVersionBadge');if(b)b.textContent='v45.47 History UX Stable';document.title='TFMS v45.47 History UX Stable';window.TFMS_BUILD=Object.freeze({version:'v45.47',channel:'History UX Stable',buildDate:'2026.08.12',title:'History UX Compact LCC'});const u=new URL(location.href);if(u.searchParams.get('v')!=='45.47'){u.searchParams.set('v','45.47');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
+  function sync(){try{const b=$('tfmsVersionBadge');if(b)b.textContent='v45.49 Dashboard Freeze Recovery Safe';document.title='TFMS v45.49 Dashboard Freeze Recovery Safe';window.TFMS_BUILD=Object.freeze({version:'v45.49',channel:'Dashboard Freeze Recovery Safe',buildDate:'2026.08.12',title:'History UX Compact LCC'});const u=new URL(location.href);if(u.searchParams.get('v')!=='45.49'){u.searchParams.set('v','45.49');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
   function init(){bind();sync();const old=document.querySelector('#history .v4513-history-tools');if(old)old.remove();}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
   [150,800,2200,5200,10500].forEach(ms=>setTimeout(()=>{init();sync()},ms));
@@ -21027,13 +21027,13 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 
 
 
-<!-- TFMS v45.48 Dashboard Finance Split Safe: dashboard/header only -->
-<style id="tfms-v4548-dashboard-finance-css">
+<!-- TFMS v45.49 Dashboard Freeze Recovery Safe: dashboard/header only -->
+<style id="tfms-v4549-dashboard-finance-css">
 /* Header spacing: corporation logo → TFMS → version */
-#appHeader .logo-title{gap:11px!important;}
-#appHeader #tfmsVersionBadge{margin-left:2px!important;}
+#appHeader .logo-title{gap:14px!important;}
+#appHeader #tfmsVersionBadge{margin-left:3px!important;}
 
-/* Dashboard: remove legacy spanning that created the blank second-row area. */
+/* Dashboard finance split: visual layout only. */
 #dashboard.tfms-dashboard-v451 .v451-kpi-grid > .v451-kpi{grid-column:auto!important;}
 #dashboard.tfms-dashboard-v451 .v451-kpi-icon.navy{background:#edf2f7!important;color:#315174!important;}
 @media (min-width:1400px){
@@ -21046,36 +21046,28 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
   #dashboard.tfms-dashboard-v451 .v451-kpi-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;}
 }
 </style>
-<script id="tfms-v4548-final-sync">
+<script id="tfms-v4549-final-sync">
 (function(){
   'use strict';
-  const LABEL='v45.48 Dashboard Finance Split Safe';
-  let syncing=false;
+  const LABEL='v45.49 Dashboard Freeze Recovery Safe';
   function syncVersion(){
-    if(syncing)return; syncing=true;
     try{
       const b=document.getElementById('tfmsVersionBadge');
       if(b && b.textContent!==LABEL)b.textContent=LABEL;
-      if(document.title!=='TFMS '+LABEL)document.title='TFMS '+LABEL;
-      window.TFMS_BUILD=Object.freeze({version:'v45.48',channel:'Dashboard Finance Split Safe',buildDate:'2026.08.12',title:'Dashboard Monthly and Cumulative Finance Split'});
+      const title='TFMS '+LABEL;
+      if(document.title!==title)document.title=title;
+      window.TFMS_BUILD={version:'v45.49',channel:'Dashboard Freeze Recovery Safe',buildDate:'2026.08.12',title:'Dashboard Finance Split + Freeze Recovery'};
       const u=new URL(location.href);
-      if(u.searchParams.get('v')!=='45.48'){
-        u.searchParams.set('v','45.48');
+      if(u.searchParams.get('v')!=='45.49'){
+        u.searchParams.set('v','45.49');
         history.replaceState(history.state,'',u.pathname+u.search+u.hash);
       }
-    }catch(e){} finally{syncing=false;}
+    }catch(e){console.warn('[TFMS v45.49 version sync]',e);}
   }
-  function init(){
-    syncVersion();
-    const b=document.getElementById('tfmsVersionBadge');
-    if(b && !b.__v4548Observer){
-      const mo=new MutationObserver(()=>{if(b.textContent!==LABEL)syncVersion();});
-      mo.observe(b,{childList:true,characterData:true,subtree:true});
-      b.__v4548Observer=mo;
-    }
-  }
+  function init(){syncVersion();}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
-  [100,500,1500,4000,9000,15000].forEach(ms=>setTimeout(syncVersion,ms));
+  // Finite retries only. No MutationObserver on the version badge.
+  [120,700,1800,4500,9000].forEach(ms=>setTimeout(syncVersion,ms));
 })();
 </script>
 </body></html>
