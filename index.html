@@ -6,7 +6,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>TFMS v45.44 Stability LCC Edit Hotfix</title>
+<title>TFMS v45.45 Recovery Baseline LCC Edit</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -12198,12 +12198,7 @@ document.addEventListener('DOMContentLoaded',function(){
         @page{size:A4 portrait;margin:0}
       </style></head><body>
       <div class="dj-sheet ${esc(sheetClass||'')}">${content}</div>
-      
-
-<!-- TFMS v45.32 Shell Frame Stable - Data Store Fix
-     Equipment UX reads live lexical assetData first; window.assetData is fallback only.
-     Login / photo loading / Supabase schema unchanged. -->
-</body></html>`);
+      </body></html>`);
     win.document.close();
     setTimeout(()=>win.focus(),200);
   }
@@ -20762,18 +20757,33 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true}); else bind();
 })();
 </script>
-<script id="tfms-v4544-final-version-sync">
+<script id="tfms-v4545-final-version-sync">
 (function(){
   'use strict';
-  const BUILD='v45.44', LABEL='v45.44 Stability LCC Edit Hotfix';
+  const BUILD='v45.45', LABEL='v45.45 Recovery Baseline LCC Edit';
   function sync(){
     const b=document.getElementById('tfmsVersionBadge'); if(b)b.textContent=LABEL;
     document.title='TFMS '+LABEL;
     try{window.TFMS_BUILD=Object.freeze({version:BUILD,channel:'Stability LCC Edit Hotfix',buildDate:'2026.08.12',title:'Stability LCC Edit Hotfix'});}catch(e){}
-    try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.44'){u.searchParams.set('v','45.44');history.replaceState(history.state,'',u.pathname+u.search+u.hash);}}catch(e){}
+    try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.44'){u.searchParams.set('v','45.45');history.replaceState(history.state,'',u.pathname+u.search+u.hash);}}catch(e){}
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync,{once:true});else sync();
   [300,1200,4000,9000].forEach(ms=>setTimeout(sync,ms));
 })();
 </script>
+<script id="tfms-v4545-eof-guard">
+(function(){
+  'use strict';
+  function sync4545(){
+    try{
+      document.title='TFMS v45.45 Recovery Baseline LCC Edit';
+      const b=document.getElementById('tfmsVersionBadge'); if(b)b.textContent='v45.45 Recovery Baseline LCC Edit';
+      const u=new URL(location.href); if(u.searchParams.get('v')!=='45.45'){u.searchParams.set('v','45.45');history.replaceState(history.state,'',u.pathname+u.search+u.hash);}
+    }catch(e){}
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync4545,{once:true}); else sync4545();
+  [500,2000,7000].forEach(ms=>setTimeout(sync4545,ms));
+})();
+</script>
+
 </body></html>
