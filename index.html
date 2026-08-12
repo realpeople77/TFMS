@@ -21327,3 +21327,229 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 }
 </style>
 </body></html>
+
+<!-- =========================================================
+     TFMS v45.53 Today Light UX Safe
+     Scope: 오늘의 업무 일반사용자 UX 개선 only
+     No DB schema / SQL changes. Existing functions retained.
+     ========================================================= -->
+<style id="tfms-v4553-today-light-style">
+#today{--t53-navy:#113a67;--t53-line:#d9e4ef;--t53-soft:#f7fbff;--t53-text:#1f3654;--t53-sub:#6b7c91;--t53-teal:#159a9c;--t53-green:#14a36b;--t53-orange:#f49b21;--t53-red:#e55863;}
+#today.tfms-today-user .panel{padding:14px 16px!important;border-radius:16px!important}
+#today.tfms-today-user .notice{padding:12px 14px!important;background:#fbfdff!important;border:1px dashed #cfe0f2!important}
+#today.tfms-today-user .notice>div{align-items:center!important}
+#today.tfms-today-user .notice b{color:var(--t53-navy)}
+#today.tfms-today-user .today-user-summary-v4550{gap:11px!important;margin:12px 0 14px!important}
+#today.tfms-today-user .today-user-kpi-v4550{min-height:74px!important;border-radius:15px!important;padding:12px 14px!important;box-shadow:0 6px 18px rgba(17,58,103,.045)!important}
+#today.tfms-today-user .today-user-kpi-v4550 .ico{width:40px!important;height:40px!important;border-radius:12px!important;font-size:17px!important}
+#today.tfms-today-user .today-user-kpi-v4550 span{font-size:11px!important;color:var(--t53-sub)!important}
+#today.tfms-today-user .today-user-kpi-v4550 strong{font-size:22px!important;color:var(--t53-text)!important}
+#today.tfms-today-user .today-manual-panel{margin:0 0 13px!important;padding:13px 15px!important;border-radius:15px!important;background:linear-gradient(180deg,#ffffff,#fbfdff)!important;box-shadow:0 4px 14px rgba(17,58,103,.035)!important}
+#today.tfms-today-user .today-manual-panel .section-title{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:10px!important;font-size:15px!important;color:var(--t53-text)!important}
+#today.tfms-today-user .today-manual-panel .section-title::after{content:'담당 시설의 업무를 빠르게 등록합니다.';font-size:11px;font-weight:700;color:#7a8ca1}
+#today.tfms-today-user .today-manual-grid{display:grid!important;grid-template-columns:1fr 1fr 1.55fr .8fr auto!important;gap:9px!important;align-items:end!important}
+#today.tfms-today-user .today-manual-grid label{font-size:11px!important;font-weight:800!important;color:#506176!important}
+#today.tfms-today-user .today-manual-grid input,#today.tfms-today-user .today-manual-grid select{height:38px!important;min-height:38px!important;border-radius:10px!important;border:1px solid #cfdbe8!important;background:#fff!important}
+#today.tfms-today-user .today-manual-grid .btn{height:38px!important;border-radius:10px!important;padding:0 16px!important;box-shadow:none!important}
+#today.tfms-today-user .today-user-list-shell-v4553{border:1px solid var(--t53-line);border-radius:15px;background:#fff;box-shadow:0 4px 14px rgba(17,58,103,.03);overflow:hidden}
+#today.tfms-today-user .today-user-list-title-v4550{margin:0!important;padding:13px 15px 10px!important;border-bottom:1px solid #edf2f7!important;font-size:15px!important;color:var(--t53-text)!important;background:linear-gradient(180deg,#ffffff,#fbfcfe)!important}
+#today.tfms-today-user .today-user-list-title-v4550 small{font-size:10.5px!important;color:#8a97a7!important}
+#today.tfms-today-user .today-user-filterbar-v4553{display:grid;grid-template-columns:1fr auto auto auto;gap:8px;align-items:center;padding:10px 15px;border-bottom:1px solid #edf2f7;background:#fbfdff}
+#today.tfms-today-user .today-user-filterbar-v4553 .meta{font-size:11px;color:#6f8095;font-weight:700}
+#today.tfms-today-user .today-user-filterbar-v4553 .tools{display:contents}
+#today.tfms-today-user .today-user-filterbar-v4553 select,
+#today.tfms-today-user .today-user-filterbar-v4553 button{height:34px;border-radius:9px;border:1px solid #cfe0f0;background:#fff;padding:0 11px;font:inherit;font-size:11px;font-weight:800;color:#2d4766}
+#today.tfms-today-user .today-user-filterbar-v4553 button{background:#f5f9ff}
+#today.tfms-today-user .today-user-table-wrap-v4553{padding:0 15px 14px;background:#fff}
+#today.tfms-today-user table.table{margin-top:0!important;border-collapse:separate!important;border-spacing:0 8px!important;background:transparent!important}
+#today.tfms-today-user table.table thead th{height:34px!important;background:#f3f7fb!important;color:#5d7087!important;font-size:10.5px!important;border-top:1px solid #e5edf6!important;border-bottom:1px solid #e5edf6!important}
+#today.tfms-today-user table.table thead th:first-child{border-left:1px solid #e5edf6!important;border-radius:10px 0 0 10px}
+#today.tfms-today-user table.table thead th:last-child{border-right:1px solid #e5edf6!important;border-radius:0 10px 10px 0}
+#today.tfms-today-user table.table tbody td{background:#fff!important;border-top:1px solid #e6edf5!important;border-bottom:1px solid #e6edf5!important;font-size:11.5px!important;color:#243d5c!important}
+#today.tfms-today-user table.table tbody td:first-child{border-left:1px solid #e6edf5!important;border-radius:12px 0 0 12px}
+#today.tfms-today-user table.table tbody td:last-child{border-right:1px solid #e6edf5!important;border-radius:0 12px 12px 0}
+#today.tfms-today-user table.table tbody tr:hover td{background:#fcfdff!important}
+#today.tfms-today-user table.table td:nth-child(1){font-weight:800!important;color:#21496f!important}
+#today.tfms-today-user .today-lcc-badge-v4550{margin-left:6px!important;background:#eef6ff!important;border-color:#c9dcff!important;color:#225dd8!important}
+#today.tfms-today-user .status{font-size:10.5px!important;padding:5px 9px!important;font-weight:800!important}
+#today.tfms-today-user .today-overdue-v4550{color:#d92c3a!important}
+#today.tfms-today-user .today-action-line-v446,#today.tfms-today-user .today-flow-actions{gap:5px!important}
+#today.tfms-today-user td:last-child .btn,#today.tfms-today-user td:last-child .small-btn,#today.tfms-today-user td:last-child button{min-height:30px!important;padding:5px 9px!important;border-radius:8px!important;font-size:10.5px!important}
+#today.tfms-today-user .today-user-footnote-v4553{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;padding:0 15px 14px;color:#7d8da0;font-size:10px;line-height:1.45}
+#today.tfms-today-user .today-user-footnote-v4553 .legend{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+#today.tfms-today-user .today-user-footnote-v4553 .legend span{display:inline-flex;align-items:center;gap:5px;padding:3px 7px;border-radius:999px;background:#f5f8fb;border:1px solid #e3ebf3}
+#today.tfms-today-user .today-user-dot-v4553{width:8px;height:8px;border-radius:50%;display:inline-block}
+#today.tfms-today-user .today-user-dot-v4553.blue{background:#3b82f6}.today-user-dot-v4553.green{background:#10b981}.today-user-dot-v4553.red{background:#ef4444}
+#today.tfms-today-user .empty-state{padding:26px 12px!important;border-radius:12px!important;background:#fbfdff!important;border:1px dashed #d8e4f0!important;color:#7d8da0!important}
+@media(max-width:1280px){
+  #today.tfms-today-user .today-manual-grid{grid-template-columns:1fr 1fr!important}
+  #today.tfms-today-user .today-manual-grid>div:nth-child(3){grid-column:1/-1}
+  #today.tfms-today-user .today-user-filterbar-v4553{grid-template-columns:1fr 1fr}
+}
+@media(max-width:760px){
+  #today.tfms-today-user .today-user-summary-v4550{grid-template-columns:1fr 1fr!important}
+  #today.tfms-today-user .today-manual-grid{grid-template-columns:1fr!important}
+  #today.tfms-today-user .today-manual-panel .section-title::after{display:none}
+  #today.tfms-today-user .today-user-filterbar-v4553{grid-template-columns:1fr!important}
+  #today.tfms-today-user .today-user-table-wrap-v4553{overflow:auto}
+  #today.tfms-today-user table.table{min-width:980px}
+}
+</style>
+<script id="tfms-v4553-today-light-controller">
+(function(){
+  'use strict';
+  const $=id=>document.getElementById(id);
+  function session(){try{return JSON.parse(sessionStorage.getItem('tfmsSession')||'{}')}catch(e){return {}}}
+  function role(){try{return String(window.cloudProfile?.role||window.tfmsRole||session().role||'').toLowerCase()}catch(e){return ''}}
+  function isAdmin(){const r=role();return r==='admin'||r==='관리자'}
+  function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+  function todayISO(){const d=new Date(),o=d.getTimezoneOffset();return new Date(d.getTime()-o*60000).toISOString().slice(0,10)}
+  function tasks(){
+    try{return Array.isArray(window.todayTasks)?window.todayTasks:((typeof todayTasks!=='undefined'&&Array.isArray(todayTasks))?todayTasks:[])}catch(e){return []}
+  }
+  function isDone(t){return /완료|조치완료/.test(String(t?.status||''))}
+  function isProgress(t){return /진행/.test(String(t?.status||''))}
+  function rawDate(t){return String(t?.rawDate||((t?.due&&t.due!=='오늘')?t.due:'')||'').slice(0,10)}
+  function isLate(t){const d=rawDate(t);return !!d&&d<todayISO()&&!isDone(t)}
+
+  function syncVersion(){
+    try{
+      const label='v45.53 Today Light UX Safe';
+      const badge=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
+      if(badge)badge.textContent=label;
+      document.title='TFMS '+label;
+      window.TFMS_BUILD={version:'v45.53',channel:'Today Light UX Safe',buildDate:'2026.08.12',title:'오늘의 업무 라이트 UX'};
+      const u=new URL(location.href);
+      if(u.searchParams.get('v')!=='45.53'){
+        u.searchParams.set('v','45.53');
+        history.replaceState(history.state,'',u.pathname+u.search+u.hash);
+      }
+    }catch(e){console.warn('[TFMS v45.53 version sync]',e)}
+  }
+
+  function ensureTodayLightUX(){
+    syncVersion();
+    const page=$('today'); if(!page)return;
+    const userOnly=!isAdmin();
+    page.classList.toggle('tfms-today-user',userOnly);
+    if(!userOnly)return;
+
+    const panel=page.querySelector(':scope > .panel');
+    const table=panel?.querySelector('table.table');
+    const manual=$('todayManualPanelV416');
+    if(!panel||!table||!manual)return;
+
+    let shell=page.querySelector('.today-user-list-shell-v4553');
+    if(!shell){
+      shell=document.createElement('div');
+      shell.className='today-user-list-shell-v4553';
+
+      const listTitle=page.querySelector('.today-user-list-title-v4550')||document.createElement('div');
+      listTitle.className='today-user-list-title-v4550';
+      listTitle.innerHTML='<span><span class="dot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#139ca1;margin-right:7px"></span>내 업무 목록</span><small>점검주기 연동 + 직접등록 업무를 함께 표시합니다.</small>';
+      shell.appendChild(listTitle);
+
+      const filter=document.createElement('div');
+      filter.className='today-user-filterbar-v4553';
+      filter.innerHTML=''
+        +'<div class="meta" id="todayUserMetaV4553">오늘 기준 업무를 표시합니다.</div>'
+        +'<div class="tools"><select id="todayUserStatusFilterV4553"><option value="all">상태 전체</option><option value="예정">예정</option><option value="진행">진행중</option><option value="완료">완료</option></select></div>'
+        +'<div class="tools"><select id="todayUserDueFilterV4553"><option value="all">기한 전체</option><option value="today">오늘</option><option value="late">기한초과</option><option value="future">예정일 포함</option></select></div>'
+        +'<div class="tools"><button type="button" id="todayUserRefreshV4553">새로고침</button></div>';
+      shell.appendChild(filter);
+
+      const wrap=document.createElement('div');
+      wrap.className='today-user-table-wrap-v4553';
+      table.parentNode.insertBefore(shell,table);
+      wrap.appendChild(table);
+      shell.appendChild(wrap);
+
+      const foot=document.createElement('div');
+      foot.className='today-user-footnote-v4553';
+      foot.innerHTML=''
+       +'<div class="legend"><span><i class="today-user-dot-v4553 blue"></i>LCC 연계 설비 표시</span><span><i class="today-user-dot-v4553 green"></i>완료 업무</span><span><i class="today-user-dot-v4553 red"></i>기한 초과 업무</span></div>'
+       +'<div>완료 후 유지관리 등록 또는 결과입력 버튼으로 후속 처리할 수 있습니다.</div>';
+      shell.appendChild(foot);
+
+      const statusSel=filter.querySelector('#todayUserStatusFilterV4553');
+      const dueSel=filter.querySelector('#todayUserDueFilterV4553');
+      const refreshBtn=filter.querySelector('#todayUserRefreshV4553');
+      statusSel.addEventListener('change',applyRowFilters);
+      dueSel.addEventListener('change',applyRowFilters);
+      refreshBtn.addEventListener('click',()=>{
+        try{window.renderTodayTasks?.();}catch(e){}
+        setTimeout(()=>{ensureTodayLightUX();applyRowFilters();},60);
+      });
+    }
+
+    const fac=$('todayManualFacilityV416');
+    if(fac&&fac.options.length===1)fac.disabled=true;
+    applySummary();
+    applyRowFilters();
+  }
+
+  function applySummary(){
+    if(isAdmin())return;
+    const arr=tasks();
+    const active=arr.filter(t=>!isDone(t)).length;
+    const progress=arr.filter(isProgress).length;
+    const done=arr.filter(isDone).length;
+    const late=arr.filter(isLate).length;
+    [['todayUserTotalV4550',active],['todayUserProgressV4550',progress],['todayUserDoneV4550',done],['todayUserLateV4550',late]].forEach(([id,val])=>{const el=$(id);if(el)el.textContent=String(val)+'건';});
+    const meta=$('todayUserMetaV4553');
+    if(meta)meta.textContent=`총 ${arr.length}건 · 진행중 ${progress}건 · 완료 ${done}건 · 기한초과 ${late}건`;
+  }
+
+  function applyRowFilters(){
+    if(isAdmin())return;
+    const arr=tasks();
+    const body=$('todayBody'); if(!body)return;
+    const statusVal=$('todayUserStatusFilterV4553')?.value||'all';
+    const dueVal=$('todayUserDueFilterV4553')?.value||'all';
+    [...body.querySelectorAll('tr')].forEach((tr,i)=>{
+      const t=arr[i];
+      if(!t||tr.children.length<7){tr.style.display='';return;}
+      const matchStatus=statusVal==='all' ? true : (statusVal==='진행' ? isProgress(t) : String(t.status||'').includes(statusVal));
+      let matchDue=true;
+      if(dueVal==='today') matchDue=(String(t.due||'')==='오늘'||rawDate(t)===todayISO());
+      else if(dueVal==='late') matchDue=isLate(t);
+      else if(dueVal==='future') matchDue=!!rawDate(t);
+      tr.style.display=(matchStatus&&matchDue)?'':'none';
+
+      const assetCell=tr.children[1];
+      if(assetCell&&t.assetName&&!/시설\s*공통/.test(t.assetName)&&!assetCell.querySelector('.today-lcc-badge-v4550')){
+        assetCell.insertAdjacentHTML('beforeend','<span class="today-lcc-badge-v4550">LCC 연계</span>');
+      }
+      const dueCell=tr.children[4];
+      if(dueCell){
+        dueCell.classList.toggle('today-overdue-v4550',isLate(t));
+        if(isLate(t)&&!String(dueCell.textContent).includes('지연')) dueCell.innerHTML=esc(dueCell.textContent)+' <small style="color:#d92c3a;font-weight:900">(지연)</small>';
+      }
+    });
+  }
+
+  const oldRender=window.renderTodayTasks;
+  if(typeof oldRender==='function'&&!oldRender.__v4553){
+    const wrapped=function(){const r=oldRender.apply(this,arguments);setTimeout(()=>{ensureTodayLightUX();applySummary();applyRowFilters();},40);return r;};
+    wrapped.__v4553=true;window.renderTodayTasks=wrapped;
+  }
+  const oldManual=window.ensureManualTodayUI;
+  if(typeof oldManual==='function'&&!oldManual.__v4553){
+    const wrapped=function(){const r=oldManual.apply(this,arguments);setTimeout(()=>{ensureTodayLightUX();applySummary();applyRowFilters();},40);return r;};
+    wrapped.__v4553=true;window.ensureManualTodayUI=wrapped;
+  }
+  const oldShow=window.showPage;
+  if(typeof oldShow==='function'&&!oldShow.__v4553){
+    const wrapped=function(){const r=oldShow.apply(this,arguments);if(arguments[0]==='today')setTimeout(()=>{ensureTodayLightUX();applySummary();applyRowFilters();},120);return r;};
+    wrapped.__v4553=true;window.showPage=wrapped;
+  }
+  const oldNav=window.navTo;
+  if(typeof oldNav==='function'&&!oldNav.__v4553){
+    const wrapped=function(){const r=oldNav.apply(this,arguments);if(arguments[0]==='today')setTimeout(()=>{ensureTodayLightUX();applySummary();applyRowFilters();},140);return r;};
+    wrapped.__v4553=true;window.navTo=wrapped;
+  }
+  function init(){syncVersion();setTimeout(()=>{ensureTodayLightUX();applySummary();applyRowFilters();},260)}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+  [600,1800,4800,9200].forEach(ms=>setTimeout(syncVersion,ms));
+})();
+</script>
