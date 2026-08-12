@@ -5484,7 +5484,13 @@ document.addEventListener('DOMContentLoaded',function(){
     const content=JSON.stringify({
       schema:'tfms-daily-log-v1',
       workers,
-      rows
+      rows,
+      operationStatus:(q('dailyOperationStatusV4554')?.value||''),
+      usageCount:Number(q('dailyUsageCountV4554')?.value||0),
+      eventCount:Number(q('dailyEventCountV4554')?.value||0),
+      operationNote:(q('dailyOperationNoteV4554')?.value||'').trim(),
+      summary:(q('dailySummaryV4554')?.value||'').trim(),
+      handover:(q('dailyHandoverV4554')?.value||'').trim()
     });
 
     const btn=q('dailySaveBtnV322');
@@ -21326,7 +21332,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
  #stats .tfms-stats-badge{display:none!important;}
 }
 </style>
-</body></html>
+
 
 <!-- =========================================================
      TFMS v45.53 Today Light UX Safe
@@ -21553,3 +21559,130 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
   [600,1800,4800,9200].forEach(ms=>setTimeout(syncVersion,ms));
 })();
 </script>
+
+
+
+<!-- =========================================================
+     TFMS v45.54 Daily Log Phase 1 Safe
+     General daily journal only: operational overview + summary/handover.
+     Existing daily rows / Today-task import / facility journal / PDF logic retained.
+     No DB schema / SQL changes.
+     ========================================================= -->
+<style id="tfms-v4554-daily-phase1-style">
+#dailylog{--d54-line:#d9e4ef;--d54-soft:#f8fbfe;--d54-text:#173552;--d54-sub:#687b91;--d54-blue:#1768cf;--d54-teal:#139ea2;}
+#dailylog[data-v459-mode="general"] #v459GeneralDaily{padding:14px 16px!important;border-radius:15px!important;box-shadow:0 5px 18px rgba(20,54,90,.04)!important}
+#dailylog[data-v459-mode="general"] #v459GeneralDaily>.section-title{font-size:16px!important;margin-bottom:11px!important;color:var(--d54-text)!important}
+#dailylog .v4554-basic-caption{font-size:10.5px;color:#8190a1;margin:-5px 0 10px}
+#dailylog .v4554-operation-box{margin:11px 0 12px;padding:12px 13px;border:1px solid var(--d54-line);border-radius:13px;background:linear-gradient(180deg,#fff,#fbfdff)}
+#dailylog .v4554-block-title{display:flex;align-items:center;gap:7px;margin:0 0 10px;font-size:14px;font-weight:900;color:var(--d54-text)}
+#dailylog .v4554-block-title::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--d54-teal);flex:0 0 auto}
+#dailylog .v4554-operation-grid{display:grid;grid-template-columns:1fr .8fr .9fr 1.7fr;gap:9px;align-items:end}
+#dailylog .v4554-field{min-width:0}
+#dailylog .v4554-field label{display:block;margin-bottom:4px;font-size:10.5px;font-weight:800;color:#52647a}
+#dailylog .v4554-field input,#dailylog .v4554-field select,#dailylog .v4554-field textarea{width:100%;box-sizing:border-box;border:1px solid #cedae7;border-radius:9px;background:#fff;font:inherit;color:#1f3654}
+#dailylog .v4554-field input,#dailylog .v4554-field select{height:36px;padding:0 9px}
+#dailylog .v4554-field textarea{min-height:36px;height:36px;padding:8px 9px;resize:vertical;line-height:1.4}
+#dailylog .v4554-operation-help{margin-top:7px;font-size:10px;color:#8997a8}
+#dailylog .v4554-closing-box{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0 4px}
+#dailylog .v4554-closing-card{border:1px solid var(--d54-line);border-radius:13px;background:#fff;padding:11px 12px}
+#dailylog .v4554-closing-card h4{margin:0 0 7px;font-size:13px;color:var(--d54-text)}
+#dailylog .v4554-closing-card textarea{width:100%;box-sizing:border-box;min-height:68px;border:1px solid #cfdae7;border-radius:9px;padding:9px 10px;resize:vertical;font:inherit;font-size:12px;line-height:1.45;color:#233c59;background:#fbfdff}
+#dailylog .v4554-phase-note{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:8px 0 0;padding:8px 10px;border-radius:10px;background:#f7fbff;border:1px solid #dceaf6;color:#687d94;font-size:10px}
+#dailylog .v4554-phase-note b{color:#285d91}
+#dailylog[data-v459-mode="general"] .v459-list-head{margin-top:11px!important;margin-bottom:8px!important}
+#dailylog[data-v459-mode="general"] .v459-table-scroll{border:1px solid #e2e9f1;border-radius:11px;overflow:auto}
+#dailylog[data-v459-mode="general"] .v459-table-scroll .table{margin:0!important}
+#dailylog[data-v459-mode="general"] .v459-table-scroll .table th{background:#f5f8fb!important;font-size:10.5px!important;padding:8px!important}
+#dailylog[data-v459-mode="general"] .v459-table-scroll .table td{padding:9px 8px!important}
+#dailylog[data-v459-mode="general"] #dailySaveBtnV322{min-height:38px!important;border-radius:9px!important;padding:0 16px!important}
+@media(max-width:1150px){#dailylog .v4554-operation-grid{grid-template-columns:1fr 1fr}.v4554-operation-grid .v4554-field:last-child{grid-column:1/-1}}
+@media(max-width:720px){#dailylog .v4554-operation-grid,#dailylog .v4554-closing-box{grid-template-columns:1fr}.v4554-operation-grid .v4554-field:last-child{grid-column:auto}}
+</style>
+<script id="tfms-v4554-daily-phase1-controller">
+(function(){
+  'use strict';
+  const $=id=>document.getElementById(id);
+  function syncVersion(){
+    try{
+      const label='v45.54 Daily Log Phase 1 Safe';
+      const badge=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
+      if(badge)badge.textContent=label;
+      document.title='TFMS '+label;
+      window.TFMS_BUILD={version:'v45.54',channel:'Daily Log Phase 1 Safe',buildDate:'2026.08.12',title:'일반 업무일지 1단계 안전 개선'};
+      const u=new URL(location.href);
+      if(u.searchParams.get('v')!=='45.54'){
+        u.searchParams.set('v','45.54');
+        history.replaceState(history.state,'',u.pathname+u.search+u.hash);
+      }
+    }catch(e){console.warn('[TFMS v45.54 version sync]',e)}
+  }
+  function ensureDailyPhase1(){
+    syncVersion();
+    const page=$('dailylog');
+    const general=$('v459GeneralDaily');
+    if(!page||!general)return;
+    if(!general.querySelector('.v4554-basic-caption')){
+      const grid=general.querySelector('.v459-general-grid');
+      if(grid){
+        const cap=document.createElement('div');
+        cap.className='v4554-basic-caption';
+        cap.textContent='공통 기본정보는 그대로 유지하고, 아래 운영현황은 시설 특성에 맞춰 필요한 값만 간단히 기록합니다.';
+        grid.insertAdjacentElement('afterend',cap);
+      }
+    }
+    if(!general.querySelector('.v4554-operation-box')){
+      const grid=general.querySelector('.v459-general-grid');
+      if(grid){
+        const box=document.createElement('div');
+        box.className='v4554-operation-box';
+        box.innerHTML=`
+          <div class="v4554-block-title">운영 현황</div>
+          <div class="v4554-operation-grid">
+            <div class="v4554-field"><label>운영상태</label><select id="dailyOperationStatusV4554"><option>정상 운영</option><option>부분 운영</option><option>운영 중단</option><option>기타</option></select></div>
+            <div class="v4554-field"><label>이용 / 업무건수</label><input id="dailyUsageCountV4554" type="number" min="0" placeholder="0"></div>
+            <div class="v4554-field"><label>행사·예약·프로그램</label><input id="dailyEventCountV4554" type="number" min="0" placeholder="0"></div>
+            <div class="v4554-field"><label>당일 운영 특이사항</label><textarea id="dailyOperationNoteV4554" placeholder="특이사항이 있는 경우 간단히 입력"></textarea></div>
+          </div>
+          <div class="v4554-operation-help">시설별 세부 체크항목은 다음 단계에서 시설유형별 모듈로 추가하며, 이번 단계는 모든 시설이 공통으로 사용할 수 있는 운영현황만 저장합니다.</div>`;
+        const cap=general.querySelector('.v4554-basic-caption');
+        (cap||grid).insertAdjacentElement('afterend',box);
+      }
+    }
+    if(!general.querySelector('.v4554-closing-box')){
+      const saveRow=$('dailySaveBtnV322')?.closest('.buttons');
+      if(saveRow){
+        const closing=document.createElement('div');
+        closing.className='v4554-closing-box';
+        closing.innerHTML=`
+          <div class="v4554-closing-card"><h4>금일 종합사항</h4><textarea id="dailySummaryV4554" placeholder="금일 운영·조치 결과를 간단히 정리"></textarea></div>
+          <div class="v4554-closing-card"><h4>익일 인계사항</h4><textarea id="dailyHandoverV4554" placeholder="다음 근무자가 확인하거나 이어서 처리할 사항"></textarea></div>`;
+        saveRow.insertAdjacentElement('beforebegin',closing);
+        const note=document.createElement('div');
+        note.className='v4554-phase-note';
+        note.innerHTML='<span><b>1단계 안전 적용</b> · 운영현황/종합사항/인계사항은 기존 업무일지 content JSON에 함께 저장됩니다.</span><span>시설별 운영점검 · 미리보기/PDF 개선은 다음 단계</span>';
+        closing.insertAdjacentElement('afterend',note);
+      }
+    }
+  }
+  const oldMode=window.setDailyModeV459;
+  if(typeof oldMode==='function'&&!oldMode.__v4554){
+    const wrapped=function(){const r=oldMode.apply(this,arguments);if(arguments[0]==='general')setTimeout(ensureDailyPhase1,50);return r;};
+    wrapped.__v4554=true;window.setDailyModeV459=wrapped;
+  }
+  const oldShow=window.showPage;
+  if(typeof oldShow==='function'&&!oldShow.__v4554daily){
+    const wrapped=function(){const r=oldShow.apply(this,arguments);if(arguments[0]==='dailylog')setTimeout(ensureDailyPhase1,120);return r;};
+    wrapped.__v4554daily=true;window.showPage=wrapped;
+  }
+  const oldNav=window.navTo;
+  if(typeof oldNav==='function'&&!oldNav.__v4554daily){
+    const wrapped=function(){const r=oldNav.apply(this,arguments);if(arguments[0]==='dailylog')setTimeout(ensureDailyPhase1,140);return r;};
+    wrapped.__v4554daily=true;window.navTo=wrapped;
+  }
+  function init(){syncVersion();setTimeout(ensureDailyPhase1,350)}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+  [700,2200,5200,9800,13000].forEach(ms=>setTimeout(syncVersion,ms));
+})();
+</script>
+
+</body></html>
