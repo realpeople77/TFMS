@@ -22135,14 +22135,14 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 <script id="tfms-v4559-version-display-lock">
 (function(){
   'use strict';
-  const LABEL='v45.61 Facility Journal Accordion Safe';
+  const LABEL='v45.62 PDF Direct Print Asset Modal Gap Fix';
   const TITLE='TFMS '+LABEL;
-  const PARAM='45.61';
+  const PARAM='45.62';
   const FIXED_BUILD=Object.freeze({
-    version:'v45.61',
-    channel:'Facility Journal Accordion Safe',
+    version:'v45.62',
+    channel:'PDF Direct Print Asset Modal Gap Fix',
     buildDate:'2026.08.13',
-    title:'Facility journal accordion and PDF action UX'
+    title:'Direct PDF rendering wait and asset register modal gap fix'
   });
 
   // Preserve the real history method, but normalize stale legacy ?v= values.
@@ -22188,7 +22188,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
     const badge=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
     if(!badge)return;
     lockTextProperty(badge,'textContent',LABEL);
-    try{badge.setAttribute('data-tfms-version-lock','45.61');}catch(e){}
+    try{badge.setAttribute('data-tfms-version-lock','45.62');}catch(e){}
   }
 
   function lockDocumentTitle(){
@@ -22330,7 +22330,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 
 
 <!-- =========================================================
-     TFMS v45.61 Facility Journal Accordion Safe
+     TFMS v45.62 PDF Direct Print Asset Modal Gap Fix
      Scope: 기계실·방재실 업무일지 presentation only.
      Existing IDs, save/preview/print functions and DB schema are preserved.
      General daily log is untouched. No MutationObserver.
@@ -22417,14 +22417,14 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 (function(){
 'use strict';
 const $=id=>document.getElementById(id);
-const LABEL='v45.61 Facility Journal Accordion Safe';
+const LABEL='v45.62 PDF Direct Print Asset Modal Gap Fix';
 function syncVersion(){
   try{
     const b=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
     if(b&&b.textContent!==LABEL)b.textContent=LABEL;
     const u=new URL(location.href);
     if(u.searchParams.get('v')!=='45.61'){
-      u.searchParams.set('v','45.61');
+      u.searchParams.set('v','45.62');
       // v45.60 history lock already normalizes to the current lock value, which was updated to 45.61 above.
       history.replaceState(history.state,'',u.pathname+u.search+u.hash);
     }
@@ -22598,4 +22598,112 @@ function init(){syncVersion();setTimeout(apply,500)}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
 </script>
+
+
+<!-- =========================================================
+     TFMS v45.62 PDF Direct Print + Asset Modal Gap Fix
+     Scope: daily-journal direct print readiness + equipment register modal visual gap only.
+     No DB / SQL / save payload / asset data logic changes.
+     ========================================================= -->
+<style id="tfms-v4562-asset-modal-gap-style">
+/* 기존 asset-form-note의 전역 margin-bottom:14px이 모달에서 투명 틈을 만들던 문제 제거 */
+#equipment .tfms-v4431-register-modal > .asset-form-note{
+  margin-bottom:0!important;
+}
+#equipment .tfms-v4431-register-modal > .grid{
+  margin-top:0!important;
+}
+</style>
+<script id="tfms-v4562-pdf-direct-print-controller">
+(function(){
+  'use strict';
+  const $=id=>document.getElementById(id);
+  const toast=m=>{try{window.showToast?.(m)}catch(e){}};
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  const nextPaint=()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+
+  async function waitImages(root){
+    if(!root)return;
+    const imgs=[...root.querySelectorAll('img')];
+    await Promise.all(imgs.map(async img=>{
+      try{
+        if(img.complete && img.naturalWidth>0){
+          if(typeof img.decode==='function'){try{await img.decode()}catch(e){}}
+          return;
+        }
+        await new Promise(resolve=>{
+          const done=()=>resolve();
+          img.addEventListener('load',done,{once:true});
+          img.addEventListener('error',done,{once:true});
+          setTimeout(done,1800);
+        });
+        if(typeof img.decode==='function'){try{await img.decode()}catch(e){}}
+      }catch(e){}
+    }));
+  }
+
+  async function preparePreview(type,id){
+    if(id!=null) window.previewSavedDailyLogV400?.(id);
+    else window.previewDailyJournalV390?.(type);
+
+    // preview 함수는 동기 DOM 작성이지만 브라우저 페인트/이미지 디코딩은 뒤따르므로 기다린다.
+    await nextPaint();
+    await wait(90);
+    const sheet=$('dailyJournalPreviewSheet');
+    if(!sheet||!String(sheet.innerHTML||'').trim())throw new Error('출력할 미리보기 내용이 생성되지 않았습니다.');
+    try{if(document.fonts?.ready)await document.fonts.ready}catch(e){}
+    await waitImages(sheet);
+    await nextPaint();
+    return sheet;
+  }
+
+  async function printPreparedSheet(sheet){
+    // 현재 최종 인쇄 루트(v41.0)를 우선 사용하고, 없으면 v40.2 루트를 사용한다.
+    const root=$('tfmsPrintRootV410')||$('tfmsPrintRootV402');
+    if(!root)throw new Error('인쇄 전용 영역을 찾지 못했습니다.');
+    root.innerHTML='';
+    const clone=sheet.cloneNode(true);
+    clone.id='';
+    root.appendChild(clone);
+    $('dailyJournalPreviewModal')?.classList.remove('show');
+
+    const cls=root.id==='tfmsPrintRootV410'?'tfms-printing-v410':'tfms-printing-v402';
+    document.body.classList.add(cls);
+    try{
+      try{if(document.fonts?.ready)await document.fonts.ready}catch(e){}
+      await waitImages(clone);
+      await nextPaint();
+      await wait(80);
+      window.print();
+    }finally{
+      setTimeout(()=>{
+        document.body.classList.remove(cls);
+        root.innerHTML='';
+      },900);
+    }
+  }
+
+  // 업무일지 3종(기계실/대기배출/일상근무) 모두 동일한 준비 절차를 거쳐 직접 PDF 출력 가능
+  window.printDailyJournalV390=async function(type){
+    try{
+      const sheet=await preparePreview(type,null);
+      await printPreparedSheet(sheet);
+    }catch(e){
+      console.error('[TFMS v45.62 direct PDF]',e);
+      toast('PDF 출력 준비에 실패했습니다: '+(e?.message||e));
+    }
+  };
+
+  window.printSavedDailyLogV400=async function(id){
+    try{
+      const sheet=await preparePreview(null,id);
+      await printPreparedSheet(sheet);
+    }catch(e){
+      console.error('[TFMS v45.62 saved PDF]',e);
+      toast('저장자료 PDF 출력 준비에 실패했습니다: '+(e?.message||e));
+    }
+  };
+})();
+</script>
+
 </body></html>
