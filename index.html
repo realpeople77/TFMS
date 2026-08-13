@@ -22135,14 +22135,14 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 <script id="tfms-v4559-version-display-lock">
 (function(){
   'use strict';
-  const LABEL='v45.60 Daily Facility Scope Spacing Safe';
+  const LABEL='v45.61 Facility Journal Accordion Safe';
   const TITLE='TFMS '+LABEL;
-  const PARAM='45.60';
+  const PARAM='45.61';
   const FIXED_BUILD=Object.freeze({
-    version:'v45.60',
-    channel:'Daily Facility Scope Spacing Safe',
+    version:'v45.61',
+    channel:'Facility Journal Accordion Safe',
     buildDate:'2026.08.13',
-    title:'Daily log facility scope and spacing correction'
+    title:'Facility journal accordion and PDF action UX'
   });
 
   // Preserve the real history method, but normalize stale legacy ?v= values.
@@ -22188,7 +22188,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
     const badge=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
     if(!badge)return;
     lockTextProperty(badge,'textContent',LABEL);
-    try{badge.setAttribute('data-tfms-version-lock','45.60');}catch(e){}
+    try{badge.setAttribute('data-tfms-version-lock','45.61');}catch(e){}
   }
 
   function lockDocumentTitle(){
@@ -22325,6 +22325,277 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
   }
   function init(){[350,1100,2600].forEach(ms=>setTimeout(apply,ms))}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();
+</script>
+
+
+<!-- =========================================================
+     TFMS v45.61 Facility Journal Accordion Safe
+     Scope: 기계실·방재실 업무일지 presentation only.
+     Existing IDs, save/preview/print functions and DB schema are preserved.
+     General daily log is untouched. No MutationObserver.
+     ========================================================= -->
+<style id="tfms-v4561-facility-journal-style">
+#dailylog[data-v459-mode="facility"]{--fj-blue:#1767d4;--fj-navy:#173453;--fj-line:#d9e4f0;--fj-soft:#f7faff;--fj-green:#0f9f68;--fj-muted:#75869a}
+#dailylog[data-v459-mode="facility"] .v459-facility-journal{margin-top:10px!important}
+#dailylog[data-v459-mode="facility"] .v4561-facility-head{padding:14px 16px!important;border-radius:15px!important}
+#dailylog[data-v459-mode="facility"] .v4561-base-layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(310px,.55fr);gap:12px;align-items:stretch}
+#dailylog[data-v459-mode="facility"] .v4561-basic-side{min-width:0}
+#dailylog[data-v459-mode="facility"] .v4561-basic-side .notice{margin-bottom:11px!important;padding:10px 13px!important;font-size:11.5px!important;line-height:1.45!important}
+#dailylog[data-v459-mode="facility"] .v4561-basic-side .dj-grid{margin-top:0!important;gap:9px!important}
+#dailylog[data-v459-mode="facility"] .v4561-progress-card{border:1px solid var(--fj-line);background:#fff;border-radius:13px;padding:12px 14px;display:flex;flex-direction:column;justify-content:center;gap:9px;box-shadow:0 3px 12px rgba(17,58,103,.035)}
+#dailylog[data-v459-mode="facility"] .v4561-progress-card .head{display:flex;align-items:center;justify-content:space-between;gap:8px;font-weight:900;color:var(--fj-navy);font-size:13px}
+#dailylog[data-v459-mode="facility"] .v4561-progress-card .count{font-size:19px;color:#0f4f9b;letter-spacing:-.4px}
+#dailylog[data-v459-mode="facility"] .v4561-progress-track{height:7px;border-radius:999px;background:#eaf0f6;overflow:hidden}
+#dailylog[data-v459-mode="facility"] .v4561-progress-fill{height:100%;width:0;background:linear-gradient(90deg,#2f83e8,#1767d4);border-radius:999px;transition:width .2s ease}
+#dailylog[data-v459-mode="facility"] .v4561-progress-card small{font-size:10px;color:#7b8da2;line-height:1.4}
+#dailylog[data-v459-mode="facility"] .v4561-top-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:3px}
+#dailylog[data-v459-mode="facility"] .v4561-top-actions button{height:34px;border:1px solid #cbdced;border-radius:9px;background:#fff;color:#24527f;padding:0 11px;font-weight:900;font-size:10.5px;cursor:pointer}
+#dailylog[data-v459-mode="facility"] .v4561-top-actions button.primary{background:linear-gradient(90deg,#1263cb,#0b9baa);border-color:transparent;color:#fff}
+#dailylog[data-v459-mode="facility"] .dj-tabs{display:grid!important;grid-template-columns:1fr 1fr;gap:8px!important;margin:10px 0 0!important;padding:0!important;background:transparent!important;border:0!important}
+#dailylog[data-v459-mode="facility"] .dj-tab{min-height:39px!important;border:1px solid #d3e0ee!important;border-radius:10px!important;background:#fff!important;color:#53677f!important;font-size:11.5px!important;font-weight:900!important}
+#dailylog[data-v459-mode="facility"] .dj-tab.active{background:#edf5ff!important;border-color:#76aef0!important;color:#0e57ad!important;box-shadow:0 0 0 2px rgba(23,103,212,.06)!important}
+#dailylog[data-v459-mode="facility"] #djTabMachine{display:none!important}
+#dailylog[data-v459-mode="facility"] #djFormMachine{display:none!important}
+
+/* Facility journal document panels */
+#dailylog[data-v459-mode="facility"] #djFormWork,
+#dailylog[data-v459-mode="facility"] #djFormAir{padding:13px 14px!important;border-radius:15px!important;background:#fff!important}
+#dailylog[data-v459-mode="facility"] #djFormWork>.section-title,
+#dailylog[data-v459-mode="facility"] #djFormAir>.section-title{font-size:16px!important;margin-bottom:9px!important;color:var(--fj-navy)!important}
+#dailylog[data-v459-mode="facility"] #djFormAir>.notice{padding:9px 12px!important;margin-bottom:10px!important;font-size:10.5px!important}
+
+/* quick section navigation */
+#dailylog[data-v459-mode="facility"] .v4561-quicknav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin:8px 0 10px}
+#dailylog[data-v459-mode="facility"] .v4561-quicknav button{height:37px;border:1px solid #d5e1ee;background:#fff;border-radius:9px;color:#52677f;font-weight:900;font-size:10.5px;cursor:pointer;white-space:nowrap}
+#dailylog[data-v459-mode="facility"] .v4561-quicknav button.active{background:#1767d4;border-color:#1767d4;color:#fff}
+#dailylog[data-v459-mode="facility"] .v4561-quicknav button.done:not(.active){background:#eefbf5;border-color:#bfe9d5;color:#08754e}
+
+/* Air statutory record accordion */
+#dailylog[data-v459-mode="facility"] #djFormAir .air-input-section.v4561-acc{border:1px solid #d9e4ef!important;border-radius:12px!important;background:#fff!important;margin:8px 0!important;padding:0!important;overflow:hidden!important;box-shadow:none!important}
+#dailylog[data-v459-mode="facility"] #djFormAir .air-input-section.v4561-acc>h3{display:none!important}
+#dailylog[data-v459-mode="facility"] .v4561-acc-head{width:100%;min-height:43px;border:0;background:#fff;padding:9px 12px;display:flex;align-items:center;gap:9px;text-align:left;cursor:pointer;color:var(--fj-navy)}
+#dailylog[data-v459-mode="facility"] .v4561-acc-head:hover{background:#fbfdff}
+#dailylog[data-v459-mode="facility"] .v4561-acc-no{width:25px;height:25px;border-radius:8px;display:grid;place-items:center;background:#edf5ff;color:#1767d4;font-size:11px;font-weight:900;flex:0 0 auto}
+#dailylog[data-v459-mode="facility"] .v4561-acc-title{font-size:12.5px;font-weight:900;flex:1}
+#dailylog[data-v459-mode="facility"] .v4561-acc-sub{font-size:9.5px;color:#8291a3;font-weight:700;margin-left:5px}
+#dailylog[data-v459-mode="facility"] .v4561-acc-state{font-size:9.5px;font-weight:900;padding:4px 8px;border-radius:999px;background:#f1f5f9;color:#7a8898;white-space:nowrap}
+#dailylog[data-v459-mode="facility"] .v4561-acc-state.done{background:#eaf9f2;color:#08754e}
+#dailylog[data-v459-mode="facility"] .v4561-acc-arrow{font-size:14px;color:#5e738d;transition:transform .15s}
+#dailylog[data-v459-mode="facility"] .v4561-acc.is-open .v4561-acc-arrow{transform:rotate(180deg)}
+#dailylog[data-v459-mode="facility"] .v4561-acc:not(.is-open)>:not(.v4561-acc-head):not(h3){display:none!important}
+#dailylog[data-v459-mode="facility"] .v4561-acc.is-open>:not(.v4561-acc-head):not(h3){margin-left:12px!important;margin-right:12px!important}
+#dailylog[data-v459-mode="facility"] .v4561-acc.is-open>:last-child{margin-bottom:12px!important}
+#dailylog[data-v459-mode="facility"] #djFormAir .air-outlet-row{gap:7px!important;margin-bottom:6px!important}
+#dailylog[data-v459-mode="facility"] #djFormAir input,
+#dailylog[data-v459-mode="facility"] #djFormAir select,
+#dailylog[data-v459-mode="facility"] #djFormAir textarea{min-height:35px!important;font-size:11px!important;border-radius:8px!important}
+#dailylog[data-v459-mode="facility"] #djFormAir textarea{min-height:58px!important}
+#dailylog[data-v459-mode="facility"] #djFormAir .dj-grid{gap:8px!important}
+#dailylog[data-v459-mode="facility"] #djFormAir>.buttons,
+#dailylog[data-v459-mode="facility"] #djFormWork>.buttons{display:none!important}
+
+/* Existing work/PDF form compacting */
+#dailylog[data-v459-mode="facility"] #djFormWork .dj-grid{gap:8px!important}
+#dailylog[data-v459-mode="facility"] #djFormWork .dj-field label{font-size:11px!important;margin-bottom:4px!important}
+#dailylog[data-v459-mode="facility"] #djFormWork input{min-height:35px!important;font-size:11px!important}
+#dailylog[data-v459-mode="facility"] #wjWorkRows .dj-grid{margin-bottom:6px!important}
+#dailylog[data-v459-mode="facility"] #djFormWork .section-title[style]{margin-top:12px!important}
+
+@media(max-width:1200px){
+  #dailylog[data-v459-mode="facility"] .v4561-base-layout{grid-template-columns:1fr}
+  #dailylog[data-v459-mode="facility"] .v4561-progress-card{display:grid;grid-template-columns:auto 1fr auto;align-items:center}
+  #dailylog[data-v459-mode="facility"] .v4561-progress-card small{grid-column:1/-1}
+}
+@media(max-width:850px){
+  #dailylog[data-v459-mode="facility"] .v4561-quicknav{grid-template-columns:1fr 1fr}
+  #dailylog[data-v459-mode="facility"] .dj-tabs{grid-template-columns:1fr}
+  #dailylog[data-v459-mode="facility"] .v4561-progress-card{display:flex}
+}
+</style>
+<script id="tfms-v4561-facility-journal-controller">
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const LABEL='v45.61 Facility Journal Accordion Safe';
+function syncVersion(){
+  try{
+    const b=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
+    if(b&&b.textContent!==LABEL)b.textContent=LABEL;
+    const u=new URL(location.href);
+    if(u.searchParams.get('v')!=='45.61'){
+      u.searchParams.set('v','45.61');
+      // v45.60 history lock already normalizes to the current lock value, which was updated to 45.61 above.
+      history.replaceState(history.state,'',u.pathname+u.search+u.hash);
+    }
+  }catch(e){}
+}
+function activeType(){
+  if($('djFormAir')?.classList.contains('active'))return 'air';
+  return 'work';
+}
+window.previewFacilityJournalV4561=function(){
+  const t=activeType();
+  if(typeof window.previewDailyJournalV390==='function')window.previewDailyJournalV390(t);
+};
+window.printFacilityJournalV4561=function(){
+  const t=activeType();
+  if(typeof window.printDailyJournalV390==='function')window.printDailyJournalV390(t);
+};
+window.saveFacilityJournalV4561=function(){
+  const t=activeType();
+  if(typeof window.saveDailyJournalV390==='function')return window.saveDailyJournalV390(t);
+};
+
+function filled(el){
+  if(!el||el.disabled)return false;
+  if(el.type==='radio'||el.type==='checkbox')return !!el.checked;
+  const v=String(el.value||'').trim();
+  if(!v)return false;
+  // Default outlet numbers are labels rather than meaningful completion data.
+  if(el.readOnly&&/^\d+$/.test(v))return false;
+  return true;
+}
+function sectionHasInput(sec){
+  return [...sec.querySelectorAll('input,select,textarea')].some(filled);
+}
+function allAcc(){return [...document.querySelectorAll('#djFormAir .air-input-section.v4561-acc')];}
+function updateProgress(){
+  const type=activeType();
+  let done=0,total=0;
+  if(type==='air'){
+    const secs=allAcc(); total=secs.length;
+    secs.forEach((sec,i)=>{
+      const ok=sectionHasInput(sec);if(ok)done++;
+      sec.querySelector('.v4561-acc-state')?.classList.toggle('done',ok);
+      const st=sec.querySelector('.v4561-acc-state');if(st)st.textContent=ok?'입력됨':'미작성';
+      const q=document.querySelector(`.v4561-quicknav button[data-index="${i}"]`);if(q)q.classList.toggle('done',ok);
+    });
+  }else{
+    const f=$('djFormWork');
+    const groups=[
+      ['wjRank1','wjName1','wjTime1','wjRank2','wjName2','wjTime2'],
+      ['wjWorkRows'],
+      ['wjAttach1','wjAttach2','wjApprover1','wjApprover2']
+    ];
+    total=groups.length;
+    done=groups.filter(g=>g.some(id=>id==='wjWorkRows' ? !!String($(id)?.textContent||'').trim() : filled($(id)))).length;
+  }
+  const count=$('v4561ProgressCount');if(count)count.textContent=`${done}/${total}`;
+  const fill=$('v4561ProgressFill');if(fill)fill.style.width=(total?Math.round(done/total*100):0)+'%';
+  const desc=$('v4561ProgressDesc');if(desc)desc.textContent=type==='air'?'대기배출 기록부 섹션 작성 현황':'업무일지 작성 현황';
+}
+window.toggleFacilityAccordionV4561=function(index,forceOpen){
+  const secs=allAcc(); const sec=secs[index]; if(!sec)return;
+  const open=forceOpen===true ? true : !sec.classList.contains('is-open');
+  sec.classList.toggle('is-open',open);
+  document.querySelectorAll('.v4561-quicknav button').forEach((b,i)=>b.classList.toggle('active',i===index&&open));
+};
+window.openFacilitySectionV4561=function(index){
+  allAcc().forEach((s,i)=>s.classList.toggle('is-open',i===index));
+  document.querySelectorAll('.v4561-quicknav button').forEach((b,i)=>b.classList.toggle('active',i===index));
+  const sec=allAcc()[index];
+  if(sec)sec.scrollIntoView({behavior:'smooth',block:'nearest'});
+};
+function makeAccordion(sec,index,title,sub){
+  if(!sec||sec.dataset.v4561Acc==='1')return;
+  sec.dataset.v4561Acc='1';sec.classList.add('v4561-acc');
+  const old=sec.querySelector(':scope > h3');if(old)old.style.display='none';
+  const head=document.createElement('button');head.type='button';head.className='v4561-acc-head';
+  head.innerHTML=`<span class="v4561-acc-no">${index+1}</span><span class="v4561-acc-title">${title}<span class="v4561-acc-sub">${sub}</span></span><span class="v4561-acc-state">미작성</span><span class="v4561-acc-arrow">⌄</span>`;
+  head.addEventListener('click',()=>window.toggleFacilityAccordionV4561(index));
+  sec.insertBefore(head,sec.firstChild);
+  sec.classList.toggle('is-open',index===0);
+}
+function splitAirEtc(measure){
+  if(!measure||$('v4561AirEtcSection'))return $('v4561AirEtcSection');
+  const grid=measure.querySelector('.dj-grid');if(!grid)return null;
+  const ids=['airOpinionNew','airEtc','airOfficerRankNew','airOfficerNameNew'];
+  const fields=ids.map(id=>$(id)?.closest('.dj-field')).filter(Boolean);
+  if(!fields.length)return null;
+  const sec=document.createElement('div');sec.id='v4561AirEtcSection';sec.className='air-input-section';
+  const h=document.createElement('h3');h.textContent='5. 기타 기록';sec.appendChild(h);
+  const newGrid=document.createElement('div');newGrid.className='dj-grid';sec.appendChild(newGrid);
+  fields.forEach(f=>newGrid.appendChild(f));
+  measure.insertAdjacentElement('afterend',sec);
+  return sec;
+}
+function upgradeAir(){
+  const form=$('djFormAir');if(!form)return;
+  const original=[...form.querySelectorAll(':scope > .air-input-section')];
+  if(original.length<4)return;
+  const outlet=original[0],operation=original[1],repair=original[2],measure=original[3];
+  const etc=splitAirEtc(measure);
+  const order=[outlet,operation,measure,repair,etc].filter(Boolean);
+  order.forEach(sec=>form.appendChild(sec));
+  const defs=[
+    ['배출시설','배출구별 가동시간'],
+    ['운전점검','방지시설 운전사항'],
+    ['계측기록','자가측정 및 운전기록'],
+    ['이상조치','방지시설 보수사항'],
+    ['기타','환경기술인 의견·기타 기록']
+  ];
+  order.forEach((sec,i)=>makeAccordion(sec,i,defs[i][0],defs[i][1]));
+  let q=form.querySelector('.v4561-quicknav');
+  if(!q){
+    q=document.createElement('div');q.className='v4561-quicknav';
+    q.innerHTML=defs.map((d,i)=>`<button type="button" data-index="${i}" onclick="openFacilitySectionV4561(${i})">${i+1}. ${d[0]}</button>`).join('');
+    const notice=form.querySelector(':scope > .notice');
+    (notice||form.querySelector(':scope > .section-title'))?.insertAdjacentElement('afterend',q);
+  }
+  q.querySelector('button')?.classList.add('active');
+}
+function buildTop(){
+  const page=$('dailylog');const base=[...page?.querySelectorAll(':scope > .panel')||[]].find(p=>p.querySelector('#djFacility'));
+  if(!base||base.dataset.v4561Top==='1')return;
+  base.dataset.v4561Top='1';base.classList.add('v4561-facility-head');
+  const notice=base.querySelector(':scope > .notice');
+  const grid=base.querySelector(':scope > .dj-grid');
+  if(!grid)return;
+  const basic=document.createElement('div');basic.className='v4561-basic-side';
+  if(notice)basic.appendChild(notice);basic.appendChild(grid);
+  const progress=document.createElement('div');progress.className='v4561-progress-card';
+  progress.innerHTML=`<div class="head"><span>작성 진행률</span><strong class="count" id="v4561ProgressCount">0/0</strong></div><div class="v4561-progress-track"><div class="v4561-progress-fill" id="v4561ProgressFill"></div></div><small id="v4561ProgressDesc">업무일지 작성 현황</small><div class="v4561-top-actions"><button type="button" onclick="previewFacilityJournalV4561()">미리보기</button><button type="button" onclick="printFacilityJournalV4561()">PDF 출력</button><button type="button" class="primary" onclick="saveFacilityJournalV4561()">저장</button></div>`;
+  const layout=document.createElement('div');layout.className='v4561-base-layout';layout.appendChild(basic);layout.appendChild(progress);
+  const title=base.querySelector(':scope > .section-title');title?.insertAdjacentElement('afterend',layout);
+  const tabs=base.querySelector('.dj-tabs');if(tabs){
+    if($('djTabWork'))$('djTabWork').textContent='업무일지 작성';
+    if($('djTabAir'))$('djTabAir').textContent='대기배출 기록부';
+  }
+}
+function apply(){
+  syncVersion();
+  const page=$('dailylog');if(!page||page.getAttribute('data-v459-mode')!=='facility')return;
+  buildTop();upgradeAir();updateProgress();
+}
+const oldForm=window.showDailyFormV390;
+if(typeof oldForm==='function'&&!oldForm.__v4561){
+  const wrapped=function(){const r=oldForm.apply(this,arguments);setTimeout(()=>{apply();updateProgress();},30);return r};
+  wrapped.__v4561=true;window.showDailyFormV390=wrapped;
+}
+const oldMode=window.setDailyModeV459;
+if(typeof oldMode==='function'&&!oldMode.__v4561){
+  const wrapped=function(){const r=oldMode.apply(this,arguments);if(arguments[0]==='facility')setTimeout(apply,60);return r};
+  wrapped.__v4561=true;window.setDailyModeV459=wrapped;
+}
+const oldShow=window.showPage;
+if(typeof oldShow==='function'&&!oldShow.__v4561daily){
+  const wrapped=function(){const r=oldShow.apply(this,arguments);if(arguments[0]==='dailylog')setTimeout(apply,260);return r};
+  wrapped.__v4561daily=true;window.showPage=wrapped;
+}
+const oldNav=window.navTo;
+if(typeof oldNav==='function'&&!oldNav.__v4561daily){
+  const wrapped=function(){const r=oldNav.apply(this,arguments);if(arguments[0]==='dailylog')setTimeout(apply,280);return r};
+  wrapped.__v4561daily=true;window.navTo=wrapped;
+}
+const page=$('dailylog');
+if(page&&!page.dataset.v4561InputBound){
+  page.dataset.v4561InputBound='1';
+  page.addEventListener('input',()=>{if(page.getAttribute('data-v459-mode')==='facility')updateProgress();});
+  page.addEventListener('change',()=>{if(page.getAttribute('data-v459-mode')==='facility')updateProgress();});
+}
+function init(){syncVersion();setTimeout(apply,500)}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
 </script>
 </body></html>
