@@ -16488,7 +16488,7 @@ function imgSrc(){const src=$('tfms-v423-fire-original-form-controller')?.textCo
 const PW=1653,PH=2337;
 function box(x,y,w,h,text,cls=''){return `<div class="fire-overlay-v430 ${cls}" style="left:${x/PW*100}%;top:${y/PH*100}%;width:${w/PW*100}%;height:${h/PH*100}%">${text}</div>`;}
 function mark(x,y){return box(x,y,30,30,'✓','check');}
-function gradeMark(v){const pos={'특급':[1088,396],'1급':[1204,396],'2급':[1316,396],'3급':[1428,396]}[v];return pos?mark(pos[0],pos[1]):'';}
+function gradeMark(v){const pos={'특급':[1106,396],'1급':[1222,396],'2급':[1334,396],'3급':[1446,396]}[v];return pos?mark(pos[0],pos[1]):'';}
 function result(v,i){const good=[866,1095,1324,1553],bad=[916,1145,1374,1603];return v==='양호'?[1166,good[i]]:v==='불량'?[1166,bad[i]]:[];}
 function method(v){return ({'대면':[675,1774],'서면':[821,1774],'정보통신':[970,1774]}[v]||[]);}
 function remedy(v){return ({'이전':[675,1850],'제거':[821,1850],'수리·교체':[970,1850],'기타':[1167,1850]}[v]||[]);}
