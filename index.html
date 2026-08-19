@@ -16479,7 +16479,7 @@ const val=id=>$(id)?.value??'';
 const radio=name=>document.querySelector(`input[name="${name}"]:checked`)?.value||'';
 const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const toast=m=>{try{window.showToast?.(m)}catch(e){alert(m)}};
-window.TFMS_BUILD=Object.freeze({version:'v45.71',channel:'Enterprise Stable',buildDate:'2026.08.18',title:'점검주기 관리자·사용자 역할별 UX 분리 및 주소창 동기화'});
+window.TFMS_BUILD=Object.freeze({version:'v45.72',channel:'Enterprise Stable',buildDate:'2026.08.18',title:'일반담당자 시설·연계설비 범위 복구 및 주소창 동기화'});
 function applyVersion(){const b=window.TFMS_BUILD,label=`${b.version} ${b.channel}`;const badge=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');if(badge)badge.textContent=label;document.querySelectorAll('.logo-title small').forEach(el=>el.textContent=`시설 유지관리 이력관리 시스템 · ${label}`);const current=document.querySelector('#tfmsVersionModal .current-build');if(current)current.textContent=`현재 버전: ${label} · Build ${b.buildDate}`;}
 function data(){return{date:val('fireDate'),performer:val('firePerformer'),facility:val('fireFacility'),grade:val('fireGrade'),address:val('fireAddress'),basement:val('fireBasement'),ground:val('fireGround'),totalArea:val('fireTotalArea'),floorArea:val('fireFloorArea'),buildings:val('fireBuildings'),checks:[0,1,2,3].map(i=>({content:val(`fireCheck${i}`),result:radio(`fireResult${i}`),action:val(`fireAction${i}`)})),improvement:{reportDate:val('fireReportDate'),method:val('fireReportMethod'),reportTo:val('fireReportTo'),remedy:val('fireRemedy')},extinguishers:Array.isArray(window.fireExtRowsV420)?window.fireExtRowsV420:[]};}
 function fmtDate(v){const m=String(v||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);return m?`${m[1]}. ${Number(m[2])}. ${Number(m[3])}.`:String(v||'');}
@@ -16831,7 +16831,7 @@ document.addEventListener('DOMContentLoaded',applyVersion);if(document.readyStat
 #dashboard.tfms-dashboard-v431>.stats .stat{min-height:70px}
 @media(max-width:900px){#dashboard.tfms-dashboard-v431>.stats{grid-template-columns:1fr 1fr}}
 </style>
-<!-- TFMS v45.71 Enterprise Stable: 점검주기 관리자·사용자 역할별 UX 분리 및 주소창 동기화 -->
+<!-- TFMS v45.72 Enterprise Stable: 점검주기 관리자·사용자 역할별 UX 분리 및 주소창 동기화 -->
 <script id="tfms-v431-controller">
 (function(){
 'use strict';
@@ -22131,14 +22131,14 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 <script id="tfms-v4559-version-display-lock">
 (function(){
   'use strict';
-  const LABEL='v45.71 Cycle Admin User Role Split UX Safe';
+  const LABEL='v45.72 User Facility Asset Scope Hotfix Safe';
   const TITLE='TFMS '+LABEL;
-  const PARAM='45.71';
+  const PARAM='45.72';
   const FIXED_BUILD=Object.freeze({
-    version:'v45.71',
-    channel:'Cycle Admin User Role Split UX Safe',
+    version:'v45.72',
+    channel:'User Facility Asset Scope Hotfix Safe',
     buildDate:'2026.08.18',
-    title:'소방 법정서식 체크 위치 미세조정 및 버전/주소창 동기화'
+    title:'일반담당자 시설·연계설비 범위 복구 및 버전/주소창 동기화'
   });
 
   // Preserve the real history method, but normalize stale legacy ?v= values.
@@ -22184,7 +22184,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
     const badge=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
     if(!badge)return;
     lockTextProperty(badge,'textContent',LABEL);
-    try{badge.setAttribute('data-tfms-version-lock','45.71');}catch(e){}
+    try{badge.setAttribute('data-tfms-version-lock','45.72');}catch(e){}
   }
 
   function lockDocumentTitle(){
@@ -22413,14 +22413,14 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 (function(){
 'use strict';
 const $=id=>document.getElementById(id);
-const LABEL='v45.71 Cycle Admin User Role Split UX Safe';
+const LABEL='v45.72 User Facility Asset Scope Hotfix Safe';
 function syncVersion(){
   try{
     const b=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
     if(b&&b.textContent!==LABEL)b.textContent=LABEL;
     const u=new URL(location.href);
-    if(u.searchParams.get('v')!=='45.71'){
-      u.searchParams.set('v','45.71');
+    if(u.searchParams.get('v')!=='45.72'){
+      u.searchParams.set('v','45.72');
       // v45.60 history lock already normalizes to the current lock value, which was updated to 45.61 above.
       history.replaceState(history.state,'',u.pathname+u.search+u.hash);
     }
@@ -23162,10 +23162,10 @@ const oldFire=window.navToFireV420;if(typeof oldFire==='function'&&!oldFire.__v4
 })();
 </script>
 
-<!-- TFMS v45.71 Cycle Role Split UX Safe -->
+<!-- TFMS v45.72 Cycle Role Split UX Safe -->
 <style id="tfms-v4571-cycle-role-split-style">
 /* =========================================================
-   v45.71 점검주기 관리 역할별 UX
+   v45.72 점검주기 관리 역할별 UX
    - 관리자: 점검기준 관리 중심
    - 일반담당자: 내 점검업무 실행 중심
    - 조회전용: 관리자 현황 조회 중심, 편집영역 숨김
@@ -23269,6 +23269,86 @@ const oldShow=window.showPage;if(typeof oldShow==='function'&&!oldShow.__v4571cy
 const oldNav=window.navTo;if(typeof oldNav==='function'&&!oldNav.__v4571cycle){const w=function(id){const r=oldNav.apply(this,arguments);if(id==='cycle')setTimeout(apply,80);return r};w.__v4571cycle=true;window.navTo=w}
 const oldRender=window.renderCycleTasks;if(typeof oldRender==='function'&&!oldRender.__v4571cycle){const w=function(){const r=oldRender.apply(this,arguments);setTimeout(apply,0);return r};w.__v4571cycle=true;window.renderCycleTasks=w;try{renderCycleTasks=w}catch(e){}}
 const oldToday=window.renderTodayTasks;if(typeof oldToday==='function'&&!oldToday.__v4571cycle){const w=function(){const r=oldToday.apply(this,arguments);setTimeout(()=>{if(role()==='user')renderUser()},0);return r};w.__v4571cycle=true;window.renderTodayTasks=w}
+})();
+</script>
+
+
+<!-- TFMS v45.72 User Facility Asset Scope Hotfix Safe -->
+<script id="tfms-v4572-user-facility-asset-scope-controller">
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+function sess(){try{return JSON.parse(sessionStorage.getItem('tfmsSession')||'{}')}catch(e){return {}}}
+function norm(v){return String(v||'').trim().toLowerCase().replace(/[\s·ㆍ.\-_]/g,'').replace(/시설안전운영팀/g,'안전시설운영팀')}
+function role(){
+  const s=sess();let r='';
+  try{r=window.cloudProfile?.role||window.getTfmsCloudProfile?.()?.role||window.tfmsRole||s.role||''}catch(e){r=s.role||''}
+  r=String(r).trim().toLowerCase();
+  if(r==='관리자'||r.includes('팀 관리자'))return 'admin';
+  if(r==='조회전용'||r.includes('조회'))return 'viewer';
+  return r||'user';
+}
+function dept(){
+  const s=sess(),p=(()=>{try{return window.getTfmsCloudProfile?.()||window.cloudProfile||{}}catch(e){return {}}})();
+  const vals=[p.department?.name,p.department_name,p.dept,s.dept,s.department,window.currentUserDept,window.tfmsUserDept];
+  return String(vals.find(v=>v&&String(v).trim()&&String(v).trim()!=='전체')||'').trim();
+}
+function facilityRows(){
+  try{if(typeof getFacilityMasterSource==='function'){const x=getFacilityMasterSource();if(Array.isArray(x)&&x.length)return x}}catch(e){}
+  try{if(typeof facilityMasterStable!=='undefined'&&Array.isArray(facilityMasterStable))return facilityMasterStable}catch(e){}
+  try{if(typeof facilityMaster!=='undefined'&&Array.isArray(facilityMaster))return facilityMaster}catch(e){}
+  return [];
+}
+function facDept(f){return f?.dept||f?.department_name||f?.dept_name||f?.department?.name||(typeof f?.department==='string'?f.department:'')||''}
+function allowedFacilities(){
+  const rows=facilityRows(),r=role(),d=norm(dept());
+  let list=(r==='admin'||r==='viewer'||!d)?rows:rows.filter(f=>norm(facDept(f))===d);
+  // Legacy rows may temporarily have no department after DB hydration. Recover only names already known to the user's scoped department.
+  if(!list.length&&r!=='admin'&&r!=='viewer'&&d){
+    try{list=rows.filter(f=>norm(typeof getScopedFacilityDept==='function'?getScopedFacilityDept(f.name):'')===d)}catch(e){}
+  }
+  const seen=new Set();return list.filter(f=>{const n=String(f?.name||'').trim();if(!n||seen.has(n))return false;seen.add(n);return true});
+}
+function assetEntries(){
+  try{if(typeof getAssetEntries==='function'){const e=getAssetEntries();if(Array.isArray(e))return e}}catch(e){}
+  try{return Object.entries(window.assetData||(typeof assetData!=='undefined'?assetData:{})||{})}catch(e){return Object.entries(window.assetData||{})}
+}
+function assetFacility(a){return String(a?.facility||a?.facility_name||a?.facilityName||'').trim()}
+function assetLabel(a){const space=a?.space||a?.location||a?.location_detail||a?.locationDetail||'기본시설';return `${space} · ${a?.name||'설비'}`}
+function fillAssets(){
+  const fac=$('todayManualFacilityV416'),sel=$('todayManualAssetV416');if(!fac||!sel)return;
+  const facility=String(fac.value||'').trim(),keep=sel.value;
+  const rows=assetEntries().filter(([,a])=>assetFacility(a)===facility&&a?.name).sort((a,b)=>assetLabel(a[1]).localeCompare(assetLabel(b[1]),'ko'));
+  sel.innerHTML='<option value="">시설 공통업무</option>';
+  rows.forEach(([key,a])=>{const o=document.createElement('option');o.value=key;o.textContent=assetLabel(a);sel.appendChild(o)});
+  if(keep&&[...sel.options].some(o=>o.value===keep))sel.value=keep;
+  sel.disabled=!facility;
+}
+function fillFacilities(){
+  const fac=$('todayManualFacilityV416');if(!fac)return false;
+  const list=allowedFacilities(),keep=fac.value;
+  fac.innerHTML='';
+  list.forEach(f=>{const o=document.createElement('option');o.value=f.name;o.textContent=f.name;fac.appendChild(o)});
+  if(keep&&[...fac.options].some(o=>o.value===keep))fac.value=keep;
+  else if(fac.options.length)fac.selectedIndex=0;
+  fac.disabled=false;
+  if(fac.dataset.v4572Bound!=='1'){
+    fac.dataset.v4572Bound='1';
+    fac.addEventListener('change',fillAssets);
+  }
+  fillAssets();
+  return list.length>0;
+}
+function apply(){
+  const page=$('today');if(!page)return;
+  fillFacilities();
+}
+function schedule(){[0,100,300,700,1400,2600].forEach(ms=>setTimeout(apply,ms))}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});else schedule();
+const oldShow=window.showPage;if(typeof oldShow==='function'&&!oldShow.__v4572scope){const w=function(id){const r=oldShow.apply(this,arguments);if(id==='today')schedule();return r};w.__v4572scope=true;window.showPage=w}
+const oldNav=window.navTo;if(typeof oldNav==='function'&&!oldNav.__v4572scope){const w=function(id){const r=oldNav.apply(this,arguments);if(id==='today')schedule();return r};w.__v4572scope=true;window.navTo=w}
+const oldLoad=window.loadEnterpriseData;if(typeof oldLoad==='function'&&!oldLoad.__v4572scope){const w=async function(){const r=await oldLoad.apply(this,arguments);schedule();return r};w.__v4572scope=true;window.loadEnterpriseData=w}
+const oldRender=window.renderTodayTasks;if(typeof oldRender==='function'&&!oldRender.__v4572scope){const w=function(){const r=oldRender.apply(this,arguments);setTimeout(apply,30);return r};w.__v4572scope=true;window.renderTodayTasks=w}
 })();
 </script>
 </body></html>
