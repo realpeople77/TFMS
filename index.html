@@ -16479,7 +16479,7 @@ const val=id=>$(id)?.value??'';
 const radio=name=>document.querySelector(`input[name="${name}"]:checked`)?.value||'';
 const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const toast=m=>{try{window.showToast?.(m)}catch(e){alert(m)}};
-window.TFMS_BUILD=Object.freeze({version:'v45.70',channel:'Enterprise Stable',buildDate:'2026.08.18',title:'소방 법정서식 양호 체크 상향 미세조정 및 주소창 동기화'});
+window.TFMS_BUILD=Object.freeze({version:'v45.71',channel:'Enterprise Stable',buildDate:'2026.08.18',title:'점검주기 관리자·사용자 역할별 UX 분리 및 주소창 동기화'});
 function applyVersion(){const b=window.TFMS_BUILD,label=`${b.version} ${b.channel}`;const badge=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');if(badge)badge.textContent=label;document.querySelectorAll('.logo-title small').forEach(el=>el.textContent=`시설 유지관리 이력관리 시스템 · ${label}`);const current=document.querySelector('#tfmsVersionModal .current-build');if(current)current.textContent=`현재 버전: ${label} · Build ${b.buildDate}`;}
 function data(){return{date:val('fireDate'),performer:val('firePerformer'),facility:val('fireFacility'),grade:val('fireGrade'),address:val('fireAddress'),basement:val('fireBasement'),ground:val('fireGround'),totalArea:val('fireTotalArea'),floorArea:val('fireFloorArea'),buildings:val('fireBuildings'),checks:[0,1,2,3].map(i=>({content:val(`fireCheck${i}`),result:radio(`fireResult${i}`),action:val(`fireAction${i}`)})),improvement:{reportDate:val('fireReportDate'),method:val('fireReportMethod'),reportTo:val('fireReportTo'),remedy:val('fireRemedy')},extinguishers:Array.isArray(window.fireExtRowsV420)?window.fireExtRowsV420:[]};}
 function fmtDate(v){const m=String(v||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);return m?`${m[1]}. ${Number(m[2])}. ${Number(m[3])}.`:String(v||'');}
@@ -16831,7 +16831,7 @@ document.addEventListener('DOMContentLoaded',applyVersion);if(document.readyStat
 #dashboard.tfms-dashboard-v431>.stats .stat{min-height:70px}
 @media(max-width:900px){#dashboard.tfms-dashboard-v431>.stats{grid-template-columns:1fr 1fr}}
 </style>
-<!-- TFMS v45.70 Enterprise Stable: 소방 법정서식 양호 체크 상향 미세조정 및 주소창 동기화 -->
+<!-- TFMS v45.71 Enterprise Stable: 점검주기 관리자·사용자 역할별 UX 분리 및 주소창 동기화 -->
 <script id="tfms-v431-controller">
 (function(){
 'use strict';
@@ -22131,12 +22131,12 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 <script id="tfms-v4559-version-display-lock">
 (function(){
   'use strict';
-  const LABEL='v45.70 Fire Result Check Upward Tweak URL Sync Safe';
+  const LABEL='v45.71 Cycle Admin User Role Split UX Safe';
   const TITLE='TFMS '+LABEL;
-  const PARAM='45.70';
+  const PARAM='45.71';
   const FIXED_BUILD=Object.freeze({
-    version:'v45.70',
-    channel:'Fire Form Final Alignment URL Sync Safe',
+    version:'v45.71',
+    channel:'Cycle Admin User Role Split UX Safe',
     buildDate:'2026.08.18',
     title:'소방 법정서식 체크 위치 미세조정 및 버전/주소창 동기화'
   });
@@ -22184,7 +22184,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
     const badge=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
     if(!badge)return;
     lockTextProperty(badge,'textContent',LABEL);
-    try{badge.setAttribute('data-tfms-version-lock','45.70');}catch(e){}
+    try{badge.setAttribute('data-tfms-version-lock','45.71');}catch(e){}
   }
 
   function lockDocumentTitle(){
@@ -22413,14 +22413,14 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 (function(){
 'use strict';
 const $=id=>document.getElementById(id);
-const LABEL='v45.70 Fire Result Check Upward Tweak URL Sync Safe';
+const LABEL='v45.71 Cycle Admin User Role Split UX Safe';
 function syncVersion(){
   try{
     const b=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
     if(b&&b.textContent!==LABEL)b.textContent=LABEL;
     const u=new URL(location.href);
-    if(u.searchParams.get('v')!=='45.70'){
-      u.searchParams.set('v','45.70');
+    if(u.searchParams.get('v')!=='45.71'){
+      u.searchParams.set('v','45.71');
       // v45.60 history lock already normalizes to the current lock value, which was updated to 45.61 above.
       history.replaceState(history.state,'',u.pathname+u.search+u.hash);
     }
@@ -23159,6 +23159,116 @@ function init(){apply();bind();setTimeout(apply,250);setTimeout(apply,900);}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 // Hook page entry without altering existing navigation/business logic.
 const oldFire=window.navToFireV420;if(typeof oldFire==='function'&&!oldFire.__v4566){const w=function(){const r=oldFire.apply(this,arguments);setTimeout(apply,70);return r};w.__v4566=true;window.navToFireV420=w;}
+})();
+</script>
+
+<!-- TFMS v45.71 Cycle Role Split UX Safe -->
+<style id="tfms-v4571-cycle-role-split-style">
+/* =========================================================
+   v45.71 점검주기 관리 역할별 UX
+   - 관리자: 점검기준 관리 중심
+   - 일반담당자: 내 점검업무 실행 중심
+   - 조회전용: 관리자 현황 조회 중심, 편집영역 숨김
+   기존 cycleTasks / todayTasks / 저장·생성 로직은 변경하지 않음
+   ========================================================= */
+#cycle.v4571-cycle{--c71-blue:#1764d6;--c71-navy:#153b68;--c71-line:#dbe5f0;--c71-soft:#f7faff;--c71-good:#16865d;--c71-warn:#c87914;--c71-bad:#d84b4b}
+#cycle.v4571-cycle>.title-row{min-height:62px!important;margin-bottom:10px!important;align-items:flex-start!important}
+#cycle.v4571-cycle .v4571-role-badge{display:inline-flex;align-items:center;height:24px;padding:0 9px;margin-left:7px;border-radius:999px;background:#edf5ff;color:#1764d6;border:1px solid #c9def8;font-size:10.5px;font-weight:900;vertical-align:middle}
+#cycle.v4571-cycle .v4571-title-actions{margin-left:auto;display:flex;align-items:center;justify-content:flex-end;gap:7px;flex-wrap:wrap}
+#cycle.v4571-cycle .v4571-title-actions button{height:36px;padding:0 12px;border:1px solid #cbdbea;border-radius:9px;background:#fff;color:#315c86;font-size:11.5px;font-weight:850;cursor:pointer;white-space:nowrap}
+#cycle.v4571-cycle .v4571-title-actions button.primary{border-color:#1764d6;background:#1764d6;color:#fff}
+#cycle.v4571-cycle .v4571-title-actions button:hover{filter:brightness(.98)}
+/* ===== 관리자/조회전용 ===== */
+#cycle.v4571-admin,#cycle.v4571-viewer{grid-template-columns:minmax(0,1fr) 390px!important;gap:11px!important;align-items:start!important}
+#cycle.v4571-admin.active,#cycle.v4571-viewer.active{display:grid!important}
+#cycle.v4571-admin>.title-row,#cycle.v4571-viewer>.title-row,
+#cycle.v4571-admin>.v4565-kpi-grid,#cycle.v4571-viewer>.v4565-kpi-grid,
+#cycle.v4571-admin>.v459-cycle-shortcuts,#cycle.v4571-viewer>.v459-cycle-shortcuts{grid-column:1/-1!important}
+#cycle.v4571-admin>.v4565-kpi-grid,#cycle.v4571-viewer>.v4565-kpi-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:10px!important;margin:0!important}
+#cycle.v4571-admin .v4565-kpi,#cycle.v4571-viewer .v4565-kpi{min-height:76px!important;padding:13px 15px!important;border-radius:14px!important;box-shadow:0 4px 16px rgba(26,70,115,.045)!important}
+#cycle.v4571-admin .v4565-kpi span:not(.ico),#cycle.v4571-viewer .v4565-kpi span:not(.ico){font-size:11px!important}
+#cycle.v4571-admin .v4565-kpi strong,#cycle.v4571-viewer .v4565-kpi strong{font-size:22px!important}
+#cycle.v4571-admin>.v459-cycle-shortcuts,#cycle.v4571-viewer>.v459-cycle-shortcuts{display:flex!important;gap:7px!important;margin:0!important}
+#cycle.v4571-admin>.v459-cycle-shortcuts button,#cycle.v4571-viewer>.v459-cycle-shortcuts button{flex:0 1 230px!important;min-height:48px!important;padding:7px 10px!important;box-shadow:none!important}
+#cycle.v4571-admin>.v459-cycle-shortcuts button>span,#cycle.v4571-viewer>.v459-cycle-shortcuts button>span{width:30px!important;height:30px!important;font-size:15px!important}
+#cycle.v4571-admin>.v459-cycle-shortcuts small,#cycle.v4571-viewer>.v459-cycle-shortcuts small{display:none!important}
+#cycle.v4571-admin>.panel,#cycle.v4571-viewer>.panel{margin:0!important;border-radius:14px!important}
+#cycle.v4571-admin>.panel:has(.v459-preset-grid),#cycle.v4571-viewer>.panel:has(.v459-preset-grid){grid-column:1!important;grid-row:4!important}
+#cycle.v4571-admin>#v459CycleForm,#cycle.v4571-viewer>#v459CycleForm{grid-column:2!important;grid-row:4 / span 2!important;position:sticky!important;top:72px!important;padding:15px!important}
+#cycle.v4571-admin>.v459-table-panel,#cycle.v4571-viewer>.v459-table-panel{grid-column:1!important;grid-row:5!important;padding:14px!important}
+#cycle.v4571-admin #v459CycleForm .v459-form-grid-4,#cycle.v4571-viewer #v459CycleForm .v459-form-grid-4{grid-template-columns:1fr 1fr!important;gap:9px!important}
+#cycle.v4571-admin #v459CycleForm .v459-span-3,#cycle.v4571-viewer #v459CycleForm .v459-span-3{grid-column:1/-1!important}
+#cycle.v4571-admin #v459CycleForm .v459-cycle-actions,#cycle.v4571-viewer #v459CycleForm .v459-cycle-actions{grid-column:1/-1!important;display:grid!important;grid-template-columns:1fr 1fr!important;gap:7px!important}
+#cycle.v4571-admin #v459CycleForm .v459-cycle-actions .btn,#cycle.v4571-viewer #v459CycleForm .v459-cycle-actions .btn{width:100%!important}
+#cycle.v4571-admin .v459-preset-grid,#cycle.v4571-viewer .v459-preset-grid{grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:6px!important}
+#cycle.v4571-admin .v459-preset-grid button,#cycle.v4571-viewer .v459-preset-grid button{min-height:52px!important;padding:8px!important}
+#cycle.v4571-admin .v459-preset-grid button b,#cycle.v4571-viewer .v459-preset-grid button b{font-size:11px!important}
+#cycle.v4571-admin .v459-preset-grid button span,#cycle.v4571-viewer .v459-preset-grid button span{font-size:9.5px!important}
+#cycle.v4571-admin .v459-table-scroll,#cycle.v4571-viewer .v459-table-scroll{max-height:54vh!important}
+#cycle.v4571-viewer>#v459CycleForm,#cycle.v4571-viewer>.panel:has(.v459-preset-grid){display:none!important}
+#cycle.v4571-viewer>.v459-table-panel{grid-column:1/-1!important;grid-row:auto!important}
+#cycle.v4571-viewer .v459-table-scroll td:last-child button{display:none!important}
+/* ===== 사용자 전용 ===== */
+#cycle.v4571-user.active{display:block!important}
+#cycle.v4571-user>.v4565-kpi-grid,#cycle.v4571-user>.v459-cycle-shortcuts,#cycle.v4571-user>.panel{display:none!important}
+#cycle.v4571-user #v4571UserCycle{display:block!important}
+#v4571UserCycle{display:none}
+.v4571-user-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:11px}
+.v4571-user-kpi{background:#fff;border:1px solid var(--c71-line);border-radius:14px;min-height:88px;padding:14px 16px;display:grid;grid-template-columns:44px 1fr;grid-template-rows:auto auto;column-gap:11px;align-items:center;box-shadow:0 4px 16px rgba(26,70,115,.045)}
+.v4571-user-kpi .ico{grid-row:1/3;width:44px;height:44px;border-radius:13px;display:grid;place-items:center;background:#edf5ff;font-size:19px}.v4571-user-kpi.warn .ico{background:#fff4e8}.v4571-user-kpi.bad .ico{background:#fff0f0}.v4571-user-kpi.good .ico{background:#eaf9f2}
+.v4571-user-kpi span{font-size:11px;color:#6e8399;font-weight:850}.v4571-user-kpi strong{font-size:23px;line-height:1;color:var(--c71-navy)}.v4571-user-kpi.warn strong{color:var(--c71-warn)}.v4571-user-kpi.bad strong{color:var(--c71-bad)}.v4571-user-kpi.good strong{color:var(--c71-good)}
+.v4571-user-layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:11px;align-items:start}
+.v4571-user-panel{background:#fff;border:1px solid var(--c71-line);border-radius:14px;padding:14px;box-shadow:0 4px 16px rgba(26,70,115,.04)}
+.v4571-user-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}.v4571-user-head h2{margin:0;font-size:16px;color:var(--c71-navy)}.v4571-user-head button{height:32px;padding:0 9px;border:1px solid #d2dfec;border-radius:8px;background:#fff;color:#35638e;font-size:11px;font-weight:800;cursor:pointer}
+.v4571-user-tabs{display:flex;gap:4px;border-bottom:1px solid #e0e8f2;margin-bottom:9px}.v4571-user-tabs button{height:38px;padding:0 16px;border:0;border-bottom:2px solid transparent;background:transparent;color:#637a92;font-size:11.5px;font-weight:850;cursor:pointer}.v4571-user-tabs button.active{color:#1764d6;border-bottom-color:#1764d6}
+.v4571-user-table-wrap{overflow:auto;border:1px solid #e1e9f2;border-radius:10px}.v4571-user-table{width:100%;border-collapse:collapse;min-width:790px}.v4571-user-table th{background:#f6f9fd;color:#506b87;font-size:10.5px;padding:9px 8px;text-align:left;white-space:nowrap}.v4571-user-table td{border-top:1px solid #e7edf4;padding:9px 8px;font-size:11.5px;color:#2d465e;vertical-align:middle}.v4571-user-table td strong{color:#173f69}.v4571-user-table td small{display:block;margin-top:2px;color:#8495a7;font-size:9.5px}.v4571-user-table .status{white-space:nowrap}.v4571-user-actions{display:flex;gap:5px;justify-content:flex-end}.v4571-user-actions button{height:31px;border-radius:7px;padding:0 9px;font-size:10.5px;font-weight:850;cursor:pointer}.v4571-user-actions .go{border:1px solid #1764d6;background:#1764d6;color:#fff}.v4571-user-actions .issue{border:1px solid #d4dfeb;background:#fff;color:#496984}
+.v4571-user-empty{padding:38px 10px;text-align:center;color:#71869c;font-size:12px}
+.v4571-progress-card{position:sticky;top:72px}.v4571-progress-title{font-size:15px;color:var(--c71-navy);font-weight:900;margin-bottom:11px}.v4571-progress-ring{--pct:0;width:112px;height:112px;border-radius:50%;margin:4px auto 12px;background:conic-gradient(#21a574 calc(var(--pct)*1%),#e9eef5 0);display:grid;place-items:center;position:relative}.v4571-progress-ring:after{content:"";position:absolute;width:84px;height:84px;background:#fff;border-radius:50%}.v4571-progress-ring strong{position:relative;z-index:1;font-size:24px;color:#17456f}.v4571-progress-bar{height:7px;background:#e9eef5;border-radius:999px;overflow:hidden}.v4571-progress-bar i{display:block;height:100%;width:0;background:#22a574;border-radius:inherit}.v4571-progress-meta{display:flex;align-items:center;justify-content:space-between;margin-top:7px;font-size:10.5px;color:#71859a}.v4571-progress-list{margin-top:13px;border-top:1px solid #e4ebf3;padding-top:8px}.v4571-progress-list div{display:flex;justify-content:space-between;padding:5px 2px;font-size:10.5px;color:#61778e}.v4571-progress-list b{color:#244a70}.v4571-tip{margin-top:10px;padding:11px;border:1px solid #cfe0f5;background:#f2f7ff;border-radius:10px;font-size:10.5px;line-height:1.55;color:#496b8d}.v4571-tip strong{display:block;color:#1764d6;margin-bottom:2px}
+.v4571-recent{margin-top:11px}.v4571-recent table{width:100%;border-collapse:collapse}.v4571-recent th,.v4571-recent td{padding:7px 8px;border-top:1px solid #e8eef4;font-size:10.5px;text-align:left}.v4571-recent th{background:#f8fafd;color:#647b92}
+@media(max-width:1250px){#cycle.v4571-admin,#cycle.v4571-viewer{grid-template-columns:minmax(0,1fr) 340px!important}.v4571-user-layout{grid-template-columns:minmax(0,1fr) 250px}}
+@media(max-width:980px){#cycle.v4571-admin.active,#cycle.v4571-viewer.active{display:block!important}#cycle.v4571-admin>*:not(.title-row),#cycle.v4571-viewer>*:not(.title-row){margin-bottom:10px!important}#cycle.v4571-admin>#v459CycleForm,#cycle.v4571-viewer>#v459CycleForm{position:static!important}.v4571-user-kpis{grid-template-columns:1fr 1fr}.v4571-user-layout{grid-template-columns:1fr}.v4571-progress-card{position:static}.v4571-title-actions{margin-top:7px!important}}
+@media(max-width:620px){.v4571-user-kpis{grid-template-columns:1fr}.v4571-user-tabs{overflow:auto}.v4571-user-tabs button{white-space:nowrap;padding:0 11px}#cycle.v4571-cycle>.title-row{display:block!important}.v4571-title-actions{justify-content:flex-start!important}.v4571-user-kpi{min-height:76px}}
+</style>
+<script id="tfms-v4571-cycle-role-split-controller">
+(function(){
+'use strict';
+const $=id=>document.getElementById(id), q=(s,r=document)=>r.querySelector(s), qa=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+function session(){try{return JSON.parse(sessionStorage.getItem('tfmsSession')||'{}')}catch(e){return {}}}
+function role(){const r=String(window.cloudProfile?.role||window.tfmsRole||session().role||'user').trim().toLowerCase();if(r==='admin'||r==='관리자'||r.includes('팀 관리자'))return 'admin';if(r==='viewer'||r==='조회전용'||r.includes('조회'))return 'viewer';return 'user'}
+function dept(){return String(window.cloudProfile?.department?.name||window.tfmsUserDept||window.currentUserDept||session().dept||'').trim()}
+function name(){return String(window.cloudProfile?.name||session().name||'담당자').trim()}
+function todayIso(){const d=new Date();return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10)}
+function facilityDept(n){try{if(typeof getScopedFacilityDept==='function')return getScopedFacilityDept(n)||'';if(typeof getFacilityDeptStable==='function')return getFacilityDeptStable(n)||'';if(typeof getFacilityDept==='function')return getFacilityDept(n)||''}catch(e){}return ''}
+function scoped(list){const d=dept(),r=role();if(r==='admin'||r==='viewer'||!d||d==='전체')return list;return list.filter(x=>!x?.facility||facilityDept(x.facility)===d)}
+function cycles(){try{return scoped(Array.isArray(cycleTasks)?cycleTasks:(window.cycleTasks||[]))}catch(e){return scoped(window.cycleTasks||[])}}
+function tasks(){try{return scoped(Array.isArray(todayTasks)?todayTasks:(window.todayTasks||[]))}catch(e){return scoped(window.todayTasks||[])}}
+function taskId(t){if(!t._flowId)t._flowId='task_'+Date.now()+'_'+Math.random().toString(36).slice(2,8);return t._flowId}
+function isDone(t){return String(t?.status||'')==='완료'}
+function dueDate(t){const raw=String(t?.due||'');if(raw==='오늘')return todayIso();return /^\d{4}-\d{2}-\d{2}$/.test(raw)?raw:''}
+function daysFromToday(v){if(!v)return 999;const a=new Date(todayIso()+'T00:00:00'),b=new Date(v+'T00:00:00');return Math.round((b-a)/86400000)}
+function taskBucket(t){const done=isDone(t),dd=daysFromToday(dueDate(t));if(done)return 'done';if(dd<0)return 'late';if(dd<=0)return 'today';if(dd<=3)return 'urgent';return 'future'}
+function setupTitle(p,r){const h=q(':scope > .title-row h1',p);if(h&&!h.querySelector('.v4571-role-badge')){const b=document.createElement('span');b.className='v4571-role-badge';b.textContent=r==='admin'?'관리자 전용':r==='viewer'?'조회전용':'담당자용';h.appendChild(b)}
+ const row=q(':scope > .title-row',p);let actions=$('v4571CycleTitleActions');if(!actions){actions=document.createElement('div');actions.id='v4571CycleTitleActions';actions.className='v4571-title-actions';row?.appendChild(actions)}
+ if(r==='admin')actions.innerHTML='<button type="button" onclick="navTo(\'today\')">오늘 업무 확인</button><button type="button" onclick="navToFireV420()">소방 월간점검</button><button type="button" class="primary" onclick="v4571FocusCycleForm()">＋ 기준 추가</button>';
+ else if(r==='viewer')actions.innerHTML='<button type="button" onclick="navTo(\'today\')">오늘 업무 확인</button><button type="button" onclick="navToFireV420()">소방 월간점검</button>';
+ else actions.innerHTML='<button type="button" onclick="v4571RefreshUserCycle()">↻ 새로고침</button><button type="button" class="primary" onclick="navTo(\'today\')">오늘의 업무 열기</button>';
+ const bc=q(':scope > .title-row .breadcrumb',p);if(bc)bc.textContent=r==='user'?'홈 › 점검주기 관리 › 내 점검업무':'홈 › 점검주기 관리 › 점검기준 관리';}
+window.v4571FocusCycleForm=function(){const el=$('v459CycleForm');if(!el)return;el.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(()=>$('cycleFacility')?.focus(),260)};
+function setupAdmin(p,r){p.classList.toggle('v4571-admin',r==='admin');p.classList.toggle('v4571-viewer',r==='viewer');const k=qa('.v4565-kpi',p);const list=cycles(),today=todayIso();let due=0,late=0,off=0;list.forEach(c=>{const d=String(c.due||c.nextDue||'');if(d===today)due++;if(d&&d<today)late++;if(c.active==='미사용')off++});const vals=[[list.length,'전체 점검기준'],[due,'오늘 생성 예정'],[late,'미완료/경과'],[off,'미사용']];k.slice(0,4).forEach((el,i)=>{const s=q('span:not(.ico)',el),st=q('strong',el);if(s)s.textContent=vals[i][1];if(st)st.textContent=vals[i][0]+'건'});const preset=qa(':scope > .panel',p).find(x=>q('.v459-preset-grid',x));if(preset&&!preset.classList.contains('v4565-preset-collapsed'))preset.classList.add('v4565-preset-collapsed');}
+function ensureUserRoot(p){let root=$('v4571UserCycle');if(root)return root;root=document.createElement('div');root.id='v4571UserCycle';root.innerHTML=`<div class="v4571-user-kpis"><div class="v4571-user-kpi"><span class="ico">▣</span><span>오늘 할 점검</span><strong id="v4571TodayN">0건</strong></div><div class="v4571-user-kpi warn"><span class="ico">◷</span><span>기한 임박 (3일 이내)</span><strong id="v4571UrgentN">0건</strong></div><div class="v4571-user-kpi bad"><span class="ico">⌛</span><span>미완료</span><strong id="v4571PendingN">0건</strong></div><div class="v4571-user-kpi good"><span class="ico">✓</span><span>완료</span><strong id="v4571DoneN">0건</strong></div></div><div class="v4571-user-layout"><div><div class="v4571-user-panel"><div class="v4571-user-head"><h2>내 점검업무</h2><button type="button" onclick="v4571RefreshUserCycle()">↻ 새로고침</button></div><div class="v4571-user-tabs" id="v4571UserTabs"><button class="active" data-tab="today">오늘</button><button data-tab="urgent">기한임박</button><button data-tab="pending">미완료</button><button data-tab="done">완료</button></div><div class="v4571-user-table-wrap"><table class="v4571-user-table"><thead><tr><th>시설명</th><th>연계 설비</th><th>점검명</th><th>주기</th><th>기한</th><th>상태</th><th style="text-align:right">작업</th></tr></thead><tbody id="v4571UserBody"></tbody></table></div></div><div class="v4571-user-panel v4571-recent"><div class="v4571-user-head"><h2>최근 완료 내역</h2></div><table><thead><tr><th>완료시간</th><th>시설명</th><th>점검명</th><th>결과</th></tr></thead><tbody id="v4571RecentBody"></tbody></table></div></div><aside class="v4571-user-panel v4571-progress-card"><div class="v4571-progress-title">오늘의 진행률</div><div class="v4571-progress-ring" id="v4571ProgressRing"><strong id="v4571ProgressPct">0%</strong></div><div class="v4571-progress-bar"><i id="v4571ProgressBar"></i></div><div class="v4571-progress-meta"><span id="v4571ProgressText">0 / 0건 완료</span><span id="v4571ProgressRemain">남은 0건</span></div><div class="v4571-progress-list"><div><span>완료</span><b id="v4571ProgDone">0건</b></div><div><span>진행·예정</span><b id="v4571ProgWait">0건</b></div><div><span>기한 경과</span><b id="v4571ProgLate">0건</b></div></div><div class="v4571-tip"><strong>Tip</strong>점검 결과가 정상이면 <b>점검하기</b>에서 바로 완료할 수 있습니다. 이상이 있으면 특이사항 등록을 통해 유지관리 이력으로 연계하세요.</div></aside></div>`;q(':scope > .title-row',p)?.insertAdjacentElement('afterend',root);q('#v4571UserTabs',root)?.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;qa('button',e.currentTarget).forEach(x=>x.classList.toggle('active',x===b));root.dataset.tab=b.dataset.tab;renderUser();});return root;}
+function filterUser(list,tab){return list.filter(t=>{const b=taskBucket(t);if(tab==='today')return b==='today'||b==='late';if(tab==='urgent')return b==='urgent';if(tab==='pending')return !isDone(t);if(tab==='done')return isDone(t);return true})}
+function openTask(t,issue){const id=taskId(t);if(issue&&typeof window.startTodayIssueV3261==='function')return window.startTodayIssueV3261(id);if(typeof window.openTodayFlowV3261==='function')return window.openTodayFlowV3261(id);if(typeof window.navTo==='function')window.navTo('today')}
+window.v4571OpenTask=function(id,issue){const t=tasks().find(x=>taskId(x)===id);if(t)openTask(t,!!issue)};
+function renderUser(){const root=$('v4571UserCycle');if(!root)return;const all=tasks();all.forEach(taskId);const today=all.filter(t=>taskBucket(t)==='today'||taskBucket(t)==='late'),urgent=all.filter(t=>taskBucket(t)==='urgent'),pending=all.filter(t=>!isDone(t)),done=all.filter(isDone);[['v4571TodayN',today.length],['v4571UrgentN',urgent.length],['v4571PendingN',pending.length],['v4571DoneN',done.length]].forEach(([id,n])=>{if($(id))$(id).textContent=n+'건'});const tab=root.dataset.tab||'today';const list=filterUser(all,tab);const body=$('v4571UserBody');if(body)body.innerHTML=list.length?list.map(t=>{const id=taskId(t),b=taskBucket(t),asset=t.assetName||'시설 공통업무',done=isDone(t);const st=done?'완료':b==='late'?'지연':b==='urgent'?'임박':'예정';const cls=done?'done':(b==='late'?'danger':b==='urgent'?'wait':'info');return `<tr><td><strong>${esc(t.facility||'-')}</strong></td><td>${esc(asset)}</td><td>${esc(t.task||'-')}</td><td>${esc(t.cycle||'-')}</td><td>${esc(t.due||'-')}</td><td><span class="status ${cls}">${st}</span></td><td><div class="v4571-user-actions">${done?'<span class="status done">처리완료</span>':`<button class="go" type="button" onclick="v4571OpenTask('${id}',0)">▶ 점검하기</button><button class="issue" type="button" onclick="v4571OpenTask('${id}',1)">특이사항</button>`}</div></td></tr>`}).join(''):'<tr><td colspan="7"><div class="v4571-user-empty">해당 조건의 점검업무가 없습니다.</div></td></tr>';const recent=$('v4571RecentBody');if(recent){const rs=done.slice().sort((a,b)=>String(b.completedAt||'').localeCompare(String(a.completedAt||''))).slice(0,5);recent.innerHTML=rs.length?rs.map(t=>`<tr><td>${esc(t.completedAt?new Date(t.completedAt).toLocaleString('ko-KR'):'-')}</td><td>${esc(t.facility||'-')}</td><td>${esc(t.task||'-')}</td><td><span class="status done">${esc(t.result||'완료')}</span></td></tr>`).join(''):'<tr><td colspan="4" style="text-align:center;color:#8293a5">최근 완료 내역이 없습니다.</td></tr>';}const total=today.length,comp=today.filter(isDone).length,pct=total?Math.round(comp/total*100):0,late=today.filter(t=>taskBucket(t)==='late').length;const ring=$('v4571ProgressRing');if(ring)ring.style.setProperty('--pct',pct);if($('v4571ProgressPct'))$('v4571ProgressPct').textContent=pct+'%';if($('v4571ProgressBar'))$('v4571ProgressBar').style.width=pct+'%';if($('v4571ProgressText'))$('v4571ProgressText').textContent=`${comp} / ${total}건 완료`;if($('v4571ProgressRemain'))$('v4571ProgressRemain').textContent=`남은 ${Math.max(0,total-comp)}건`;if($('v4571ProgDone'))$('v4571ProgDone').textContent=comp+'건';if($('v4571ProgWait'))$('v4571ProgWait').textContent=Math.max(0,total-comp-late)+'건';if($('v4571ProgLate'))$('v4571ProgLate').textContent=late+'건';}
+window.v4571RefreshUserCycle=function(){try{window.renderTodayTasks?.()}catch(e){}renderUser()};
+function apply(){const p=$('cycle');if(!p)return;const r=role();p.classList.add('v4571-cycle');p.classList.remove('v4571-admin','v4571-viewer','v4571-user');p.classList.add(r==='admin'?'v4571-admin':r==='viewer'?'v4571-viewer':'v4571-user');setupTitle(p,r);if(r==='user'){ensureUserRoot(p);renderUser()}else setupAdmin(p,r)}
+function init(){apply();[250,700,1500,3200].forEach(ms=>setTimeout(apply,ms))}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+const oldShow=window.showPage;if(typeof oldShow==='function'&&!oldShow.__v4571cycle){const w=function(id){const r=oldShow.apply(this,arguments);if(id==='cycle')setTimeout(apply,80);return r};w.__v4571cycle=true;window.showPage=w}
+const oldNav=window.navTo;if(typeof oldNav==='function'&&!oldNav.__v4571cycle){const w=function(id){const r=oldNav.apply(this,arguments);if(id==='cycle')setTimeout(apply,80);return r};w.__v4571cycle=true;window.navTo=w}
+const oldRender=window.renderCycleTasks;if(typeof oldRender==='function'&&!oldRender.__v4571cycle){const w=function(){const r=oldRender.apply(this,arguments);setTimeout(apply,0);return r};w.__v4571cycle=true;window.renderCycleTasks=w;try{renderCycleTasks=w}catch(e){}}
+const oldToday=window.renderTodayTasks;if(typeof oldToday==='function'&&!oldToday.__v4571cycle){const w=function(){const r=oldToday.apply(this,arguments);setTimeout(()=>{if(role()==='user')renderUser()},0);return r};w.__v4571cycle=true;window.renderTodayTasks=w}
 })();
 </script>
 </body></html>
