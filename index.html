@@ -16479,7 +16479,7 @@ const val=id=>$(id)?.value??'';
 const radio=name=>document.querySelector(`input[name="${name}"]:checked`)?.value||'';
 const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const toast=m=>{try{window.showToast?.(m)}catch(e){alert(m)}};
-window.TFMS_BUILD=Object.freeze({version:'v45.72',channel:'Enterprise Stable',buildDate:'2026.08.18',title:'일반담당자 시설·연계설비 범위 복구 및 주소창 동기화'});
+window.TFMS_BUILD=Object.freeze({version:'v45.73',channel:'Enterprise Stable',buildDate:'2026.08.19',title:'점검주기 관리자 대시보드 레이아웃 2차 개선 및 주소창 동기화'});
 function applyVersion(){const b=window.TFMS_BUILD,label=`${b.version} ${b.channel}`;const badge=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');if(badge)badge.textContent=label;document.querySelectorAll('.logo-title small').forEach(el=>el.textContent=`시설 유지관리 이력관리 시스템 · ${label}`);const current=document.querySelector('#tfmsVersionModal .current-build');if(current)current.textContent=`현재 버전: ${label} · Build ${b.buildDate}`;}
 function data(){return{date:val('fireDate'),performer:val('firePerformer'),facility:val('fireFacility'),grade:val('fireGrade'),address:val('fireAddress'),basement:val('fireBasement'),ground:val('fireGround'),totalArea:val('fireTotalArea'),floorArea:val('fireFloorArea'),buildings:val('fireBuildings'),checks:[0,1,2,3].map(i=>({content:val(`fireCheck${i}`),result:radio(`fireResult${i}`),action:val(`fireAction${i}`)})),improvement:{reportDate:val('fireReportDate'),method:val('fireReportMethod'),reportTo:val('fireReportTo'),remedy:val('fireRemedy')},extinguishers:Array.isArray(window.fireExtRowsV420)?window.fireExtRowsV420:[]};}
 function fmtDate(v){const m=String(v||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);return m?`${m[1]}. ${Number(m[2])}. ${Number(m[3])}.`:String(v||'');}
@@ -22131,11 +22131,11 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 <script id="tfms-v4559-version-display-lock">
 (function(){
   'use strict';
-  const LABEL='v45.72 User Facility Asset Scope Hotfix Safe';
+  const LABEL='v45.73 Cycle Admin Dashboard Layout V2 Safe';
   const TITLE='TFMS '+LABEL;
-  const PARAM='45.72';
+  const PARAM='45.73';
   const FIXED_BUILD=Object.freeze({
-    version:'v45.72',
+    version:'v45.73',
     channel:'User Facility Asset Scope Hotfix Safe',
     buildDate:'2026.08.18',
     title:'일반담당자 시설·연계설비 범위 복구 및 버전/주소창 동기화'
@@ -22184,7 +22184,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
     const badge=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
     if(!badge)return;
     lockTextProperty(badge,'textContent',LABEL);
-    try{badge.setAttribute('data-tfms-version-lock','45.72');}catch(e){}
+    try{badge.setAttribute('data-tfms-version-lock','45.73');}catch(e){}
   }
 
   function lockDocumentTitle(){
@@ -22413,14 +22413,14 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 (function(){
 'use strict';
 const $=id=>document.getElementById(id);
-const LABEL='v45.72 User Facility Asset Scope Hotfix Safe';
+const LABEL='v45.73 Cycle Admin Dashboard Layout V2 Safe';
 function syncVersion(){
   try{
     const b=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
     if(b&&b.textContent!==LABEL)b.textContent=LABEL;
     const u=new URL(location.href);
-    if(u.searchParams.get('v')!=='45.72'){
-      u.searchParams.set('v','45.72');
+    if(u.searchParams.get('v')!=='45.73'){
+      u.searchParams.set('v','45.73');
       // v45.60 history lock already normalizes to the current lock value, which was updated to 45.61 above.
       history.replaceState(history.state,'',u.pathname+u.search+u.hash);
     }
@@ -23349,6 +23349,80 @@ const oldShow=window.showPage;if(typeof oldShow==='function'&&!oldShow.__v4572sc
 const oldNav=window.navTo;if(typeof oldNav==='function'&&!oldNav.__v4572scope){const w=function(id){const r=oldNav.apply(this,arguments);if(id==='today')schedule();return r};w.__v4572scope=true;window.navTo=w}
 const oldLoad=window.loadEnterpriseData;if(typeof oldLoad==='function'&&!oldLoad.__v4572scope){const w=async function(){const r=await oldLoad.apply(this,arguments);schedule();return r};w.__v4572scope=true;window.loadEnterpriseData=w}
 const oldRender=window.renderTodayTasks;if(typeof oldRender==='function'&&!oldRender.__v4572scope){const w=function(){const r=oldRender.apply(this,arguments);setTimeout(apply,30);return r};w.__v4572scope=true;window.renderTodayTasks=w}
+})();
+</script>
+
+
+<!-- TFMS v45.73 Cycle Admin Dashboard Layout V2 Safe -->
+<style id="tfms-v4573-cycle-admin-layout-v2-style">
+/* 관리자 점검주기 화면 2차 마감: 기존 로직/ID 유지, 배치·가독성만 재정리 */
+#cycle.v4571-admin.v4573-admin-v2,
+#cycle.v4571-viewer.v4573-admin-v2{
+  grid-template-columns:minmax(0,1fr) 390px!important;
+  grid-template-rows:auto auto auto auto!important;
+  column-gap:12px!important;row-gap:12px!important;align-items:start!important;
+}
+#cycle.v4573-admin-v2>.title-row{grid-column:1/-1!important;grid-row:1!important;margin:0!important}
+#cycle.v4573-admin-v2>.v4565-kpi-grid{grid-column:1/-1!important;grid-row:2!important;margin:0!important}
+#cycle.v4573-admin-v2>.v459-cycle-shortcuts{grid-column:1/-1!important;grid-row:3!important;margin:0!important;justify-content:flex-start!important}
+#cycle.v4573-admin-v2>.v459-cycle-shortcuts button{flex:0 0 auto!important;width:auto!important;min-width:165px!important;min-height:40px!important;padding:5px 10px!important;border-radius:10px!important}
+#cycle.v4573-admin-v2>.v459-cycle-shortcuts button:first-child{display:none!important}
+#cycle.v4573-admin-v2>.v459-cycle-shortcuts button>span{width:26px!important;height:26px!important;font-size:13px!important}
+#cycle.v4573-admin-v2>.v459-cycle-shortcuts button>b{font-size:11px!important}
+#cycle.v4573-admin-v2>.panel:has(.v459-preset-grid){display:none!important}
+#cycle.v4573-admin-v2>.panel:has(.v459-preset-grid).v4573-preset-open{display:block!important;grid-column:1/-1!important;grid-row:4!important;margin:0!important;padding:12px!important}
+#cycle.v4573-admin-v2>.v459-table-panel{grid-column:1!important;grid-row:4!important;padding:15px!important;min-width:0!important}
+#cycle.v4573-admin-v2>#v459CycleForm{grid-column:2!important;grid-row:4!important;position:sticky!important;top:70px!important;padding:15px!important;border-radius:14px!important;box-shadow:0 6px 22px rgba(32,76,120,.06)!important}
+#cycle.v4573-admin-v2.v4573-preset-visible>.v459-table-panel,
+#cycle.v4573-admin-v2.v4573-preset-visible>#v459CycleForm{grid-row:5!important}
+#cycle.v4573-admin-v2 .v459-table-panel .section-title{font-size:15px!important}
+#cycle.v4573-admin-v2 .v459-table-panel .v459-list-head small{font-size:10.5px!important}
+#cycle.v4573-admin-v2 .v4565-cycle-tools{grid-template-columns:minmax(240px,1fr) 145px auto!important;margin:9px 0 11px!important}
+#cycle.v4573-admin-v2 .v459-table-scroll{max-height:470px!important;border:1px solid #e0e8f2!important;border-radius:10px!important}
+#cycle.v4573-admin-v2 .v459-table-scroll .table{min-width:880px!important}
+#cycle.v4573-admin-v2 .v459-table-scroll .table th{position:sticky;top:0;z-index:2;background:#f4f8fc!important}
+#cycle.v4573-admin-v2 #v459CycleForm .v459-list-head{padding-bottom:9px!important;border-bottom:1px solid #e4ebf3!important;margin-bottom:10px!important}
+#cycle.v4573-admin-v2 #v459CycleForm .v459-form-grid-4{grid-template-columns:1fr 1fr!important;gap:9px!important}
+#cycle.v4573-admin-v2 #v459CycleForm .field label{font-size:10.5px!important;margin-bottom:4px!important}
+#cycle.v4573-admin-v2 #v459CycleForm input,#cycle.v4573-admin-v2 #v459CycleForm select{height:37px!important;min-height:37px!important;font-size:11px!important}
+#cycle.v4573-admin-v2 #v459CycleForm .v459-next-due{min-height:44px!important}
+#cycle.v4573-admin-v2 .v4573-admin-bottom{grid-column:1!important;display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:0}
+#cycle.v4573-admin-v2.v4573-preset-visible .v4573-admin-bottom{grid-row:6!important}
+#cycle.v4573-admin-v2:not(.v4573-preset-visible) .v4573-admin-bottom{grid-row:5!important}
+.v4573-admin-card{background:#fff;border:1px solid #dce6f0;border-radius:14px;padding:13px 14px;box-shadow:0 4px 16px rgba(30,71,112,.04);min-height:126px}
+.v4573-admin-card-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}.v4573-admin-card-head strong{font-size:13px;color:#183f68}.v4573-admin-card-head span{font-size:10px;color:#7b8fa3}
+.v4573-admin-list{display:grid;gap:5px}.v4573-admin-item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:9px;align-items:center;padding:7px 8px;border-radius:9px;background:#f8fbfe;font-size:10.5px;color:#49647e}.v4573-admin-item b{display:block;color:#243f5c;font-size:11px;margin-bottom:2px}.v4573-admin-item em{font-style:normal;color:#d04b42;font-weight:850;white-space:nowrap}.v4573-admin-empty{padding:22px 8px;text-align:center;color:#8294a7;font-size:10.5px}
+#cycle.v4573-admin-v2 .v4565-kpi-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+#cycle.v4573-admin-v2 .v4565-kpi{min-height:82px!important;padding:14px 16px!important}
+#cycle.v4573-admin-v2 .v4565-kpi .ico{width:38px!important;height:38px!important;border-radius:11px!important}
+#cycle.v4573-admin-v2 .v4565-kpi strong{font-size:24px!important}
+#cycle.v4573-admin-v2 .v4571-title-actions button{height:38px!important;padding:0 13px!important}
+@media(max-width:1180px){#cycle.v4573-admin-v2{grid-template-columns:1fr!important}#cycle.v4573-admin-v2>.v459-table-panel,#cycle.v4573-admin-v2>#v459CycleForm,#cycle.v4573-admin-v2 .v4573-admin-bottom{grid-column:1!important;grid-row:auto!important}#cycle.v4573-admin-v2>#v459CycleForm{position:static!important}#cycle.v4573-admin-v2 .v4573-admin-bottom{grid-template-columns:1fr}}
+</style>
+<script id="tfms-v4573-cycle-admin-layout-v2-controller">
+(function(){
+'use strict';
+const $=id=>document.getElementById(id),q=(s,r=document)=>r.querySelector(s),qa=(s,r=document)=>[...r.querySelectorAll(s)];
+function sess(){try{return JSON.parse(sessionStorage.getItem('tfmsSession')||'{}')}catch(e){return {}}}
+function role(){let r='';try{r=window.cloudProfile?.role||window.getTfmsCloudProfile?.()?.role||window.tfmsRole||sess().role||''}catch(e){r=sess().role||''}r=String(r).trim().toLowerCase();if(r==='admin'||r==='관리자'||r.includes('팀 관리자'))return'admin';if(r==='viewer'||r==='조회전용'||r.includes('조회'))return'viewer';return'user'}
+function cycles(){try{return Array.isArray(cycleTasks)?cycleTasks:(window.cycleTasks||[])}catch(e){return window.cycleTasks||[]}}
+function todays(){try{return Array.isArray(todayTasks)?todayTasks:(window.todayTasks||[])}catch(e){return window.todayTasks||[]}}
+function iso(){const d=new Date();return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10)}
+function isDone(t){return String(t?.status||'')==='완료'}
+function dueOf(x){const d=String(x?.due||x?.nextDue||'').trim();return d==='오늘'?iso():/^\d{4}-\d{2}-\d{2}$/.test(d)?d:''}
+function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function titleActions(){const box=$('v4571CycleTitleActions');if(!box||role()!=='admin')return;box.innerHTML='<button type="button" onclick="v4573GenerateDueCycles()">▶ 생성 실행</button><button type="button" onclick="v4573TogglePreset()">⚙ 빠른 설정</button><button type="button" class="primary" onclick="v4571FocusCycleForm()">＋ 기준 추가</button>'}
+window.v4573TogglePreset=function(){const p=$('cycle');if(!p)return;const panel=qa(':scope > .panel',p).find(x=>q('.v459-preset-grid',x));if(!panel)return;const open=!panel.classList.contains('v4573-preset-open');panel.classList.toggle('v4573-preset-open',open);p.classList.toggle('v4573-preset-visible',open)};
+window.v4573GenerateDueCycles=async function(){const list=cycles(),today=iso(),idx=[];list.forEach((c,i)=>{const d=dueOf(c);if(String(c?.active||'사용')!=='미사용'&&d===today)idx.push(i)});if(!idx.length){try{window.showToast?.('오늘 생성할 점검기준이 없습니다.')}catch(e){}return}if(!confirm(`오늘 도래한 점검기준 ${idx.length}건을 오늘의 업무로 생성할까요?`))return;for(const i of idx){try{const r=window.generateTodayFromCycle?.(i);if(r&&typeof r.then==='function')await r}catch(e){console.error('v45.73 cycle generate',i,e)}}setTimeout(()=>{try{window.renderTodayTasks?.();window.renderCycleTasks?.()}catch(e){}renderBottom();updateKpi()},150)};
+function updateKpi(){const p=$('cycle');if(!p||role()==='user')return;const cs=cycles(),ts=todays(),today=iso();const due=cs.filter(c=>String(c?.active||'사용')!=='미사용'&&dueOf(c)===today).length;const pending=ts.filter(t=>!isDone(t)).length;const late=ts.filter(t=>!isDone(t)&&dueOf(t)&&dueOf(t)<today).length||cs.filter(c=>String(c?.active||'사용')!=='미사용'&&dueOf(c)&&dueOf(c)<today).length;const vals=[[cs.length,'전체 점검기준'],[due,'오늘 생성 예정'],[pending,'미완료'],[late,'누락 점검']];qa('.v4565-kpi',p).slice(0,4).forEach((el,i)=>{const s=q('span:not(.ico)',el),st=q('strong',el);if(s)s.textContent=vals[i][1];if(st)st.textContent=vals[i][0]+'건'})}
+function ensureBottom(){const p=$('cycle');if(!p||role()==='user')return null;let root=$('v4573AdminBottom');if(root)return root;root=document.createElement('div');root.id='v4573AdminBottom';root.className='v4573-admin-bottom';root.innerHTML='<div class="v4573-admin-card"><div class="v4573-admin-card-head"><strong>누락 점검 알림</strong><span id="v4573LateCount">0건</span></div><div class="v4573-admin-list" id="v4573LateList"></div></div><div class="v4573-admin-card"><div class="v4573-admin-card-head"><strong>최근 변경 이력</strong><span>최근 기준</span></div><div class="v4573-admin-list" id="v4573RecentList"></div></div>';p.appendChild(root);return root}
+function renderBottom(){if(role()==='user')return;ensureBottom();const today=iso(),cs=cycles(),ts=todays();let late=ts.filter(t=>!isDone(t)&&dueOf(t)&&dueOf(t)<today).map(t=>({facility:t.facility,task:t.task,due:dueOf(t)}));if(!late.length)late=cs.filter(c=>String(c?.active||'사용')!=='미사용'&&dueOf(c)&&dueOf(c)<today).map(c=>({facility:c.facility,task:c.task,due:dueOf(c)}));late=late.slice(0,4);const ll=$('v4573LateList'),lc=$('v4573LateCount');if(lc)lc.textContent=late.length+'건';if(ll)ll.innerHTML=late.length?late.map(x=>`<div class="v4573-admin-item"><div><b>${esc(x.facility||'-')} · ${esc(x.task||'-')}</b><span>기한 ${esc(x.due||'-')}</span></div><em>기한 경과</em></div>`).join(''):'<div class="v4573-admin-empty">현재 누락된 점검이 없습니다.</div>';const recent=cs.slice().sort((a,b)=>String(b.updated_at||b.updatedAt||b.created_at||b.createdAt||'').localeCompare(String(a.updated_at||a.updatedAt||a.created_at||a.createdAt||''))).slice(0,4);const rl=$('v4573RecentList');if(rl)rl.innerHTML=recent.length?recent.map(x=>{const dt=x.updated_at||x.updatedAt||x.created_at||x.createdAt||'';return `<div class="v4573-admin-item"><div><b>${esc(x.facility||'-')} · ${esc(x.task||'-')}</b><span>${esc(x.cycle||'-')} · ${esc(x.manager||'담당자')}</span></div><span>${dt?esc(String(dt).replace('T',' ').slice(0,16)):'기준 등록'}</span></div>`}).join(''):'<div class="v4573-admin-empty">등록된 점검기준이 없습니다.</div>'}
+function apply(){const p=$('cycle');if(!p)return;const r=role();if(r==='user'){p.classList.remove('v4573-admin-v2','v4573-preset-visible');return}p.classList.add('v4573-admin-v2');titleActions();ensureBottom();renderBottom();updateKpi()}
+function init(){apply();[250,700,1500,3000].forEach(ms=>setTimeout(apply,ms))}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+const os=window.showPage;if(typeof os==='function'&&!os.__v4573cycle){const w=function(id){const r=os.apply(this,arguments);if(id==='cycle')setTimeout(apply,100);return r};w.__v4573cycle=true;window.showPage=w}
+const on=window.navTo;if(typeof on==='function'&&!on.__v4573cycle){const w=function(id){const r=on.apply(this,arguments);if(id==='cycle')setTimeout(apply,100);return r};w.__v4573cycle=true;window.navTo=w}
+const orc=window.renderCycleTasks;if(typeof orc==='function'&&!orc.__v4573cycle){const w=function(){const r=orc.apply(this,arguments);setTimeout(()=>{apply();renderBottom();updateKpi()},0);return r};w.__v4573cycle=true;window.renderCycleTasks=w;try{renderCycleTasks=w}catch(e){}}
 })();
 </script>
 </body></html>
