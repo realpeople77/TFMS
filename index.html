@@ -22142,7 +22142,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 <script id="tfms-v4559-version-display-lock">
 (function(){
   'use strict';
-  const LABEL='v45.78 History Query Render Recovery Safe';
+  const LABEL='v45.89 Today Work Hub V2 Safe';
   const TITLE='TFMS '+LABEL;
   const PARAM='45.78';
   const FIXED_BUILD=Object.freeze({
@@ -22424,7 +22424,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 (function(){
 'use strict';
 const $=id=>document.getElementById(id);
-const LABEL='v45.78 History Query Render Recovery Safe';
+const LABEL='v45.89 Today Work Hub V2 Safe';
 function syncVersion(){
   try{
     const b=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
@@ -23602,8 +23602,8 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <script id="tfms-v4576-maintenance-attachments-today-unified-controller">
 (function(){
 'use strict';
-const VERSION='v45.79 History Quick Filter Reset Safe';
-const VERSION_PARAM='45.77';
+const VERSION='v45.89 Today Work Hub V2 Safe';
+const VERSION_PARAM='45.89';
 const BUCKET='tfms-equipment-photos';
 const $=id=>document.getElementById(id);
 const esc=v=>String(v??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
@@ -24137,7 +24137,7 @@ setInterval(()=>{if(window.renderTodayTasks!==render){window.renderTodayTasks=re
 <script id="tfms-v4586-account-compact-controller">
 (function(){
 'use strict';
-const BUILD='v45.86 MyInfo Account Compact Thumbnail UI Safe', VER='45.86';
+const BUILD='v45.89 Today Work Hub V2 Safe', VER='45.89';
 const $=id=>document.getElementById(id), q=(s,r=document)=>r.querySelector(s), qa=(s,r=document)=>Array.from(r.querySelectorAll(s));
 function lockVersion(){const b=$('tfmsVersionBadge');if(b)b.textContent=BUILD;document.title='TFMS '+BUILD;try{const u=new URL(location.href);if(u.searchParams.get('v')!==VER){u.searchParams.set('v',VER);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
 function buildMyInfo(){
@@ -24262,8 +24262,8 @@ main .page .title-icon[class*="history"]{
 <script id="tfms-v4587-page-header-icon-controller">
 (function(){
 'use strict';
-const BUILD='v45.87 Page Header Icon Standardization Safe';
-const VERSION='45.87';
+const BUILD='v45.89 Today Work Hub V2 Safe';
+const VERSION='45.89';
 function lockVersion(){
   const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent=BUILD;
   document.title='TFMS '+BUILD;
@@ -24396,8 +24396,8 @@ const oldNav=window.navTo;if(typeof oldNav==='function'&&!oldNav.__v4587header){
 <script id="tfms-v4588-login-hero-controller">
 (function(){
 'use strict';
-const BUILD='v45.88 Login Hero Background Refresh Safe';
-const VERSION='45.88';
+const BUILD='v45.89 Today Work Hub V2 Safe';
+const VERSION='45.89';
 function lockVersion(){
   const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent=BUILD;
   document.title='TFMS '+BUILD;
@@ -24406,6 +24406,116 @@ function lockVersion(){
 function apply(){lockVersion();}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();
 [80,300,900,1800].forEach(ms=>setTimeout(apply,ms));setInterval(lockVersion,850);
+})();
+</script>
+
+
+
+<!-- =========================================================
+ TFMS v45.89 Today Work Hub V2 Safe
+ Scope: Today page UX + stable task action flow only.
+ DB / SQL / fire / maintenance core logic unchanged.
+ ========================================================= -->
+<style id="tfms-v4589-today-hub-style">
+#today.v4589-hub{--hub-blue:#1764d6;--hub-teal:#0b9aa3;--hub-green:#1f9d55;--hub-red:#e44747;--hub-line:#d9e4f0;--hub-soft:#f7faff}
+#today.v4589-hub>.title-row{margin-bottom:12px!important}
+#today.v4589-hub>.panel{display:none!important}
+#today .v4589-shell{display:grid;gap:11px}
+#today .v4589-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+#today .v4589-kpi{border:1px solid var(--hub-line);background:#fff;border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:12px;min-height:74px;box-shadow:0 4px 15px rgba(25,61,104,.04);cursor:pointer;text-align:left}
+#today .v4589-kpi:hover{border-color:#a9c9eb;background:#fbfdff}
+#today .v4589-kpi .ico{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:#edf5ff;color:var(--hub-blue);font-size:18px;flex:0 0 38px}
+#today .v4589-kpi.teal .ico{background:#e9f9fa;color:var(--hub-teal)}#today .v4589-kpi.green .ico{background:#ecf9f1;color:var(--hub-green)}#today .v4589-kpi.red .ico{background:#fff0f0;color:var(--hub-red)}
+#today .v4589-kpi span{display:block;font-size:10.5px;color:#6e8197;font-weight:800}#today .v4589-kpi strong{display:block;font-size:22px;color:#15395f;line-height:1.05;margin:3px 0}#today .v4589-kpi.red strong{color:#d83939}
+#today .v4589-card{background:#fff;border:1px solid var(--hub-line);border-radius:14px;padding:14px 15px;box-shadow:0 4px 16px rgba(24,61,103,.04)}
+#today .v4589-card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:11px}
+#today .v4589-card-title{font-size:15px;font-weight:900;color:#153a61;display:flex;align-items:center;gap:8px}.v4589-card-title:before{content:"";width:9px;height:9px;border-radius:50%;background:var(--hub-blue)}
+#today .v4589-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+#today .v4589-filters{display:flex;gap:6px;flex-wrap:wrap}
+#today .v4589-filter{height:32px;border:1px solid #d3dfec;background:#fff;border-radius:999px;padding:0 11px;font-size:10.5px;font-weight:850;color:#49657f;cursor:pointer}
+#today .v4589-filter.active{background:#edf5ff;border-color:#8db8ed;color:#1358aa}
+#today .v4589-search{display:flex;gap:6px;align-items:center}#today .v4589-search input{width:210px;height:34px!important;min-height:34px!important;font-size:11px!important;padding:0 10px!important}
+#today .v4589-icon-btn{width:34px;height:34px;border:1px solid #d3dfec;background:#fff;border-radius:8px;cursor:pointer;color:#44637e;font-weight:900}
+#today .v4589-table-wrap{border:1px solid #e0e8f1;border-radius:11px;overflow:auto;max-height:410px}
+#today .v4589-table{width:100%;border-collapse:collapse;min-width:910px}.v4589-table th{position:sticky;top:0;background:#f5f8fc;color:#5b7189;font-size:10.5px;text-align:left;padding:10px 11px;z-index:1}.v4589-table td{padding:10px 11px;border-top:1px solid #edf2f7;font-size:11px;color:#1e3f61;vertical-align:middle}.v4589-table tr:hover td{background:#fbfdff}
+#today .v4589-status{display:inline-flex;align-items:center;border-radius:999px;padding:4px 8px;font-size:9.5px;font-weight:900}.v4589-status.plan{background:#fff4e7;color:#b56516}.v4589-status.progress{background:#eaf8fa;color:#087983}.v4589-status.done{background:#ebf8f0;color:#17814b}.v4589-status.late{background:#fff0f0;color:#d53d3d}
+#today .v4589-actions{display:flex;gap:5px;align-items:center;flex-wrap:wrap}.v4589-actions button{height:30px;border-radius:7px;padding:0 9px;font-size:10px;font-weight:850;cursor:pointer;border:1px solid #d2dfec;background:#fff;color:#335a80}.v4589-actions .fire{background:#0756b5;border-color:#0756b5;color:#fff}.v4589-actions .work{background:linear-gradient(135deg,#1764d6,#0b9aa3);border-color:transparent;color:#fff}.v4589-actions .delete{border-color:#efb6b6;color:#cc3c3c}.v4589-actions .undo{color:#51677e}
+#today .v4589-empty{padding:32px;text-align:center;color:#7b8da1;font-size:11px}
+#today .v4589-footer{display:flex;justify-content:space-between;align-items:center;margin-top:9px;color:#75889c;font-size:10px;gap:8px;flex-wrap:wrap}
+#today .v4589-manual-shell{background:#fff;border:1px solid var(--hub-line);border-radius:14px;overflow:hidden}.v4589-manual-toggle{width:100%;border:0;background:#fff;padding:13px 15px;display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;text-align:left}.v4589-manual-toggle b{font-size:13px;color:#173b61}.v4589-manual-toggle small{display:block;margin-top:3px;font-size:10px;color:#7b8da2;font-weight:600}.v4589-manual-toggle .left{display:flex;align-items:center;gap:10px}.v4589-manual-toggle .ico{width:34px;height:34px;border-radius:10px;background:#eaf9fa;color:#0b929b;display:grid;place-items:center;font-size:17px}.v4589-manual-body{display:none;border-top:1px solid #e6edf5;padding:12px 14px}.v4589-manual-shell.open .v4589-manual-body{display:block}
+#today .v4589-manual-body #todayManualPanelV416{margin:0!important;padding:0!important;border:0!important;box-shadow:none!important;background:transparent!important}.v4589-manual-body #todayManualPanelV416>.section-title{display:none!important}
+/* processing drawer */
+#v4589TodayDrawer{position:fixed;z-index:10040;top:62px;right:14px;bottom:14px;width:min(350px,calc(100vw - 28px));background:#fff;border:1px solid #d5e0eb;border-radius:16px;box-shadow:0 22px 60px rgba(15,39,70,.25);display:none;flex-direction:column;overflow:hidden}#v4589TodayDrawer.show{display:flex}
+#v4589TodayDrawer .head{display:flex;align-items:center;justify-content:space-between;padding:14px 15px;border-bottom:1px solid #e6edf5}.v4589-drawer-title{font-size:16px;font-weight:900;color:#17385a}.v4589-close{border:0;background:transparent;font-size:22px;color:#6c7f92;cursor:pointer}
+#v4589TodayDrawer .body{padding:14px 15px;overflow:auto;flex:1}.v4589-task-meta{padding:10px 11px;border-radius:10px;background:#f6f9fd;border:1px solid #e0e8f1;margin-bottom:13px}.v4589-task-meta small{display:block;color:#7a8da1;font-size:9.5px}.v4589-task-meta strong{display:block;color:#173c63;font-size:14px;margin-top:3px}
+#v4589TodayDrawer .field{margin-bottom:12px}#v4589TodayDrawer label{font-size:11px!important;font-weight:900;color:#31516f;margin-bottom:6px!important}.v4589-result-choice{display:grid;grid-template-columns:1fr 1fr;gap:8px}.v4589-result-choice button{height:42px;border:1px solid #d3deea;border-radius:9px;background:#fff;font-weight:900;color:#536b82;cursor:pointer}.v4589-result-choice button.normal.active{background:#eefaf3;border-color:#73c69c;color:#16764b}.v4589-result-choice button.issue.active{background:#fff3f3;border-color:#ef9d9d;color:#c63b3b}
+#v4589TodayDrawer textarea{min-height:92px!important;resize:vertical}.v4589-photo-drop{border:1px dashed #aec4da;border-radius:10px;min-height:74px;display:flex;align-items:center;justify-content:center;text-align:center;background:#fbfdff;cursor:pointer;color:#58738e;font-size:10px}.v4589-photo-preview{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:7px}.v4589-photo-preview img{width:100%;height:58px;object-fit:cover;border-radius:7px;border:1px solid #dce5ee}
+#v4589TodayDrawer .foot{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 14px;border-top:1px solid #e6edf5;background:#fbfdff}.v4589-drawer-btn{height:40px;border:0;border-radius:9px;font-size:11px;font-weight:900;cursor:pointer;color:#fff;background:#115cbf}.v4589-drawer-btn.link{background:#0b999f}.v4589-drawer-btn:disabled{opacity:.45;cursor:not-allowed}
+@media(max-width:1100px){#today .v4589-kpis{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:720px){#today .v4589-kpis{grid-template-columns:1fr 1fr}#today .v4589-search{width:100%}#today .v4589-search input{width:100%}#v4589TodayDrawer{top:8px;right:8px;bottom:8px;width:calc(100vw - 16px)}}
+</style>
+<script id="tfms-v4589-today-hub-controller">
+(function(){
+'use strict';
+const BUILD='v45.89 Today Work Hub V2 Safe',VERSION='45.89';
+const $=id=>document.getElementById(id),q=(s,r=document)=>r.querySelector(s),qa=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const esc=v=>String(v??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
+let filter='all',search='',activeKey='',resultMode='normal',drawerFiles=[];
+function lockVersion(){const b=$('tfmsVersionBadge');if(b)b.textContent=BUILD;document.title='TFMS '+BUILD;try{const u=new URL(location.href);if(u.searchParams.get('v')!==VERSION){u.searchParams.set('v',VERSION);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
+function admin(){try{return typeof currentRole!=='undefined'&&currentRole==='admin'||window.tfmsCurrentRole==='admin'||/admin|관리자/i.test(String(window.cloudProfile?.role||window.cloudProfile?.user_role||''))}catch(e){return false}}
+function deptOf(f){try{return window.getFacilityDeptStable?.(f)||window.getFacilityDept?.(f)||''}catch(e){return''}}
+function scoped(){let a=Array.isArray(window.todayTasks)?window.todayTasks:[];try{const d=window.tfmsUserDept||window.currentUserDept||'';if(d&&d!=='전체')a=a.filter(t=>deptOf(t.facility)===d)}catch(e){}return a}
+function ensureKey(t,i){if(!t._flowId)t._flowId=String(t.dbId||t.id||('today_'+Date.now()+'_'+i+'_'+Math.random().toString(36).slice(2,6)));return String(t._flowId)}
+function findTask(k){return (window.todayTasks||[]).find((t,i)=>ensureKey(t,i)===String(k)||String(t.dbId||t.id||'')===String(k))}
+function done(t){return /완료/.test(String(t?.status||''))}
+function late(t){if(done(t))return false;const d=String(t?.due||t?.task_date||'');if(!/^\d{4}-\d{2}-\d{2}$/.test(d))return false;const now=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);return d<now}
+function progress(t){return /진행/.test(String(t?.status||''))}
+function fire(t){return /소방|소화기/.test(String(t?.task||t?.title||'')+' '+String(t?.field||''))}
+function title(t){return t?.task||t?.title||'-'}
+function asset(t){try{const a=t?.assetKey&&window.assetData?.[t.assetKey];return a?`${a.space||'-'} · ${a.name||t.assetName||'시설 공통업무'}`:(t?.assetName||'시설 공통업무')}catch(e){return t?.assetName||'시설 공통업무'}}
+function status(t){if(done(t))return['완료','done'];if(late(t))return['기한초과','late'];if(progress(t))return['진행중','progress'];return['예정','plan']}
+function filtered(){return scoped().filter(t=>{if(filter==='plan'&&(done(t)||late(t)||progress(t)))return false;if(filter==='late'&&!late(t))return false;if(filter==='done'&&!done(t))return false;if(filter==='progress'&&!progress(t))return false;if(search&&!([t.facility,asset(t),title(t)].join(' ').toLowerCase().includes(search.toLowerCase())))return false;return true})}
+function counts(){const a=scoped();return{all:a.length,todo:a.filter(x=>!done(x)).length,progress:a.filter(progress).length,done:a.filter(done).length,late:a.filter(late).length}}
+function ensureShell(){
+ const p=$('today');if(!p||$('v4589TodayShell'))return;p.classList.add('v4589-hub');
+ const shell=document.createElement('div');shell.id='v4589TodayShell';shell.className='v4589-shell';shell.innerHTML=`
+ <div class="v4589-kpis">
+  <button class="v4589-kpi" data-k="all"><span class="ico">☑</span><div><span>오늘 할 업무</span><strong id="v4589Todo">0건</strong><span id="v4589AllSub">전체 0건</span></div></button>
+  <button class="v4589-kpi teal" data-k="progress"><span class="ico">◔</span><div><span>진행중</span><strong id="v4589Progress">0건</strong><span>현재 처리 중인 업무</span></div></button>
+  <button class="v4589-kpi green" data-k="done"><span class="ico">✓</span><div><span>완료</span><strong id="v4589Done">0건</strong><span>완료 처리된 업무</span></div></button>
+  <button class="v4589-kpi red" data-k="late"><span class="ico">!</span><div><span>기한초과</span><strong id="v4589Late">0건</strong><span>기한이 지난 업무</span></div></button>
+ </div>
+ <div class="v4589-card">
+  <div class="v4589-card-head"><div class="v4589-card-title">오늘 해야 할 업무</div><button class="btn light" id="v4589CycleGo" type="button">점검주기 관리</button></div>
+  <div class="v4589-toolbar"><div class="v4589-filters"><button class="v4589-filter active" data-f="all">전체 <b id="v4589FAll">0</b></button><button class="v4589-filter" data-f="plan">예정</button><button class="v4589-filter" data-f="progress">진행중</button><button class="v4589-filter" data-f="late">기한초과</button><button class="v4589-filter" data-f="done">완료</button></div><div class="v4589-search"><input id="v4589Search" placeholder="시설명, 업무명 검색"><button class="v4589-icon-btn" id="v4589Refresh" title="새로고침">↻</button></div></div>
+  <div class="v4589-table-wrap"><table class="v4589-table"><thead><tr><th>시설명</th><th>연계 설비</th><th>업무명</th><th>주기</th><th>기한</th><th>상태</th><th>처리</th></tr></thead><tbody id="v4589TodayBody"></tbody></table></div>
+  <div class="v4589-footer"><span id="v4589Count">총 0건</span><span>업무 처리에서 정상완료 또는 유지관리 연계를 선택할 수 있습니다.</span></div>
+ </div>
+ <div class="v4589-manual-shell" id="v4589ManualShell"><button class="v4589-manual-toggle" type="button"><span class="left"><span class="ico">＋</span><span><b>비정기 업무 등록</b><small>정기점검 외 현장 확인·민원·긴급 점검 등 비정기 업무를 등록합니다.</small></span></span><span id="v4589ManualArrow">⌄</span></button><div class="v4589-manual-body" id="v4589ManualBody"></div></div>`;
+ p.appendChild(shell);
+ qa('.v4589-kpi',shell).forEach(b=>b.onclick=()=>setFilter(b.dataset.k==='all'?'all':b.dataset.k));qa('.v4589-filter',shell).forEach(b=>b.onclick=()=>setFilter(b.dataset.f));
+ $('v4589Search').addEventListener('input',e=>{search=e.target.value||'';render()});$('v4589Refresh').onclick=()=>{try{window.loadEnterpriseData?.()}catch(e){}setTimeout(render,180)};$('v4589CycleGo').onclick=()=>window.navTo?.('cycle');
+ q('.v4589-manual-toggle',shell).onclick=()=>{const s=$('v4589ManualShell');s.classList.toggle('open');$('v4589ManualArrow').textContent=s.classList.contains('open')?'⌃':'⌄';moveManual()};
+ ensureDrawer();moveManual();
+}
+function moveManual(){const dest=$('v4589ManualBody'),src=$('todayManualPanelV416');if(dest&&src&&src.parentNode!==dest)dest.appendChild(src)}
+function setFilter(f){filter=f;qa('.v4589-filter').forEach(b=>b.classList.toggle('active',b.dataset.f===f));render()}
+function render(){ensureShell();moveManual();const c=counts();if($('v4589Todo'))$('v4589Todo').textContent=c.todo+'건';if($('v4589Progress'))$('v4589Progress').textContent=c.progress+'건';if($('v4589Done'))$('v4589Done').textContent=c.done+'건';if($('v4589Late'))$('v4589Late').textContent=c.late+'건';if($('v4589AllSub'))$('v4589AllSub').textContent='전체 '+c.all+'건';if($('v4589FAll'))$('v4589FAll').textContent=c.all;const a=filtered(),body=$('v4589TodayBody');if(!body)return;body.innerHTML=a.length?a.map((t,i)=>{const k=ensureKey(t,i),s=status(t);return `<tr><td>${esc(t.facility||'-')}</td><td>${esc(asset(t))}</td><td><b>${esc(title(t))}</b></td><td>${esc(t.cycle||'직접등록')}</td><td>${esc(t.due||t.task_date||'-')}</td><td><span class="v4589-status ${s[1]}">${s[0]}</span></td><td><div class="v4589-actions">${done(t)?`<button class="undo" onclick="undoTodayV3261('${esc(k)}')">완료 취소</button>`:`${fire(t)?`<button class="fire" onclick="navToFireV420()">소방점검</button>`:''}<button class="work" onclick="openTodayWorkV4589('${esc(k)}')">업무 처리</button>`}${admin()?`<button class="delete" onclick="deleteTodayTaskV4577('${esc(t.dbId||k)}')">직권삭제</button>`:''}</div></td></tr>`}).join(''):'<tr><td colspan="7"><div class="v4589-empty">조건에 맞는 오늘의 업무가 없습니다.</div></td></tr>';if($('v4589Count'))$('v4589Count').textContent=`총 ${a.length}건 · 전체 ${c.all}건`}
+function ensureDrawer(){if($('v4589TodayDrawer'))return;const d=document.createElement('div');d.id='v4589TodayDrawer';d.innerHTML=`<div class="head"><div class="v4589-drawer-title">업무 처리</div><button class="v4589-close" type="button">×</button></div><div class="body"><div class="v4589-task-meta"><small id="v4589DrawerFacility">-</small><strong id="v4589DrawerTask">-</strong></div><div class="field"><label>점검 결과</label><div class="v4589-result-choice"><button type="button" class="normal active" data-r="normal">✓ 정상</button><button type="button" class="issue" data-r="issue">⚠ 이상 발견</button></div></div><div class="field"><label>점검내용</label><textarea id="v4589DrawerNote" placeholder="점검 결과 또는 이상사항을 입력하세요."></textarea></div><div class="field"><label>특이사항</label><textarea id="v4589DrawerExtra" placeholder="필요한 경우 특이사항을 입력하세요."></textarea></div><div class="field"><label>사진 첨부</label><label class="v4589-photo-drop" for="v4589DrawerPhotos"><span>📷 현장사진 추가<br><small>이상 발견 시 유지관리 등록으로 함께 전달됩니다.</small></span></label><input id="v4589DrawerPhotos" type="file" accept="image/*" multiple style="display:none"><div class="v4589-photo-preview" id="v4589PhotoPreview"></div></div></div><div class="foot"><button class="v4589-drawer-btn" id="v4589NormalBtn" type="button">✓ 정상 완료</button><button class="v4589-drawer-btn link" id="v4589LinkBtn" type="button">↗ 유지관리 연계</button></div>`;document.body.appendChild(d);q('.v4589-close',d).onclick=closeDrawer;qa('.v4589-result-choice button',d).forEach(b=>b.onclick=()=>setResult(b.dataset.r));$('v4589DrawerPhotos').addEventListener('change',previewFiles);$('v4589NormalBtn').onclick=completeNormal;$('v4589LinkBtn').onclick=linkMaintenance;setResult('normal')}
+function setResult(r){resultMode=r;qa('.v4589-result-choice button',$('v4589TodayDrawer')).forEach(b=>b.classList.toggle('active',b.dataset.r===r));$('v4589NormalBtn').disabled=r!=='normal';$('v4589LinkBtn').disabled=r!=='issue'}
+function previewFiles(){drawerFiles=Array.from($('v4589DrawerPhotos')?.files||[]);const p=$('v4589PhotoPreview');if(!p)return;p.innerHTML='';drawerFiles.slice(0,8).forEach(f=>{const img=document.createElement('img');img.src=URL.createObjectURL(f);p.appendChild(img)})}
+function openDrawer(k){const t=findTask(k);if(!t){window.showToast?.('업무 정보를 찾지 못했습니다.');return}activeKey=ensureKey(t,0);try{window.openTodayUnifiedV4576?.(activeKey);$('todayFlowModalV3261')?.classList.remove('show')}catch(e){}$('v4589DrawerFacility').textContent=`${t.facility||'-'} · ${asset(t)}`;$('v4589DrawerTask').textContent=title(t);$('v4589DrawerNote').value=t.resultNote||'';$('v4589DrawerExtra').value=t.extraNote||'';$('v4589DrawerPhotos').value='';drawerFiles=[];$('v4589PhotoPreview').innerHTML='';setResult('normal');$('v4589TodayDrawer').classList.add('show')}
+function closeDrawer(){$('v4589TodayDrawer')?.classList.remove('show');activeKey='';drawerFiles=[]}
+async function uploadNormalPhotos(t){if(!drawerFiles.length)return 0;const c=window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb;if(!c)return 0;const bucket='tfms-equipment-photos',base=`today/${t.dbId||ensureKey(t,0)}/photos`;let n=0;for(const f of drawerFiles){const name=String(f.name||'photo').replace(/[^\w.가-힣-]/g,'_');const path=`${base}/${Date.now()}_${Math.random().toString(36).slice(2,7)}_${name}`;const r=await c.storage.from(bucket).upload(path,f,{cacheControl:'3600',upsert:false,contentType:f.type||'image/jpeg'});if(r.error)throw r.error;n++}return n}
+async function completeNormal(){const t=findTask(activeKey);if(!t)return;const note=String($('v4589DrawerNote').value||'').trim(),extra=String($('v4589DrawerExtra').value||'').trim();t.resultNote=[note,extra].filter(Boolean).join('\n');try{if($('todayUnifiedNoteV4576'))$('todayUnifiedNoteV4576').value=t.resultNote;await uploadNormalPhotos(t);window.finishTodayUnifiedV4576?.();closeDrawer();setTimeout(render,120);window.showToast?.('정상으로 완료 처리했습니다.')}catch(e){console.error(e);window.showToast?.('업무 완료 처리 중 오류: '+(e?.message||e))}}
+function transferFiles(){if(!drawerFiles.length)return;let tries=0;const timer=setInterval(()=>{tries++;const input=$('photoInput');if(input){try{const dt=new DataTransfer();drawerFiles.forEach(f=>dt.items.add(f));input.files=dt.files;input.dispatchEvent(new Event('change',{bubbles:true}));clearInterval(timer)}catch(e){clearInterval(timer)}}if(tries>12)clearInterval(timer)},120)}
+function linkMaintenance(){const t=findTask(activeKey);if(!t)return;const note=String($('v4589DrawerNote').value||'').trim(),extra=String($('v4589DrawerExtra').value||'').trim();t.resultNote=[note,extra].filter(Boolean).join('\n');if($('todayUnifiedNoteV4576'))$('todayUnifiedNoteV4576').value=t.resultNote;transferFiles();window.issueTodayUnifiedV4576?.();closeDrawer()}
+window.openTodayWorkV4589=openDrawer;
+function installRenderer(){window.renderTodayTasks=render;try{renderTodayTasks=render}catch(e){}if($('today')?.classList.contains('active'))render()}
+function init(){lockVersion();ensureShell();ensureDrawer();installRenderer();setTimeout(moveManual,120)}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+[80,300,800,1800,3600].forEach(ms=>setTimeout(()=>{lockVersion();ensureShell();installRenderer();moveManual()},ms));setInterval(()=>{lockVersion();if(window.renderTodayTasks!==render){window.renderTodayTasks=render;try{renderTodayTasks=render}catch(e){}}},1000);
+['showPage','navTo'].forEach(name=>{const base=window[name];if(typeof base==='function'&&!base.__v4589){const w=function(id){const r=base.apply(this,arguments);if(id==='today')setTimeout(()=>{ensureShell();installRenderer();moveManual();render()},120);return r};w.__v4589=true;window[name]=w}});
 })();
 </script>
 
