@@ -12258,76 +12258,7 @@ document.addEventListener('DOMContentLoaded',function(){
         @page{size:A4 portrait;margin:0}
       </style></head><body>
       <div class="dj-sheet ${esc(sheetClass||'')}">${content}</div>
-      
-
-<!-- =========================================================
- TFMS v45.92 Fire Legal Form Exact Cell Mapping Safe
- Original statutory form image/geometry unchanged.
- Only dynamic value coordinates + input choice UI corrected.
- ========================================================= -->
-<style id="tfms-v4592-fire-exact-mapping-style">
-/* Input-side helpers only; statutory output image is untouched. */
-#fireMonthly .v4592-choice-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
-#fireMonthly .v4592-choice-row button{height:30px;border:1px solid #d2deea;border-radius:7px;background:#fff;color:#48637d;padding:0 9px;font-size:10.5px;font-weight:800;cursor:pointer}
-#fireMonthly .v4592-choice-row button.active{background:#edf6ff;border-color:#72a9e6;color:#0d59ae}
-#fireMonthly .v4592-choice-row button .box{display:inline-block;width:14px;text-align:center;margin-right:3px;font-weight:900}
-</style>
-<script id="tfms-v4592-fire-exact-mapping-controller">
-(function(){
-'use strict';
-const BUILD='v45.92 Fire Legal Form Exact Cell Mapping Safe',VERSION='45.92';
-const $=id=>document.getElementById(id);
-const q=(s,r=document)=>r.querySelector(s);
-const val=id=>$(id)?.value??'';
-const radio=name=>document.querySelector(`input[name="${name}"]:checked`)?.value||'';
-const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-const toast=m=>{try{window.showToast?.(m)}catch(e){alert(m)}};
-function lockVersion(){const b=$('tfmsVersionBadge');if(b)b.textContent=BUILD;document.title='TFMS '+BUILD;try{const u=new URL(location.href);if(u.searchParams.get('v')!==VERSION){u.searchParams.set('v',VERSION);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
-function data(){return{date:val('fireDate'),performer:val('firePerformer'),facility:val('fireFacility'),grade:val('fireGrade'),address:val('fireAddress'),basement:val('fireBasement'),ground:val('fireGround'),totalArea:val('fireTotalArea'),floorArea:val('fireFloorArea'),buildings:val('fireBuildings'),checks:[0,1,2,3].map(i=>({content:val(`fireCheck${i}`),result:radio(`fireResult${i}`),action:val(`fireAction${i}`)})),improvement:{reportDate:val('fireReportDate'),method:val('fireReportMethod'),reportTo:val('fireReportTo'),remedy:val('fireRemedy')}}}
-function fmtDate(v){const m=String(v||'').match(/^(\d{4})-(\d{2})-(\d{2})/);return m?`${m[1]}. ${Number(m[2])}. ${Number(m[3])}.`:String(v||'')}
-function imgSrc(){const src=$('tfms-v423-fire-original-form-controller')?.textContent||'';const m=src.match(/const\s+FORM_IMAGE\s*=\s*['"](data:image\/png;base64,[^'"]+)['"]/);if(m?.[1])return m[1];const shown=document.querySelector('.fire-original-sheet .fire-form-bg');if(shown?.src)return shown.src;throw new Error('원본 법정서식 이미지를 불러오지 못했습니다.')}
-const PW=1653,PH=2337;
-function box(x,y,w,h,text,cls=''){return `<div class="fire-overlay-v430 ${cls}" style="left:${x/PW*100}%;top:${y/PH*100}%;width:${w/PW*100}%;height:${h/PH*100}%">${text}</div>`}
-function mark(x,y){return box(x,y,30,30,'✓','check')}
-function gradeMark(v){const pos={'특급':[1118,396],'1급':[1234,396],'2급':[1346,396],'3급':[1458,396]}[v];return pos?mark(...pos):''}
-function result(v,i){const good=[838,1067,1296,1525],bad=[902,1131,1360,1589];return v==='양호'?[1166,good[i]]:v==='불량'?[1166,bad[i]]:[]}
-function method(v){return ({'대면':[675,1774],'서면':[821,1774],'정보통신':[970,1774]}[v]||[])}
-function remedy(v){return ({'이전':[675,1850],'제거':[821,1850],'수리·교체':[970,1850],'기타':[1167,1850]}[v]||[])}
-function overlays(d){let o='',m=[];
-  /* Existing legal-form cells: only place values in blank data cells. */
-  o+=box(417,330,474,64,esc(fmtDate(d.date)),'compact');
-  o+=box(1138,330,447,64,esc(d.performer),'compact');
-  /* 상호 blank cell = x607~891 */
-  o+=box(607,397,284,76,esc(d.facility),'compact');
-  o+=gradeMark(d.grade);
-  o+=box(607,473,878,75,esc(d.address),'compact');
-  /* Metric labels occupy y548~623; values belong in the blank row y623~699. */
-  o+=box(417,623,190,76,esc(d.basement),'compact');
-  o+=box(607,623,204,76,esc(d.ground),'compact');
-  o+=box(811,623,247,76,esc(d.totalArea),'compact');
-  o+=box(1058,623,213,76,esc(d.floorArea),'compact');
-  o+=box(1271,623,214,76,esc(d.buildings),'compact');
-  const ys=[757,986,1215,1444],hs=[229,229,229,228];
-  d.checks.forEach((r,i)=>{o+=box(417,ys[i],722,hs[i],esc(r.content),'left');const p=result(r.result,i);if(p.length)o+=mark(...p);o+=box(1304,ys[i],181,hs[i],esc(r.action),'left')});
-  /* 보고일시는 법정서식의 빈 값 행(y1748~1823)에 수행일자와 동일 날짜를 자동 표기. */
-  o+=box(417,1748,230,75,esc(fmtDate(d.date)),'compact');
-  m=method(d.improvement.method);if(m.length)o+=mark(...m);
-  o+=box(1139,1748,346,75,esc(d.improvement.reportTo),'compact');
-  m=remedy(d.improvement.remedy);if(m.length)o+=mark(...m);
-  return o;
-}
-function renderPreview(){try{const sheet=$('firePreviewSheet'),modal=$('firePreviewModal');if(!sheet||!modal)throw new Error('미리보기 영역을 찾지 못했습니다.');sheet.className='fire-original-sheet';sheet.innerHTML=`<img class="fire-form-bg" src="${imgSrc()}" alt="소방안전관리자 업무 수행 기록표">${overlays(data())}`;modal.classList.add('show');modal.scrollTop=0}catch(e){console.error(e);toast('서식 미리보기 실패: '+(e?.message||e))}}
-function installPreview(){window.previewFireRecordV420=renderPreview;try{previewFireRecordV420=renderPreview}catch(e){}}
-function syncReportDate(){const src=$('fireDate'),dst=$('fireReportDate');if(!src||!dst||!src.value)return;const current=String(dst.value||'');const time=/T(\d{2}:\d{2})/.exec(current)?.[1]||'00:00';dst.value=`${src.value}T${time}`}
-function makeChoices(selectId,values){const sel=$(selectId);if(!sel||sel.nextElementSibling?.classList.contains('v4592-choice-row'))return;const row=document.createElement('div');row.className='v4592-choice-row';values.forEach(v=>{const b=document.createElement('button');b.type='button';b.dataset.value=v;b.innerHTML=`<span class="box">☐</span>${v}`;b.onclick=()=>{sel.value=v;sel.dispatchEvent(new Event('change',{bubbles:true}));paint()};row.appendChild(b)});sel.insertAdjacentElement('afterend',row);function paint(){row.querySelectorAll('button').forEach(b=>{const on=sel.value===b.dataset.value;b.classList.toggle('active',on);q('.box',b).textContent=on?'☑':'☐'})}sel.addEventListener('change',paint);paint()}
-function init(){lockVersion();syncReportDate();makeChoices('fireReportMethod',['대면','서면','정보통신']);makeChoices('fireRemedy',['이전','제거','수리·교체','기타']);const d=$('fireDate');if(d&&!d.dataset.v4592){d.dataset.v4592='1';d.addEventListener('change',syncReportDate);d.addEventListener('input',syncReportDate)}installPreview()}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
-[80,300,800,1600,3200].forEach(ms=>setTimeout(()=>{init();installPreview()},ms));
-setInterval(()=>{lockVersion();if(window.previewFireRecordV420!==renderPreview)installPreview()},1000);
-})();
-</script>
-
-</body></html>`);
+      </body></html>`);
     win.document.close();
     setTimeout(()=>win.focus(),200);
   }
@@ -15715,75 +15646,6 @@ window.printFireExtQrLabelsV447=async function(){
     const w=window.open('','_blank','width=1100,height=800');if(!w)throw new Error('팝업이 차단되었습니다.');
     w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>${esc(facility)} 소화기 QR 라벨</title><style>@page{size:A4 portrait;margin:8mm}*{box-sizing:border-box}body{font-family:"Malgun Gothic",sans-serif;margin:0}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5mm}.label{border:1px solid #333;border-radius:3mm;min-height:82mm;padding:4mm;text-align:center;break-inside:avoid}.label img{width:42mm;height:42mm}.facility{font-weight:700;font-size:11pt}.code{font-size:15pt;font-weight:800;margin:2mm 0}.loc{font-size:9pt;min-height:12mm}.hint{font-size:7.5pt;color:#555;margin-top:1mm}@media print{.no-print{display:none}}</style></head><body><div class="no-print" style="padding:10px;text-align:center"><button onclick="print()">인쇄</button></div><div class="grid">${labels.map(x=>`<div class="label"><div class="facility">${esc(facility)}</div><div class="code">${esc(x.code)}</div><img src="${x.qr}"><div class="loc">${esc(x.location||'상세 위치 현장 입력')}</div><div class="hint">QR 촬영 후 현장점검</div></div>`).join('')}</div>
 
-
-
-<!-- =========================================================
- TFMS v45.92 Fire Legal Form Exact Cell Mapping Safe
- Original statutory form image/geometry unchanged.
- Only dynamic value coordinates + input choice UI corrected.
- ========================================================= -->
-<style id="tfms-v4592-fire-exact-mapping-style">
-/* Input-side helpers only; statutory output image is untouched. */
-#fireMonthly .v4592-choice-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
-#fireMonthly .v4592-choice-row button{height:30px;border:1px solid #d2deea;border-radius:7px;background:#fff;color:#48637d;padding:0 9px;font-size:10.5px;font-weight:800;cursor:pointer}
-#fireMonthly .v4592-choice-row button.active{background:#edf6ff;border-color:#72a9e6;color:#0d59ae}
-#fireMonthly .v4592-choice-row button .box{display:inline-block;width:14px;text-align:center;margin-right:3px;font-weight:900}
-</style>
-<script id="tfms-v4592-fire-exact-mapping-controller">
-(function(){
-'use strict';
-const BUILD='v45.92 Fire Legal Form Exact Cell Mapping Safe',VERSION='45.92';
-const $=id=>document.getElementById(id);
-const q=(s,r=document)=>r.querySelector(s);
-const val=id=>$(id)?.value??'';
-const radio=name=>document.querySelector(`input[name="${name}"]:checked`)?.value||'';
-const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-const toast=m=>{try{window.showToast?.(m)}catch(e){alert(m)}};
-function lockVersion(){const b=$('tfmsVersionBadge');if(b)b.textContent=BUILD;document.title='TFMS '+BUILD;try{const u=new URL(location.href);if(u.searchParams.get('v')!==VERSION){u.searchParams.set('v',VERSION);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
-function data(){return{date:val('fireDate'),performer:val('firePerformer'),facility:val('fireFacility'),grade:val('fireGrade'),address:val('fireAddress'),basement:val('fireBasement'),ground:val('fireGround'),totalArea:val('fireTotalArea'),floorArea:val('fireFloorArea'),buildings:val('fireBuildings'),checks:[0,1,2,3].map(i=>({content:val(`fireCheck${i}`),result:radio(`fireResult${i}`),action:val(`fireAction${i}`)})),improvement:{reportDate:val('fireReportDate'),method:val('fireReportMethod'),reportTo:val('fireReportTo'),remedy:val('fireRemedy')}}}
-function fmtDate(v){const m=String(v||'').match(/^(\d{4})-(\d{2})-(\d{2})/);return m?`${m[1]}. ${Number(m[2])}. ${Number(m[3])}.`:String(v||'')}
-function imgSrc(){const src=$('tfms-v423-fire-original-form-controller')?.textContent||'';const m=src.match(/const\s+FORM_IMAGE\s*=\s*['"](data:image\/png;base64,[^'"]+)['"]/);if(m?.[1])return m[1];const shown=document.querySelector('.fire-original-sheet .fire-form-bg');if(shown?.src)return shown.src;throw new Error('원본 법정서식 이미지를 불러오지 못했습니다.')}
-const PW=1653,PH=2337;
-function box(x,y,w,h,text,cls=''){return `<div class="fire-overlay-v430 ${cls}" style="left:${x/PW*100}%;top:${y/PH*100}%;width:${w/PW*100}%;height:${h/PH*100}%">${text}</div>`}
-function mark(x,y){return box(x,y,30,30,'✓','check')}
-function gradeMark(v){const pos={'특급':[1118,396],'1급':[1234,396],'2급':[1346,396],'3급':[1458,396]}[v];return pos?mark(...pos):''}
-function result(v,i){const good=[838,1067,1296,1525],bad=[902,1131,1360,1589];return v==='양호'?[1166,good[i]]:v==='불량'?[1166,bad[i]]:[]}
-function method(v){return ({'대면':[675,1774],'서면':[821,1774],'정보통신':[970,1774]}[v]||[])}
-function remedy(v){return ({'이전':[675,1850],'제거':[821,1850],'수리·교체':[970,1850],'기타':[1167,1850]}[v]||[])}
-function overlays(d){let o='',m=[];
-  /* Existing legal-form cells: only place values in blank data cells. */
-  o+=box(417,330,474,64,esc(fmtDate(d.date)),'compact');
-  o+=box(1138,330,447,64,esc(d.performer),'compact');
-  /* 상호 blank cell = x607~891 */
-  o+=box(607,397,284,76,esc(d.facility),'compact');
-  o+=gradeMark(d.grade);
-  o+=box(607,473,878,75,esc(d.address),'compact');
-  /* Metric labels occupy y548~623; values belong in the blank row y623~699. */
-  o+=box(417,623,190,76,esc(d.basement),'compact');
-  o+=box(607,623,204,76,esc(d.ground),'compact');
-  o+=box(811,623,247,76,esc(d.totalArea),'compact');
-  o+=box(1058,623,213,76,esc(d.floorArea),'compact');
-  o+=box(1271,623,214,76,esc(d.buildings),'compact');
-  const ys=[757,986,1215,1444],hs=[229,229,229,228];
-  d.checks.forEach((r,i)=>{o+=box(417,ys[i],722,hs[i],esc(r.content),'left');const p=result(r.result,i);if(p.length)o+=mark(...p);o+=box(1304,ys[i],181,hs[i],esc(r.action),'left')});
-  /* 보고일시는 법정서식의 빈 값 행(y1748~1823)에 수행일자와 동일 날짜를 자동 표기. */
-  o+=box(417,1748,230,75,esc(fmtDate(d.date)),'compact');
-  m=method(d.improvement.method);if(m.length)o+=mark(...m);
-  o+=box(1139,1748,346,75,esc(d.improvement.reportTo),'compact');
-  m=remedy(d.improvement.remedy);if(m.length)o+=mark(...m);
-  return o;
-}
-function renderPreview(){try{const sheet=$('firePreviewSheet'),modal=$('firePreviewModal');if(!sheet||!modal)throw new Error('미리보기 영역을 찾지 못했습니다.');sheet.className='fire-original-sheet';sheet.innerHTML=`<img class="fire-form-bg" src="${imgSrc()}" alt="소방안전관리자 업무 수행 기록표">${overlays(data())}`;modal.classList.add('show');modal.scrollTop=0}catch(e){console.error(e);toast('서식 미리보기 실패: '+(e?.message||e))}}
-function installPreview(){window.previewFireRecordV420=renderPreview;try{previewFireRecordV420=renderPreview}catch(e){}}
-function syncReportDate(){const src=$('fireDate'),dst=$('fireReportDate');if(!src||!dst||!src.value)return;const current=String(dst.value||'');const time=/T(\d{2}:\d{2})/.exec(current)?.[1]||'00:00';dst.value=`${src.value}T${time}`}
-function makeChoices(selectId,values){const sel=$(selectId);if(!sel||sel.nextElementSibling?.classList.contains('v4592-choice-row'))return;const row=document.createElement('div');row.className='v4592-choice-row';values.forEach(v=>{const b=document.createElement('button');b.type='button';b.dataset.value=v;b.innerHTML=`<span class="box">☐</span>${v}`;b.onclick=()=>{sel.value=v;sel.dispatchEvent(new Event('change',{bubbles:true}));paint()};row.appendChild(b)});sel.insertAdjacentElement('afterend',row);function paint(){row.querySelectorAll('button').forEach(b=>{const on=sel.value===b.dataset.value;b.classList.toggle('active',on);q('.box',b).textContent=on?'☑':'☐'})}sel.addEventListener('change',paint);paint()}
-function init(){lockVersion();syncReportDate();makeChoices('fireReportMethod',['대면','서면','정보통신']);makeChoices('fireRemedy',['이전','제거','수리·교체','기타']);const d=$('fireDate');if(d&&!d.dataset.v4592){d.dataset.v4592='1';d.addEventListener('change',syncReportDate);d.addEventListener('input',syncReportDate)}installPreview()}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
-[80,300,800,1600,3200].forEach(ms=>setTimeout(()=>{init();installPreview()},ms));
-setInterval(()=>{lockVersion();if(window.previewFireRecordV420!==renderPreview)installPreview()},1000);
-})();
-</script>
-
 </body></html>`);
     w.document.close();setTimeout(()=>w.focus(),200);
   }catch(e){console.error(e);toast('QR 라벨 출력 준비 실패: '+(e?.message||e))}
@@ -15805,15 +15667,14 @@ function collect(){
 
 function legalHtml(d){
   const resultBox=v=>`[${v==='양호'?'√':' '}] 양호<br>[${v==='불량'?'√':' '}] 불량`;
-  const reportDate=d.improvement?.reportDate||d.date||'';
   return `<div class="small">■ 화재의 예방 및 안전관리에 관한 법률 시행규칙 [별지 제12호서식]</div>
     <h1>소방안전관리자 업무 수행 기록표</h1>
     <div class="small">※ [ ]에는 해당되는 곳에 √표를 합니다.</div>
     <table>
       <tr><th style="width:16%">수행일자</th><td>${esc(d.date)}</td><th style="width:16%">수행자</th><td>${esc(d.performer)}　(서명)</td></tr>
-      <tr><th rowspan="3">소방안전<br>관리대상물</th><th>상호</th><td class="fire-facility-value">${esc(d.facility)}</td><th>등급</th><td colspan="2" class="fire-nowrap fire-grade-value">[${d.grade==='특급'?'√':' '}]특급　[${d.grade==='1급'?'√':' '}]1급　[${d.grade==='2급'?'√':' '}]2급　[${d.grade==='3급'?'√':' '}]3급</td></tr>
+      <tr><th rowspan="3">소방안전<br>관리대상물</th><th>상호</th><td>${esc(d.facility)}</td><th>등급</th><td colspan="2">[${d.grade==='특급'?'√':' '}]특급　[${d.grade==='1급'?'√':' '}]1급　[${d.grade==='2급'?'√':' '}]2급　[${d.grade==='3급'?'√':' '}]3급</td></tr>
       <tr><th>소재지</th><td colspan="4">${esc(d.address)}</td></tr>
-      <tr><th>지하층</th><td class="fire-metric-value">${esc(d.basement)}</td><th>지상층</th><td class="fire-metric-value">${esc(d.ground)}</td><td class="fire-metric-summary">연면적 ${esc(d.totalArea)}㎡ / 바닥면적 ${esc(d.floorArea)}㎡ / ${esc(d.buildings)}동</td></tr>
+      <tr><th>지하층</th><td>${esc(d.basement)}</td><th>지상층</th><td>${esc(d.ground)}</td><td>연면적 ${esc(d.totalArea)}㎡ / 바닥면적 ${esc(d.floorArea)}㎡ / ${esc(d.buildings)}동</td></tr>
     </table>
     <table style="margin-top:-1px">
       <tr><th style="width:18%">항목</th><th>확인내용</th><th style="width:14%">확인결과</th><th style="width:18%">조치사항</th></tr>
@@ -15821,8 +15682,8 @@ function legalHtml(d){
     </table>
     <table style="margin-top:-1px">
       <tr><th rowspan="3" style="width:18%">불량사항<br>개선보고</th><th>보고일시</th><th>보고방법</th><th>보고받은 사람</th></tr>
-      <tr><td>${esc(reportDate)}</td><td class="fire-nowrap fire-report-method">[${d.improvement.method==='대면'?'√':' '}]대면　[${d.improvement.method==='서면'?'√':' '}]서면　[${d.improvement.method==='정보통신'?'√':' '}]정보통신</td><td>${esc(d.improvement.reportTo)}</td></tr>
-      <tr><th>조치방법</th><td colspan="2" class="fire-nowrap fire-remedy-value">[${d.improvement.remedy==='이전'?'√':' '}]이전　[${d.improvement.remedy==='제거'?'√':' '}]제거　[${d.improvement.remedy==='수리·교체'?'√':' '}]수리·교체　[${d.improvement.remedy==='기타'?'√':' '}]기타</td></tr>
+      <tr><td>${esc(d.improvement.reportDate)}</td><td>[${d.improvement.method==='대면'?'√':' '}]대면　[${d.improvement.method==='서면'?'√':' '}]서면　[${d.improvement.method==='정보통신'?'√':' '}]정보통신</td><td>${esc(d.improvement.reportTo)}</td></tr>
+      <tr><th>조치방법</th><td colspan="2">[${d.improvement.remedy==='이전'?'√':' '}]이전　[${d.improvement.remedy==='제거'?'√':' '}]제거　[${d.improvement.remedy==='수리·교체'?'√':' '}]수리·교체　[${d.improvement.remedy==='기타'?'√':' '}]기타</td></tr>
     </table>
     <div class="small" style="margin-top:12px;line-height:1.7">※ 작성요령<br>
     1. 소방안전관리업무를 수행한 날을 포함하여 월 1회 이상 작성<br>
@@ -16601,75 +16462,6 @@ window.printFireRecordV420=async function(){
 </style>
 
 
-
-
-<!-- =========================================================
- TFMS v45.92 Fire Legal Form Exact Cell Mapping Safe
- Original statutory form image/geometry unchanged.
- Only dynamic value coordinates + input choice UI corrected.
- ========================================================= -->
-<style id="tfms-v4592-fire-exact-mapping-style">
-/* Input-side helpers only; statutory output image is untouched. */
-#fireMonthly .v4592-choice-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
-#fireMonthly .v4592-choice-row button{height:30px;border:1px solid #d2deea;border-radius:7px;background:#fff;color:#48637d;padding:0 9px;font-size:10.5px;font-weight:800;cursor:pointer}
-#fireMonthly .v4592-choice-row button.active{background:#edf6ff;border-color:#72a9e6;color:#0d59ae}
-#fireMonthly .v4592-choice-row button .box{display:inline-block;width:14px;text-align:center;margin-right:3px;font-weight:900}
-</style>
-<script id="tfms-v4592-fire-exact-mapping-controller">
-(function(){
-'use strict';
-const BUILD='v45.92 Fire Legal Form Exact Cell Mapping Safe',VERSION='45.92';
-const $=id=>document.getElementById(id);
-const q=(s,r=document)=>r.querySelector(s);
-const val=id=>$(id)?.value??'';
-const radio=name=>document.querySelector(`input[name="${name}"]:checked`)?.value||'';
-const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-const toast=m=>{try{window.showToast?.(m)}catch(e){alert(m)}};
-function lockVersion(){const b=$('tfmsVersionBadge');if(b)b.textContent=BUILD;document.title='TFMS '+BUILD;try{const u=new URL(location.href);if(u.searchParams.get('v')!==VERSION){u.searchParams.set('v',VERSION);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
-function data(){return{date:val('fireDate'),performer:val('firePerformer'),facility:val('fireFacility'),grade:val('fireGrade'),address:val('fireAddress'),basement:val('fireBasement'),ground:val('fireGround'),totalArea:val('fireTotalArea'),floorArea:val('fireFloorArea'),buildings:val('fireBuildings'),checks:[0,1,2,3].map(i=>({content:val(`fireCheck${i}`),result:radio(`fireResult${i}`),action:val(`fireAction${i}`)})),improvement:{reportDate:val('fireReportDate'),method:val('fireReportMethod'),reportTo:val('fireReportTo'),remedy:val('fireRemedy')}}}
-function fmtDate(v){const m=String(v||'').match(/^(\d{4})-(\d{2})-(\d{2})/);return m?`${m[1]}. ${Number(m[2])}. ${Number(m[3])}.`:String(v||'')}
-function imgSrc(){const src=$('tfms-v423-fire-original-form-controller')?.textContent||'';const m=src.match(/const\s+FORM_IMAGE\s*=\s*['"](data:image\/png;base64,[^'"]+)['"]/);if(m?.[1])return m[1];const shown=document.querySelector('.fire-original-sheet .fire-form-bg');if(shown?.src)return shown.src;throw new Error('원본 법정서식 이미지를 불러오지 못했습니다.')}
-const PW=1653,PH=2337;
-function box(x,y,w,h,text,cls=''){return `<div class="fire-overlay-v430 ${cls}" style="left:${x/PW*100}%;top:${y/PH*100}%;width:${w/PW*100}%;height:${h/PH*100}%">${text}</div>`}
-function mark(x,y){return box(x,y,30,30,'✓','check')}
-function gradeMark(v){const pos={'특급':[1118,396],'1급':[1234,396],'2급':[1346,396],'3급':[1458,396]}[v];return pos?mark(...pos):''}
-function result(v,i){const good=[838,1067,1296,1525],bad=[902,1131,1360,1589];return v==='양호'?[1166,good[i]]:v==='불량'?[1166,bad[i]]:[]}
-function method(v){return ({'대면':[675,1774],'서면':[821,1774],'정보통신':[970,1774]}[v]||[])}
-function remedy(v){return ({'이전':[675,1850],'제거':[821,1850],'수리·교체':[970,1850],'기타':[1167,1850]}[v]||[])}
-function overlays(d){let o='',m=[];
-  /* Existing legal-form cells: only place values in blank data cells. */
-  o+=box(417,330,474,64,esc(fmtDate(d.date)),'compact');
-  o+=box(1138,330,447,64,esc(d.performer),'compact');
-  /* 상호 blank cell = x607~891 */
-  o+=box(607,397,284,76,esc(d.facility),'compact');
-  o+=gradeMark(d.grade);
-  o+=box(607,473,878,75,esc(d.address),'compact');
-  /* Metric labels occupy y548~623; values belong in the blank row y623~699. */
-  o+=box(417,623,190,76,esc(d.basement),'compact');
-  o+=box(607,623,204,76,esc(d.ground),'compact');
-  o+=box(811,623,247,76,esc(d.totalArea),'compact');
-  o+=box(1058,623,213,76,esc(d.floorArea),'compact');
-  o+=box(1271,623,214,76,esc(d.buildings),'compact');
-  const ys=[757,986,1215,1444],hs=[229,229,229,228];
-  d.checks.forEach((r,i)=>{o+=box(417,ys[i],722,hs[i],esc(r.content),'left');const p=result(r.result,i);if(p.length)o+=mark(...p);o+=box(1304,ys[i],181,hs[i],esc(r.action),'left')});
-  /* 보고일시는 법정서식의 빈 값 행(y1748~1823)에 수행일자와 동일 날짜를 자동 표기. */
-  o+=box(417,1748,230,75,esc(fmtDate(d.date)),'compact');
-  m=method(d.improvement.method);if(m.length)o+=mark(...m);
-  o+=box(1139,1748,346,75,esc(d.improvement.reportTo),'compact');
-  m=remedy(d.improvement.remedy);if(m.length)o+=mark(...m);
-  return o;
-}
-function renderPreview(){try{const sheet=$('firePreviewSheet'),modal=$('firePreviewModal');if(!sheet||!modal)throw new Error('미리보기 영역을 찾지 못했습니다.');sheet.className='fire-original-sheet';sheet.innerHTML=`<img class="fire-form-bg" src="${imgSrc()}" alt="소방안전관리자 업무 수행 기록표">${overlays(data())}`;modal.classList.add('show');modal.scrollTop=0}catch(e){console.error(e);toast('서식 미리보기 실패: '+(e?.message||e))}}
-function installPreview(){window.previewFireRecordV420=renderPreview;try{previewFireRecordV420=renderPreview}catch(e){}}
-function syncReportDate(){const src=$('fireDate'),dst=$('fireReportDate');if(!src||!dst||!src.value)return;const current=String(dst.value||'');const time=/T(\d{2}:\d{2})/.exec(current)?.[1]||'00:00';dst.value=`${src.value}T${time}`}
-function makeChoices(selectId,values){const sel=$(selectId);if(!sel||sel.nextElementSibling?.classList.contains('v4592-choice-row'))return;const row=document.createElement('div');row.className='v4592-choice-row';values.forEach(v=>{const b=document.createElement('button');b.type='button';b.dataset.value=v;b.innerHTML=`<span class="box">☐</span>${v}`;b.onclick=()=>{sel.value=v;sel.dispatchEvent(new Event('change',{bubbles:true}));paint()};row.appendChild(b)});sel.insertAdjacentElement('afterend',row);function paint(){row.querySelectorAll('button').forEach(b=>{const on=sel.value===b.dataset.value;b.classList.toggle('active',on);q('.box',b).textContent=on?'☑':'☐'})}sel.addEventListener('change',paint);paint()}
-function init(){lockVersion();syncReportDate();makeChoices('fireReportMethod',['대면','서면','정보통신']);makeChoices('fireRemedy',['이전','제거','수리·교체','기타']);const d=$('fireDate');if(d&&!d.dataset.v4592){d.dataset.v4592='1';d.addEventListener('change',syncReportDate);d.addEventListener('input',syncReportDate)}installPreview()}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
-[80,300,800,1600,3200].forEach(ms=>setTimeout(()=>{init();installPreview()},ms));
-setInterval(()=>{lockVersion();if(window.previewFireRecordV420!==renderPreview)installPreview()},1000);
-})();
-</script>
-
 </body></html>`);doc.close();
   await new Promise(r=>{if(doc.readyState==='complete')r();else frame.onload=r;});
   const imgs=[...doc.images];await Promise.all(imgs.map(img=>img.complete?(img.decode?.().catch(()=>{})||Promise.resolve()):new Promise(res=>{img.onload=img.onerror=res;})));
@@ -16979,75 +16771,6 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{
 }
 </style>
 
-
-
-
-<!-- =========================================================
- TFMS v45.92 Fire Legal Form Exact Cell Mapping Safe
- Original statutory form image/geometry unchanged.
- Only dynamic value coordinates + input choice UI corrected.
- ========================================================= -->
-<style id="tfms-v4592-fire-exact-mapping-style">
-/* Input-side helpers only; statutory output image is untouched. */
-#fireMonthly .v4592-choice-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
-#fireMonthly .v4592-choice-row button{height:30px;border:1px solid #d2deea;border-radius:7px;background:#fff;color:#48637d;padding:0 9px;font-size:10.5px;font-weight:800;cursor:pointer}
-#fireMonthly .v4592-choice-row button.active{background:#edf6ff;border-color:#72a9e6;color:#0d59ae}
-#fireMonthly .v4592-choice-row button .box{display:inline-block;width:14px;text-align:center;margin-right:3px;font-weight:900}
-</style>
-<script id="tfms-v4592-fire-exact-mapping-controller">
-(function(){
-'use strict';
-const BUILD='v45.92 Fire Legal Form Exact Cell Mapping Safe',VERSION='45.92';
-const $=id=>document.getElementById(id);
-const q=(s,r=document)=>r.querySelector(s);
-const val=id=>$(id)?.value??'';
-const radio=name=>document.querySelector(`input[name="${name}"]:checked`)?.value||'';
-const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-const toast=m=>{try{window.showToast?.(m)}catch(e){alert(m)}};
-function lockVersion(){const b=$('tfmsVersionBadge');if(b)b.textContent=BUILD;document.title='TFMS '+BUILD;try{const u=new URL(location.href);if(u.searchParams.get('v')!==VERSION){u.searchParams.set('v',VERSION);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
-function data(){return{date:val('fireDate'),performer:val('firePerformer'),facility:val('fireFacility'),grade:val('fireGrade'),address:val('fireAddress'),basement:val('fireBasement'),ground:val('fireGround'),totalArea:val('fireTotalArea'),floorArea:val('fireFloorArea'),buildings:val('fireBuildings'),checks:[0,1,2,3].map(i=>({content:val(`fireCheck${i}`),result:radio(`fireResult${i}`),action:val(`fireAction${i}`)})),improvement:{reportDate:val('fireReportDate'),method:val('fireReportMethod'),reportTo:val('fireReportTo'),remedy:val('fireRemedy')}}}
-function fmtDate(v){const m=String(v||'').match(/^(\d{4})-(\d{2})-(\d{2})/);return m?`${m[1]}. ${Number(m[2])}. ${Number(m[3])}.`:String(v||'')}
-function imgSrc(){const src=$('tfms-v423-fire-original-form-controller')?.textContent||'';const m=src.match(/const\s+FORM_IMAGE\s*=\s*['"](data:image\/png;base64,[^'"]+)['"]/);if(m?.[1])return m[1];const shown=document.querySelector('.fire-original-sheet .fire-form-bg');if(shown?.src)return shown.src;throw new Error('원본 법정서식 이미지를 불러오지 못했습니다.')}
-const PW=1653,PH=2337;
-function box(x,y,w,h,text,cls=''){return `<div class="fire-overlay-v430 ${cls}" style="left:${x/PW*100}%;top:${y/PH*100}%;width:${w/PW*100}%;height:${h/PH*100}%">${text}</div>`}
-function mark(x,y){return box(x,y,30,30,'✓','check')}
-function gradeMark(v){const pos={'특급':[1118,396],'1급':[1234,396],'2급':[1346,396],'3급':[1458,396]}[v];return pos?mark(...pos):''}
-function result(v,i){const good=[838,1067,1296,1525],bad=[902,1131,1360,1589];return v==='양호'?[1166,good[i]]:v==='불량'?[1166,bad[i]]:[]}
-function method(v){return ({'대면':[675,1774],'서면':[821,1774],'정보통신':[970,1774]}[v]||[])}
-function remedy(v){return ({'이전':[675,1850],'제거':[821,1850],'수리·교체':[970,1850],'기타':[1167,1850]}[v]||[])}
-function overlays(d){let o='',m=[];
-  /* Existing legal-form cells: only place values in blank data cells. */
-  o+=box(417,330,474,64,esc(fmtDate(d.date)),'compact');
-  o+=box(1138,330,447,64,esc(d.performer),'compact');
-  /* 상호 blank cell = x607~891 */
-  o+=box(607,397,284,76,esc(d.facility),'compact');
-  o+=gradeMark(d.grade);
-  o+=box(607,473,878,75,esc(d.address),'compact');
-  /* Metric labels occupy y548~623; values belong in the blank row y623~699. */
-  o+=box(417,623,190,76,esc(d.basement),'compact');
-  o+=box(607,623,204,76,esc(d.ground),'compact');
-  o+=box(811,623,247,76,esc(d.totalArea),'compact');
-  o+=box(1058,623,213,76,esc(d.floorArea),'compact');
-  o+=box(1271,623,214,76,esc(d.buildings),'compact');
-  const ys=[757,986,1215,1444],hs=[229,229,229,228];
-  d.checks.forEach((r,i)=>{o+=box(417,ys[i],722,hs[i],esc(r.content),'left');const p=result(r.result,i);if(p.length)o+=mark(...p);o+=box(1304,ys[i],181,hs[i],esc(r.action),'left')});
-  /* 보고일시는 법정서식의 빈 값 행(y1748~1823)에 수행일자와 동일 날짜를 자동 표기. */
-  o+=box(417,1748,230,75,esc(fmtDate(d.date)),'compact');
-  m=method(d.improvement.method);if(m.length)o+=mark(...m);
-  o+=box(1139,1748,346,75,esc(d.improvement.reportTo),'compact');
-  m=remedy(d.improvement.remedy);if(m.length)o+=mark(...m);
-  return o;
-}
-function renderPreview(){try{const sheet=$('firePreviewSheet'),modal=$('firePreviewModal');if(!sheet||!modal)throw new Error('미리보기 영역을 찾지 못했습니다.');sheet.className='fire-original-sheet';sheet.innerHTML=`<img class="fire-form-bg" src="${imgSrc()}" alt="소방안전관리자 업무 수행 기록표">${overlays(data())}`;modal.classList.add('show');modal.scrollTop=0}catch(e){console.error(e);toast('서식 미리보기 실패: '+(e?.message||e))}}
-function installPreview(){window.previewFireRecordV420=renderPreview;try{previewFireRecordV420=renderPreview}catch(e){}}
-function syncReportDate(){const src=$('fireDate'),dst=$('fireReportDate');if(!src||!dst||!src.value)return;const current=String(dst.value||'');const time=/T(\d{2}:\d{2})/.exec(current)?.[1]||'00:00';dst.value=`${src.value}T${time}`}
-function makeChoices(selectId,values){const sel=$(selectId);if(!sel||sel.nextElementSibling?.classList.contains('v4592-choice-row'))return;const row=document.createElement('div');row.className='v4592-choice-row';values.forEach(v=>{const b=document.createElement('button');b.type='button';b.dataset.value=v;b.innerHTML=`<span class="box">☐</span>${v}`;b.onclick=()=>{sel.value=v;sel.dispatchEvent(new Event('change',{bubbles:true}));paint()};row.appendChild(b)});sel.insertAdjacentElement('afterend',row);function paint(){row.querySelectorAll('button').forEach(b=>{const on=sel.value===b.dataset.value;b.classList.toggle('active',on);q('.box',b).textContent=on?'☑':'☐'})}sel.addEventListener('change',paint);paint()}
-function init(){lockVersion();syncReportDate();makeChoices('fireReportMethod',['대면','서면','정보통신']);makeChoices('fireRemedy',['이전','제거','수리·교체','기타']);const d=$('fireDate');if(d&&!d.dataset.v4592){d.dataset.v4592='1';d.addEventListener('change',syncReportDate);d.addEventListener('input',syncReportDate)}installPreview()}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
-[80,300,800,1600,3200].forEach(ms=>setTimeout(()=>{init();installPreview()},ms));
-setInterval(()=>{lockVersion();if(window.previewFireRecordV420!==renderPreview)installPreview()},1000);
-})();
-</script>
 
 </body></html>`);doc.close();await new Promise(r=>setTimeout(r,100));if(doc.fonts?.ready)await doc.fonts.ready;await Promise.all([...doc.images].map(img=>img.complete?Promise.resolve():new Promise(r=>{img.onload=img.onerror=r})));await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));frame.contentWindow.focus();frame.contentWindow.print();setTimeout(()=>frame.remove(),5000);}catch(e){console.error(e);toast('PDF 출력 실패: '+(e?.message||e));}};
 function db(){try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||(typeof sb!=='undefined'?sb:null)}catch(e){return null}}
@@ -24797,94 +24520,40 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 </script>
 
 
-<!-- TFMS v45.91 Fire Legal Form Minimal Mapping Safe -->
-<style id="tfms-v4591-fire-minimal-style">
-/* Legal form geometry is untouched. Only dynamic values are constrained inside the existing cells. */
-.fire-legal-sheet .fire-facility-value{text-align:center!important}
-.fire-legal-sheet .fire-nowrap{white-space:nowrap!important;word-break:keep-all!important}
-.fire-legal-sheet .fire-grade-value{font-size:9px!important;letter-spacing:-.15px!important}
-.fire-legal-sheet .fire-metric-value{font-size:9px!important;text-align:center!important}
-.fire-legal-sheet .fire-metric-summary{font-size:8.2px!important;white-space:nowrap!important;letter-spacing:-.35px!important;padding-left:2px!important;padding-right:2px!important}
-.fire-legal-sheet .fire-report-method,.fire-legal-sheet .fire-remedy-value{font-size:8.7px!important;letter-spacing:-.25px!important}
-</style>
-<script id="tfms-v4591-fire-minimal-controller">
+
+<!-- TFMS v45.93 Clean Recovery Validation Safe -->
+<script id="tfms-v4593-clean-recovery-lock">
 (function(){
 'use strict';
-const BUILD='v45.91 Fire Legal Form Minimal Mapping Safe',VERSION='45.91';
-const $=id=>document.getElementById(id);
-function lockVersion(){const b=$('tfmsVersionBadge');if(b)b.textContent=BUILD;document.title='TFMS '+BUILD;try{const u=new URL(location.href);if(u.searchParams.get('v')!==VERSION){u.searchParams.set('v',VERSION);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
-function syncReportDate(){const src=$('fireDate'),dst=$('fireReportDate');if(src&&dst&&src.value)dst.value=src.value;}
-function init(){lockVersion();syncReportDate();const src=$('fireDate');if(src&&!src.dataset.v4591){src.dataset.v4591='1';src.addEventListener('change',syncReportDate);src.addEventListener('input',syncReportDate);}}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
-[100,500,1400].forEach(ms=>setTimeout(init,ms));
-})();
-</script>
-
-
-<!-- =========================================================
- TFMS v45.92 Fire Legal Form Exact Cell Mapping Safe
- Original statutory form image/geometry unchanged.
- Only dynamic value coordinates + input choice UI corrected.
- ========================================================= -->
-<style id="tfms-v4592-fire-exact-mapping-style">
-/* Input-side helpers only; statutory output image is untouched. */
-#fireMonthly .v4592-choice-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
-#fireMonthly .v4592-choice-row button{height:30px;border:1px solid #d2deea;border-radius:7px;background:#fff;color:#48637d;padding:0 9px;font-size:10.5px;font-weight:800;cursor:pointer}
-#fireMonthly .v4592-choice-row button.active{background:#edf6ff;border-color:#72a9e6;color:#0d59ae}
-#fireMonthly .v4592-choice-row button .box{display:inline-block;width:14px;text-align:center;margin-right:3px;font-weight:900}
-</style>
-<script id="tfms-v4592-fire-exact-mapping-controller">
-(function(){
-'use strict';
-const BUILD='v45.92 Fire Legal Form Exact Cell Mapping Safe',VERSION='45.92';
-const $=id=>document.getElementById(id);
-const q=(s,r=document)=>r.querySelector(s);
-const val=id=>$(id)?.value??'';
-const radio=name=>document.querySelector(`input[name="${name}"]:checked`)?.value||'';
-const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-const toast=m=>{try{window.showToast?.(m)}catch(e){alert(m)}};
-function lockVersion(){const b=$('tfmsVersionBadge');if(b)b.textContent=BUILD;document.title='TFMS '+BUILD;try{const u=new URL(location.href);if(u.searchParams.get('v')!==VERSION){u.searchParams.set('v',VERSION);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
-function data(){return{date:val('fireDate'),performer:val('firePerformer'),facility:val('fireFacility'),grade:val('fireGrade'),address:val('fireAddress'),basement:val('fireBasement'),ground:val('fireGround'),totalArea:val('fireTotalArea'),floorArea:val('fireFloorArea'),buildings:val('fireBuildings'),checks:[0,1,2,3].map(i=>({content:val(`fireCheck${i}`),result:radio(`fireResult${i}`),action:val(`fireAction${i}`)})),improvement:{reportDate:val('fireReportDate'),method:val('fireReportMethod'),reportTo:val('fireReportTo'),remedy:val('fireRemedy')}}}
-function fmtDate(v){const m=String(v||'').match(/^(\d{4})-(\d{2})-(\d{2})/);return m?`${m[1]}. ${Number(m[2])}. ${Number(m[3])}.`:String(v||'')}
-function imgSrc(){const src=$('tfms-v423-fire-original-form-controller')?.textContent||'';const m=src.match(/const\s+FORM_IMAGE\s*=\s*['"](data:image\/png;base64,[^'"]+)['"]/);if(m?.[1])return m[1];const shown=document.querySelector('.fire-original-sheet .fire-form-bg');if(shown?.src)return shown.src;throw new Error('원본 법정서식 이미지를 불러오지 못했습니다.')}
-const PW=1653,PH=2337;
-function box(x,y,w,h,text,cls=''){return `<div class="fire-overlay-v430 ${cls}" style="left:${x/PW*100}%;top:${y/PH*100}%;width:${w/PW*100}%;height:${h/PH*100}%">${text}</div>`}
-function mark(x,y){return box(x,y,30,30,'✓','check')}
-function gradeMark(v){const pos={'특급':[1118,396],'1급':[1234,396],'2급':[1346,396],'3급':[1458,396]}[v];return pos?mark(...pos):''}
-function result(v,i){const good=[838,1067,1296,1525],bad=[902,1131,1360,1589];return v==='양호'?[1166,good[i]]:v==='불량'?[1166,bad[i]]:[]}
-function method(v){return ({'대면':[675,1774],'서면':[821,1774],'정보통신':[970,1774]}[v]||[])}
-function remedy(v){return ({'이전':[675,1850],'제거':[821,1850],'수리·교체':[970,1850],'기타':[1167,1850]}[v]||[])}
-function overlays(d){let o='',m=[];
-  /* Existing legal-form cells: only place values in blank data cells. */
-  o+=box(417,330,474,64,esc(fmtDate(d.date)),'compact');
-  o+=box(1138,330,447,64,esc(d.performer),'compact');
-  /* 상호 blank cell = x607~891 */
-  o+=box(607,397,284,76,esc(d.facility),'compact');
-  o+=gradeMark(d.grade);
-  o+=box(607,473,878,75,esc(d.address),'compact');
-  /* Metric labels occupy y548~623; values belong in the blank row y623~699. */
-  o+=box(417,623,190,76,esc(d.basement),'compact');
-  o+=box(607,623,204,76,esc(d.ground),'compact');
-  o+=box(811,623,247,76,esc(d.totalArea),'compact');
-  o+=box(1058,623,213,76,esc(d.floorArea),'compact');
-  o+=box(1271,623,214,76,esc(d.buildings),'compact');
-  const ys=[757,986,1215,1444],hs=[229,229,229,228];
-  d.checks.forEach((r,i)=>{o+=box(417,ys[i],722,hs[i],esc(r.content),'left');const p=result(r.result,i);if(p.length)o+=mark(...p);o+=box(1304,ys[i],181,hs[i],esc(r.action),'left')});
-  /* 보고일시는 법정서식의 빈 값 행(y1748~1823)에 수행일자와 동일 날짜를 자동 표기. */
-  o+=box(417,1748,230,75,esc(fmtDate(d.date)),'compact');
-  m=method(d.improvement.method);if(m.length)o+=mark(...m);
-  o+=box(1139,1748,346,75,esc(d.improvement.reportTo),'compact');
-  m=remedy(d.improvement.remedy);if(m.length)o+=mark(...m);
-  return o;
+const BUILD='v45.93 Clean Recovery Validation Safe';
+const VERSION='45.93';
+function lock(){
+  const b=document.getElementById('tfmsVersionBadge'); if(b)b.textContent=BUILD;
+  document.title='TFMS '+BUILD;
+  try{const u=new URL(location.href);if(u.searchParams.get('v')!==VERSION){u.searchParams.set('v',VERSION);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
 }
-function renderPreview(){try{const sheet=$('firePreviewSheet'),modal=$('firePreviewModal');if(!sheet||!modal)throw new Error('미리보기 영역을 찾지 못했습니다.');sheet.className='fire-original-sheet';sheet.innerHTML=`<img class="fire-form-bg" src="${imgSrc()}" alt="소방안전관리자 업무 수행 기록표">${overlays(data())}`;modal.classList.add('show');modal.scrollTop=0}catch(e){console.error(e);toast('서식 미리보기 실패: '+(e?.message||e))}}
-function installPreview(){window.previewFireRecordV420=renderPreview;try{previewFireRecordV420=renderPreview}catch(e){}}
-function syncReportDate(){const src=$('fireDate'),dst=$('fireReportDate');if(!src||!dst||!src.value)return;const current=String(dst.value||'');const time=/T(\d{2}:\d{2})/.exec(current)?.[1]||'00:00';dst.value=`${src.value}T${time}`}
-function makeChoices(selectId,values){const sel=$(selectId);if(!sel||sel.nextElementSibling?.classList.contains('v4592-choice-row'))return;const row=document.createElement('div');row.className='v4592-choice-row';values.forEach(v=>{const b=document.createElement('button');b.type='button';b.dataset.value=v;b.innerHTML=`<span class="box">☐</span>${v}`;b.onclick=()=>{sel.value=v;sel.dispatchEvent(new Event('change',{bubbles:true}));paint()};row.appendChild(b)});sel.insertAdjacentElement('afterend',row);function paint(){row.querySelectorAll('button').forEach(b=>{const on=sel.value===b.dataset.value;b.classList.toggle('active',on);q('.box',b).textContent=on?'☑':'☐'})}sel.addEventListener('change',paint);paint()}
-function init(){lockVersion();syncReportDate();makeChoices('fireReportMethod',['대면','서면','정보통신']);makeChoices('fireRemedy',['이전','제거','수리·교체','기타']);const d=$('fireDate');if(d&&!d.dataset.v4592){d.dataset.v4592='1';d.addEventListener('change',syncReportDate);d.addEventListener('input',syncReportDate)}installPreview()}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
-[80,300,800,1600,3200].forEach(ms=>setTimeout(()=>{init();installPreview()},ms));
-setInterval(()=>{lockVersion();if(window.previewFireRecordV420!==renderPreview)installPreview()},1000);
+function fireNavGuard(){
+  const fire=document.getElementById('fireMonthly');
+  if(!fire)return;
+  if(typeof window.navToFireV420!=='function'){
+    window.navToFireV420=function(){
+      document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+      fire.classList.add('active');
+      window.scrollTo({top:0,behavior:'smooth'});
+      try{window.initFireForm?.()}catch(e){}
+    };
+  }
+  if(typeof window.navToFireQrV459!=='function'){
+    window.navToFireQrV459=function(){
+      window.navToFireV420();
+      setTimeout(()=>{try{window.setFireMode?.('qr')}catch(e){}},40);
+    };
+  }
+}
+function run(){lock();fireNavGuard()}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
+[80,250,800,1800].forEach(ms=>setTimeout(run,ms));
+setInterval(lock,900);
 })();
 </script>
 
