@@ -23555,4 +23555,126 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 })();
 </script>
 
+
+
+<!-- =========================================================
+     TFMS v45.76 Maintenance Attachments + Today Unified Action Safe
+     - 유지관리 등록/수정 첨부파일 실저장 (기존 Storage bucket 재사용)
+     - 유지관리 수정에서 기존 첨부 조회/추가/삭제
+     - 오늘의 업무 결과입력/특이사항을 '업무 처리' 단일 흐름으로 통합
+     - DB 테이블/SQL 변경 없음
+     ========================================================= -->
+<style id="tfms-v4576-attachments-today-unified-style">
+#maintenanceEditModal .v4576-attach-section{grid-column:1/-1;border:1px solid #dce7f2;border-radius:12px;padding:13px;background:#f9fbfd}
+#maintenanceEditModal .v4576-attach-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:9px}
+#maintenanceEditModal .v4576-attach-head strong{font-size:13px;color:#234566}
+#maintenanceEditModal .v4576-attach-head small{font-size:10px;color:#7b8fa3}
+#maintenanceEditModal .v4576-current-files{display:grid;gap:6px;margin-bottom:10px}
+#maintenanceEditModal .v4576-file-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;gap:8px;align-items:center;padding:8px 9px;border:1px solid #e1e9f2;border-radius:9px;background:#fff;font-size:11px}
+#maintenanceEditModal .v4576-file-row b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#294967}
+#maintenanceEditModal .v4576-file-row span{font-size:10px;color:#8193a6}
+#maintenanceEditModal .v4576-file-row button,#maintenanceEditModal .v4576-file-row a{height:28px;padding:0 9px;border-radius:7px;border:1px solid #cdd9e6;background:#fff;color:#24598c;font-size:10px;font-weight:800;text-decoration:none;display:inline-flex;align-items:center;cursor:pointer}
+#maintenanceEditModal .v4576-file-row button{color:#c84646;border-color:#f0caca}
+#maintenanceEditModal .v4576-attach-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+#maintenanceEditModal .v4576-upload{display:flex;align-items:center;justify-content:center;min-height:72px;border:1px dashed #a9c1da;border-radius:10px;background:#fff;cursor:pointer;text-align:center;padding:9px}
+#maintenanceEditModal .v4576-upload strong{display:block;font-size:11px;color:#214b73}.v4576-upload small{font-size:9px;color:#8293a4}
+#maintenanceEditModal .v4576-selected{margin-top:5px;font-size:9.5px;color:#637c95;min-height:14px}
+#todayFlowModalV3261 .tfms-flow-box{width:min(620px,100%)!important}
+#todayFlowModalV3261 .v4576-today-note{margin:14px 0 2px}
+#todayFlowModalV3261 .v4576-today-note label{display:block;font-size:12px;font-weight:850;color:#334e68;margin-bottom:6px}
+#todayFlowModalV3261 .v4576-today-note textarea{width:100%;min-height:92px;box-sizing:border-box;border:1px solid #cbd8e6;border-radius:10px;padding:10px 11px;font:inherit;resize:vertical}
+#todayFlowModalV3261 .v4576-today-note small{display:block;margin-top:5px;font-size:10px;color:#7b8fa3}
+#today .today-flow-actions .v4576-work-action{background:linear-gradient(135deg,#0968cf,#0a9aa0);border-color:transparent;color:#fff;min-width:86px}
+#today .today-flow-actions .v4576-work-action:hover{filter:brightness(.98)}
+@media(max-width:700px){#maintenanceEditModal .v4576-attach-grid{grid-template-columns:1fr}#maintenanceEditModal .v4576-file-row{grid-template-columns:auto minmax(0,1fr) auto}.v4576-file-row span{display:none!important}}
+</style>
+<script id="tfms-v4576-maintenance-attachments-today-unified-controller">
+(function(){
+'use strict';
+const VERSION='v45.76 Maintenance Attachments + Today Unified Action Safe';
+const VERSION_PARAM='45.76';
+const BUCKET='tfms-equipment-photos';
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
+const sb=()=>{try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||null}catch(e){return null}};
+const user=async()=>{try{const known=window.getTfmsCloudUser?.()||window.cloudUser;if(known?.id)return known;const c=sb();const r=await c?.auth?.getUser?.();return r?.data?.user||null}catch(e){return null}};
+const toast=m=>{try{window.showToast?.(m)}catch(e){}};
+function syncVersion(){
+  const b=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');if(b)b.textContent=VERSION;
+  document.title='TFMS '+VERSION;
+  try{const u=new URL(location.href);if(u.searchParams.get('v')!==VERSION_PARAM){u.searchParams.set('v',VERSION_PARAM);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
+  try{window.TFMS_BUILD=Object.freeze({version:'v45.76',channel:'Attachments + Today Unified Safe',buildDate:'2026.08.20',title:'Maintenance Attachments + Today Unified Action Safe'})}catch(e){}
+}
+function safeName(n){return String(n||'file').replace(/[\\/:*?"<>|#%&{}$!'`@+=]/g,'_').replace(/\s+/g,'_').slice(0,120)}
+function fmtBytes(n){n=Number(n||0);if(n<1024)return n+' B';if(n<1048576)return (n/1024).toFixed(1)+' KB';return (n/1048576).toFixed(1)+' MB'}
+function kindOf(file){return String(file?.type||'').startsWith('image/')?'photos':'docs'}
+function pathBase(id,kind){return `maintenance/${id}/${kind}`}
+async function uploadFiles(recordId,files){
+  const c=sb();if(!c||!recordId||!files?.length)return 0;let ok=0;
+  for(const f of files){
+    const kind=kindOf(f),path=`${pathBase(recordId,kind)}/${Date.now()}_${Math.random().toString(36).slice(2,8)}_${safeName(f.name)}`;
+    const r=await c.storage.from(BUCKET).upload(path,f,{cacheControl:'3600',upsert:false,contentType:f.type||'application/octet-stream'});
+    if(r.error)throw r.error;ok++;
+  }
+  await refreshEvidenceCount(recordId);return ok;
+}
+async function listFolder(recordId,kind){
+  const c=sb();if(!c)return[];const r=await c.storage.from(BUCKET).list(pathBase(recordId,kind),{limit:100,sortBy:{column:'created_at',order:'asc'}});if(r.error){if(/not found|does not exist/i.test(r.error.message||''))return[];throw r.error}
+  return (r.data||[]).filter(x=>x?.name&&x.name!=='.emptyFolderPlaceholder').map(x=>({...x,kind,path:`${pathBase(recordId,kind)}/${x.name}`}));
+}
+async function listAll(recordId){const [p,d]=await Promise.all([listFolder(recordId,'photos'),listFolder(recordId,'docs')]);return [...p,...d]}
+async function refreshEvidenceCount(recordId){
+  const c=sb();if(!c||!recordId)return 0;const files=await listAll(recordId);const r=await c.from('maintenance_records').update({evidence_count:files.length,updated_at:new Date().toISOString()}).eq('id',recordId);if(r.error)console.warn('evidence_count update',r.error);return files.length;
+}
+async function signed(path){const c=sb();if(!c||!path)return'';const r=await c.storage.from(BUCKET).createSignedUrl(path,3600);return r?.data?.signedUrl||''}
+function ensureEditAttachmentUI(){
+  const grid=document.querySelector('#maintenanceEditModal .edit-grid');if(!grid||$('v4576EditAttachments'))return;
+  const sec=document.createElement('div');sec.id='v4576EditAttachments';sec.className='v4576-attach-section';sec.innerHTML=`
+    <div class="v4576-attach-head"><strong>사진 · 증빙자료</strong><small>기존 첨부를 확인하고 추가하거나 삭제할 수 있습니다.</small></div>
+    <div class="v4576-current-files" id="v4576CurrentFiles"><div class="v4576-selected">등록된 첨부자료를 불러오는 중입니다.</div></div>
+    <div class="v4576-attach-grid">
+      <div><label class="v4576-upload" for="v4576EditPhotoInput"><span><strong>📷 사진 추가</strong><small>JPG, PNG 등 이미지 파일</small></span></label><input id="v4576EditPhotoInput" type="file" accept="image/*" multiple style="display:none"><div class="v4576-selected" id="v4576EditPhotoSelected">추가할 사진 없음</div></div>
+      <div><label class="v4576-upload" for="v4576EditDocInput"><span><strong>📎 증빙자료 추가</strong><small>PDF, 문서, 견적서, 결과보고 등</small></span></label><input id="v4576EditDocInput" type="file" multiple style="display:none"><div class="v4576-selected" id="v4576EditDocSelected">추가할 증빙 없음</div></div>
+    </div>`;
+  grid.appendChild(sec);
+  $('v4576EditPhotoInput')?.addEventListener('change',()=>renderSelected('v4576EditPhotoInput','v4576EditPhotoSelected'));
+  $('v4576EditDocInput')?.addEventListener('change',()=>renderSelected('v4576EditDocInput','v4576EditDocSelected'));
+}
+function renderSelected(inputId,labelId){const fs=Array.from($(inputId)?.files||[]),el=$(labelId);if(el)el.textContent=fs.length?`${fs.length}개 선택 · ${fs.map(f=>f.name).join(', ')}`:'추가할 파일 없음'}
+async function loadEditAttachments(recordId){
+  ensureEditAttachmentUI();const box=$('v4576CurrentFiles');if(!box)return;box.innerHTML='<div class="v4576-selected">첨부자료 확인 중...</div>';
+  try{
+    const files=await listAll(recordId);if(!files.length){box.innerHTML='<div class="v4576-selected">등록된 사진·증빙자료가 없습니다.</div>';return}
+    const rows=[];for(const f of files){const url=await signed(f.path);rows.push(`<div class="v4576-file-row"><span>${f.kind==='photos'?'📷':'📎'}</span><b title="${esc(f.name)}">${esc(f.name)}</b><a href="${esc(url)}" target="_blank" rel="noopener">열기</a><button type="button" onclick="deleteMaintenanceAttachmentV4576('${esc(recordId)}','${esc(f.path)}')">삭제</button></div>`)}box.innerHTML=rows.join('');
+  }catch(e){console.error(e);box.innerHTML=`<div class="v4576-selected">첨부자료 조회 실패: ${esc(e?.message||e)}</div>`}
+}
+window.deleteMaintenanceAttachmentV4576=async function(recordId,path){if(!confirm('이 첨부파일을 삭제하시겠습니까?'))return;const c=sb();if(!c)return;const r=await c.storage.from(BUCKET).remove([path]);if(r.error){toast('첨부파일 삭제 실패: '+r.error.message);return}await refreshEvidenceCount(recordId);await loadEditAttachments(recordId);toast('첨부파일을 삭제했습니다.')};
+function clearEditInputs(){['v4576EditPhotoInput','v4576EditDocInput'].forEach(id=>{const el=$(id);if(el)el.value=''});renderSelected('v4576EditPhotoInput','v4576EditPhotoSelected');renderSelected('v4576EditDocInput','v4576EditDocSelected')}
+function hookEditOpen(){const base=window.openMaintenanceEditV372;if(typeof base!=='function'||base.__v4576)return;const w=async function(id){ensureEditAttachmentUI();clearEditInputs();const r=await base.apply(this,arguments);setTimeout(()=>loadEditAttachments(id),80);return r};w.__v4576=true;window.openMaintenanceEditV372=w}
+function hookEditSave(){const base=window.saveMaintenanceEditV372;if(typeof base!=='function'||base.__v4576)return;const w=async function(){const id=String($('editMaintenanceId')?.value||'');const photos=Array.from($('v4576EditPhotoInput')?.files||[]),docs=Array.from($('v4576EditDocInput')?.files||[]);const r=await base.apply(this,arguments);const success=!$('maintenanceEditModal')?.classList.contains('show');if(success&&id&&(photos.length||docs.length)){try{const n=await uploadFiles(id,[...photos,...docs]);toast(`유지관리 수정 및 첨부 ${n}개 저장을 완료했습니다.`);try{await window.loadMaintenanceHistoryV361?.()}catch(e){}}catch(e){console.error(e);toast('텍스트 수정은 저장됐지만 첨부 저장에 실패했습니다: '+(e?.message||e))}}return r};w.__v4576=true;window.saveMaintenanceEditV372=w}
+async function latestRecordForUser(uid,since){const c=sb();if(!c||!uid)return null;let q=c.from('maintenance_records').select('id,created_at').eq('registered_by',uid).is('deleted_at',null).order('created_at',{ascending:false}).limit(1);if(since)q=q.gte('created_at',since);const r=await q.maybeSingle();if(r.error)throw r.error;return r.data||null}
+function hookRegisterAttachments(){const base=window.addRecordFromForm;if(typeof base!=='function'||base.__v4576)return;const w=async function(){const docs=Array.from($('docInput')?.files||[]),photos=Array.from($('photoInput')?.files||[]);if(!docs.length&&!photos.length)return await base.apply(this,arguments);const u=await user(),started=new Date(Date.now()-3000).toISOString();const r=await base.apply(this,arguments);if(!u?.id)return r;try{const rec=await latestRecordForUser(u.id,started);if(rec?.id){const n=await uploadFiles(rec.id,[...photos,...docs]);toast(`유지관리 이력과 첨부자료 ${n}개를 저장했습니다.`);try{await window.loadMaintenanceHistoryV361?.()}catch(e){}}}catch(e){console.error(e);toast('유지관리 이력은 저장됐지만 첨부자료 저장에 실패했습니다: '+(e?.message||e))}return r};w.__v4576=true;window.addRecordFromForm=w}
+
+/* 오늘의 업무: 두 개의 처리 버튼을 하나의 업무 처리 흐름으로 통합 */
+let activeTodayId='';
+function findTaskById(id){return (window.todayTasks||[]).find(t=>String(t?._flowId||'')===String(id))}
+function ensureTodayUnified(){
+  const modal=$('todayFlowModalV3261'),box=modal?.querySelector('.tfms-flow-box');if(!box)return;
+  if(!$('todayUnifiedNoteV4576')){const wrap=document.createElement('div');wrap.className='v4576-today-note';wrap.innerHTML=`<label for="todayUnifiedNoteV4576">점검결과 · 특이사항</label><textarea id="todayUnifiedNoteV4576" placeholder="정상 확인 내용 또는 발견된 이상사항을 간단히 기록하세요."></textarea><small>정상 완료 시 점검결과로 저장되고, 이상 발견 시 유지관리 등록 내용에 자동으로 이어집니다.</small>`;const choice=box.querySelector('.tfms-flow-choice');choice?.insertAdjacentElement('beforebegin',wrap)}
+  const choices=box.querySelectorAll('.tfms-flow-choice button');if(choices[0]){choices[0].setAttribute('onclick','finishTodayUnifiedV4576()');choices[0].innerHTML='<strong>✅ 정상 · 업무 완료</strong><span>점검결과를 저장하고 오늘의 업무를 완료합니다.</span>'}if(choices[1]){choices[1].setAttribute('onclick','issueTodayUnifiedV4576()');choices[1].innerHTML='<strong>⚠ 이상 발견 · 유지관리 연계</strong><span>점검결과를 넘겨 유지관리 등록 화면을 자동 작성합니다.</span>'}
+}
+function upgradeTodayRows(){
+  const body=$('todayBody');if(!body)return;body.querySelectorAll('tr[data-task-id]').forEach(tr=>{const id=tr.dataset.taskId,actions=tr.querySelector('.today-flow-actions');if(!actions)return;const undo=actions.querySelector('.undo');if(undo)return;actions.innerHTML=`<button class="today-flow-btn v4576-work-action" type="button" onclick="openTodayUnifiedV4576('${esc(id)}')">업무 처리</button>`})
+}
+window.openTodayUnifiedV4576=function(id){activeTodayId=id;ensureTodayUnified();const t=findTaskById(id);const note=$('todayUnifiedNoteV4576');if(note)note.value=t?.resultNote||'';if(typeof window.openTodayFlowV3261==='function')window.openTodayFlowV3261(id)};
+window.finishTodayUnifiedV4576=function(){const t=findTaskById(activeTodayId),note=String($('todayUnifiedNoteV4576')?.value||'').trim();if(t)t.resultNote=note;window.finishTodayNormalV3261?.();setTimeout(upgradeTodayRows,80)};
+window.issueTodayUnifiedV4576=function(){const t=findTaskById(activeTodayId),note=String($('todayUnifiedNoteV4576')?.value||'').trim();if(t){t.resultNote=note;t.result='이상 발견'}window.sendTodayIssueV3261?.();setTimeout(()=>{const d=$('regDetail');if(d&&note&&!d.value.includes(note))d.value=d.value.replace(/점검결과\/특이사항:\s*$/,'점검결과/특이사항: '+note);try{d?.dispatchEvent(new Event('input',{bubbles:true}))}catch(e){}},260)};
+function hookTodayRender(){const base=window.renderTodayTasks;if(typeof base!=='function'||base.__v4576)return;const w=function(){const r=base.apply(this,arguments);setTimeout(()=>{ensureTodayUnified();upgradeTodayRows()},15);return r};w.__v4576=true;window.renderTodayTasks=w;try{renderTodayTasks=w}catch(e){}}
+function hookNavigation(){['showPage','navTo'].forEach(name=>{const base=window[name];if(typeof base!=='function'||base.__v4576nav)return;const w=function(id){const r=base.apply(this,arguments);setTimeout(()=>{syncVersion();if(id==='today'){ensureTodayUnified();try{window.renderTodayTasks?.()}catch(e){}upgradeTodayRows()}if(id==='history')ensureEditAttachmentUI()},100);return r};w.__v4576nav=true;window[name]=w})}
+function init(){syncVersion();ensureEditAttachmentUI();ensureTodayUnified();hookEditOpen();hookEditSave();hookRegisterAttachments();hookTodayRender();hookNavigation();try{window.renderTodayTasks?.()}catch(e){}[120,400,900,1800,3600].forEach(ms=>setTimeout(()=>{syncVersion();hookEditOpen();hookEditSave();hookRegisterAttachments();hookTodayRender();ensureEditAttachmentUI();ensureTodayUnified();upgradeTodayRows()},ms))}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+setInterval(syncVersion,2500);
+})();
+</script>
+
 </body></html>
