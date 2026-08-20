@@ -23826,4 +23826,129 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <script id="tfms-v4579-final-version-lock">
 (function(){const VERSION='v45.79 History Quick Filter Reset Safe',VP='45.79';function lock(){try{const b=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');if(b)b.textContent=VERSION}catch(e){}try{document.title='TFMS '+VERSION}catch(e){}try{const u=new URL(location.href);if(u.searchParams.get('v')!==VP){u.searchParams.set('v',VP);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',lock,{once:true});else lock();setInterval(lock,700)})();
 </script>
+<style id="tfms-v4580-density-popup-stats-style">
+/* v45.80 — Equipment Density + Popup Polish + Stats Insight (visual/UX only) */
+:root{--v4580-line:#dce6f1;--v4580-soft:#f7faff;--v4580-text:#102b4a;--v4580-muted:#75879c;--v4580-blue:#1267d6;--v4580-teal:#0da4a4}
+
+/* Equipment — tighter master/detail density */
+#equipment .tfms-v4431-shell{grid-template-columns:300px minmax(0,1fr)!important;min-height:calc(100vh - 94px)!important}
+#equipment .tfms-v4431-sidebar{padding:16px 12px 12px!important}
+#equipment .tfms-v4431-side-head{margin:0 5px 11px!important}
+#equipment .tfms-v4431-side-head h2{font-size:17px!important}
+#equipment .tfms-v4431-search{margin:0 3px 8px!important}
+#equipment .tfms-v4431-search input{height:35px!important}
+#equipment .tfms-v4431-filters{gap:6px!important;margin:0 3px 9px!important}
+#equipment .tfms-v4431-filters select{height:35px!important}
+#equipment .tfms-v4431-side-actions{gap:6px!important;margin:0 3px 10px!important}
+#equipment .tfms-v4431-side-actions button{height:35px!important;font-size:11px!important}
+#equipment .tfms-v4431-list{height:calc(100vh - 278px)!important;min-height:360px!important;padding-bottom:12px!important}
+#equipment .tfms-v4431-list #assetList>*{padding:11px 11px!important}
+#equipment .tfms-v4431-list #assetList>*.active,#equipment .tfms-v4431-list #assetList>*.selected{margin:3px 0!important;border-radius:8px!important}
+#equipment .tfms-v4431-main{padding:18px 20px 22px!important}
+#equipment .tfms-v4431-titlebar{margin-bottom:10px!important;gap:12px!important}
+#equipment .tfms-v4431-titlegroup{gap:10px!important}
+#equipment .tfms-v4431-titlegroup h2{font-size:20px!important}
+#equipment .tfms-v4431-status{padding:5px 10px!important;font-size:11px!important}
+#equipment .tfms-v4431-main-actions{gap:6px!important}
+#equipment .tfms-v4431-main-actions button{height:34px!important;padding:0 11px!important;font-size:11px!important}
+#equipment .tfms-v4431-summary-card{padding:0 10px!important;margin-bottom:9px!important;border-radius:9px!important}
+#equipment .tfms-v4431-summary-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+#equipment .tfms-v4431-summary-item{min-height:49px!important;padding:9px 13px!important}
+#equipment .tfms-v4431-summary-item span{font-size:9px!important;margin-bottom:3px!important}
+#equipment .tfms-v4431-summary-item strong{font-size:11px!important;line-height:1.3!important}
+#equipment .tfms-v4431-tabs{margin-top:9px!important;border-radius:9px!important}
+#equipment .tfms-v4431-tabbar button{height:38px!important;font-size:11px!important}
+#equipment .tfms-v4431-tabpane{padding:10px!important}
+#equipment .tfms-v4431-basic-grid .tfms-v4433-detail-item{min-height:52px!important;padding:8px 11px!important}
+#equipment .tfms-v4431-basic-grid .tfms-v4433-detail-item span{font-size:9px!important;margin-bottom:3px!important}
+#equipment .tfms-v4431-basic-grid .tfms-v4433-detail-item strong{font-size:11px!important;line-height:1.3!important}
+
+/* Equipment register/edit popup — centered, compact, section-like rhythm */
+#equipment .tfms-v4431-register-modal{display:none!important;align-items:center!important;justify-content:center!important;padding:22px!important;overflow:auto!important;background:rgba(7,26,50,.58)!important;backdrop-filter:blur(2px)}
+#equipment .tfms-v4431-register-modal.show{display:flex!important}
+#equipment .tfms-v4431-register-modal>.section-title,
+#equipment .tfms-v4431-register-modal>.asset-form-note,
+#equipment .tfms-v4431-register-modal>.grid,
+#equipment .tfms-v4431-register-modal>.buttons{width:min(900px,calc(100vw - 44px))!important;max-width:900px!important;margin-left:0!important;margin-right:0!important}
+#equipment .tfms-v4431-register-modal>.section-title{margin:0!important;padding:14px 17px!important;font-size:16px!important;border-radius:13px 13px 0 0!important;box-shadow:0 -1px 0 #dfe7f1 inset}
+#equipment .tfms-v4431-register-modal>.asset-form-note{padding:9px 17px!important;font-size:11px!important}
+#equipment .tfms-v4431-register-modal>.grid{padding:11px 17px 7px!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:9px 10px!important;max-height:58vh!important;overflow:auto!important}
+#equipment .tfms-v4431-register-modal>.grid .field label{font-size:11px!important;margin-bottom:4px!important}
+#equipment .tfms-v4431-register-modal>.grid input,#equipment .tfms-v4431-register-modal>.grid select,#equipment .tfms-v4431-register-modal>.grid textarea{min-height:37px!important;font-size:12px!important;border-radius:8px!important}
+#equipment .tfms-v4431-register-modal>.grid textarea{min-height:72px!important}
+#equipment .tfms-v4431-register-modal>.buttons{padding:11px 17px 13px!important;border-radius:0 0 13px 13px!important;position:static!important;box-shadow:0 14px 38px rgba(8,35,65,.16)!important}
+#equipment .tfms-v4431-register-modal>.buttons .btn{min-height:36px!important;min-width:94px!important;font-size:11px!important}
+#equipment .tfms-v4431-modal-close{width:28px!important;height:28px!important;font-size:17px!important}
+
+/* Maintenance edit popup — smaller and calmer */
+#maintenanceEditModal{padding:24px!important;align-items:center!important;background:rgba(7,25,48,.58)!important;backdrop-filter:blur(2px)}
+#maintenanceEditModal .edit-box{width:min(760px,calc(100vw - 44px))!important;max-width:760px!important;max-height:82vh!important;border-radius:15px!important;box-shadow:0 22px 62px rgba(4,28,56,.28)!important;display:flex!important;flex-direction:column!important;overflow:hidden!important}
+#maintenanceEditModal .edit-head{padding:13px 17px!important;flex:0 0 auto!important}
+#maintenanceEditModal .edit-head h3{font-size:17px!important}
+#maintenanceEditModal .edit-body{padding:12px 16px 14px!important;overflow:auto!important;min-height:0!important}
+#maintenanceEditModal .edit-grid{gap:9px 10px!important}
+#maintenanceEditModal .edit-field label{margin-bottom:4px!important;font-size:11px!important}
+#maintenanceEditModal input,#maintenanceEditModal select{min-height:37px!important;height:37px!important;font-size:12px!important;border-radius:8px!important}
+#maintenanceEditModal textarea{min-height:78px!important;font-size:12px!important;border-radius:8px!important}
+#maintenanceEditModal .edit-actions{position:sticky!important;bottom:-14px!important;margin:12px -16px -14px!important;padding:10px 16px 12px!important;background:#fff!important;border-top:1px solid #e6edf5!important;box-shadow:0 -7px 16px rgba(10,40,70,.05)!important}
+#maintenanceEditModal .v4576-attach-section{padding:10px!important;border-radius:10px!important}
+#maintenanceEditModal .v4576-current-files{max-height:112px!important;overflow:auto!important}
+#maintenanceEditModal .v4576-upload{min-height:56px!important}
+
+/* Stats — management insight strip and slightly tighter visual hierarchy */
+#stats .tfms-stats-summary{padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important}
+#stats .tfms-compact-kpi{gap:9px!important}
+#stats .compare-card{min-height:82px!important;padding:12px 14px!important}
+#stats .compare-card p{font-size:11px!important;margin-bottom:5px!important}
+#stats .compare-card strong{font-size:21px!important;line-height:1.05!important}
+#stats .compare-card .delta{font-size:9px!important;margin-top:5px!important}
+#stats .tfms-stats-main{padding:13px 14px 11px!important}
+#stats .tfms-four-charts{gap:9px!important}
+#stats .tfms-mini-chart{padding:10px 11px!important;border-radius:11px!important}
+#stats .tfms-mini-chart h3{font-size:12px!important;margin-bottom:5px!important}
+#stats .chart-wrap{min-height:145px!important}
+#stats .tfms-admin-insights{gap:9px!important;margin-top:9px!important}
+#stats .tfms-insight-card{padding:10px 11px!important;border-radius:11px!important;min-height:84px!important}
+#stats .tfms-insight-card h4{font-size:11px!important}
+#tfmsManagementPointsV4580{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:0 0 10px}
+#tfmsManagementPointsV4580 .v4580-point{background:#fff;border:1px solid #dce6f1;border-radius:11px;padding:10px 11px;min-height:58px;display:flex;flex-direction:column;justify-content:center}
+#tfmsManagementPointsV4580 .v4580-point span{font-size:9px;color:#7b8da1;margin-bottom:3px;font-weight:700}
+#tfmsManagementPointsV4580 .v4580-point strong{font-size:13px;color:#173a60;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#tfmsManagementPointsV4580 .v4580-point small{font-size:9px;color:#8293a5;margin-top:3px}
+#tfmsManagementPointsV4580 .v4580-point.ok{background:#f6fff9;border-color:#ccebd7}#tfmsManagementPointsV4580 .v4580-point.ok strong{color:#167448}
+#tfmsManagementPointsV4580 .v4580-point.warn{background:#fffaf2;border-color:#f1dfbd}#tfmsManagementPointsV4580 .v4580-point.warn strong{color:#9a6400}
+
+/* Statistics drill popup follows the same compact popup rule */
+.tfms-stats-dialog{width:min(900px,94vw)!important;max-height:82vh!important;border-radius:15px!important}
+.tfms-stats-dialog-head{padding:14px 17px!important}.tfms-stats-dialog-head h2{font-size:17px!important}.tfms-stats-dialog-body{padding:12px 16px 16px!important}
+
+@media(max-width:1200px){#equipment .tfms-v4431-shell{grid-template-columns:275px minmax(0,1fr)!important}#tfmsManagementPointsV4580{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:800px){#equipment .tfms-v4431-shell{grid-template-columns:1fr!important}#equipment .tfms-v4431-sidebar{border-right:0!important;border-bottom:1px solid #dfe6ef!important}#equipment .tfms-v4431-list{height:auto!important;max-height:330px!important;min-height:0!important}#equipment .tfms-v4431-register-modal>.grid{grid-template-columns:1fr!important}#maintenanceEditModal .edit-grid{grid-template-columns:1fr!important}#tfmsManagementPointsV4580{grid-template-columns:1fr 1fr}}
+</style>
+<script id="tfms-v4580-density-popup-stats-controller">
+(function(){
+'use strict';
+const VERSION='v45.80 Equipment Popup Stats Polish Safe', VP='45.80';
+const $=id=>document.getElementById(id);
+function lockVersion(){try{const b=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');if(b)b.textContent=VERSION}catch(e){}try{document.title='TFMS '+VERSION}catch(e){}try{const u=new URL(location.href);if(u.searchParams.get('v')!==VP){u.searchParams.set('v',VP);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}try{window.TFMS_BUILD=Object.freeze({version:'v45.80',channel:'Equipment Popup Stats Polish Safe',buildDate:'2026.08.20',title:'Equipment Popup Stats Polish Safe'})}catch(e){}}
+function statusDone(r){return /완료|조치완료|종결/.test(String(r?.status||r?.process_status||''))}
+function recordDate(r){const s=String(r?.rawDate||r?.registered_on||r?.date||r?.created_at||'').replaceAll('.','-');const m=s.match(/\d{4}-\d{2}-\d{2}/);return m?new Date(m[0]+'T00:00:00'):null}
+function countBy(arr,key){const m=new Map();arr.forEach(r=>{const k=String(key(r)||'미지정');m.set(k,(m.get(k)||0)+1)});return [...m.entries()].sort((a,b)=>b[1]-a[1])}
+function renderManagementPoints(){
+ const page=$('stats');if(!page)return;const main=page.querySelector('.tfms-stats-main');if(!main)return;
+ let host=$('tfmsManagementPointsV4580');if(!host){host=document.createElement('div');host.id='tfmsManagementPointsV4580';const title=main.querySelector('.section-title');if(title)title.insertAdjacentElement('afterend',host);else main.prepend(host)}
+ const arr=Array.isArray(window.records)?window.records:[];const now=new Date();const seven=new Date(now);seven.setDate(now.getDate()-6);
+ const fields=countBy(arr,r=>r.field);const facs=countBy(arr,r=>r.facility);const recent=arr.filter(r=>{const d=recordDate(r);return d&&d>=seven&&d<=now}).length;const open=arr.filter(r=>!statusDone(r)).length;const evalCount=arr.filter(r=>String(r.eval||'').trim()&&String(r.eval||'').trim()!=='-').length;const evalRate=arr.length?Math.round(evalCount/arr.length*100):0;
+ host.innerHTML=`<div class="v4580-point"><span>최다 발생 분야</span><strong>${fields[0]?fields[0][0]:'데이터 없음'}</strong><small>${fields[0]?fields[0][1]+'건 등록':'-'}</small></div><div class="v4580-point"><span>최다 발생 시설</span><strong>${facs[0]?facs[0][0]:'데이터 없음'}</strong><small>${facs[0]?facs[0][1]+'건 등록':'-'}</small></div><div class="v4580-point"><span>최근 7일 신규 등록</span><strong>${recent}건</strong><small>최근 업무 발생량</small></div><div class="v4580-point ${open?'warn':'ok'}"><span>현재 미조치·진행중</span><strong>${open}건</strong><small>${open?'확인 필요':'집중 관리 대상 없음'}</small></div><div class="v4580-point ${evalRate>=70?'ok':''}"><span>경영평가 연계율</span><strong>${evalRate}%</strong><small>${evalCount}/${arr.length||0}건 연계</small></div>`;
+}
+function beautifyEquipmentModal(){const m=$('tfmsV4431RegisterModal');if(!m)return;const grid=m.querySelector(':scope>.grid');if(grid&&!grid.dataset.v4580){grid.dataset.v4580='1';grid.querySelectorAll('.field').forEach(f=>{const l=f.querySelector('label');if(l)l.title=l.textContent.trim()})}}
+function run(){lockVersion();beautifyEquipmentModal();renderManagementPoints()}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
+[200,700,1600,3200].forEach(ms=>setTimeout(run,ms));setInterval(lockVersion,700);
+const oldShow=window.showPage;if(typeof oldShow==='function')window.showPage=function(id,btn){const r=oldShow.apply(this,arguments);setTimeout(()=>{lockVersion();if(id==='equipment')beautifyEquipmentModal();if(id==='stats')renderManagementPoints()},180);return r};
+const oldNav=window.navTo;if(typeof oldNav==='function')window.navTo=function(id){const r=oldNav.apply(this,arguments);setTimeout(()=>{lockVersion();if(id==='equipment')beautifyEquipmentModal();if(id==='stats')renderManagementPoints()},180);return r};
+const oldStats=window.renderStatsCharts;if(typeof oldStats==='function'&&!oldStats.__v4580){const w=function(){const r=oldStats.apply(this,arguments);setTimeout(renderManagementPoints,30);return r};w.__v4580=true;window.renderStatsCharts=w}
+})();
+</script>
+
 </body></html>
