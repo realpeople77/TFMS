@@ -24077,4 +24077,105 @@ setInterval(()=>{if(window.renderTodayTasks!==render){window.renderTodayTasks=re
 })();
 </script>
 
+
+
+<!-- =========================================================
+     TFMS v45.86 MyInfo + Account Admin Compact Thumbnail UI Safe
+     UI-only. Existing IDs / handlers / DB / SQL unchanged.
+     ========================================================= -->
+<style id="tfms-v4586-account-compact-style">
+/* My Info */
+#myPage.v4586-myinfo .title-row,#accountAdmin.v4586-account .title-row{margin-bottom:12px!important}
+#myPage.v4586-myinfo .v4586-my-shell{display:grid;grid-template-columns:minmax(0,1.15fr) 190px minmax(320px,1fr);gap:10px;align-items:stretch}
+#myPage.v4586-myinfo .v4586-card{background:#fff;border:1px solid #d7e2ef;border-radius:13px;padding:14px 15px;box-shadow:0 3px 14px rgba(24,62,104,.04);min-width:0}
+#myPage.v4586-myinfo .v4586-card-title{font-size:13px;font-weight:900;color:#173b61;margin:0 0 10px;padding-bottom:8px;border-bottom:1px solid #e5edf5}
+#myPage.v4586-myinfo #v4586BasicCard .section-title,#myPage.v4586-myinfo #v4586PasswordCard .section-title{display:none!important}
+#myPage.v4586-myinfo #v4586BasicCard.panel,#myPage.v4586-myinfo #v4586PasswordCard.panel{margin:0!important;padding:0!important;border:0!important;box-shadow:none!important;background:transparent!important}
+#myPage.v4586-myinfo #v4586BasicCard .grid.two{display:grid!important;grid-template-columns:1fr!important;gap:0!important}
+#myPage.v4586-myinfo #v4586BasicCard .field{display:grid!important;grid-template-columns:92px minmax(0,1fr);align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #edf2f7}
+#myPage.v4586-myinfo #v4586BasicCard .field:last-child{border-bottom:0}
+#myPage.v4586-myinfo #v4586BasicCard label{margin:0!important;font-size:11px!important;color:#667b91!important}
+#myPage.v4586-myinfo #v4586BasicCard input{height:auto!important;min-height:0!important;padding:0!important;border:0!important;background:transparent!important;font-size:12px!important;font-weight:800!important;color:#172f4b!important}
+#myPage.v4586-myinfo .v4586-profile-card{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+#myPage.v4586-myinfo .v4586-avatar{width:70px;height:70px;border-radius:50%;display:grid;place-items:center;background:#eef5ff;color:#1764d6;font-size:34px;margin:7px 0 10px;border:1px solid #d7e7fb}
+#myPage.v4586-myinfo .v4586-profile-name{font-weight:900;font-size:14px;color:#17395e;margin-bottom:3px}
+#myPage.v4586-myinfo .v4586-profile-role{font-size:10.5px;color:#74869b;margin-bottom:12px}
+#myPage.v4586-myinfo .v4586-profile-chip{border:1px solid #d3dfec;background:#fff;border-radius:8px;padding:7px 10px;font-size:10.5px;font-weight:800;color:#405d79}
+#myPage.v4586-myinfo #v4586PasswordCard .grid.two{display:grid!important;grid-template-columns:1fr!important;gap:8px!important}
+#myPage.v4586-myinfo #v4586PasswordCard .field.wide{grid-column:auto!important}
+#myPage.v4586-myinfo #v4586PasswordCard input{height:36px!important;min-height:36px!important;font-size:11.5px!important}
+#myPage.v4586-myinfo #v4586PasswordCard .buttons{margin-top:10px!important}
+#myPage.v4586-myinfo #v4586PasswordCard .buttons .btn{width:100%!important}
+#myPage.v4586-myinfo #v4586PasswordCard .help{margin-top:8px!important;padding:8px 10px!important;font-size:10px!important}
+#myPage.v4586-myinfo .v4586-my-bottom{margin-top:10px;background:#fff;border:1px solid #d7e2ef;border-radius:13px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 3px 14px rgba(24,62,104,.04)}
+#myPage.v4586-myinfo .v4586-my-bottom strong{font-size:12px;color:#193b60}#myPage.v4586-myinfo .v4586-my-bottom span{font-size:10.5px;color:#73869b}
+
+/* Account approval */
+#accountAdmin.v4586-account .v4586-account-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;border-bottom:1px solid #dfe8f1}
+#accountAdmin.v4586-account .v4586-account-tabs{display:flex;gap:4px;align-items:center}
+#accountAdmin.v4586-account .v4586-account-tab{border:0;background:transparent;padding:10px 14px 9px;font-size:11.5px;font-weight:900;color:#6b7f94;cursor:pointer;border-bottom:2px solid transparent}
+#accountAdmin.v4586-account .v4586-account-tab.active{color:#155fc4;border-bottom-color:#1764d6}
+#accountAdmin.v4586-account .v4586-refresh{height:31px!important;min-height:31px!important;font-size:10.5px!important;padding:0 10px!important}
+#accountAdmin.v4586-account .v4586-account-panel{margin:0!important;padding:0!important;border:0!important;box-shadow:none!important;background:transparent!important}
+#accountAdmin.v4586-account .v4586-account-panel>.section-title{display:none!important}
+#accountAdmin.v4586-account .v4586-account-table-wrap{background:#fff;border:1px solid #d7e2ef;border-radius:13px;padding:0 12px 10px;box-shadow:0 3px 14px rgba(24,62,104,.04);overflow:auto}
+#accountAdmin.v4586-account .v4586-account-table-wrap .table{margin:0!important;min-width:780px!important}
+#accountAdmin.v4586-account .v4586-account-table-wrap .table th{background:#f5f8fc!important;color:#526b84!important;font-size:10.5px!important;padding:9px 8px!important;white-space:nowrap}
+#accountAdmin.v4586-account .v4586-account-table-wrap .table td{font-size:11px!important;padding:9px 8px!important;white-space:nowrap}
+#accountAdmin.v4586-account .edit-input{height:31px!important;min-height:31px!important;padding:4px 7px!important;font-size:10.5px!important;min-width:110px!important}
+#accountAdmin.v4586-account .small-btn{height:29px!important;min-height:29px!important;font-size:10px!important;padding:0 9px!important}
+#accountAdmin.v4586-account .v4586-guide-wrap{display:none;grid-template-columns:1fr;gap:8px}
+#accountAdmin.v4586-account .v4586-guide-wrap.active{display:grid}
+#accountAdmin.v4586-account .v4586-guide-wrap>.panel{margin:0!important;padding:12px 14px!important}
+#accountAdmin.v4586-account .account-flow{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:8px!important}
+#accountAdmin.v4586-account .flow-card{padding:10px!important;min-height:92px!important}.flow-card strong{font-size:12px!important}.flow-card p{font-size:10px!important;line-height:1.4!important}.flow-card b{width:24px!important;height:24px!important;font-size:11px!important}
+#accountAdmin.v4586-account .account-note{font-size:10.5px!important;line-height:1.55!important}
+#accountAdmin.v4586-account .v4586-account-count{font-size:10.5px;color:#6d8299;margin-left:auto;margin-right:8px}
+@media(max-width:1120px){#myPage.v4586-myinfo .v4586-my-shell{grid-template-columns:1fr 170px}#myPage.v4586-myinfo #v4586PasswordWrap{grid-column:1/-1}#accountAdmin.v4586-account .account-flow{grid-template-columns:1fr 1fr!important}}
+@media(max-width:760px){#myPage.v4586-myinfo .v4586-my-shell{grid-template-columns:1fr}#myPage.v4586-myinfo #v4586PasswordWrap{grid-column:auto}#accountAdmin.v4586-account .v4586-account-toolbar{align-items:flex-start;flex-direction:column}#accountAdmin.v4586-account .account-flow{grid-template-columns:1fr!important}}
+</style>
+<script id="tfms-v4586-account-compact-controller">
+(function(){
+'use strict';
+const BUILD='v45.86 MyInfo Account Compact Thumbnail UI Safe', VER='45.86';
+const $=id=>document.getElementById(id), q=(s,r=document)=>r.querySelector(s), qa=(s,r=document)=>Array.from(r.querySelectorAll(s));
+function lockVersion(){const b=$('tfmsVersionBadge');if(b)b.textContent=BUILD;document.title='TFMS '+BUILD;try{const u=new URL(location.href);if(u.searchParams.get('v')!==VER){u.searchParams.set('v',VER);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
+function buildMyInfo(){
+ const p=$('myPage');if(!p||p.dataset.v4586==='1')return;p.dataset.v4586='1';p.classList.add('v4586-myinfo');
+ const panels=qa(':scope > .panel',p);if(panels.length<2)return;
+ const basic=panels[0], pass=panels[1];basic.id='v4586BasicCard';pass.id='v4586PasswordCard';basic.classList.add('v4586-account-inner');pass.classList.add('v4586-account-inner');
+ const shell=document.createElement('div');shell.className='v4586-my-shell';
+ const basicWrap=document.createElement('div');basicWrap.className='v4586-card';basicWrap.innerHTML='<div class="v4586-card-title">기본 정보</div>';basic.parentNode.insertBefore(shell,basic);basicWrap.appendChild(basic);shell.appendChild(basicWrap);
+ const profile=document.createElement('div');profile.className='v4586-card v4586-profile-card';profile.innerHTML='<div class="v4586-card-title" style="align-self:stretch;text-align:left">프로필</div><div class="v4586-avatar">●</div><div class="v4586-profile-name" id="v4586ProfileName">사용자</div><div class="v4586-profile-role" id="v4586ProfileRole">TFMS 사용자</div><div class="v4586-profile-chip">공단 내부 승인 계정</div>';shell.appendChild(profile);
+ const passWrap=document.createElement('div');passWrap.id='v4586PasswordWrap';passWrap.className='v4586-card';passWrap.innerHTML='<div class="v4586-card-title">비밀번호 변경</div>';passWrap.appendChild(pass);shell.appendChild(passWrap);
+ const bottom=document.createElement('div');bottom.className='v4586-my-bottom';bottom.innerHTML='<strong>개인 설정</strong><span>계정 정보와 비밀번호는 본인 계정에만 적용됩니다.</span>';shell.after(bottom);syncMyInfo();
+ }
+function syncMyInfo(){const n=$('myName')?.value||'사용자',r=$('myRole')?.value||'TFMS 사용자';if($('v4586ProfileName'))$('v4586ProfileName').textContent=n;if($('v4586ProfileRole'))$('v4586ProfileRole').textContent=r;}
+function buildAccount(){
+ const p=$('accountAdmin');if(!p||p.dataset.v4586==='1')return;p.dataset.v4586='1';p.classList.add('v4586-account');
+ const panels=qa(':scope > .panel',p);if(panels.length<4)return;
+ const flow=panels[0],pending=panels[1],approved=panels[2],security=panels[3];
+ pending.id='v4586PendingPanel';approved.id='v4586ApprovedPanel';flow.id='v4586FlowPanel';security.id='v4586SecurityPanel';
+ [pending,approved].forEach(x=>x.classList.add('v4586-account-panel'));
+ [pending,approved].forEach(panel=>{const table=q('table',panel);if(table){const wrap=document.createElement('div');wrap.className='v4586-account-table-wrap';table.parentNode.insertBefore(wrap,table);wrap.appendChild(table)}});
+ const toolbar=document.createElement('div');toolbar.className='v4586-account-toolbar';toolbar.innerHTML='<div class="v4586-account-tabs"><button class="v4586-account-tab active" data-tab="pending">승인 대기</button><button class="v4586-account-tab" data-tab="approved">승인 완료</button><button class="v4586-account-tab" data-tab="guide">권한 목록</button></div><div style="display:flex;align-items:center"><span class="v4586-account-count" id="v4586AccountCount"></span><button class="btn light v4586-refresh" type="button">↻ 새로고침</button></div>';
+ p.insertBefore(toolbar,flow);
+ const guide=document.createElement('div');guide.id='v4586GuideWrap';guide.className='v4586-guide-wrap';flow.parentNode.insertBefore(guide,flow);guide.appendChild(flow);guide.appendChild(security);
+ toolbar.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));toolbar.querySelector('.v4586-refresh').onclick=()=>{try{window.renderAccountTables?.();window.loadAccountAdmin?.()}catch(e){}setTimeout(updateCount,100)};
+ switchTab('pending');updateCount();
+ }
+function switchTab(tab){
+ const p=$('accountAdmin');if(!p)return;qa('.v4586-account-tab',p).forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
+ const pending=$('v4586PendingPanel'),approved=$('v4586ApprovedPanel'),guide=$('v4586GuideWrap');
+ if(pending)pending.style.display=tab==='pending'?'block':'none';if(approved)approved.style.display=tab==='approved'?'block':'none';if(guide)guide.classList.toggle('active',tab==='guide');updateCount(tab);
+ }
+function updateCount(tab){tab=tab||q('.v4586-account-tab.active',$('accountAdmin'))?.dataset.tab||'pending';let n=0;if(tab==='pending')n=qa('#accountRequestBody tr').filter(tr=>!tr.querySelector('.empty-state')).length;else if(tab==='approved')n=qa('#approvedUserBody tr').filter(tr=>!tr.querySelector('.empty-state')).length;if($('v4586AccountCount'))$('v4586AccountCount').textContent=tab==='guide'?'권한 운영 안내':('총 '+n+'명');}
+function run(){lockVersion();buildMyInfo();buildAccount();syncMyInfo();updateCount();}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();[80,300,900,1800].forEach(ms=>setTimeout(run,ms));setInterval(lockVersion,900);
+const oldPop=window.populateMyPage;if(typeof oldPop==='function'&&!oldPop.__v4586){const w=function(){const r=oldPop.apply(this,arguments);setTimeout(syncMyInfo,0);return r};w.__v4586=true;window.populateMyPage=w;}
+const oldRender=window.renderAccountTables;if(typeof oldRender==='function'&&!oldRender.__v4586){const w=function(){const r=oldRender.apply(this,arguments);setTimeout(updateCount,0);return r};w.__v4586=true;window.renderAccountTables=w;try{renderAccountTables=w}catch(e){}}
+const oldShow=window.showPage;if(typeof oldShow==='function'&&!oldShow.__v4586){const w=function(id){const r=oldShow.apply(this,arguments);if(id==='myPage'||id==='accountAdmin')setTimeout(run,100);return r};w.__v4586=true;window.showPage=w;}
+})();
+</script>
+
 </body></html>
