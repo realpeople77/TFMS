@@ -12258,222 +12258,7 @@ document.addEventListener('DOMContentLoaded',function(){
         @page{size:A4 portrait;margin:0}
       </style></head><body>
       <div class="dj-sheet ${esc(sheetClass||'')}">${content}</div>
-      
-
-<!-- =========================================================
-     TFMS v45.83 Global Compact UI + Cycle Layout Recovery Safe
-     Scope: UI density unification only. No DB/SQL/content changes.
-     ========================================================= -->
-<style id="tfms-v4583-global-compact-style">
-/* ===== Global compact unification ===== */
-body{font-size:13px!important}
-.sidebar{width:223px!important}
-.nav{padding:14px 18px!important;font-size:14px!important;border-bottom-width:3px!important}
-.logo-title{font-size:20px!important}.logo-title small{font-size:11px!important}
-.user{font-size:13px!important;gap:10px!important}
-.page{padding:20px 22px!important}
-.panel{padding:14px 15px!important;border-radius:14px!important}
-.title-row{margin-bottom:14px!important}.title-icon{width:46px!important;height:46px!important;border-radius:12px!important;font-size:22px!important}
-h1{font-size:24px!important;letter-spacing:-.7px!important}.breadcrumb{font-size:12px!important}
-.section-title{font-size:16px!important;gap:7px!important;margin-bottom:12px!important}
-label{font-size:12px!important;margin-bottom:5px!important}
-input,select,textarea{padding:9px 10px!important;font-size:13px!important;border-radius:8px!important}
-input,select{min-height:38px!important}textarea{line-height:1.5!important}
-.btn{height:36px!important;min-height:36px!important;padding:0 12px!important;font-size:12px!important;border-radius:8px!important}
-.btn.small,.small-btn{height:30px!important;min-height:30px!important;padding:0 10px!important;font-size:11px!important}
-.help,.notice,.tfms-edit-note,.empty-state{font-size:12px!important;line-height:1.55!important}
-.table,.table th,.table td{font-size:12px!important}.table th,.table td{padding:9px 10px!important}
-.status,.chip,.badge,.schedule-chip{font-size:10.5px!important;padding:4px 8px!important}
-.stat strong,.summary-card strong,.compare-card strong,.lcc-card strong{font-size:20px!important}
-.stat span,.summary-card p,.compare-card p,.lcc-card p,.help-card p{font-size:11px!important}
-.dot{width:9px!important;height:9px!important}
-.buttons{gap:6px!important}
-/* dialogs / popups */
-#maintenanceEditModal .edit-box,#maintenanceActionModal .action-box,.tfms-import-dialog{border-radius:14px!important}
-#maintenanceEditModal .edit-box{width:min(800px,96vw)!important;max-height:86vh!important}
-#maintenanceEditModal .edit-head{padding:14px 16px!important}#maintenanceEditModal .edit-head h3{font-size:17px!important}
-#maintenanceEditModal .edit-body{padding:14px 16px 18px!important}
-#maintenanceEditModal .edit-grid{gap:10px!important}
-#maintenanceEditModal .edit-field label{font-size:12px!important}
-#maintenanceEditModal textarea{min-height:88px!important}
-/* equipment list a little denser */
-#equipment #assetList .tree-item{font-size:11px!important;line-height:1.24!important;padding:6px 8px!important}
-#equipment #assetList .tree-item b{font-size:11px!important}
-#equipment #assetList .tree-item small{font-size:9.5px!important;line-height:1.12!important}
-/* charts slimmer without changing values */
-.chart-card .bar,.chart-wrap .bar,.bars .bar,[class*="bar-chart"] .bar{max-width:26px!important}
-/* a few responsive guards */
-@media(max-width:1200px){.sidebar{width:208px!important}.page{padding:16px 18px!important}}
-@media(max-width:820px){h1{font-size:22px!important}.page{padding:12px!important}.panel{padding:12px!important}}
-
-/* ===== Cycle layout recovery ===== */
-#cycle.v4583-compact{display:grid!important;grid-template-columns:minmax(0,1fr) 350px!important;grid-auto-rows:auto!important;column-gap:12px!important;row-gap:10px!important;align-items:start!important}
-#cycle.v4583-compact>.title-row{grid-column:1/-1!important;grid-row:1!important;margin:0!important}
-#cycle.v4583-compact>.v4565-kpi-grid{grid-column:1/-1!important;grid-row:2!important;margin:0!important}
-#cycle.v4583-compact>.v459-cycle-shortcuts{display:none!important}
-#cycle.v4583-compact>.v4583-preset-panel{display:none!important;grid-column:1/-1!important;grid-row:3!important;margin:0!important}
-#cycle.v4583-compact.v4583-preset-open>.v4583-preset-panel{display:block!important}
-#cycle.v4583-compact>#v4583CycleLeft{grid-column:1!important;grid-row:4!important;min-width:0!important;display:grid!important;gap:10px!important;align-content:start!important}
-#cycle.v4583-compact.v4583-preset-open>#v4583CycleLeft{grid-row:4!important}
-#cycle.v4583-compact>#v459CycleForm{grid-column:2!important;grid-row:4!important;position:sticky!important;top:68px!important;align-self:start!important;width:auto!important;margin:0!important}
-#cycle.v4583-compact>.v459-table-panel{display:none!important}
-#cycle.v4583-compact .v459-table-panel{padding:13px 14px!important}
-#cycle.v4583-compact .v459-list-head{margin-bottom:8px!important}
-#cycle.v4583-compact .v459-list-head small{font-size:11px!important;line-height:1.4!important}
-#cycle.v4583-compact #v459CycleForm .v459-form-grid-4{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px 9px!important}
-#cycle.v4583-compact #v459CycleForm .v459-span-3{grid-column:1/-1!important}
-#cycle.v4583-compact #v459CycleForm .v459-cycle-actions{grid-column:1/-1!important;display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important}
-#cycle.v4583-compact #v459CycleForm .v459-next-due{min-height:38px!important;padding:7px 9px!important}
-#cycle.v4583-compact #v459CycleForm input,#cycle.v4583-compact #v459CycleForm select{height:36px!important;min-height:36px!important;font-size:12px!important}
-#cycle.v4583-compact #v4583CycleLeft .v459-table-scroll{max-height:340px!important;overflow:auto!important}
-#cycle.v4583-compact #v4583CycleLeft .empty-state{min-height:54px!important;padding:12px 8px!important}
-#cycle.v4583-compact #v4583CycleLeft .v4573-admin-bottom{display:grid!important;grid-template-columns:1fr 1fr!important;gap:10px!important;margin:0!important}
-#cycle.v4583-compact #v4583CycleLeft .v4573-admin-card{min-height:100px!important;padding:11px 12px!important}
-#cycle.v4583-compact #v4583CycleLeft .v4573-admin-card-head strong{font-size:12px!important}
-#cycle.v4583-compact #v4583CycleLeft .v4573-admin-item,#cycle.v4583-compact #v4583CycleLeft .v4573-admin-empty{font-size:10.5px!important}
-#cycle .v4583-title-actions{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-left:auto}
-#cycle .v4583-title-actions .tiny-label{font-size:9px;font-weight:800;color:#7a8da3;padding:0 2px}
-#cycle .v4583-title-actions .btn{height:34px!important;font-size:11px!important;padding:0 10px!important}
-#cycle .v4583-title-actions .btn.primary-mini{background:#1764d6!important;border-color:#1764d6!important;color:#fff!important}
-#cycle .v4583-title-actions .btn.light-mini{background:#fff!important}
-@media(max-width:1180px){#cycle.v4583-compact{grid-template-columns:1fr!important}#cycle.v4583-compact>#v4583CycleLeft,#cycle.v4583-compact>#v459CycleForm{grid-column:1!important;grid-row:auto!important}#cycle.v4583-compact>#v459CycleForm{position:static!important}#cycle.v4583-compact #v4583CycleLeft .v4573-admin-bottom{grid-template-columns:1fr!important}}
-@media(max-width:760px){#cycle.v4583-compact>.v4565-kpi-grid{grid-template-columns:1fr 1fr!important}#cycle .v4583-title-actions .tiny-label{display:none}}
-</style>
-<script id="tfms-v4583-global-compact-controller">
-(function(){
-'use strict';
-const BUILD='v45.83 Global Compact UI Cycle Recovery Safe';
-const VERSION='45.83';
-const $=id=>document.getElementById(id);
-const q=(sel,root=document)=>root.querySelector(sel);
-const qa=(sel,root=document)=>Array.from(root.querySelectorAll(sel));
-function lockVersion(){
-  const b=$('tfmsVersionBadge'); if(b) b.textContent=BUILD;
-  document.title='TFMS '+BUILD;
-  try{const u=new URL(location.href); if(u.searchParams.get('v')!==VERSION){u.searchParams.set('v',VERSION);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
-}
-function getCyclePage(){return $('cycle')}
-function getPresetPanel(p){return qa(':scope > .panel',p).find(el=>q('.v459-preset-grid',el))||null}
-function togglePreset(force){
-  const p=getCyclePage(); if(!p) return;
-  const panel=getPresetPanel(p); if(!panel) return;
-  const open = typeof force==='boolean' ? force : !p.classList.contains('v4583-preset-open');
-  p.classList.toggle('v4583-preset-open',open);
-  panel.style.display = open ? '' : 'none';
-  const btn=q('.v4583-toggle-preset',p); if(btn) btn.textContent = open ? '빠른 설정 닫기' : '빠른 설정';
-}
-function rebuildCycleActions(p){
-  const row=q(':scope > .title-row',p); if(!row) return;
-  let box=$('v4583CycleActions');
-  if(!box){
-    box=document.createElement('div'); box.id='v4583CycleActions'; box.className='v4583-title-actions';
-    row.appendChild(box);
-  }
-  box.innerHTML=''
-    +'<span class="tiny-label">전용점검</span>'
-    +'<button type="button" class="btn light-mini" data-act="fire">🧯 소방 월간</button>'
-    +'<button type="button" class="btn light-mini" data-act="qr">▦ 소화기 QR</button>'
-    +'<button type="button" class="btn light-mini" data-act="generate">▶ 생성 실행</button>'
-    +'<button type="button" class="btn light-mini v4583-toggle-preset" data-act="preset">빠른 설정</button>'
-    +'<button type="button" class="btn primary-mini" data-act="add">＋ 기준 추가</button>';
-  q('[data-act="fire"]',box).onclick=()=>window.navToFireV420?.();
-  q('[data-act="qr"]',box).onclick=()=>window.navToFireQrV459?.();
-  q('[data-act="generate"]',box).onclick=()=>window.v4573GenerateDueCycles?.();
-  q('[data-act="preset"]',box).onclick=()=>togglePreset();
-  q('[data-act="add"]',box).onclick=()=>{const form=$('v459CycleForm'); if(form) form.scrollIntoView({behavior:'smooth',block:'start'}); q('#cycleTask',form||document)?.focus?.();};
-}
-function recoverCycleLayout(){
-  const p=getCyclePage(); if(!p) return;
-  p.classList.add('v4583-compact');
-  const preset=getPresetPanel(p); if(preset){preset.classList.add('v4583-preset-panel'); if(!p.classList.contains('v4583-preset-open')) preset.style.display='none';}
-  let left=$('v4583CycleLeft'); if(!left){left=document.createElement('div'); left.id='v4583CycleLeft';}
-  const form=$('v459CycleForm');
-  const table=q(':scope > .v459-table-panel',p) || q('#v4574AdminLeft > .v459-table-panel',p);
-  const bottom=$('v4573AdminBottom') || q('#v4574AdminLeft > .v4573-admin-bottom',p);
-  if(form && !left.parentNode){ p.insertBefore(left, form); }
-  if(table && table.parentNode!==left) left.appendChild(table);
-  if(bottom && bottom.parentNode!==left) left.appendChild(bottom);
-  rebuildCycleActions(p);
-  // hide older action boxes / shortcut boxes if present
-  q('#v4571CycleTitleActions',p)?.remove();
-  q(':scope > .v459-cycle-shortcuts',p)?.setAttribute('aria-hidden','true');
-}
-function run(){ lockVersion(); recoverCycleLayout(); togglePreset(false); }
-if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',run,{once:true}); else run();
-[60,220,700,1600,3200].forEach(ms=>setTimeout(run,ms));
-const oldShow=window.showPage; if(typeof oldShow==='function' && !oldShow.__v4583compact){ const w=function(id){ const r=oldShow.apply(this,arguments); setTimeout(run,120); return r; }; w.__v4583compact=true; window.showPage=w; }
-const oldNav=window.navTo; if(typeof oldNav==='function' && !oldNav.__v4583compact){ const w=function(id){ const r=oldNav.apply(this,arguments); setTimeout(run,120); return r; }; w.__v4583compact=true; window.navTo=w; }
-})();
-</script>
-
-
-
-<!-- =========================================================
-     TFMS v45.84 Today Work Stable Renderer Safe
-     Fix: multiple legacy today renderers competing/flickering.
-     No DB / SQL / business data change.
-     ========================================================= -->
-<style id="tfms-v4584-today-stable-style">
-#today #todayBody td:last-child{min-width:230px!important}
-#today #todayBody .v4584-action-line{display:flex!important;align-items:center!important;gap:6px!important;flex-wrap:nowrap!important;white-space:nowrap!important}
-#today #todayBody .v4584-action-line button{height:31px!important;min-height:31px!important;padding:0 10px!important;border-radius:7px!important;font-size:10.5px!important;font-weight:850!important;white-space:nowrap!important}
-#today #todayBody .v4584-fire{background:#155cbd!important;color:#fff!important;border:1px solid #155cbd!important}
-#today #todayBody .v4584-work{background:linear-gradient(135deg,#1065c6,#0a9a9e)!important;color:#fff!important;border:0!important}
-#today #todayBody .v4584-delete{background:#fff!important;color:#cf3030!important;border:1px solid #efaaaa!important}
-#today #todayBody .v4584-undo{background:#fff!important;color:#355c83!important;border:1px solid #c9d8e8!important}
-@media(max-width:900px){#today #todayBody td:last-child{min-width:205px!important}#today #todayBody .v4584-action-line button{padding:0 8px!important;font-size:10px!important}}
-</style>
-<script id="tfms-v4584-today-stable-controller">
-(function(){
-'use strict';
-const BUILD='v45.84 Today Work Stable Renderer Safe',VP='45.84';
-const $=id=>document.getElementById(id);
-const esc=v=>String(v??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
-function lockVersion(){const b=$('tfmsVersionBadge');if(b)b.textContent=BUILD;document.title='TFMS '+BUILD;try{const u=new URL(location.href);if(u.searchParams.get('v')!==VP){u.searchParams.set('v',VP);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
-function isAdmin(){try{if(typeof currentRole!=='undefined'&&currentRole==='admin')return true;if(window.tfmsCurrentRole==='admin')return true;const p=window.cloudProfile||{};return /admin|관리자/i.test(String(p.role||p.user_role||''))}catch(e){return false}}
-function deptOf(f){try{return window.getFacilityDeptStable?.(f)||window.getFacilityDept?.(f)||''}catch(e){return''}}
-function scoped(){let list=Array.isArray(window.todayTasks)?window.todayTasks:[];try{const d=window.tfmsUserDept||window.currentUserDept||'';if(d&&d!=='전체')list=list.filter(t=>deptOf(t.facility)===d)}catch(e){}return list}
-function idOf(t,i){return String(t?._flowId||t?.dbId||t?.id||('today-'+i))}
-function isDone(t){return String(t?.status||'').includes('완료')}
-function fireTask(t){return /소방|소화기/.test(String(t?.task||'')+' '+String(t?.field||''))}
-function dueLate(t){const d=String(t?.due||'');const today=new Date().toISOString().slice(0,10);return d&&d!=='오늘'&&/^\d{4}-\d{2}-\d{2}$/.test(d)&&d<today&&!isDone(t)}
-function statusClass(t){return isDone(t)?'done':(dueLate(t)?'delay':(String(t?.due||'')==='오늘'?'wait':'info'))}
-function assetText(t){try{const a=t?.assetKey&&window.assetData?.[t.assetKey];return a?`${a.space||'-'} · ${a.name||t.assetName||'시설 공통업무'}`:(t?.assetName||'시설 공통업무')}catch(e){return t?.assetName||'시설 공통업무'}}
-function actionHtml(t,id){
-  const arr=[];
-  if(isDone(t)) arr.push(`<button type="button" class="v4584-undo" onclick="undoTodayV3261('${esc(id)}')">완료 취소</button>`);
-  else{
-    if(fireTask(t))arr.push(`<button type="button" class="v4584-fire" onclick="navToFireV420()">소방점검</button>`);
-    arr.push(`<button type="button" class="v4584-work" onclick="openTodayUnifiedV4576('${esc(id)}')">업무 처리</button>`);
-  }
-  if(isAdmin())arr.push(`<button type="button" class="v4584-delete" onclick="deleteTodayTaskV4577('${esc(t?.dbId||id)}')">직권삭제</button>`);
-  return `<div class="v4584-action-line">${arr.join('')}</div>`;
-}
-function renderStable(){
-  const body=$('todayBody');if(!body)return;
-  const list=scoped();
-  body.innerHTML=list.length?list.map((t,i)=>{const id=idOf(t,i);return `<tr data-task-id="${esc(id)}"><td>${esc(t.facility||'-')}</td><td>${esc(assetText(t))}</td><td>${esc(t.task||'-')}</td><td>${esc(t.cycle||'-')}</td><td>${esc(t.due||'-')}</td><td><span class="status ${statusClass(t)}">${esc(t.status||'예정')}</span></td><td>${actionHtml(t,id)}</td></tr>`}).join(''):'<tr><td colspan="7"><div class="empty-state">오늘의 업무가 없습니다. 점검주기 관리에서 항목을 등록하면 표시됩니다.</div></td></tr>';
-  try{window.ensureTodayUnified?.()}catch(e){}
-  try{window.applyTodayUserFiltersV4553?.()}catch(e){}
-}
-renderStable.__v4584stable=true;
-function install(){
-  lockVersion();
-  window.renderTodayTasks=renderStable;
-  try{renderTodayTasks=renderStable}catch(e){}
-  if($('today')?.classList.contains('active'))renderStable();
-}
-/* Old delayed wrappers may replace renderTodayTasks after page load. Reclaim it quietly. */
-let last='';
-function guard(){lockVersion();if(window.renderTodayTasks!==renderStable){window.renderTodayTasks=renderStable;try{renderTodayTasks=renderStable}catch(e){}}const p=$('today');if(!p?.classList.contains('active'))return;const body=$('todayBody');if(!body)return;const sig=(Array.isArray(window.todayTasks)?window.todayTasks:[]).map((x,i)=>[idOf(x,i),x.status,x.due,x.task,x.dbId].join('|')).join('¦')+'#'+isAdmin();const bad=body.querySelector('.today-flow-actions,.today-action-line-v446,.fire-today-btn,.v4577-admin-delete')||!body.querySelector('.v4584-action-line')&&scoped().length;if(bad||sig!==last){last=sig;renderStable()}}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
-[80,220,600,1200,2400,4200].forEach(ms=>setTimeout(()=>{install();guard()},ms));
-setInterval(guard,500);
-['showPage','navTo'].forEach(name=>{const base=window[name];if(typeof base!=='function'||base.__v4584stable)return;const w=function(id){const r=base.apply(this,arguments);if(id==='today')setTimeout(()=>{install();renderStable()},40);return r};w.__v4584stable=true;window[name]=w});
-})();
-</script>
-
-</body></html>`);
+      </body></html>`);
     win.document.close();
     setTimeout(()=>win.focus(),200);
   }
@@ -15861,221 +15646,6 @@ window.printFireExtQrLabelsV447=async function(){
     const w=window.open('','_blank','width=1100,height=800');if(!w)throw new Error('팝업이 차단되었습니다.');
     w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>${esc(facility)} 소화기 QR 라벨</title><style>@page{size:A4 portrait;margin:8mm}*{box-sizing:border-box}body{font-family:"Malgun Gothic",sans-serif;margin:0}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5mm}.label{border:1px solid #333;border-radius:3mm;min-height:82mm;padding:4mm;text-align:center;break-inside:avoid}.label img{width:42mm;height:42mm}.facility{font-weight:700;font-size:11pt}.code{font-size:15pt;font-weight:800;margin:2mm 0}.loc{font-size:9pt;min-height:12mm}.hint{font-size:7.5pt;color:#555;margin-top:1mm}@media print{.no-print{display:none}}</style></head><body><div class="no-print" style="padding:10px;text-align:center"><button onclick="print()">인쇄</button></div><div class="grid">${labels.map(x=>`<div class="label"><div class="facility">${esc(facility)}</div><div class="code">${esc(x.code)}</div><img src="${x.qr}"><div class="loc">${esc(x.location||'상세 위치 현장 입력')}</div><div class="hint">QR 촬영 후 현장점검</div></div>`).join('')}</div>
 
-
-
-<!-- =========================================================
-     TFMS v45.83 Global Compact UI + Cycle Layout Recovery Safe
-     Scope: UI density unification only. No DB/SQL/content changes.
-     ========================================================= -->
-<style id="tfms-v4583-global-compact-style">
-/* ===== Global compact unification ===== */
-body{font-size:13px!important}
-.sidebar{width:223px!important}
-.nav{padding:14px 18px!important;font-size:14px!important;border-bottom-width:3px!important}
-.logo-title{font-size:20px!important}.logo-title small{font-size:11px!important}
-.user{font-size:13px!important;gap:10px!important}
-.page{padding:20px 22px!important}
-.panel{padding:14px 15px!important;border-radius:14px!important}
-.title-row{margin-bottom:14px!important}.title-icon{width:46px!important;height:46px!important;border-radius:12px!important;font-size:22px!important}
-h1{font-size:24px!important;letter-spacing:-.7px!important}.breadcrumb{font-size:12px!important}
-.section-title{font-size:16px!important;gap:7px!important;margin-bottom:12px!important}
-label{font-size:12px!important;margin-bottom:5px!important}
-input,select,textarea{padding:9px 10px!important;font-size:13px!important;border-radius:8px!important}
-input,select{min-height:38px!important}textarea{line-height:1.5!important}
-.btn{height:36px!important;min-height:36px!important;padding:0 12px!important;font-size:12px!important;border-radius:8px!important}
-.btn.small,.small-btn{height:30px!important;min-height:30px!important;padding:0 10px!important;font-size:11px!important}
-.help,.notice,.tfms-edit-note,.empty-state{font-size:12px!important;line-height:1.55!important}
-.table,.table th,.table td{font-size:12px!important}.table th,.table td{padding:9px 10px!important}
-.status,.chip,.badge,.schedule-chip{font-size:10.5px!important;padding:4px 8px!important}
-.stat strong,.summary-card strong,.compare-card strong,.lcc-card strong{font-size:20px!important}
-.stat span,.summary-card p,.compare-card p,.lcc-card p,.help-card p{font-size:11px!important}
-.dot{width:9px!important;height:9px!important}
-.buttons{gap:6px!important}
-/* dialogs / popups */
-#maintenanceEditModal .edit-box,#maintenanceActionModal .action-box,.tfms-import-dialog{border-radius:14px!important}
-#maintenanceEditModal .edit-box{width:min(800px,96vw)!important;max-height:86vh!important}
-#maintenanceEditModal .edit-head{padding:14px 16px!important}#maintenanceEditModal .edit-head h3{font-size:17px!important}
-#maintenanceEditModal .edit-body{padding:14px 16px 18px!important}
-#maintenanceEditModal .edit-grid{gap:10px!important}
-#maintenanceEditModal .edit-field label{font-size:12px!important}
-#maintenanceEditModal textarea{min-height:88px!important}
-/* equipment list a little denser */
-#equipment #assetList .tree-item{font-size:11px!important;line-height:1.24!important;padding:6px 8px!important}
-#equipment #assetList .tree-item b{font-size:11px!important}
-#equipment #assetList .tree-item small{font-size:9.5px!important;line-height:1.12!important}
-/* charts slimmer without changing values */
-.chart-card .bar,.chart-wrap .bar,.bars .bar,[class*="bar-chart"] .bar{max-width:26px!important}
-/* a few responsive guards */
-@media(max-width:1200px){.sidebar{width:208px!important}.page{padding:16px 18px!important}}
-@media(max-width:820px){h1{font-size:22px!important}.page{padding:12px!important}.panel{padding:12px!important}}
-
-/* ===== Cycle layout recovery ===== */
-#cycle.v4583-compact{display:grid!important;grid-template-columns:minmax(0,1fr) 350px!important;grid-auto-rows:auto!important;column-gap:12px!important;row-gap:10px!important;align-items:start!important}
-#cycle.v4583-compact>.title-row{grid-column:1/-1!important;grid-row:1!important;margin:0!important}
-#cycle.v4583-compact>.v4565-kpi-grid{grid-column:1/-1!important;grid-row:2!important;margin:0!important}
-#cycle.v4583-compact>.v459-cycle-shortcuts{display:none!important}
-#cycle.v4583-compact>.v4583-preset-panel{display:none!important;grid-column:1/-1!important;grid-row:3!important;margin:0!important}
-#cycle.v4583-compact.v4583-preset-open>.v4583-preset-panel{display:block!important}
-#cycle.v4583-compact>#v4583CycleLeft{grid-column:1!important;grid-row:4!important;min-width:0!important;display:grid!important;gap:10px!important;align-content:start!important}
-#cycle.v4583-compact.v4583-preset-open>#v4583CycleLeft{grid-row:4!important}
-#cycle.v4583-compact>#v459CycleForm{grid-column:2!important;grid-row:4!important;position:sticky!important;top:68px!important;align-self:start!important;width:auto!important;margin:0!important}
-#cycle.v4583-compact>.v459-table-panel{display:none!important}
-#cycle.v4583-compact .v459-table-panel{padding:13px 14px!important}
-#cycle.v4583-compact .v459-list-head{margin-bottom:8px!important}
-#cycle.v4583-compact .v459-list-head small{font-size:11px!important;line-height:1.4!important}
-#cycle.v4583-compact #v459CycleForm .v459-form-grid-4{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px 9px!important}
-#cycle.v4583-compact #v459CycleForm .v459-span-3{grid-column:1/-1!important}
-#cycle.v4583-compact #v459CycleForm .v459-cycle-actions{grid-column:1/-1!important;display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important}
-#cycle.v4583-compact #v459CycleForm .v459-next-due{min-height:38px!important;padding:7px 9px!important}
-#cycle.v4583-compact #v459CycleForm input,#cycle.v4583-compact #v459CycleForm select{height:36px!important;min-height:36px!important;font-size:12px!important}
-#cycle.v4583-compact #v4583CycleLeft .v459-table-scroll{max-height:340px!important;overflow:auto!important}
-#cycle.v4583-compact #v4583CycleLeft .empty-state{min-height:54px!important;padding:12px 8px!important}
-#cycle.v4583-compact #v4583CycleLeft .v4573-admin-bottom{display:grid!important;grid-template-columns:1fr 1fr!important;gap:10px!important;margin:0!important}
-#cycle.v4583-compact #v4583CycleLeft .v4573-admin-card{min-height:100px!important;padding:11px 12px!important}
-#cycle.v4583-compact #v4583CycleLeft .v4573-admin-card-head strong{font-size:12px!important}
-#cycle.v4583-compact #v4583CycleLeft .v4573-admin-item,#cycle.v4583-compact #v4583CycleLeft .v4573-admin-empty{font-size:10.5px!important}
-#cycle .v4583-title-actions{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-left:auto}
-#cycle .v4583-title-actions .tiny-label{font-size:9px;font-weight:800;color:#7a8da3;padding:0 2px}
-#cycle .v4583-title-actions .btn{height:34px!important;font-size:11px!important;padding:0 10px!important}
-#cycle .v4583-title-actions .btn.primary-mini{background:#1764d6!important;border-color:#1764d6!important;color:#fff!important}
-#cycle .v4583-title-actions .btn.light-mini{background:#fff!important}
-@media(max-width:1180px){#cycle.v4583-compact{grid-template-columns:1fr!important}#cycle.v4583-compact>#v4583CycleLeft,#cycle.v4583-compact>#v459CycleForm{grid-column:1!important;grid-row:auto!important}#cycle.v4583-compact>#v459CycleForm{position:static!important}#cycle.v4583-compact #v4583CycleLeft .v4573-admin-bottom{grid-template-columns:1fr!important}}
-@media(max-width:760px){#cycle.v4583-compact>.v4565-kpi-grid{grid-template-columns:1fr 1fr!important}#cycle .v4583-title-actions .tiny-label{display:none}}
-</style>
-<script id="tfms-v4583-global-compact-controller">
-(function(){
-'use strict';
-const BUILD='v45.83 Global Compact UI Cycle Recovery Safe';
-const VERSION='45.83';
-const $=id=>document.getElementById(id);
-const q=(sel,root=document)=>root.querySelector(sel);
-const qa=(sel,root=document)=>Array.from(root.querySelectorAll(sel));
-function lockVersion(){
-  const b=$('tfmsVersionBadge'); if(b) b.textContent=BUILD;
-  document.title='TFMS '+BUILD;
-  try{const u=new URL(location.href); if(u.searchParams.get('v')!==VERSION){u.searchParams.set('v',VERSION);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
-}
-function getCyclePage(){return $('cycle')}
-function getPresetPanel(p){return qa(':scope > .panel',p).find(el=>q('.v459-preset-grid',el))||null}
-function togglePreset(force){
-  const p=getCyclePage(); if(!p) return;
-  const panel=getPresetPanel(p); if(!panel) return;
-  const open = typeof force==='boolean' ? force : !p.classList.contains('v4583-preset-open');
-  p.classList.toggle('v4583-preset-open',open);
-  panel.style.display = open ? '' : 'none';
-  const btn=q('.v4583-toggle-preset',p); if(btn) btn.textContent = open ? '빠른 설정 닫기' : '빠른 설정';
-}
-function rebuildCycleActions(p){
-  const row=q(':scope > .title-row',p); if(!row) return;
-  let box=$('v4583CycleActions');
-  if(!box){
-    box=document.createElement('div'); box.id='v4583CycleActions'; box.className='v4583-title-actions';
-    row.appendChild(box);
-  }
-  box.innerHTML=''
-    +'<span class="tiny-label">전용점검</span>'
-    +'<button type="button" class="btn light-mini" data-act="fire">🧯 소방 월간</button>'
-    +'<button type="button" class="btn light-mini" data-act="qr">▦ 소화기 QR</button>'
-    +'<button type="button" class="btn light-mini" data-act="generate">▶ 생성 실행</button>'
-    +'<button type="button" class="btn light-mini v4583-toggle-preset" data-act="preset">빠른 설정</button>'
-    +'<button type="button" class="btn primary-mini" data-act="add">＋ 기준 추가</button>';
-  q('[data-act="fire"]',box).onclick=()=>window.navToFireV420?.();
-  q('[data-act="qr"]',box).onclick=()=>window.navToFireQrV459?.();
-  q('[data-act="generate"]',box).onclick=()=>window.v4573GenerateDueCycles?.();
-  q('[data-act="preset"]',box).onclick=()=>togglePreset();
-  q('[data-act="add"]',box).onclick=()=>{const form=$('v459CycleForm'); if(form) form.scrollIntoView({behavior:'smooth',block:'start'}); q('#cycleTask',form||document)?.focus?.();};
-}
-function recoverCycleLayout(){
-  const p=getCyclePage(); if(!p) return;
-  p.classList.add('v4583-compact');
-  const preset=getPresetPanel(p); if(preset){preset.classList.add('v4583-preset-panel'); if(!p.classList.contains('v4583-preset-open')) preset.style.display='none';}
-  let left=$('v4583CycleLeft'); if(!left){left=document.createElement('div'); left.id='v4583CycleLeft';}
-  const form=$('v459CycleForm');
-  const table=q(':scope > .v459-table-panel',p) || q('#v4574AdminLeft > .v459-table-panel',p);
-  const bottom=$('v4573AdminBottom') || q('#v4574AdminLeft > .v4573-admin-bottom',p);
-  if(form && !left.parentNode){ p.insertBefore(left, form); }
-  if(table && table.parentNode!==left) left.appendChild(table);
-  if(bottom && bottom.parentNode!==left) left.appendChild(bottom);
-  rebuildCycleActions(p);
-  // hide older action boxes / shortcut boxes if present
-  q('#v4571CycleTitleActions',p)?.remove();
-  q(':scope > .v459-cycle-shortcuts',p)?.setAttribute('aria-hidden','true');
-}
-function run(){ lockVersion(); recoverCycleLayout(); togglePreset(false); }
-if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',run,{once:true}); else run();
-[60,220,700,1600,3200].forEach(ms=>setTimeout(run,ms));
-const oldShow=window.showPage; if(typeof oldShow==='function' && !oldShow.__v4583compact){ const w=function(id){ const r=oldShow.apply(this,arguments); setTimeout(run,120); return r; }; w.__v4583compact=true; window.showPage=w; }
-const oldNav=window.navTo; if(typeof oldNav==='function' && !oldNav.__v4583compact){ const w=function(id){ const r=oldNav.apply(this,arguments); setTimeout(run,120); return r; }; w.__v4583compact=true; window.navTo=w; }
-})();
-</script>
-
-
-
-<!-- =========================================================
-     TFMS v45.84 Today Work Stable Renderer Safe
-     Fix: multiple legacy today renderers competing/flickering.
-     No DB / SQL / business data change.
-     ========================================================= -->
-<style id="tfms-v4584-today-stable-style">
-#today #todayBody td:last-child{min-width:230px!important}
-#today #todayBody .v4584-action-line{display:flex!important;align-items:center!important;gap:6px!important;flex-wrap:nowrap!important;white-space:nowrap!important}
-#today #todayBody .v4584-action-line button{height:31px!important;min-height:31px!important;padding:0 10px!important;border-radius:7px!important;font-size:10.5px!important;font-weight:850!important;white-space:nowrap!important}
-#today #todayBody .v4584-fire{background:#155cbd!important;color:#fff!important;border:1px solid #155cbd!important}
-#today #todayBody .v4584-work{background:linear-gradient(135deg,#1065c6,#0a9a9e)!important;color:#fff!important;border:0!important}
-#today #todayBody .v4584-delete{background:#fff!important;color:#cf3030!important;border:1px solid #efaaaa!important}
-#today #todayBody .v4584-undo{background:#fff!important;color:#355c83!important;border:1px solid #c9d8e8!important}
-@media(max-width:900px){#today #todayBody td:last-child{min-width:205px!important}#today #todayBody .v4584-action-line button{padding:0 8px!important;font-size:10px!important}}
-</style>
-<script id="tfms-v4584-today-stable-controller">
-(function(){
-'use strict';
-const BUILD='v45.84 Today Work Stable Renderer Safe',VP='45.84';
-const $=id=>document.getElementById(id);
-const esc=v=>String(v??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
-function lockVersion(){const b=$('tfmsVersionBadge');if(b)b.textContent=BUILD;document.title='TFMS '+BUILD;try{const u=new URL(location.href);if(u.searchParams.get('v')!==VP){u.searchParams.set('v',VP);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
-function isAdmin(){try{if(typeof currentRole!=='undefined'&&currentRole==='admin')return true;if(window.tfmsCurrentRole==='admin')return true;const p=window.cloudProfile||{};return /admin|관리자/i.test(String(p.role||p.user_role||''))}catch(e){return false}}
-function deptOf(f){try{return window.getFacilityDeptStable?.(f)||window.getFacilityDept?.(f)||''}catch(e){return''}}
-function scoped(){let list=Array.isArray(window.todayTasks)?window.todayTasks:[];try{const d=window.tfmsUserDept||window.currentUserDept||'';if(d&&d!=='전체')list=list.filter(t=>deptOf(t.facility)===d)}catch(e){}return list}
-function idOf(t,i){return String(t?._flowId||t?.dbId||t?.id||('today-'+i))}
-function isDone(t){return String(t?.status||'').includes('완료')}
-function fireTask(t){return /소방|소화기/.test(String(t?.task||'')+' '+String(t?.field||''))}
-function dueLate(t){const d=String(t?.due||'');const today=new Date().toISOString().slice(0,10);return d&&d!=='오늘'&&/^\d{4}-\d{2}-\d{2}$/.test(d)&&d<today&&!isDone(t)}
-function statusClass(t){return isDone(t)?'done':(dueLate(t)?'delay':(String(t?.due||'')==='오늘'?'wait':'info'))}
-function assetText(t){try{const a=t?.assetKey&&window.assetData?.[t.assetKey];return a?`${a.space||'-'} · ${a.name||t.assetName||'시설 공통업무'}`:(t?.assetName||'시설 공통업무')}catch(e){return t?.assetName||'시설 공통업무'}}
-function actionHtml(t,id){
-  const arr=[];
-  if(isDone(t)) arr.push(`<button type="button" class="v4584-undo" onclick="undoTodayV3261('${esc(id)}')">완료 취소</button>`);
-  else{
-    if(fireTask(t))arr.push(`<button type="button" class="v4584-fire" onclick="navToFireV420()">소방점검</button>`);
-    arr.push(`<button type="button" class="v4584-work" onclick="openTodayUnifiedV4576('${esc(id)}')">업무 처리</button>`);
-  }
-  if(isAdmin())arr.push(`<button type="button" class="v4584-delete" onclick="deleteTodayTaskV4577('${esc(t?.dbId||id)}')">직권삭제</button>`);
-  return `<div class="v4584-action-line">${arr.join('')}</div>`;
-}
-function renderStable(){
-  const body=$('todayBody');if(!body)return;
-  const list=scoped();
-  body.innerHTML=list.length?list.map((t,i)=>{const id=idOf(t,i);return `<tr data-task-id="${esc(id)}"><td>${esc(t.facility||'-')}</td><td>${esc(assetText(t))}</td><td>${esc(t.task||'-')}</td><td>${esc(t.cycle||'-')}</td><td>${esc(t.due||'-')}</td><td><span class="status ${statusClass(t)}">${esc(t.status||'예정')}</span></td><td>${actionHtml(t,id)}</td></tr>`}).join(''):'<tr><td colspan="7"><div class="empty-state">오늘의 업무가 없습니다. 점검주기 관리에서 항목을 등록하면 표시됩니다.</div></td></tr>';
-  try{window.ensureTodayUnified?.()}catch(e){}
-  try{window.applyTodayUserFiltersV4553?.()}catch(e){}
-}
-renderStable.__v4584stable=true;
-function install(){
-  lockVersion();
-  window.renderTodayTasks=renderStable;
-  try{renderTodayTasks=renderStable}catch(e){}
-  if($('today')?.classList.contains('active'))renderStable();
-}
-/* Old delayed wrappers may replace renderTodayTasks after page load. Reclaim it quietly. */
-let last='';
-function guard(){lockVersion();if(window.renderTodayTasks!==renderStable){window.renderTodayTasks=renderStable;try{renderTodayTasks=renderStable}catch(e){}}const p=$('today');if(!p?.classList.contains('active'))return;const body=$('todayBody');if(!body)return;const sig=(Array.isArray(window.todayTasks)?window.todayTasks:[]).map((x,i)=>[idOf(x,i),x.status,x.due,x.task,x.dbId].join('|')).join('¦')+'#'+isAdmin();const bad=body.querySelector('.today-flow-actions,.today-action-line-v446,.fire-today-btn,.v4577-admin-delete')||!body.querySelector('.v4584-action-line')&&scoped().length;if(bad||sig!==last){last=sig;renderStable()}}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
-[80,220,600,1200,2400,4200].forEach(ms=>setTimeout(()=>{install();guard()},ms));
-setInterval(guard,500);
-['showPage','navTo'].forEach(name=>{const base=window[name];if(typeof base!=='function'||base.__v4584stable)return;const w=function(id){const r=base.apply(this,arguments);if(id==='today')setTimeout(()=>{install();renderStable()},40);return r};w.__v4584stable=true;window[name]=w});
-})();
-</script>
-
 </body></html>`);
     w.document.close();setTimeout(()=>w.focus(),200);
   }catch(e){console.error(e);toast('QR 라벨 출력 준비 실패: '+(e?.message||e))}
@@ -16892,221 +16462,6 @@ window.printFireRecordV420=async function(){
 </style>
 
 
-
-
-<!-- =========================================================
-     TFMS v45.83 Global Compact UI + Cycle Layout Recovery Safe
-     Scope: UI density unification only. No DB/SQL/content changes.
-     ========================================================= -->
-<style id="tfms-v4583-global-compact-style">
-/* ===== Global compact unification ===== */
-body{font-size:13px!important}
-.sidebar{width:223px!important}
-.nav{padding:14px 18px!important;font-size:14px!important;border-bottom-width:3px!important}
-.logo-title{font-size:20px!important}.logo-title small{font-size:11px!important}
-.user{font-size:13px!important;gap:10px!important}
-.page{padding:20px 22px!important}
-.panel{padding:14px 15px!important;border-radius:14px!important}
-.title-row{margin-bottom:14px!important}.title-icon{width:46px!important;height:46px!important;border-radius:12px!important;font-size:22px!important}
-h1{font-size:24px!important;letter-spacing:-.7px!important}.breadcrumb{font-size:12px!important}
-.section-title{font-size:16px!important;gap:7px!important;margin-bottom:12px!important}
-label{font-size:12px!important;margin-bottom:5px!important}
-input,select,textarea{padding:9px 10px!important;font-size:13px!important;border-radius:8px!important}
-input,select{min-height:38px!important}textarea{line-height:1.5!important}
-.btn{height:36px!important;min-height:36px!important;padding:0 12px!important;font-size:12px!important;border-radius:8px!important}
-.btn.small,.small-btn{height:30px!important;min-height:30px!important;padding:0 10px!important;font-size:11px!important}
-.help,.notice,.tfms-edit-note,.empty-state{font-size:12px!important;line-height:1.55!important}
-.table,.table th,.table td{font-size:12px!important}.table th,.table td{padding:9px 10px!important}
-.status,.chip,.badge,.schedule-chip{font-size:10.5px!important;padding:4px 8px!important}
-.stat strong,.summary-card strong,.compare-card strong,.lcc-card strong{font-size:20px!important}
-.stat span,.summary-card p,.compare-card p,.lcc-card p,.help-card p{font-size:11px!important}
-.dot{width:9px!important;height:9px!important}
-.buttons{gap:6px!important}
-/* dialogs / popups */
-#maintenanceEditModal .edit-box,#maintenanceActionModal .action-box,.tfms-import-dialog{border-radius:14px!important}
-#maintenanceEditModal .edit-box{width:min(800px,96vw)!important;max-height:86vh!important}
-#maintenanceEditModal .edit-head{padding:14px 16px!important}#maintenanceEditModal .edit-head h3{font-size:17px!important}
-#maintenanceEditModal .edit-body{padding:14px 16px 18px!important}
-#maintenanceEditModal .edit-grid{gap:10px!important}
-#maintenanceEditModal .edit-field label{font-size:12px!important}
-#maintenanceEditModal textarea{min-height:88px!important}
-/* equipment list a little denser */
-#equipment #assetList .tree-item{font-size:11px!important;line-height:1.24!important;padding:6px 8px!important}
-#equipment #assetList .tree-item b{font-size:11px!important}
-#equipment #assetList .tree-item small{font-size:9.5px!important;line-height:1.12!important}
-/* charts slimmer without changing values */
-.chart-card .bar,.chart-wrap .bar,.bars .bar,[class*="bar-chart"] .bar{max-width:26px!important}
-/* a few responsive guards */
-@media(max-width:1200px){.sidebar{width:208px!important}.page{padding:16px 18px!important}}
-@media(max-width:820px){h1{font-size:22px!important}.page{padding:12px!important}.panel{padding:12px!important}}
-
-/* ===== Cycle layout recovery ===== */
-#cycle.v4583-compact{display:grid!important;grid-template-columns:minmax(0,1fr) 350px!important;grid-auto-rows:auto!important;column-gap:12px!important;row-gap:10px!important;align-items:start!important}
-#cycle.v4583-compact>.title-row{grid-column:1/-1!important;grid-row:1!important;margin:0!important}
-#cycle.v4583-compact>.v4565-kpi-grid{grid-column:1/-1!important;grid-row:2!important;margin:0!important}
-#cycle.v4583-compact>.v459-cycle-shortcuts{display:none!important}
-#cycle.v4583-compact>.v4583-preset-panel{display:none!important;grid-column:1/-1!important;grid-row:3!important;margin:0!important}
-#cycle.v4583-compact.v4583-preset-open>.v4583-preset-panel{display:block!important}
-#cycle.v4583-compact>#v4583CycleLeft{grid-column:1!important;grid-row:4!important;min-width:0!important;display:grid!important;gap:10px!important;align-content:start!important}
-#cycle.v4583-compact.v4583-preset-open>#v4583CycleLeft{grid-row:4!important}
-#cycle.v4583-compact>#v459CycleForm{grid-column:2!important;grid-row:4!important;position:sticky!important;top:68px!important;align-self:start!important;width:auto!important;margin:0!important}
-#cycle.v4583-compact>.v459-table-panel{display:none!important}
-#cycle.v4583-compact .v459-table-panel{padding:13px 14px!important}
-#cycle.v4583-compact .v459-list-head{margin-bottom:8px!important}
-#cycle.v4583-compact .v459-list-head small{font-size:11px!important;line-height:1.4!important}
-#cycle.v4583-compact #v459CycleForm .v459-form-grid-4{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px 9px!important}
-#cycle.v4583-compact #v459CycleForm .v459-span-3{grid-column:1/-1!important}
-#cycle.v4583-compact #v459CycleForm .v459-cycle-actions{grid-column:1/-1!important;display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important}
-#cycle.v4583-compact #v459CycleForm .v459-next-due{min-height:38px!important;padding:7px 9px!important}
-#cycle.v4583-compact #v459CycleForm input,#cycle.v4583-compact #v459CycleForm select{height:36px!important;min-height:36px!important;font-size:12px!important}
-#cycle.v4583-compact #v4583CycleLeft .v459-table-scroll{max-height:340px!important;overflow:auto!important}
-#cycle.v4583-compact #v4583CycleLeft .empty-state{min-height:54px!important;padding:12px 8px!important}
-#cycle.v4583-compact #v4583CycleLeft .v4573-admin-bottom{display:grid!important;grid-template-columns:1fr 1fr!important;gap:10px!important;margin:0!important}
-#cycle.v4583-compact #v4583CycleLeft .v4573-admin-card{min-height:100px!important;padding:11px 12px!important}
-#cycle.v4583-compact #v4583CycleLeft .v4573-admin-card-head strong{font-size:12px!important}
-#cycle.v4583-compact #v4583CycleLeft .v4573-admin-item,#cycle.v4583-compact #v4583CycleLeft .v4573-admin-empty{font-size:10.5px!important}
-#cycle .v4583-title-actions{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-left:auto}
-#cycle .v4583-title-actions .tiny-label{font-size:9px;font-weight:800;color:#7a8da3;padding:0 2px}
-#cycle .v4583-title-actions .btn{height:34px!important;font-size:11px!important;padding:0 10px!important}
-#cycle .v4583-title-actions .btn.primary-mini{background:#1764d6!important;border-color:#1764d6!important;color:#fff!important}
-#cycle .v4583-title-actions .btn.light-mini{background:#fff!important}
-@media(max-width:1180px){#cycle.v4583-compact{grid-template-columns:1fr!important}#cycle.v4583-compact>#v4583CycleLeft,#cycle.v4583-compact>#v459CycleForm{grid-column:1!important;grid-row:auto!important}#cycle.v4583-compact>#v459CycleForm{position:static!important}#cycle.v4583-compact #v4583CycleLeft .v4573-admin-bottom{grid-template-columns:1fr!important}}
-@media(max-width:760px){#cycle.v4583-compact>.v4565-kpi-grid{grid-template-columns:1fr 1fr!important}#cycle .v4583-title-actions .tiny-label{display:none}}
-</style>
-<script id="tfms-v4583-global-compact-controller">
-(function(){
-'use strict';
-const BUILD='v45.83 Global Compact UI Cycle Recovery Safe';
-const VERSION='45.83';
-const $=id=>document.getElementById(id);
-const q=(sel,root=document)=>root.querySelector(sel);
-const qa=(sel,root=document)=>Array.from(root.querySelectorAll(sel));
-function lockVersion(){
-  const b=$('tfmsVersionBadge'); if(b) b.textContent=BUILD;
-  document.title='TFMS '+BUILD;
-  try{const u=new URL(location.href); if(u.searchParams.get('v')!==VERSION){u.searchParams.set('v',VERSION);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
-}
-function getCyclePage(){return $('cycle')}
-function getPresetPanel(p){return qa(':scope > .panel',p).find(el=>q('.v459-preset-grid',el))||null}
-function togglePreset(force){
-  const p=getCyclePage(); if(!p) return;
-  const panel=getPresetPanel(p); if(!panel) return;
-  const open = typeof force==='boolean' ? force : !p.classList.contains('v4583-preset-open');
-  p.classList.toggle('v4583-preset-open',open);
-  panel.style.display = open ? '' : 'none';
-  const btn=q('.v4583-toggle-preset',p); if(btn) btn.textContent = open ? '빠른 설정 닫기' : '빠른 설정';
-}
-function rebuildCycleActions(p){
-  const row=q(':scope > .title-row',p); if(!row) return;
-  let box=$('v4583CycleActions');
-  if(!box){
-    box=document.createElement('div'); box.id='v4583CycleActions'; box.className='v4583-title-actions';
-    row.appendChild(box);
-  }
-  box.innerHTML=''
-    +'<span class="tiny-label">전용점검</span>'
-    +'<button type="button" class="btn light-mini" data-act="fire">🧯 소방 월간</button>'
-    +'<button type="button" class="btn light-mini" data-act="qr">▦ 소화기 QR</button>'
-    +'<button type="button" class="btn light-mini" data-act="generate">▶ 생성 실행</button>'
-    +'<button type="button" class="btn light-mini v4583-toggle-preset" data-act="preset">빠른 설정</button>'
-    +'<button type="button" class="btn primary-mini" data-act="add">＋ 기준 추가</button>';
-  q('[data-act="fire"]',box).onclick=()=>window.navToFireV420?.();
-  q('[data-act="qr"]',box).onclick=()=>window.navToFireQrV459?.();
-  q('[data-act="generate"]',box).onclick=()=>window.v4573GenerateDueCycles?.();
-  q('[data-act="preset"]',box).onclick=()=>togglePreset();
-  q('[data-act="add"]',box).onclick=()=>{const form=$('v459CycleForm'); if(form) form.scrollIntoView({behavior:'smooth',block:'start'}); q('#cycleTask',form||document)?.focus?.();};
-}
-function recoverCycleLayout(){
-  const p=getCyclePage(); if(!p) return;
-  p.classList.add('v4583-compact');
-  const preset=getPresetPanel(p); if(preset){preset.classList.add('v4583-preset-panel'); if(!p.classList.contains('v4583-preset-open')) preset.style.display='none';}
-  let left=$('v4583CycleLeft'); if(!left){left=document.createElement('div'); left.id='v4583CycleLeft';}
-  const form=$('v459CycleForm');
-  const table=q(':scope > .v459-table-panel',p) || q('#v4574AdminLeft > .v459-table-panel',p);
-  const bottom=$('v4573AdminBottom') || q('#v4574AdminLeft > .v4573-admin-bottom',p);
-  if(form && !left.parentNode){ p.insertBefore(left, form); }
-  if(table && table.parentNode!==left) left.appendChild(table);
-  if(bottom && bottom.parentNode!==left) left.appendChild(bottom);
-  rebuildCycleActions(p);
-  // hide older action boxes / shortcut boxes if present
-  q('#v4571CycleTitleActions',p)?.remove();
-  q(':scope > .v459-cycle-shortcuts',p)?.setAttribute('aria-hidden','true');
-}
-function run(){ lockVersion(); recoverCycleLayout(); togglePreset(false); }
-if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',run,{once:true}); else run();
-[60,220,700,1600,3200].forEach(ms=>setTimeout(run,ms));
-const oldShow=window.showPage; if(typeof oldShow==='function' && !oldShow.__v4583compact){ const w=function(id){ const r=oldShow.apply(this,arguments); setTimeout(run,120); return r; }; w.__v4583compact=true; window.showPage=w; }
-const oldNav=window.navTo; if(typeof oldNav==='function' && !oldNav.__v4583compact){ const w=function(id){ const r=oldNav.apply(this,arguments); setTimeout(run,120); return r; }; w.__v4583compact=true; window.navTo=w; }
-})();
-</script>
-
-
-
-<!-- =========================================================
-     TFMS v45.84 Today Work Stable Renderer Safe
-     Fix: multiple legacy today renderers competing/flickering.
-     No DB / SQL / business data change.
-     ========================================================= -->
-<style id="tfms-v4584-today-stable-style">
-#today #todayBody td:last-child{min-width:230px!important}
-#today #todayBody .v4584-action-line{display:flex!important;align-items:center!important;gap:6px!important;flex-wrap:nowrap!important;white-space:nowrap!important}
-#today #todayBody .v4584-action-line button{height:31px!important;min-height:31px!important;padding:0 10px!important;border-radius:7px!important;font-size:10.5px!important;font-weight:850!important;white-space:nowrap!important}
-#today #todayBody .v4584-fire{background:#155cbd!important;color:#fff!important;border:1px solid #155cbd!important}
-#today #todayBody .v4584-work{background:linear-gradient(135deg,#1065c6,#0a9a9e)!important;color:#fff!important;border:0!important}
-#today #todayBody .v4584-delete{background:#fff!important;color:#cf3030!important;border:1px solid #efaaaa!important}
-#today #todayBody .v4584-undo{background:#fff!important;color:#355c83!important;border:1px solid #c9d8e8!important}
-@media(max-width:900px){#today #todayBody td:last-child{min-width:205px!important}#today #todayBody .v4584-action-line button{padding:0 8px!important;font-size:10px!important}}
-</style>
-<script id="tfms-v4584-today-stable-controller">
-(function(){
-'use strict';
-const BUILD='v45.84 Today Work Stable Renderer Safe',VP='45.84';
-const $=id=>document.getElementById(id);
-const esc=v=>String(v??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
-function lockVersion(){const b=$('tfmsVersionBadge');if(b)b.textContent=BUILD;document.title='TFMS '+BUILD;try{const u=new URL(location.href);if(u.searchParams.get('v')!==VP){u.searchParams.set('v',VP);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
-function isAdmin(){try{if(typeof currentRole!=='undefined'&&currentRole==='admin')return true;if(window.tfmsCurrentRole==='admin')return true;const p=window.cloudProfile||{};return /admin|관리자/i.test(String(p.role||p.user_role||''))}catch(e){return false}}
-function deptOf(f){try{return window.getFacilityDeptStable?.(f)||window.getFacilityDept?.(f)||''}catch(e){return''}}
-function scoped(){let list=Array.isArray(window.todayTasks)?window.todayTasks:[];try{const d=window.tfmsUserDept||window.currentUserDept||'';if(d&&d!=='전체')list=list.filter(t=>deptOf(t.facility)===d)}catch(e){}return list}
-function idOf(t,i){return String(t?._flowId||t?.dbId||t?.id||('today-'+i))}
-function isDone(t){return String(t?.status||'').includes('완료')}
-function fireTask(t){return /소방|소화기/.test(String(t?.task||'')+' '+String(t?.field||''))}
-function dueLate(t){const d=String(t?.due||'');const today=new Date().toISOString().slice(0,10);return d&&d!=='오늘'&&/^\d{4}-\d{2}-\d{2}$/.test(d)&&d<today&&!isDone(t)}
-function statusClass(t){return isDone(t)?'done':(dueLate(t)?'delay':(String(t?.due||'')==='오늘'?'wait':'info'))}
-function assetText(t){try{const a=t?.assetKey&&window.assetData?.[t.assetKey];return a?`${a.space||'-'} · ${a.name||t.assetName||'시설 공통업무'}`:(t?.assetName||'시설 공통업무')}catch(e){return t?.assetName||'시설 공통업무'}}
-function actionHtml(t,id){
-  const arr=[];
-  if(isDone(t)) arr.push(`<button type="button" class="v4584-undo" onclick="undoTodayV3261('${esc(id)}')">완료 취소</button>`);
-  else{
-    if(fireTask(t))arr.push(`<button type="button" class="v4584-fire" onclick="navToFireV420()">소방점검</button>`);
-    arr.push(`<button type="button" class="v4584-work" onclick="openTodayUnifiedV4576('${esc(id)}')">업무 처리</button>`);
-  }
-  if(isAdmin())arr.push(`<button type="button" class="v4584-delete" onclick="deleteTodayTaskV4577('${esc(t?.dbId||id)}')">직권삭제</button>`);
-  return `<div class="v4584-action-line">${arr.join('')}</div>`;
-}
-function renderStable(){
-  const body=$('todayBody');if(!body)return;
-  const list=scoped();
-  body.innerHTML=list.length?list.map((t,i)=>{const id=idOf(t,i);return `<tr data-task-id="${esc(id)}"><td>${esc(t.facility||'-')}</td><td>${esc(assetText(t))}</td><td>${esc(t.task||'-')}</td><td>${esc(t.cycle||'-')}</td><td>${esc(t.due||'-')}</td><td><span class="status ${statusClass(t)}">${esc(t.status||'예정')}</span></td><td>${actionHtml(t,id)}</td></tr>`}).join(''):'<tr><td colspan="7"><div class="empty-state">오늘의 업무가 없습니다. 점검주기 관리에서 항목을 등록하면 표시됩니다.</div></td></tr>';
-  try{window.ensureTodayUnified?.()}catch(e){}
-  try{window.applyTodayUserFiltersV4553?.()}catch(e){}
-}
-renderStable.__v4584stable=true;
-function install(){
-  lockVersion();
-  window.renderTodayTasks=renderStable;
-  try{renderTodayTasks=renderStable}catch(e){}
-  if($('today')?.classList.contains('active'))renderStable();
-}
-/* Old delayed wrappers may replace renderTodayTasks after page load. Reclaim it quietly. */
-let last='';
-function guard(){lockVersion();if(window.renderTodayTasks!==renderStable){window.renderTodayTasks=renderStable;try{renderTodayTasks=renderStable}catch(e){}}const p=$('today');if(!p?.classList.contains('active'))return;const body=$('todayBody');if(!body)return;const sig=(Array.isArray(window.todayTasks)?window.todayTasks:[]).map((x,i)=>[idOf(x,i),x.status,x.due,x.task,x.dbId].join('|')).join('¦')+'#'+isAdmin();const bad=body.querySelector('.today-flow-actions,.today-action-line-v446,.fire-today-btn,.v4577-admin-delete')||!body.querySelector('.v4584-action-line')&&scoped().length;if(bad||sig!==last){last=sig;renderStable()}}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
-[80,220,600,1200,2400,4200].forEach(ms=>setTimeout(()=>{install();guard()},ms));
-setInterval(guard,500);
-['showPage','navTo'].forEach(name=>{const base=window[name];if(typeof base!=='function'||base.__v4584stable)return;const w=function(id){const r=base.apply(this,arguments);if(id==='today')setTimeout(()=>{install();renderStable()},40);return r};w.__v4584stable=true;window[name]=w});
-})();
-</script>
-
 </body></html>`);doc.close();
   await new Promise(r=>{if(doc.readyState==='complete')r();else frame.onload=r;});
   const imgs=[...doc.images];await Promise.all(imgs.map(img=>img.complete?(img.decode?.().catch(()=>{})||Promise.resolve()):new Promise(res=>{img.onload=img.onerror=res;})));
@@ -17416,221 +16771,6 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{
 }
 </style>
 
-
-
-
-<!-- =========================================================
-     TFMS v45.83 Global Compact UI + Cycle Layout Recovery Safe
-     Scope: UI density unification only. No DB/SQL/content changes.
-     ========================================================= -->
-<style id="tfms-v4583-global-compact-style">
-/* ===== Global compact unification ===== */
-body{font-size:13px!important}
-.sidebar{width:223px!important}
-.nav{padding:14px 18px!important;font-size:14px!important;border-bottom-width:3px!important}
-.logo-title{font-size:20px!important}.logo-title small{font-size:11px!important}
-.user{font-size:13px!important;gap:10px!important}
-.page{padding:20px 22px!important}
-.panel{padding:14px 15px!important;border-radius:14px!important}
-.title-row{margin-bottom:14px!important}.title-icon{width:46px!important;height:46px!important;border-radius:12px!important;font-size:22px!important}
-h1{font-size:24px!important;letter-spacing:-.7px!important}.breadcrumb{font-size:12px!important}
-.section-title{font-size:16px!important;gap:7px!important;margin-bottom:12px!important}
-label{font-size:12px!important;margin-bottom:5px!important}
-input,select,textarea{padding:9px 10px!important;font-size:13px!important;border-radius:8px!important}
-input,select{min-height:38px!important}textarea{line-height:1.5!important}
-.btn{height:36px!important;min-height:36px!important;padding:0 12px!important;font-size:12px!important;border-radius:8px!important}
-.btn.small,.small-btn{height:30px!important;min-height:30px!important;padding:0 10px!important;font-size:11px!important}
-.help,.notice,.tfms-edit-note,.empty-state{font-size:12px!important;line-height:1.55!important}
-.table,.table th,.table td{font-size:12px!important}.table th,.table td{padding:9px 10px!important}
-.status,.chip,.badge,.schedule-chip{font-size:10.5px!important;padding:4px 8px!important}
-.stat strong,.summary-card strong,.compare-card strong,.lcc-card strong{font-size:20px!important}
-.stat span,.summary-card p,.compare-card p,.lcc-card p,.help-card p{font-size:11px!important}
-.dot{width:9px!important;height:9px!important}
-.buttons{gap:6px!important}
-/* dialogs / popups */
-#maintenanceEditModal .edit-box,#maintenanceActionModal .action-box,.tfms-import-dialog{border-radius:14px!important}
-#maintenanceEditModal .edit-box{width:min(800px,96vw)!important;max-height:86vh!important}
-#maintenanceEditModal .edit-head{padding:14px 16px!important}#maintenanceEditModal .edit-head h3{font-size:17px!important}
-#maintenanceEditModal .edit-body{padding:14px 16px 18px!important}
-#maintenanceEditModal .edit-grid{gap:10px!important}
-#maintenanceEditModal .edit-field label{font-size:12px!important}
-#maintenanceEditModal textarea{min-height:88px!important}
-/* equipment list a little denser */
-#equipment #assetList .tree-item{font-size:11px!important;line-height:1.24!important;padding:6px 8px!important}
-#equipment #assetList .tree-item b{font-size:11px!important}
-#equipment #assetList .tree-item small{font-size:9.5px!important;line-height:1.12!important}
-/* charts slimmer without changing values */
-.chart-card .bar,.chart-wrap .bar,.bars .bar,[class*="bar-chart"] .bar{max-width:26px!important}
-/* a few responsive guards */
-@media(max-width:1200px){.sidebar{width:208px!important}.page{padding:16px 18px!important}}
-@media(max-width:820px){h1{font-size:22px!important}.page{padding:12px!important}.panel{padding:12px!important}}
-
-/* ===== Cycle layout recovery ===== */
-#cycle.v4583-compact{display:grid!important;grid-template-columns:minmax(0,1fr) 350px!important;grid-auto-rows:auto!important;column-gap:12px!important;row-gap:10px!important;align-items:start!important}
-#cycle.v4583-compact>.title-row{grid-column:1/-1!important;grid-row:1!important;margin:0!important}
-#cycle.v4583-compact>.v4565-kpi-grid{grid-column:1/-1!important;grid-row:2!important;margin:0!important}
-#cycle.v4583-compact>.v459-cycle-shortcuts{display:none!important}
-#cycle.v4583-compact>.v4583-preset-panel{display:none!important;grid-column:1/-1!important;grid-row:3!important;margin:0!important}
-#cycle.v4583-compact.v4583-preset-open>.v4583-preset-panel{display:block!important}
-#cycle.v4583-compact>#v4583CycleLeft{grid-column:1!important;grid-row:4!important;min-width:0!important;display:grid!important;gap:10px!important;align-content:start!important}
-#cycle.v4583-compact.v4583-preset-open>#v4583CycleLeft{grid-row:4!important}
-#cycle.v4583-compact>#v459CycleForm{grid-column:2!important;grid-row:4!important;position:sticky!important;top:68px!important;align-self:start!important;width:auto!important;margin:0!important}
-#cycle.v4583-compact>.v459-table-panel{display:none!important}
-#cycle.v4583-compact .v459-table-panel{padding:13px 14px!important}
-#cycle.v4583-compact .v459-list-head{margin-bottom:8px!important}
-#cycle.v4583-compact .v459-list-head small{font-size:11px!important;line-height:1.4!important}
-#cycle.v4583-compact #v459CycleForm .v459-form-grid-4{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px 9px!important}
-#cycle.v4583-compact #v459CycleForm .v459-span-3{grid-column:1/-1!important}
-#cycle.v4583-compact #v459CycleForm .v459-cycle-actions{grid-column:1/-1!important;display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important}
-#cycle.v4583-compact #v459CycleForm .v459-next-due{min-height:38px!important;padding:7px 9px!important}
-#cycle.v4583-compact #v459CycleForm input,#cycle.v4583-compact #v459CycleForm select{height:36px!important;min-height:36px!important;font-size:12px!important}
-#cycle.v4583-compact #v4583CycleLeft .v459-table-scroll{max-height:340px!important;overflow:auto!important}
-#cycle.v4583-compact #v4583CycleLeft .empty-state{min-height:54px!important;padding:12px 8px!important}
-#cycle.v4583-compact #v4583CycleLeft .v4573-admin-bottom{display:grid!important;grid-template-columns:1fr 1fr!important;gap:10px!important;margin:0!important}
-#cycle.v4583-compact #v4583CycleLeft .v4573-admin-card{min-height:100px!important;padding:11px 12px!important}
-#cycle.v4583-compact #v4583CycleLeft .v4573-admin-card-head strong{font-size:12px!important}
-#cycle.v4583-compact #v4583CycleLeft .v4573-admin-item,#cycle.v4583-compact #v4583CycleLeft .v4573-admin-empty{font-size:10.5px!important}
-#cycle .v4583-title-actions{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-left:auto}
-#cycle .v4583-title-actions .tiny-label{font-size:9px;font-weight:800;color:#7a8da3;padding:0 2px}
-#cycle .v4583-title-actions .btn{height:34px!important;font-size:11px!important;padding:0 10px!important}
-#cycle .v4583-title-actions .btn.primary-mini{background:#1764d6!important;border-color:#1764d6!important;color:#fff!important}
-#cycle .v4583-title-actions .btn.light-mini{background:#fff!important}
-@media(max-width:1180px){#cycle.v4583-compact{grid-template-columns:1fr!important}#cycle.v4583-compact>#v4583CycleLeft,#cycle.v4583-compact>#v459CycleForm{grid-column:1!important;grid-row:auto!important}#cycle.v4583-compact>#v459CycleForm{position:static!important}#cycle.v4583-compact #v4583CycleLeft .v4573-admin-bottom{grid-template-columns:1fr!important}}
-@media(max-width:760px){#cycle.v4583-compact>.v4565-kpi-grid{grid-template-columns:1fr 1fr!important}#cycle .v4583-title-actions .tiny-label{display:none}}
-</style>
-<script id="tfms-v4583-global-compact-controller">
-(function(){
-'use strict';
-const BUILD='v45.83 Global Compact UI Cycle Recovery Safe';
-const VERSION='45.83';
-const $=id=>document.getElementById(id);
-const q=(sel,root=document)=>root.querySelector(sel);
-const qa=(sel,root=document)=>Array.from(root.querySelectorAll(sel));
-function lockVersion(){
-  const b=$('tfmsVersionBadge'); if(b) b.textContent=BUILD;
-  document.title='TFMS '+BUILD;
-  try{const u=new URL(location.href); if(u.searchParams.get('v')!==VERSION){u.searchParams.set('v',VERSION);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
-}
-function getCyclePage(){return $('cycle')}
-function getPresetPanel(p){return qa(':scope > .panel',p).find(el=>q('.v459-preset-grid',el))||null}
-function togglePreset(force){
-  const p=getCyclePage(); if(!p) return;
-  const panel=getPresetPanel(p); if(!panel) return;
-  const open = typeof force==='boolean' ? force : !p.classList.contains('v4583-preset-open');
-  p.classList.toggle('v4583-preset-open',open);
-  panel.style.display = open ? '' : 'none';
-  const btn=q('.v4583-toggle-preset',p); if(btn) btn.textContent = open ? '빠른 설정 닫기' : '빠른 설정';
-}
-function rebuildCycleActions(p){
-  const row=q(':scope > .title-row',p); if(!row) return;
-  let box=$('v4583CycleActions');
-  if(!box){
-    box=document.createElement('div'); box.id='v4583CycleActions'; box.className='v4583-title-actions';
-    row.appendChild(box);
-  }
-  box.innerHTML=''
-    +'<span class="tiny-label">전용점검</span>'
-    +'<button type="button" class="btn light-mini" data-act="fire">🧯 소방 월간</button>'
-    +'<button type="button" class="btn light-mini" data-act="qr">▦ 소화기 QR</button>'
-    +'<button type="button" class="btn light-mini" data-act="generate">▶ 생성 실행</button>'
-    +'<button type="button" class="btn light-mini v4583-toggle-preset" data-act="preset">빠른 설정</button>'
-    +'<button type="button" class="btn primary-mini" data-act="add">＋ 기준 추가</button>';
-  q('[data-act="fire"]',box).onclick=()=>window.navToFireV420?.();
-  q('[data-act="qr"]',box).onclick=()=>window.navToFireQrV459?.();
-  q('[data-act="generate"]',box).onclick=()=>window.v4573GenerateDueCycles?.();
-  q('[data-act="preset"]',box).onclick=()=>togglePreset();
-  q('[data-act="add"]',box).onclick=()=>{const form=$('v459CycleForm'); if(form) form.scrollIntoView({behavior:'smooth',block:'start'}); q('#cycleTask',form||document)?.focus?.();};
-}
-function recoverCycleLayout(){
-  const p=getCyclePage(); if(!p) return;
-  p.classList.add('v4583-compact');
-  const preset=getPresetPanel(p); if(preset){preset.classList.add('v4583-preset-panel'); if(!p.classList.contains('v4583-preset-open')) preset.style.display='none';}
-  let left=$('v4583CycleLeft'); if(!left){left=document.createElement('div'); left.id='v4583CycleLeft';}
-  const form=$('v459CycleForm');
-  const table=q(':scope > .v459-table-panel',p) || q('#v4574AdminLeft > .v459-table-panel',p);
-  const bottom=$('v4573AdminBottom') || q('#v4574AdminLeft > .v4573-admin-bottom',p);
-  if(form && !left.parentNode){ p.insertBefore(left, form); }
-  if(table && table.parentNode!==left) left.appendChild(table);
-  if(bottom && bottom.parentNode!==left) left.appendChild(bottom);
-  rebuildCycleActions(p);
-  // hide older action boxes / shortcut boxes if present
-  q('#v4571CycleTitleActions',p)?.remove();
-  q(':scope > .v459-cycle-shortcuts',p)?.setAttribute('aria-hidden','true');
-}
-function run(){ lockVersion(); recoverCycleLayout(); togglePreset(false); }
-if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',run,{once:true}); else run();
-[60,220,700,1600,3200].forEach(ms=>setTimeout(run,ms));
-const oldShow=window.showPage; if(typeof oldShow==='function' && !oldShow.__v4583compact){ const w=function(id){ const r=oldShow.apply(this,arguments); setTimeout(run,120); return r; }; w.__v4583compact=true; window.showPage=w; }
-const oldNav=window.navTo; if(typeof oldNav==='function' && !oldNav.__v4583compact){ const w=function(id){ const r=oldNav.apply(this,arguments); setTimeout(run,120); return r; }; w.__v4583compact=true; window.navTo=w; }
-})();
-</script>
-
-
-
-<!-- =========================================================
-     TFMS v45.84 Today Work Stable Renderer Safe
-     Fix: multiple legacy today renderers competing/flickering.
-     No DB / SQL / business data change.
-     ========================================================= -->
-<style id="tfms-v4584-today-stable-style">
-#today #todayBody td:last-child{min-width:230px!important}
-#today #todayBody .v4584-action-line{display:flex!important;align-items:center!important;gap:6px!important;flex-wrap:nowrap!important;white-space:nowrap!important}
-#today #todayBody .v4584-action-line button{height:31px!important;min-height:31px!important;padding:0 10px!important;border-radius:7px!important;font-size:10.5px!important;font-weight:850!important;white-space:nowrap!important}
-#today #todayBody .v4584-fire{background:#155cbd!important;color:#fff!important;border:1px solid #155cbd!important}
-#today #todayBody .v4584-work{background:linear-gradient(135deg,#1065c6,#0a9a9e)!important;color:#fff!important;border:0!important}
-#today #todayBody .v4584-delete{background:#fff!important;color:#cf3030!important;border:1px solid #efaaaa!important}
-#today #todayBody .v4584-undo{background:#fff!important;color:#355c83!important;border:1px solid #c9d8e8!important}
-@media(max-width:900px){#today #todayBody td:last-child{min-width:205px!important}#today #todayBody .v4584-action-line button{padding:0 8px!important;font-size:10px!important}}
-</style>
-<script id="tfms-v4584-today-stable-controller">
-(function(){
-'use strict';
-const BUILD='v45.84 Today Work Stable Renderer Safe',VP='45.84';
-const $=id=>document.getElementById(id);
-const esc=v=>String(v??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
-function lockVersion(){const b=$('tfmsVersionBadge');if(b)b.textContent=BUILD;document.title='TFMS '+BUILD;try{const u=new URL(location.href);if(u.searchParams.get('v')!==VP){u.searchParams.set('v',VP);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
-function isAdmin(){try{if(typeof currentRole!=='undefined'&&currentRole==='admin')return true;if(window.tfmsCurrentRole==='admin')return true;const p=window.cloudProfile||{};return /admin|관리자/i.test(String(p.role||p.user_role||''))}catch(e){return false}}
-function deptOf(f){try{return window.getFacilityDeptStable?.(f)||window.getFacilityDept?.(f)||''}catch(e){return''}}
-function scoped(){let list=Array.isArray(window.todayTasks)?window.todayTasks:[];try{const d=window.tfmsUserDept||window.currentUserDept||'';if(d&&d!=='전체')list=list.filter(t=>deptOf(t.facility)===d)}catch(e){}return list}
-function idOf(t,i){return String(t?._flowId||t?.dbId||t?.id||('today-'+i))}
-function isDone(t){return String(t?.status||'').includes('완료')}
-function fireTask(t){return /소방|소화기/.test(String(t?.task||'')+' '+String(t?.field||''))}
-function dueLate(t){const d=String(t?.due||'');const today=new Date().toISOString().slice(0,10);return d&&d!=='오늘'&&/^\d{4}-\d{2}-\d{2}$/.test(d)&&d<today&&!isDone(t)}
-function statusClass(t){return isDone(t)?'done':(dueLate(t)?'delay':(String(t?.due||'')==='오늘'?'wait':'info'))}
-function assetText(t){try{const a=t?.assetKey&&window.assetData?.[t.assetKey];return a?`${a.space||'-'} · ${a.name||t.assetName||'시설 공통업무'}`:(t?.assetName||'시설 공통업무')}catch(e){return t?.assetName||'시설 공통업무'}}
-function actionHtml(t,id){
-  const arr=[];
-  if(isDone(t)) arr.push(`<button type="button" class="v4584-undo" onclick="undoTodayV3261('${esc(id)}')">완료 취소</button>`);
-  else{
-    if(fireTask(t))arr.push(`<button type="button" class="v4584-fire" onclick="navToFireV420()">소방점검</button>`);
-    arr.push(`<button type="button" class="v4584-work" onclick="openTodayUnifiedV4576('${esc(id)}')">업무 처리</button>`);
-  }
-  if(isAdmin())arr.push(`<button type="button" class="v4584-delete" onclick="deleteTodayTaskV4577('${esc(t?.dbId||id)}')">직권삭제</button>`);
-  return `<div class="v4584-action-line">${arr.join('')}</div>`;
-}
-function renderStable(){
-  const body=$('todayBody');if(!body)return;
-  const list=scoped();
-  body.innerHTML=list.length?list.map((t,i)=>{const id=idOf(t,i);return `<tr data-task-id="${esc(id)}"><td>${esc(t.facility||'-')}</td><td>${esc(assetText(t))}</td><td>${esc(t.task||'-')}</td><td>${esc(t.cycle||'-')}</td><td>${esc(t.due||'-')}</td><td><span class="status ${statusClass(t)}">${esc(t.status||'예정')}</span></td><td>${actionHtml(t,id)}</td></tr>`}).join(''):'<tr><td colspan="7"><div class="empty-state">오늘의 업무가 없습니다. 점검주기 관리에서 항목을 등록하면 표시됩니다.</div></td></tr>';
-  try{window.ensureTodayUnified?.()}catch(e){}
-  try{window.applyTodayUserFiltersV4553?.()}catch(e){}
-}
-renderStable.__v4584stable=true;
-function install(){
-  lockVersion();
-  window.renderTodayTasks=renderStable;
-  try{renderTodayTasks=renderStable}catch(e){}
-  if($('today')?.classList.contains('active'))renderStable();
-}
-/* Old delayed wrappers may replace renderTodayTasks after page load. Reclaim it quietly. */
-let last='';
-function guard(){lockVersion();if(window.renderTodayTasks!==renderStable){window.renderTodayTasks=renderStable;try{renderTodayTasks=renderStable}catch(e){}}const p=$('today');if(!p?.classList.contains('active'))return;const body=$('todayBody');if(!body)return;const sig=(Array.isArray(window.todayTasks)?window.todayTasks:[]).map((x,i)=>[idOf(x,i),x.status,x.due,x.task,x.dbId].join('|')).join('¦')+'#'+isAdmin();const bad=body.querySelector('.today-flow-actions,.today-action-line-v446,.fire-today-btn,.v4577-admin-delete')||!body.querySelector('.v4584-action-line')&&scoped().length;if(bad||sig!==last){last=sig;renderStable()}}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
-[80,220,600,1200,2400,4200].forEach(ms=>setTimeout(()=>{install();guard()},ms));
-setInterval(guard,500);
-['showPage','navTo'].forEach(name=>{const base=window[name];if(typeof base!=='function'||base.__v4584stable)return;const w=function(id){const r=base.apply(this,arguments);if(id==='today')setTimeout(()=>{install();renderStable()},40);return r};w.__v4584stable=true;window[name]=w});
-})();
-</script>
 
 </body></html>`);doc.close();await new Promise(r=>setTimeout(r,100));if(doc.fonts?.ready)await doc.fonts.ready;await Promise.all([...doc.images].map(img=>img.complete?Promise.resolve():new Promise(r=>{img.onload=img.onerror=r})));await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));frame.contentWindow.focus();frame.contentWindow.print();setTimeout(()=>frame.remove(),5000);}catch(e){console.error(e);toast('PDF 출력 실패: '+(e?.message||e));}};
 function db(){try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||(typeof sb!=='undefined'?sb:null)}catch(e){return null}}
@@ -24811,437 +23951,129 @@ const oldStats=window.renderStatsCharts;if(typeof oldStats==='function'&&!oldSta
 })();
 </script>
 
-<!-- =========================================================
-     TFMS v45.82 Recovery Base
-     Scope: UI regression recovery / attachment visibility / slim charts / cycle shortcut density
-     DB / SQL / core business logic unchanged
-     ========================================================= -->
-<style id="tfms-v4582-recovery-base-style">
-/* 1) Equipment register/edit popup recovery: stack direct children vertically again. */
-#equipment .tfms-v4431-register-modal{
-  display:none!important;position:fixed!important;inset:0!important;z-index:10030!important;
-  padding:24px!important;overflow:auto!important;background:rgba(7,26,50,.58)!important;backdrop-filter:blur(2px)
-}
-#equipment .tfms-v4431-register-modal.show{display:block!important}
-#equipment .tfms-v4431-register-modal>.section-title,
-#equipment .tfms-v4431-register-modal>.asset-form-note,
-#equipment .tfms-v4431-register-modal>.grid,
-#equipment .tfms-v4431-register-modal>.buttons{
-  width:min(820px,calc(100vw - 48px))!important;max-width:820px!important;
-  margin-left:auto!important;margin-right:auto!important;box-sizing:border-box!important
-}
-#equipment .tfms-v4431-register-modal>.section-title{
-  margin-top:18px!important;margin-bottom:0!important;padding:13px 16px!important;
-  border-radius:14px 14px 0 0!important;background:#fff!important;border:1px solid #dce6f1!important;border-bottom:0!important;
-  box-shadow:0 16px 38px rgba(8,35,65,.12)!important;font-size:16px!important
-}
-#equipment .tfms-v4431-register-modal>.asset-form-note{
-  margin-top:0!important;padding:9px 16px!important;background:#f7fbff!important;border-left:1px solid #dce6f1!important;border-right:1px solid #dce6f1!important;
-  border-radius:0!important;font-size:10.5px!important;line-height:1.45!important
-}
-#equipment .tfms-v4431-register-modal>.grid{
-  margin-top:0!important;padding:11px 16px 9px!important;background:#fff!important;border-left:1px solid #dce6f1!important;border-right:1px solid #dce6f1!important;
-  display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px 9px!important;max-height:none!important;overflow:visible!important
-}
-#equipment .tfms-v4431-register-modal>.grid .field label{font-size:10.5px!important;margin-bottom:3px!important}
-#equipment .tfms-v4431-register-modal>.grid input,
-#equipment .tfms-v4431-register-modal>.grid select,
-#equipment .tfms-v4431-register-modal>.grid textarea{min-height:35px!important;height:35px!important;font-size:11.5px!important;border-radius:8px!important;padding-top:6px!important;padding-bottom:6px!important}
-#equipment .tfms-v4431-register-modal>.grid textarea{height:auto!important;min-height:66px!important}
-#equipment .tfms-v4431-register-modal>.buttons{
-  margin-top:0!important;padding:10px 16px 12px!important;background:#fff!important;border:1px solid #dce6f1!important;border-top:0!important;
-  border-radius:0 0 14px 14px!important;position:static!important;box-shadow:0 18px 40px rgba(8,35,65,.14)!important
-}
-#equipment .tfms-v4431-register-modal>.buttons .btn{min-height:35px!important;min-width:90px!important;font-size:11px!important}
-
-/* 2) Maintenance edit popup: attachments are a first-class section and always visibly separated. */
-#maintenanceEditModal .edit-box{width:min(780px,calc(100vw - 44px))!important;max-width:780px!important;max-height:84vh!important}
-#maintenanceEditModal .edit-body{padding:11px 15px 13px!important}
-#maintenanceEditModal .edit-grid{gap:8px 9px!important}
-#maintenanceEditModal .v4576-attach-section{
-  display:block!important;grid-column:1/-1!important;margin-top:4px!important;padding:11px!important;
-  background:#f7fbff!important;border:1px solid #cfe0f2!important;border-radius:11px!important
-}
-#maintenanceEditModal .v4576-attach-head{margin-bottom:8px!important;padding-bottom:7px!important;border-bottom:1px solid #e2ebf5!important}
-#maintenanceEditModal .v4576-attach-head strong{font-size:12.5px!important;color:#153f69!important}
-#maintenanceEditModal .v4576-current-files{max-height:105px!important;overflow:auto!important;margin-bottom:8px!important}
-#maintenanceEditModal .v4576-attach-grid{gap:8px!important}
-#maintenanceEditModal .v4576-upload{min-height:52px!important;padding:7px!important;background:#fff!important}
-#maintenanceEditModal .v4576-upload strong{font-size:10.5px!important}
-#maintenanceEditModal .v4576-upload small{font-size:9px!important}
-
-/* 3) Statistics bars: keep the same data/height, only make bars lighter and slimmer. */
-#stats .bar{width:30px!important;max-width:30px!important;border-radius:7px 7px 2px 2px!important}
-#stats .bar-item{min-width:36px!important;gap:6px!important}
-#stats .bar-value{font-size:12px!important}
-#stats .bar-label{font-size:10px!important}
-#stats .chart{column-gap:6px!important}
-
-/* 4) Cycle shortcuts: compact dedicated shortcut strip instead of a wide empty row. */
-#cycle.v4574-density>.v459-cycle-shortcuts{
-  width:max-content!important;max-width:100%!important;justify-self:start!important;align-items:center!important;
-  display:flex!important;gap:6px!important;min-height:32px!important;padding:3px 5px!important;
-  border:1px solid #dce7f2!important;border-radius:10px!important;background:rgba(255,255,255,.72)!important
-}
-#cycle.v4574-density>.v459-cycle-shortcuts:before{
-  content:'전용 점검';display:inline-flex;align-items:center;height:28px;padding:0 8px;border-radius:7px;
-  background:#edf7f7;color:#16777a;font-size:9.5px;font-weight:850;white-space:nowrap
-}
-#cycle.v4574-density>.v459-cycle-shortcuts button{
-  min-width:132px!important;width:auto!important;height:30px!important;min-height:30px!important;padding:3px 8px!important;
-  border-radius:7px!important;grid-template-columns:20px 1fr!important;column-gap:6px!important;box-shadow:none!important
-}
-#cycle.v4574-density>.v459-cycle-shortcuts button>span{width:20px!important;height:20px!important;border-radius:6px!important;font-size:11px!important}
-#cycle.v4574-density>.v459-cycle-shortcuts button>b{font-size:10px!important}
-#cycle.v4574-density>.v459-cycle-shortcuts small{display:none!important}
-
-@media(max-width:900px){
- #equipment .tfms-v4431-register-modal>.grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
- #cycle.v4574-density>.v459-cycle-shortcuts{width:100%!important;flex-wrap:wrap!important}
-}
-@media(max-width:620px){
- #equipment .tfms-v4431-register-modal>.grid{grid-template-columns:1fr!important}
- #maintenanceEditModal .v4576-attach-grid{grid-template-columns:1fr!important}
-}
-</style>
-<script id="tfms-v4582-recovery-base-controller">
-(function(){
-'use strict';
-const VERSION='v45.82 Popup Attachment Chart Cycle Polish Safe', VP='45.82', BUCKET='tfms-equipment-photos';
-const $=id=>document.getElementById(id);
-const esc=v=>String(v??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
-const client=()=>{try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.supabaseClient||window.sb||null}catch(e){return null}};
-function lockVersion(){
- try{const b=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');if(b)b.textContent=VERSION}catch(e){}
- try{document.title='TFMS '+VERSION}catch(e){}
- try{const u=new URL(location.href);if(u.searchParams.get('v')!==VP){u.searchParams.set('v',VP);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
- try{window.TFMS_BUILD=Object.freeze({version:'v45.82',channel:'Popup Attachment Chart Cycle Polish Safe',buildDate:'2026.08.20',title:'Popup Attachment Chart Cycle Polish Safe'})}catch(e){}
-}
-function pathBase(id,kind){return `maintenance/${id}/${kind}`}
-async function listFolder(id,kind){
- const c=client();if(!c||!id)return[];const r=await c.storage.from(BUCKET).list(pathBase(id,kind),{limit:100,sortBy:{column:'created_at',order:'asc'}});
- if(r.error)return[];return (r.data||[]).filter(x=>x?.name&&x.name!=='.emptyFolderPlaceholder').map(x=>({...x,kind,path:`${pathBase(id,kind)}/${x.name}`}));
-}
-async function signed(path){const c=client();if(!c)return'';const r=await c.storage.from(BUCKET).createSignedUrl(path,3600);return r?.data?.signedUrl||''}
-function selectedLabel(inputId,labelId,empty){const input=$(inputId),label=$(labelId);if(!label)return;const fs=Array.from(input?.files||[]);label.textContent=fs.length?`${fs.length}개 선택 · ${fs.map(f=>f.name).join(', ')}`:empty}
-function ensureAttachments(){
- const grid=document.querySelector('#maintenanceEditModal .edit-grid');if(!grid)return null;
- let sec=$('v4576EditAttachments');
- if(!sec){
-  sec=document.createElement('div');sec.id='v4576EditAttachments';sec.className='v4576-attach-section';
-  sec.innerHTML=`<div class="v4576-attach-head"><strong>사진 · 관련문서 / 증빙 첨부</strong><small>기존 자료 확인 · 추가 · 삭제</small></div><div class="v4576-current-files" id="v4576CurrentFiles"><div class="v4576-selected">첨부자료 확인 중...</div></div><div class="v4576-attach-grid"><div><label class="v4576-upload" for="v4576EditPhotoInput"><span><strong>📷 사진 추가</strong><small>JPG · PNG 등 이미지</small></span></label><input id="v4576EditPhotoInput" type="file" accept="image/*" multiple style="display:none"><div class="v4576-selected" id="v4576EditPhotoSelected">추가할 사진 없음</div></div><div><label class="v4576-upload" for="v4576EditDocInput"><span><strong>📎 관련문서 · 증빙 추가</strong><small>PDF · 견적서 · 결과보고 등</small></span></label><input id="v4576EditDocInput" type="file" multiple style="display:none"><div class="v4576-selected" id="v4576EditDocSelected">추가할 문서 없음</div></div></div>`;
-  grid.appendChild(sec);
-  $('v4576EditPhotoInput')?.addEventListener('change',()=>selectedLabel('v4576EditPhotoInput','v4576EditPhotoSelected','추가할 사진 없음'));
-  $('v4576EditDocInput')?.addEventListener('change',()=>selectedLabel('v4576EditDocInput','v4576EditDocSelected','추가할 문서 없음'));
- }
- return sec;
-}
-async function renderAttachments(){
- const sec=ensureAttachments(),box=$('v4576CurrentFiles'),id=String($('editMaintenanceId')?.value||'');if(!sec||!box)return;
- if(!id){box.innerHTML='<div class="v4576-selected">수정할 이력을 선택하면 기존 첨부자료가 표시됩니다.</div>';return}
- box.innerHTML='<div class="v4576-selected">기존 첨부자료를 확인하는 중입니다.</div>';
- try{
-  const [p,d]=await Promise.all([listFolder(id,'photos'),listFolder(id,'docs')]),files=[...p,...d];
-  if(!files.length){box.innerHTML='<div class="v4576-selected">등록된 사진·관련문서가 없습니다. 아래에서 새 자료를 추가할 수 있습니다.</div>';return}
-  const rows=[];for(const f of files){const url=await signed(f.path);rows.push(`<div class="v4576-file-row"><span>${f.kind==='photos'?'📷':'📎'}</span><b title="${esc(f.name)}">${esc(f.name)}</b><span>${f.kind==='photos'?'사진':'관련문서'}</span><a href="${esc(url)}" target="_blank" rel="noopener">열기</a><button type="button" class="v4582-attach-delete" data-path="${esc(f.path)}">삭제</button></div>`)}
-  box.innerHTML=rows.join('');
-  box.querySelectorAll('.v4582-attach-delete').forEach(b=>b.addEventListener('click',()=>{const path=b.dataset.path||'';if(typeof window.deleteMaintenanceAttachmentV4576==='function')window.deleteMaintenanceAttachmentV4576(id,path)}));
- }catch(e){box.innerHTML='<div class="v4576-selected">첨부자료를 불러오지 못했습니다.</div>'}
-}
-function watchMaintenanceModal(){
- const m=$('maintenanceEditModal');if(!m||m.dataset.v4582watch)return;m.dataset.v4582watch='1';
- const obs=new MutationObserver(()=>{if(m.classList.contains('show')){ensureAttachments();setTimeout(renderAttachments,60)}});obs.observe(m,{attributes:true,attributeFilter:['class']});
- ensureAttachments();
-}
-function polishCycle(){const p=$('cycle');if(!p)return;const s=p.querySelector(':scope > .v459-cycle-shortcuts');if(s)s.setAttribute('aria-label','전용 점검 바로가기')}
-function run(){lockVersion();watchMaintenanceModal();ensureAttachments();polishCycle()}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
-[100,350,900,1800,3600].forEach(ms=>setTimeout(run,ms));setInterval(lockVersion,600);
-const oldShow=window.showPage;if(typeof oldShow==='function'&&!oldShow.__v4582){const w=function(id){const r=oldShow.apply(this,arguments);setTimeout(()=>{run();if(id==='history')setTimeout(renderAttachments,100);if(id==='cycle')polishCycle()},120);return r};w.__v4582=true;window.showPage=w}
-const oldNav=window.navTo;if(typeof oldNav==='function'&&!oldNav.__v4582){const w=function(id){const r=oldNav.apply(this,arguments);setTimeout(()=>{run();if(id==='history')setTimeout(renderAttachments,100);if(id==='cycle')polishCycle()},120);return r};w.__v4582=true;window.navTo=w}
-})();
-</script>
-
-<!-- =========================================================
-     TFMS v45.82 Text Leak Guard + Equipment Compact + Cycle Reflow Safe
-     UI-only guard / density correction. DB / SQL unchanged.
-     ========================================================= -->
-<style id="tfms-v4582-final-polish-style">
-/* Equipment list: smaller, calmer rows. */
-#equipment #assetList .tree-item{
-  font-size:12px!important;line-height:1.28!important;font-weight:800!important;
-  padding:7px 9px!important;border-radius:8px!important;margin:0 0 2px!important;
-}
-#equipment #assetList .tree-item small{
-  display:inline-block!important;margin-top:3px!important;font-size:9.5px!important;line-height:1.15!important;
-  font-weight:600!important;color:#6b7a90!important;
-}
-#equipment #assetList>div:not(.tree-item):not(.empty-state){font-size:10px!important;margin:9px 4px 4px!important;line-height:1.2!important}
-#equipment .tfms-v4431-list,#equipment .tree-list{font-size:12px!important}
-
-/* Cycle: remove the empty dedicated strip; compact fire/QR shortcuts into title actions. */
-#cycle.v4582-cycle-reflow>.v459-cycle-shortcuts{display:none!important}
-#cycle.v4582-cycle-reflow{row-gap:8px!important}
-#cycle.v4582-cycle-reflow>.v4565-kpi-grid{grid-row:2!important}
-#cycle.v4582-cycle-reflow>.v459-table-panel{grid-row:3!important}
-#cycle.v4582-cycle-reflow>#v459CycleForm{grid-row:3!important}
-#cycle .v4582-special-shortcuts{display:inline-flex;align-items:center;gap:5px;margin-right:3px}
-#cycle .v4582-special-shortcuts .label{font-size:9px;font-weight:850;color:#668096;padding:0 3px;white-space:nowrap}
-#cycle .v4582-special-shortcuts button{height:32px!important;padding:0 9px!important;border:1px solid #cfe0ee!important;border-radius:8px!important;background:#fff!important;color:#163e69!important;font-size:10px!important;font-weight:850!important;box-shadow:none!important;white-space:nowrap}
-#cycle .v4582-special-shortcuts button:hover{background:#f4f9fd!important;border-color:#9fc4e5!important}
-@media(max-width:1180px){#cycle .v4582-special-shortcuts .label{display:none}#cycle .v4582-special-shortcuts button{padding:0 7px!important;font-size:9.5px!important}}
-</style>
-<script id="tfms-v4582-final-polish-controller">
-(function(){
-'use strict';
-const BUILD='v45.82 Text Leak Guard Equipment Compact Cycle Reflow Safe';
-function $(id){return document.getElementById(id)}
-function lockVersion(){
-  const b=$('tfmsVersionBadge'); if(b)b.textContent=BUILD;
-  document.title='TFMS '+BUILD;
-  try{const u=new URL(location.href);if(u.searchParams.get('v')!=='45.82'){u.searchParams.set('v','45.82');history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
-}
-function cycleReflow(){
-  const p=$('cycle');if(!p)return;p.classList.add('v4582-cycle-reflow');
-  const old=p.querySelector(':scope > .v459-cycle-shortcuts');
-  const actions=$('v4571CycleTitleActions')||p.querySelector(':scope > .title-row');
-  if(actions&&!actions.querySelector('.v4582-special-shortcuts')){
-    const box=document.createElement('span');box.className='v4582-special-shortcuts';
-    box.innerHTML='<span class="label">전용점검</span><button type="button" data-go="fire">🧯 소방 월간</button><button type="button" data-go="qr">▦ 소화기 QR</button>';
-    box.querySelector('[data-go="fire"]').onclick=()=>{try{window.navToFireV420?.()}catch(e){}};
-    box.querySelector('[data-go="qr"]').onclick=()=>{try{window.navToFireQrV459?.()}catch(e){}};
-    actions.prepend(box);
-  }
-  if(old)old.setAttribute('aria-hidden','true');
-}
-/* Permanent UI safeguard: remove accidental plain script/template text nodes if a future patch is inserted at a wrong HTML boundary. */
-function purgeAccidentalSourceText(){
-  const suspects=['window.printSavedDailyLogV400','window.printDailyJournalV390','function legalHtml(d)','${esc(d.date)}','printHtmlDocument('];
-  [...document.body.childNodes].forEach(n=>{
-    if(n.nodeType===Node.TEXT_NODE){const t=n.textContent||'';if(suspects.some(x=>t.includes(x)))n.remove()}
-  });
-  document.querySelectorAll('body > pre, body > code').forEach(el=>{const t=el.textContent||'';if(suspects.some(x=>t.includes(x)))el.remove()});
-}
-function run(){lockVersion();cycleReflow();purgeAccidentalSourceText()}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
-[80,250,700,1600,3200].forEach(ms=>setTimeout(run,ms));setInterval(lockVersion,700);
-const oldShow=window.showPage;if(typeof oldShow==='function'&&!oldShow.__v4582final){const w=function(id){const r=oldShow.apply(this,arguments);setTimeout(run,100);return r};w.__v4582final=true;window.showPage=w}
-const oldNav=window.navTo;if(typeof oldNav==='function'&&!oldNav.__v4582final){const w=function(id){const r=oldNav.apply(this,arguments);setTimeout(run,100);return r};w.__v4582final=true;window.navTo=w}
-})();
-</script>
-
 
 
 <!-- =========================================================
-     TFMS v45.83 Global Compact UI + Cycle Layout Recovery Safe
-     Scope: UI density unification only. No DB/SQL/content changes.
+     TFMS v45.85 Page Isolation + Global Compact + Fire Nav Recovery Safe
+     Base: clean v45.80. UI-only. DB / SQL / core content unchanged.
      ========================================================= -->
-<style id="tfms-v4583-global-compact-style">
-/* ===== Global compact unification ===== */
+<style id="tfms-v4585-page-isolation-compact-style">
+/* Absolute page isolation: inactive menus can never remain visible below the active page. */
+section.page:not(.active){display:none!important;visibility:hidden!important}
+section.page.active{visibility:visible!important}
+/* Cycle's grid layout applies ONLY while cycle itself is active. */
+#cycle.page:not(.active){display:none!important}
+#cycle.page.active.v4573-admin-v2.v4574-density{display:grid!important}
+
+/* Global compact scale: content unchanged, only density/size unified. */
 body{font-size:13px!important}
-.sidebar{width:223px!important}
 .nav{padding:14px 18px!important;font-size:14px!important;border-bottom-width:3px!important}
 .logo-title{font-size:20px!important}.logo-title small{font-size:11px!important}
 .user{font-size:13px!important;gap:10px!important}
-.page{padding:20px 22px!important}
-.panel{padding:14px 15px!important;border-radius:14px!important}
-.title-row{margin-bottom:14px!important}.title-icon{width:46px!important;height:46px!important;border-radius:12px!important;font-size:22px!important}
+.page{padding:18px 20px!important}
+.panel{padding:14px 15px!important;border-radius:13px!important}
+.title-row{margin-bottom:13px!important}.title-icon{width:46px!important;height:46px!important;border-radius:12px!important;font-size:22px!important}
 h1{font-size:24px!important;letter-spacing:-.7px!important}.breadcrumb{font-size:12px!important}
-.section-title{font-size:16px!important;gap:7px!important;margin-bottom:12px!important}
+.section-title{font-size:15px!important;gap:7px!important;margin-bottom:11px!important}
 label{font-size:12px!important;margin-bottom:5px!important}
-input,select,textarea{padding:9px 10px!important;font-size:13px!important;border-radius:8px!important}
-input,select{min-height:38px!important}textarea{line-height:1.5!important}
-.btn{height:36px!important;min-height:36px!important;padding:0 12px!important;font-size:12px!important;border-radius:8px!important}
-.btn.small,.small-btn{height:30px!important;min-height:30px!important;padding:0 10px!important;font-size:11px!important}
-.help,.notice,.tfms-edit-note,.empty-state{font-size:12px!important;line-height:1.55!important}
-.table,.table th,.table td{font-size:12px!important}.table th,.table td{padding:9px 10px!important}
-.status,.chip,.badge,.schedule-chip{font-size:10.5px!important;padding:4px 8px!important}
-.stat strong,.summary-card strong,.compare-card strong,.lcc-card strong{font-size:20px!important}
-.stat span,.summary-card p,.compare-card p,.lcc-card p,.help-card p{font-size:11px!important}
-.dot{width:9px!important;height:9px!important}
+input,select,textarea{font-size:12.5px!important;padding:8px 9px!important;border-radius:8px!important}
+input,select{min-height:36px!important}
+.btn{height:34px!important;min-height:34px!important;padding:0 11px!important;font-size:11.5px!important;border-radius:8px!important}
+.small-btn{height:30px!important;min-height:30px!important;font-size:10.5px!important;padding:0 9px!important}
+.table{font-size:12px!important}.table th,.table td{padding:8px 9px!important;font-size:12px!important}
+.status,.schedule-chip{font-size:10px!important;padding:4px 7px!important}
+.help,.notice,.tfms-edit-note,.empty-state{font-size:11.5px!important;line-height:1.5!important}
 .buttons{gap:6px!important}
-/* dialogs / popups */
-#maintenanceEditModal .edit-box,#maintenanceActionModal .action-box,.tfms-import-dialog{border-radius:14px!important}
-#maintenanceEditModal .edit-box{width:min(800px,96vw)!important;max-height:86vh!important}
-#maintenanceEditModal .edit-head{padding:14px 16px!important}#maintenanceEditModal .edit-head h3{font-size:17px!important}
-#maintenanceEditModal .edit-body{padding:14px 16px 18px!important}
-#maintenanceEditModal .edit-grid{gap:10px!important}
-#maintenanceEditModal .edit-field label{font-size:12px!important}
-#maintenanceEditModal textarea{min-height:88px!important}
-/* equipment list a little denser */
-#equipment #assetList .tree-item{font-size:11px!important;line-height:1.24!important;padding:6px 8px!important}
-#equipment #assetList .tree-item b{font-size:11px!important}
-#equipment #assetList .tree-item small{font-size:9.5px!important;line-height:1.12!important}
-/* charts slimmer without changing values */
-.chart-card .bar,.chart-wrap .bar,.bars .bar,[class*="bar-chart"] .bar{max-width:26px!important}
-/* a few responsive guards */
-@media(max-width:1200px){.sidebar{width:208px!important}.page{padding:16px 18px!important}}
-@media(max-width:820px){h1{font-size:22px!important}.page{padding:12px!important}.panel{padding:12px!important}}
-
-/* ===== Cycle layout recovery ===== */
-#cycle.v4583-compact{display:grid!important;grid-template-columns:minmax(0,1fr) 350px!important;grid-auto-rows:auto!important;column-gap:12px!important;row-gap:10px!important;align-items:start!important}
-#cycle.v4583-compact>.title-row{grid-column:1/-1!important;grid-row:1!important;margin:0!important}
-#cycle.v4583-compact>.v4565-kpi-grid{grid-column:1/-1!important;grid-row:2!important;margin:0!important}
-#cycle.v4583-compact>.v459-cycle-shortcuts{display:none!important}
-#cycle.v4583-compact>.v4583-preset-panel{display:none!important;grid-column:1/-1!important;grid-row:3!important;margin:0!important}
-#cycle.v4583-compact.v4583-preset-open>.v4583-preset-panel{display:block!important}
-#cycle.v4583-compact>#v4583CycleLeft{grid-column:1!important;grid-row:4!important;min-width:0!important;display:grid!important;gap:10px!important;align-content:start!important}
-#cycle.v4583-compact.v4583-preset-open>#v4583CycleLeft{grid-row:4!important}
-#cycle.v4583-compact>#v459CycleForm{grid-column:2!important;grid-row:4!important;position:sticky!important;top:68px!important;align-self:start!important;width:auto!important;margin:0!important}
-#cycle.v4583-compact>.v459-table-panel{display:none!important}
-#cycle.v4583-compact .v459-table-panel{padding:13px 14px!important}
-#cycle.v4583-compact .v459-list-head{margin-bottom:8px!important}
-#cycle.v4583-compact .v459-list-head small{font-size:11px!important;line-height:1.4!important}
-#cycle.v4583-compact #v459CycleForm .v459-form-grid-4{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px 9px!important}
-#cycle.v4583-compact #v459CycleForm .v459-span-3{grid-column:1/-1!important}
-#cycle.v4583-compact #v459CycleForm .v459-cycle-actions{grid-column:1/-1!important;display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important}
-#cycle.v4583-compact #v459CycleForm .v459-next-due{min-height:38px!important;padding:7px 9px!important}
-#cycle.v4583-compact #v459CycleForm input,#cycle.v4583-compact #v459CycleForm select{height:36px!important;min-height:36px!important;font-size:12px!important}
-#cycle.v4583-compact #v4583CycleLeft .v459-table-scroll{max-height:340px!important;overflow:auto!important}
-#cycle.v4583-compact #v4583CycleLeft .empty-state{min-height:54px!important;padding:12px 8px!important}
-#cycle.v4583-compact #v4583CycleLeft .v4573-admin-bottom{display:grid!important;grid-template-columns:1fr 1fr!important;gap:10px!important;margin:0!important}
-#cycle.v4583-compact #v4583CycleLeft .v4573-admin-card{min-height:100px!important;padding:11px 12px!important}
-#cycle.v4583-compact #v4583CycleLeft .v4573-admin-card-head strong{font-size:12px!important}
-#cycle.v4583-compact #v4583CycleLeft .v4573-admin-item,#cycle.v4583-compact #v4583CycleLeft .v4573-admin-empty{font-size:10.5px!important}
-#cycle .v4583-title-actions{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-left:auto}
-#cycle .v4583-title-actions .tiny-label{font-size:9px;font-weight:800;color:#7a8da3;padding:0 2px}
-#cycle .v4583-title-actions .btn{height:34px!important;font-size:11px!important;padding:0 10px!important}
-#cycle .v4583-title-actions .btn.primary-mini{background:#1764d6!important;border-color:#1764d6!important;color:#fff!important}
-#cycle .v4583-title-actions .btn.light-mini{background:#fff!important}
-@media(max-width:1180px){#cycle.v4583-compact{grid-template-columns:1fr!important}#cycle.v4583-compact>#v4583CycleLeft,#cycle.v4583-compact>#v459CycleForm{grid-column:1!important;grid-row:auto!important}#cycle.v4583-compact>#v459CycleForm{position:static!important}#cycle.v4583-compact #v4583CycleLeft .v4573-admin-bottom{grid-template-columns:1fr!important}}
-@media(max-width:760px){#cycle.v4583-compact>.v4565-kpi-grid{grid-template-columns:1fr 1fr!important}#cycle .v4583-title-actions .tiny-label{display:none}}
+/* Equipment list compact without changing data. */
+#equipment #assetList .tree-item{font-size:11px!important;line-height:1.22!important;padding:6px 8px!important;margin-bottom:1px!important}
+#equipment #assetList .tree-item small{font-size:9.5px!important;line-height:1.12!important;margin-top:2px!important}
+/* Maintenance edit dialog compact but attachment area remains visible. */
+#maintenanceEditModal .edit-box{width:min(790px,96vw)!important;max-height:84vh!important}
+#maintenanceEditModal .edit-head{padding:13px 15px!important}#maintenanceEditModal .edit-head h3{font-size:17px!important}
+#maintenanceEditModal .edit-body{padding:13px 15px 16px!important}
+#maintenanceEditModal .edit-grid{gap:9px 10px!important}
+#maintenanceEditModal .edit-field label{font-size:11.5px!important}
+#maintenanceEditModal textarea{min-height:82px!important}
+#maintenanceEditModal .v4576-attach-section{padding:10px!important}
+#maintenanceEditModal .v4576-upload{min-height:54px!important}
+/* Slim statistics bars only. */
+#stats .bar{max-width:28px!important;width:28px!important}
+/* Cycle: remove the redundant empty shortcut strip. Existing legal/fire pages are untouched. */
+#cycle.page.active.v4574-density>.v459-cycle-shortcuts{display:none!important}
+#cycle.page.active.v4574-density{row-gap:9px!important;grid-template-rows:auto auto auto!important}
+#cycle.page.active.v4574-density>.title-row{grid-row:1!important}
+#cycle.page.active.v4574-density>.v4565-kpi-grid{grid-row:2!important}
+#cycle.page.active.v4574-density>#v4574AdminLeft{grid-row:3!important}
+#cycle.page.active.v4574-density>#v459CycleForm{grid-row:3!important}
+#cycle.page.active.v4574-density>.panel:has(.v459-preset-grid).v4573-preset-open{grid-row:3!important}
+#cycle.page.active.v4574-density.v4573-preset-visible>#v4574AdminLeft,
+#cycle.page.active.v4574-density.v4573-preset-visible>#v459CycleForm{grid-row:4!important}
+#cycle .v4585-fire-shortcuts{display:inline-flex;align-items:center;gap:5px;margin-right:4px}
+#cycle .v4585-fire-shortcuts .tiny{font-size:9px;font-weight:850;color:#71849a;margin-right:1px}
+#cycle .v4585-fire-shortcuts button{height:32px!important;padding:0 9px!important;border:1px solid #d1deeb!important;border-radius:8px!important;background:#fff!important;color:#173e67!important;font-size:10px!important;font-weight:850!important;cursor:pointer!important}
+#cycle .v4585-fire-shortcuts button:hover{background:#f4f9ff!important;border-color:#9fc1e5!important}
+@media(max-width:1180px){.page{padding:15px 17px!important}#cycle .v4585-fire-shortcuts .tiny{display:none}}
+@media(max-width:820px){.page{padding:11px!important}h1{font-size:21px!important}.panel{padding:11px 12px!important}}
 </style>
-<script id="tfms-v4583-global-compact-controller">
+<script id="tfms-v4585-page-isolation-controller">
 (function(){
 'use strict';
-const BUILD='v45.83 Global Compact UI Cycle Recovery Safe';
-const VERSION='45.83';
+const BUILD='v45.85 Page Isolation Global Compact Fire Nav Recovery Safe';
+const VP='45.85';
 const $=id=>document.getElementById(id);
-const q=(sel,root=document)=>root.querySelector(sel);
-const qa=(sel,root=document)=>Array.from(root.querySelectorAll(sel));
+const q=(s,r=document)=>r.querySelector(s);
 function lockVersion(){
-  const b=$('tfmsVersionBadge'); if(b) b.textContent=BUILD;
+  const b=$('tfmsVersionBadge');if(b)b.textContent=BUILD;
   document.title='TFMS '+BUILD;
-  try{const u=new URL(location.href); if(u.searchParams.get('v')!==VERSION){u.searchParams.set('v',VERSION);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
+  try{const u=new URL(location.href);if(u.searchParams.get('v')!==VP){u.searchParams.set('v',VP);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
 }
-function getCyclePage(){return $('cycle')}
-function getPresetPanel(p){return qa(':scope > .panel',p).find(el=>q('.v459-preset-grid',el))||null}
-function togglePreset(force){
-  const p=getCyclePage(); if(!p) return;
-  const panel=getPresetPanel(p); if(!panel) return;
-  const open = typeof force==='boolean' ? force : !p.classList.contains('v4583-preset-open');
-  p.classList.toggle('v4583-preset-open',open);
-  panel.style.display = open ? '' : 'none';
-  const btn=q('.v4583-toggle-preset',p); if(btn) btn.textContent = open ? '빠른 설정 닫기' : '빠른 설정';
+function enforcePageIsolation(){
+  document.querySelectorAll('section.page').forEach(p=>{
+    if(!p.classList.contains('active')){p.style.removeProperty('display');p.setAttribute('aria-hidden','true')}
+    else p.removeAttribute('aria-hidden');
+  });
 }
-function rebuildCycleActions(p){
-  const row=q(':scope > .title-row',p); if(!row) return;
-  let box=$('v4583CycleActions');
-  if(!box){
-    box=document.createElement('div'); box.id='v4583CycleActions'; box.className='v4583-title-actions';
-    row.appendChild(box);
-  }
-  box.innerHTML=''
-    +'<span class="tiny-label">전용점검</span>'
-    +'<button type="button" class="btn light-mini" data-act="fire">🧯 소방 월간</button>'
-    +'<button type="button" class="btn light-mini" data-act="qr">▦ 소화기 QR</button>'
-    +'<button type="button" class="btn light-mini" data-act="generate">▶ 생성 실행</button>'
-    +'<button type="button" class="btn light-mini v4583-toggle-preset" data-act="preset">빠른 설정</button>'
-    +'<button type="button" class="btn primary-mini" data-act="add">＋ 기준 추가</button>';
-  q('[data-act="fire"]',box).onclick=()=>window.navToFireV420?.();
-  q('[data-act="qr"]',box).onclick=()=>window.navToFireQrV459?.();
-  q('[data-act="generate"]',box).onclick=()=>window.v4573GenerateDueCycles?.();
-  q('[data-act="preset"]',box).onclick=()=>togglePreset();
-  q('[data-act="add"]',box).onclick=()=>{const form=$('v459CycleForm'); if(form) form.scrollIntoView({behavior:'smooth',block:'start'}); q('#cycleTask',form||document)?.focus?.();};
+function ensureCycleFireButtons(){
+  const p=$('cycle');if(!p)return;
+  const actions=$('v4571CycleTitleActions')||q(':scope > .title-row',p);if(!actions)return;
+  if(q('.v4585-fire-shortcuts',actions))return;
+  const box=document.createElement('span');box.className='v4585-fire-shortcuts';
+  box.innerHTML='<span class="tiny">전용점검</span><button type="button" data-fire="monthly">🧯 소방 월간</button><button type="button" data-fire="qr">▦ 소화기 QR</button>';
+  q('[data-fire="monthly"]',box).addEventListener('click',e=>{e.preventDefault();e.stopPropagation();if(typeof window.navToFireV420==='function')window.navToFireV420();});
+  q('[data-fire="qr"]',box).addEventListener('click',e=>{e.preventDefault();e.stopPropagation();if(typeof window.navToFireQrV459==='function')window.navToFireQrV459();else if(typeof window.navToFireV420==='function'){window.navToFireV420();setTimeout(()=>window.navToFireQrV459?.(),80);}});
+  actions.prepend(box);
 }
-function recoverCycleLayout(){
-  const p=getCyclePage(); if(!p) return;
-  p.classList.add('v4583-compact');
-  const preset=getPresetPanel(p); if(preset){preset.classList.add('v4583-preset-panel'); if(!p.classList.contains('v4583-preset-open')) preset.style.display='none';}
-  let left=$('v4583CycleLeft'); if(!left){left=document.createElement('div'); left.id='v4583CycleLeft';}
-  const form=$('v459CycleForm');
-  const table=q(':scope > .v459-table-panel',p) || q('#v4574AdminLeft > .v459-table-panel',p);
-  const bottom=$('v4573AdminBottom') || q('#v4574AdminLeft > .v4573-admin-bottom',p);
-  if(form && !left.parentNode){ p.insertBefore(left, form); }
-  if(table && table.parentNode!==left) left.appendChild(table);
-  if(bottom && bottom.parentNode!==left) left.appendChild(bottom);
-  rebuildCycleActions(p);
-  // hide older action boxes / shortcut boxes if present
-  q('#v4571CycleTitleActions',p)?.remove();
-  q(':scope > .v459-cycle-shortcuts',p)?.setAttribute('aria-hidden','true');
-}
-function run(){ lockVersion(); recoverCycleLayout(); togglePreset(false); }
-if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',run,{once:true}); else run();
-[60,220,700,1600,3200].forEach(ms=>setTimeout(run,ms));
-const oldShow=window.showPage; if(typeof oldShow==='function' && !oldShow.__v4583compact){ const w=function(id){ const r=oldShow.apply(this,arguments); setTimeout(run,120); return r; }; w.__v4583compact=true; window.showPage=w; }
-const oldNav=window.navTo; if(typeof oldNav==='function' && !oldNav.__v4583compact){ const w=function(id){ const r=oldNav.apply(this,arguments); setTimeout(run,120); return r; }; w.__v4583compact=true; window.navTo=w; }
+function run(){lockVersion();enforcePageIsolation();ensureCycleFireButtons()}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
+[80,250,700,1600,3200].forEach(ms=>setTimeout(run,ms));
+setInterval(()=>{lockVersion();enforcePageIsolation()},800);
+['showPage','navTo'].forEach(name=>{const base=window[name];if(typeof base!=='function'||base.__v4585)return;const w=function(){const r=base.apply(this,arguments);setTimeout(run,30);setTimeout(run,180);return r};w.__v4585=true;window[name]=w});
 })();
 </script>
 
 
-
-<!-- =========================================================
-     TFMS v45.84 Today Work Stable Renderer Safe
-     Fix: multiple legacy today renderers competing/flickering.
-     No DB / SQL / business data change.
-     ========================================================= -->
-<style id="tfms-v4584-today-stable-style">
-#today #todayBody td:last-child{min-width:230px!important}
-#today #todayBody .v4584-action-line{display:flex!important;align-items:center!important;gap:6px!important;flex-wrap:nowrap!important;white-space:nowrap!important}
-#today #todayBody .v4584-action-line button{height:31px!important;min-height:31px!important;padding:0 10px!important;border-radius:7px!important;font-size:10.5px!important;font-weight:850!important;white-space:nowrap!important}
-#today #todayBody .v4584-fire{background:#155cbd!important;color:#fff!important;border:1px solid #155cbd!important}
-#today #todayBody .v4584-work{background:linear-gradient(135deg,#1065c6,#0a9a9e)!important;color:#fff!important;border:0!important}
-#today #todayBody .v4584-delete{background:#fff!important;color:#cf3030!important;border:1px solid #efaaaa!important}
-#today #todayBody .v4584-undo{background:#fff!important;color:#355c83!important;border:1px solid #c9d8e8!important}
-@media(max-width:900px){#today #todayBody td:last-child{min-width:205px!important}#today #todayBody .v4584-action-line button{padding:0 8px!important;font-size:10px!important}}
-</style>
-<script id="tfms-v4584-today-stable-controller">
+<script id="tfms-v4585-today-stable-renderer">
 (function(){
 'use strict';
-const BUILD='v45.84 Today Work Stable Renderer Safe',VP='45.84';
 const $=id=>document.getElementById(id);
 const esc=v=>String(v??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
-function lockVersion(){const b=$('tfmsVersionBadge');if(b)b.textContent=BUILD;document.title='TFMS '+BUILD;try{const u=new URL(location.href);if(u.searchParams.get('v')!==VP){u.searchParams.set('v',VP);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
 function isAdmin(){try{if(typeof currentRole!=='undefined'&&currentRole==='admin')return true;if(window.tfmsCurrentRole==='admin')return true;const p=window.cloudProfile||{};return /admin|관리자/i.test(String(p.role||p.user_role||''))}catch(e){return false}}
 function deptOf(f){try{return window.getFacilityDeptStable?.(f)||window.getFacilityDept?.(f)||''}catch(e){return''}}
 function scoped(){let list=Array.isArray(window.todayTasks)?window.todayTasks:[];try{const d=window.tfmsUserDept||window.currentUserDept||'';if(d&&d!=='전체')list=list.filter(t=>deptOf(t.facility)===d)}catch(e){}return list}
 function idOf(t,i){return String(t?._flowId||t?.dbId||t?.id||('today-'+i))}
 function isDone(t){return String(t?.status||'').includes('완료')}
 function fireTask(t){return /소방|소화기/.test(String(t?.task||'')+' '+String(t?.field||''))}
-function dueLate(t){const d=String(t?.due||'');const today=new Date().toISOString().slice(0,10);return d&&d!=='오늘'&&/^\d{4}-\d{2}-\d{2}$/.test(d)&&d<today&&!isDone(t)}
+function dueLate(t){const d=String(t?.due||'');const today=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);return d&&d!=='오늘'&&/^\d{4}-\d{2}-\d{2}$/.test(d)&&d<today&&!isDone(t)}
 function statusClass(t){return isDone(t)?'done':(dueLate(t)?'delay':(String(t?.due||'')==='오늘'?'wait':'info'))}
 function assetText(t){try{const a=t?.assetKey&&window.assetData?.[t.assetKey];return a?`${a.space||'-'} · ${a.name||t.assetName||'시설 공통업무'}`:(t?.assetName||'시설 공통업무')}catch(e){return t?.assetName||'시설 공통업무'}}
-function actionHtml(t,id){
-  const arr=[];
-  if(isDone(t)) arr.push(`<button type="button" class="v4584-undo" onclick="undoTodayV3261('${esc(id)}')">완료 취소</button>`);
-  else{
-    if(fireTask(t))arr.push(`<button type="button" class="v4584-fire" onclick="navToFireV420()">소방점검</button>`);
-    arr.push(`<button type="button" class="v4584-work" onclick="openTodayUnifiedV4576('${esc(id)}')">업무 처리</button>`);
-  }
-  if(isAdmin())arr.push(`<button type="button" class="v4584-delete" onclick="deleteTodayTaskV4577('${esc(t?.dbId||id)}')">직권삭제</button>`);
-  return `<div class="v4584-action-line">${arr.join('')}</div>`;
-}
-function renderStable(){
-  const body=$('todayBody');if(!body)return;
-  const list=scoped();
-  body.innerHTML=list.length?list.map((t,i)=>{const id=idOf(t,i);return `<tr data-task-id="${esc(id)}"><td>${esc(t.facility||'-')}</td><td>${esc(assetText(t))}</td><td>${esc(t.task||'-')}</td><td>${esc(t.cycle||'-')}</td><td>${esc(t.due||'-')}</td><td><span class="status ${statusClass(t)}">${esc(t.status||'예정')}</span></td><td>${actionHtml(t,id)}</td></tr>`}).join(''):'<tr><td colspan="7"><div class="empty-state">오늘의 업무가 없습니다. 점검주기 관리에서 항목을 등록하면 표시됩니다.</div></td></tr>';
-  try{window.ensureTodayUnified?.()}catch(e){}
-  try{window.applyTodayUserFiltersV4553?.()}catch(e){}
-}
-renderStable.__v4584stable=true;
-function install(){
-  lockVersion();
-  window.renderTodayTasks=renderStable;
-  try{renderTodayTasks=renderStable}catch(e){}
-  if($('today')?.classList.contains('active'))renderStable();
-}
-/* Old delayed wrappers may replace renderTodayTasks after page load. Reclaim it quietly. */
-let last='';
-function guard(){lockVersion();if(window.renderTodayTasks!==renderStable){window.renderTodayTasks=renderStable;try{renderTodayTasks=renderStable}catch(e){}}const p=$('today');if(!p?.classList.contains('active'))return;const body=$('todayBody');if(!body)return;const sig=(Array.isArray(window.todayTasks)?window.todayTasks:[]).map((x,i)=>[idOf(x,i),x.status,x.due,x.task,x.dbId].join('|')).join('¦')+'#'+isAdmin();const bad=body.querySelector('.today-flow-actions,.today-action-line-v446,.fire-today-btn,.v4577-admin-delete')||!body.querySelector('.v4584-action-line')&&scoped().length;if(bad||sig!==last){last=sig;renderStable()}}
+function actionHtml(t,id){const a=[];if(isDone(t)){a.push(`<button type="button" class="small-btn" onclick="undoTodayV3261('${esc(id)}')">완료 취소</button>`)}else{if(fireTask(t))a.push(`<button type="button" class="small-btn blue" onclick="navToFireV420()">소방점검</button>`);a.push(`<button type="button" class="small-btn blue" onclick="openTodayUnifiedV4576('${esc(id)}')">업무 처리</button>`)}if(isAdmin())a.push(`<button type="button" class="small-btn" style="color:#c33;border-color:#efb1b1" onclick="deleteTodayTaskV4577('${esc(t?.dbId||id)}')">직권삭제</button>`);return `<div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap">${a.join('')}</div>`}
+function render(){const body=$('todayBody');if(!body)return;const list=scoped();body.innerHTML=list.length?list.map((t,i)=>{const id=idOf(t,i);return `<tr data-task-id="${esc(id)}"><td>${esc(t.facility||'-')}</td><td>${esc(assetText(t))}</td><td>${esc(t.task||'-')}</td><td>${esc(t.cycle||'-')}</td><td>${esc(t.due||'-')}</td><td><span class="status ${statusClass(t)}">${esc(t.status||'예정')}</span></td><td>${actionHtml(t,id)}</td></tr>`}).join(''):'<tr><td colspan="7"><div class="empty-state">오늘의 업무가 없습니다. 점검주기 관리에서 항목을 등록하면 표시됩니다.</div></td></tr>';try{window.ensureTodayUnified?.()}catch(e){}}
+render.__v4585stable=true;
+function install(){window.renderTodayTasks=render;try{renderTodayTasks=render}catch(e){}if($('today')?.classList.contains('active'))render()}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
-[80,220,600,1200,2400,4200].forEach(ms=>setTimeout(()=>{install();guard()},ms));
-setInterval(guard,500);
-['showPage','navTo'].forEach(name=>{const base=window[name];if(typeof base!=='function'||base.__v4584stable)return;const w=function(id){const r=base.apply(this,arguments);if(id==='today')setTimeout(()=>{install();renderStable()},40);return r};w.__v4584stable=true;window[name]=w});
+[100,400,1000,2200].forEach(ms=>setTimeout(install,ms));
+setInterval(()=>{if(window.renderTodayTasks!==render){window.renderTodayTasks=render;try{renderTodayTasks=render}catch(e){}}},900);
+['showPage','navTo'].forEach(name=>{const base=window[name];if(typeof base!=='function'||base.__v4585today)return;const w=function(id){const r=base.apply(this,arguments);if(id==='today')setTimeout(()=>{install();render()},50);return r};w.__v4585today=true;window[name]=w});
 })();
 </script>
 
