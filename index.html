@@ -22142,12 +22142,12 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 <script id="tfms-v4559-version-display-lock">
 (function(){
   'use strict';
-  const LABEL='v45.75 Cycle Completion Sync Fix Safe';
+  const LABEL='v45.78 History Query Render Recovery Safe';
   const TITLE='TFMS '+LABEL;
-  const PARAM='45.75';
+  const PARAM='45.78';
   const FIXED_BUILD=Object.freeze({
-    version:'v45.75',
-    channel:'User Facility Asset Scope Hotfix Safe',
+    version:'v45.78',
+    channel:'History Query Render Recovery Safe',
     buildDate:'2026.08.18',
     title:'일반담당자 시설·연계설비 범위 복구 및 버전/주소창 동기화'
   });
@@ -22424,14 +22424,14 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 (function(){
 'use strict';
 const $=id=>document.getElementById(id);
-const LABEL='v45.75 Cycle Completion Sync Fix Safe';
+const LABEL='v45.78 History Query Render Recovery Safe';
 function syncVersion(){
   try{
     const b=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
     if(b&&b.textContent!==LABEL)b.textContent=LABEL;
     const u=new URL(location.href);
-    if(u.searchParams.get('v')!=='45.75'){
-      u.searchParams.set('v','45.75');
+    if(u.searchParams.get('v')!=='45.78'){
+      u.searchParams.set('v','45.78');
       // v45.60 history lock already normalizes to the current lock value, which was updated to 45.61 above.
       history.replaceState(history.state,'',u.pathname+u.search+u.hash);
     }
@@ -23614,7 +23614,7 @@ function syncVersion(){
   const b=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');if(b)b.textContent=VERSION;
   document.title='TFMS '+VERSION;
   try{const u=new URL(location.href);if(u.searchParams.get('v')!==VERSION_PARAM){u.searchParams.set('v',VERSION_PARAM);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
-  try{window.TFMS_BUILD=Object.freeze({version:'v45.77',channel:'Approved Thumbnail UI + Admin Cleanup Safe',buildDate:'2026.08.20',title:'Approved Thumbnail UI + Admin Cleanup Safe'})}catch(e){}
+  try{window.TFMS_BUILD=Object.freeze({version:'v45.78',channel:'History Query Render Recovery Safe',buildDate:'2026.08.20',title:'History Query Render Recovery Safe'})}catch(e){}
 }
 function safeName(n){return String(n||'file').replace(/[\\/:*?"<>|#%&{}$!'`@+=]/g,'_').replace(/\s+/g,'_').slice(0,120)}
 function fmtBytes(n){n=Number(n||0);if(n<1024)return n+' B';if(n<1048576)return (n/1024).toFixed(1)+' KB';return (n/1048576).toFixed(1)+' MB'}
@@ -23722,7 +23722,7 @@ setInterval(syncVersion,2500);
 <script id="tfms-v4577-approved-thumbnail-controller">
 (function(){
 'use strict';
-const VERSION='v45.77 Approved Thumbnail UI + Admin Cleanup Safe',VP='45.77',BUCKET='tfms-equipment-photos';
+const VERSION='v45.78 History Query Render Recovery Safe',VP='45.78',BUCKET='tfms-equipment-photos';
 const $=id=>document.getElementById(id);const esc=v=>String(v??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
 const db=()=>{try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||null}catch(e){return null}};const toast=m=>{try{window.showToast?.(m)}catch(e){}};
 function role(){let r='';try{const p=window.getTfmsCloudProfile?.()||window.cloudProfile||{};const s=JSON.parse(sessionStorage.getItem('tfmsSession')||'{}');r=String(p.role||s.role||window.tfmsRole||'').toLowerCase()}catch(e){}return r}
@@ -23767,4 +23767,55 @@ function init(){syncVersion();const end=iso(new Date()),start=iso(localDate(-30)
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();setInterval(syncVersion,2500);
 })();
 </script>
+
+
+<!-- =========================================================
+     TFMS v45.78 History Query Render Recovery Safe
+     Scope: maintenance history + delete/change history rendering/event recovery only.
+     No DB schema / SQL / equipment / fire / daily-log logic changes.
+     ========================================================= -->
+<style id="tfms-v4578-history-recovery-style">
+#deleteManage .v4577-audit-table input[type="checkbox"]{width:15px;height:15px;cursor:pointer;accent-color:#1769d2}
+#deleteManage .v4577-audit-table tbody tr,#history .v4577-history-table tbody tr{background:#fff}
+#deleteManage .v4577-audit-table tbody tr:hover,#history .v4577-history-table tbody tr:hover{background:#f7fbff}
+.v4578-loading-note{padding:24px;text-align:center;color:#6b7f94;font-size:11px}
+</style>
+<script id="tfms-v4578-history-recovery-controller">
+(function(){
+'use strict';
+const VERSION='v45.78 History Query Render Recovery Safe',VP='45.78';
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
+const client=()=>{try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||null}catch(e){return null}};
+const toast=m=>{try{window.showToast?.(m)}catch(e){}};
+function role(){try{const p=window.getTfmsCloudProfile?.()||window.cloudProfile||{};const ss=JSON.parse(sessionStorage.getItem('tfmsSession')||'{}');return String(p.role||ss.role||window.tfmsRole||'').toLowerCase()}catch(e){return ''}}
+function admin(){const r=role();return r==='admin'||r==='관리자'}
+function forceVersion(){try{const b=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');if(b)b.textContent=VERSION}catch(e){}try{document.title='TFMS '+VERSION}catch(e){}try{const u=new URL(location.href);if(u.searchParams.get('v')!==VP){u.searchParams.set('v',VP);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
+
+let hist=[];
+function subfield(r){const d=String(r.detail||'');for(const [k,v] of [['보일러','보일러'],['펌프','펌프'],['분전반','전기설비'],['전기','전기설비'],['소화기','소방시설'],['소방','소방시설'],['여과','수처리'],['배관','배관'],['승강기','승강기']])if(d.includes(k))return v;return '-'}
+function recNo(r,i){const y=String(r.registered_on||'').slice(0,4)||String(new Date().getFullYear());const tail=String(r.id||'').replace(/[^0-9a-z]/gi,'').slice(-4).toUpperCase();return `RM-${y}-${tail||String(hist.length-i).padStart(4,'0')}`}
+function resetHistoryFilters(){['historyFacility','historyField','historyStatus','historyLccFilter','historyEvalFilter','historyEvidenceFilter'].forEach(id=>{const e=$(id);if(e)e.selectedIndex=0});['historyStart','historyEnd','historyMonth'].forEach(id=>{const e=$(id);if(e)e.value=''});document.querySelectorAll('[data-v4577-fav]').forEach(b=>b.classList.remove('active'))}
+function fillHistoryFacilities(){const s=$('historyFacility');if(!s)return;const old=s.value;const names=[...new Set(hist.map(x=>x.facility).filter(Boolean))].sort();s.innerHTML='<option>전체</option>'+names.map(n=>`<option>${esc(n)}</option>`).join('');if([...s.options].some(o=>o.value===old))s.value=old}
+function historyFiltered(){let a=hist.slice();const f=$('historyFacility')?.value||'전체',fld=$('historyField')?.value||'전체',st=$('historyStatus')?.value||'전체',s=$('historyStart')?.value||'',e=$('historyEnd')?.value||'',l=$('historyLccFilter')?.value||'all',ev=$('historyEvalFilter')?.value||'all',proof=$('historyEvidenceFilter')?.value||'all';if(f!=='전체')a=a.filter(x=>x.facility===f);if(fld!=='전체')a=a.filter(x=>x.field===fld);if(st!=='전체')a=a.filter(x=>x.status===st);if(s)a=a.filter(x=>x.date>=s);if(e)a=a.filter(x=>x.date<=e);if(l==='linked')a=a.filter(x=>!!x.assetId);if(l==='unlinked')a=a.filter(x=>!x.assetId);if(ev==='linked')a=a.filter(x=>x.eval.length);if(ev==='unlinked')a=a.filter(x=>!x.eval.length);if(proof==='yes')a=a.filter(x=>x.evidence>0);if(proof==='no')a=a.filter(x=>x.evidence===0);return a}
+function renderHistory(){const body=$('historyBody');if(!body)return;const list=historyFiltered();if($('historyTotalV4577'))$('historyTotalV4577').textContent=`총 ${list.length}건`;if(!list.length){body.innerHTML='<tr><td colspan="7"><div class="empty-state">선택한 조건에 등록된 유지관리 이력이 없습니다.</div></td></tr>';return}body.innerHTML=list.map((r,i)=>`<tr data-record-id="${esc(r.id)}" onclick="window.openMaintenanceDetailV370?.('${esc(r.id)}')"><td class="v4577-id">${recNo(r,i)}</td><td>${esc(r.facility)}</td><td>${esc(r.field)}</td><td>${esc(r.subfield)}</td><td class="v4577-detail-cell"><span class="v4577-detail-text">${esc(r.detail||'-')}</span></td><td>${esc(r.date||'-')}</td><td><span class="status ${/완료/.test(r.status)?'done':(/미조치|필요/.test(r.status)?'wait':'info')}">${esc(r.status||'-')}</span>${(admin()||String(r.ownerId||'')===String(window.cloudUser?.id||window.getTfmsCloudUser?.()?.id||''))?`<button class="v4577-edit-mini" type="button" onclick="event.stopPropagation();window.openMaintenanceEditV372?.('${esc(r.id)}')">수정</button>`:''}</td></tr>`).join('')}
+async function loadHistory(){const body=$('historyBody'),c=client();if(!body)return;if(!c){body.innerHTML='<tr><td colspan="7"><div class="empty-state">DB 연결 정보를 확인하지 못했습니다.</div></td></tr>';return}body.innerHTML='<tr><td colspan="7"><div class="v4578-loading-note">유지관리 이력을 불러오는 중입니다.</div></td></tr>';try{const {data,error}=await c.from('maintenance_records').select('*, department:departments(id,name), facility:facilities(id,name)').is('deleted_at',null).order('created_at',{ascending:false});if(error)throw error;hist=(data||[]).map(r=>({id:r.id,ownerId:r.registered_by||'',registered_on:r.registered_on||'',date:String(r.registered_on||r.created_at||'').slice(0,10),facility:r.facility?.name||'',field:r.field_category||'기타',detail:r.detail||r.action_detail||'',status:r.process_status||'진행중',assetId:r.asset_id||'',evidence:Number(r.evidence_count||0),eval:Array.isArray(r.evaluation_tags)?r.evaluation_tags:[],subfield:''}));hist.forEach(x=>x.subfield=subfield(x));fillHistoryFacilities();renderHistory()}catch(e){console.error('v45.78 history load',e);body.innerHTML=`<tr><td colspan="7"><div class="empty-state" style="color:#b91c1c">조회 실패: ${esc(e?.message||e)}</div></td></tr>`}}
+window.renderHistoryV4578=renderHistory;window.renderHistoryV4577=renderHistory;window.renderHistory=renderHistory;window.renderHistoryV318=renderHistory;window.renderMaintenanceHistoryV361=renderHistory;window.resetHistoryV4577=function(){resetHistoryFilters();renderHistory()};
+
+let audit=[],auditPage=1;
+function auditMap(x){const src=x.source||'audit',act=String(x.action_type||'').toLowerCase(),kind=src==='maintenance'||/delete|삭제/.test(act)?'delete':'change';let target=String(x.target_type||'기타');const map={today_task:'오늘의 업무',maintenance:'유지관리',maintenance_record:'유지관리',equipment:'설비',asset:'설비',dailylog:'업무일지',daily_log:'업무일지'};target=map[target]||target||'기타';return {source:src,id:x.id,kind,target,facility:x.facility_name||x.facility||'-',title:x.target_title||x.detail||'-',change:x.action_detail||(kind==='delete'?'관리자 완전삭제':'변경'),actor:x.actor_name||'관리자',time:x.created_at||x.deleted_at||'',note:x.note||x.process_status||'-'}}
+function fillAuditFacilities(){const s=$('auditFacilityV4577');if(!s)return;const old=s.value;const names=[...new Set(audit.map(x=>x.facility).filter(x=>x&&x!=='-'))].sort();s.innerHTML='<option value="all">전체</option>'+names.map(n=>`<option>${esc(n)}</option>`).join('');if([...s.options].some(o=>o.value===old))s.value=old}
+function auditFiltered(){let a=audit.slice();const s=$('auditStartV4577')?.value||'',e=$('auditEndV4577')?.value||'',k=$('auditTypeV4577')?.value||'all',t=$('auditTargetV4577')?.value||'all',f=$('auditFacilityV4577')?.value||'all',actor=String($('auditActorV4577')?.value||'').trim().toLowerCase(),q=String($('auditKeywordV4577')?.value||'').trim().toLowerCase();if(s)a=a.filter(x=>String(x.time).slice(0,10)>=s);if(e)a=a.filter(x=>String(x.time).slice(0,10)<=e);if(k!=='all')a=a.filter(x=>x.kind===k);if(t!=='all')a=a.filter(x=>x.target===t);if(f!=='all')a=a.filter(x=>x.facility===f);if(actor)a=a.filter(x=>String(x.actor).toLowerCase().includes(actor));if(q)a=a.filter(x=>`${x.title} ${x.change} ${x.note}`.toLowerCase().includes(q));return a}
+function renderAudit(){const body=$('deleteBody');if(!body)return;const list=auditFiltered(),size=Number($('auditPageSizeV4577')?.value||10),pages=Math.max(1,Math.ceil(list.length/size));auditPage=Math.min(auditPage,pages);const st=(auditPage-1)*size,rows=list.slice(st,st+size);if($('auditTotalV4577'))$('auditTotalV4577').textContent=`총 ${list.length}건`;if($('auditPageInfoV4577'))$('auditPageInfoV4577').textContent=`총 ${list.length}건 중 ${list.length?st+1:0}-${Math.min(st+size,list.length)}행 표시`;if($('auditSelectAllV4577'))$('auditSelectAllV4577').checked=false;if(!rows.length)body.innerHTML='<tr><td colspan="11"><div class="empty-state">조건에 맞는 삭제·변경 이력이 없습니다.</div></td></tr>';else body.innerHTML=rows.map((r,i)=>`<tr><td><input type="checkbox" class="audit-select-v4577" data-source="${esc(r.source)}" data-id="${esc(r.id)}"></td><td>${st+i+1}</td><td><span class="audit-badge ${r.kind}">${r.kind==='delete'?'삭제':'변경'}</span></td><td>${esc(r.target)}</td><td>${esc(r.facility)}</td><td>${esc(r.title)}</td><td>${esc(r.change)}</td><td>${esc(r.actor)}</td><td>${esc(r.time?new Date(r.time).toLocaleString('ko-KR'):'-')}</td><td>${esc(r.note||'-')}</td><td>${admin()?`<button class="audit-row-delete" type="button" onclick="event.stopPropagation();window.openAuditDeleteV4577?.('${esc(r.source)}','${esc(r.id)}')">이력 삭제</button>`:'-'}</td></tr>`).join('');const pg=$('auditPaginationV4577');if(pg){let h=`<button type="button" onclick="window.setAuditPageV4578(${Math.max(1,auditPage-1)})">‹</button>`;for(let p=1;p<=pages;p++)h+=`<button type="button" class="${p===auditPage?'active':''}" onclick="window.setAuditPageV4578(${p})">${p}</button>`;h+=`<button type="button" onclick="window.setAuditPageV4578(${Math.min(pages,auditPage+1)})">›</button>`;pg.innerHTML=h}}
+async function loadAudit(){const body=$('deleteBody'),c=client();if(!body)return;if(!c){body.innerHTML='<tr><td colspan="11"><div class="empty-state">DB 연결 정보를 확인하지 못했습니다.</div></td></tr>';return}body.innerHTML='<tr><td colspan="11"><div class="v4578-loading-note">삭제·변경이력을 불러오는 중입니다.</div></td></tr>';try{const [m,a]=await Promise.all([c.from('maintenance_records').select('id,deleted_at,detail,process_status,facility:facilities(name)').not('deleted_at','is',null).order('deleted_at',{ascending:false}).limit(500),c.from('tfms_audit_logs').select('id,action_type,target_type,target_id,target_title,facility_name,actor_name,action_detail,created_at').order('created_at',{ascending:false}).limit(500)]);const rows=[];if(!m.error)(m.data||[]).forEach(x=>rows.push(auditMap({source:'maintenance',id:x.id,deleted_at:x.deleted_at,detail:x.detail,facility:x.facility?.name||'-',process_status:x.process_status})));if(!a.error)(a.data||[]).forEach(x=>rows.push(auditMap({source:'audit',...x})));audit=rows.sort((x,y)=>String(y.time).localeCompare(String(x.time)));fillAuditFacilities();auditPage=1;renderAudit()}catch(e){console.error('v45.78 audit load',e);body.innerHTML=`<tr><td colspan="11"><div class="empty-state" style="color:#b91c1c">${esc(e?.message||e)}</div></td></tr>`}}
+window.renderAuditV4577=renderAudit;window.renderAuditV4578=renderAudit;window.setAuditPageV4578=p=>{auditPage=Math.max(1,Number(p)||1);renderAudit()};window.toggleAuditAllV4577=v=>document.querySelectorAll('#deleteBody .audit-select-v4577').forEach(x=>x.checked=!!v);
+window.deleteSelectedAuditV4577=async function(){if(!admin())return toast('관리자만 사용할 수 있습니다.');const chosen=[...document.querySelectorAll('#deleteBody .audit-select-v4577:checked')].map(x=>({source:x.dataset.source,id:x.dataset.id}));if(!chosen.length)return toast('삭제할 이력을 선택하세요.');if(!confirm(`선택한 이력 ${chosen.length}건을 완전 삭제하시겠습니까?\n이 작업은 복구할 수 없습니다.`))return;for(const k of chosen){const r=audit.find(x=>x.source===k.source&&String(x.id)===String(k.id));if(r&&typeof window.deleteAuditRowV4577==='function')await window.deleteAuditRowV4577(r)}await loadAudit()};
+window.resetAuditV4577=function(){['auditTypeV4577','auditTargetV4577','auditFacilityV4577'].forEach(id=>{const e=$(id);if(e)e.selectedIndex=0});['auditStartV4577','auditEndV4577','auditActorV4577','auditKeywordV4577'].forEach(id=>{const e=$(id);if(e)e.value=''});auditPage=1;renderAudit()};
+try{window.renderDeleteRequests=function(){if($('deleteManage')?.classList.contains('active'))return renderAudit()};renderDeleteRequests=window.renderDeleteRequests}catch(e){}
+function bind(){forceVersion();if(!window.__tfmsV4578HistoryInit){resetHistoryFilters();window.__tfmsV4578HistoryInit=true}const os=window.showPage;if(typeof os==='function'&&!os.__v4578){const w=function(id){const r=os.apply(this,arguments);setTimeout(()=>{forceVersion();if(id==='history'){loadHistory();setTimeout(renderHistory,500)}if(id==='deleteManage'){loadAudit();setTimeout(renderAudit,500)}},60);return r};w.__v4578=true;window.showPage=w;try{showPage=w}catch(e){}}const on=window.navTo;if(typeof on==='function'&&!on.__v4578){const w=function(id){const r=on.apply(this,arguments);setTimeout(()=>{forceVersion();if(id==='history'){loadHistory();setTimeout(renderHistory,500)}if(id==='deleteManage'){loadAudit();setTimeout(renderAudit,500)}},60);return r};w.__v4578=true;window.navTo=w;try{navTo=w}catch(e){}}}
+function init(){bind();loadHistory();loadAudit();[120,500,1100,2300,4500].forEach(ms=>setTimeout(()=>{bind();forceVersion();if($('history')?.classList.contains('active'))renderHistory();if($('deleteManage')?.classList.contains('active'))renderAudit()},ms))}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();setInterval(()=>{forceVersion();if($('deleteManage')?.classList.contains('active'))renderAudit()},1800);
+})();
+</script>
+
 </body></html>
