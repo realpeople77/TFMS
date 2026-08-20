@@ -24178,4 +24178,117 @@ const oldShow=window.showPage;if(typeof oldShow==='function'&&!oldShow.__v4586){
 })();
 </script>
 
+
+
+<!-- =========================================================
+     TFMS v45.87 Page Header Icon Standardization Safe
+     Scope: title header icon size/alignment only + dashboard icon.
+     No business logic / DB / SQL changes.
+     ========================================================= -->
+<style id="tfms-v4587-page-header-icon-style">
+/* Page title icon standard: fixed box, fixed glyph size, fixed alignment. */
+main .page .title-row{
+  display:flex!important;
+  align-items:center!important;
+}
+main .page .title-left{
+  display:flex!important;
+  align-items:center!important;
+  gap:12px!important;
+  min-height:46px!important;
+}
+main .page .title-left>.title-icon,
+main .page .title-row .title-icon{
+  flex:0 0 46px!important;
+  width:46px!important;
+  height:46px!important;
+  min-width:46px!important;
+  min-height:46px!important;
+  max-width:46px!important;
+  max-height:46px!important;
+  box-sizing:border-box!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  margin:0!important;
+  padding:0!important;
+  border-radius:12px!important;
+  font-size:21px!important;
+  line-height:1!important;
+  vertical-align:middle!important;
+  overflow:hidden!important;
+}
+main .page .title-left>div:last-child{
+  min-width:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+}
+main .page .title-left h1{
+  margin-top:0!important;
+  margin-bottom:2px!important;
+  line-height:1.12!important;
+}
+main .page .title-left .breadcrumb{
+  line-height:1.2!important;
+  margin:0!important;
+}
+/* Keep special icon classes from changing geometry. */
+main .page .title-icon[class*="v45"],
+main .page .title-icon[class*="history"]{
+  width:46px!important;height:46px!important;min-width:46px!important;min-height:46px!important;font-size:21px!important;margin:0!important;
+}
+/* Dashboard: same 46px title icon standard without changing dashboard content. */
+#dashboard .v451-dash-head>.v4587-dashboard-title{
+  display:flex!important;align-items:center!important;gap:12px!important;min-height:46px!important;
+}
+#dashboard .v4587-dashboard-icon{
+  flex:0 0 46px!important;width:46px!important;height:46px!important;
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  border-radius:12px!important;background:linear-gradient(145deg,#0f9ca8,#155dcc)!important;
+  color:#fff!important;box-shadow:0 8px 20px rgba(20,98,170,.18)!important;
+  font-size:21px!important;line-height:1!important;
+}
+#dashboard .v4587-dashboard-copy{display:flex!important;flex-direction:column!important;justify-content:center!important;min-width:0!important}
+#dashboard .v4587-dashboard-copy h1{margin:0 0 2px!important;line-height:1.12!important}
+#dashboard .v4587-dashboard-copy p{margin:0!important;line-height:1.3!important}
+@media(max-width:820px){
+  main .page .title-left>.title-icon,main .page .title-row .title-icon,#dashboard .v4587-dashboard-icon{
+    flex-basis:42px!important;width:42px!important;height:42px!important;min-width:42px!important;min-height:42px!important;max-width:42px!important;max-height:42px!important;font-size:19px!important;border-radius:11px!important;
+  }
+  main .page .title-left,#dashboard .v451-dash-head>.v4587-dashboard-title{gap:10px!important;min-height:42px!important}
+}
+</style>
+<script id="tfms-v4587-page-header-icon-controller">
+(function(){
+'use strict';
+const BUILD='v45.87 Page Header Icon Standardization Safe';
+const VERSION='45.87';
+function lockVersion(){
+  const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent=BUILD;
+  document.title='TFMS '+BUILD;
+  try{const u=new URL(location.href);if(u.searchParams.get('v')!==VERSION){u.searchParams.set('v',VERSION);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
+}
+function ensureDashboardIcon(){
+  const head=document.querySelector('#dashboard .v451-dash-head');
+  if(!head)return;
+  let first=head.firstElementChild;
+  if(!first)return;
+  if(first.classList.contains('v4587-dashboard-title'))return;
+  const h1=first.querySelector('h1');
+  if(!h1||String(h1.textContent||'').trim()!=='대시보드')return;
+  first.classList.add('v4587-dashboard-title');
+  const icon=document.createElement('span');icon.className='v4587-dashboard-icon';icon.setAttribute('aria-hidden','true');icon.textContent='⌂';
+  const copy=document.createElement('span');copy.className='v4587-dashboard-copy';
+  while(first.firstChild)copy.appendChild(first.firstChild);
+  first.appendChild(icon);first.appendChild(copy);
+}
+function apply(){lockVersion();ensureDashboardIcon();}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();
+[100,500,1500].forEach(ms=>setTimeout(apply,ms));
+const oldShow=window.showPage;if(typeof oldShow==='function'&&!oldShow.__v4587header){const w=function(){const r=oldShow.apply(this,arguments);setTimeout(apply,60);return r};w.__v4587header=true;window.showPage=w}
+const oldNav=window.navTo;if(typeof oldNav==='function'&&!oldNav.__v4587header){const w=function(){const r=oldNav.apply(this,arguments);setTimeout(apply,60);return r};w.__v4587header=true;window.navTo=w}
+})();
+</script>
+
 </body></html>
