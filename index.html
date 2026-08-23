@@ -16512,7 +16512,7 @@ function overlays(d){let o='';
  o+=box(607,473,878,75,esc(d.address),'compact');
  o+=box(417,624,190,71,esc(d.basement),'compact');o+=box(607,624,204,71,esc(d.ground),'compact');o+=box(811,624,247,71,esc(d.totalArea),'compact');o+=box(1058,624,213,71,esc(d.floorArea),'compact');o+=box(1271,624,314,71,esc(d.buildings),'compact');
  const ys=[757,986,1215,1444],hs=[229,229,229,228];d.checks.forEach((r,i)=>{o+=box(417,ys[i],722,hs[i],esc(r.content),'left');const q=result(r.result,i);if(q.length)o+=mark(...q);o+=box(1304,ys[i],181,hs[i],esc(r.action),'left');});
- const imp=d.improvement;o+=box(417,1675,230,73,esc(fmtDT(imp.reportDate)),'compact');m=method(imp.method);if(m.length)o+=mark(...m);o+=box(1139,1675,346,73,esc(imp.reportTo),'compact');m=remedy(imp.remedy);if(m.length)o+=mark(...m);return o;}
+ const imp=d.improvement;o+=box(417,1748,230,73,esc(fmtDT(imp.reportDate)),'compact');m=method(imp.method);if(m.length)o+=mark(...m);o+=box(1139,1748,346,73,esc(imp.reportTo),'compact');m=remedy(imp.remedy);if(m.length)o+=mark(...m);return o;}
 window.previewFireRecordV420=function(){try{const sheet=$('firePreviewSheet'),modal=$('firePreviewModal');if(!sheet||!modal)throw new Error('미리보기 영역을 찾지 못했습니다.');sheet.className='fire-original-sheet';sheet.innerHTML=`<img class="fire-form-bg" src="${imgSrc()}" alt="소방안전관리자 업무 수행 기록표">${overlays(data())}`;modal.classList.add('show');modal.scrollTop=0;}catch(e){console.error(e);toast('서식 미리보기 실패: '+(e?.message||e));}};
 window.printFireRecordV420=async function(){try{window.previewFireRecordV420();const preview=$('firePreviewSheet');if(!preview?.innerHTML.trim())throw new Error('인쇄할 서식을 생성하지 못했습니다.');const frame=document.createElement('iframe');frame.setAttribute('aria-hidden','true');Object.assign(frame.style,{position:'fixed',right:'0',bottom:'0',width:'1px',height:'1px',border:'0',opacity:'0',pointerEvents:'none'});document.body.appendChild(frame);const css=`@page{size:A4 portrait;margin:0}*{box-sizing:border-box}html,body{margin:0!important;padding:0!important;width:210mm!important;height:297mm!important;background:#fff!important}.fire-original-sheet{position:relative;width:210mm;height:297mm;margin:0;padding:0;overflow:hidden;background:#fff}.fire-form-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;display:block;z-index:0}.fire-overlay-v430{position:absolute;z-index:2;box-sizing:border-box;display:flex;align-items:center;justify-content:center;padding:0 1.1mm;overflow:hidden;color:#111;font-family:"Malgun Gothic","맑은 고딕",Arial,sans-serif;font-size:9pt;line-height:1.18;font-weight:400;text-align:center;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere}.fire-overlay-v430.left{align-items:flex-start;justify-content:flex-start;text-align:left;padding:1.5mm 1.7mm;font-size:8.5pt;line-height:1.28}.fire-overlay-v430.compact{font-size:8.5pt}.fire-overlay-v430.check{padding:0;font-size:9.5pt;font-weight:700;line-height:1;overflow:hidden}`;const doc=frame.contentDocument||frame.contentWindow.document;doc.open();doc.write(`<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>소방안전관리자 업무 수행 기록표</title><style>${css}</style>
 <style id="tfms-v4427-transparent-logo-fix">
@@ -24525,8 +24525,8 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <script id="tfms-v4593-clean-recovery-lock">
 (function(){
 'use strict';
-const BUILD='v45.94 Fire Legal Five-Cell Position Fix Safe';
-const VERSION='45.94';
+const BUILD='v45.95 Fire Legal Report Row Position Fix Safe';
+const VERSION='45.95';
 function lock(){
   const b=document.getElementById('tfmsVersionBadge'); if(b)b.textContent=BUILD;
   document.title='TFMS '+BUILD;
