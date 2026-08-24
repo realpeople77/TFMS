@@ -24745,132 +24745,65 @@ setInterval(()=>{lockVersion();patchGradeFunction()},1200);
 
 
 <!-- =========================================================
- TFMS v46.02 Fire Preview Canvas Parity Safe
- - Print renderer untouched
- - Preview uses same official PDF background + same percent overlays
- - No iframe; fixed 794x1123 A4 canvas scaled visually only
+ TFMS v46.05 Fire Preview Click Recovery Safe
+ - Base: v46.00
+ - Preview only: direct final function, no wrapper chain
+ - Print logic untouched
  ========================================================= -->
-<style id="tfms-v4602-fire-preview-canvas-style">
-#firePreviewModal.show{overflow:auto!important;align-items:flex-start!important;justify-content:flex-start!important;}
-#firePreviewSheet.fire-preview-canvas-v4602{
-  position:relative!important;
-  width:min(900px,calc(100vw - 44px))!important;
-  height:auto!important;
-  min-height:0!important;
-  aspect-ratio:auto!important;
-  margin:0 auto 22px!important;
-  padding:0!important;
-  background:#fff!important;
-  overflow:hidden!important;
-  box-shadow:0 14px 50px rgba(0,0,0,.30)!important;
-}
-#firePreviewSheet .fire-preview-canvas-inner-v4602{
-  position:absolute!important;
-  left:0!important;top:0!important;
-  width:794px!important;height:1123px!important;
-  transform-origin:top left!important;
-  background:#fff!important;
-  overflow:hidden!important;
-}
-#firePreviewSheet .fire-preview-canvas-inner-v4602 .fire-official-bg{
-  position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
-  object-fit:fill!important;display:block!important;z-index:0!important;
-}
-#firePreviewSheet .fire-preview-canvas-inner-v4602 .fire-value-v4599{
-  position:absolute!important;z-index:2!important;box-sizing:border-box!important;display:flex!important;
-  align-items:center!important;justify-content:center!important;padding:0 3px!important;overflow:hidden!important;
-  color:#111!important;font-family:Dotum,"돋움",sans-serif!important;font-size:11.33px!important;
-  line-height:1.08!important;font-weight:400!important;text-align:center!important;white-space:nowrap!important;
-}
-#firePreviewSheet .fire-preview-canvas-inner-v4602 .fire-value-v4599.left{
-  align-items:flex-start!important;justify-content:flex-start!important;text-align:left!important;white-space:pre-wrap!important;
-  word-break:keep-all!important;padding:6px 7px!important;font-size:10.93px!important;line-height:1.28!important;
-}
-#firePreviewSheet .fire-preview-canvas-inner-v4602 .fire-check-v4599{
-  position:absolute!important;z-index:3!important;display:flex!important;align-items:center!important;justify-content:center!important;
-  width:1.9%!important;height:1.35%!important;padding:0!important;color:#111!important;font-family:Arial,sans-serif!important;
-  font-size:13.3px!important;font-weight:700!important;line-height:1!important;
-}
-@media(max-width:900px){#firePreviewSheet.fire-preview-canvas-v4602{width:calc(100vw - 20px)!important;}}
+<style id="tfms-v4605-fire-preview-click-style">
+#firePreviewModal.show{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:flex-start!important;overflow:auto!important;padding:14px 18px 28px!important;background:rgba(9,25,48,.84)!important}
+#firePreviewModal .fire-preview-bar{width:min(960px,calc(100vw - 36px))!important;max-width:none!important;margin:0 auto 10px!important;flex:0 0 auto!important}
+#firePreviewSheet.fire-official-sheet.v4605-preview{position:relative!important;display:block!important;width:min(920px,calc(100vw - 60px))!important;height:auto!important;aspect-ratio:210/297!important;min-height:0!important;max-height:none!important;flex:0 0 auto!important;margin:0 auto 24px!important;padding:0!important;overflow:hidden!important;background:#fff!important;box-shadow:0 12px 42px rgba(0,0,0,.28)!important}
+#firePreviewSheet.fire-official-sheet.v4605-preview .fire-official-bg{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:fill!important;display:block!important;z-index:0!important}
+#firePreviewSheet.fire-official-sheet.v4605-preview .fire-value-v4599{position:absolute!important;z-index:2!important}
+#firePreviewSheet.fire-official-sheet.v4605-preview .fire-check-v4599{position:absolute!important;z-index:3!important}
+@media(max-width:900px){#firePreviewModal .fire-preview-bar{width:calc(100vw - 20px)!important}#firePreviewSheet.fire-official-sheet.v4605-preview{width:calc(100vw - 24px)!important}}
 </style>
-<script id="tfms-v4602-fire-preview-canvas-controller">
+<script id="tfms-v4605-fire-preview-click-controller">
 (function(){
 'use strict';
-const BUILD='v46.02 Fire Preview Canvas Parity Safe';
-const VERSION='46.02';
-const A4W=794,A4H=1123;
-function lockVersion(){
-  const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent=BUILD;
-  document.title='TFMS '+BUILD;
-  try{const u=new URL(location.href);if(u.searchParams.get('v')!==VERSION){u.searchParams.set('v',VERSION);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
+const BUILD='v46.05 Fire Preview Click Recovery Safe';
+const VERSION='46.05';
+const PW=1653, PH=2337;
+const $=id=>document.getElementById(id);
+const val=id=>$(id)?.value??'';
+const radio=name=>document.querySelector(`input[name="${name}"]:checked`)?.value||'';
+const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const toast=m=>{try{window.showToast?.(m)}catch(e){alert(m)}};
+function lockVersion(){const b=$('tfmsVersionBadge');if(b)b.textContent=BUILD;document.title='TFMS '+BUILD;try{const u=new URL(location.href);if(u.searchParams.get('v')!==VERSION){u.searchParams.set('v',VERSION);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
+function getFormImage(){const src=$('tfms-v4599-fire-official-controller')?.textContent||'';const m=src.match(/const\s+FORM_IMAGE\s*=\s*['"](data:image\/png;base64,[^'"]+)['"]/);if(m?.[1])return m[1];const img=document.querySelector('.fire-official-bg');if(img?.src)return img.src;throw new Error('공식 법정서식 이미지를 찾지 못했습니다.');}
+function data(){return{date:val('fireDate'),performer:val('firePerformer'),facility:val('fireFacility'),grade:val('fireGrade'),address:val('fireAddress'),basement:val('fireBasement'),ground:val('fireGround'),totalArea:val('fireTotalArea'),floorArea:val('fireFloorArea'),buildings:val('fireBuildings'),checks:[0,1,2,3].map(i=>({content:val(`fireCheck${i}`),result:radio(`fireResult${i}`),action:val(`fireAction${i}`)})),improvement:{reportDate:val('fireReportDate'),method:val('fireReportMethod'),reportTo:val('fireReportTo'),remedy:val('fireRemedy')}};}
+function fmtDate(v){const m=String(v||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);return m?`${m[1]}. ${Number(m[2])}. ${Number(m[3])}.`:String(v||'');}
+function fmtDT(v,fallback){const s=String(v||'');const m=s.match(/^(\d{4})-(\d{2})-(\d{2})(?:[T\s](\d{2}):(\d{2}))?/);if(m)return m[4]&&m[5]?`${m[1]}. ${Number(m[2])}. ${Number(m[3])}. ${m[4]}:${m[5]}`:`${m[1]}. ${Number(m[2])}. ${Number(m[3])}.`;return fmtDate(fallback||'');}
+function box(x,y,w,h,text,cls=''){return `<div class="fire-value-v4599 ${cls}" style="left:${x/PW*100}%;top:${y/PH*100}%;width:${w/PW*100}%;height:${h/PH*100}%">${text}</div>`;}
+function mark(x,y){return `<div class="fire-check-v4599" style="left:${x/PW*100}%;top:${y/PH*100}%">√</div>`;}
+function grade(v){return ({'특급':[1081,417],'1급':[1190,417],'2급':[1289,417],'3급':[1387,417]}[v]||[]);}
+function result(v,i){const good=[838,1067,1296,1525],bad=[902,1131,1360,1589];return v==='양호'?[1166,good[i]]:v==='불량'?[1166,bad[i]]:[];}
+function method(v){return ({'대면':[675,1774],'서면':[821,1774],'정보통신':[970,1774]}[v]||[]);}
+function remedy(v){return ({'이전':[675,1850],'제거':[821,1850],'수리·교체':[970,1850],'수리ㆍ교체':[970,1850],'기타':[1167,1850]}[v]||[]);}
+function overlays(d){let o='',m=[];o+=box(417,330,474,64,esc(fmtDate(d.date)));o+=box(1138,330,447,64,esc(d.performer));o+=box(607,397,351,76,esc(d.facility));m=grade(d.grade);if(m.length)o+=mark(...m);o+=box(607,473,878,75,esc(d.address));o+=box(417,624,190,71,esc(d.basement));o+=box(607,624,204,71,esc(d.ground));o+=box(811,624,247,71,esc(d.totalArea));o+=box(1058,624,213,71,esc(d.floorArea));o+=box(1271,624,314,71,esc(d.buildings));const ys=[757,986,1215,1444],hs=[229,229,229,228];d.checks.forEach((r,i)=>{o+=box(417,ys[i],722,hs[i],esc(r.content),'left');m=result(r.result,i);if(m.length)o+=mark(...m);o+=box(1304,ys[i],181,hs[i],esc(r.action),'left');});const imp=d.improvement||{};o+=box(417,1748,230,73,esc(fmtDT(imp.reportDate,d.date)));m=method(imp.method);if(m.length)o+=mark(...m);o+=box(1139,1748,346,73,esc(imp.reportTo));m=remedy(imp.remedy);if(m.length)o+=mark(...m);return o;}
+function syncReportDate(){const date=$('fireDate'),report=$('fireReportDate');if(!date||!report||!date.value)return;const old=report.value;const time=(old.match(/T(\d{2}:\d{2})/)||[])[1]||new Date().toTimeString().slice(0,5);if(!old||old.slice(0,10)!==date.value)report.value=`${date.value}T${time}`;}
+function preview(){try{syncReportDate();const sheet=$('firePreviewSheet'),modal=$('firePreviewModal');if(!sheet||!modal)throw new Error('미리보기 영역을 찾지 못했습니다.');sheet.className='fire-official-sheet v4605-preview';sheet.innerHTML=`<img class="fire-official-bg" src="${getFormImage()}" alt="소방안전관리자 업무 수행 기록표">${overlays(data())}`;modal.classList.add('show');modal.scrollTop=0;return true;}catch(e){console.error('v46.05 preview',e);toast('서식 미리보기 실패: '+(e?.message||e));return false;}}
+preview.__v4600=true;preview.__v4605=true;window.previewFireRecordV420=preview;
+function run(){lockVersion();window.previewFireRecordV420=preview;}
+function bindPreviewButtons(){
+ document.addEventListener('click',function(e){
+   const btn=e.target.closest?.('button');
+   if(!btn)return;
+   const fire=document.getElementById('fireMonthly');
+   if(!fire||!fire.contains(btn))return;
+   const txt=(btn.textContent||'').replace(/\s+/g,' ').trim();
+   const oc=btn.getAttribute('onclick')||'';
+   if(txt.includes('법정서식 미리보기')||txt==='서식 미리보기'||/previewFireRecordV420/.test(oc)){
+     if(/printFireRecordV420/.test(oc))return;
+     e.preventDefault();e.stopPropagation();
+     preview();
+   }
+ },true);
 }
-function correctGrade(root){
-  if(!root)return;
-  const grade=document.getElementById('fireGrade')?.value||'';
-  const pos=(window.__TFMS_V4600_GRADE_POS__||{})[grade];
-  if(!pos)return;
-  const marks=[...root.querySelectorAll('.fire-check-v4599')];
-  if(!marks.length)return;
-  // Grade mark is the first checkbox overlay generated by the official renderer.
-  const mark=marks[0];
-  mark.style.left=(pos[0]/1653*100)+'%';
-  mark.style.top=(pos[1]/2337*100)+'%';
-}
-function convertPreview(){
-  const sheet=document.getElementById('firePreviewSheet');
-  if(!sheet)return;
-  correctGrade(sheet);
-  const source=sheet.innerHTML;
-  if(!source||!source.includes('fire-official-bg'))return;
-  const width=Math.min(900,Math.max(320,window.innerWidth-44));
-  const scale=width/A4W;
-  const height=A4H*scale;
-  sheet.className='fire-preview-canvas-v4602';
-  sheet.style.width=width+'px';
-  sheet.style.height=height+'px';
-  sheet.innerHTML='';
-  const canvas=document.createElement('div');
-  canvas.className='fire-preview-canvas-inner-v4602';
-  canvas.style.transform=`scale(${scale})`;
-  canvas.innerHTML=source;
-  sheet.appendChild(canvas);
-}
-function wrapPreview(){
-  const old=window.previewFireRecordV420;
-  if(typeof old!=='function'||old.__v4602)return;
-  const wrapped=function(){
-    const r=old.apply(this,arguments);
-    requestAnimationFrame(()=>requestAnimationFrame(convertPreview));
-    return r;
-  };
-  wrapped.__v4602=true;
-  window.previewFireRecordV420=wrapped;
-}
-function run(){lockVersion();wrapPreview()}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
-[80,250,700,1600].forEach(ms=>setTimeout(run,ms));
-setInterval(()=>{lockVersion();wrapPreview()},1200);
-})();
-</script>
-
-</body></html>`);
-  doc.close();
-}
-function wrapPreview(){
-  const old=window.previewFireRecordV420;
-  if(typeof old!=='function'||old.__v4601)return;
-  const wrapped=function(){
-    const r=old.apply(this,arguments);
-    requestAnimationFrame(()=>requestAnimationFrame(convertPreview));
-    return r;
-  };
-  wrapped.__v4601=true;
-  window.previewFireRecordV420=wrapped;
-}
-function run(){lockVersion();wrapPreview()}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
-[80,250,700,1600].forEach(ms=>setTimeout(run,ms));
-setInterval(()=>{lockVersion();wrapPreview()},1200);
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{run();bindPreviewButtons()},{once:true});else{run();bindPreviewButtons();}
+[100,400,900,1800].forEach(ms=>setTimeout(run,ms));
+setInterval(run,1400);
 })();
 </script>
 
