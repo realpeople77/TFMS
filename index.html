@@ -24742,4 +24742,101 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 setInterval(()=>{lockVersion();patchGradeFunction()},1200);
 })();
 </script>
+
+
+<!-- =========================================================
+ TFMS v46.01 Fire Preview = Print Parity Safe
+ - Print renderer untouched
+ - Preview uses an iframe with the same fixed A4 coordinate system as print
+ - Prevents preview-only aspect/coordinate distortion
+ ========================================================= -->
+<style id="tfms-v4601-fire-preview-parity-style">
+#firePreviewModal.show{overflow:auto!important;align-items:flex-start!important;justify-content:flex-start!important;}
+#firePreviewSheet.fire-preview-parity-v4601{
+  position:relative!important;
+  width:min(900px,calc(100vw - 44px))!important;
+  height:auto!important;
+  min-height:0!important;
+  aspect-ratio:auto!important;
+  margin:0 auto 22px!important;
+  padding:0!important;
+  background:#fff!important;
+  overflow:hidden!important;
+  box-shadow:0 14px 50px rgba(0,0,0,.30)!important;
+}
+#firePreviewSheet .fire-preview-frame-v4601{
+  position:absolute!important;
+  left:0!important;top:0!important;
+  width:794px!important;height:1123px!important;
+  border:0!important;margin:0!important;padding:0!important;
+  transform-origin:top left!important;
+  background:#fff!important;
+  pointer-events:none!important;
+}
+@media(max-width:900px){#firePreviewSheet.fire-preview-parity-v4601{width:calc(100vw - 20px)!important;}}
+</style>
+<script id="tfms-v4601-fire-preview-parity-controller">
+(function(){
+'use strict';
+const BUILD='v46.01 Fire Preview Print Parity Safe';
+const VERSION='46.01';
+const A4W=794, A4H=1123;
+function lockVersion(){
+  const b=document.getElementById('tfmsVersionBadge'); if(b)b.textContent=BUILD;
+  document.title='TFMS '+BUILD;
+  try{const u=new URL(location.href);if(u.searchParams.get('v')!==VERSION){u.searchParams.set('v',VERSION);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
+}
+function printCss(){return `*{box-sizing:border-box}html,body{margin:0!important;padding:0!important;width:210mm!important;height:297mm!important;background:#fff!important;overflow:hidden!important}.fire-official-sheet{position:relative;width:210mm;height:297mm;margin:0;padding:0;overflow:hidden;background:#fff}.fire-official-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;display:block;z-index:0}.fire-value-v4599{position:absolute;z-index:2;box-sizing:border-box;display:flex;align-items:center;justify-content:center;padding:0 .8mm;overflow:hidden;color:#111;font-family:Dotum,"돋움",sans-serif;font-size:8.5pt;line-height:1.08;font-weight:400;text-align:center;white-space:nowrap}.fire-value-v4599.left{align-items:flex-start;justify-content:flex-start;text-align:left;white-space:pre-wrap;word-break:keep-all;padding:1.5mm 1.7mm;font-size:8.2pt;line-height:1.28}.fire-check-v4599{position:absolute;z-index:3;display:flex;align-items:center;justify-content:center;width:1.9%;height:1.35%;padding:0;color:#111;font-family:Arial,sans-serif;font-size:10pt;font-weight:700;line-height:1}`}
+function correctGrade(root){
+  if(!root)return;
+  const grade=document.getElementById('fireGrade')?.value||'';
+  const pos=(window.__TFMS_V4600_GRADE_POS__||{})[grade];
+  if(!pos)return;
+  const mark=root.querySelector('.fire-check-v4599');
+  if(!mark)return;
+  mark.style.left=(pos[0]/1653*100)+'%';
+  mark.style.top=(pos[1]/2337*100)+'%';
+}
+function convertPreview(){
+  const sheet=document.getElementById('firePreviewSheet');
+  if(!sheet)return;
+  // Current renderer has already generated official background + value overlays.
+  correctGrade(sheet);
+  const source=sheet.innerHTML;
+  if(!source||!source.includes('fire-official-bg'))return;
+  const width=Math.min(900,Math.max(300,window.innerWidth-44));
+  const scale=width/A4W;
+  const height=A4H*scale;
+  sheet.className='fire-preview-parity-v4601';
+  sheet.style.width=width+'px';
+  sheet.style.height=height+'px';
+  sheet.innerHTML='';
+  const frame=document.createElement('iframe');
+  frame.className='fire-preview-frame-v4601';
+  frame.setAttribute('title','소방안전관리자 업무 수행 기록표 미리보기');
+  frame.style.transform=`scale(${scale})`;
+  sheet.appendChild(frame);
+  const doc=frame.contentDocument||frame.contentWindow.document;
+  doc.open();
+  doc.write(`<!doctype html><html lang="ko"><head><meta charset="utf-8"><style>${printCss()}</style></head><body><div class="fire-official-sheet">${source}</div></body></html>`);
+  doc.close();
+}
+function wrapPreview(){
+  const old=window.previewFireRecordV420;
+  if(typeof old!=='function'||old.__v4601)return;
+  const wrapped=function(){
+    const r=old.apply(this,arguments);
+    requestAnimationFrame(()=>requestAnimationFrame(convertPreview));
+    return r;
+  };
+  wrapped.__v4601=true;
+  window.previewFireRecordV420=wrapped;
+}
+function run(){lockVersion();wrapPreview()}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
+[80,250,700,1600].forEach(ms=>setTimeout(run,ms));
+setInterval(()=>{lockVersion();wrapPreview()},1200);
+})();
+</script>
+
 </body></html>
