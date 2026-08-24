@@ -24642,4 +24642,104 @@ setInterval(()=>{lockVersion();cleanupBackButtons();},1000);
 })();
 </script>
 
+
+
+<!-- =========================================================
+ TFMS v46.00 Fire Preview Ratio + Grade Check Fix Safe
+ - Official PDF background untouched
+ - Preview keeps intrinsic A4 ratio (no flex vertical shrink)
+ - Grade check marks aligned to official PDF checkbox centers only
+ ========================================================= -->
+<style id="tfms-v4600-fire-preview-grade-fix-style">
+/* Let the official page image establish its own height. This prevents flex-column vertical compression. */
+#firePreviewSheet.fire-official-sheet{
+  width:min(920px,calc(100vw - 36px))!important;
+  height:auto!important;
+  aspect-ratio:auto!important;
+  flex:0 0 auto!important;
+  min-height:0!important;
+  overflow:hidden!important;
+}
+#firePreviewSheet.fire-official-sheet .fire-official-bg{
+  position:relative!important;
+  inset:auto!important;
+  width:100%!important;
+  height:auto!important;
+  aspect-ratio:auto!important;
+  object-fit:contain!important;
+  display:block!important;
+}
+#firePreviewModal.show{overflow:auto!important;justify-content:flex-start!important;}
+@media(max-width:900px){
+  #firePreviewSheet.fire-official-sheet{width:calc(100vw - 20px)!important;}
+}
+</style>
+<script id="tfms-v4600-fire-preview-grade-fix-controller">
+(function(){
+'use strict';
+const BUILD='v46.00 Fire Preview Ratio Grade Check Fix Safe';
+const VERSION='46.00';
+function lockVersion(){
+  const b=document.getElementById('tfmsVersionBadge'); if(b)b.textContent=BUILD;
+  document.title='TFMS '+BUILD;
+  try{const u=new URL(location.href);if(u.searchParams.get('v')!==VERSION){u.searchParams.set('v',VERSION);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
+}
+/* v45.99 uses the original 1653×2337 coordinate basis.
+   These are TOP-LEFT positions of the √ overlay, recalculated from the
+   official PDF rendered page. Only the grade positions are changed. */
+window.__TFMS_V4600_GRADE_POS__={
+  '특급':[1081,417],
+  '1급':[1190,417],
+  '2급':[1289,417],
+  '3급':[1387,417]
+};
+function patchGradeFunction(){
+  try{
+    /* Rebuild preview/print overlays through a narrow wrapper: replace only
+       the grade coordinate lookup in the v45.99 controller source function
+       by overriding grade() in its accessible execution path is impossible
+       because it is closure-local. Instead wrap preview/print after render
+       and relocate the grade √ based on selected value. */
+    const reposition=(root)=>{
+      if(!root)return;
+      const grade=document.getElementById('fireGrade')?.value||'';
+      const pos=window.__TFMS_V4600_GRADE_POS__[grade];
+      if(!pos)return;
+      /* grade mark is the first check overlay in document order */
+      const marks=[...root.querySelectorAll('.fire-check-v4599')];
+      if(!marks.length)return;
+      const mark=marks[0];
+      mark.style.left=(pos[0]/1653*100)+'%';
+      mark.style.top=(pos[1]/2337*100)+'%';
+    };
+    const oldPreview=window.previewFireRecordV420;
+    if(typeof oldPreview==='function'&&!oldPreview.__v4600){
+      const wrapped=function(){const r=oldPreview.apply(this,arguments);requestAnimationFrame(()=>reposition(document.getElementById('firePreviewSheet')));return r;};
+      wrapped.__v4600=true; window.previewFireRecordV420=wrapped;
+    }
+    /* For printing, v45.99 creates fresh markup internally. Temporarily adjust
+       fireGrade so its closure emits the same mark, then patch generated iframe
+       immediately after creation using a MutationObserver. */
+    const oldPrint=window.printFireRecordV420;
+    if(typeof oldPrint==='function'&&!oldPrint.__v4600){
+      const wrapped=async function(){
+        const obs=new MutationObserver((muts)=>{
+          for(const m of muts){for(const n of m.addedNodes||[]){if(n?.tagName==='IFRAME'){
+            const fix=()=>{try{reposition(n.contentDocument?.querySelector('.fire-official-sheet'))}catch(e){}};
+            setTimeout(fix,20);setTimeout(fix,80);setTimeout(fix,150);
+          }}}
+        });
+        obs.observe(document.body,{childList:true});
+        try{return await oldPrint.apply(this,arguments)}finally{setTimeout(()=>obs.disconnect(),500)}
+      };
+      wrapped.__v4600=true; window.printFireRecordV420=wrapped;
+    }
+  }catch(e){console.error('v46.00 grade patch',e)}
+}
+function run(){lockVersion();patchGradeFunction()}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
+[80,250,700,1600].forEach(ms=>setTimeout(run,ms));
+setInterval(()=>{lockVersion();patchGradeFunction()},1200);
+})();
+</script>
 </body></html>
