@@ -24807,4 +24807,202 @@ setInterval(run,1400);
 })();
 </script>
 
+
+
+<!-- =========================================================
+ TFMS v46.06 User-Centered Sidebar Role UX Safe
+ - Sidebar/menu layer only
+ - Existing page buttons/functions/DB/SQL untouched
+ ========================================================= -->
+<style id="tfms-v4606-sidebar-style">
+#appHeader nav.tfms-v4606-sidebar{
+  padding:14px 10px 96px!important;
+  gap:5px!important;
+  scrollbar-width:thin;
+}
+#appHeader nav.tfms-v4606-sidebar .tfms-v4606-section{
+  display:flex;flex-direction:column;gap:4px;margin:0 0 6px;
+}
+#appHeader nav.tfms-v4606-sidebar .tfms-v4606-section-label{
+  color:#7fa7d5;font-size:10px;font-weight:800;letter-spacing:.06em;
+  padding:10px 13px 4px;text-transform:uppercase;
+}
+#appHeader nav.tfms-v4606-sidebar .nav{
+  min-height:44px!important;padding:11px 38px 11px 46px!important;
+  border-radius:9px!important;font-size:13px!important;
+  display:flex!important;align-items:center!important;width:100%;
+}
+#appHeader nav.tfms-v4606-sidebar .nav.role-hidden{display:none!important}
+#appHeader nav.tfms-v4606-sidebar .nav .tfms-nav-ico{font-size:18px!important}
+#appHeader nav.tfms-v4606-sidebar .tfms-v4606-menu-badge,
+#appHeader nav.tfms-v4606-sidebar .tfms-v4606-custom-badge{
+  position:absolute;right:10px;top:50%;transform:translateY(-50%);
+  min-width:20px;height:20px;padding:0 6px;border-radius:999px;
+  background:#ef4444;color:#fff;font-size:10px;font-weight:900;
+  display:none;align-items:center;justify-content:center;
+  box-shadow:0 3px 9px rgba(239,68,68,.28);
+}
+#appHeader nav.tfms-v4606-sidebar .has-badge .tfms-v4606-menu-badge,
+#appHeader nav.tfms-v4606-sidebar .has-badge .tfms-v4606-custom-badge{display:flex}
+#appHeader nav.tfms-v4606-sidebar .tfms-v4606-group{
+  display:flex;flex-direction:column;gap:3px;
+}
+#appHeader nav.tfms-v4606-sidebar .tfms-v4606-group-toggle,
+#appHeader nav.tfms-v4606-sidebar .tfms-v4606-alert-btn{
+  position:relative;width:100%;min-height:44px;border:0;border-radius:9px;
+  background:transparent;color:#eaf3ff;text-align:left;padding:11px 38px 11px 46px;
+  font-size:13px;font-weight:800;cursor:pointer;
+}
+#appHeader nav.tfms-v4606-sidebar .tfms-v4606-group-toggle:hover,
+#appHeader nav.tfms-v4606-sidebar .tfms-v4606-group.active>.tfms-v4606-group-toggle,
+#appHeader nav.tfms-v4606-sidebar .tfms-v4606-alert-btn:hover{
+  background:rgba(255,255,255,.08);color:#fff;
+}
+#appHeader nav.tfms-v4606-sidebar .tfms-v4606-group-toggle .ico,
+#appHeader nav.tfms-v4606-sidebar .tfms-v4606-alert-btn .ico{
+  position:absolute;left:15px;top:50%;transform:translateY(-50%);
+  width:22px;text-align:center;font-size:18px;
+}
+#appHeader nav.tfms-v4606-sidebar .tfms-v4606-group-toggle .chev{
+  position:absolute;right:14px;top:50%;transform:translateY(-50%) rotate(0deg);
+  transition:transform .18s ease;color:#9bb9da;font-size:12px;
+}
+#appHeader nav.tfms-v4606-sidebar .tfms-v4606-group.open>.tfms-v4606-group-toggle .chev{transform:translateY(-50%) rotate(90deg)}
+#appHeader nav.tfms-v4606-sidebar .tfms-v4606-submenu{
+  display:none;flex-direction:column;gap:2px;padding:2px 0 2px 16px;
+}
+#appHeader nav.tfms-v4606-sidebar .tfms-v4606-group.open>.tfms-v4606-submenu{display:flex}
+#appHeader nav.tfms-v4606-sidebar .tfms-v4606-submenu .nav{
+  min-height:38px!important;padding:8px 34px 8px 40px!important;
+  font-size:12px!important;color:#cde0f4!important;background:rgba(255,255,255,.025)!important;
+}
+#appHeader nav.tfms-v4606-sidebar .tfms-v4606-submenu .nav:hover,
+#appHeader nav.tfms-v4606-sidebar .tfms-v4606-submenu .nav.active{
+  background:rgba(25,142,205,.28)!important;color:#fff!important;box-shadow:none!important;
+}
+#appHeader nav.tfms-v4606-sidebar .tfms-v4606-submenu .nav .tfms-nav-ico{left:12px!important;font-size:15px!important}
+#appHeader nav.tfms-v4606-sidebar .tfms-v4606-divider{height:1px;background:rgba(143,180,220,.16);margin:6px 8px}
+#appHeader nav.tfms-v4606-sidebar .tfms-v4606-bottom{margin-top:auto!important}
+#appHeader nav.tfms-v4606-sidebar .dev-nav{display:none!important}
+
+/* Top bell */
+#appHeader .tfms-v4606-top-alert{
+  position:relative;border:0;background:transparent;color:#fff;width:36px;height:36px;
+  display:grid;place-items:center;border-radius:50%;cursor:pointer;font-size:18px;
+}
+#appHeader .tfms-v4606-top-alert:hover{background:rgba(255,255,255,.10)}
+#appHeader .tfms-v4606-top-badge{
+  position:absolute;right:-2px;top:-2px;min-width:17px;height:17px;padding:0 4px;
+  display:none;align-items:center;justify-content:center;border-radius:999px;
+  background:#ef4444;color:#fff;font-size:9px;font-weight:900;border:2px solid #07366f;
+}
+#appHeader .tfms-v4606-top-alert.has-badge .tfms-v4606-top-badge{display:flex}
+
+/* Notification drawer */
+#tfmsV4606AlertDrawer{position:fixed;inset:0;z-index:120050;display:none;background:rgba(4,24,48,.38)}
+#tfmsV4606AlertDrawer.show{display:block}
+#tfmsV4606AlertDrawer .drawer{
+  position:absolute;right:18px;top:68px;width:min(390px,calc(100vw - 32px));max-height:calc(100vh - 92px);
+  background:#fff;border:1px solid #dce6f1;border-radius:16px;box-shadow:0 24px 60px rgba(5,38,78,.24);overflow:hidden;
+}
+#tfmsV4606AlertDrawer .head{height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 17px;border-bottom:1px solid #e8eef5}
+#tfmsV4606AlertDrawer .head strong{font-size:15px;color:#10213d}
+#tfmsV4606AlertDrawer .close{border:0;background:#f2f6fb;color:#47627e;width:30px;height:30px;border-radius:8px;cursor:pointer}
+#tfmsV4606AlertDrawer .body{padding:11px;overflow:auto;max-height:calc(100vh - 160px)}
+#tfmsV4606AlertDrawer .alert-row{display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:center;padding:11px 9px;border-radius:10px;cursor:pointer}
+#tfmsV4606AlertDrawer .alert-row:hover{background:#f5f9fd}
+#tfmsV4606AlertDrawer .alert-ico{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:#eef6ff}
+#tfmsV4606AlertDrawer .alert-row.late .alert-ico{background:#fff0f0;color:#dc2626}
+#tfmsV4606AlertDrawer .alert-row.pending .alert-ico{background:#fff7e8;color:#d97706}
+#tfmsV4606AlertDrawer .alert-row.approval .alert-ico{background:#f1ecff;color:#7c3aed}
+#tfmsV4606AlertDrawer .alert-row b{display:block;font-size:12px;color:#163153;margin-bottom:3px}
+#tfmsV4606AlertDrawer .alert-row small{display:block;color:#7b8ba0;font-size:10.5px;line-height:1.4}
+#tfmsV4606AlertDrawer .count{font-size:11px;font-weight:900;color:#e53b3b}
+#tfmsV4606AlertDrawer .empty{padding:34px 14px;text-align:center;color:#8090a4;font-size:12px}
+
+@media(max-width:760px){
+ #appHeader nav.tfms-v4606-sidebar .tfms-v4606-section-label,
+ #appHeader nav.tfms-v4606-sidebar .tfms-v4606-group-toggle,
+ #appHeader nav.tfms-v4606-sidebar .tfms-v4606-alert-btn{display:none!important}
+ #appHeader nav.tfms-v4606-sidebar .tfms-v4606-submenu{display:flex!important;flex-direction:row!important;padding:0!important}
+ #appHeader nav.tfms-v4606-sidebar .tfms-v4606-submenu .nav{min-width:max-content!important}
+}
+</style>
+<script id="tfms-v4606-sidebar-controller">
+(function(){
+'use strict';
+const BUILD='v46.06 User-Centered Sidebar Role UX Safe';
+const VERSION='46.06';
+const $=id=>document.getElementById(id);
+const q=(s,r=document)=>r.querySelector(s);
+const qa=(s,r=document)=>Array.from(r.querySelectorAll(s));
+function lockVersion(){
+ const b=$('tfmsVersionBadge');if(b)b.textContent=BUILD;
+ document.title='TFMS '+BUILD;
+ try{const u=new URL(location.href);if(u.searchParams.get('v')!==VERSION){u.searchParams.set('v',VERSION);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
+}
+function role(){try{return String(window.cloudProfile?.role||window.tfmsRole||JSON.parse(sessionStorage.getItem('tfmsSession')||'{}').role||'user').toLowerCase()}catch(e){return'user'}}
+function dept(){try{return window.cloudProfile?.department?.name||window.tfmsUserDept||window.currentUserDept||''}catch(e){return''}}
+function btnFor(id){return qa('#appHeader nav .nav').find(b=>(b.getAttribute('onclick')||'').includes(`'${id}'`)||(b.getAttribute('onclick')||'').includes(`\"${id}\"`))}
+function ensureBadge(btn,id){if(!btn)return null;let s=q('.tfms-v4606-menu-badge',btn);if(!s){s=document.createElement('span');s.className='tfms-v4606-menu-badge';s.id=id;btn.appendChild(s)}return s}
+function setBadge(el,n){if(!el)return;const v=Math.max(0,Number(n)||0);el.textContent=v>99?'99+':String(v);el.parentElement?.classList.toggle('has-badge',v>0)}
+function iconMap(id){return({dashboard:'⌂',today:'▣',register:'＋',history:'⌕',stats:'▥',excel:'⇩',dailylog:'▤',equipment:'⚙',cycle:'◷',deleteManage:'↶',myPage:'♙',accountAdmin:'♧'})[id]||'•'}
+function setIcon(btn,id){if(!btn)return;let ico=q('.tfms-nav-ico',btn);if(!ico){ico=document.createElement('span');ico.className='tfms-nav-ico';btn.prepend(ico)}ico.textContent=iconMap(id)}
+function makeSection(cls,label){const s=document.createElement('div');s.className='tfms-v4606-section '+cls;if(label){const l=document.createElement('div');l.className='tfms-v4606-section-label';l.textContent=label;s.appendChild(l)}return s}
+function makeGroup(id,label,ico){const g=document.createElement('div');g.className='tfms-v4606-group';g.id=id;const t=document.createElement('button');t.type='button';t.className='tfms-v4606-group-toggle';t.innerHTML=`<span class="ico">${ico}</span>${label}<span class="chev">›</span>`;const sub=document.createElement('div');sub.className='tfms-v4606-submenu';t.onclick=()=>g.classList.toggle('open');g.append(t,sub);return{g,t,sub}}
+function ensureAlertDrawer(){if($('tfmsV4606AlertDrawer'))return;const d=document.createElement('div');d.id='tfmsV4606AlertDrawer';d.innerHTML='<div class="drawer"><div class="head"><strong>🔔 알림센터</strong><button class="close" type="button">×</button></div><div class="body" id="tfmsV4606AlertBody"></div></div>';document.body.appendChild(d);d.addEventListener('click',e=>{if(e.target===d)d.classList.remove('show')});q('.close',d).onclick=()=>d.classList.remove('show')}
+function showAlerts(){ensureAlertDrawer();renderAlerts();$('tfmsV4606AlertDrawer').classList.add('show')}
+function scopedTasks(){let a=Array.isArray(window.todayTasks)?window.todayTasks.slice():[];const d=dept();if(role()!=='admin'&&d&&d!=='전체'){try{a=a.filter(t=>{const f=String(t.facility||'');if(typeof window.getScopedFacilityDept==='function')return window.getScopedFacilityDept(f)===d;return true})}catch(e){}}return a}
+function completed(t){return /완료/.test(String(t.status||''))||t.completed===true||t.is_completed===true}
+function dateStr(t){return String(t.task_date||t.due||t.date||'').slice(0,10)}
+function lateTasks(){const today=new Date().toISOString().slice(0,10);return scopedTasks().filter(t=>{if(completed(t))return false;const d=dateStr(t);return /^\d{4}-\d{2}-\d{2}$/.test(d)&&d<today})}
+function pendingTasks(){return scopedTasks().filter(t=>!completed(t))}
+function unresolvedMaintenance(){try{return (Array.isArray(window.records)?window.records:[]).filter(r=>!/완료|조치완료/.test(String(r.status||''))).length}catch(e){return 0}}
+function pendingAccounts(){if(role()!=='admin')return 0;const body=$('accountRequestBody');if(!body)return 0;return qa('tr',body).filter(tr=>!q('.empty-state',tr)).length}
+function renderAlerts(){const body=$('tfmsV4606AlertBody');if(!body)return;const late=lateTasks(),pending=pendingTasks(),acc=pendingAccounts();let rows=[];late.slice(0,5).forEach(t=>rows.push(`<div class="alert-row late" data-nav="today"><div class="alert-ico">!</div><div><b>기한초과 · ${escapeHtml(t.task||'업무')}</b><small>${escapeHtml(t.facility||'-')} · ${escapeHtml(dateStr(t)||'-')}</small></div><span class="count">확인</span></div>`));if(!late.length&&pending.length)rows.push(`<div class="alert-row pending" data-nav="today"><div class="alert-ico">◷</div><div><b>처리할 오늘의 업무</b><small>현재 미완료 업무 ${pending.length}건이 있습니다.</small></div><span class="count">${pending.length}</span></div>`);if(acc)rows.push(`<div class="alert-row approval" data-nav="accountAdmin"><div class="alert-ico">♧</div><div><b>계정 승인 대기</b><small>관리자 확인이 필요한 계정이 있습니다.</small></div><span class="count">${acc}</span></div>`);body.innerHTML=rows.length?rows.join(''):'<div class="empty">현재 확인할 새 알림이 없습니다.</div>';qa('.alert-row',body).forEach(r=>r.onclick=()=>{const id=r.dataset.nav;if(typeof window.navTo==='function')window.navTo(id);else window.showPage?.(id,btnFor(id));$('tfmsV4606AlertDrawer').classList.remove('show')})}
+function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function updateBadges(){const late=lateTasks().length,pending=pendingTasks().length,maint=unresolvedMaintenance(),acc=pendingAccounts();setBadge($('v4606TodayBadge'),pending);setBadge($('v4606MaintBadge'),maint);setBadge($('v4606CycleBadge'),late);setBadge($('v4606AccountBadge'),acc);const total=late+acc;const side=$('v4606AlertSideBadge');if(side){side.textContent=total>99?'99+':String(total);q('#v4606AlertSide')?.classList.toggle('has-badge',total>0)}const top=$('v4606TopBadge');if(top){top.textContent=total>99?'99+':String(total);q('#v4606TopAlert')?.classList.toggle('has-badge',total>0)}}
+function buildSidebar(){
+ const nav=q('#appHeader nav');if(!nav||nav.classList.contains('tfms-v4606-sidebar'))return;
+ const ids=['dashboard','today','register','history','stats','excel','dailylog','equipment','cycle','deleteManage','myPage','accountAdmin'];
+ const b={};ids.forEach(id=>{b[id]=btnFor(id);setIcon(b[id],id)});
+ if(b.cycle)b.cycle.dataset.roles='admin';
+ nav.classList.add('tfms-v4606-sidebar');
+ const frag=document.createDocumentFragment();
+ const main=makeSection('tfms-v4606-main','업무');
+ [b.dashboard,b.today].filter(Boolean).forEach(x=>main.appendChild(x));
+ if(b.today)ensureBadge(b.today,'v4606TodayBadge');
+ const mg=makeGroup('v4606MaintenanceGroup','유지관리','🔧');
+ [b.register,b.history].filter(Boolean).forEach(x=>mg.sub.appendChild(x));
+ const mb=document.createElement('span');mb.className='tfms-v4606-custom-badge';mb.id='v4606MaintBadge';mg.t.appendChild(mb);
+ main.appendChild(mg.g);
+ [b.dailylog,b.equipment].filter(Boolean).forEach(x=>main.appendChild(x));
+ frag.appendChild(main);
+ const admin=makeSection('tfms-v4606-admin','관리자 도구');
+ [b.stats,b.cycle,b.deleteManage,b.accountAdmin,b.excel].filter(Boolean).forEach(x=>admin.appendChild(x));
+ if(b.cycle)ensureBadge(b.cycle,'v4606CycleBadge');if(b.accountAdmin)ensureBadge(b.accountAdmin,'v4606AccountBadge');
+ frag.appendChild(admin);
+ const bottom=makeSection('tfms-v4606-bottom','');
+ const divider=document.createElement('div');divider.className='tfms-v4606-divider';bottom.appendChild(divider);
+ const alert=document.createElement('button');alert.type='button';alert.id='v4606AlertSide';alert.className='tfms-v4606-alert-btn';alert.innerHTML='<span class="ico">♧</span>알림센터<span class="tfms-v4606-custom-badge" id="v4606AlertSideBadge"></span>';alert.onclick=showAlerts;bottom.appendChild(alert);
+ if(b.myPage)bottom.appendChild(b.myPage);
+ frag.appendChild(bottom);
+ nav.innerHTML='';nav.appendChild(frag);
+ mg.g.classList.add('open');
+ // role-based section display
+ applyRoleSections();
+ observeActive(mg.g,[b.register,b.history]);
+ updateBadges();
+}
+function applyRoleSections(){const r=role();const admin=q('#appHeader nav .tfms-v4606-admin');if(admin)admin.style.display=(r==='admin'||r==='viewer')?'flex':'none';if(r==='viewer'){const reg=btnFor('register'),today=btnFor('today'),daily=btnFor('dailylog'),equip=btnFor('equipment'),cycle=btnFor('cycle'),del=btnFor('deleteManage'),acc=btnFor('accountAdmin');[reg,today,daily,equip,cycle,del,acc].forEach(x=>{if(x)x.style.display='none'})}}
+function observeActive(group,buttons){const sync=()=>group.classList.toggle('active',buttons.some(b=>b?.classList.contains('active')));buttons.filter(Boolean).forEach(b=>new MutationObserver(sync).observe(b,{attributes:true,attributeFilter:['class']}));sync()}
+function bindTopAlert(){const user=q('#appHeader .user');if(!user||$('v4606TopAlert'))return;const bell=qa(':scope > span',user).find(s=>(s.textContent||'').trim()==='🔔');const btn=document.createElement('button');btn.type='button';btn.id='v4606TopAlert';btn.className='tfms-v4606-top-alert';btn.innerHTML='🔔<span class="tfms-v4606-top-badge" id="v4606TopBadge"></span>';btn.onclick=showAlerts;if(bell)bell.replaceWith(btn);else user.insertBefore(btn,$('topUserLabel')||user.firstChild)}
+function refresh(){lockVersion();buildSidebar();bindTopAlert();applyRoleSections();updateBadges()}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',refresh,{once:true});else refresh();
+[120,450,1000,2200,4200].forEach(ms=>setTimeout(refresh,ms));
+setInterval(()=>{lockVersion();updateBadges()},900);
+const oldApply=window.applyMenuByRoleStable;if(typeof oldApply==='function'&&!oldApply.__v4606){const w=function(){const r=oldApply.apply(this,arguments);setTimeout(()=>{applyRoleSections();updateBadges()},30);return r};w.__v4606=true;window.applyMenuByRoleStable=w}
+})();
+</script>
+
 </body></html>
