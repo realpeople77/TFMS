@@ -25005,4 +25005,138 @@ const oldApply=window.applyMenuByRoleStable;if(typeof oldApply==='function'&&!ol
 })();
 </script>
 
+
+<!-- =========================================================
+     TFMS v46.07 Today Work User-Centered UX Safe
+     UI-only enhancement over v46.06 / existing v45.89 hub.
+     No DB/SQL schema or fire/daily/equipment business logic changes.
+     ========================================================= -->
+<style id="tfms-v4607-today-user-ux-style">
+#today.v4589-hub.v4607-user-ux{--u-blue:#1764d6;--u-navy:#123b66;--u-teal:#0b999f;--u-red:#dc4242;--u-green:#1f9856;--u-amber:#d88220}
+#today.v4607-user-ux>.title-row{margin-bottom:13px!important}
+#today.v4607-user-ux .v4589-shell{gap:13px!important}
+#today.v4607-user-ux .v4589-kpis{gap:12px!important}
+#today.v4607-user-ux .v4589-kpi{min-height:82px!important;padding:14px 17px!important;border-radius:15px!important}
+#today.v4607-user-ux .v4589-kpi .ico{width:42px!important;height:42px!important;flex-basis:42px!important;font-size:19px!important}
+#today.v4607-user-ux .v4589-kpi span{font-size:10.5px!important}
+#today.v4607-user-ux .v4589-kpi strong{font-size:23px!important;margin:4px 0!important}
+#today.v4607-user-ux .v4589-card{padding:15px 16px!important;border-radius:15px!important}
+#today.v4607-user-ux .v4589-card-head{margin-bottom:12px!important}
+#today.v4607-user-ux .v4589-card-title{font-size:15.5px!important}
+#today.v4607-user-ux #v4589CycleGo{display:none}
+#today.v4607-user-ux.v4607-admin #v4589CycleGo{display:inline-flex}
+#today.v4607-user-ux .v4589-table-wrap{min-height:190px!important;max-height:430px!important;background:#fff}
+#today.v4607-user-ux .v4589-empty{min-height:150px!important;padding:30px 18px!important;display:flex;align-items:center;justify-content:center}
+#today.v4607-user-ux .v4607-empty-inner{display:grid;justify-items:center;gap:8px;color:#75879b}
+#today.v4607-user-ux .v4607-empty-ico{width:48px;height:48px;border-radius:14px;background:#eef5ff;color:#1764d6;display:grid;place-items:center;font-size:22px}
+#today.v4607-user-ux .v4607-empty-inner strong{font-size:13px;color:#365473}
+#today.v4607-user-ux .v4607-empty-inner span{font-size:10.5px;text-align:center;line-height:1.55}
+#today.v4607-user-ux .v4589-footer{padding-top:2px!important}
+#today.v4607-user-ux .v4607-bottom-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(360px,.8fr);gap:13px;align-items:stretch}
+#today.v4607-user-ux .v4589-manual-shell{height:100%;border-radius:15px!important}
+#today.v4607-user-ux .v4589-manual-toggle{min-height:88px!important;padding:16px 17px!important}
+#today.v4607-user-ux .v4589-manual-toggle b{font-size:14px!important}
+#today.v4607-user-ux .v4589-manual-toggle small{font-size:10.5px!important;line-height:1.5!important}
+#today.v4607-user-ux .v4589-manual-toggle .ico{width:40px!important;height:40px!important;flex:0 0 40px!important}
+#today.v4607-user-ux .v4607-alert-card{background:#fff;border:1px solid #d9e4f0;border-radius:15px;padding:15px 16px;box-shadow:0 4px 16px rgba(24,61,103,.04);min-height:88px}
+#today.v4607-user-ux .v4607-alert-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+#today.v4607-user-ux .v4607-alert-title{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:900;color:#173b61}
+#today.v4607-user-ux .v4607-alert-title .ico{width:30px;height:30px;border-radius:9px;background:#eef5ff;color:#1764d6;display:grid;place-items:center}
+#today.v4607-user-ux .v4607-alert-more{border:0;background:transparent;color:#1764d6;font-size:10.5px;font-weight:900;cursor:pointer}
+#today.v4607-user-ux .v4607-alert-list{display:grid;gap:7px}
+#today.v4607-user-ux .v4607-alert-row{display:grid;grid-template-columns:8px 1fr auto;gap:8px;align-items:center;min-height:25px;font-size:10.5px;color:#435b73}
+#today.v4607-user-ux .v4607-alert-row i{width:6px;height:6px;border-radius:50%;background:#1764d6}
+#today.v4607-user-ux .v4607-alert-row.late i{background:#e24747}
+#today.v4607-user-ux .v4607-alert-row.maint i{background:#0b999f}
+#today.v4607-user-ux .v4607-alert-row time{font-size:9.5px;color:#91a0b1}
+#today.v4607-user-ux .v4607-alert-empty{display:flex;align-items:center;gap:10px;padding:9px 4px;color:#77899c;font-size:10.5px}
+#today.v4607-user-ux .v4607-alert-empty .ok{width:30px;height:30px;border-radius:50%;background:#ecf8f1;color:#1b9655;display:grid;place-items:center;font-weight:900}
+#today.v4607-user-ux .v4607-user-guide{display:flex;align-items:center;gap:7px;margin-bottom:1px;padding:0 2px;color:#708399;font-size:10px;flex-wrap:wrap}
+#today.v4607-user-ux .v4607-user-guide b{color:#315474}
+#today.v4607-user-ux .v4607-user-guide .step{display:inline-flex;align-items:center;border:1px solid #dbe6f1;background:#fff;border-radius:999px;padding:4px 8px;font-weight:800}
+#today.v4607-user-ux .v4607-user-guide .arrow{color:#99a8b8}
+#today.v4607-user-ux .v4589-filter b{font-weight:900}
+#today.v4607-user-ux .v4607-filter-count{font-style:normal;font-size:9px;margin-left:2px;color:inherit}
+#today.v4607-user-ux .v4589-actions .work{min-width:70px}
+#today.v4607-user-ux .v4589-actions .link-direct{border-color:#aac7e6;color:#1259aa;background:#fff}
+#today.v4607-user-ux.v4607-user .v4589-actions .delete{display:none!important}
+@media(max-width:1150px){#today.v4607-user-ux .v4607-bottom-grid{grid-template-columns:1fr}}
+@media(max-width:720px){#today.v4607-user-ux .v4589-kpi{min-height:76px!important;padding:12px!important}#today.v4607-user-ux .v4589-kpi strong{font-size:20px!important}.v4607-user-guide{display:none!important}}
+</style>
+<script id="tfms-v4607-today-user-ux-controller">
+(function(){
+'use strict';
+const BUILD='v46.07 Today Work User-Centered UX Safe';
+const VERSION='46.07';
+const $=id=>document.getElementById(id);
+const q=(s,r=document)=>r.querySelector(s);
+const qa=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+function currentRole(){
+ try{return String(window.cloudProfile?.role||window.tfmsRole||JSON.parse(sessionStorage.getItem('tfmsSession')||'{}').role||'user').toLowerCase()}catch(e){return'user'}
+}
+function currentDept(){try{return window.cloudProfile?.department?.name||window.tfmsUserDept||window.currentUserDept||''}catch(e){return''}}
+function installHistoryGuard(){
+ if(history.replaceState.__v4607)return;
+ const base=history.replaceState.bind(history);
+ const guarded=function(state,title,url){
+   try{if(typeof url==='string'&&url){const u=new URL(url,location.href);u.searchParams.set('v',VERSION);url=u.pathname+u.search+u.hash}}catch(e){}
+   return base(state,title,url);
+ };
+ guarded.__v4607=true;history.replaceState=guarded;
+}
+function lockVersion(){
+ const b=$('tfmsVersionBadge');if(b&&b.textContent!==BUILD)b.textContent=BUILD;
+ if(document.title!=='TFMS '+BUILD)document.title='TFMS '+BUILD;
+ try{const u=new URL(location.href);if(u.searchParams.get('v')!==VERSION){u.searchParams.set('v',VERSION);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
+}
+function completed(t){return /완료/.test(String(t?.status||''))||t?.completed===true||t?.is_completed===true}
+function rawDate(t){return String(t?.task_date||t?.due||t?.date||'').trim()}
+function normDate(v){const s=String(v||'').trim();if(/^\d{4}-\d{2}-\d{2}$/.test(s))return s;if(/^\d{4}\.\d{1,2}\.\d{1,2}/.test(s)){const a=s.match(/^(\d{4})\.(\d{1,2})\.(\d{1,2})/);return `${a[1]}-${a[2].padStart(2,'0')}-${a[3].padStart(2,'0')}`}if(s==='오늘')return new Date().toISOString().slice(0,10);return''}
+function scopedTasks(){
+ let a=Array.isArray(window.todayTasks)?window.todayTasks.slice():[];
+ const d=currentDept();if(currentRole()!=='admin'&&d&&d!=='전체'){
+   try{a=a.filter(t=>typeof window.getScopedFacilityDept==='function'?window.getScopedFacilityDept(String(t.facility||''))===d:true)}catch(e){}
+ }
+ return a;
+}
+function statusOf(t){
+ if(completed(t))return'done';
+ const s=String(t?.status||'');if(/진행/.test(s))return'progress';
+ const d=normDate(rawDate(t)),today=new Date().toISOString().slice(0,10);if(d&&d<today)return'late';
+ return'plan';
+}
+function counts(){const a=scopedTasks(),o={all:a.length,plan:0,progress:0,late:0,done:0};a.forEach(t=>o[statusOf(t)]++);return o}
+function pendingMaintenance(){try{return (Array.isArray(window.records)?window.records:[]).filter(r=>!/완료|조치완료/.test(String(r?.status||''))).length}catch(e){return 0}}
+function ensureGuide(shell){if(!shell||q('.v4607-user-guide',shell))return;const guide=document.createElement('div');guide.className='v4607-user-guide';guide.innerHTML='<b>업무 흐름</b><span class="step">오늘 할 일 확인</span><span class="arrow">→</span><span class="step">업무 처리</span><span class="arrow">→</span><span class="step">정상 완료 / 이상 연계</span>';const kpis=q('.v4589-kpis',shell);if(kpis)kpis.insertAdjacentElement('afterend',guide)}
+function ensureBottom(shell){
+ if(!shell)return;let grid=$('v4607TodayBottom');if(!grid){grid=document.createElement('div');grid.id='v4607TodayBottom';grid.className='v4607-bottom-grid';shell.appendChild(grid)}
+ const manual=$('v4589ManualShell');if(manual&&manual.parentNode!==grid)grid.appendChild(manual);
+ let alert=$('v4607TodayAlerts');if(!alert){alert=document.createElement('div');alert.id='v4607TodayAlerts';alert.className='v4607-alert-card';alert.innerHTML='<div class="v4607-alert-head"><div class="v4607-alert-title"><span class="ico">♧</span>알림 / 안내</div><button type="button" class="v4607-alert-more">전체 알림 보기 ›</button></div><div class="v4607-alert-list" id="v4607TodayAlertList"></div>';grid.appendChild(alert);q('.v4607-alert-more',alert).onclick=()=>{if(typeof window.showAlerts==='function')window.showAlerts();else $('v4606AlertSide')?.click?.()}}
+}
+function renderAlerts(){const box=$('v4607TodayAlertList');if(!box)return;const tasks=scopedTasks(),late=tasks.filter(t=>statusOf(t)==='late'),maint=pendingMaintenance();const rows=[];late.slice(0,2).forEach(t=>rows.push(`<div class="v4607-alert-row late"><i></i><span>기한초과 · ${esc(t.task||t.title||'업무')} (${esc(t.facility||'-')})</span><time>확인 필요</time></div>`));if(maint)rows.push(`<div class="v4607-alert-row maint"><i></i><span>후속조치가 필요한 유지관리 ${maint}건</span><time>유지관리</time></div>`);if(!rows.length){const c=counts();if(c.plan||c.progress)rows.push(`<div class="v4607-alert-row"><i></i><span>오늘 처리할 업무 ${c.plan+c.progress}건이 있습니다.</span><time>오늘</time></div>`)}box.innerHTML=rows.length?rows.join(''):'<div class="v4607-alert-empty"><span class="ok">✓</span><span>현재 확인이 필요한 새 알림이 없습니다.</span></div>'}
+function enhanceFilters(){const c=counts();const map={all:c.all,plan:c.plan,progress:c.progress,late:c.late,done:c.done};qa('#today .v4589-filter').forEach(b=>{const key=b.dataset.f;if(!key)return;let i=q('.v4607-filter-count',b);if(!i){i=document.createElement('i');i.className='v4607-filter-count';b.appendChild(i)}i.textContent=' '+(map[key]||0)})}
+function enhanceEmpty(){const body=$('v4589TodayBody');if(!body)return;const empty=q('.v4589-empty',body);if(empty&&!q('.v4607-empty-inner',empty)){empty.innerHTML='<div class="v4607-empty-inner"><span class="v4607-empty-ico">✓</span><strong>조건에 맞는 오늘의 업무가 없습니다.</strong><span>정기 업무는 점검주기에서 자동 생성되고,<br>현장 확인·민원·긴급 점검은 아래 비정기 업무 등록에서 추가할 수 있습니다.</span></div>'}}
+function setRoleClass(){const p=$('today');if(!p)return;const r=currentRole();p.classList.add('v4607-user-ux');p.classList.toggle('v4607-admin',r==='admin'||r==='viewer');p.classList.toggle('v4607-user',!(r==='admin'||r==='viewer'))}
+function refreshToday(){
+ lockVersion();const p=$('today');if(!p)return;setRoleClass();
+ const shell=$('v4589TodayShell');if(!shell)return;
+ ensureGuide(shell);ensureBottom(shell);enhanceFilters();enhanceEmpty();renderAlerts();
+ const cycle=$('v4589CycleGo');if(cycle)cycle.textContent='점검주기 관리';
+}
+function bindVersionGuards(){
+ const badge=$('tfmsVersionBadge');if(badge&&!badge.__v4607obs){badge.__v4607obs=true;new MutationObserver(()=>{if(badge.textContent!==BUILD)badge.textContent=BUILD}).observe(badge,{childList:true,characterData:true,subtree:true})}
+ const title=q('head title');if(title&&!title.__v4607obs){title.__v4607obs=true;new MutationObserver(()=>{if(document.title!=='TFMS '+BUILD)document.title='TFMS '+BUILD}).observe(title,{childList:true,characterData:true,subtree:true})}
+}
+function installRenderHook(){
+ const base=window.renderTodayHubV4589;if(typeof base==='function'&&!base.__v4607){const w=function(){const r=base.apply(this,arguments);setTimeout(refreshToday,0);return r};w.__v4607=true;window.renderTodayHubV4589=w}
+}
+function run(){installHistoryGuard();lockVersion();bindVersionGuards();installRenderHook();setTimeout(refreshToday,30)}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
+[100,350,900,1800,3600].forEach(ms=>setTimeout(run,ms));
+setInterval(()=>{lockVersion();if($('today')?.classList.contains('active'))refreshToday()},700);
+['showPage','navTo'].forEach(name=>{const base=window[name];if(typeof base==='function'&&!base.__v4607today){const w=function(id){const r=base.apply(this,arguments);if(id==='today')setTimeout(refreshToday,120);return r};w.__v4607today=true;window[name]=w}});
+})();
+</script>
+
 </body></html>
