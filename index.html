@@ -6,7 +6,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>TFMS v46.13 Header Icon Safe Restore</title>
+<title>TFMS v46.14 Static Header Icon Markup Fix Safe</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -999,7 +999,7 @@ nav.sidebar {
 <div class="top">
 <div aria-label="대시보드 홈으로 이동" class="logo" onclick="goHome()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goHome();}" role="button" tabindex="0">
 <img alt="태백시시설관리공단" src="data:image/png;base64,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"/>
-<div class="logo-title"><span class="tfms-head-name">TFMS</span><span class="v32-classic-note" id="tfmsVersionBadge" title="클릭하여 업데이트 내역 보기">v46.10 Maintenance Role Scope & Version Authority Safe</span><small>시설 유지관리 이력관리 시스템</small></div>
+<div class="logo-title"><span class="tfms-head-name">TFMS</span><span class="v32-classic-note" id="tfmsVersionBadge" title="클릭하여 업데이트 내역 보기">v46.14 Static Header Icon Markup Fix Safe</span><small>시설 유지관리 이력관리 시스템</small></div>
 </div>
 <div class="user">
 <span class="current-role-badge" id="cloudTopBadge" style="background:#fff7ed;color:#9a3412;border-color:#fed7aa">로컬 저장</span><span>🔔</span><button class="link-btn" id="topUserLabel" onclick="navTo('myPage')" style="text-decoration:none">👤 로그인 사용자</button><span class="current-role-badge" id="roleBadge">권한 확인 중</span><button class="logout" id="topLoginBtn" onclick="toggleTopLogin()">로그아웃</button>
@@ -1091,9 +1091,9 @@ nav.sidebar {
 <main>
 <section class="page active tfms-dashboard-v451" id="dashboard">
 <div class="v451-dash-head">
-  <div>
-    <h1>대시보드</h1>
-    <p>오늘도 안전하고 효율적인 시설관리를 응원합니다.</p>
+  <div class="v4614-dashboard-title-wrap">
+    <span class="v4614-dashboard-title-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>
+    <div class="v4614-dashboard-title-copy"><h1>대시보드</h1><p>오늘도 안전하고 효율적인 시설관리를 응원합니다.</p></div>
   </div>
   <div class="v451-dash-tools">
     <span class="current-scope" id="scopeBadge">전체 시설 기준</span>
@@ -1154,7 +1154,7 @@ nav.sidebar {
 </section>
 <section class="page" id="register">
 <div class="title-row v459-title-row">
-  <div class="title-left"><div class="title-icon">📝</div><div><h1>유지관리 등록</h1><div class="breadcrumb">홈 › 유지관리 등록 › 유지관리 이력 작성</div></div></div>
+  <div class="title-left"><div class="title-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"/></svg></div><div><h1>유지관리 등록</h1><div class="breadcrumb">홈 › 유지관리 등록 › 유지관리 이력 작성</div></div></div>
   <div class="v459-top-actions"><button class="btn" type="button" onclick="resetRegisterForm()">초기화</button><button class="btn blue" type="button" data-tfms-register-button="1" onclick="addRecordFromForm()">등록</button></div>
 </div>
 <div class="v459-register-shell">
@@ -1210,7 +1210,7 @@ nav.sidebar {
 </div>
 </section>
 <section class="page" id="history">
-<div class="title-row"><div class="title-left"><div class="title-icon">🔍</div><div><h1>유지관리 조회</h1><div class="breadcrumb">홈 › 유지관리 조회</div></div></div></div>
+<div class="title-row"><div class="title-left"><div class="title-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg></div><div><h1>유지관리 조회</h1><div class="breadcrumb">홈 › 유지관리 조회</div></div></div></div>
 <div class="panel v4577-history-shell">
   <div class="v4577-favorite-row"><strong>즐겨찾기 필터</strong><div class="v4577-favorite-chips"><button type="button" data-v4577-fav="all" class="active">전체</button><button type="button" data-v4577-fav="week">이번주</button><button type="button" data-v4577-fav="open">미완료</button><button type="button" data-v4577-fav="boiler">기계-보일러</button><button type="button" data-v4577-fav="preventive">예방정비</button></div></div>
   <div class="v4577-history-filter-grid">
@@ -1234,7 +1234,7 @@ nav.sidebar {
 </div>
 </section>
 <section class="page" id="myPage">
-<div class="title-row"><div class="title-left"><div class="title-icon">👤</div><div><h1>내 정보</h1><div class="breadcrumb">홈 › 내 정보 › 비밀번호 변경</div></div></div></div>
+<div class="title-row"><div class="title-left"><div class="title-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></svg></div><div><h1>내 정보</h1><div class="breadcrumb">홈 › 내 정보 › 비밀번호 변경</div></div></div></div>
 <div class="panel">
 <div class="section-title"><span class="dot"></span>계정정보</div>
 <div class="grid two">
@@ -1256,7 +1256,7 @@ nav.sidebar {
 </div>
 </section>
 <section class="page" id="accountAdmin">
-<div class="title-row"><div class="title-left"><div class="title-icon">👥</div><div><h1>계정승인</h1><div class="breadcrumb">홈 › 계정승인 › 사용자 권한관리</div></div></div></div>
+<div class="title-row"><div class="title-left"><div class="title-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="4"/><path d="M2.5 21a6.5 6.5 0 0 1 13 0M17 11l2 2 3-4"/></svg></div><div><h1>계정승인</h1><div class="breadcrumb">홈 › 계정승인 › 사용자 권한관리</div></div></div></div>
 <div class="panel">
 <div class="section-title"><span class="dot"></span>계정 운영 흐름</div>
 <div class="account-flow">
@@ -1318,7 +1318,7 @@ nav.sidebar {
 <div id="auditDeleteModalV4577" class="v4577-confirm-overlay" onclick="if(event.target===this)closeAuditDeleteV4577()"><div class="v4577-confirm-card"><div class="v4577-confirm-title">❗ 이력 완전 삭제 확인</div><p>선택한 이력을 완전히 삭제합니다.</p><div id="auditDeleteInfoV4577" class="v4577-confirm-info"></div><strong class="v4577-danger-text">삭제된 이력은 복구할 수 없습니다.</strong><p>계속하시겠습니까?</p><div class="v4577-confirm-actions"><button class="btn light" type="button" onclick="closeAuditDeleteV4577()">취소</button><button class="btn red" id="auditDeleteConfirmBtnV4577" type="button">완전 삭제</button></div></div></div>
 </section>
 <section class="page" id="today">
-<div class="title-row"><div class="title-left"><div class="title-icon">✅</div><div><h1>오늘의 업무</h1><div class="breadcrumb">홈 › 오늘의 업무</div></div></div></div>
+<div class="title-row"><div class="title-left"><div class="title-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M7.5 12l2.5 2.5 5-5"/></svg></div><div><h1>오늘의 업무</h1><div class="breadcrumb">홈 › 오늘의 업무</div></div></div></div>
 <div class="panel"><div class="notice">
 <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
 <div><b>점검주기 관리</b>에 등록된 정기 업무가 자동으로 표시됩니다. 담당 시설의 정기점검 기준을 확인·등록한 뒤, 완료 처리하면 유지관리 등록 화면으로 연결할 수 있습니다.</div>
@@ -1329,7 +1329,7 @@ nav.sidebar {
 <section class="page" id="dailylog">
 <div class="title-row">
 <div class="title-left">
-<div class="title-icon">📋</div>
+<div class="title-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3Z"/><path d="M8 4v16M10.5 8H16M10.5 12H16"/></svg></div>
 <div><h1>업무일지</h1><div class="breadcrumb">홈 › 업무일지 › 일상점검 자동작성</div></div>
 </div>
 </div>
@@ -1373,7 +1373,7 @@ nav.sidebar {
 </div>
 </section>
 <section class="page" id="qrCheck">
-<div class="title-row"><div class="title-left"><div class="title-icon">📱</div><div><h1>QR점검</h1><div class="breadcrumb">홈 › QR점검 › 모바일 현장점검</div></div></div></div>
+<div class="title-row"><div class="title-left"><div class="title-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM18 18h3v3h-3zM18 14h3"/></svg></div><div><h1>QR점검</h1><div class="breadcrumb">홈 › QR점검 › 모바일 현장점검</div></div></div></div>
 <div class="panel">
 <div class="section-title"><span class="dot"></span>QR 점검 흐름</div>
 <div class="notice">
@@ -1424,7 +1424,7 @@ nav.sidebar {
 </div>
 </section>
 <section class="page" id="sampleData">
-<div class="title-row"><div class="title-left"><div class="title-icon">🗂</div><div><h1>예시자료</h1><div class="breadcrumb">홈 › 예시자료 › 테스트 데이터 관리</div></div></div></div>
+<div class="title-row"><div class="title-left"><div class="title-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h6l2 2h8v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z"/><path d="M8 13h8M8 16h5"/></svg></div><div><h1>예시자료</h1><div class="breadcrumb">홈 › 예시자료 › 테스트 데이터 관리</div></div></div></div>
 <div class="panel">
 <div class="section-title"><span class="dot"></span>테스트 데이터 관리</div>
 <div class="notice">
@@ -1462,7 +1462,7 @@ nav.sidebar {
 </div>
 </section>
 <section class="page" id="finalTest">
-<div class="title-row"><div class="title-left"><div class="title-icon">🧪</div><div><h1>실전 테스트</h1><div class="breadcrumb">홈 › 실전 테스트 › 최종 점검</div></div></div></div>
+<div class="title-row"><div class="title-left"><div class="title-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3v5l-5 9a3 3 0 0 0 2.6 4.5h10.8A3 3 0 0 0 20 17l-5-9V3"/><path d="M8 13h8"/></svg></div><div><h1>실전 테스트</h1><div class="breadcrumb">홈 › 실전 테스트 › 최종 점검</div></div></div></div>
 <div class="panel">
 <div class="section-title"><span class="dot"></span>운영 전 체크리스트</div>
 <div class="test-grid">
@@ -1490,7 +1490,7 @@ nav.sidebar {
 </div>
 </section>
 <section class="page tfms-ux-page" id="stats">
-<div class="title-row tfms-ux-title"><div class="title-left"><div class="title-icon">📈</div><div><h1>통계현황</h1><div class="breadcrumb">홈 › 통계현황 › 핵심지표 요약</div></div></div>
+<div class="title-row tfms-ux-title"><div class="title-left"><div class="title-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></div><div><h1>통계현황</h1><div class="breadcrumb">홈 › 통계현황 › 핵심지표 요약</div></div></div>
 <div class="tfms-stats-badge">현재 선택 부서 기준 · 실시간 집계</div></div>
 <div class="panel tfms-stats-summary">
 <div class="compare-grid tfms-compact-kpi">
@@ -1514,7 +1514,7 @@ nav.sidebar {
 </div>
 </section>
 <section class="page" id="excel">
-<div class="title-row"><div class="title-left"><div class="title-icon">⬇</div><div><h1>엑셀 다운로드</h1><div class="breadcrumb">홈 › 엑셀 다운로드</div></div></div></div>
+<div class="title-row"><div class="title-left"><div class="title-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12"/><path d="m8 11 4 4 4-4"/><path d="M5 20h14"/></svg></div><div><h1>엑셀 다운로드</h1><div class="breadcrumb">홈 › 엑셀 다운로드</div></div></div></div>
 <div class="panel">
 <div class="notice">자료구분·대상연도·시설 조건에 따라 유지관리 데이터를 자동 분류하여 실제 .xlsx 엑셀파일로 내려받습니다.</div>
 <div class="grid" style="margin-top:16px">
@@ -1533,7 +1533,7 @@ nav.sidebar {
 <section class="page" id="facility">
 <div class="title-row">
 <div class="title-left">
-<div class="title-icon">🏢</div>
+<div class="title-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18M5 21V8l7-4 7 4v13"/><path d="M9 21v-6h6v6M8 10h2M14 10h2"/></svg></div>
 <div><h1>시설관리</h1><div class="breadcrumb">홈 › 시설관리 › 기준정보 관리</div></div>
 </div>
 </div>
@@ -1582,7 +1582,7 @@ nav.sidebar {
 <section class="page" id="equipment">
 <div class="title-row">
 <div class="title-left">
-<div class="title-icon">⚙</div>
+<div class="title-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21h-4v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3v-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.5V3h4v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.5 1h.1v4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg></div>
 <div><h1>설비관리</h1><div class="breadcrumb">홈 › 설비관리 › 설비 기준정보 및 이력</div></div>
 </div>
 </div>
@@ -1700,7 +1700,7 @@ nav.sidebar {
 </div>
 </section>
 <section class="page" id="cycle">
-<div class="title-row"><div class="title-left"><div class="title-icon">📅</div><div><h1>점검주기 관리</h1><div class="breadcrumb">홈 › 점검주기 관리 › 예방점검·소방점검</div></div></div></div>
+<div class="title-row"><div class="title-left"><div class="title-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/><path d="M5 4 3 6M19 4l2 2"/></svg></div><div><h1>점검주기 관리</h1><div class="breadcrumb">홈 › 점검주기 관리 › 예방점검·소방점검</div></div></div></div>
 <div class="v459-cycle-shortcuts">
   <button type="button" class="active" onclick="document.getElementById('v459CycleForm')?.scrollIntoView({behavior:'smooth',block:'start'})"><span>📅</span><b>일반 점검주기</b><small>설비·시설 반복점검 일정 관리</small></button>
   <button type="button" onclick="navToFireV420()"><span>🧯</span><b>소방 월간점검</b><small>업무 수행 기록표 작성·이력</small></button>
@@ -22142,7 +22142,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 <script id="tfms-v4559-version-display-lock">
 (function(){
   'use strict';
-  const LABEL='v45.89 Today Work Hub V2 Safe';
+  const LABEL='v46.14 Static Header Icon Markup Fix Safe';
   const TITLE='TFMS '+LABEL;
   const PARAM='45.78';
   const FIXED_BUILD=Object.freeze({
@@ -22424,7 +22424,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 (function(){
 'use strict';
 const $=id=>document.getElementById(id);
-const LABEL='v45.89 Today Work Hub V2 Safe';
+const LABEL='v46.14 Static Header Icon Markup Fix Safe';
 function syncVersion(){
   try{
     const b=$('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
@@ -23602,8 +23602,8 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <script id="tfms-v4576-maintenance-attachments-today-unified-controller">
 (function(){
 'use strict';
-const VERSION='v45.89 Today Work Hub V2 Safe';
-const VERSION_PARAM='45.89';
+const VERSION='v46.14 Static Header Icon Markup Fix Safe';
+const VERSION_PARAM='46.14';
 const BUCKET='tfms-equipment-photos';
 const $=id=>document.getElementById(id);
 const esc=v=>String(v??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
@@ -24137,7 +24137,7 @@ setInterval(()=>{if(window.renderTodayTasks!==render){window.renderTodayTasks=re
 <script id="tfms-v4586-account-compact-controller">
 (function(){
 'use strict';
-const BUILD='v45.89 Today Work Hub V2 Safe', VER='45.89';
+const BUILD='v46.14 Static Header Icon Markup Fix Safe', VER='46.14';
 const $=id=>document.getElementById(id), q=(s,r=document)=>r.querySelector(s), qa=(s,r=document)=>Array.from(r.querySelectorAll(s));
 function lockVersion(){const b=$('tfmsVersionBadge');if(b)b.textContent=BUILD;document.title='TFMS '+BUILD;try{const u=new URL(location.href);if(u.searchParams.get('v')!==VER){u.searchParams.set('v',VER);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
 function buildMyInfo(){
@@ -24262,8 +24262,8 @@ main .page .title-icon[class*="history"]{
 <script id="tfms-v4587-page-header-icon-controller">
 (function(){
 'use strict';
-const BUILD='v45.89 Today Work Hub V2 Safe';
-const VERSION='45.89';
+const BUILD='v46.14 Static Header Icon Markup Fix Safe';
+const VERSION='46.14';
 function lockVersion(){
   const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent=BUILD;
   document.title='TFMS '+BUILD;
@@ -24396,8 +24396,8 @@ const oldNav=window.navTo;if(typeof oldNav==='function'&&!oldNav.__v4587header){
 <script id="tfms-v4588-login-hero-controller">
 (function(){
 'use strict';
-const BUILD='v45.89 Today Work Hub V2 Safe';
-const VERSION='45.89';
+const BUILD='v46.14 Static Header Icon Markup Fix Safe';
+const VERSION='46.14';
 function lockVersion(){
   const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent=BUILD;
   document.title='TFMS '+BUILD;
@@ -24412,7 +24412,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <!-- =========================================================
- TFMS v45.89 Today Work Hub V2 Safe
+ TFMS v46.14 Static Header Icon Markup Fix Safe
  Scope: Today page UX + stable task action flow only.
  DB / SQL / fire / maintenance core logic unchanged.
  ========================================================= -->
@@ -24457,7 +24457,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <script id="tfms-v4589-today-hub-controller">
 (function(){
 'use strict';
-const BUILD='v45.89 Today Work Hub V2 Safe',VERSION='45.89';
+const BUILD='v46.14 Static Header Icon Markup Fix Safe',VERSION='46.14';
 const $=id=>document.getElementById(id),q=(s,r=document)=>r.querySelector(s),qa=(s,r=document)=>Array.from(r.querySelectorAll(s));
 const esc=v=>String(v??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
 let filter='all',search='',activeKey='',resultMode='normal',drawerFiles=[];
@@ -25373,7 +25373,7 @@ setInterval(()=>{lockVersion();identityGuard();if($('equipment')?.classList.cont
 })();
 </script>
 
-<!-- TFMS v46.10 Maintenance Role Scope & Version Authority Safe -->
+<!-- TFMS v46.14 Static Header Icon Markup Fix Safe -->
 <style id="tfms-v4610-maintenance-scope-style">
 #history .v4610-scope-note{display:inline-flex;align-items:center;gap:5px;margin-left:8px;padding:4px 8px;border:1px solid #cfe0f1;border-radius:999px;background:#f7fbff;color:#55718d;font-size:9.5px;font-weight:800;vertical-align:middle}
 #history .v4610-scope-note::before{content:"";width:6px;height:6px;border-radius:50%;background:#12a7a2}
@@ -25381,8 +25381,8 @@ setInterval(()=>{lockVersion();identityGuard();if($('equipment')?.classList.cont
 <script id="tfms-v4610-maintenance-role-scope-controller">
 (function(){
 'use strict';
-const BUILD='v46.10 Maintenance Role Scope & Version Authority Safe';
-const VERSION='46.10';
+const BUILD='v46.14 Static Header Icon Markup Fix Safe';
+const VERSION='46.14';
 const $=id=>document.getElementById(id);
 const q=(s,r=document)=>r.querySelector(s);
 const qa=(s,r=document)=>Array.from(r.querySelectorAll(s));
@@ -25469,36 +25469,14 @@ setInterval(()=>{installHistoryVersionAuthority();lockVersion();identityGuard();
 })();
 </script>
 
-<!-- TFMS v46.13 Header Icon Safe Restore -->
-<style id="tfms-v4613-header-icon-safe-style">
-main .page > .title-row .title-left{display:flex;align-items:center;gap:12px!important}
-main .page > .title-row .title-icon{width:46px!important;height:46px!important;flex:0 0 46px!important;border-radius:13px!important;display:flex!important;align-items:center!important;justify-content:center!important;background:linear-gradient(145deg,#119ca8,#1568ce)!important;box-shadow:0 7px 16px rgba(20,92,170,.15)!important;color:#fff!important;font-size:0!important;line-height:1!important;padding:0!important;margin:0!important}
-main .page > .title-row .title-icon svg{width:23px;height:23px;display:block;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
-#dashboard .v451-dash-head>div:first-child{position:relative;padding-left:58px;min-height:46px;display:flex;flex-direction:column;justify-content:center}
-#dashboard .v451-dash-head>div:first-child::before{content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:13px;background-color:#1288c4;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='3' width='7' height='7' rx='1.5'/%3E%3Crect x='14' y='3' width='7' height='7' rx='1.5'/%3E%3Crect x='3' y='14' width='7' height='7' rx='1.5'/%3E%3Crect x='14' y='14' width='7' height='7' rx='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center;background-size:23px 23px;box-shadow:0 7px 16px rgba(20,92,170,.15)}
-@media(max-width:760px){main .page > .title-row .title-icon{width:42px!important;height:42px!important;flex-basis:42px!important}main .page > .title-row .title-icon svg{width:21px;height:21px}#dashboard .v451-dash-head>div:first-child{padding-left:52px;min-height:42px}#dashboard .v451-dash-head>div:first-child::before{width:42px;height:42px;background-size:21px 21px}}
+<style id="tfms-v4614-static-header-icons-style">
+main .page > .title-row .title-left{display:flex!important;align-items:center!important;gap:12px!important}
+main .page > .title-row .title-icon{width:46px!important;height:46px!important;min-width:46px!important;flex:0 0 46px!important;border-radius:13px!important;display:flex!important;align-items:center!important;justify-content:center!important;background:linear-gradient(145deg,#0f9fa5,#176bd0)!important;color:#fff!important;box-shadow:0 6px 14px rgba(20,92,170,.14)!important;font-size:0!important;line-height:0!important;padding:0!important;margin:0!important}
+main .page > .title-row .title-icon svg,.v4614-dashboard-title-icon svg{width:22px!important;height:22px!important;display:block!important;fill:none!important;stroke:currentColor!important;stroke-width:1.8!important;stroke-linecap:round!important;stroke-linejoin:round!important}
+#dashboard .v451-dash-head .v4614-dashboard-title-wrap{display:flex!important;align-items:center!important;gap:12px!important;min-height:46px!important}
+.v4614-dashboard-title-icon{width:46px!important;height:46px!important;min-width:46px!important;flex:0 0 46px!important;border-radius:13px!important;display:flex!important;align-items:center!important;justify-content:center!important;background:linear-gradient(145deg,#0f9fa5,#176bd0)!important;color:#fff!important;box-shadow:0 6px 14px rgba(20,92,170,.14)!important}
+.v4614-dashboard-title-copy{display:flex!important;flex-direction:column!important;justify-content:center!important}.v4614-dashboard-title-copy h1{margin:0!important}.v4614-dashboard-title-copy p{margin:2px 0 0!important}
+@media(max-width:760px){main .page > .title-row .title-icon,.v4614-dashboard-title-icon{width:42px!important;height:42px!important;min-width:42px!important;flex-basis:42px!important}main .page > .title-row .title-icon svg,.v4614-dashboard-title-icon svg{width:20px!important;height:20px!important}}
 </style>
-<script id="tfms-v4613-header-icon-safe-controller">
-(function(){'use strict';
-const V='46.13',BUILD='v46.13 Header Icon Safe Restore';
-const icons={
-'유지관리 등록':'<svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"/></svg>',
-'유지관리 조회':'<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>',
-'오늘의 업무':'<svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M7.5 12l2.5 2.5 5-5"/></svg>',
-'업무일지':'<svg viewBox="0 0 24 24"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3Z"/><path d="M8 4v16M10.5 8H16M10.5 12H16"/></svg>',
-'설비관리':'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21h-4v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3v-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.5V3h4v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.5 1h.1v4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg>',
-'점검주기 관리':'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/><path d="M5 4 3 6M19 4l2 2"/></svg>',
-'통계현황':'<svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>',
-'엑셀 다운로드':'<svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m8 11 4 4 4-4"/><path d="M5 20h14"/></svg>',
-'내 정보':'<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></svg>',
-'계정승인':'<svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M2.5 21a6.5 6.5 0 0 1 13 0M17 11l2 2 3-4"/></svg>',
-'삭제·변경 이력 관리':'<svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3 2"/></svg>'};
-function titleOf(h){return String(h?.textContent||'').replace(/관리자 전용|조회전용|담당자용/g,'').replace(/\s+/g,' ').trim()}
-function applyIcons(){document.querySelectorAll('main .page > .title-row').forEach(row=>{const h=row.querySelector('h1'),icon=row.querySelector('.title-icon');if(!h||!icon)return;const svg=icons[titleOf(h)];if(svg)icon.innerHTML=svg;});}
-function lock(){const b=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');if(b)b.textContent=BUILD;document.title='TFMS '+BUILD;try{const u=new URL(location.href);if(u.searchParams.get('v')!==V){u.searchParams.set('v',V);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
-function run(){applyIcons();lock()}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
-[120,500,1200].forEach(ms=>setTimeout(run,ms));setInterval(lock,1200);
-})();
-</script>
+<script id="tfms-v4614-final-version-lock">(function(){'use strict';const B='v46.14 Static Header Icon Markup Fix Safe',V='46.14';function f(){const b=document.getElementById('tfmsVersionBadge');if(b&&b.textContent!==B)b.textContent=B;if(document.title!=='TFMS '+B)document.title='TFMS '+B;try{const u=new URL(location.href);if(u.searchParams.get('v')!==V){u.searchParams.set('v',V);History.prototype.replaceState.call(history,history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',f,{once:true});else f();setInterval(f,100);})();</script>
 </body></html>
