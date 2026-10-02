@@ -34335,19 +34335,37 @@ syncVersion();
 <style id="tfms-v4711-energy-trend-tabs-style">
 #stats .tfms-energy-mini-toggle button{cursor:pointer}
 #stats .tfms-energy-mini-toggle button:disabled{cursor:default;opacity:.55}
-#stats .tfms-energy-trend-v4711{padding:4px 2px 0;overflow:auto}
-#stats .tfms-energy-trend-v4711 table{min-width:760px;width:100%;border-collapse:collapse;font-size:9px}
-#stats .tfms-energy-trend-v4711 th,#stats .tfms-energy-trend-v4711 td{border-bottom:1px solid #e8eef4;padding:6px 5px;text-align:right;white-space:nowrap}
-#stats .tfms-energy-trend-v4711 th:first-child,#stats .tfms-energy-trend-v4711 td:first-child{text-align:left;position:sticky;left:0;background:#fff;font-weight:900;z-index:1}
-#stats .tfms-energy-trend-v4711 thead th{background:#f7fafc;color:#718198;font-weight:900}
-#stats .tfms-energy-trend-v4711 tr.current td{color:#234e78;font-weight:800}
-#stats .tfms-energy-trend-v4711 tr.previous td{color:#7b8794}
-#stats .tfms-energy-trend-v4711 .energy-row-label{display:flex;align-items:center;gap:5px}
-#stats .tfms-energy-trend-v4711 .energy-dot{width:7px;height:7px;border-radius:50%;display:inline-block;background:#86a8cf}
-#stats .tfms-energy-trend-v4711 .energy-dot.electricity{background:#4f8bd6}
-#stats .tfms-energy-trend-v4711 .energy-dot.gas{background:#dd9458}
-#stats .tfms-energy-trend-v4711 .energy-dot.water{background:#55a9ae}
-#stats .tfms-energy-trend-note-v4711{margin-top:7px;color:#8493a4;font-size:8px;line-height:1.5;text-align:right}
+#stats .tfms-energy-chart-placeholder{padding:0;overflow:hidden}
+#stats .tfms-energy-trend-v4711{position:relative;height:245px;background:#fbfdff}
+#stats .tfms-energy-trend-shell-v4711{position:absolute;inset:0;display:flex;flex-direction:column}
+#stats .tfms-energy-trend-legend-v4711{display:flex;flex-wrap:wrap;gap:8px 14px;padding:10px 12px 0 12px;min-height:32px}
+#stats .tfms-energy-legend-item-v4711{display:inline-flex;align-items:center;gap:6px;color:#5b6f87;font-size:10px;font-weight:800;white-space:nowrap}
+#stats .tfms-energy-legend-swatch-v4711{width:16px;height:4px;border-radius:999px;background:#8ba9ce;display:inline-block;position:relative;overflow:hidden}
+#stats .tfms-energy-legend-swatch-v4711.dot{width:10px;height:10px;border-radius:50%}
+#stats .tfms-energy-legend-swatch-v4711.dashed{background:repeating-linear-gradient(to right,currentColor 0 6px,transparent 6px 10px);height:3px}
+#stats .tfms-energy-chart-canvas-v4711{position:relative;flex:1;min-height:0;padding:0 10px 22px}
+#stats .tfms-energy-chart-svg-v4711{display:block;width:100%;height:100%}
+#stats .tfms-energy-chart-svg-v4711 .grid line{stroke:#e8eef5;stroke-width:1}
+#stats .tfms-energy-chart-svg-v4711 .axis text{fill:#7d8ea3;font-size:10px;font-weight:700}
+#stats .tfms-energy-chart-svg-v4711 .axis .month-label{font-size:9px}
+#stats .tfms-energy-chart-svg-v4711 .bar{transform-origin:center bottom;transform-box:fill-box;transform:scaleY(0);transition:transform .75s cubic-bezier(.2,.8,.2,1),opacity .28s ease;opacity:.94}
+#stats .tfms-energy-trend-v4711.is-ready .bar{transform:scaleY(1)}
+#stats .tfms-energy-chart-svg-v4711 .line-path{fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;opacity:.95}
+#stats .tfms-energy-chart-svg-v4711 .line-path.prev{stroke-dasharray:6 5;opacity:.58}
+#stats .tfms-energy-chart-svg-v4711 .line-point{opacity:0;transform:scale(.3);transform-origin:center center;transition:opacity .25s ease .15s,transform .35s ease .15s}
+#stats .tfms-energy-trend-v4711.is-ready .line-point{opacity:1;transform:scale(1)}
+#stats .tfms-energy-chart-svg-v4711 .line-point.prev{opacity:.7}
+#stats .tfms-energy-chart-tooltip-v4711{position:absolute;z-index:6;pointer-events:none;min-width:122px;max-width:220px;padding:8px 10px;border-radius:10px;background:rgba(15,26,43,.95);color:#fff;box-shadow:0 12px 26px rgba(0,0,0,.18);font-size:11px;line-height:1.45;opacity:0;transform:translate(-50%,-110%);transition:opacity .12s ease}
+#stats .tfms-energy-chart-tooltip-v4711.show{opacity:1}
+#stats .tfms-energy-chart-tooltip-v4711 b{display:block;font-size:12px;margin-bottom:2px}
+#stats .tfms-energy-chart-tooltip-v4711 small{display:block;color:rgba(255,255,255,.78);font-size:10px}
+#stats .tfms-energy-chart-note-v4711{padding:0 12px 8px;text-align:right;color:#8493a4;font-size:9px;line-height:1.5}
+#stats .tfms-energy-chart-empty-v4711{position:absolute;inset:0;display:grid;place-content:center;text-align:center;color:#75869a;padding:20px}
+#stats .tfms-energy-chart-empty-v4711 strong{display:block;font-size:14px;color:#4e637f}
+#stats .tfms-energy-chart-empty-v4711 span{display:block;font-size:11px;margin-top:5px}
+#stats .tfms-energy-chart-svg-v4711 .hit-point{fill:transparent;cursor:pointer}
+#stats .tfms-energy-chart-svg-v4711 .hit-bar{fill:transparent;cursor:pointer}
+#stats .tfms-energy-trend-note-v4711{margin-top:0;color:#8493a4;font-size:8px;line-height:1.5;text-align:right}
 </style>
 <script id="tfms-v4711-energy-trend-tabs-controller">
 (function(){
@@ -34359,7 +34377,7 @@ const $=id=>document.getElementById(id);
 const q=(s,r)=> (r||document).querySelector(s);
 const clean=v=>String(v??'').trim();
 const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-const TYPES=[['electricity','전기','kWh'],['gas','가스','㎥'],['water','수도','㎥']];
+const TYPES=[['electricity','전기','kWh','#3d7be0'],['gas','가스','㎥','#df8a45'],['water','수도','㎥','#29a9b4']];
 let metric='amount';
 function rows(){return Array.isArray(window.__tfmsEnergyDbRowsV4710)?window.__tfmsEnergyDbRowsV4710:[]}
 function parts(v){const m=/^(\d{4})-(\d{2})$/.exec(String(v||''));return m?{year:Number(m[1]),month:Number(m[2])}:null}
@@ -34370,18 +34388,67 @@ function monthRows(year,month,type){return rows().filter(r=>{const p=parts(r.mon
 function sumMetric(year,month,type,key){const vals=monthRows(year,month,type).map(r=>fnum(r[key])).filter(v=>v!==null);return vals.length?vals.reduce((a,b)=>a+b,0):null}
 function unitPrice(year,month,type){const valid=monthRows(year,month,type).filter(r=>fnum(r.usage)!==null&&fnum(r.amount)!==null&&Number(r.usage)>0);if(!valid.length)return null;const usage=valid.reduce((s,r)=>s+Number(r.usage),0),amount=valid.reduce((s,r)=>s+Number(r.amount),0);return usage>0?amount/usage:null}
 function buttons(){return ['usage','amount','unit'].map(m=>'<button type="button" data-energy-trend-metric-v4711="'+m+'" class="'+(metric===m?'active':'')+'">'+({usage:'사용량',amount:'요금',unit:'단가'}[m])+'</button>').join('')}
-function typeRows(p,m){const months=Array.from({length:p.endMonth},(_,i)=>i+1),years=[p.year,p.year-1],out=[];years.forEach(y=>TYPES.forEach(([type,label,unit])=>{const vals=months.map(mon=>m==='usage'?sumMetric(y,mon,type,'usage'):unitPrice(y,mon,type));out.push({year:y,type,label,unit,vals})}));return {months,out}}
 function amountRows(p){const months=Array.from({length:p.endMonth},(_,i)=>i+1);return {months,out:[p.year,p.year-1].map(y=>({year:y,vals:months.map(mon=>sumMetric(y,mon,null,'amount'))}))}}
+function typeRows(p,m){const months=Array.from({length:p.endMonth},(_,i)=>i+1),years=[p.year,p.year-1],out=[];years.forEach(y=>TYPES.forEach(([type,label,unit,color])=>{const vals=months.map(mon=>m==='usage'?sumMetric(y,mon,type,'usage'):unitPrice(y,mon,type));out.push({year:y,type,label,unit,color,vals,prev:y!==p.year})}));return {months,out}}
+function noteText(){
+ if(metric==='amount')return '단위: 원 · 전기·수도·가스 요금 합계 · 마우스를 올리면 월별 금액이 표시됩니다.';
+ if(metric==='usage')return '사용량은 전기(kWh), 가스·수도(㎥)를 에너지원별로 표시합니다. 실선은 '+period().year+'년, 점선은 '+(period().year-1)+'년입니다.';
+ return '단가는 월별 총요금 ÷ 월별 총사용량의 가중 평균값입니다. 전기 원/kWh, 가스·수도 원/㎥ 기준입니다.';
+}
+function legendHtml(p){
+ if(metric==='amount'){
+   return '<span class="tfms-energy-legend-item-v4711"><i class="tfms-energy-legend-swatch-v4711" style="background:#2f73da"></i>'+p.year+'년</span>'+
+          '<span class="tfms-energy-legend-item-v4711"><i class="tfms-energy-legend-swatch-v4711" style="background:#a9bfdc"></i>'+(p.year-1)+'년</span>';
+ }
+ return TYPES.map(([type,label,unit,color])=>{
+   return '<span class="tfms-energy-legend-item-v4711"><i class="tfms-energy-legend-swatch-v4711 dot" style="background:'+color+'"></i>'+label+' '+(metric==='usage'?'('+unit+')':'')+'<i class="tfms-energy-legend-swatch-v4711" style="background:'+color+';margin-left:6px"></i>'+p.year+'<i class="tfms-energy-legend-swatch-v4711 dashed" style="color:'+color+';margin-left:6px"></i>'+(p.year-1)+'</span>';
+ }).join('');
+}
+function wrapChart(inner,note){return '<div class="tfms-energy-trend-v4711"><div class="tfms-energy-trend-shell-v4711">'+inner+'<div class="tfms-energy-chart-note-v4711">'+note+'</div></div></div>'}
+function chartSvgShell(legend,svg,empty){return '<div class="tfms-energy-trend-legend-v4711">'+legend+'</div><div class="tfms-energy-chart-canvas-v4711">'+(empty?'<div class="tfms-energy-chart-empty-v4711"><strong>'+empty.title+'</strong><span>'+empty.text+'</span></div>':'')+'<svg class="tfms-energy-chart-svg-v4711" viewBox="0 0 720 180" preserveAspectRatio="none">'+svg+'</svg><div class="tfms-energy-chart-tooltip-v4711"></div></div>'}
+function amountSvg(p){
+ const data=amountRows(p),months=data.months,series=data.out,vals=series.flatMap(s=>s.vals.filter(v=>v!==null));
+ if(!vals.length)return chartSvgShell(legendHtml(p),'',{title:'표시할 공공요금 자료가 없습니다.',text:'DB에 저장된 월별 공공요금 자료를 먼저 등록해주세요.'});
+ const W=720,H=180,left=46,right=12,top=10,bottom=26,innerW=W-left-right,innerH=H-top-bottom,max=Math.max(...vals,1)*1.15;const grid=[];for(let i=0;i<5;i++){const y=top+innerH*(i/4),value=max*(1-i/4);grid.push('<line x1="'+left+'" y1="'+y.toFixed(2)+'" x2="'+(W-right)+'" y2="'+y.toFixed(2)+'"></line><text x="'+(left-6)+'" y="'+(y+3).toFixed(2)+'" text-anchor="end">'+fmt(value>=1000?Math.round(value):value)+'</text>')}
+ const groupW=innerW/months.length,barW=Math.min(24,groupW*.28),colors=['#2f73da','#b2c7e0'];let bars='';
+ months.forEach((m,idx)=>{const gx=left+groupW*idx+groupW/2;bars+='<text class="month-label" x="'+gx.toFixed(2)+'" y="'+(H-7)+'" text-anchor="middle">'+m+'월</text>';series.forEach((s,si)=>{const v=s.vals[idx];if(v===null)return;const h=(v/max)*innerH,x=gx+(si===0?-barW*.75:barW*.05),y=top+innerH-h;bars+='<rect class="bar" x="'+x.toFixed(2)+'" y="'+y.toFixed(2)+'" width="'+barW.toFixed(2)+'" height="'+h.toFixed(2)+'" rx="4" fill="'+colors[si]+'" data-tip-title="'+s.year+'년 '+m+'월" data-tip-value="'+fmt(v)+'원" data-tip-meta="총 공공요금"/>';
+ bars+='<rect class="hit-bar" x="'+(x-3).toFixed(2)+'" y="'+top+'" width="'+(barW+6).toFixed(2)+'" height="'+innerH.toFixed(2)+'" data-tip-title="'+s.year+'년 '+m+'월" data-tip-value="'+fmt(v)+'원" data-tip-meta="총 공공요금" />';
+ })});
+ const svg='<g class="grid">'+grid.map(x=>x.replace('<text','<g class="axis"><text').replace('</text>','</text></g>')).join('')+'</g><g class="axis"></g><g>'+bars+'</g>';
+ return chartSvgShell(legendHtml(p),svg,'');
+}
+function linePath(points){return points.map((p,i)=>(i?'L':'M')+p.x.toFixed(2)+' '+p.y.toFixed(2)).join(' ')}
+function typeSvg(p){
+ const data=typeRows(p,metric),months=data.months,allVals=data.out.flatMap(s=>s.vals.filter(v=>v!==null));
+ if(!allVals.length)return chartSvgShell(legendHtml(p),'',{title:'표시할 추이 자료가 없습니다.',text:'선택한 기간에 사용량 또는 단가 자료가 없습니다.'});
+ const W=720,H=180,left=46,right=12,top=10,bottom=26,innerW=W-left-right,innerH=H-top-bottom,max=Math.max(...allVals,1)*1.15;let svg='<g class="grid">';
+ for(let i=0;i<5;i++){const y=top+innerH*(i/4),value=max*(1-i/4);svg+='<line x1="'+left+'" y1="'+y.toFixed(2)+'" x2="'+(W-right)+'" y2="'+y.toFixed(2)+'"></line><g class="axis"><text x="'+(left-6)+'" y="'+(y+3).toFixed(2)+'" text-anchor="end">'+fmt(value,metric==='unit'?1:0)+'</text></g>'}
+ svg+='<g class="axis">';
+ const xs=months.map((m,idx)=>left + innerW*((months.length===1?0:idx/(months.length-1))));
+ xs.forEach((x,idx)=>{svg+='<text class="month-label" x="'+x.toFixed(2)+'" y="'+(H-7)+'" text-anchor="middle">'+months[idx]+'월</text>'});svg+='</g><g>';
+ data.out.forEach(s=>{const pts=s.vals.map((v,idx)=>v===null?null:{x:xs[idx],y:top+innerH-(v/max)*innerH,v:v,month:months[idx]}).filter(Boolean);if(!pts.length)return;svg+='<path class="line-path '+(s.prev?'prev':'')+'" stroke="'+s.color+'" d="'+linePath(pts)+'"></path>';
+ pts.forEach(pt=>{svg+='<circle class="line-point '+(s.prev?'prev':'')+'" cx="'+pt.x.toFixed(2)+'" cy="'+pt.y.toFixed(2)+'" r="'+(s.prev?3:3.8)+'" fill="'+s.color+'" data-tip-title="'+s.year+'년 '+s.label+' · '+pt.month+'월" data-tip-value="'+fmt(pt.v,metric==='unit'?1:0)+' '+(metric==='usage'?s.unit:('원/'+s.unit))+'" data-tip-meta="'+(metric==='usage'?'사용량':'단가')+'" />';
+ svg+='<circle class="hit-point" cx="'+pt.x.toFixed(2)+'" cy="'+pt.y.toFixed(2)+'" r="10" data-tip-title="'+s.year+'년 '+s.label+' · '+pt.month+'월" data-tip-value="'+fmt(pt.v,metric==='unit'?1:0)+' '+(metric==='usage'?s.unit:('원/'+s.unit))+'" data-tip-meta="'+(metric==='usage'?'사용량':'단가')+'" />';
+ })
+ });
+ svg+='</g>';
+ return chartSvgShell(legendHtml(p),svg,'');
+}
+function bindTooltips(target){
+ const tip=q('.tfms-energy-chart-tooltip-v4711',target);if(!tip)return;const hit=target.querySelectorAll('[data-tip-title]');
+ function show(el,e){tip.innerHTML='<b>'+esc(el.getAttribute('data-tip-title')||'')+'</b><div>'+esc(el.getAttribute('data-tip-value')||'')+'</div><small>'+esc(el.getAttribute('data-tip-meta')||'')+'</small>';tip.classList.add('show');move(e)}
+ function move(e){if(!e||!('clientX' in e))return;const r=target.getBoundingClientRect();const x=(e.clientX-r.left);const y=(e.clientY-r.top);tip.style.left=Math.max(52,Math.min(r.width-52,x))+'px';tip.style.top=Math.max(28,y-6)+'px'}
+ function hide(){tip.classList.remove('show')}
+ hit.forEach(el=>{el.addEventListener('mouseenter',e=>show(el,e));el.addEventListener('mousemove',move);el.addEventListener('mouseleave',hide);el.addEventListener('focus',e=>show(el,e));el.addEventListener('blur',hide)});
+ }
+function animateChart(target){const box=q('.tfms-energy-trend-v4711',target);if(!box)return;box.classList.remove('is-ready');const paths=Array.from(box.querySelectorAll('.line-path'));paths.forEach(path=>{try{const len=path.getTotalLength();const isPrev=path.classList.contains('prev');path.style.strokeDasharray=(isPrev?'6 5 ':'')+len;path.style.strokeDashoffset=len;path.style.transition='stroke-dashoffset .9s cubic-bezier(.2,.8,.2,1)';requestAnimationFrame(()=>{path.style.strokeDashoffset='0'})}catch(e){}});requestAnimationFrame(()=>setTimeout(()=>box.classList.add('is-ready'),20));bindTooltips(target)}
 function renderTrend(){
  const root=$('tfmsEnergyStatsRoot'),panel=q('.tfms-energy-chart-panel',root);const p=period();if(!panel||!p)return;
  const h=q('.tfms-energy-panel-head h3',panel),sub=q('.tfms-energy-panel-head span',panel),toggle=q('.tfms-energy-mini-toggle',panel),target=q('.tfms-energy-chart-placeholder',panel);if(!target)return;
  if(h)h.textContent='월별 공공요금 추이';if(sub)sub.textContent=(p.year-1)+'년 / '+p.year+'년 비교';if(toggle)toggle.innerHTML=buttons();
- if(metric==='amount'){
-   const x=amountRows(p);target.innerHTML='<div class="tfms-energy-trend-v4711"><table><thead><tr><th>구분</th>'+x.months.map(m=>'<th>'+m+'월</th>').join('')+'</tr></thead><tbody>'+x.out.map(r=>'<tr class="'+(r.year===p.year?'current':'previous')+'"><td>'+r.year+'년 총 공공요금</td>'+r.vals.map(v=>'<td>'+fmt(v)+'</td>').join('')+'</tr>').join('')+'</tbody></table><div class="tfms-energy-trend-note-v4711">단위: 원 · 전기·수도·가스 요금 합계 · DB 저장자료 기준</div></div>';
- }else{
-   const x=typeRows(p,metric);const digits=metric==='unit'?1:0;target.innerHTML='<div class="tfms-energy-trend-v4711"><table><thead><tr><th>구분</th>'+x.months.map(m=>'<th>'+m+'월</th>').join('')+'</tr></thead><tbody>'+x.out.map(r=>'<tr class="'+(r.year===p.year?'current':'previous')+'"><td><span class="energy-row-label"><i class="energy-dot '+r.type+'"></i>'+r.year+'년 '+esc(r.label)+'</span></td>'+r.vals.map(v=>'<td>'+fmt(v,digits)+'</td>').join('')+'</tr>').join('')+'</tbody></table><div class="tfms-energy-trend-note-v4711">'+(metric==='usage'?'사용량은 단위가 다른 전기(kWh)와 가스·수도(㎥)를 합산하지 않고 에너지원별로 표시합니다.':'단가는 월별 총요금 ÷ 월별 총사용량의 가중 평균값입니다. 전기 원/kWh, 가스·수도 원/㎥ 기준입니다.')+'</div></div>';
- }
+ target.innerHTML = wrapChart(metric==='amount'?amountSvg(p):typeSvg(p), noteText());
  const btns=toggle?Array.from(toggle.querySelectorAll('[data-energy-trend-metric-v4711]')):[];btns.forEach(b=>b.addEventListener('click',()=>{metric=b.dataset.energyTrendMetricV4711||'amount';renderTrend()}));
+ animateChart(target);
 }
 function renderStatus(){
  const root=$('tfmsEnergyStatsRoot'),grid=q('.tfms-energy-status-grid',root),panel=q('.tfms-energy-status-panel',root),p=period();if(!grid||!p)return;
