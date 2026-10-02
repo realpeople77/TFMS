@@ -12909,6 +12909,7 @@ Scope: dashboard maintenance aggregation/display scope only
 - Duplicate sideFacilityCount/sideTodoCount/sideOpenCount/sideMonthCount displays are synchronized without altering legacy IDs
 - No DB schema, SQL, RLS, insert payload, statistics formula, energy feature, or 160ms navigation transition changed
 -->
+<!-- TFMS v47.11 Stabilization Cleanup I Stable | removed 10 pure version-lock intervals only -->
 </body></html>`);
     win.document.close();
     setTimeout(()=>win.focus(),200);
@@ -16514,6 +16515,7 @@ TFMS v46.76 LEGACY AUDIT MANIFEST
 END LEGACY AUDIT MANIFEST
 -->
 
+<!-- TFMS v47.11 Stabilization Cleanup I Stable | removed 10 pure version-lock intervals only -->
 </body></html>`);
     w.document.close();setTimeout(()=>w.focus(),200);
   }catch(e){console.error(e);toast('QR 라벨 출력 준비 실패: '+(e?.message||e))}
@@ -17540,6 +17542,7 @@ TFMS v46.76 LEGACY AUDIT MANIFEST
 END LEGACY AUDIT MANIFEST
 -->
 
+<!-- TFMS v47.11 Stabilization Cleanup I Stable | removed 10 pure version-lock intervals only -->
 </body></html>`);doc.close();
   await new Promise(r=>{if(doc.readyState==='complete')r();else frame.onload=r;});
   const imgs=[...doc.images];await Promise.all(imgs.map(img=>img.complete?(img.decode?.().catch(()=>{})||Promise.resolve()):new Promise(res=>{img.onload=img.onerror=res;})));
@@ -18060,6 +18063,7 @@ TFMS v46.76 LEGACY AUDIT MANIFEST
 END LEGACY AUDIT MANIFEST
 -->
 
+<!-- TFMS v47.11 Stabilization Cleanup I Stable | removed 10 pure version-lock intervals only -->
 </body></html>`);doc.close();await new Promise(r=>setTimeout(r,100));if(doc.fonts?.ready)await doc.fonts.ready;await Promise.all([...doc.images].map(img=>img.complete?Promise.resolve():new Promise(r=>{img.onload=img.onerror=r})));await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));frame.contentWindow.focus();frame.contentWindow.print();setTimeout(()=>frame.remove(),5000);}catch(e){console.error(e);toast('PDF 출력 실패: '+(e?.message||e));}};
 function db(){try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||(typeof sb!=='undefined'?sb:null)}catch(e){return null}}
 async function facilityId(name){const sbc=db();const {data,error}=await sbc.from('facilities').select('id,name').eq('name',name).limit(1);if(error)throw error;if(!data?.length)throw new Error(`시설 DB에서 '${name}'을 찾지 못했습니다.`);return data[0].id;}
@@ -24832,7 +24836,7 @@ function hookTodayRender(){const base=window.renderTodayTasks;if(typeof base!=='
 function hookNavigation(){['showPage','navTo'].forEach(name=>{const base=window[name];if(typeof base!=='function'||base.__v4576nav)return;const w=function(id){const r=base.apply(this,arguments);setTimeout(()=>{syncVersion();if(id==='today'){ensureTodayUnified();try{window.renderTodayTasks?.()}catch(e){}upgradeTodayRows()}if(id==='history')ensureEditAttachmentUI()},100);return r};w.__v4576nav=true;window[name]=w})}
 function init(){syncVersion();ensureEditAttachmentUI();ensureTodayUnified();hookEditOpen();hookEditSave();hookRegisterAttachments();hookTodayRender();hookNavigation();try{window.renderTodayTasks?.()}catch(e){}[120,400,900,1800,3600].forEach(ms=>setTimeout(()=>{syncVersion();hookEditOpen();hookEditSave();hookRegisterAttachments();hookTodayRender();ensureEditAttachmentUI();ensureTodayUnified();upgradeTodayRows()},ms))}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
-setInterval(syncVersion,2500);
+
 })();
 </script>
 
@@ -24912,7 +24916,7 @@ window.deleteTodayTaskV4577=deleteTodayTaskV4577;
 function decorateTodayAdmin(){if(!admin())return;document.querySelectorAll('#todayBody tr[data-task-id]').forEach(tr=>{const a=tr.querySelector('.today-flow-actions');if(!a||a.querySelector('.v4577-admin-delete'))return;const task=(window.todayTasks||[]).find(x=>String(x._flowId||'')===String(tr.dataset.taskId));const id=task?.dbId||task?._flowId||tr.dataset.taskId;const b=document.createElement('button');b.type='button';b.className='v4577-admin-delete';b.textContent='직권삭제';b.onclick=e=>{e.stopPropagation();deleteTodayTaskV4577(String(id))};a.appendChild(b)})}
 function wire(){document.querySelectorAll('[data-v4577-fav]').forEach(b=>b.onclick=()=>favClick(b.dataset.v4577Fav,b));document.querySelectorAll('[data-v4577-audit-range]').forEach(b=>b.onclick=()=>setAuditRange(b.dataset.v4577AuditRange,b));const oldRender=window.renderTodayTasks;if(typeof oldRender==='function'&&!oldRender.__v4577){const w=function(){const r=oldRender.apply(this,arguments);setTimeout(decorateTodayAdmin,20);return r};w.__v4577=true;window.renderTodayTasks=w;try{renderTodayTasks=w}catch(e){}}['showPage','navTo'].forEach(name=>{const base=window[name];if(typeof base!=='function'||base.__v4577)return;const w=function(id){const r=base.apply(this,arguments);setTimeout(()=>{syncVersion();if(id==='history')loadHistoryV4577();if(id==='deleteManage')loadAuditV4577();if(id==='today'){try{window.renderTodayTasks?.()}catch(e){}decorateTodayAdmin()}},120);return r};w.__v4577=true;window[name]=w})}
 function init(){syncVersion();const end=iso(new Date()),start=iso(localDate(-30));if($('historyEnd'))$('historyEnd').value=end;if($('historyStart'))$('historyStart').value=start;if($('auditEndV4577'))$('auditEndV4577').value=end;if($('auditStartV4577'))$('auditStartV4577').value=iso(localDate(-30));wire();setTimeout(()=>{loadHistoryV4577();loadAuditV4577();decorateTodayAdmin()},500);[1000,2200,4500].forEach(ms=>setTimeout(()=>{syncVersion();wire();decorateTodayAdmin()},ms))}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();setInterval(syncVersion,2500);
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
 </script>
 
@@ -24972,7 +24976,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 #history .v4577-favorite-row::after{content:"빠른 필터는 한 번에 하나만 적용됩니다.";margin-left:auto;color:#8a9aac;font-size:10px}
 </style>
 <script id="tfms-v4579-final-version-lock">
-(function(){const VERSION='v47.11 Energy Trend Tabs Stable',VP='47.11';function lock(){try{const b=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');if(b)b.textContent=VERSION}catch(e){}try{document.title='TFMS '+VERSION}catch(e){}try{const u=new URL(location.href);if(u.searchParams.get('v')!==VP){u.searchParams.set('v',VP);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',lock,{once:true});else lock();setInterval(lock,700)})();
+(function(){const VERSION='v47.11 Energy Trend Tabs Stable',VP='47.11';function lock(){try{const b=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');if(b)b.textContent=VERSION}catch(e){}try{document.title='TFMS '+VERSION}catch(e){}try{const u=new URL(location.href);if(u.searchParams.get('v')!==VP){u.searchParams.set('v',VP);history.replaceState(history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',lock,{once:true});else lock();})();
 </script>
 <style id="tfms-v4580-density-popup-stats-style">
 /* v45.80 — Equipment Density + Popup Polish + Stats Insight (visual/UX only) */
@@ -25092,7 +25096,7 @@ function renderManagementPoints(){
 function beautifyEquipmentModal(){const m=$('tfmsV4431RegisterModal');if(!m)return;const grid=m.querySelector(':scope>.grid');if(grid&&!grid.dataset.v4580){grid.dataset.v4580='1';grid.querySelectorAll('.field').forEach(f=>{const l=f.querySelector('label');if(l)l.title=l.textContent.trim()})}}
 function run(){lockVersion();beautifyEquipmentModal();renderManagementPoints()}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
-[200,700,1600,3200].forEach(ms=>setTimeout(run,ms));setInterval(lockVersion,700);
+[200,700,1600,3200].forEach(ms=>setTimeout(run,ms));
 const oldShow=window.showPage;if(typeof oldShow==='function')window.showPage=function(id,btn){const r=oldShow.apply(this,arguments);setTimeout(()=>{lockVersion();if(id==='equipment')beautifyEquipmentModal();if(id==='stats')renderManagementPoints()},180);return r};
 const oldNav=window.navTo;if(typeof oldNav==='function')window.navTo=function(id){const r=oldNav.apply(this,arguments);setTimeout(()=>{lockVersion();if(id==='equipment')beautifyEquipmentModal();if(id==='stats')renderManagementPoints()},180);return r};
 const oldStats=window.renderStatsCharts;if(typeof oldStats==='function'&&!oldStats.__v4580){const w=function(){const r=oldStats.apply(this,arguments);setTimeout(renderManagementPoints,30);return r};w.__v4580=true;window.renderStatsCharts=w}
@@ -25314,7 +25318,7 @@ function switchTab(tab){
  }
 function updateCount(tab){tab=tab||q('.v4586-account-tab.active',$('accountAdmin'))?.dataset.tab||'pending';let n=0;if(tab==='pending')n=qa('#accountRequestBody tr').filter(tr=>!tr.querySelector('.empty-state')).length;else if(tab==='approved')n=qa('#approvedUserBody tr').filter(tr=>!tr.querySelector('.empty-state')).length;if($('v4586AccountCount'))$('v4586AccountCount').textContent=tab==='guide'?'권한 운영 안내':('총 '+n+'명');}
 function run(){lockVersion();buildMyInfo();buildAccount();syncMyInfo();updateCount();}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();[80,300,900,1800].forEach(ms=>setTimeout(run,ms));setInterval(lockVersion,900);
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();[80,300,900,1800].forEach(ms=>setTimeout(run,ms));
 const oldPop=window.populateMyPage;if(typeof oldPop==='function'&&!oldPop.__v4586){const w=function(){const r=oldPop.apply(this,arguments);setTimeout(syncMyInfo,0);return r};w.__v4586=true;window.populateMyPage=w;}
 const oldRender=window.renderAccountTables;if(typeof oldRender==='function'&&!oldRender.__v4586){const w=function(){const r=oldRender.apply(this,arguments);setTimeout(updateCount,0);return r};w.__v4586=true;window.renderAccountTables=w;try{renderAccountTables=w}catch(e){}}
 const oldShow=window.showPage;if(typeof oldShow==='function'&&!oldShow.__v4586){const w=function(id){const r=oldShow.apply(this,arguments);if(id==='myPage'||id==='accountAdmin')setTimeout(run,100);return r};w.__v4586=true;window.showPage=w;}
@@ -25435,7 +25439,7 @@ function lockVersion(){
 }
 function apply(){lockVersion();}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();
-[80,300,900,1800].forEach(ms=>setTimeout(apply,ms));setInterval(lockVersion,850);
+[80,300,900,1800].forEach(ms=>setTimeout(apply,ms));
 })();
 </script>
 
@@ -25583,7 +25587,7 @@ function fireNavGuard(){
 function run(){lock();fireNavGuard()}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
 [80,250,800,1800].forEach(ms=>setTimeout(run,ms));
-setInterval(lock,900);
+
 })();
 </script>
 
@@ -26048,6 +26052,7 @@ TFMS v46.76 LEGACY AUDIT MANIFEST
 END LEGACY AUDIT MANIFEST
 -->
 
+<!-- TFMS v47.11 Stabilization Cleanup I Stable | removed 10 pure version-lock intervals only -->
 </body></html>`);doc.close();await new Promise(r=>setTimeout(r,160));if(doc.fonts?.ready)try{await doc.fonts.ready}catch(e){}frame.contentWindow.focus();frame.contentWindow.print();setTimeout(()=>frame.remove(),1800);}catch(e){console.error(e);toast('PDF 출력 실패: '+(e?.message||e));}};
 function run(){lockVersion();cleanupBackButtons();syncReportDate();}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
@@ -26880,7 +26885,7 @@ function lockVersion(){const b=$('tfmsVersionBadge')||document.querySelector('.v
 function run(){install();hookNav();bindFilters();watchBody();lockVersion();if($('history')?.classList.contains('active'))enter()}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
 [120,700,1800].forEach(ms=>setTimeout(()=>{lockVersion();install();hookNav();if(identity()!==loadedIdentity&&$('history')?.classList.contains('active'))enter()},ms));
-setInterval(lockVersion,1200);
+
 })();
 </script>
 
@@ -26893,7 +26898,7 @@ main .page .title-left{align-items:center!important;gap:12px!important}
 #dashboard .v4615-dashboard-title{display:flex!important;align-items:center!important;gap:12px!important;min-height:46px!important}
 </style>
 
-<script id="tfms-v4618-final-version-lock">(function(){'use strict';const BUILD='v47.11 Energy Trend Tabs Stable',V='47.11';function lock(){const b=document.getElementById('tfmsVersionBadge');if(b&&b.textContent!==BUILD)b.textContent=BUILD;if(document.title!=='TFMS '+BUILD)document.title='TFMS '+BUILD;try{const u=new URL(location.href);if(u.searchParams.get('v')!==V){u.searchParams.set('v',V);History.prototype.replaceState.call(history,history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',lock,{once:true});else lock();[100,500,1500,3500].forEach(ms=>setTimeout(lock,ms));setInterval(lock,1500);})();</script>
+<script id="tfms-v4618-final-version-lock">(function(){'use strict';const BUILD='v47.11 Energy Trend Tabs Stable',V='47.11';function lock(){const b=document.getElementById('tfmsVersionBadge');if(b&&b.textContent!==BUILD)b.textContent=BUILD;if(document.title!=='TFMS '+BUILD)document.title='TFMS '+BUILD;try{const u=new URL(location.href);if(u.searchParams.get('v')!==V){u.searchParams.set('v',V);History.prototype.replaceState.call(history,history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',lock,{once:true});else lock();[100,500,1500,3500].forEach(ms=>setTimeout(lock,ms));})();</script>
 
 <!-- TFMS v46.92 Equipment Click Prime Cleanup Stable : visual header geometry only -->
 <style id="tfms-v4619-page-header-layout-standard">/* superseded by v46.24 exact ID geometry normalization */</style>
@@ -27138,7 +27143,7 @@ main .page .title-left{align-items:center!important;gap:12px!important}
    try{const u=new URL(location.href);if(u.searchParams.get('v')!==VERSION){u.searchParams.set('v',VERSION);History.prototype.replaceState.call(history,history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',lock,{once:true});else lock();
- [100,500,1500,3500].forEach(ms=>setTimeout(lock,ms));setInterval(lock,1500);
+ [100,500,1500,3500].forEach(ms=>setTimeout(lock,ms));
 })();
 </script>
 
@@ -34499,4 +34504,5 @@ syncVersion();
   transform:translate(0,2px)!important;
 }
 </style>
+<!-- TFMS v47.11 Stabilization Cleanup I Stable | removed 10 pure version-lock intervals only -->
 </body></html>
