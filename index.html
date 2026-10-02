@@ -24333,6 +24333,7 @@ const oldFire=window.navToFireV420;if(typeof oldFire==='function'&&!oldFire.__v4
 #cycle.v4571-cycle>.title-row{min-height:62px!important;margin-bottom:10px!important;align-items:flex-start!important}
 #cycle.v4571-cycle .v4571-role-badge{display:inline-flex;align-items:center;height:24px;padding:0 9px;margin-left:7px;border-radius:999px;background:#edf5ff;color:#1764d6;border:1px solid #c9def8;font-size:10.5px;font-weight:900;vertical-align:middle}
 #cycle.v4571-cycle .v4571-title-actions{margin-left:auto;display:flex;align-items:center;justify-content:flex-end;gap:7px;flex-wrap:wrap}
+#cycle.v4571-user .v4571-title-actions{flex-wrap:nowrap!important;white-space:nowrap!important}
 #cycle.v4571-cycle .v4571-title-actions button{height:36px;padding:0 12px;border:1px solid #cbdbea;border-radius:9px;background:#fff;color:#315c86;font-size:11.5px;font-weight:850;cursor:pointer;white-space:nowrap}
 #cycle.v4571-cycle .v4571-title-actions button.primary{border-color:#1764d6;background:#1764d6;color:#fff}
 #cycle.v4571-cycle .v4571-title-actions button:hover{filter:brightness(.98)}
@@ -25182,13 +25183,8 @@ function enforcePageIsolation(){
 }
 function ensureCycleFireButtons(){
   const p=$('cycle');if(!p)return;
-  const actions=$('v4571CycleTitleActions')||q(':scope > .title-row',p);if(!actions)return;
-  if(q('.v4585-fire-shortcuts',actions))return;
-  const box=document.createElement('span');box.className='v4585-fire-shortcuts';
-  box.innerHTML='<span class="tiny">전용점검</span><button type="button" data-fire="monthly">🧯 소방 월간</button><button type="button" data-fire="qr">▦ 소화기 QR</button>';
-  q('[data-fire="monthly"]',box).addEventListener('click',e=>{e.preventDefault();e.stopPropagation();if(typeof window.navToFireV420==='function')window.navToFireV420();});
-  q('[data-fire="qr"]',box).addEventListener('click',e=>{e.preventDefault();e.stopPropagation();if(typeof window.navToFireQrV459==='function')window.navToFireQrV459();else if(typeof window.navToFireV420==='function'){window.navToFireV420();setTimeout(()=>window.navToFireQrV459?.(),80);}});
-  actions.prepend(box);
+  /* v47.11 cleanup: role-specific title actions already provide fire monthly / QR navigation. */
+  p.querySelectorAll('.v4585-fire-shortcuts').forEach(el=>el.remove());
 }
 function run(){lockVersion();enforcePageIsolation();ensureCycleFireButtons()}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
