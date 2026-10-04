@@ -34952,4 +34952,46 @@ syncVersion();
 }
 </style>
 <!-- /TFMS v47.11 Animation Layer IV.1 Stable -->
+
+
+<!-- TFMS v47.11 Animation Layer V.1 | toast feedback motion | CSS only -->
+<style id="tfms-v4711-animation-layer-v1-toast">
+/*
+  Animation Layer V.1 — Toast 알림 등장 효과
+  - CSS only. Existing showToast()/toastTimer logic is unchanged.
+  - No JS, observer, timer, DB, permission, navigation or data-flow changes.
+  - Existing display:none -> block lifecycle naturally triggers the entrance motion.
+*/
+.toast{
+  transform-origin:right bottom;
+  will-change:transform,opacity;
+  animation:tfmsToastInV4711 .30s cubic-bezier(.18,.86,.28,1) both;
+}
+@keyframes tfmsToastInV4711{
+  from{
+    opacity:0;
+    transform:translate3d(0,9px,0) scale(.965);
+    filter:brightness(.97);
+  }
+  72%{
+    opacity:1;
+    transform:translate3d(0,-1px,0) scale(1.008);
+    filter:brightness(1.02);
+  }
+  to{
+    opacity:1;
+    transform:translate3d(0,0,0) scale(1);
+    filter:brightness(1);
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  .toast{
+    animation:none!important;
+    transform:none!important;
+    filter:none!important;
+    will-change:auto!important;
+  }
+}
+</style>
+<!-- /TFMS v47.11 Animation Layer V.1 -->
 </body></html>
