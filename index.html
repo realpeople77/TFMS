@@ -35354,4 +35354,50 @@ syncVersion();
 }
 </style>
 <!-- /TFMS v47.11 Animation Layer V.5 -->
+
+
+<!-- TFMS v47.11 Wide Screen Adaptive Layout | CSS-only wide viewport patch -->
+<style id="tfms-v4711-wide-screen-adaptive-style">
+/*
+  Wide Screen Adaptive Layout
+  - Applies only when the browser CSS viewport is 2000px or wider.
+  - Keeps existing <=1999px desktop/tablet/mobile layout unchanged.
+  - CSS only: no JS, observer, timer, navigation, data, permission or DB changes.
+  - Releases legacy 1920px shell / 1700px dashboard caps so QHD/4K workspaces use available width.
+*/
+@media (min-width:2000px){
+  #appLayout.layout{
+    width:100%!important;
+    max-width:none!important;
+    margin-left:0!important;
+    margin-right:0!important;
+    padding-right:clamp(20px,1.35vw,36px)!important;
+  }
+
+  #appLayout.layout > main{
+    width:100%!important;
+    max-width:none!important;
+    min-width:0!important;
+  }
+
+  #appLayout main .page{
+    width:100%!important;
+    max-width:none!important;
+  }
+
+  #dashboard.tfms-dashboard-v451{
+    width:100%!important;
+    max-width:none!important;
+    margin-left:0!important;
+    margin-right:0!important;
+  }
+
+  /* Keep wide dashboard cards balanced instead of merely stretching gaps. */
+  #dashboard.tfms-dashboard-v451 .v451-dashboard-grid{
+    grid-template-columns:minmax(0,1.08fr) minmax(0,1.36fr) minmax(0,1fr)!important;
+    gap:clamp(14px,0.8vw,22px)!important;
+  }
+}
+</style>
+<!-- /TFMS v47.11 Wide Screen Adaptive Layout -->
 </body></html>
