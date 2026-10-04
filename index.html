@@ -35241,4 +35241,62 @@ syncVersion();
 }
 </style>
 <!-- /TFMS v47.11 Animation Layer V.4 -->
+
+<!-- TFMS v47.11 Animation Layer V.5 | result table feedback | CSS only -->
+<style id="tfms-v4711-animation-layer-v5-table-feedback">
+/*
+  Animation Layer V.5 — 조회 결과 테이블 피드백
+  - CSS only. Existing filters, queries, row click/detail, paging and data rendering are unchanged.
+  - Scoped to maintenance history and delete/change audit result tables only.
+  - No new JS, observer, timer or navigation wrapper.
+*/
+#history #historyBody > tr,
+#deleteManage #deleteBody > tr{
+  animation:tfmsResultRowInV4711 .22s cubic-bezier(.22,.80,.28,1) both;
+  transition:
+    background-color .16s ease,
+    box-shadow .18s ease,
+    filter .16s ease;
+}
+#history #historyBody > tr > td,
+#deleteManage #deleteBody > tr > td{
+  transition:background-color .16s ease,color .16s ease;
+}
+@media (hover:hover) and (pointer:fine){
+  #history #historyBody > tr[data-record-id]:hover,
+  #history #historyBody > tr.tfms-history-clickable:hover,
+  #deleteManage #deleteBody > tr:hover{
+    background:#f4f9ff!important;
+    box-shadow:inset 3px 0 0 #6ea9eb, inset 0 1px 0 rgba(110,169,235,.08), inset 0 -1px 0 rgba(110,169,235,.08);
+  }
+  #history #historyBody > tr[data-record-id]:hover > td,
+  #history #historyBody > tr.tfms-history-clickable:hover > td,
+  #deleteManage #deleteBody > tr:hover > td{
+    background-color:transparent!important;
+  }
+}
+/* Empty/loading rows may be replaced by the existing renderer; keep their entrance softer. */
+#history #historyBody > tr:has(.empty-state),
+#history #historyBody > tr:has(.v4578-loading-note),
+#deleteManage #deleteBody > tr:has(.empty-state),
+#deleteManage #deleteBody > tr:has(.v4578-loading-note){
+  animation-duration:.18s;
+}
+@keyframes tfmsResultRowInV4711{
+  from{opacity:.38;transform:translateY(3px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@media (prefers-reduced-motion:reduce){
+  #history #historyBody > tr,
+  #deleteManage #deleteBody > tr,
+  #history #historyBody > tr > td,
+  #deleteManage #deleteBody > tr > td{
+    animation:none!important;
+    transition:none!important;
+    transform:none!important;
+    filter:none!important;
+  }
+}
+</style>
+<!-- /TFMS v47.11 Animation Layer V.5 -->
 </body></html>
