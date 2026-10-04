@@ -35088,4 +35088,91 @@ syncVersion();
 </style>
 <!-- /TFMS v47.11 Animation Layer V.2 -->
 
+
+
+<!-- TFMS v47.11 Animation Layer V.3 | cycle & daily selection feedback | CSS only -->
+<style id="tfms-v4711-animation-layer-v3-selection-cards">
+/*
+  Animation Layer V.3 — 점검주기·업무일지 선택형 UI 피드백
+  - CSS only. Existing click handlers, active classes, data and render logic are unchanged.
+  - Scoped to cycle shortcuts/presets, daily journal mode cards and weather picks.
+  - No new JS, observer, timer or navigation wrapper.
+*/
+#cycle .v459-cycle-shortcuts button,
+#cycle .v459-preset-grid button,
+#dailylog .v459-daily-mode button,
+#dailylog .v4510-weather-picks button{
+  transform-origin:center center;
+  transition:
+    transform .18s cubic-bezier(.22,.80,.28,1),
+    box-shadow .20s ease,
+    border-color .18s ease,
+    background-color .18s ease,
+    filter .18s ease;
+}
+#cycle .v459-cycle-shortcuts button > span,
+#dailylog .v459-daily-mode .ico,
+#dailylog .v4510-weather-picks button > span{
+  transition:
+    transform .20s cubic-bezier(.20,.86,.30,1),
+    filter .18s ease;
+  transform-origin:center center;
+}
+@media (hover:hover) and (pointer:fine){
+  #cycle .v459-cycle-shortcuts button:hover,
+  #cycle .v459-preset-grid button:hover,
+  #dailylog .v459-daily-mode button:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 18px rgba(28,75,128,.10);
+  }
+  #dailylog .v4510-weather-picks button:hover{
+    transform:translateY(-2px) scale(1.025);
+    box-shadow:0 6px 14px rgba(28,75,128,.10);
+  }
+  #cycle .v459-cycle-shortcuts button:hover > span,
+  #dailylog .v459-daily-mode button:hover .ico{
+    transform:scale(1.06);
+  }
+  #dailylog .v4510-weather-picks button:hover > span{
+    transform:translateY(-1px) scale(1.08);
+  }
+}
+/* Selected state: restrained emphasis without changing layout or click behavior. */
+#cycle .v459-cycle-shortcuts button.active,
+#dailylog .v459-daily-mode button.active{
+  box-shadow:0 5px 15px rgba(27,91,160,.10);
+}
+#cycle .v459-cycle-shortcuts button.active > span,
+#dailylog .v459-daily-mode button.active .ico{
+  transform:scale(1.035);
+  filter:saturate(1.05);
+}
+#dailylog .v4510-weather-picks button.active > span{
+  transform:scale(1.06);
+  filter:saturate(1.08);
+}
+/* Keep tactile press feedback stronger than hover while preserving existing handlers. */
+#cycle .v459-cycle-shortcuts button:not(:disabled):active,
+#cycle .v459-preset-grid button:not(:disabled):active,
+#dailylog .v459-daily-mode button:not(:disabled):active,
+#dailylog .v4510-weather-picks button:not(:disabled):active{
+  transform:translateY(1px) scale(.985);
+  filter:brightness(.985);
+}
+@media (prefers-reduced-motion:reduce){
+  #cycle .v459-cycle-shortcuts button,
+  #cycle .v459-preset-grid button,
+  #dailylog .v459-daily-mode button,
+  #dailylog .v4510-weather-picks button,
+  #cycle .v459-cycle-shortcuts button > span,
+  #dailylog .v459-daily-mode .ico,
+  #dailylog .v4510-weather-picks button > span{
+    animation:none!important;
+    transition:none!important;
+    transform:none!important;
+    filter:none!important;
+  }
+}
+</style>
+<!-- /TFMS v47.11 Animation Layer V.3 -->
 </body></html>
