@@ -8938,6 +8938,25 @@ document.addEventListener('DOMContentLoaded',function(){
   #tfmsVersionModal .change-item ul{margin:0;padding-left:20px;color:#475569}
   #tfmsVersionModal .change-item li{margin:4px 0}
 </style>
+<!-- TFMS v47.11 Update History Cleanup | display order only -->
+<style id="tfms-v4711-update-history-cleanup-style">
+/*
+  Update History Cleanup
+  - Update-history modal display only.
+  - No version controller, DB, permission, observer, timer or navigation logic changes.
+*/
+#tfmsVersionModal .version-body{display:flex;flex-direction:column}
+#tfmsVersionModal .current-build{order:-100;font-size:0}
+#tfmsVersionModal .current-build::after{
+  content:"현재 운영기준: v47.11 Animation Layer V.5 Stable · 2026.10.04";
+  font-size:14px;
+  line-height:1.45;
+}
+#tfmsVersionModal .tfms-history-latest-group{order:-90}
+#tfmsVersionModal .tfms-history-latest-group .change-item:first-child{padding-top:2px}
+#tfmsVersionModal .tfms-history-latest-group .change-item:last-child{border-bottom:1px solid #eef2f7}
+#tfmsVersionModal .version-body > .change-item{order:0}
+</style>
 <div aria-hidden="true" id="tfmsVersionModal">
 <div aria-labelledby="tfmsVersionTitle" aria-modal="true" class="version-box" role="dialog">
 <div class="version-head">
@@ -8946,6 +8965,42 @@ document.addEventListener('DOMContentLoaded',function(){
 </div>
 <div class="version-body">
 <div class="current-build">현재 버전: v36.3 Stable · Build 2026.07.22</div>
+<div class="tfms-history-latest-group" aria-label="최근 주요 업데이트">
+  <div class="change-item" data-version="v47.11-animation-v5">
+    <strong>v47.11 Animation Layer V.5 Stable</strong>
+    <ul>
+      <li>Stabilization Cleanup I~VI.1 완료 및 브라우저 뒤로가기·앞으로가기 안정화</li>
+      <li>Animation Layer I~III: 페이지 전환, 카드·버튼, 대시보드 KPI·도넛, 탭·모달·상세영역 인터랙션 적용</li>
+      <li>Animation Layer IV: 통계현황 &gt; 유지관리 통계 그래프 상승·hover 모션 보강</li>
+      <li>Animation Layer V.1~V.5: Toast, 첨부 업로드, 선택형 카드, 설비관리, 조회 결과 테이블 피드백 적용</li>
+      <li>애니메이션 작업은 기존 데이터·산식·필터·권한 구조를 유지한 CSS 중심 독립 레이어 방식으로 적용</li>
+    </ul>
+  </div>
+  <div class="change-item" data-version="v47.09">
+    <strong>v47.09 Baseline · Dashboard Global Scope Alignment</strong>
+    <ul>
+      <li>관리자·조회전용 대시보드 유지관리 집계를 통계현황·엑셀 다운로드와 동일한 전체 범위로 정렬</li>
+      <li>일반담당자는 기존과 같이 소속 부서 범위 유지</li>
+      <li>최근 유지관리 목록과 월간·누적 예산 집계 범위를 동일 기준으로 통일</li>
+    </ul>
+  </div>
+  <div class="change-item" data-version="v47.06">
+    <strong>v47.06 · Maintenance Dashboard Refresh</strong>
+    <ul>
+      <li>일괄등록 저장 후 기존 데이터 로더를 재사용하여 유지관리 자료 재조회</li>
+      <li>저장 후 대시보드·유지관리 조회·엑셀 화면의 기존 렌더러를 순차 갱신</li>
+      <li>DB 스키마·RLS·권한·통계 산식·160ms 화면전환 로직은 유지</li>
+    </ul>
+  </div>
+  <div class="change-item" data-version="v47.05">
+    <strong>v47.05 · Maintenance Legacy Batch Insert</strong>
+    <ul>
+      <li>선택한 기존 유지관리 자료를 maintenance_records에 일괄 등록하는 기능 보강</li>
+      <li>저장 직전 중복자료 재확인 및 시설 매핑·로그인 권한·필수값 검증</li>
+      <li>기존 테이블 구조와 권한 정책을 변경하지 않고 저장 후 유지관리 조회를 갱신</li>
+    </ul>
+  </div>
+</div>
 <div class="change-item">
 <strong>v36.3 Stable</strong>
 <ul>
