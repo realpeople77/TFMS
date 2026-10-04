@@ -34994,4 +34994,98 @@ syncVersion();
 }
 </style>
 <!-- /TFMS v47.11 Animation Layer V.1 -->
+
+
+<!-- TFMS v47.11 Animation Layer V.2 | maintenance upload feedback | CSS only -->
+<style id="tfms-v4711-animation-layer-v2-upload-feedback">
+/*
+  Animation Layer V.2 — 유지관리 등록 첨부영역 피드백
+  - CSS only. Existing document/photo input, drag/drop and preview logic is unchanged.
+  - Reuses the existing .tfms-drag-active state; no new JS, observer or timer.
+  - Scoped only to #register document/photo upload surfaces and photo preview items.
+*/
+#register label[for="docInput"].upload-zone,
+#register label[for="photoInput"].upload-zone{
+  transform-origin:center center;
+  transition:
+    transform .18s cubic-bezier(.22,.80,.28,1),
+    border-color .18s ease,
+    background-color .18s ease,
+    box-shadow .20s ease;
+}
+#register label[for="docInput"].upload-zone .file-btn,
+#register label[for="photoInput"].upload-zone .file-btn{
+  transition:
+    transform .18s cubic-bezier(.22,.80,.28,1),
+    background-color .18s ease,
+    border-color .18s ease,
+    box-shadow .18s ease;
+}
+@media (hover:hover) and (pointer:fine){
+  #register label[for="docInput"].upload-zone:hover,
+  #register label[for="photoInput"].upload-zone:hover{
+    transform:translateY(-2px);
+    border-color:#8db8ea;
+    background:#f7fbff;
+    box-shadow:0 8px 20px rgba(31,91,157,.10);
+  }
+  #register label[for="docInput"].upload-zone:hover .file-btn,
+  #register label[for="photoInput"].upload-zone:hover .file-btn{
+    transform:translateY(-1px) scale(1.015);
+    box-shadow:0 4px 10px rgba(37,99,235,.10);
+  }
+}
+#register label[for="docInput"].upload-zone.tfms-drag-active,
+#register label[for="photoInput"].upload-zone.tfms-drag-active{
+  transform:translateY(-3px) scale(1.012);
+  border-color:#2563eb!important;
+  background:#eff6ff!important;
+  box-shadow:
+    0 0 0 4px rgba(37,99,235,.08),
+    0 12px 26px rgba(37,99,235,.14);
+}
+#register label[for="docInput"].upload-zone.tfms-drag-active .file-btn,
+#register label[for="photoInput"].upload-zone.tfms-drag-active .file-btn{
+  transform:scale(1.045);
+  border-color:#93c5fd;
+  background:#fff;
+  box-shadow:0 5px 14px rgba(37,99,235,.15);
+}
+#register #photoPreview > .thumb,
+#register #photoPreview > .tfms-photo-thumb-v413{
+  transform-origin:center center;
+  animation:tfmsUploadPreviewInV4711 .26s cubic-bezier(.20,.86,.30,1) both;
+  transition:
+    transform .18s cubic-bezier(.22,.80,.28,1),
+    box-shadow .18s ease,
+    border-color .18s ease;
+}
+@media (hover:hover) and (pointer:fine){
+  #register #photoPreview > .thumb:hover,
+  #register #photoPreview > .tfms-photo-thumb-v413:hover{
+    transform:translateY(-2px) scale(1.025);
+    border-color:#9dbde3;
+    box-shadow:0 7px 16px rgba(24,70,124,.14);
+  }
+}
+@keyframes tfmsUploadPreviewInV4711{
+  from{opacity:.12;transform:translateY(5px) scale(.94)}
+  72%{opacity:1;transform:translateY(-1px) scale(1.012)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+@media (prefers-reduced-motion:reduce){
+  #register label[for="docInput"].upload-zone,
+  #register label[for="photoInput"].upload-zone,
+  #register label[for="docInput"].upload-zone .file-btn,
+  #register label[for="photoInput"].upload-zone .file-btn,
+  #register #photoPreview > .thumb,
+  #register #photoPreview > .tfms-photo-thumb-v413{
+    animation:none!important;
+    transition:none!important;
+    transform:none!important;
+  }
+}
+</style>
+<!-- /TFMS v47.11 Animation Layer V.2 -->
+
 </body></html>
