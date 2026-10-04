@@ -34897,18 +34897,23 @@ syncVersion();
 #stats .tfms-maintenance-stats-block .chart-wrap .bar{
   transform-origin:center bottom;
   will-change:transform,opacity;
-  animation:tfmsMaintStatsBarGrowV4711 .72s cubic-bezier(.16,.82,.24,1) both;
-  transition:filter .18s ease,box-shadow .18s ease;
+  animation:tfmsMaintStatsBarGrowV4711 .96s cubic-bezier(.14,.78,.18,1) backwards;
+  transition:transform .22s cubic-bezier(.2,.8,.2,1),filter .20s ease,box-shadow .20s ease;
 }
 #stats .tfms-maintenance-stats-block .chart-wrap .bar-value{
-  animation:tfmsMaintStatsValueInV4711 .42s ease-out both;
+  animation:tfmsMaintStatsValueInV4711 .50s ease-out both;
 }
 #stats .tfms-maintenance-stats-block .chart-wrap .bar-label{
-  animation:tfmsMaintStatsLabelInV4711 .40s ease-out both;
+  animation:tfmsMaintStatsLabelInV4711 .46s ease-out both;
+}
+#stats .tfms-maintenance-stats-block .chart-wrap .bar-item:hover{
+  transform:translateY(-3px)!important;
+  filter:brightness(1.045)!important;
 }
 #stats .tfms-maintenance-stats-block .chart-wrap .bar-item:hover .bar{
-  filter:brightness(1.08) saturate(1.08);
-  box-shadow:0 8px 18px rgba(20,79,155,.20);
+  transform:translateY(-4px) scaleX(1.08) scaleY(1.035);
+  filter:brightness(1.13) saturate(1.12);
+  box-shadow:0 11px 24px rgba(20,79,155,.28);
 }
 /* 관리자 상세 인사이트의 미니 진행막대도 같은 원칙으로 표시 */
 #stats .tfms-maintenance-stats-block + .tfms-admin-insights .tfms-insight-bar i,
@@ -34918,9 +34923,10 @@ syncVersion();
   animation:tfmsMaintStatsInsightGrowV4711 .62s cubic-bezier(.16,.82,.24,1) both;
 }
 @keyframes tfmsMaintStatsBarGrowV4711{
-  from{opacity:.16;transform:scaleY(.015)}
-  55%{opacity:.92}
-  to{opacity:1;transform:scaleY(1)}
+  from{opacity:.08;transform:translateY(12px) scaleY(.001)}
+  62%{opacity:.96}
+  86%{opacity:1;transform:translateY(-2px) scaleY(1.035)}
+  to{opacity:1;transform:translateY(0) scaleY(1)}
 }
 @keyframes tfmsMaintStatsValueInV4711{
   from{opacity:0;transform:translateY(7px)}
