@@ -8948,7 +8948,7 @@ document.addEventListener('DOMContentLoaded',function(){
 #tfmsVersionModal .version-body{display:flex;flex-direction:column}
 #tfmsVersionModal .current-build{order:-100;font-size:0}
 #tfmsVersionModal .current-build::after{
-  content:"현재 운영기준: v47.11 Stability Patch II Role Display Stable · 2026.10.06";
+  content:"현재 운영기준: v47.11 Stability Patch III Audit + Wide Chart Stable · 2026.10.06";
   font-size:14px;
   line-height:1.45;
 }
@@ -8966,6 +8966,15 @@ document.addEventListener('DOMContentLoaded',function(){
 <div class="version-body">
 <div class="current-build">현재 버전: v36.3 Stable · Build 2026.07.22</div>
 <div class="tfms-history-latest-group" aria-label="최근 주요 업데이트">
+  <div class="change-item" data-version="v47.11-stability-patch-iii">
+    <strong>v47.11 · Stability Patch III — Audit Render Stability + Wide Chart Comfort</strong>
+    <ul>
+      <li>삭제·변경이력의 주기적 renderAudit 호출은 유지하되 데이터·페이지·권한 결과가 동일하면 tbody DOM을 다시 만들지 않도록 안정화</li>
+      <li>체크박스 선택 중 1.8초 재렌더링으로 선택상태가 초기화될 수 있던 구조를 제거하고 필터·페이징·삭제 후 실제 결과 변경 시에만 표를 갱신</li>
+      <li>2000px 이상 넓은 화면에서는 페이지 전체 폭은 활용하되 유지관리 4개 그래프와 에너지 시각화 영역에 적정 최대폭을 적용하여 과도한 가로 늘어짐 방지</li>
+      <li>DB·Supabase·RLS·권한·통계 데이터·산식·필터·Observer·Timer 개수는 변경하지 않음</li>
+    </ul>
+  </div>
   <div class="change-item" data-version="v47.11-stability-patch-ii">
     <strong>v47.11 · Stability Patch II — Role Display Consistency</strong>
     <ul>
@@ -25248,7 +25257,33 @@ let audit=[],auditPage=1;
 function auditMap(x){const src=x.source||'audit',act=String(x.action_type||'').toLowerCase(),kind=src==='maintenance'||/delete|삭제/.test(act)?'delete':'change';let target=String(x.target_type||'기타');const map={today_task:'오늘의 업무',maintenance:'유지관리',maintenance_record:'유지관리',equipment:'설비',asset:'설비',dailylog:'업무일지',daily_log:'업무일지'};target=map[target]||target||'기타';return {source:src,id:x.id,kind,target,facility:x.facility_name||x.facility||'-',title:x.target_title||x.detail||'-',change:x.action_detail||(kind==='delete'?'관리자 완전삭제':'변경'),actor:x.actor_name||'관리자',time:x.created_at||x.deleted_at||'',note:x.note||x.process_status||'-'}}
 function fillAuditFacilities(){const s=$('auditFacilityV4577');if(!s)return;const old=s.value;const names=[...new Set(audit.map(x=>x.facility).filter(x=>x&&x!=='-'))].sort();s.innerHTML='<option value="all">전체</option>'+names.map(n=>`<option>${esc(n)}</option>`).join('');if([...s.options].some(o=>o.value===old))s.value=old}
 function auditFiltered(){let a=audit.slice();const s=$('auditStartV4577')?.value||'',e=$('auditEndV4577')?.value||'',k=$('auditTypeV4577')?.value||'all',t=$('auditTargetV4577')?.value||'all',f=$('auditFacilityV4577')?.value||'all',actor=String($('auditActorV4577')?.value||'').trim().toLowerCase(),q=String($('auditKeywordV4577')?.value||'').trim().toLowerCase();if(s)a=a.filter(x=>String(x.time).slice(0,10)>=s);if(e)a=a.filter(x=>String(x.time).slice(0,10)<=e);if(k!=='all')a=a.filter(x=>x.kind===k);if(t!=='all')a=a.filter(x=>x.target===t);if(f!=='all')a=a.filter(x=>x.facility===f);if(actor)a=a.filter(x=>String(x.actor).toLowerCase().includes(actor));if(q)a=a.filter(x=>`${x.title} ${x.change} ${x.note}`.toLowerCase().includes(q));return a}
-function renderAudit(){const body=$('deleteBody');if(!body)return;const list=auditFiltered(),size=Number($('auditPageSizeV4577')?.value||10),pages=Math.max(1,Math.ceil(list.length/size));auditPage=Math.min(auditPage,pages);const st=(auditPage-1)*size,rows=list.slice(st,st+size);if($('auditTotalV4577'))$('auditTotalV4577').textContent=`총 ${list.length}건`;if($('auditPageInfoV4577'))$('auditPageInfoV4577').textContent=`총 ${list.length}건 중 ${list.length?st+1:0}-${Math.min(st+size,list.length)}행 표시`;if($('auditSelectAllV4577'))$('auditSelectAllV4577').checked=false;if(!rows.length)body.innerHTML='<tr><td colspan="11"><div class="empty-state">조건에 맞는 삭제·변경 이력이 없습니다.</div></td></tr>';else body.innerHTML=rows.map((r,i)=>`<tr><td><input type="checkbox" class="audit-select-v4577" data-source="${esc(r.source)}" data-id="${esc(r.id)}"></td><td>${st+i+1}</td><td><span class="audit-badge ${r.kind}">${r.kind==='delete'?'삭제':'변경'}</span></td><td>${esc(r.target)}</td><td>${esc(r.facility)}</td><td>${esc(r.title)}</td><td>${esc(r.change)}</td><td>${esc(r.actor)}</td><td>${esc(r.time?new Date(r.time).toLocaleString('ko-KR'):'-')}</td><td>${esc(r.note||'-')}</td><td>${admin()?`<button class="audit-row-delete" type="button" onclick="event.stopPropagation();window.openAuditDeleteV4577?.('${esc(r.source)}','${esc(r.id)}')">이력 삭제</button>`:'-'}</td></tr>`).join('');const pg=$('auditPaginationV4577');if(pg){let h=`<button type="button" onclick="window.setAuditPageV4578(${Math.max(1,auditPage-1)})">‹</button>`;for(let p=1;p<=pages;p++)h+=`<button type="button" class="${p===auditPage?'active':''}" onclick="window.setAuditPageV4578(${p})">${p}</button>`;h+=`<button type="button" onclick="window.setAuditPageV4578(${Math.min(pages,auditPage+1)})">›</button>`;pg.innerHTML=h}}
+function renderAudit(){
+ const body=$('deleteBody');if(!body)return;
+ const list=auditFiltered(),size=Number($('auditPageSizeV4577')?.value||10),pages=Math.max(1,Math.ceil(list.length/size));
+ auditPage=Math.min(auditPage,pages);
+ const st=(auditPage-1)*size,rows=list.slice(st,st+size),isAdmin=admin();
+ if($('auditTotalV4577'))$('auditTotalV4577').textContent=`총 ${list.length}건`;
+ if($('auditPageInfoV4577'))$('auditPageInfoV4577').textContent=`총 ${list.length}건 중 ${list.length?st+1:0}-${Math.min(st+size,list.length)}행 표시`;
+ const renderKey=JSON.stringify([auditPage,size,pages,isAdmin,rows.map(r=>[r.source,String(r.id),r.kind,r.target,r.facility,r.title,r.change,r.actor,r.time,r.note])]);
+ if(body.dataset.tfmsAuditRenderKey!==renderKey||body.querySelector('.v4578-loading-note')){
+   const all=$('auditSelectAllV4577');if(all)all.checked=false;
+   body.innerHTML=!rows.length
+     ?'<tr><td colspan="11"><div class="empty-state">조건에 맞는 삭제·변경 이력이 없습니다.</div></td></tr>'
+     :rows.map((r,i)=>`<tr><td><input type="checkbox" class="audit-select-v4577" data-source="${esc(r.source)}" data-id="${esc(r.id)}"></td><td>${st+i+1}</td><td><span class="audit-badge ${r.kind}">${r.kind==='delete'?'삭제':'변경'}</span></td><td>${esc(r.target)}</td><td>${esc(r.facility)}</td><td>${esc(r.title)}</td><td>${esc(r.change)}</td><td>${esc(r.actor)}</td><td>${esc(r.time?new Date(r.time).toLocaleString('ko-KR'):'-')}</td><td>${esc(r.note||'-')}</td><td>${isAdmin?`<button class="audit-row-delete" type="button" onclick="event.stopPropagation();window.openAuditDeleteV4577?.('${esc(r.source)}','${esc(r.id)}')">이력 삭제</button>`:'-'}</td></tr>`).join('');
+   body.dataset.tfmsAuditRenderKey=renderKey;
+ }
+ const pg=$('auditPaginationV4577');
+ if(pg){
+   const pageKey=`${auditPage}|${pages}`;
+   if(pg.dataset.tfmsAuditPageKey!==pageKey){
+     let h=`<button type="button" onclick="window.setAuditPageV4578(${Math.max(1,auditPage-1)})">‹</button>`;
+     for(let p=1;p<=pages;p++)h+=`<button type="button" class="${p===auditPage?'active':''}" onclick="window.setAuditPageV4578(${p})">${p}</button>`;
+     h+=`<button type="button" onclick="window.setAuditPageV4578(${Math.min(pages,auditPage+1)})">›</button>`;
+     pg.innerHTML=h;
+     pg.dataset.tfmsAuditPageKey=pageKey;
+   }
+ }
+}
 async function loadAudit(){const body=$('deleteBody'),c=client();if(!body)return;if(!c){body.innerHTML='<tr><td colspan="11"><div class="empty-state">DB 연결 정보를 확인하지 못했습니다.</div></td></tr>';return}body.innerHTML='<tr><td colspan="11"><div class="v4578-loading-note">삭제·변경이력을 불러오는 중입니다.</div></td></tr>';try{const [m,a]=await Promise.all([c.from('maintenance_records').select('id,deleted_at,detail,process_status,facility:facilities(name)').not('deleted_at','is',null).order('deleted_at',{ascending:false}).limit(500),c.from('tfms_audit_logs').select('id,action_type,target_type,target_id,target_title,facility_name,actor_name,action_detail,created_at').order('created_at',{ascending:false}).limit(500)]);const rows=[];if(!m.error)(m.data||[]).forEach(x=>rows.push(auditMap({source:'maintenance',id:x.id,deleted_at:x.deleted_at,detail:x.detail,facility:x.facility?.name||'-',process_status:x.process_status})));if(!a.error)(a.data||[]).forEach(x=>rows.push(auditMap({source:'audit',...x})));audit=rows.sort((x,y)=>String(y.time).localeCompare(String(x.time)));fillAuditFacilities();auditPage=1;renderAudit()}catch(e){console.error('v45.78 audit load',e);body.innerHTML=`<tr><td colspan="11"><div class="empty-state" style="color:#b91c1c">${esc(e?.message||e)}</div></td></tr>`}}
 window.renderAuditV4577=renderAudit;window.renderAuditV4578=renderAudit;window.setAuditPageV4578=p=>{auditPage=Math.max(1,Number(p)||1);renderAudit()};window.toggleAuditAllV4577=v=>document.querySelectorAll('#deleteBody .audit-select-v4577').forEach(x=>x.checked=!!v);
 window.deleteSelectedAuditV4577=async function(){if(!admin())return toast('관리자만 사용할 수 있습니다.');const chosen=[...document.querySelectorAll('#deleteBody .audit-select-v4577:checked')].map(x=>({source:x.dataset.source,id:x.dataset.id}));if(!chosen.length)return toast('삭제할 이력을 선택하세요.');if(!confirm(`선택한 이력 ${chosen.length}건을 완전 삭제하시겠습니까?\n이 작업은 복구할 수 없습니다.`))return;for(const k of chosen){const r=audit.find(x=>x.source===k.source&&String(x.id)===String(k.id));if(r&&typeof window.deleteAuditRowV4577==='function')await window.deleteAuditRowV4577(r)}await loadAudit()};
@@ -35539,4 +35574,39 @@ syncVersion();
 }
 </style>
 <!-- /TFMS v47.11 Final Animation & Responsive Polish -->
+
+
+<!-- TFMS v47.11 Stability Patch III | wide-screen visualization comfort | CSS only -->
+<style id="tfms-v4711-stability-patch-iii-wide-chart-comfort">
+/*
+  Stability Patch III — Wide Chart Comfort
+  - Applies only at CSS viewport widths >= 2000px.
+  - Keeps the wide workspace, tables and KPI areas fluid.
+  - Caps chart/visualization groups so bars and SVG plots do not become unnaturally wide.
+  - No chart data, renderer, filter, click-drill, DB or permission changes.
+*/
+@media (min-width:2000px){
+  #stats .tfms-four-charts{
+    width:min(100%,1760px)!important;
+    max-width:1760px!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+  }
+
+  #stats .tfms-energy-summary-grid{
+    width:min(100%,1760px)!important;
+    max-width:1760px!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+  }
+
+  #stats .tfms-four-charts > *,
+  #stats .tfms-energy-summary-grid > *,
+  #stats .tfms-energy-chart-panel,
+  #stats .tfms-energy-chart-placeholder{
+    min-width:0!important;
+  }
+}
+</style>
+<!-- /TFMS v47.11 Stability Patch III -->
 </body></html>
