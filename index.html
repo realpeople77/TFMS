@@ -8948,7 +8948,7 @@ document.addEventListener('DOMContentLoaded',function(){
 #tfmsVersionModal .version-body{display:flex;flex-direction:column}
 #tfmsVersionModal .current-build{order:-100;font-size:0}
 #tfmsVersionModal .current-build::after{
-  content:"현재 운영기준: v47.11 Stability Patch III Audit + Wide Chart Stable · 2026.10.06";
+  content:"현재 운영기준: v47.11 Stability Patch III.1 Chart Aspect Comfort Stable · 2026.10.06";
   font-size:14px;
   line-height:1.45;
 }
@@ -8966,6 +8966,15 @@ document.addEventListener('DOMContentLoaded',function(){
 <div class="version-body">
 <div class="current-build">현재 버전: v36.3 Stable · Build 2026.07.22</div>
 <div class="tfms-history-latest-group" aria-label="최근 주요 업데이트">
+  <div class="change-item" data-version="v47.11-stability-patch-iii-1">
+    <strong>v47.11 · Stability Patch III.1 — Chart Aspect Comfort</strong>
+    <ul>
+      <li>브라우저 최대화 시 에너지 추이 SVG가 가로 공간을 과도하게 채워 늘어져 보이던 표시를 보정</li>
+      <li>1400px 이상 화면에서 실제 plotting 영역을 적정 최대폭으로 제한하고 중앙 배치하여 그래프 비율과 월간 간격 가독성 유지</li>
+      <li>유지관리 통계 chart-wrap도 초광폭에서만 적정 최대폭을 적용해 막대 간격이 과도하게 벌어지지 않도록 보정</li>
+      <li>그래프 데이터·산식·필터·클릭 상세분석·DB·권한·Observer·Timer는 변경하지 않음</li>
+    </ul>
+  </div>
   <div class="change-item" data-version="v47.11-stability-patch-iii">
     <strong>v47.11 · Stability Patch III — Audit Render Stability + Wide Chart Comfort</strong>
     <ul>
@@ -35609,4 +35618,44 @@ syncVersion();
 }
 </style>
 <!-- /TFMS v47.11 Stability Patch III -->
+
+
+<!-- TFMS v47.11 Stability Patch III.1 | chart aspect comfort | CSS only -->
+<style id="tfms-v4711-stability-patch-iii-1-chart-aspect-comfort">
+/*
+  Stability Patch III.1 — Chart Aspect Comfort
+  - Prevents wide-window chart plots from stretching across the full card.
+  - Plotting area only; cards/workspace remain responsive.
+  - No data, formula, filter, click-drill, DB, permission or renderer logic changes.
+*/
+@media (min-width:1400px){
+  #stats .tfms-energy-chart-canvas-v4711{
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+  }
+  #stats .tfms-energy-chart-svg-v4711{
+    width:min(100%,820px)!important;
+    height:auto!important;
+    aspect-ratio:4 / 1;
+    flex:0 1 820px;
+  }
+  #stats .tfms-maintenance-stats-block .chart-wrap{
+    width:min(100%,760px)!important;
+    max-width:760px!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+  }
+}
+@media (min-width:2000px){
+  #stats .tfms-energy-chart-svg-v4711{
+    width:min(100%,900px)!important;
+    flex-basis:900px;
+  }
+  #stats .tfms-maintenance-stats-block .chart-wrap{
+    max-width:800px!important;
+  }
+}
+</style>
+<!-- /TFMS v47.11 Stability Patch III.1 -->
 </body></html>
