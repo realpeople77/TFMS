@@ -8948,7 +8948,7 @@ document.addEventListener('DOMContentLoaded',function(){
 #tfmsVersionModal .version-body{display:flex;flex-direction:column}
 #tfmsVersionModal .current-build{order:-100;font-size:0}
 #tfmsVersionModal .current-build::after{
-  content:"현재 운영기준: v47.11 Animation Layer V.5 Stable · 2026.10.04";
+  content:"현재 운영기준: v47.11 Wide Screen Adaptive Stable · 2026.10.04";
   font-size:14px;
   line-height:1.45;
 }
@@ -8966,6 +8966,15 @@ document.addEventListener('DOMContentLoaded',function(){
 <div class="version-body">
 <div class="current-build">현재 버전: v36.3 Stable · Build 2026.07.22</div>
 <div class="tfms-history-latest-group" aria-label="최근 주요 업데이트">
+  <div class="change-item" data-version="v47.11-wide-screen">
+    <strong>v47.11 · Wide Screen Adaptive Layout</strong>
+    <ul>
+      <li>32인치 QHD·4K 등 넓은 화면에서 발생하는 좌우 빈 공간을 줄이도록 작업영역 폭 대응 보강</li>
+      <li>브라우저 CSS 폭 2000px 이상에서만 기존 1920px 전체 작업영역·1700px 대시보드 폭 제한을 해제</li>
+      <li>1999px 이하 기존 화면은 그대로 유지하고, 넓은 화면에서는 대시보드 3열 비율과 간격만 추가 보정</li>
+      <li>레이아웃 CSS만 수정했으며 DB·권한·데이터·Observer·Timer·160ms 화면전환 로직은 유지</li>
+    </ul>
+  </div>
   <div class="change-item" data-version="v47.11-animation-v5">
     <strong>v47.11 Animation Layer V.5 Stable</strong>
     <ul>
@@ -35303,11 +35312,14 @@ syncVersion();
   Animation Layer V.5 — 조회 결과 테이블 피드백
   - CSS only. Existing filters, queries, row click/detail, paging and data rendering are unchanged.
   - Scoped to maintenance history and delete/change audit result tables only.
+  - Flicker fix: delete/change audit rows keep hover feedback but do not replay entrance animation on periodic re-render.
   - No new JS, observer, timer or navigation wrapper.
 */
+#history #historyBody > tr{
+  animation:tfmsResultRowInV4711 .22s cubic-bezier(.22,.80,.28,1) both;
+}
 #history #historyBody > tr,
 #deleteManage #deleteBody > tr{
-  animation:tfmsResultRowInV4711 .22s cubic-bezier(.22,.80,.28,1) both;
   transition:
     background-color .16s ease,
     box-shadow .18s ease,
@@ -35332,9 +35344,7 @@ syncVersion();
 }
 /* Empty/loading rows may be replaced by the existing renderer; keep their entrance softer. */
 #history #historyBody > tr:has(.empty-state),
-#history #historyBody > tr:has(.v4578-loading-note),
-#deleteManage #deleteBody > tr:has(.empty-state),
-#deleteManage #deleteBody > tr:has(.v4578-loading-note){
+#history #historyBody > tr:has(.v4578-loading-note){
   animation-duration:.18s;
 }
 @keyframes tfmsResultRowInV4711{
