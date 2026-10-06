@@ -8948,7 +8948,7 @@ document.addEventListener('DOMContentLoaded',function(){
 #tfmsVersionModal .version-body{display:flex;flex-direction:column}
 #tfmsVersionModal .current-build{order:-100;font-size:0}
 #tfmsVersionModal .current-build::after{
-  content:"현재 운영기준: v47.11 Wide Screen Adaptive Stable · 2026.10.04";
+  content:"현재 운영기준: v47.11 Final UI Polish Stable · 2026.10.06";
   font-size:14px;
   line-height:1.45;
 }
@@ -8966,6 +8966,16 @@ document.addEventListener('DOMContentLoaded',function(){
 <div class="version-body">
 <div class="current-build">현재 버전: v36.3 Stable · Build 2026.07.22</div>
 <div class="tfms-history-latest-group" aria-label="최근 주요 업데이트">
+  <div class="change-item" data-version="v47.11-final-ui-polish">
+    <strong>v47.11 · Final Animation &amp; Responsive Polish Stable</strong>
+    <ul>
+      <li>삭제·변경이력의 주기적 재렌더링과 행 등장 애니메이션 충돌로 발생하던 중앙 깜빡임 제거</li>
+      <li>유지관리 통계 막대 hover 이동을 부드럽게 보정하고 터치 환경의 잔류 hover 효과를 차단</li>
+      <li>모바일 Toast 폭·위치를 보정하여 좁은 화면에서 알림이 화면 밖으로 벗어나지 않도록 개선</li>
+      <li>2000px 이상 초광폭 화면에서 대시보드·주요 패널의 min-width 충돌 가능성을 추가 안정화</li>
+      <li>CSS 중심 최종 Polish로 DB·권한·데이터·Observer·Timer·160ms 화면전환 로직은 유지</li>
+    </ul>
+  </div>
   <div class="change-item" data-version="v47.11-wide-screen">
     <strong>v47.11 · Wide Screen Adaptive Layout</strong>
     <ul>
@@ -35410,4 +35420,78 @@ syncVersion();
 }
 </style>
 <!-- /TFMS v47.11 Wide Screen Adaptive Layout -->
+
+
+<!-- TFMS v47.11 Final Animation & Responsive Polish | CSS-only -->
+<style id="tfms-v4711-final-animation-responsive-polish">
+/*
+  Final Animation & Responsive Polish
+  - CSS/display only. No JS, observer, timer, navigation, DB, permission, data or calculation changes.
+  - Smooths the existing maintenance-chart hover container itself.
+  - Prevents sticky chart hover motion on coarse/touch pointers.
+  - Keeps toast notifications inside narrow mobile viewports.
+  - Adds min-width guards for ultra-wide dashboard/panel layouts.
+*/
+
+/* Maintenance chart: the bar already transitions; make the parent hover lift equally smooth. */
+@media (hover:hover) and (pointer:fine){
+  #stats .tfms-maintenance-stats-block .chart-wrap .bar-item{
+    transform-origin:center bottom;
+    transition:transform .20s cubic-bezier(.20,.82,.24,1),filter .20s ease;
+  }
+}
+
+/* Touch/coarse pointers can retain :hover after a tap; keep the graph visually stationary there. */
+@media (hover:none), (pointer:coarse){
+  #stats .tfms-maintenance-stats-block .chart-wrap .bar-item:hover{
+    transform:none!important;
+    filter:none!important;
+  }
+  #stats .tfms-maintenance-stats-block .chart-wrap .bar-item:hover .bar{
+    transform:none!important;
+    filter:none!important;
+    box-shadow:none!important;
+  }
+}
+
+/* Toast: preserve desktop position while preventing long messages from overflowing narrow screens. */
+.toast{
+  max-width:min(440px,calc(100vw - 32px));
+  overflow-wrap:anywhere;
+}
+@media (max-width:600px){
+  .toast{
+    left:14px!important;
+    right:14px!important;
+    bottom:14px!important;
+    width:auto!important;
+    max-width:none!important;
+    text-align:center;
+  }
+}
+
+/* Ultra-wide layouts: allow grid/panel children to shrink correctly instead of forcing overflow. */
+@media (min-width:2000px){
+  #dashboard.tfms-dashboard-v451 .v451-dashboard-grid > *,
+  #dashboard.tfms-dashboard-v451 .v451-card,
+  #stats .panel,
+  #history .panel,
+  #deleteManage .panel,
+  #equipment .panel{
+    min-width:0!important;
+  }
+}
+
+/* Complete reduced-motion coverage for the chart parent hover added before Layer V. */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto!important;}
+  #stats .tfms-maintenance-stats-block .chart-wrap .bar-item{
+    animation:none!important;
+    transition:none!important;
+    transform:none!important;
+    filter:none!important;
+  }
+}
+</style>
+<!-- /TFMS v47.11 Final Animation & Responsive Polish -->
 </body></html>
