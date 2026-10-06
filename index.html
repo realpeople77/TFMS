@@ -8948,7 +8948,7 @@ document.addEventListener('DOMContentLoaded',function(){
 #tfmsVersionModal .version-body{display:flex;flex-direction:column}
 #tfmsVersionModal .current-build{order:-100;font-size:0}
 #tfmsVersionModal .current-build::after{
-  content:"현재 운영기준: v47.11 Final UI Polish Stable · 2026.10.06";
+  content:"현재 운영기준: v47.11 Stability Patch I Stable · 2026.10.06";
   font-size:14px;
   line-height:1.45;
 }
@@ -8966,6 +8966,15 @@ document.addEventListener('DOMContentLoaded',function(){
 <div class="version-body">
 <div class="current-build">현재 버전: v36.3 Stable · Build 2026.07.22</div>
 <div class="tfms-history-latest-group" aria-label="최근 주요 업데이트">
+  <div class="change-item" data-version="v47.11-stability-patch-i">
+    <strong>v47.11 · Stability Patch I — Today Renderer Ownership</strong>
+    <ul>
+      <li>오늘의 업무 구형 v4585 렌더러와 최신 v4589 Hub 렌더러의 renderTodayTasks 주도권 경쟁 제거</li>
+      <li>v4589 Hub가 구성된 이후 v4585 watchdog·지연 설치·오늘의 업무 진입 훅이 최신 렌더러를 덮어쓰지 않도록 fallback 방식으로 제한</li>
+      <li>v4589 화면이 구성되지 못한 예외 상황에서는 기존 v4585 렌더러가 안전망으로 동작하도록 보존</li>
+      <li>DB·Supabase·RLS·권한·데이터 구조·Observer·Timer 개수·160ms 화면전환 로직은 변경하지 않음</li>
+    </ul>
+  </div>
   <div class="change-item" data-version="v47.11-final-ui-polish">
     <strong>v47.11 · Final Animation &amp; Responsive Polish Stable</strong>
     <ul>
@@ -25479,11 +25488,13 @@ function assetText(t){try{const a=t?.assetKey&&window.assetData?.[t.assetKey];re
 function actionHtml(t,id){const a=[];if(isDone(t)){a.push(`<button type="button" class="small-btn" onclick="undoTodayV3261('${esc(id)}')">완료 취소</button>`)}else{if(fireTask(t))a.push(`<button type="button" class="small-btn blue" onclick="navToFireV420()">소방점검</button>`);a.push(`<button type="button" class="small-btn blue" onclick="openTodayUnifiedV4576('${esc(id)}')">업무 처리</button>`)}if(isAdmin())a.push(`<button type="button" class="small-btn" style="color:#c33;border-color:#efb1b1" onclick="deleteTodayTaskV4577('${esc(t?.dbId||id)}')">직권삭제</button>`);return `<div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap">${a.join('')}</div>`}
 function render(){const body=$('todayBody');if(!body)return;const list=scoped();body.innerHTML=list.length?list.map((t,i)=>{const id=idOf(t,i);return `<tr data-task-id="${esc(id)}"><td>${esc(t.facility||'-')}</td><td>${esc(assetText(t))}</td><td>${esc(t.task||'-')}</td><td>${esc(t.cycle||'-')}</td><td>${esc(t.due||'-')}</td><td><span class="status ${statusClass(t)}">${esc(t.status||'예정')}</span></td><td>${actionHtml(t,id)}</td></tr>`}).join(''):'<tr><td colspan="7"><div class="empty-state">오늘의 업무가 없습니다. 점검주기 관리에서 항목을 등록하면 표시됩니다.</div></td></tr>';try{window.ensureTodayUnified?.()}catch(e){}}
 render.__v4585stable=true;
-function install(){window.renderTodayTasks=render;try{renderTodayTasks=render}catch(e){}if($('today')?.classList.contains('active'))render()}
+/* Stability Patch I: v4589 Hub가 구성된 이후에는 v4585가 renderTodayTasks 주도권을 되찾지 않는다. */
+function v4589OwnsToday(){return !!$('v4589TodayShell')}
+function install(){if(v4589OwnsToday())return;window.renderTodayTasks=render;try{renderTodayTasks=render}catch(e){}if($('today')?.classList.contains('active'))render()}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
 [100,400,1000,2200].forEach(ms=>setTimeout(install,ms));
-setInterval(()=>{if(window.renderTodayTasks!==render){window.renderTodayTasks=render;try{renderTodayTasks=render}catch(e){}}},900);
-['showPage','navTo'].forEach(name=>{const base=window[name];if(typeof base!=='function'||base.__v4585today)return;const w=function(id){const r=base.apply(this,arguments);if(id==='today')setTimeout(()=>{install();render()},50);return r};w.__v4585today=true;window[name]=w});
+setInterval(()=>{if(v4589OwnsToday())return;if(window.renderTodayTasks!==render){window.renderTodayTasks=render;try{renderTodayTasks=render}catch(e){}}},900);
+['showPage','navTo'].forEach(name=>{const base=window[name];if(typeof base!=='function'||base.__v4585today)return;const w=function(id){const r=base.apply(this,arguments);if(id==='today')setTimeout(()=>{if(v4589OwnsToday()){try{window.renderTodayTasks?.()}catch(e){}return}install();render()},50);return r};w.__v4585today=true;window[name]=w});
 })();
 </script>
 
