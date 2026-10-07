@@ -8948,7 +8948,7 @@ document.addEventListener('DOMContentLoaded',function(){
 #tfmsVersionModal .version-body{display:flex;flex-direction:column}
 #tfmsVersionModal .current-build{order:-100;font-size:0}
 #tfmsVersionModal .current-build::after{
-  content:"현재 운영기준: v47.11 Stability Patch VI Today UX Polling Optimized Stable · 2026.10.07";
+  content:"현재 운영기준: v47.11 Motion Standardization Stable · 2026.10.07";
   font-size:14px;
   line-height:1.45;
 }
@@ -8966,6 +8966,15 @@ document.addEventListener('DOMContentLoaded',function(){
 <div class="version-body">
 <div class="current-build">현재 버전: v36.3 Stable · Build 2026.07.22</div>
 <div class="tfms-history-latest-group" aria-label="최근 주요 업데이트">
+  <div class="change-item" data-version="v47.11-motion-standardization">
+    <strong>v47.11 · Motion Standardization — Unified Interaction Rhythm</strong>
+    <ul>
+      <li>기존 Layer I~V의 색상·포커스·탭 등 빠른 피드백은 160ms, 카드·선택·행·설비 상호작용은 220ms로 리듬 통일</li>
+      <li>패널·모달·Toast 등 등장 효과는 300ms 전후로 통일하고 cubic-bezier(.20,.80,.20,1) 계열 easing을 공통 적용</li>
+      <li>그래프는 정보 인지 시간을 고려해 에너지 추이 760ms, 유지관리 막대 820ms의 별도 데이터 시각화 속도를 유지</li>
+      <li>새 애니메이션·Timer·MutationObserver·Navigation wrapper를 추가하지 않았으며 DB·권한·데이터·레이아웃·160ms 페이지 전환은 변경하지 않음</li>
+    </ul>
+  </div>
   <div class="change-item" data-version="v47.11-stability-patch-vi">
     <strong>v47.11 · Stability Patch VI — Today UX Polling Optimization</strong>
     <ul>
@@ -35783,4 +35792,185 @@ syncVersion();
 }
 </style>
 <!-- /TFMS v47.11 Stability Patch III.2 -->
+<!-- TFMS v47.11 Motion Standardization | CSS-only timing/easing normalization -->
+<style id="tfms-v4711-motion-standardization-style">
+/*
+  Motion Standardization
+  - CSS only. No new animation behavior, JS, observer, timer or navigation wrapper.
+  - Existing Layer I~V selectors/states are reused; only timing/easing rhythm is normalized.
+  - Existing 160ms fixed page-transition lifecycle is preserved.
+*/
+:root{
+  --tfms-motion-fast:160ms;
+  --tfms-motion-normal:220ms;
+  --tfms-motion-slow:300ms;
+  --tfms-motion-chart:760ms;
+  --tfms-motion-chart-strong:820ms;
+  --tfms-ease-smooth:cubic-bezier(.20,.80,.20,1);
+  --tfms-ease-emphasis:cubic-bezier(.24,.86,.30,1);
+}
+
+/* Layer I — page/card rhythm. */
+#appLayout main .page.active{
+  transition:opacity var(--tfms-motion-fast) ease-out,transform var(--tfms-motion-normal) var(--tfms-ease-smooth)!important;
+}
+@media (hover:hover) and (pointer:fine){
+  #appLayout main :where(
+    .quick,.v451-kpi,.v451-card,.asset-kpi,.tfms-eq-kpi,.export-summary-card,
+    .tfms-drill-kpi,.today-user-kpi-v4550,.fo-kpi,.v4565-kpi,.v4565-qr-kpi,
+    .v4571-user-kpi,.v4589-kpi,.tfms-energy-card,.tfms-insight-card,.v4573-admin-card,.v4589-card
+  ){
+    transition:transform var(--tfms-motion-normal) var(--tfms-ease-smooth),box-shadow var(--tfms-motion-normal) ease,border-color var(--tfms-motion-fast) ease!important;
+  }
+}
+
+/* Layer III — navigation, tabs, panels and modal entrance. */
+#appHeader nav.tfms-v4606-sidebar .nav,
+#appHeader nav.tfms-v4606-sidebar .tfms-v4606-group-toggle,
+#appHeader nav.tfms-v4606-sidebar .tfms-v4606-alert-btn,
+#appHeader .tfms-v4606-top-alert{
+  transition:background-color var(--tfms-motion-fast) ease,color var(--tfms-motion-fast) ease,box-shadow var(--tfms-motion-normal) ease,border-color var(--tfms-motion-fast) ease,transform var(--tfms-motion-normal) var(--tfms-ease-smooth)!important;
+}
+#appHeader nav.tfms-v4606-sidebar .nav .tfms-nav-ico,
+#appHeader nav.tfms-v4606-sidebar .tfms-v4606-group-toggle .ico,
+#appHeader nav.tfms-v4606-sidebar .tfms-v4606-alert-btn .ico{
+  transition:transform var(--tfms-motion-normal) var(--tfms-ease-smooth),opacity var(--tfms-motion-fast) ease!important;
+}
+#appHeader nav.tfms-v4606-sidebar .tfms-v4606-group.open>.tfms-v4606-submenu{
+  animation-duration:var(--tfms-motion-normal)!important;
+  animation-timing-function:var(--tfms-ease-smooth)!important;
+}
+#appLayout main :where(.dept-tab,.dj-tab,.v4571-user-tabs button,.v4586-account-tab,.tfms-stats-mode-tabs button,.tfms-energy-subtabs button,.tfms-energy-mini-toggle button){
+  transition:background-color var(--tfms-motion-fast) ease,color var(--tfms-motion-fast) ease,border-color var(--tfms-motion-fast) ease,box-shadow var(--tfms-motion-normal) ease,transform var(--tfms-motion-normal) var(--tfms-ease-smooth)!important;
+}
+#appLayout main :where(.dj-form.active,.tfms-energy-subpanel.active,.v4586-guide-wrap.active),
+#accountAdmin.v4586-account .v4586-account-panel,
+.v4577-history-detail.show{
+  animation-duration:var(--tfms-motion-normal)!important;
+  animation-timing-function:var(--tfms-ease-smooth)!important;
+}
+#stats #tfmsEnergyStatsRoot:not([hidden]){
+  animation-duration:var(--tfms-motion-slow)!important;
+  animation-timing-function:var(--tfms-ease-smooth)!important;
+}
+.tfms-detail-modal.show,
+.tfms-flow-modal.show,
+.v4577-confirm-overlay.show,
+#tfmsV4649JournalModal.show,
+#tfmsV4606AlertDrawer.show,
+#dailyJournalPreviewModal.show,
+.modal-overlay:not(.hidden){
+  animation-duration:var(--tfms-motion-fast)!important;
+  animation-timing-function:ease-out!important;
+}
+.tfms-detail-modal.show .tfms-detail-box,
+.tfms-flow-modal.show .tfms-flow-box,
+.v4577-confirm-overlay.show .v4577-confirm-card,
+#tfmsV4649JournalModal.show .tfms-v4649-modal-card,
+#tfmsV4606AlertDrawer.show .drawer,
+#dailyJournalPreviewModal.show .dj-modal-bar,
+#dailyJournalPreviewModal.show .dj-sheet-wrap,
+.modal-overlay:not(.hidden) .modal-card{
+  animation-duration:var(--tfms-motion-slow)!important;
+  animation-timing-function:var(--tfms-ease-emphasis)!important;
+}
+#appLayout main :where(input,select,textarea){
+  transition:border-color var(--tfms-motion-fast) ease,box-shadow var(--tfms-motion-fast) ease,background-color var(--tfms-motion-fast) ease!important;
+}
+
+/* Layer V.1/V.2 — toast and upload feedback. */
+.toast{
+  animation-duration:var(--tfms-motion-slow)!important;
+  animation-timing-function:var(--tfms-ease-emphasis)!important;
+}
+#register label[for="docInput"].upload-zone,
+#register label[for="photoInput"].upload-zone,
+#register label[for="docInput"].upload-zone .file-btn,
+#register label[for="photoInput"].upload-zone .file-btn{
+  transition-duration:var(--tfms-motion-normal)!important;
+  transition-timing-function:var(--tfms-ease-smooth)!important;
+}
+#register #photoPreview > .thumb,
+#register #photoPreview > .tfms-photo-thumb-v413{
+  animation-duration:var(--tfms-motion-slow)!important;
+  animation-timing-function:var(--tfms-ease-emphasis)!important;
+  transition-duration:var(--tfms-motion-normal)!important;
+  transition-timing-function:var(--tfms-ease-smooth)!important;
+}
+
+/* Layer V.3/V.4 — selection and equipment feedback. */
+#cycle .v459-cycle-shortcuts button,
+#cycle .v459-preset-grid button,
+#dailylog .v459-daily-mode button,
+#dailylog .v4510-weather-picks button,
+#equipment .uf-item,
+#equipment .tree-item,
+#equipment .asset-mini-actions button{
+  transition-duration:var(--tfms-motion-normal)!important;
+  transition-timing-function:var(--tfms-ease-smooth)!important;
+}
+#cycle .v459-cycle-shortcuts button > span,
+#dailylog .v459-daily-mode .ico,
+#dailylog .v4510-weather-picks button > span,
+#equipment .uf-item small{
+  transition-duration:var(--tfms-motion-normal)!important;
+  transition-timing-function:var(--tfms-ease-smooth)!important;
+}
+
+/* Layer V.5 — result rows. Delete/change audit keeps no entrance animation. */
+#history #historyBody > tr{
+  animation-duration:var(--tfms-motion-normal)!important;
+  animation-timing-function:var(--tfms-ease-smooth)!important;
+}
+#history #historyBody > tr,
+#deleteManage #deleteBody > tr,
+#history #historyBody > tr > td,
+#deleteManage #deleteBody > tr > td{
+  transition-duration:var(--tfms-motion-fast)!important;
+  transition-timing-function:ease!important;
+}
+
+/* Data visualization keeps a slower, readable cadence. */
+#stats .tfms-energy-chart-svg-v4711 .bar{
+  transition-duration:var(--tfms-motion-chart),var(--tfms-motion-normal)!important;
+  transition-timing-function:var(--tfms-ease-smooth),ease!important;
+}
+#stats .tfms-energy-chart-svg-v4711 .line-point{
+  transition-duration:var(--tfms-motion-slow),var(--tfms-motion-slow)!important;
+  transition-timing-function:ease,var(--tfms-ease-smooth)!important;
+}
+#stats .tfms-maintenance-stats-block .chart-wrap .bar{
+  animation-duration:var(--tfms-motion-chart-strong)!important;
+  animation-timing-function:var(--tfms-ease-smooth)!important;
+  transition-duration:var(--tfms-motion-normal)!important;
+  transition-timing-function:var(--tfms-ease-smooth)!important;
+}
+@media (hover:hover) and (pointer:fine){
+  #stats .tfms-maintenance-stats-block .chart-wrap .bar-item{
+    transition-duration:var(--tfms-motion-normal)!important;
+    transition-timing-function:var(--tfms-ease-smooth)!important;
+  }
+}
+
+/* Accessibility remains authoritative. */
+@media (prefers-reduced-motion:reduce){
+  #appLayout main .page.active,
+  #appLayout main :where(.quick,.v451-kpi,.v451-card,.asset-kpi,.tfms-eq-kpi,.export-summary-card,.tfms-drill-kpi,.today-user-kpi-v4550,.fo-kpi,.v4565-kpi,.v4565-qr-kpi,.v4571-user-kpi,.v4589-kpi,.tfms-energy-card,.tfms-insight-card,.v4573-admin-card,.v4589-card),
+  #appHeader nav.tfms-v4606-sidebar .nav,
+  #appHeader nav.tfms-v4606-sidebar .tfms-v4606-group-toggle,
+  #appHeader nav.tfms-v4606-sidebar .tfms-v4606-alert-btn,
+  #appHeader .tfms-v4606-top-alert,
+  .toast,
+  #history #historyBody > tr,
+  #deleteManage #deleteBody > tr,
+  #stats .tfms-energy-chart-svg-v4711 .bar,
+  #stats .tfms-energy-chart-svg-v4711 .line-point,
+  #stats .tfms-maintenance-stats-block .chart-wrap .bar,
+  #stats .tfms-maintenance-stats-block .chart-wrap .bar-item{
+    animation:none!important;
+    transition:none!important;
+    transform:none!important;
+  }
+}
+</style>
 </body></html>
