@@ -8948,7 +8948,7 @@ document.addEventListener('DOMContentLoaded',function(){
 #tfmsVersionModal .version-body{display:flex;flex-direction:column}
 #tfmsVersionModal .current-build{order:-100;font-size:0}
 #tfmsVersionModal .current-build::after{
-  content:"현재 운영기준: v47.11 Stability Patch III.1 Chart Aspect Comfort Stable · 2026.10.06";
+  content:"현재 운영기준: v47.11 Stability Patch III.2 Chart Label Overlap Fix Stable · 2026.10.07";
   font-size:14px;
   line-height:1.45;
 }
@@ -8966,6 +8966,15 @@ document.addEventListener('DOMContentLoaded',function(){
 <div class="version-body">
 <div class="current-build">현재 버전: v36.3 Stable · Build 2026.07.22</div>
 <div class="tfms-history-latest-group" aria-label="최근 주요 업데이트">
+  <div class="change-item" data-version="v47.11-stability-patch-iii-2">
+    <strong>v47.11 · Stability Patch III.2 — Chart Label Overlap Fix</strong>
+    <ul>
+      <li>그래프 폭 제한 이후 에너지 추이 그래프 좌측 상단 Y축 값과 범례 텍스트가 겹치던 표시 오류 보정</li>
+      <li>III.1의 적정 최대폭은 유지하고 SVG 높이를 실제 chart canvas 내부 높이에 맞춰 상단 범례 영역 침범 방지</li>
+      <li>1400px 이상에서 범례와 plotting 영역 사이 여백을 확보하고 2000px 이상 폭 규칙도 동일하게 유지</li>
+      <li>그래프 데이터·산식·필터·기간선택·DB·권한·Observer·Timer·JS 렌더러는 변경하지 않음</li>
+    </ul>
+  </div>
   <div class="change-item" data-version="v47.11-stability-patch-iii-1">
     <strong>v47.11 · Stability Patch III.1 — Chart Aspect Comfort</strong>
     <ul>
@@ -35658,4 +35667,45 @@ syncVersion();
 }
 </style>
 <!-- /TFMS v47.11 Stability Patch III.1 -->
+
+
+<!-- TFMS v47.11 Stability Patch III.2 | chart label overlap fix | CSS only -->
+<style id="tfms-v4711-stability-patch-iii-2-chart-label-overlap-fix">
+/*
+  Stability Patch III.2 — Chart Label Overlap Fix
+  - Keeps the III.1 desktop chart width comfort rule.
+  - Constrains the SVG to the actual chart canvas height so the top Y-axis label
+    cannot intrude into the legend row.
+  - CSS only: no data, formula, filter, DB, permission or renderer changes.
+*/
+@media (min-width:1400px){
+  #stats .tfms-energy-trend-v4711{
+    height:258px!important;
+  }
+  #stats .tfms-energy-trend-legend-v4711{
+    min-height:36px!important;
+    padding-bottom:6px!important;
+  }
+  #stats .tfms-energy-chart-canvas-v4711{
+    align-items:stretch!important;
+    min-height:0!important;
+    overflow:visible!important;
+  }
+  #stats .tfms-energy-chart-svg-v4711{
+    width:min(100%,820px)!important;
+    height:100%!important;
+    max-height:100%!important;
+    aspect-ratio:auto!important;
+    flex:0 1 820px!important;
+    align-self:stretch!important;
+  }
+}
+@media (min-width:2000px){
+  #stats .tfms-energy-chart-svg-v4711{
+    width:min(100%,900px)!important;
+    flex-basis:900px!important;
+  }
+}
+</style>
+<!-- /TFMS v47.11 Stability Patch III.2 -->
 </body></html>
