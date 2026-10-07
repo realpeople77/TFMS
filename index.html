@@ -8948,7 +8948,7 @@ document.addEventListener('DOMContentLoaded',function(){
 #tfmsVersionModal .version-body{display:flex;flex-direction:column}
 #tfmsVersionModal .current-build{order:-100;font-size:0}
 #tfmsVersionModal .current-build::after{
-  content:"현재 운영기준: v47.11 Stability Patch IV Today Fallback Watchdog Stable · 2026.10.07";
+  content:"현재 운영기준: v47.11 Stability Patch V Page Isolation Watchdog Stable · 2026.10.07";
   font-size:14px;
   line-height:1.45;
 }
@@ -8966,6 +8966,15 @@ document.addEventListener('DOMContentLoaded',function(){
 <div class="version-body">
 <div class="current-build">현재 버전: v36.3 Stable · Build 2026.07.22</div>
 <div class="tfms-history-latest-group" aria-label="최근 주요 업데이트">
+  <div class="change-item" data-version="v47.11-stability-patch-v">
+    <strong>v47.11 · Stability Patch V — Page Isolation Watchdog Retirement</strong>
+    <ul>
+      <li>비활성 페이지 격리 상태가 연속 3회 정상 확인되면 v4585의 800ms page-isolation watchdog이 스스로 종료되도록 안정화</li>
+      <li>초기 구성 미완료·활성 페이지 중복·비활성 페이지 노출 등 격리 상태가 안정되지 않으면 기존 polling fallback을 계속 유지</li>
+      <li>기존 CSS page isolation, showPage/navTo navigation hook, 160ms 화면전환 및 DB·Supabase·RLS·권한·데이터 로직은 변경하지 않음</li>
+      <li>Timer 코드를 강제 삭제하지 않고 정상 구조 확인 후 clearInterval로 퇴역하도록 최소 수정</li>
+    </ul>
+  </div>
   <div class="change-item" data-version="v47.11-stability-patch-iv">
     <strong>v47.11 · Stability Patch IV — Today Fallback Watchdog Retirement</strong>
     <ul>
@@ -25543,9 +25552,32 @@ function ensureCycleFireButtons(){
   p.querySelectorAll('.v4585-fire-shortcuts').forEach(el=>el.remove());
 }
 function run(){lockVersion();enforcePageIsolation();ensureCycleFireButtons()}
+function pageIsolationStable(){
+  const pages=Array.from(document.querySelectorAll('section.page'));
+  if(!pages.length)return false;
+  const active=pages.filter(p=>p.classList.contains('active'));
+  if(active.length!==1)return false;
+  const current=active[0],cs=getComputedStyle(current);
+  if(cs.display==='none'||cs.visibility==='hidden'||current.getAttribute('aria-hidden')==='true')return false;
+  return pages.every(p=>{
+    if(p===current)return true;
+    const st=getComputedStyle(p);
+    return st.display==='none'&&p.getAttribute('aria-hidden')==='true';
+  });
+}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
 [80,250,700,1600,3200].forEach(ms=>setTimeout(run,ms));
-setInterval(()=>{lockVersion();enforcePageIsolation()},800);
+/* Stability Patch V: 정상 page isolation이 연속 확인되면 800ms watchdog은 스스로 종료한다.
+   초기 구성이 불완전하거나 격리가 안정되지 않으면 기존 fallback polling을 계속 유지한다. */
+let isolationStablePasses=0;
+const isolationWatchdog=setInterval(()=>{
+  lockVersion();
+  enforcePageIsolation();
+  if(pageIsolationStable()){
+    isolationStablePasses++;
+    if(isolationStablePasses>=3)clearInterval(isolationWatchdog);
+  }else isolationStablePasses=0;
+},800);
 ['showPage','navTo'].forEach(name=>{const base=window[name];if(typeof base!=='function'||base.__v4585)return;const w=function(){const r=base.apply(this,arguments);setTimeout(run,30);setTimeout(run,180);return r};w.__v4585=true;window[name]=w});
 })();
 </script>
