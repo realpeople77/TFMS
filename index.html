@@ -8948,7 +8948,7 @@ document.addEventListener('DOMContentLoaded',function(){
 #tfmsVersionModal .version-body{display:flex;flex-direction:column}
 #tfmsVersionModal .current-build{order:-100;font-size:0}
 #tfmsVersionModal .current-build::after{
-  content:"현재 운영기준: v47.11 Stability Patch V Page Isolation Watchdog Stable · 2026.10.07";
+  content:"현재 운영기준: v47.11 Stability Patch VI Today UX Polling Optimized Stable · 2026.10.07";
   font-size:14px;
   line-height:1.45;
 }
@@ -8966,6 +8966,15 @@ document.addEventListener('DOMContentLoaded',function(){
 <div class="version-body">
 <div class="current-build">현재 버전: v36.3 Stable · Build 2026.07.22</div>
 <div class="tfms-history-latest-group" aria-label="최근 주요 업데이트">
+  <div class="change-item" data-version="v47.11-stability-patch-vi">
+    <strong>v47.11 · Stability Patch VI — Today UX Polling Optimization</strong>
+    <ul>
+      <li>Today UX의 700ms watchdog 주기는 유지하되 역할·부서·업무상태·후속조치 수가 동일하고 UI 구조가 정상인 경우 DOM 재보정을 즉시 생략</li>
+      <li>업무 완료·취소·신규 등록·역할 변경·Today Hub 재생성 등 실제 상태 변화가 발생하면 기존 UX 보정을 자동 수행</li>
+      <li>기존 polling에서 중복 실행되던 lockVersion 호출을 1회로 정리해 불필요한 반복 작업을 축소</li>
+      <li>DB·Supabase·RLS·권한·오늘의 업무 데이터·v4589 렌더러·Navigation·160ms 화면전환은 변경하지 않음</li>
+    </ul>
+  </div>
   <div class="change-item" data-version="v47.11-stability-patch-v">
     <strong>v47.11 · Stability Patch V — Page Isolation Watchdog Retirement</strong>
     <ul>
@@ -26946,11 +26955,29 @@ function renderAlerts(){const box=$('v4607TodayAlertList');if(!box)return;const 
 function enhanceFilters(){const c=counts();const map={all:c.all,plan:c.plan,progress:c.progress,late:c.late,done:c.done};qa('#today .v4589-filter').forEach(b=>{const key=b.dataset.f;if(!key)return;let i=q('.v4607-filter-count',b);if(!i){i=document.createElement('i');i.className='v4607-filter-count';b.appendChild(i)}i.textContent=' '+(map[key]||0)})}
 function enhanceEmpty(){const body=$('v4589TodayBody');if(!body)return;const empty=q('.v4589-empty',body);if(empty&&!q('.v4607-empty-inner',empty)){empty.innerHTML='<div class="v4607-empty-inner"><span class="v4607-empty-ico">✓</span><strong>조건에 맞는 오늘의 업무가 없습니다.</strong><span>정기 업무는 점검주기에서 자동 생성되고,<br>현장 확인·민원·긴급 점검은 아래 비정기 업무 등록에서 추가할 수 있습니다.</span></div>'}}
 function setRoleClass(){const p=$('today');if(!p)return;const r=currentRole();p.classList.add('v4607-user-ux');p.classList.toggle('v4607-admin',r==='admin'||r==='viewer');p.classList.toggle('v4607-user',!(r==='admin'||r==='viewer'))}
-function refreshToday(){
- lockVersion();const p=$('today');if(!p)return;setRoleClass();
- const shell=$('v4589TodayShell');if(!shell)return;
- ensureGuide(shell);ensureBottom(shell);enhanceFilters();enhanceEmpty();renderAlerts();
+/* Stability Patch VI: 700ms watchdog은 유지하되 Today 데이터/UI 상태가 동일하면 DOM 보정을 생략한다. */
+let lastTodayUXKey='';
+function todayUXKey(){
+ const tasks=scopedTasks();
+ const taskSig=tasks.map((t,i)=>[String(t?._flowId||t?.dbId||t?.id||i),String(t?.status||''),rawDate(t),String(t?.facility||''),String(t?.task||t?.title||'')].join('~')).join('|');
+ return [currentRole(),currentDept(),pendingMaintenance(),taskSig].join('||');
+}
+function todayUXHealthy(){
+ const p=$('today'),shell=$('v4589TodayShell');if(!p||!shell)return false;
+ const r=currentRole(),adminLike=r==='admin'||r==='viewer';
+ if(!p.classList.contains('v4607-user-ux'))return false;
+ if(p.classList.contains('v4607-admin')!==adminLike||p.classList.contains('v4607-user')===adminLike)return false;
+ if(!q('.v4607-user-guide',shell)||!$('v4607TodayBottom')||!$('v4607TodayAlerts'))return false;
+ return qa('#today .v4589-filter').every(b=>!!q('.v4607-filter-count',b));
+}
+function refreshToday(force=false){
+ lockVersion();const p=$('today');if(!p)return;
+ const shell=$('v4589TodayShell');if(!shell){lastTodayUXKey='';return}
+ const key=todayUXKey();
+ if(!force&&key===lastTodayUXKey&&todayUXHealthy())return;
+ setRoleClass();ensureGuide(shell);ensureBottom(shell);enhanceFilters();enhanceEmpty();renderAlerts();
  const cycle=$('v4589CycleGo');if(cycle)cycle.textContent='점검주기 관리';
+ lastTodayUXKey=key;
 }
 function installRenderHook(){
  const base=window.renderTodayHubV4589;if(typeof base==='function'&&!base.__v4607){const w=function(){const r=base.apply(this,arguments);setTimeout(refreshToday,0);return r};w.__v4607=true;window.renderTodayHubV4589=w}
@@ -26958,7 +26985,7 @@ function installRenderHook(){
 function run(){installHistoryGuard();lockVersion();installRenderHook();setTimeout(refreshToday,30)}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
 [100,350,900,1800,3600].forEach(ms=>setTimeout(run,ms));
-setInterval(()=>{lockVersion();if($('today')?.classList.contains('active'))refreshToday()},700);
+setInterval(()=>{if($('today')?.classList.contains('active'))refreshToday()},700);
 ['showPage','navTo'].forEach(name=>{const base=window[name];if(typeof base==='function'&&!base.__v4607today){const w=function(id){const r=base.apply(this,arguments);if(id==='today')setTimeout(refreshToday,120);return r};w.__v4607today=true;window[name]=w}});
 })();
 </script>
