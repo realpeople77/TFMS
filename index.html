@@ -36137,4 +36137,91 @@ window.addEventListener('pagehide',()=>{const c=channel;channel=null;activeUserI
 })();
 </script>
 <!-- /TFMS v47.12 Presence Test 01 -->
+
+<!-- =========================================================
+     TFMS v47.12 Presence Test 01.1 — Header Responsive Fix
+     Scope: medium-width header layout only. CSS-only.
+     No Presence / DB / SQL / RLS / auth / navigation / timer / observer changes.
+     ========================================================= -->
+<style id="tfms-v4712-presence-header-responsive-fix">
+/* Medium desktop/tablet widths: prevent header controls from competing for space. */
+@media (max-width:1180px) and (min-width:761px){
+  #appHeader .top{
+    padding-left:12px!important;
+    padding-right:12px!important;
+    gap:8px!important;
+  }
+  #appHeader .top .logo{
+    flex:1 1 auto!important;
+    min-width:0!important;
+    overflow:hidden!important;
+    gap:7px!important;
+  }
+  #appHeader .logo-title{
+    min-width:0!important;
+    flex:0 1 auto!important;
+    overflow:hidden!important;
+  }
+  #appHeader #tfmsVersionBadge{
+    max-width:142px!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    white-space:nowrap!important;
+    flex:0 1 142px!important;
+  }
+  #appHeader .user{
+    margin-left:auto!important;
+    min-width:0!important;
+    flex:0 1 auto!important;
+    gap:6px!important;
+  }
+  #appHeader #topUserLabel{
+    max-width:170px!important;
+    min-width:0!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    white-space:nowrap!important;
+    padding-left:30px!important;
+  }
+  #appHeader #roleBadge{
+    padding:6px 9px!important;
+    font-size:11.5px!important;
+    flex:0 0 auto!important;
+  }
+  #appHeader #topLoginBtn{
+    padding:9px 13px!important;
+    font-size:12px!important;
+    flex:0 0 auto!important;
+  }
+  #tfmsPresencePillV4712{
+    height:28px!important;
+    padding:0 8px!important;
+    gap:5px!important;
+    font-size:10px!important;
+    flex:0 0 auto!important;
+  }
+}
+
+/* DB state remains available elsewhere; reclaim header space before controls collide. */
+@media (max-width:1080px) and (min-width:761px){
+  #appHeader #cloudTopBadge{display:none!important}
+  #appHeader .top .logo>img{
+    width:126px!important;
+    max-width:126px!important;
+    flex-basis:126px!important;
+  }
+}
+
+/* At compact desktop width the long build label is the first nonessential item to yield. */
+@media (max-width:950px) and (min-width:761px){
+  #appHeader #tfmsVersionBadge{display:none!important}
+  #appHeader .top .logo>img{
+    width:108px!important;
+    max-width:108px!important;
+    flex-basis:108px!important;
+  }
+  #appHeader #topUserLabel{max-width:145px!important}
+}
+</style>
+<!-- /TFMS v47.12 Presence Test 01.1 — Header Responsive Fix -->
 </body></html>
