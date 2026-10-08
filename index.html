@@ -36224,4 +36224,133 @@ window.addEventListener('pagehide',()=>{const c=channel;channel=null;activeUserI
 }
 </style>
 <!-- /TFMS v47.12 Presence Test 01.1 — Header Responsive Fix -->
+
+
+<!-- =========================================================
+     TFMS v47.12 Presence Test 02 — Admin Online User List
+     Scope: admin-only online-user detail drawer.
+     Reuses existing profiles SELECT permission and Realtime Presence topic.
+     No DB / SQL / RLS / auth / navigation / timer / observer changes.
+     Presence payload remains pseudonymous; names/departments are matched locally.
+     ========================================================= -->
+<style id="tfms-v4712-presence-test02-style">
+#tfmsPresencePillV4712{cursor:pointer;user-select:none}
+#tfmsPresencePillV4712:focus-visible{outline:2px solid #2b74d8;outline-offset:2px}
+#tfmsPresenceDetailV4712{position:fixed;inset:0;z-index:120090;display:none;background:rgba(7,27,52,.34);backdrop-filter:blur(1px)}
+#tfmsPresenceDetailV4712.show{display:block}
+#tfmsPresenceDetailV4712 .tfms-presence-panel{position:absolute;right:18px;top:66px;width:min(430px,calc(100vw - 28px));max-height:calc(100vh - 86px);display:flex;flex-direction:column;background:#fff;border:1px solid #d7e3ef;border-radius:17px;box-shadow:0 24px 64px rgba(9,41,77,.24);overflow:hidden}
+#tfmsPresenceDetailV4712 .tfms-presence-head{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:62px;padding:0 17px;border-bottom:1px solid #e5ecf4;background:#fbfdff}
+#tfmsPresenceDetailV4712 .tfms-presence-head-copy{min-width:0}
+#tfmsPresenceDetailV4712 .tfms-presence-head strong{display:block;color:#173754;font-size:14px;font-weight:900}
+#tfmsPresenceDetailV4712 .tfms-presence-head small{display:block;margin-top:2px;color:#71869a;font-size:10px;font-weight:700}
+#tfmsPresenceDetailV4712 .tfms-presence-close{width:31px;height:31px;border:0;border-radius:9px;background:#edf3f8;color:#4f667d;font-size:17px;cursor:pointer;flex:0 0 auto}
+#tfmsPresenceDetailV4712 .tfms-presence-summary{display:flex;align-items:center;gap:7px;padding:12px 16px 9px;color:#506980;font-size:10.5px;font-weight:800}
+#tfmsPresenceDetailV4712 .tfms-presence-live-dot{width:8px;height:8px;border-radius:50%;background:#29a66b;box-shadow:0 0 0 3px rgba(41,166,107,.11)}
+#tfmsPresenceDetailV4712 .tfms-presence-body{padding:0 12px 13px;overflow:auto;min-height:110px}
+#tfmsPresenceDetailV4712 .tfms-presence-user{display:grid;grid-template-columns:38px minmax(0,1fr) auto;gap:10px;align-items:center;padding:11px 8px;border-bottom:1px solid #edf2f7}
+#tfmsPresenceDetailV4712 .tfms-presence-user:last-child{border-bottom:0}
+#tfmsPresenceDetailV4712 .tfms-presence-avatar{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;background:#eaf4ff;color:#1764c0;font-size:12px;font-weight:900}
+#tfmsPresenceDetailV4712 .tfms-presence-user-main{min-width:0}
+#tfmsPresenceDetailV4712 .tfms-presence-user-name{display:flex;align-items:center;gap:6px;min-width:0;color:#1c354f;font-size:12px;font-weight:900}
+#tfmsPresenceDetailV4712 .tfms-presence-user-name .name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#tfmsPresenceDetailV4712 .tfms-presence-me{padding:2px 5px;border-radius:999px;background:#eaf7ef;color:#1d7b4c;font-size:8.5px;font-weight:900;flex:0 0 auto}
+#tfmsPresenceDetailV4712 .tfms-presence-user-sub{margin-top:3px;color:#718397;font-size:9.5px;line-height:1.45;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#tfmsPresenceDetailV4712 .tfms-presence-online{padding:4px 7px;border-radius:999px;background:#effaf4;color:#258457;font-size:9px;font-weight:900;white-space:nowrap}
+#tfmsPresenceDetailV4712 .tfms-presence-empty{padding:34px 14px;text-align:center;color:#7b8da0;font-size:11px;line-height:1.65}
+#tfmsPresenceDetailV4712 .tfms-presence-errorbox{margin:8px 4px;padding:13px 14px;border:1px solid #efdcc0;border-radius:11px;background:#fff9ef;color:#835d19;font-size:10.5px;line-height:1.6}
+#tfmsPresenceDetailV4712 .tfms-presence-foot{padding:10px 15px;border-top:1px solid #edf2f6;background:#fafcff;color:#8494a4;font-size:9px;line-height:1.45}
+@media(max-width:760px){#tfmsPresenceDetailV4712 .tfms-presence-panel{right:10px;top:58px;width:calc(100vw - 20px);max-height:calc(100vh - 70px)}}
+</style>
+<script id="tfms-v4712-presence-test02-controller">
+(function(){
+'use strict';
+if(window.__tfmsV4712PresenceTest02Installed)return;
+window.__tfmsV4712PresenceTest02Installed=true;
+
+const CHANNEL_NAME='tfms-online-presence-v1';
+const PILL_ID='tfmsPresencePillV4712';
+const DRAWER_ID='tfmsPresenceDetailV4712';
+let sb=null,detailChannel=null,profileMap=new Map(),profilesReady=false,lastKeys=[];
+
+function $(id){return document.getElementById(id)}
+function profile(){try{return window.getTfmsCloudProfile?.()||window.cloudProfile||null}catch(e){return window.cloudProfile||null}}
+function role(){try{const p=profile()||{},s=JSON.parse(sessionStorage.getItem('tfmsSession')||'{}');return String(p.role||p.user_role||window.tfmsRole||window.tfmsCurrentRole||s.role||'').toLowerCase()}catch(e){return''}}
+function isAdmin(){const r=role();return r==='admin'||r==='관리자'}
+function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function initials(name){const s=String(name||'?').trim();return esc((s.slice(0,1)||'?').toUpperCase())}
+function flatten(state){const rows=[];Object.values(state||{}).forEach(v=>{if(Array.isArray(v))rows.push(...v)});return rows}
+function stateKeys(){if(!detailChannel)return[];try{return [...new Set(flatten(detailChannel.presenceState()).map(x=>String(x?.u||'')).filter(Boolean))]}catch(e){return[]}}
+async function pseudonym(id){
+  const raw='tfms-presence-v1:'+String(id||'');
+  try{if(globalThis.crypto?.subtle&&globalThis.TextEncoder){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(raw));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('').slice(0,32)}}catch(e){}
+  let h1=2166136261,h2=2166136261;for(let i=0;i<raw.length;i++){h1=Math.imul(h1^raw.charCodeAt(i),16777619);h2=Math.imul(h2^(raw.charCodeAt(i)+i),16777619)}
+  return ('00000000'+(h1>>>0).toString(16)).slice(-8)+('00000000'+(h2>>>0).toString(16)).slice(-8);
+}
+function ensureDrawer(){
+  let d=$(DRAWER_ID);if(d)return d;
+  d=document.createElement('div');d.id=DRAWER_ID;
+  d.innerHTML='<div class="tfms-presence-panel"><div class="tfms-presence-head"><div class="tfms-presence-head-copy"><strong>🟢 현재 접속자</strong><small>관리자 전용 · Presence 실명정보 미전송</small></div><button type="button" class="tfms-presence-close" aria-label="닫기">×</button></div><div class="tfms-presence-summary"><span class="tfms-presence-live-dot"></span><span id="tfmsPresenceSummaryV4712">접속 상태 확인 중</span></div><div class="tfms-presence-body" id="tfmsPresenceBodyV4712"><div class="tfms-presence-empty">접속자 정보를 불러오는 중입니다.</div></div><div class="tfms-presence-foot">실명·부서 정보는 Presence 채널에 전송하지 않고, 관리자가 기존 profiles 조회 권한으로 브라우저 안에서만 매칭합니다.</div></div>';
+  document.body.appendChild(d);
+  d.addEventListener('click',e=>{if(e.target===d)closeDrawer()});
+  d.querySelector('.tfms-presence-close').onclick=closeDrawer;
+  return d;
+}
+function setBody(html){const b=$('tfmsPresenceBodyV4712');if(b)b.innerHTML=html}
+function setSummary(text){const s=$('tfmsPresenceSummaryV4712');if(s)s.textContent=text}
+async function loadProfiles(){
+  profileMap=new Map();profilesReady=false;
+  if(!sb||!isAdmin())return;
+  const {data,error}=await sb.from('profiles').select('id,full_name,position_title,role,account_status, department:departments(name), primary_facility:facilities(name)').eq('account_status','active');
+  if(error)throw error;
+  const rows=Array.isArray(data)?data:[];
+  const pairs=await Promise.all(rows.map(async p=>[await pseudonym(p.id),p]));
+  profileMap=new Map(pairs);profilesReady=true;
+}
+async function myKey(){try{const u=window.getTfmsCloudUser?.()||window.cloudUser||null;return u?.id?await pseudonym(u.id):''}catch(e){return''}}
+async function render(){
+  if(!$(DRAWER_ID)?.classList.contains('show'))return;
+  lastKeys=stateKeys();
+  setSummary(`현재 접속 ${lastKeys.length}명`);
+  if(!profilesReady){setBody('<div class="tfms-presence-empty">접속자 프로필을 확인하는 중입니다.</div>');return}
+  const mine=await myKey();
+  const matched=[],unmatched=[];
+  lastKeys.forEach(k=>{const p=profileMap.get(k);if(p)matched.push({k,p});else unmatched.push(k)});
+  matched.sort((a,b)=>{if(a.k===mine)return-1;if(b.k===mine)return 1;return String(a.p.department?.name||'').localeCompare(String(b.p.department?.name||''),'ko')||String(a.p.full_name||'').localeCompare(String(b.p.full_name||''),'ko')});
+  let html=matched.map(({k,p})=>{
+    const name=p.full_name||'이름 미등록',pos=p.position_title||'',dept=p.department?.name||'부서 미지정',fac=p.primary_facility?.name||'';
+    const sub=[pos,dept,fac].filter(Boolean).join(' · ');
+    return `<div class="tfms-presence-user"><div class="tfms-presence-avatar">${initials(name)}</div><div class="tfms-presence-user-main"><div class="tfms-presence-user-name"><span class="name">${esc(name)}</span>${k===mine?'<span class="tfms-presence-me">나</span>':''}</div><div class="tfms-presence-user-sub">${esc(sub||'프로필 정보 없음')}</div></div><span class="tfms-presence-online">온라인</span></div>`;
+  }).join('');
+  if(unmatched.length)html+=`<div class="tfms-presence-user"><div class="tfms-presence-avatar">?</div><div class="tfms-presence-user-main"><div class="tfms-presence-user-name"><span class="name">프로필 매칭 대기</span></div><div class="tfms-presence-user-sub">현재 관리자 조회 범위와 매칭되지 않은 접속입니다.</div></div><span class="tfms-presence-online">${unmatched.length}명</span></div>`;
+  if(!html)html='<div class="tfms-presence-empty">현재 확인되는 접속자가 없습니다.</div>';
+  setBody(html);
+}
+function watcherKey(){try{return 'admin-view-'+crypto.randomUUID()}catch(e){return 'admin-view-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2)}}
+async function startDetailChannel(){
+  if(detailChannel||!sb)return;
+  const ch=sb.channel(CHANNEL_NAME,{config:{presence:{key:watcherKey()}}});detailChannel=ch;
+  ch.on('presence',{event:'sync'},()=>{if(detailChannel===ch)render()});
+  ch.subscribe(status=>{
+    if(detailChannel!==ch)return;
+    if(status==='SUBSCRIBED'){render()}
+    else if(status==='CHANNEL_ERROR'||status==='TIMED_OUT'){setSummary('접속 상태 확인 불가');setBody('<div class="tfms-presence-errorbox">Realtime 접속자 상태를 불러오지 못했습니다. 패널을 닫았다가 다시 열어주세요.</div>')}
+  });
+}
+async function stopDetailChannel(){const ch=detailChannel;detailChannel=null;lastKeys=[];if(ch){try{await sb?.removeChannel?.(ch)}catch(e){}}}
+async function openDrawer(){
+  if(!isAdmin())return;
+  try{sb=window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||null}catch(e){sb=null}
+  const d=ensureDrawer();d.classList.add('show');setSummary('접속 상태 확인 중');setBody('<div class="tfms-presence-empty">접속자 정보를 불러오는 중입니다.</div>');
+  if(!sb){setSummary('DB 연결 확인 필요');setBody('<div class="tfms-presence-errorbox">Supabase 연결 객체를 확인하지 못했습니다.</div>');return}
+  try{await Promise.all([loadProfiles(),startDetailChannel()]);await render()}catch(e){setSummary('프로필 조회 확인 필요');setBody(`<div class="tfms-presence-errorbox">접속자 프로필을 불러오지 못했습니다.<br>${esc(e?.message||e||'알 수 없는 오류')}</div>`)}
+}
+function closeDrawer(){const d=$(DRAWER_ID);if(d)d.classList.remove('show');stopDetailChannel();profileMap=new Map();profilesReady=false}
+function bindPill(){const p=$(PILL_ID);if(!p)return;p.title='현재 접속자 목록 보기 · 관리자 전용';p.setAttribute('role','button');p.setAttribute('tabindex','0');p.onclick=openDrawer;p.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openDrawer()}}}
+function init(){bindPill();document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$(DRAWER_ID)?.classList.contains('show'))closeDrawer()})}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else queueMicrotask(init);
+window.addEventListener('pagehide',()=>{stopDetailChannel()});
+})();
+</script>
+<!-- /TFMS v47.12 Presence Test 02 — Admin Online User List -->
+
 </body></html>
