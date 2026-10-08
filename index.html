@@ -36038,7 +36038,7 @@ function ensurePill(){
   if(!pill){
     pill=document.createElement('span');pill.id=PILL_ID;
     pill.innerHTML='<span class="tfms-presence-dot"></span><span class="tfms-presence-text">접속 확인중</span>';
-    pill.title='TFMS Realtime Presence Test 01 · 실명/부서 정보는 Presence에 전송하지 않습니다.';
+    pill.title='TFMS Realtime Presence · 실명/부서 정보는 Presence에 전송하지 않습니다.';
     const label=$('topUserLabel');host.insertBefore(pill,label||host.firstChild);
   }
   pill.classList.toggle('tfms-presence-show',isAdmin()&&appReady());
@@ -36136,10 +36136,10 @@ window.addEventListener('pageshow',e=>{if(e.persisted)resumeFromSession()});
 window.addEventListener('pagehide',()=>{const c=channel;channel=null;activeUserId='';if(c){try{c.untrack()}catch(e){}try{sb?.removeChannel?.(c)}catch(e){}}});
 })();
 </script>
-<!-- /TFMS v47.12 Presence Test 01 -->
+<!-- /TFMS v47.12 Presence Stable — Pseudonymous Online Count -->
 
 <!-- =========================================================
-     TFMS v47.12 Presence Test 01.1 — Header Responsive Fix
+     TFMS v47.12 Presence Stable — Header Responsive Fix
      Scope: medium-width header layout only. CSS-only.
      No Presence / DB / SQL / RLS / auth / navigation / timer / observer changes.
      ========================================================= -->
@@ -36223,11 +36223,11 @@ window.addEventListener('pagehide',()=>{const c=channel;channel=null;activeUserI
   #appHeader #topUserLabel{max-width:145px!important}
 }
 </style>
-<!-- /TFMS v47.12 Presence Test 01.1 — Header Responsive Fix -->
+<!-- /TFMS v47.12 Presence Stable — Header Responsive Fix -->
 
 
 <!-- =========================================================
-     TFMS v47.12 Presence Test 02 — Admin Online User List
+     TFMS v47.12 Presence Stable — Admin Online User List
      Scope: admin-only online-user detail drawer.
      Reuses existing profiles SELECT permission and Realtime Presence topic.
      No DB / SQL / RLS / auth / navigation / timer / observer changes.
@@ -36351,6 +36351,6 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 window.addEventListener('pagehide',()=>{stopDetailChannel()});
 })();
 </script>
-<!-- /TFMS v47.12 Presence Test 02 — Admin Online User List -->
+<!-- /TFMS v47.12 Presence Stable — Admin Online User List -->
 
-</body></html>
+\n<!-- =========================================================\n     TFMS v47.12 Presence Stable — Operational UI Polish\n     CSS-only. No DB / SQL / RLS / auth / navigation / timer / observer changes.\n     ========================================================= -->\n<style id="tfms-v4712-presence-stable-polish">\n#tfmsPresencePillV4712{transition:background .16s ease,border-color .16s ease,box-shadow .16s ease,transform .16s ease}\n#tfmsPresencePillV4712.tfms-presence-show:hover{box-shadow:0 4px 14px rgba(19,93,68,.12);transform:translateY(-1px)}\n#tfmsPresencePillV4712.tfms-presence-show:active{transform:translateY(0)}\n#tfmsPresenceDetailV4712 .tfms-presence-panel{animation:tfmsPresencePanelIn .20s cubic-bezier(.20,.80,.20,1)}\n#tfmsPresenceDetailV4712 .tfms-presence-close{transition:background .16s ease,color .16s ease,transform .16s ease}\n#tfmsPresenceDetailV4712 .tfms-presence-close:hover{background:#e2ebf3;color:#244761}\n#tfmsPresenceDetailV4712 .tfms-presence-close:active{transform:scale(.96)}\n#tfmsPresenceDetailV4712 .tfms-presence-body{overscroll-behavior:contain;scrollbar-gutter:stable}\n#tfmsPresenceDetailV4712 .tfms-presence-user{transition:background .16s ease}\n#tfmsPresenceDetailV4712 .tfms-presence-user:hover{background:#f8fbfe}\n@keyframes tfmsPresencePanelIn{from{opacity:0;transform:translateY(-5px) scale(.995)}to{opacity:1;transform:none}}\n@media(max-height:620px){\n #tfmsPresenceDetailV4712 .tfms-presence-panel{top:8px;max-height:calc(100vh - 16px)}\n #tfmsPresenceDetailV4712 .tfms-presence-head{min-height:54px}\n}\n@media(max-width:520px){\n #tfmsPresenceDetailV4712 .tfms-presence-panel{right:6px;top:54px;width:calc(100vw - 12px);max-height:calc(100vh - 60px);border-radius:14px}\n #tfmsPresenceDetailV4712 .tfms-presence-head{padding:0 13px}\n #tfmsPresenceDetailV4712 .tfms-presence-summary{padding-left:13px;padding-right:13px}\n #tfmsPresenceDetailV4712 .tfms-presence-body{padding-left:8px;padding-right:8px}\n #tfmsPresenceDetailV4712 .tfms-presence-user{grid-template-columns:36px minmax(0,1fr) auto;gap:8px}\n}\n@media(prefers-reduced-motion:reduce){\n #tfmsPresencePillV4712,#tfmsPresenceDetailV4712 .tfms-presence-panel,#tfmsPresenceDetailV4712 .tfms-presence-close,#tfmsPresenceDetailV4712 .tfms-presence-user{animation:none!important;transition:none!important}\n}\n</style>\n<!-- /TFMS v47.12 Presence Stable — Operational UI Polish -->\n</body></html>
