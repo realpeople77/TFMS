@@ -8966,6 +8966,15 @@ document.addEventListener('DOMContentLoaded',function(){
 <div class="version-body">
 <div class="current-build">현재 버전: v36.3 Stable · Build 2026.07.22</div>
 <div class="tfms-history-latest-group" aria-label="최근 주요 업데이트">
+  <div class="change-item" data-version="v47.11-operational-stable">
+    <strong>v47.11 · Operational Stable — 운영 기준본 확정</strong>
+    <ul>
+      <li>Stability Patch I~VI, Wide Screen/Chart 보정, Motion Standardization까지 반영한 v47.11 최종 운영 기준본 확정</li>
+      <li>Timer·MutationObserver·Navigation·역할표시·삭제변경이력·Today UX 구조를 최종 재점검하고 기능 코드 추가 변경 없이 동결</li>
+      <li>27인치/광폭 화면 대응 CSS와 그래프 폭·라벨 겹침 보정, 기존 160ms 화면전환 및 접근성 모션 설정 유지</li>
+      <li>DB·Supabase·RLS·권한·데이터 구조·통계 산식·필터·업무처리 로직은 변경하지 않음</li>
+    </ul>
+  </div>
   <div class="change-item" data-version="v47.11-motion-standardization">
     <strong>v47.11 · Motion Standardization — Unified Interaction Rhythm</strong>
     <ul>
@@ -35973,4 +35982,12 @@ syncVersion();
   }
 }
 </style>
+
+<!-- TFMS v47.11 Operational Stable Final | metadata/display only -->
+<style id="tfms-v4711-operational-stable-final-style">
+#tfmsVersionModal .current-build::after{
+  content:"현재 운영기준: v47.11 Operational Stable · 2026.10.08"!important;
+}
+</style>
+<!-- /TFMS v47.11 Operational Stable Final -->
 </body></html>
