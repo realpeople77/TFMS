@@ -35990,4 +35990,151 @@ syncVersion();
 }
 </style>
 <!-- /TFMS v47.11 Operational Stable Final -->
+
+<!-- =========================================================
+     TFMS v47.12 Presence Test 01
+     Scope: Realtime Presence count only.
+     No DB / SQL / RLS / navigation / timer / observer changes.
+     Presence payload contains pseudonymous user key only.
+     ========================================================= -->
+<style id="tfms-v4712-presence-test01-style">
+#tfmsPresencePillV4712{
+  display:none;align-items:center;gap:6px;height:30px;padding:0 10px;
+  border:1px solid #cfe4d7;border-radius:999px;background:#f3fbf6;
+  color:#246444;font-size:10.5px;font-weight:850;white-space:nowrap;
+  box-shadow:0 2px 8px rgba(30,110,70,.05);
+}
+#tfmsPresencePillV4712.tfms-presence-show{display:inline-flex}
+#tfmsPresencePillV4712 .tfms-presence-dot{width:7px;height:7px;border-radius:50%;background:#28a866;box-shadow:0 0 0 3px rgba(40,168,102,.11)}
+#tfmsPresencePillV4712.tfms-presence-connecting{background:#f7f9fc;border-color:#d9e2ec;color:#6c7f92}
+#tfmsPresencePillV4712.tfms-presence-connecting .tfms-presence-dot{background:#9aabba;box-shadow:none}
+#tfmsPresencePillV4712.tfms-presence-error{background:#fff8ee;border-color:#efdcbc;color:#8a6214}
+#tfmsPresencePillV4712.tfms-presence-error .tfms-presence-dot{background:#d69a31;box-shadow:none}
+@media(max-width:760px){#tfmsPresencePillV4712{display:none!important}}
+</style>
+<script id="tfms-v4712-presence-test01-controller">
+(function(){
+'use strict';
+if(window.__tfmsV4712PresenceTest01Installed)return;
+window.__tfmsV4712PresenceTest01Installed=true;
+
+const CHANNEL_NAME='tfms-online-presence-v1';
+const PILL_ID='tfmsPresencePillV4712';
+let sb=null,channel=null,activeUserId='',waitToken=0,currentCount=0;
+
+function $(id){return document.getElementById(id)}
+function profile(){try{return window.getTfmsCloudProfile?.()||window.cloudProfile||null}catch(e){return window.cloudProfile||null}}
+function role(){
+  try{
+    const p=profile()||{},s=JSON.parse(sessionStorage.getItem('tfmsSession')||'{}');
+    return String(p.role||p.user_role||window.tfmsRole||window.tfmsCurrentRole||s.role||'').toLowerCase();
+  }catch(e){return''}
+}
+function isAdmin(){const r=role();return r==='admin'||r==='관리자'}
+function appReady(){const app=$('appLayout'),p=profile();return !!p && !!app && !app.classList.contains('hidden')}
+function ensurePill(){
+  const host=document.querySelector('#appHeader .user');if(!host)return null;
+  let pill=$(PILL_ID);
+  if(!pill){
+    pill=document.createElement('span');pill.id=PILL_ID;
+    pill.innerHTML='<span class="tfms-presence-dot"></span><span class="tfms-presence-text">접속 확인중</span>';
+    pill.title='TFMS Realtime Presence Test 01 · 실명/부서 정보는 Presence에 전송하지 않습니다.';
+    const label=$('topUserLabel');host.insertBefore(pill,label||host.firstChild);
+  }
+  pill.classList.toggle('tfms-presence-show',isAdmin()&&appReady());
+  return pill;
+}
+function setPill(mode,count){
+  const pill=ensurePill();if(!pill)return;
+  pill.classList.remove('tfms-presence-connecting','tfms-presence-error');
+  if(mode==='connecting')pill.classList.add('tfms-presence-connecting');
+  if(mode==='error')pill.classList.add('tfms-presence-error');
+  const t=pill.querySelector('.tfms-presence-text');if(!t)return;
+  if(mode==='online')t.textContent=`현재 접속 ${Math.max(0,Number(count)||0)}명`;
+  else if(mode==='error')t.textContent='접속 확인불가';
+  else t.textContent='접속 확인중';
+}
+function flattenPresence(state){
+  const rows=[];Object.values(state||{}).forEach(v=>{if(Array.isArray(v))rows.push(...v)});return rows;
+}
+function syncCount(){
+  if(!channel)return;
+  try{
+    const users=new Set(flattenPresence(channel.presenceState()).map(x=>String(x?.u||'')).filter(Boolean));
+    currentCount=users.size;setPill('online',currentCount);
+  }catch(e){setPill('error',0)}
+}
+async function pseudonym(id){
+  const raw='tfms-presence-v1:'+String(id||'');
+  try{
+    if(globalThis.crypto?.subtle&&globalThis.TextEncoder){
+      const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(raw));
+      return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('').slice(0,32);
+    }
+  }catch(e){}
+  let h1=2166136261,h2=2166136261;
+  for(let i=0;i<raw.length;i++){h1=Math.imul(h1^raw.charCodeAt(i),16777619);h2=Math.imul(h2^(raw.charCodeAt(i)+i),16777619)}
+  return ('00000000'+(h1>>>0).toString(16)).slice(-8)+('00000000'+(h2>>>0).toString(16)).slice(-8);
+}
+function tabKey(){try{return crypto.randomUUID()}catch(e){return 'tab-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2)}}
+async function stopPresence(){
+  waitToken++;activeUserId='';currentCount=0;
+  const c=channel;channel=null;
+  if(c){try{await c.untrack()}catch(e){}try{await sb?.removeChannel?.(c)}catch(e){}}
+  const pill=$(PILL_ID);if(pill)pill.classList.remove('tfms-presence-show');
+}
+async function startPresence(user){
+  if(!user?.id||!sb)return;
+  if(channel&&activeUserId===String(user.id)){ensurePill();return}
+  if(channel)await stopPresence();
+  activeUserId=String(user.id);
+  const userKey=await pseudonym(user.id);
+  if(activeUserId!==String(user.id))return;
+  setPill('connecting',0);
+  const ch=sb.channel(CHANNEL_NAME,{config:{presence:{key:tabKey()}}});
+  channel=ch;
+  ch.on('presence',{event:'sync'},syncCount);
+  ch.subscribe(async status=>{
+    if(channel!==ch)return;
+    if(status==='SUBSCRIBED'){
+      try{await ch.track({u:userKey,p:1});syncCount()}catch(e){setPill('error',0)}
+    }else if(status==='CHANNEL_ERROR'||status==='TIMED_OUT'){setPill('error',0)}
+    else if(status==='CLOSED'){setPill('connecting',0)}
+  });
+}
+function waitForProfile(user){
+  const token=++waitToken;let frames=0;
+  const step=()=>{
+    if(token!==waitToken||!user?.id)return;
+    if(appReady()){startPresence(user);return}
+    if(frames++<180)requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+async function resumeFromSession(){
+  if(!sb)return;
+  try{const {data}=await sb.auth.getSession();if(data?.session?.user)waitForProfile(data.session.user);else await stopPresence()}catch(e){}
+}
+function bindAuth(){
+  try{
+    sb.auth.onAuthStateChange((event,session)=>{
+      if(event==='SIGNED_OUT'||!session?.user){stopPresence();return}
+      if(event==='INITIAL_SESSION'||event==='SIGNED_IN'||event==='TOKEN_REFRESHED'||event==='USER_UPDATED')waitForProfile(session.user);
+    });
+  }catch(e){}
+}
+function init(){
+  try{sb=window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||null}catch(e){sb=null}
+  ensurePill();
+  if(!sb)return;
+  bindAuth();resumeFromSession();
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else queueMicrotask(init);
+window.addEventListener('focus',()=>{ensurePill();if(channel)syncCount()},{passive:true});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){ensurePill();if(channel)syncCount()}});
+window.addEventListener('pageshow',e=>{if(e.persisted)resumeFromSession()});
+window.addEventListener('pagehide',()=>{const c=channel;channel=null;activeUserId='';if(c){try{c.untrack()}catch(e){}try{sb?.removeChannel?.(c)}catch(e){}}});
+})();
+</script>
+<!-- /TFMS v47.12 Presence Test 01 -->
 </body></html>
