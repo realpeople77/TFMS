@@ -9319,27 +9319,31 @@ document.addEventListener('DOMContentLoaded',function(){
       }
       if(!user?.id)throw new Error('로그인 사용자 정보를 확인할 수 없습니다.');
 
-      const now=new Date().toISOString();
-      const payload=isAdmin
-        ? {
-            process_status:'관리자삭제',
-            future_plan:`관리자 즉시삭제 사유: ${reason.trim()}`,
-            deleted_at:now,
-            deleted_by:user.id,
-            updated_at:now
-          }
-        : {
-            process_status:'삭제요청',
-            future_plan:`삭제요청 사유: ${reason.trim()}`,
-            deleted_at:now,
-            deleted_by:user.id,
-            updated_at:now
-          };
-
-      const {data,error}=await sb.from('maintenance_records')
-        .update(payload)
+      // 삭제 여부는 deleted_at으로 관리한다. 기존 처리상태(process_status)는 보존한다.
+      // 관리자삭제/삭제요청 같은 비업무 상태값을 process_status에 쓰면
+      // DB 상태 제약조건과 충돌할 수 있으므로 삭제 메타데이터만 갱신한다.
+      const {data:before,error:beforeError}=await sb.from('maintenance_records')
+        .select('id,future_plan,registered_by')
         .eq('id',id)
-        .select('id');
+        .maybeSingle();
+      if(beforeError)throw beforeError;
+      if(!before?.id)throw new Error('삭제 대상 기록을 찾을 수 없습니다.');
+
+      const now=new Date().toISOString();
+      const reasonLine=`${isAdmin?'관리자 즉시삭제':'삭제요청'} 사유: ${reason.trim()}`;
+      const previousPlan=String(before.future_plan||'').trim();
+      const payload={
+        future_plan:previousPlan?`${previousPlan}\n${reasonLine}`:reasonLine,
+        deleted_at:now,
+        deleted_by:user.id,
+        updated_at:now
+      };
+
+      let query=sb.from('maintenance_records')
+        .update(payload)
+        .eq('id',id);
+      if(!isAdmin)query=query.eq('registered_by',user.id);
+      const {data,error}=await query.select('id');
 
       if(error)throw error;
       if(!data?.length)throw new Error('삭제 권한이 없거나 대상 기록을 찾을 수 없습니다.');
@@ -36362,5 +36366,12 @@ Scope: maintenance history management column + existing soft-delete action expos
 - Normal user: own registered records only
 - Viewer: no delete action
 - Existing handleMaintenanceDeleteV363 / DB schema / RLS / audit history preserved
+-->
+
+<!-- TFMS v47.12 Maintenance Delete Action Recovery Fix 01
+Scope: maintenance soft-delete payload only
+- Preserve original process_status during soft delete
+- Store delete reason by appending to future_plan
+- Preserve existing DB/RLS/navigation/presence/energy behavior
 -->
 </body></html>
