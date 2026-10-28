@@ -36504,4 +36504,15 @@ Scope: maintenance soft-delete payload only
   #equipment .tfms-v4653-fields.two{grid-template-columns:1fr!important}
 }
 </style>
+
+<!-- TFMS v47.12 Maintenance History Flicker Fix | CSS only -->
+<style id="tfms-v4712-maintenance-history-flicker-fix">
+/* Large maintenance result sets must appear immediately after the page transition.
+   Keep hover/interaction transitions, but do not replay per-row entrance motion. */
+#history #historyBody > tr{
+  animation:none!important;
+  transform:none!important;
+}
+</style>
+<!-- /TFMS v47.12 Maintenance History Flicker Fix -->
 </body></html>
