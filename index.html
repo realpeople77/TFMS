@@ -6,7 +6,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>TFMS v47.20 Energy AI Analysis II Stable</title>
+<title>TFMS v47.21 Technical Debt Cleanup I Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -1263,7 +1263,7 @@ nav.sidebar {
 <div class="top">
 <div aria-label="대시보드 홈으로 이동" class="logo" onclick="goHome()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goHome();}" role="button" tabindex="0">
 <img alt="태백시시설관리공단" src="data:image/png;base64,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"/>
-<div class="logo-title"><span class="tfms-head-name">TFMS</span><span class="v32-classic-note" id="tfmsVersionBadge" title="클릭하여 업데이트 내역 보기">v47.20 Energy AI Analysis II Stable</span><small>시설 유지관리 이력관리 시스템</small></div>
+<div class="logo-title"><span class="tfms-head-name">TFMS</span><span class="v32-classic-note" id="tfmsVersionBadge" title="클릭하여 업데이트 내역 보기">v47.21 Technical Debt Cleanup I Stable</span><small>시설 유지관리 이력관리 시스템</small></div>
 </div>
 <div class="user">
 <span class="current-role-badge" id="cloudTopBadge" style="background:#fff7ed;color:#9a3412;border-color:#fed7aa">로컬 저장</span><span>🔔</span><button class="link-btn" id="topUserLabel" onclick="navTo('myPage')" style="text-decoration:none">👤 로그인 사용자</button><span class="current-role-badge" id="roleBadge">권한 확인 중</span><button class="logout" id="topLoginBtn" onclick="toggleTopLogin()">로그아웃</button>
@@ -12874,150 +12874,7 @@ document.addEventListener('DOMContentLoaded',function(){
       <div class="dj-sheet ${esc(sheetClass||'')}">${content}</div>
       
 <!-- TFMS v46.21 Header Single-Instance Normalize Safe : exact page ID geometry only -->
-<style id="tfms-v4620-header-geometry">
-:root{
-  --v4620-page-x:22px;
-  --v4620-page-top:18px;
-  --v4620-page-bottom:30px;
-  --v4620-head-h:58px;
-  --v4620-head-gap:12px;
-  --v4620-head-after:14px;
-  --v4620-icon:46px;
-}
-/* Exact target pages: beat historical page-specific !important rules. */
-#dashboard.page.tfms-dashboard-v451,
-#today.page,
-#history.page,
-#equipment.page,
-#deleteManage.page{
-  padding:var(--v4620-page-top) var(--v4620-page-x) var(--v4620-page-bottom)!important;
-  margin:0!important;
-  max-width:none!important;
-  transform:none!important;
-  box-sizing:border-box!important;
-}
-/* Dashboard and normal title rows share one physical rectangle. */
-#dashboard.page.tfms-dashboard-v451 > .v451-dash-head.tfms-geo-head,
-#today.page > .title-row.tfms-geo-head,
-#history.page > .title-row.tfms-geo-head,
-#equipment.page > .title-row.tfms-geo-head,
-#deleteManage.page > .title-row.tfms-geo-head{
-  width:100%!important;
-  height:var(--v4620-head-h)!important;
-  min-height:var(--v4620-head-h)!important;
-  max-height:var(--v4620-head-h)!important;
-  margin:0 0 var(--v4620-head-after)!important;
-  padding:0!important;
-  display:flex!important;
-  align-items:center!important;
-  justify-content:space-between!important;
-  gap:14px!important;
-  position:relative!important;
-  inset:auto!important;
-  transform:none!important;
-  box-sizing:border-box!important;
-}
-#today.page > .title-row.tfms-geo-head .title-left,
-#history.page > .title-row.tfms-geo-head .title-left,
-#equipment.page > .title-row.tfms-geo-head .title-left,
-#deleteManage.page > .title-row.tfms-geo-head .title-left,
-#dashboard.page.tfms-dashboard-v451 .v4615-dashboard-title{
-  height:var(--v4620-head-h)!important;
-  min-height:var(--v4620-head-h)!important;
-  display:flex!important;
-  align-items:center!important;
-  gap:var(--v4620-head-gap)!important;
-  margin:0!important;
-  padding:0!important;
-  transform:none!important;
-}
-/* Identical icon box, regardless of old per-page styles. */
-#dashboard.page .tfms-geo-head .title-icon,
-#today.page .tfms-geo-head .title-icon,
-#history.page .tfms-geo-head .title-icon,
-#equipment.page .tfms-geo-head .title-icon,
-#deleteManage.page .tfms-geo-head .title-icon{
-  width:var(--v4620-icon)!important;
-  height:var(--v4620-icon)!important;
-  min-width:var(--v4620-icon)!important;
-  min-height:var(--v4620-icon)!important;
-  flex:0 0 var(--v4620-icon)!important;
-  margin:0!important;
-  padding:0!important;
-  border-radius:13px!important;
-  display:grid!important;
-  place-items:center!important;
-  background:linear-gradient(145deg,#0b9ea4 0%,#1268d6 100%)!important;
-  color:#fff!important;
-  box-shadow:0 6px 16px rgba(18,91,160,.15)!important;
-  font-size:0!important;
-  line-height:0!important;
-  overflow:hidden!important;
-  transform:none!important;
-}
-#dashboard.page .tfms-geo-head .title-icon svg,
-#today.page .tfms-geo-head .title-icon svg,
-#history.page .tfms-geo-head .title-icon svg,
-#equipment.page .tfms-geo-head .title-icon svg,
-#deleteManage.page .tfms-geo-head .title-icon svg{
-  width:22px!important;height:22px!important;display:block!important;
-  fill:none!important;stroke:#fff!important;color:#fff!important;
-  stroke-width:1.8!important;stroke-linecap:round!important;stroke-linejoin:round!important;
-}
-#dashboard.page .tfms-geo-head .title-icon svg *,
-#today.page .tfms-geo-head .title-icon svg *,
-#history.page .tfms-geo-head .title-icon svg *,
-#equipment.page .tfms-geo-head .title-icon svg *,
-#deleteManage.page .tfms-geo-head .title-icon svg *{fill:none!important;stroke:#fff!important}
-/* Identical text baseline. */
-#today.page .tfms-geo-head .title-left>div:last-child,
-#history.page .tfms-geo-head .title-left>div:last-child,
-#equipment.page .tfms-geo-head .title-left>div:last-child,
-#deleteManage.page .tfms-geo-head .title-left>div:last-child,
-#dashboard.page .tfms-geo-head .v4615-dashboard-copy{
-  display:flex!important;flex-direction:column!important;justify-content:center!important;
-  gap:2px!important;margin:0!important;padding:0!important;min-width:0!important;
-}
-#today.page .tfms-geo-head h1,
-#history.page .tfms-geo-head h1,
-#equipment.page .tfms-geo-head h1,
-#deleteManage.page .tfms-geo-head h1,
-#dashboard.page .tfms-geo-head h1{
-  margin:0!important;padding:0!important;font-size:24px!important;line-height:1.15!important;
-  letter-spacing:-.7px!important;color:#112541!important;
-}
-#today.page .tfms-geo-head .breadcrumb,
-#history.page .tfms-geo-head .breadcrumb,
-#equipment.page .tfms-geo-head .breadcrumb,
-#deleteManage.page .tfms-geo-head .breadcrumb,
-#dashboard.page .tfms-geo-head p{
-  margin:0!important;padding:0!important;font-size:12px!important;line-height:1.35!important;color:#7a8da3!important;
-}
-#dashboard.page .v451-dash-tools{align-self:center!important;margin:0!important;padding:0!important}
-/* First body block always begins from the same header-bottom baseline. */
-#dashboard.page > .tfms-geo-head + *,
-#today.page > .tfms-geo-head + *,
-#history.page > .tfms-geo-head + *,
-#equipment.page > .tfms-geo-head + *,
-#deleteManage.page > .tfms-geo-head + *{
-  margin-top:0!important;
-  transform:none!important;
-}
-/* Kill known legacy title-only offsets without touching page content logic. */
-#today.page > .title-row.tfms-geo-head,
-#history.page > .title-row.tfms-geo-head,
-#equipment.page > .title-row.tfms-geo-head,
-#deleteManage.page > .title-row.tfms-geo-head{
-  top:auto!important;left:auto!important;right:auto!important;bottom:auto!important;
-}
-@media(max-width:1180px){
-  :root{--v4620-page-x:18px;--v4620-page-top:16px;--v4620-page-bottom:24px}
-}
-@media(max-width:820px){
-  :root{--v4620-page-x:12px;--v4620-page-top:12px;--v4620-page-bottom:20px;--v4620-head-h:52px;--v4620-icon:42px;--v4620-head-gap:10px;--v4620-head-after:12px}
-  #dashboard.page .tfms-geo-head h1,#today.page .tfms-geo-head h1,#history.page .tfms-geo-head h1,#equipment.page .tfms-geo-head h1,#deleteManage.page .tfms-geo-head h1{font-size:21px!important}
-}
-</style>
+
 
 
 <!--
@@ -16700,150 +16557,7 @@ window.printFireExtQrLabelsV447=async function(){
 
 
 <!-- TFMS v47.15 Energy Operations IV Stable : exact page ID geometry only -->
-<style id="tfms-v4620-header-geometry">
-:root{
-  --v4620-page-x:22px;
-  --v4620-page-top:18px;
-  --v4620-page-bottom:30px;
-  --v4620-head-h:58px;
-  --v4620-head-gap:12px;
-  --v4620-head-after:14px;
-  --v4620-icon:46px;
-}
-/* Exact target pages: beat historical page-specific !important rules. */
-#dashboard.page.tfms-dashboard-v451,
-#today.page,
-#history.page,
-#equipment.page,
-#deleteManage.page{
-  padding:var(--v4620-page-top) var(--v4620-page-x) var(--v4620-page-bottom)!important;
-  margin:0!important;
-  max-width:none!important;
-  transform:none!important;
-  box-sizing:border-box!important;
-}
-/* Dashboard and normal title rows share one physical rectangle. */
-#dashboard.page.tfms-dashboard-v451 > .v451-dash-head.tfms-geo-head,
-#today.page > .title-row.tfms-geo-head,
-#history.page > .title-row.tfms-geo-head,
-#equipment.page > .title-row.tfms-geo-head,
-#deleteManage.page > .title-row.tfms-geo-head{
-  width:100%!important;
-  height:var(--v4620-head-h)!important;
-  min-height:var(--v4620-head-h)!important;
-  max-height:var(--v4620-head-h)!important;
-  margin:0 0 var(--v4620-head-after)!important;
-  padding:0!important;
-  display:flex!important;
-  align-items:center!important;
-  justify-content:space-between!important;
-  gap:14px!important;
-  position:relative!important;
-  inset:auto!important;
-  transform:none!important;
-  box-sizing:border-box!important;
-}
-#today.page > .title-row.tfms-geo-head .title-left,
-#history.page > .title-row.tfms-geo-head .title-left,
-#equipment.page > .title-row.tfms-geo-head .title-left,
-#deleteManage.page > .title-row.tfms-geo-head .title-left,
-#dashboard.page.tfms-dashboard-v451 .v4615-dashboard-title{
-  height:var(--v4620-head-h)!important;
-  min-height:var(--v4620-head-h)!important;
-  display:flex!important;
-  align-items:center!important;
-  gap:var(--v4620-head-gap)!important;
-  margin:0!important;
-  padding:0!important;
-  transform:none!important;
-}
-/* Identical icon box, regardless of old per-page styles. */
-#dashboard.page .tfms-geo-head .title-icon,
-#today.page .tfms-geo-head .title-icon,
-#history.page .tfms-geo-head .title-icon,
-#equipment.page .tfms-geo-head .title-icon,
-#deleteManage.page .tfms-geo-head .title-icon{
-  width:var(--v4620-icon)!important;
-  height:var(--v4620-icon)!important;
-  min-width:var(--v4620-icon)!important;
-  min-height:var(--v4620-icon)!important;
-  flex:0 0 var(--v4620-icon)!important;
-  margin:0!important;
-  padding:0!important;
-  border-radius:13px!important;
-  display:grid!important;
-  place-items:center!important;
-  background:linear-gradient(145deg,#0b9ea4 0%,#1268d6 100%)!important;
-  color:#fff!important;
-  box-shadow:0 6px 16px rgba(18,91,160,.15)!important;
-  font-size:0!important;
-  line-height:0!important;
-  overflow:hidden!important;
-  transform:none!important;
-}
-#dashboard.page .tfms-geo-head .title-icon svg,
-#today.page .tfms-geo-head .title-icon svg,
-#history.page .tfms-geo-head .title-icon svg,
-#equipment.page .tfms-geo-head .title-icon svg,
-#deleteManage.page .tfms-geo-head .title-icon svg{
-  width:22px!important;height:22px!important;display:block!important;
-  fill:none!important;stroke:#fff!important;color:#fff!important;
-  stroke-width:1.8!important;stroke-linecap:round!important;stroke-linejoin:round!important;
-}
-#dashboard.page .tfms-geo-head .title-icon svg *,
-#today.page .tfms-geo-head .title-icon svg *,
-#history.page .tfms-geo-head .title-icon svg *,
-#equipment.page .tfms-geo-head .title-icon svg *,
-#deleteManage.page .tfms-geo-head .title-icon svg *{fill:none!important;stroke:#fff!important}
-/* Identical text baseline. */
-#today.page .tfms-geo-head .title-left>div:last-child,
-#history.page .tfms-geo-head .title-left>div:last-child,
-#equipment.page .tfms-geo-head .title-left>div:last-child,
-#deleteManage.page .tfms-geo-head .title-left>div:last-child,
-#dashboard.page .tfms-geo-head .v4615-dashboard-copy{
-  display:flex!important;flex-direction:column!important;justify-content:center!important;
-  gap:2px!important;margin:0!important;padding:0!important;min-width:0!important;
-}
-#today.page .tfms-geo-head h1,
-#history.page .tfms-geo-head h1,
-#equipment.page .tfms-geo-head h1,
-#deleteManage.page .tfms-geo-head h1,
-#dashboard.page .tfms-geo-head h1{
-  margin:0!important;padding:0!important;font-size:24px!important;line-height:1.15!important;
-  letter-spacing:-.7px!important;color:#112541!important;
-}
-#today.page .tfms-geo-head .breadcrumb,
-#history.page .tfms-geo-head .breadcrumb,
-#equipment.page .tfms-geo-head .breadcrumb,
-#deleteManage.page .tfms-geo-head .breadcrumb,
-#dashboard.page .tfms-geo-head p{
-  margin:0!important;padding:0!important;font-size:12px!important;line-height:1.35!important;color:#7a8da3!important;
-}
-#dashboard.page .v451-dash-tools{align-self:center!important;margin:0!important;padding:0!important}
-/* First body block always begins from the same header-bottom baseline. */
-#dashboard.page > .tfms-geo-head + *,
-#today.page > .tfms-geo-head + *,
-#history.page > .tfms-geo-head + *,
-#equipment.page > .tfms-geo-head + *,
-#deleteManage.page > .tfms-geo-head + *{
-  margin-top:0!important;
-  transform:none!important;
-}
-/* Kill known legacy title-only offsets without touching page content logic. */
-#today.page > .title-row.tfms-geo-head,
-#history.page > .title-row.tfms-geo-head,
-#equipment.page > .title-row.tfms-geo-head,
-#deleteManage.page > .title-row.tfms-geo-head{
-  top:auto!important;left:auto!important;right:auto!important;bottom:auto!important;
-}
-@media(max-width:1180px){
-  :root{--v4620-page-x:18px;--v4620-page-top:16px;--v4620-page-bottom:24px}
-}
-@media(max-width:820px){
-  :root{--v4620-page-x:12px;--v4620-page-top:12px;--v4620-page-bottom:20px;--v4620-head-h:52px;--v4620-icon:42px;--v4620-head-gap:10px;--v4620-head-after:12px}
-  #dashboard.page .tfms-geo-head h1,#today.page .tfms-geo-head h1,#history.page .tfms-geo-head h1,#equipment.page .tfms-geo-head h1,#deleteManage.page .tfms-geo-head h1{font-size:21px!important}
-}
-</style>
+
 
 
 <!--
@@ -17680,197 +17394,12 @@ window.printFireRecordV420=async function(){
 
 
 <!-- TFMS v44.5 Enterprise Stable UX: 대시보드 다이어트 1회차 -->
-<style id="tfms-v445-dashboard-diet">
-/* 기존 레이아웃과 기능을 유지하고 대시보드의 세로 여백만 보수적으로 축소 */
-#dashboard.tfms-dashboard-v431.active{gap:10px}
-#dashboard.tfms-dashboard-v431>.patch-note,
-#dashboard.tfms-dashboard-v431>.change-note,
-#dashboard.tfms-dashboard-v431>#dbStatusPanel{display:none!important}
-#dashboard.tfms-dashboard-v431>.title-row{padding:0 2px 2px;min-height:54px}
-#dashboard.tfms-dashboard-v431>.title-row h1{font-size:25px;line-height:1.15;margin:0 0 2px}
-#dashboard.tfms-dashboard-v431>.title-row .title-icon{width:50px;height:50px;font-size:24px;border-radius:14px}
-#dashboard.tfms-dashboard-v431>.title-row .breadcrumb{font-size:12px}
-#dashboard.tfms-dashboard-v431>.title-row .current-scope,
-#dashboard.tfms-dashboard-v431>.title-row .live-mark{font-size:12px;white-space:nowrap}
-#dashboard.tfms-dashboard-v431>.stats{gap:9px}
-#dashboard.tfms-dashboard-v431>.stats .stat{padding:10px 13px;min-height:64px;border-radius:14px}
-#dashboard.tfms-dashboard-v431>.stats .stat p{font-size:11px;margin:0 0 3px}
-#dashboard.tfms-dashboard-v431>.stats .stat strong{font-size:20px;line-height:1.1}
-#dashboard.tfms-dashboard-v431>.dash-action-v431,
-#dashboard.tfms-dashboard-v431>.dash-today-v431,
-#dashboard.tfms-dashboard-v431>.dash-daily-v431{padding:12px 13px;border-radius:15px}
-#dashboard.tfms-dashboard-v431 .section-title{font-size:14px;margin-bottom:7px}
-#dashboard.tfms-dashboard-v431>.dash-action-v431 .primary-action{padding:12px 13px;border-radius:14px}
-#dashboard.tfms-dashboard-v431>.dash-action-v431 .primary-action h2{font-size:17px;margin-bottom:3px}
-#dashboard.tfms-dashboard-v431>.dash-action-v431 .primary-action p{font-size:11px;line-height:1.3}
-#dashboard.tfms-dashboard-v431>.dash-action-v431 .secondary-actions{gap:6px;margin-top:7px}
-#dashboard.tfms-dashboard-v431>.dash-action-v431 .secondary-action{padding:8px 9px;min-height:48px;border-radius:12px}
-#dashboard.tfms-dashboard-v431>.dash-action-v431 .secondary-action strong{font-size:12px}
-#dashboard.tfms-dashboard-v431>.dash-action-v431 .secondary-action span{font-size:10px;margin-top:2px}
-#dashboard.tfms-dashboard-v431>.dash-today-v431 .table th,
-#dashboard.tfms-dashboard-v431>.dash-today-v431 .table td,
-#dashboard.tfms-dashboard-v431>.dash-daily-v431 .table th,
-#dashboard.tfms-dashboard-v431>.dash-daily-v431 .table td{padding:6px 7px;font-size:11px}
-#dashboard.tfms-dashboard-v431>.dash-today-v431 .empty-state,
-#dashboard.tfms-dashboard-v431>.dash-daily-v431 .empty-state{min-height:54px;padding:14px;font-size:11px}
-#dashboard.tfms-dashboard-v431>.dash-daily-v431{margin-top:0!important}
-@media(min-width:1200px){
- #dashboard.tfms-dashboard-v431>.dash-action-v431{grid-column:1/5}
- #dashboard.tfms-dashboard-v431>.dash-today-v431{grid-column:5/-1}
-}
-@media(max-width:900px){
- #dashboard.tfms-dashboard-v431>.title-row{align-items:flex-start}
- #dashboard.tfms-dashboard-v431>.title-row>div:last-child{flex-wrap:wrap;justify-content:flex-end}
-}
-</style>
+
 
 
 
 <!-- TFMS v47.15 Energy Operations IV Stable : exact page ID geometry only -->
-<style id="tfms-v4620-header-geometry">
-:root{
-  --v4620-page-x:22px;
-  --v4620-page-top:18px;
-  --v4620-page-bottom:30px;
-  --v4620-head-h:58px;
-  --v4620-head-gap:12px;
-  --v4620-head-after:14px;
-  --v4620-icon:46px;
-}
-/* Exact target pages: beat historical page-specific !important rules. */
-#dashboard.page.tfms-dashboard-v451,
-#today.page,
-#history.page,
-#equipment.page,
-#deleteManage.page{
-  padding:var(--v4620-page-top) var(--v4620-page-x) var(--v4620-page-bottom)!important;
-  margin:0!important;
-  max-width:none!important;
-  transform:none!important;
-  box-sizing:border-box!important;
-}
-/* Dashboard and normal title rows share one physical rectangle. */
-#dashboard.page.tfms-dashboard-v451 > .v451-dash-head.tfms-geo-head,
-#today.page > .title-row.tfms-geo-head,
-#history.page > .title-row.tfms-geo-head,
-#equipment.page > .title-row.tfms-geo-head,
-#deleteManage.page > .title-row.tfms-geo-head{
-  width:100%!important;
-  height:var(--v4620-head-h)!important;
-  min-height:var(--v4620-head-h)!important;
-  max-height:var(--v4620-head-h)!important;
-  margin:0 0 var(--v4620-head-after)!important;
-  padding:0!important;
-  display:flex!important;
-  align-items:center!important;
-  justify-content:space-between!important;
-  gap:14px!important;
-  position:relative!important;
-  inset:auto!important;
-  transform:none!important;
-  box-sizing:border-box!important;
-}
-#today.page > .title-row.tfms-geo-head .title-left,
-#history.page > .title-row.tfms-geo-head .title-left,
-#equipment.page > .title-row.tfms-geo-head .title-left,
-#deleteManage.page > .title-row.tfms-geo-head .title-left,
-#dashboard.page.tfms-dashboard-v451 .v4615-dashboard-title{
-  height:var(--v4620-head-h)!important;
-  min-height:var(--v4620-head-h)!important;
-  display:flex!important;
-  align-items:center!important;
-  gap:var(--v4620-head-gap)!important;
-  margin:0!important;
-  padding:0!important;
-  transform:none!important;
-}
-/* Identical icon box, regardless of old per-page styles. */
-#dashboard.page .tfms-geo-head .title-icon,
-#today.page .tfms-geo-head .title-icon,
-#history.page .tfms-geo-head .title-icon,
-#equipment.page .tfms-geo-head .title-icon,
-#deleteManage.page .tfms-geo-head .title-icon{
-  width:var(--v4620-icon)!important;
-  height:var(--v4620-icon)!important;
-  min-width:var(--v4620-icon)!important;
-  min-height:var(--v4620-icon)!important;
-  flex:0 0 var(--v4620-icon)!important;
-  margin:0!important;
-  padding:0!important;
-  border-radius:13px!important;
-  display:grid!important;
-  place-items:center!important;
-  background:linear-gradient(145deg,#0b9ea4 0%,#1268d6 100%)!important;
-  color:#fff!important;
-  box-shadow:0 6px 16px rgba(18,91,160,.15)!important;
-  font-size:0!important;
-  line-height:0!important;
-  overflow:hidden!important;
-  transform:none!important;
-}
-#dashboard.page .tfms-geo-head .title-icon svg,
-#today.page .tfms-geo-head .title-icon svg,
-#history.page .tfms-geo-head .title-icon svg,
-#equipment.page .tfms-geo-head .title-icon svg,
-#deleteManage.page .tfms-geo-head .title-icon svg{
-  width:22px!important;height:22px!important;display:block!important;
-  fill:none!important;stroke:#fff!important;color:#fff!important;
-  stroke-width:1.8!important;stroke-linecap:round!important;stroke-linejoin:round!important;
-}
-#dashboard.page .tfms-geo-head .title-icon svg *,
-#today.page .tfms-geo-head .title-icon svg *,
-#history.page .tfms-geo-head .title-icon svg *,
-#equipment.page .tfms-geo-head .title-icon svg *,
-#deleteManage.page .tfms-geo-head .title-icon svg *{fill:none!important;stroke:#fff!important}
-/* Identical text baseline. */
-#today.page .tfms-geo-head .title-left>div:last-child,
-#history.page .tfms-geo-head .title-left>div:last-child,
-#equipment.page .tfms-geo-head .title-left>div:last-child,
-#deleteManage.page .tfms-geo-head .title-left>div:last-child,
-#dashboard.page .tfms-geo-head .v4615-dashboard-copy{
-  display:flex!important;flex-direction:column!important;justify-content:center!important;
-  gap:2px!important;margin:0!important;padding:0!important;min-width:0!important;
-}
-#today.page .tfms-geo-head h1,
-#history.page .tfms-geo-head h1,
-#equipment.page .tfms-geo-head h1,
-#deleteManage.page .tfms-geo-head h1,
-#dashboard.page .tfms-geo-head h1{
-  margin:0!important;padding:0!important;font-size:24px!important;line-height:1.15!important;
-  letter-spacing:-.7px!important;color:#112541!important;
-}
-#today.page .tfms-geo-head .breadcrumb,
-#history.page .tfms-geo-head .breadcrumb,
-#equipment.page .tfms-geo-head .breadcrumb,
-#deleteManage.page .tfms-geo-head .breadcrumb,
-#dashboard.page .tfms-geo-head p{
-  margin:0!important;padding:0!important;font-size:12px!important;line-height:1.35!important;color:#7a8da3!important;
-}
-#dashboard.page .v451-dash-tools{align-self:center!important;margin:0!important;padding:0!important}
-/* First body block always begins from the same header-bottom baseline. */
-#dashboard.page > .tfms-geo-head + *,
-#today.page > .tfms-geo-head + *,
-#history.page > .tfms-geo-head + *,
-#equipment.page > .tfms-geo-head + *,
-#deleteManage.page > .tfms-geo-head + *{
-  margin-top:0!important;
-  transform:none!important;
-}
-/* Kill known legacy title-only offsets without touching page content logic. */
-#today.page > .title-row.tfms-geo-head,
-#history.page > .title-row.tfms-geo-head,
-#equipment.page > .title-row.tfms-geo-head,
-#deleteManage.page > .title-row.tfms-geo-head{
-  top:auto!important;left:auto!important;right:auto!important;bottom:auto!important;
-}
-@media(max-width:1180px){
-  :root{--v4620-page-x:18px;--v4620-page-top:16px;--v4620-page-bottom:24px}
-}
-@media(max-width:820px){
-  :root{--v4620-page-x:12px;--v4620-page-top:12px;--v4620-page-bottom:20px;--v4620-head-h:52px;--v4620-icon:42px;--v4620-head-gap:10px;--v4620-head-after:12px}
-  #dashboard.page .tfms-geo-head h1,#today.page .tfms-geo-head h1,#history.page .tfms-geo-head h1,#equipment.page .tfms-geo-head h1,#deleteManage.page .tfms-geo-head h1{font-size:21px!important}
-}
-</style>
+
 
 
 <!--
@@ -18201,197 +17730,12 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{
 
 
 <!-- TFMS v44.5 Enterprise Stable UX: 대시보드 다이어트 1회차 -->
-<style id="tfms-v445-dashboard-diet">
-/* 기존 레이아웃과 기능을 유지하고 대시보드의 세로 여백만 보수적으로 축소 */
-#dashboard.tfms-dashboard-v431.active{gap:10px}
-#dashboard.tfms-dashboard-v431>.patch-note,
-#dashboard.tfms-dashboard-v431>.change-note,
-#dashboard.tfms-dashboard-v431>#dbStatusPanel{display:none!important}
-#dashboard.tfms-dashboard-v431>.title-row{padding:0 2px 2px;min-height:54px}
-#dashboard.tfms-dashboard-v431>.title-row h1{font-size:25px;line-height:1.15;margin:0 0 2px}
-#dashboard.tfms-dashboard-v431>.title-row .title-icon{width:50px;height:50px;font-size:24px;border-radius:14px}
-#dashboard.tfms-dashboard-v431>.title-row .breadcrumb{font-size:12px}
-#dashboard.tfms-dashboard-v431>.title-row .current-scope,
-#dashboard.tfms-dashboard-v431>.title-row .live-mark{font-size:12px;white-space:nowrap}
-#dashboard.tfms-dashboard-v431>.stats{gap:9px}
-#dashboard.tfms-dashboard-v431>.stats .stat{padding:10px 13px;min-height:64px;border-radius:14px}
-#dashboard.tfms-dashboard-v431>.stats .stat p{font-size:11px;margin:0 0 3px}
-#dashboard.tfms-dashboard-v431>.stats .stat strong{font-size:20px;line-height:1.1}
-#dashboard.tfms-dashboard-v431>.dash-action-v431,
-#dashboard.tfms-dashboard-v431>.dash-today-v431,
-#dashboard.tfms-dashboard-v431>.dash-daily-v431{padding:12px 13px;border-radius:15px}
-#dashboard.tfms-dashboard-v431 .section-title{font-size:14px;margin-bottom:7px}
-#dashboard.tfms-dashboard-v431>.dash-action-v431 .primary-action{padding:12px 13px;border-radius:14px}
-#dashboard.tfms-dashboard-v431>.dash-action-v431 .primary-action h2{font-size:17px;margin-bottom:3px}
-#dashboard.tfms-dashboard-v431>.dash-action-v431 .primary-action p{font-size:11px;line-height:1.3}
-#dashboard.tfms-dashboard-v431>.dash-action-v431 .secondary-actions{gap:6px;margin-top:7px}
-#dashboard.tfms-dashboard-v431>.dash-action-v431 .secondary-action{padding:8px 9px;min-height:48px;border-radius:12px}
-#dashboard.tfms-dashboard-v431>.dash-action-v431 .secondary-action strong{font-size:12px}
-#dashboard.tfms-dashboard-v431>.dash-action-v431 .secondary-action span{font-size:10px;margin-top:2px}
-#dashboard.tfms-dashboard-v431>.dash-today-v431 .table th,
-#dashboard.tfms-dashboard-v431>.dash-today-v431 .table td,
-#dashboard.tfms-dashboard-v431>.dash-daily-v431 .table th,
-#dashboard.tfms-dashboard-v431>.dash-daily-v431 .table td{padding:6px 7px;font-size:11px}
-#dashboard.tfms-dashboard-v431>.dash-today-v431 .empty-state,
-#dashboard.tfms-dashboard-v431>.dash-daily-v431 .empty-state{min-height:54px;padding:14px;font-size:11px}
-#dashboard.tfms-dashboard-v431>.dash-daily-v431{margin-top:0!important}
-@media(min-width:1200px){
- #dashboard.tfms-dashboard-v431>.dash-action-v431{grid-column:1/5}
- #dashboard.tfms-dashboard-v431>.dash-today-v431{grid-column:5/-1}
-}
-@media(max-width:900px){
- #dashboard.tfms-dashboard-v431>.title-row{align-items:flex-start}
- #dashboard.tfms-dashboard-v431>.title-row>div:last-child{flex-wrap:wrap;justify-content:flex-end}
-}
-</style>
+
 
 
 
 <!-- TFMS v47.15 Energy Operations IV Stable : exact page ID geometry only -->
-<style id="tfms-v4620-header-geometry">
-:root{
-  --v4620-page-x:22px;
-  --v4620-page-top:18px;
-  --v4620-page-bottom:30px;
-  --v4620-head-h:58px;
-  --v4620-head-gap:12px;
-  --v4620-head-after:14px;
-  --v4620-icon:46px;
-}
-/* Exact target pages: beat historical page-specific !important rules. */
-#dashboard.page.tfms-dashboard-v451,
-#today.page,
-#history.page,
-#equipment.page,
-#deleteManage.page{
-  padding:var(--v4620-page-top) var(--v4620-page-x) var(--v4620-page-bottom)!important;
-  margin:0!important;
-  max-width:none!important;
-  transform:none!important;
-  box-sizing:border-box!important;
-}
-/* Dashboard and normal title rows share one physical rectangle. */
-#dashboard.page.tfms-dashboard-v451 > .v451-dash-head.tfms-geo-head,
-#today.page > .title-row.tfms-geo-head,
-#history.page > .title-row.tfms-geo-head,
-#equipment.page > .title-row.tfms-geo-head,
-#deleteManage.page > .title-row.tfms-geo-head{
-  width:100%!important;
-  height:var(--v4620-head-h)!important;
-  min-height:var(--v4620-head-h)!important;
-  max-height:var(--v4620-head-h)!important;
-  margin:0 0 var(--v4620-head-after)!important;
-  padding:0!important;
-  display:flex!important;
-  align-items:center!important;
-  justify-content:space-between!important;
-  gap:14px!important;
-  position:relative!important;
-  inset:auto!important;
-  transform:none!important;
-  box-sizing:border-box!important;
-}
-#today.page > .title-row.tfms-geo-head .title-left,
-#history.page > .title-row.tfms-geo-head .title-left,
-#equipment.page > .title-row.tfms-geo-head .title-left,
-#deleteManage.page > .title-row.tfms-geo-head .title-left,
-#dashboard.page.tfms-dashboard-v451 .v4615-dashboard-title{
-  height:var(--v4620-head-h)!important;
-  min-height:var(--v4620-head-h)!important;
-  display:flex!important;
-  align-items:center!important;
-  gap:var(--v4620-head-gap)!important;
-  margin:0!important;
-  padding:0!important;
-  transform:none!important;
-}
-/* Identical icon box, regardless of old per-page styles. */
-#dashboard.page .tfms-geo-head .title-icon,
-#today.page .tfms-geo-head .title-icon,
-#history.page .tfms-geo-head .title-icon,
-#equipment.page .tfms-geo-head .title-icon,
-#deleteManage.page .tfms-geo-head .title-icon{
-  width:var(--v4620-icon)!important;
-  height:var(--v4620-icon)!important;
-  min-width:var(--v4620-icon)!important;
-  min-height:var(--v4620-icon)!important;
-  flex:0 0 var(--v4620-icon)!important;
-  margin:0!important;
-  padding:0!important;
-  border-radius:13px!important;
-  display:grid!important;
-  place-items:center!important;
-  background:linear-gradient(145deg,#0b9ea4 0%,#1268d6 100%)!important;
-  color:#fff!important;
-  box-shadow:0 6px 16px rgba(18,91,160,.15)!important;
-  font-size:0!important;
-  line-height:0!important;
-  overflow:hidden!important;
-  transform:none!important;
-}
-#dashboard.page .tfms-geo-head .title-icon svg,
-#today.page .tfms-geo-head .title-icon svg,
-#history.page .tfms-geo-head .title-icon svg,
-#equipment.page .tfms-geo-head .title-icon svg,
-#deleteManage.page .tfms-geo-head .title-icon svg{
-  width:22px!important;height:22px!important;display:block!important;
-  fill:none!important;stroke:#fff!important;color:#fff!important;
-  stroke-width:1.8!important;stroke-linecap:round!important;stroke-linejoin:round!important;
-}
-#dashboard.page .tfms-geo-head .title-icon svg *,
-#today.page .tfms-geo-head .title-icon svg *,
-#history.page .tfms-geo-head .title-icon svg *,
-#equipment.page .tfms-geo-head .title-icon svg *,
-#deleteManage.page .tfms-geo-head .title-icon svg *{fill:none!important;stroke:#fff!important}
-/* Identical text baseline. */
-#today.page .tfms-geo-head .title-left>div:last-child,
-#history.page .tfms-geo-head .title-left>div:last-child,
-#equipment.page .tfms-geo-head .title-left>div:last-child,
-#deleteManage.page .tfms-geo-head .title-left>div:last-child,
-#dashboard.page .tfms-geo-head .v4615-dashboard-copy{
-  display:flex!important;flex-direction:column!important;justify-content:center!important;
-  gap:2px!important;margin:0!important;padding:0!important;min-width:0!important;
-}
-#today.page .tfms-geo-head h1,
-#history.page .tfms-geo-head h1,
-#equipment.page .tfms-geo-head h1,
-#deleteManage.page .tfms-geo-head h1,
-#dashboard.page .tfms-geo-head h1{
-  margin:0!important;padding:0!important;font-size:24px!important;line-height:1.15!important;
-  letter-spacing:-.7px!important;color:#112541!important;
-}
-#today.page .tfms-geo-head .breadcrumb,
-#history.page .tfms-geo-head .breadcrumb,
-#equipment.page .tfms-geo-head .breadcrumb,
-#deleteManage.page .tfms-geo-head .breadcrumb,
-#dashboard.page .tfms-geo-head p{
-  margin:0!important;padding:0!important;font-size:12px!important;line-height:1.35!important;color:#7a8da3!important;
-}
-#dashboard.page .v451-dash-tools{align-self:center!important;margin:0!important;padding:0!important}
-/* First body block always begins from the same header-bottom baseline. */
-#dashboard.page > .tfms-geo-head + *,
-#today.page > .tfms-geo-head + *,
-#history.page > .tfms-geo-head + *,
-#equipment.page > .tfms-geo-head + *,
-#deleteManage.page > .tfms-geo-head + *{
-  margin-top:0!important;
-  transform:none!important;
-}
-/* Kill known legacy title-only offsets without touching page content logic. */
-#today.page > .title-row.tfms-geo-head,
-#history.page > .title-row.tfms-geo-head,
-#equipment.page > .title-row.tfms-geo-head,
-#deleteManage.page > .title-row.tfms-geo-head{
-  top:auto!important;left:auto!important;right:auto!important;bottom:auto!important;
-}
-@media(max-width:1180px){
-  :root{--v4620-page-x:18px;--v4620-page-top:16px;--v4620-page-bottom:24px}
-}
-@media(max-width:820px){
-  :root{--v4620-page-x:12px;--v4620-page-top:12px;--v4620-page-bottom:20px;--v4620-head-h:52px;--v4620-icon:42px;--v4620-head-gap:10px;--v4620-head-after:12px}
-  #dashboard.page .tfms-geo-head h1,#today.page .tfms-geo-head h1,#history.page .tfms-geo-head h1,#equipment.page .tfms-geo-head h1,#deleteManage.page .tfms-geo-head h1{font-size:21px!important}
-}
-</style>
+
 
 
 <!--
@@ -23706,17 +23050,17 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
      Scope: daily facility scope + caption spacing, version stabilization retained.
      No application data, DB, page render, facility, daily log or maintenance logic changed.
      ========================================================= -->
-<script id="tfms-v4559-version-display-lock">
+<script id="tfms-v4721-version-authority">
 (function(){
   'use strict';
-  const LABEL='v47.15 Energy Operations IV Stable';
+  const LABEL='v47.21 Technical Debt Cleanup I Stable';
   const TITLE='TFMS '+LABEL;
-  const PARAM='47.11';
+  const PARAM='47.21';
   const FIXED_BUILD=Object.freeze({
-    version:'v45.78',
-    channel:'History Query Render Recovery Safe',
-    buildDate:'2026.08.18',
-    title:'일반담당자 시설·연계설비 범위 복구 및 버전/주소창 동기화'
+    version:'v47.21',
+    channel:'Technical Debt Cleanup I Stable',
+    buildDate:'2026.10.29',
+    title:'중복 버전 함수·중복 CSS 1차 정리 및 CSS 우선순위 감사'
   });
 
   // Preserve the real history method, but normalize stale legacy ?v= values.
@@ -23762,7 +23106,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
     const badge=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
     if(!badge)return;
     lockTextProperty(badge,'textContent',LABEL);
-    try{badge.setAttribute('data-tfms-version-lock','45.75');}catch(e){}
+    try{badge.setAttribute('data-tfms-version-lock','47.21');}catch(e){}
   }
 
   function lockDocumentTitle(){
@@ -26334,150 +25678,7 @@ window.printFireRecordV420=async function(){try{syncReportDate();const d=data();
 </style>
 </head><body>${content}
 <!-- TFMS v47.15 Energy Operations IV Stable : exact page ID geometry only -->
-<style id="tfms-v4620-header-geometry">
-:root{
-  --v4620-page-x:22px;
-  --v4620-page-top:18px;
-  --v4620-page-bottom:30px;
-  --v4620-head-h:58px;
-  --v4620-head-gap:12px;
-  --v4620-head-after:14px;
-  --v4620-icon:46px;
-}
-/* Exact target pages: beat historical page-specific !important rules. */
-#dashboard.page.tfms-dashboard-v451,
-#today.page,
-#history.page,
-#equipment.page,
-#deleteManage.page{
-  padding:var(--v4620-page-top) var(--v4620-page-x) var(--v4620-page-bottom)!important;
-  margin:0!important;
-  max-width:none!important;
-  transform:none!important;
-  box-sizing:border-box!important;
-}
-/* Dashboard and normal title rows share one physical rectangle. */
-#dashboard.page.tfms-dashboard-v451 > .v451-dash-head.tfms-geo-head,
-#today.page > .title-row.tfms-geo-head,
-#history.page > .title-row.tfms-geo-head,
-#equipment.page > .title-row.tfms-geo-head,
-#deleteManage.page > .title-row.tfms-geo-head{
-  width:100%!important;
-  height:var(--v4620-head-h)!important;
-  min-height:var(--v4620-head-h)!important;
-  max-height:var(--v4620-head-h)!important;
-  margin:0 0 var(--v4620-head-after)!important;
-  padding:0!important;
-  display:flex!important;
-  align-items:center!important;
-  justify-content:space-between!important;
-  gap:14px!important;
-  position:relative!important;
-  inset:auto!important;
-  transform:none!important;
-  box-sizing:border-box!important;
-}
-#today.page > .title-row.tfms-geo-head .title-left,
-#history.page > .title-row.tfms-geo-head .title-left,
-#equipment.page > .title-row.tfms-geo-head .title-left,
-#deleteManage.page > .title-row.tfms-geo-head .title-left,
-#dashboard.page.tfms-dashboard-v451 .v4615-dashboard-title{
-  height:var(--v4620-head-h)!important;
-  min-height:var(--v4620-head-h)!important;
-  display:flex!important;
-  align-items:center!important;
-  gap:var(--v4620-head-gap)!important;
-  margin:0!important;
-  padding:0!important;
-  transform:none!important;
-}
-/* Identical icon box, regardless of old per-page styles. */
-#dashboard.page .tfms-geo-head .title-icon,
-#today.page .tfms-geo-head .title-icon,
-#history.page .tfms-geo-head .title-icon,
-#equipment.page .tfms-geo-head .title-icon,
-#deleteManage.page .tfms-geo-head .title-icon{
-  width:var(--v4620-icon)!important;
-  height:var(--v4620-icon)!important;
-  min-width:var(--v4620-icon)!important;
-  min-height:var(--v4620-icon)!important;
-  flex:0 0 var(--v4620-icon)!important;
-  margin:0!important;
-  padding:0!important;
-  border-radius:13px!important;
-  display:grid!important;
-  place-items:center!important;
-  background:linear-gradient(145deg,#0b9ea4 0%,#1268d6 100%)!important;
-  color:#fff!important;
-  box-shadow:0 6px 16px rgba(18,91,160,.15)!important;
-  font-size:0!important;
-  line-height:0!important;
-  overflow:hidden!important;
-  transform:none!important;
-}
-#dashboard.page .tfms-geo-head .title-icon svg,
-#today.page .tfms-geo-head .title-icon svg,
-#history.page .tfms-geo-head .title-icon svg,
-#equipment.page .tfms-geo-head .title-icon svg,
-#deleteManage.page .tfms-geo-head .title-icon svg{
-  width:22px!important;height:22px!important;display:block!important;
-  fill:none!important;stroke:#fff!important;color:#fff!important;
-  stroke-width:1.8!important;stroke-linecap:round!important;stroke-linejoin:round!important;
-}
-#dashboard.page .tfms-geo-head .title-icon svg *,
-#today.page .tfms-geo-head .title-icon svg *,
-#history.page .tfms-geo-head .title-icon svg *,
-#equipment.page .tfms-geo-head .title-icon svg *,
-#deleteManage.page .tfms-geo-head .title-icon svg *{fill:none!important;stroke:#fff!important}
-/* Identical text baseline. */
-#today.page .tfms-geo-head .title-left>div:last-child,
-#history.page .tfms-geo-head .title-left>div:last-child,
-#equipment.page .tfms-geo-head .title-left>div:last-child,
-#deleteManage.page .tfms-geo-head .title-left>div:last-child,
-#dashboard.page .tfms-geo-head .v4615-dashboard-copy{
-  display:flex!important;flex-direction:column!important;justify-content:center!important;
-  gap:2px!important;margin:0!important;padding:0!important;min-width:0!important;
-}
-#today.page .tfms-geo-head h1,
-#history.page .tfms-geo-head h1,
-#equipment.page .tfms-geo-head h1,
-#deleteManage.page .tfms-geo-head h1,
-#dashboard.page .tfms-geo-head h1{
-  margin:0!important;padding:0!important;font-size:24px!important;line-height:1.15!important;
-  letter-spacing:-.7px!important;color:#112541!important;
-}
-#today.page .tfms-geo-head .breadcrumb,
-#history.page .tfms-geo-head .breadcrumb,
-#equipment.page .tfms-geo-head .breadcrumb,
-#deleteManage.page .tfms-geo-head .breadcrumb,
-#dashboard.page .tfms-geo-head p{
-  margin:0!important;padding:0!important;font-size:12px!important;line-height:1.35!important;color:#7a8da3!important;
-}
-#dashboard.page .v451-dash-tools{align-self:center!important;margin:0!important;padding:0!important}
-/* First body block always begins from the same header-bottom baseline. */
-#dashboard.page > .tfms-geo-head + *,
-#today.page > .tfms-geo-head + *,
-#history.page > .tfms-geo-head + *,
-#equipment.page > .tfms-geo-head + *,
-#deleteManage.page > .tfms-geo-head + *{
-  margin-top:0!important;
-  transform:none!important;
-}
-/* Kill known legacy title-only offsets without touching page content logic. */
-#today.page > .title-row.tfms-geo-head,
-#history.page > .title-row.tfms-geo-head,
-#equipment.page > .title-row.tfms-geo-head,
-#deleteManage.page > .title-row.tfms-geo-head{
-  top:auto!important;left:auto!important;right:auto!important;bottom:auto!important;
-}
-@media(max-width:1180px){
-  :root{--v4620-page-x:18px;--v4620-page-top:16px;--v4620-page-bottom:24px}
-}
-@media(max-width:820px){
-  :root{--v4620-page-x:12px;--v4620-page-top:12px;--v4620-page-bottom:20px;--v4620-head-h:52px;--v4620-icon:42px;--v4620-head-gap:10px;--v4620-head-after:12px}
-  #dashboard.page .tfms-geo-head h1,#today.page .tfms-geo-head h1,#history.page .tfms-geo-head h1,#equipment.page .tfms-geo-head h1,#deleteManage.page .tfms-geo-head h1{font-size:21px!important}
-}
-</style>
+
 
 
 <!--
@@ -29463,33 +28664,7 @@ setInterval(()=>{lockVersion();bind();updateBadges()},5000);
 
 
 <!-- TFMS v46.92 Equipment Click Prime Cleanup Stable -->
-<script id="tfms-v4647-version-final-lock">
-(function(){
-  'use strict';
-  const BUILD='v47.20 Energy AI Analysis II Stable';
-  const V='47.15';
-  function sync(){
-    try{
-      const b=document.getElementById('tfmsVersionBadge');
-      if(b&&b.textContent!==BUILD)b.textContent=BUILD;
-    }catch(e){}
-    try{
-      const wanted='TFMS '+BUILD;
-      if(document.title!==wanted)document.title=wanted;
-    }catch(e){}
-    try{
-      const u=new URL(location.href);
-      if(u.searchParams.get('v')!==V){
-        u.searchParams.set('v',V);
-        History.prototype.replaceState.call(history,history.state,'',u.pathname+u.search+u.hash);
-      }
-    }catch(e){}
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync,{once:true});
-  else sync();
-  [100,500,1500].forEach(ms=>setTimeout(sync,ms));
-})();
-</script>
+
 <!-- /TFMS v46.92 Equipment Click Prime Cleanup Stable -->
 
 
@@ -29510,33 +28685,7 @@ setInterval(()=>{lockVersion();bind();updateBadges()},5000);
 }
 </style>
 
-<script id="tfms-v4648-version-final-lock">
-(function(){
-  'use strict';
-  const BUILD='v47.20 Energy AI Analysis II Stable';
-  const V='47.15';
-  function sync(){
-    try{
-      const b=document.getElementById('tfmsVersionBadge');
-      if(b&&b.textContent!==BUILD)b.textContent=BUILD;
-    }catch(e){}
-    try{
-      const wanted='TFMS '+BUILD;
-      if(document.title!==wanted)document.title=wanted;
-    }catch(e){}
-    try{
-      const u=new URL(location.href);
-      if(u.searchParams.get('v')!==V){
-        u.searchParams.set('v',V);
-        History.prototype.replaceState.call(history,history.state,'',u.pathname+u.search+u.hash);
-      }
-    }catch(e){}
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync,{once:true});
-  else sync();
-  [100,500,1500].forEach(ms=>setTimeout(sync,ms));
-})();
-</script>
+
 <!-- /TFMS v46.92 Equipment Click Prime Cleanup Stable -->
 
 
@@ -30002,64 +29151,12 @@ setInterval(()=>{lockVersion();bind();updateBadges()},5000);
 }
 </style>
 
-<script id="tfms-v4650-version-final-lock">
-(function(){
-  'use strict';
-  const BUILD='v47.20 Energy AI Analysis II Stable';
-  const V='47.15';
-  function sync(){
-    try{
-      const b=document.getElementById('tfmsVersionBadge');
-      if(b&&b.textContent!==BUILD)b.textContent=BUILD;
-    }catch(e){}
-    try{
-      const wanted='TFMS '+BUILD;
-      if(document.title!==wanted)document.title=wanted;
-    }catch(e){}
-    try{
-      const u=new URL(location.href);
-      if(u.searchParams.get('v')!==V){
-        u.searchParams.set('v',V);
-        History.prototype.replaceState.call(history,history.state,'',u.pathname+u.search+u.hash);
-      }
-    }catch(e){}
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync,{once:true});
-  else sync();
-  [100,500,1500].forEach(ms=>setTimeout(sync,ms));
-})();
-</script>
+
 <!-- /TFMS v46.92 Equipment Click Prime Cleanup Stable -->
 
 
 <!-- TFMS v46.92 Equipment Click Prime Cleanup Stable -->
-<script id="tfms-v4651-version-final-lock">
-(function(){
-  'use strict';
-  const BUILD='v47.20 Energy AI Analysis II Stable';
-  const V='47.15';
-  function sync(){
-    try{
-      const b=document.getElementById('tfmsVersionBadge');
-      if(b&&b.textContent!==BUILD)b.textContent=BUILD;
-    }catch(e){}
-    try{
-      const wanted='TFMS '+BUILD;
-      if(document.title!==wanted)document.title=wanted;
-    }catch(e){}
-    try{
-      const u=new URL(location.href);
-      if(u.searchParams.get('v')!==V){
-        u.searchParams.set('v',V);
-        History.prototype.replaceState.call(history,history.state,'',u.pathname+u.search+u.hash);
-      }
-    }catch(e){}
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync,{once:true});
-  else sync();
-  [100,500,1500].forEach(ms=>setTimeout(sync,ms));
-})();
-</script>
+
 <!-- /TFMS v46.92 Equipment Click Prime Cleanup Stable -->
 
 
@@ -30642,19 +29739,7 @@ else init();
 })();
 </script>
 
-<script id="tfms-v4653-version-final-lock">
-(function(){
-'use strict';
-const BUILD='v47.15 Energy Operations IV Stable',V='47.15';
-function sync(){
- try{const b=document.getElementById('tfmsVersionBadge');if(b&&b.textContent!==BUILD)b.textContent=BUILD}catch(e){}
- try{if(document.title!=='TFMS '+BUILD)document.title='TFMS '+BUILD}catch(e){}
- try{const u=new URL(location.href);if(u.searchParams.get('v')!==V){u.searchParams.set('v',V);History.prototype.replaceState.call(history,history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync,{once:true});else sync();
-[100,500,1500].forEach(ms=>setTimeout(sync,ms));
-})();
-</script>
+
 <!-- /TFMS v46.92 Equipment Click Prime Cleanup Stable -->
 
 
@@ -31772,25 +30857,7 @@ else schedule();
 })();
 </script>
 
-<script id="tfms-v4656-version-final-lock">
-(function(){
-'use strict';
-const BUILD='v47.15 Energy Operations IV Stable',V='47.15';
-function sync(){
- try{const b=document.getElementById('tfmsVersionBadge');if(b&&b.textContent!==BUILD)b.textContent=BUILD}catch(e){}
- try{if(document.title!=='TFMS '+BUILD)document.title='TFMS '+BUILD}catch(e){}
- try{
-   const u=new URL(location.href);
-   if(u.searchParams.get('v')!==V){
-     u.searchParams.set('v',V);
-     History.prototype.replaceState.call(history,history.state,'',u.pathname+u.search+u.hash);
-   }
- }catch(e){}
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync,{once:true});else sync();
-[100,500,1500].forEach(ms=>setTimeout(sync,ms));
-})();
-</script>
+
 <!-- /TFMS v46.92 Equipment Click Prime Cleanup Stable -->
 
 
@@ -32679,25 +31746,7 @@ else init();
 })();
 </script>
 
-<script id="tfms-v4664-version-final-lock">
-(function(){
-'use strict';
-const B='v47.15 Energy Operations IV Stable',V='47.15';
-function sync(){
- try{const b=document.getElementById('tfmsVersionBadge');if(b&&b.textContent!==B)b.textContent=B}catch(e){}
- try{if(document.title!=='TFMS '+B)document.title='TFMS '+B}catch(e){}
- try{
-   const u=new URL(location.href);
-   if(u.searchParams.get('v')!==V){
-     u.searchParams.set('v',V);
-     History.prototype.replaceState.call(history,history.state,'',u.pathname+u.search+u.hash);
-   }
- }catch(e){}
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync,{once:true});else sync();
-[100,500,1500].forEach(ms=>setTimeout(sync,ms));
-})();
-</script>
+
 <!-- /TFMS v46.92 Equipment Click Prime Cleanup Stable -->
 
 
@@ -33066,25 +32115,7 @@ if(document.readyState==='loading'){
 })();
 </script>
 
-<script id="tfms-v4666-version-final-lock">
-(function(){
-'use strict';
-const B='v47.15 Energy Operations IV Stable',V='47.15';
-function sync(){
- try{const b=document.getElementById('tfmsVersionBadge');if(b&&b.textContent!==B)b.textContent=B}catch(e){}
- try{if(document.title!=='TFMS '+B)document.title='TFMS '+B}catch(e){}
- try{
-   const u=new URL(location.href);
-   if(u.searchParams.get('v')!==V){
-     u.searchParams.set('v',V);
-     History.prototype.replaceState.call(history,history.state,'',u.pathname+u.search+u.hash);
-   }
- }catch(e){}
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync,{once:true});else sync();
-[100,500,1500].forEach(ms=>setTimeout(sync,ms));
-})();
-</script>
+
 <!-- /TFMS v46.92 Equipment Click Prime Cleanup Stable -->
 
 
@@ -33144,25 +32175,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 }
 </style>
 
-<script id="tfms-v4667-version-final-lock">
-(function(){
-'use strict';
-const B='v47.15 Energy Operations IV Stable',V='47.15';
-function sync(){
- try{const b=document.getElementById('tfmsVersionBadge');if(b&&b.textContent!==B)b.textContent=B}catch(e){}
- try{if(document.title!=='TFMS '+B)document.title='TFMS '+B}catch(e){}
- try{
-   const u=new URL(location.href);
-   if(u.searchParams.get('v')!==V){
-     u.searchParams.set('v',V);
-     History.prototype.replaceState.call(history,history.state,'',u.pathname+u.search+u.hash);
-   }
- }catch(e){}
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync,{once:true});else sync();
-[100,500,1500].forEach(ms=>setTimeout(sync,ms));
-})();
-</script>
+
 <!-- /TFMS v46.92 Equipment Click Prime Cleanup Stable -->
 
 
@@ -33395,25 +32408,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 
 <!-- TFMS v46.92 Equipment Click Prime Cleanup Stable -->
-<script id="tfms-v4674-version-final-lock">
-(function(){
-'use strict';
-const B='v47.15 Energy Operations IV Stable',V='47.15';
-function sync(){
- try{const b=document.getElementById('tfmsVersionBadge');if(b&&b.textContent!==B)b.textContent=B}catch(e){}
- try{if(document.title!=='TFMS '+B)document.title='TFMS '+B}catch(e){}
- try{
-   const u=new URL(location.href);
-   if(u.searchParams.get('v')!==V){
-     u.searchParams.set('v',V);
-     History.prototype.replaceState.call(history,history.state,'',u.pathname+u.search+u.hash);
-   }
- }catch(e){}
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync,{once:true});else sync();
-setTimeout(sync,500);
-})();
-</script>
+
 <!-- /TFMS v46.92 Equipment Click Prime Cleanup Stable -->
 
 
@@ -37600,27 +36595,6 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   :root{--tfms-readable-small:12px;--tfms-readable-note:12.5px}
 }
 </style>
-<script id="tfms-v4719-version-lock">
-(function(){
- 'use strict';
- const BUILD='v47.20 Energy AI Analysis II Stable',VER='47.19';
- function sync(){
-   try{
-     const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent=BUILD;
-     document.title='TFMS '+BUILD;
-     const cb=document.querySelector('#tfmsVersionModal .current-build');if(cb)cb.textContent='현재 버전: '+BUILD;
-     const body=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');
-     if(body&&!body.querySelector('[data-version="v47.19-ui-readability-i"]')){
-       const el=document.createElement('div');el.className='change-item';el.dataset.version='v47.19-ui-readability-i';
-       el.innerHTML='<strong>v47.19 · UI Readability Layer I Stable — 작은 텍스트 가독성 보정</strong><ul><li>사이드바·제목·일반본문·KPI·기본 버튼크기는 유지하고 보조텍스트·표·배지·안내문만 최소 12px 수준으로 보정</li><li>작은 회색 텍스트의 명도 대비와 줄간격을 개선하고 JS·DB·권한·레이아웃 구조는 변경하지 않음</li></ul>';
-       body.insertBefore(el,body.firstChild);
-     }
-     const u=new URL(location.href);if(u.searchParams.get('v')!==VER){u.searchParams.set('v',VER);History.prototype.replaceState.call(history,history.state,'',u.pathname+u.search+u.hash)}
-   }catch(e){}
- }
- if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync,{once:true});else sync();
-})();
-</script>
 <!-- /TFMS v47.19 UI Readability Layer I -->
 
 
@@ -37751,4 +36725,26 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 })();
 </script>
 <!-- /TFMS v47.20 Energy AI Analysis II -->
+
+<script id="tfms-v4721-final-version-sync">
+(function(){
+ 'use strict';
+ const BUILD='v47.21 Technical Debt Cleanup I Stable',VER='47.21';
+ function sync(){
+  try{
+   const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent=BUILD;
+   document.title='TFMS '+BUILD;
+   const cb=document.querySelector('#tfmsVersionModal .current-build');if(cb)cb.textContent='현재 버전: '+BUILD;
+   const body=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');
+   if(body&&!body.querySelector('[data-version="v47.21-technical-debt-cleanup-i"]')){
+    const el=document.createElement('div');el.className='change-item';el.dataset.version='v47.21-technical-debt-cleanup-i';
+    el.innerHTML='<strong>v47.21 · Technical Debt Cleanup I Stable — 중복 함수·CSS 우선순위 1차 정리</strong><ul><li>본문까지 동일한 version-final-lock 중복 스크립트만 안전하게 제거하고 버전 표기를 v47.21 단일 기준으로 통합</li><li>동일 CSS 블록의 반복 삽입을 제거하여 최종 화면 계산값을 유지하면서 !important 중복을 축소</li><li>showPage/navTo 등 기능 패치 체인은 동작 안정성을 위해 이번 단계에서 유지</li></ul>';
+    body.insertBefore(el,body.firstChild);
+   }
+   const u=new URL(location.href);if(u.searchParams.get('v')!==VER){u.searchParams.set('v',VER);History.prototype.replaceState.call(history,history.state,'',u.pathname+u.search+u.hash)}
+  }catch(e){}
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync,{once:true});else sync();
+})();
+</script>
 </body></html>
