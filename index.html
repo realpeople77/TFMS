@@ -1983,7 +1983,8 @@ nav.sidebar {
           <input type="search" id="tfmsEnergyFilterTextV4700" oninput="renderEnergyMonthlyRowsV4700()" placeholder="시설·비고 검색">
         </div>
       </div>
-      <div class="tfms-energy-table-wrap"><table class="table tfms-energy-table tfms-energy-monthly-table"><thead><tr><th>기준월</th><th>시설</th><th>에너지원</th><th>사용량</th><th>단위</th><th>요금</th><th>이용객</th><th>상태</th><th>비고</th><th>관리</th></tr></thead><tbody id="tfmsEnergyMonthlyBodyV4700"><tr><td colspan="10"><div class="tfms-energy-table-empty">등록된 월별자료가 없습니다. 위 직접입력 영역에서 테스트 자료를 추가해보세요.</div></td></tr></tbody></table></div>
+      <div class="tfms-energy-table-wrap tfms-energy-monthly-table-wrap-v4722"><table class="table tfms-energy-table tfms-energy-monthly-table"><thead><tr><th>기준월</th><th>시설</th><th>에너지원</th><th>사용량</th><th>단위</th><th>요금</th><th>이용객</th><th>상태</th><th>비고</th><th>관리</th></tr></thead><tbody id="tfmsEnergyMonthlyBodyV4700"><tr><td colspan="10"><div class="tfms-energy-table-empty">등록된 월별자료가 없습니다. 위 직접입력 영역에서 테스트 자료를 추가해보세요.</div></td></tr></tbody></table></div>
+      <div id="tfmsEnergyMonthlyPagerV4722" class="tfms-energy-monthly-pager-v4722" aria-label="월별자료 페이지 이동"></div>
       <div class="tfms-energy-monthly-footnote">※ 표준 엑셀자료는 DB 저장 전 중복을 재검사합니다. 직접입력 자료의 DB 조회·수정은 다음 단계에서 연결합니다.</div>
     </div>
   </div>
@@ -33801,6 +33802,23 @@ function ensureRefreshButton(){
  const b=document.createElement('button');b.type='button';b.id='tfmsEnergyDbRefreshV4710';b.className='tfms-energy-db-refresh-v4710';b.textContent='DB 새로고침';b.onclick=()=>window.loadEnergyMonthlyDataV4710({force:true,reason:'manual'});filters.prepend(b);
 }
 function mergedRows(){const d=dbRows();const s=sessionRows().map(r=>Object.assign({source:'session'},r));return d.concat(s)}
+let energyMonthlyPageV4722=1,energyMonthlyPageSizeV4722=20,energyMonthlyFilterSigV4722='';
+function renderEnergyMonthlyPagerV4722(total,page,pages,start,end){
+ const box=$('tfmsEnergyMonthlyPagerV4722');if(!box)return;
+ if(!total){box.innerHTML='';box.hidden=true;return;}
+ box.hidden=false;
+ box.innerHTML='<div class="tfms-energy-pager-summary-v4722"><b>'+start+'~'+end+'</b> / 총 <b>'+total+'</b>건</div>'
+  +'<div class="tfms-energy-pager-controls-v4722">'
+  +'<button type="button" '+(page<=1?'disabled':'')+' onclick="energyMonthlyGoPageV4722(1)">처음</button>'
+  +'<button type="button" '+(page<=1?'disabled':'')+' onclick="energyMonthlyGoPageV4722('+(page-1)+')">이전</button>'
+  +'<span class="tfms-energy-pager-page-v4722"><b>'+page+'</b> / '+pages+'</span>'
+  +'<button type="button" '+(page>=pages?'disabled':'')+' onclick="energyMonthlyGoPageV4722('+(page+1)+')">다음</button>'
+  +'<button type="button" '+(page>=pages?'disabled':'')+' onclick="energyMonthlyGoPageV4722('+pages+')">마지막</button>'
+  +'<label>표시 <select onchange="energyMonthlySetPageSizeV4722(this.value)"><option value="20"'+(energyMonthlyPageSizeV4722===20?' selected':'')+'>20건</option><option value="50"'+(energyMonthlyPageSizeV4722===50?' selected':'')+'>50건</option><option value="100"'+(energyMonthlyPageSizeV4722===100?' selected':'')+'>100건</option></select></label>'
+  +'</div>';
+}
+window.energyMonthlyGoPageV4722=function(page){energyMonthlyPageV4722=Math.max(1,Number(page)||1);renderMonthly();const wrap=q('.tfms-energy-monthly-table-wrap-v4722',energyRoot());if(wrap)wrap.scrollTop=0;};
+window.energyMonthlySetPageSizeV4722=function(size){energyMonthlyPageSizeV4722=[20,50,100].includes(Number(size))?Number(size):20;energyMonthlyPageV4722=1;renderMonthly();};
 function renderMonthly(){
  const body=$('tfmsEnergyMonthlyBodyV4700');if(!body)return;
  const all=mergedRows();const ft=$('tfmsEnergyFilterTypeV4700')?.value||'',fs=$('tfmsEnergyFilterStatusV4700')?.value||'',text=clean($('tfmsEnergyFilterTextV4700')?.value).toLowerCase();
@@ -33808,11 +33826,14 @@ function renderMonthly(){
  if(ft)list=list.filter(r=>r.type===ft);if(fs)list=list.filter(r=>r.status===fs);if(text)list=list.filter(r=>(String(r.facility||'')+' '+String(r.note||'')).toLowerCase().includes(text));
  const counts={draft:0,review:0,confirmed:0};all.forEach(r=>counts[r.status]=(counts[r.status]||0)+1);
  const set=(id,v)=>{const el=$(id);if(el)el.textContent=v};set('tfmsEnergyMonthlyCountAllV4700',all.length);set('tfmsEnergyMonthlyCountDraftV4700',counts.draft||0);set('tfmsEnergyMonthlyCountReviewV4700',counts.review||0);set('tfmsEnergyMonthlyCountConfirmedV4700',counts.confirmed||0);
- if(!list.length){body.innerHTML='<tr><td colspan="10"><div class="tfms-energy-table-empty">'+(all.length?'현재 필터 조건에 맞는 자료가 없습니다.':'DB에 저장된 월별자료가 없습니다. 엑셀자료를 등록하거나 직접입력 자료를 추가해주세요.')+'</div></td></tr>';return;}
- body.innerHTML=list.map(r=>{const isDb=r.source==='db';const status=isDb?'<span class="tfms-energy-status-badge-v4710 '+statusClass(r.status)+'">'+esc(statusLabel[r.status]||r.status)+'</span>':'<select class="tfms-energy-status-select" onchange="energyMonthlySetStatusV4700('+Number(r.id)+',this.value)"><option value="draft"'+(r.status==='draft'?' selected':'')+'>임시저장</option><option value="review"'+(r.status==='review'?' selected':'')+'>검토중</option><option value="confirmed"'+(r.status==='confirmed'?' selected':'')+'>확정</option></select>';
+ const filterSig=[ft,fs,text].join('|');if(filterSig!==energyMonthlyFilterSigV4722){energyMonthlyFilterSigV4722=filterSig;energyMonthlyPageV4722=1;}
+ if(!list.length){body.innerHTML='<tr><td colspan="10"><div class="tfms-energy-table-empty">'+(all.length?'현재 필터 조건에 맞는 자료가 없습니다.':'DB에 저장된 월별자료가 없습니다. 엑셀자료를 등록하거나 직접입력 자료를 추가해주세요.')+'</div></td></tr>';renderEnergyMonthlyPagerV4722(0,1,1,0,0);return;}
+ const total=list.length,pages=Math.max(1,Math.ceil(total/energyMonthlyPageSizeV4722));energyMonthlyPageV4722=Math.min(Math.max(1,energyMonthlyPageV4722),pages);const offset=(energyMonthlyPageV4722-1)*energyMonthlyPageSizeV4722,pageRows=list.slice(offset,offset+energyMonthlyPageSizeV4722);
+ body.innerHTML=pageRows.map(r=>{const isDb=r.source==='db';const status=isDb?'<span class="tfms-energy-status-badge-v4710 '+statusClass(r.status)+'">'+esc(statusLabel[r.status]||r.status)+'</span>':'<select class="tfms-energy-status-select" onchange="energyMonthlySetStatusV4700('+Number(r.id)+',this.value)"><option value="draft"'+(r.status==='draft'?' selected':'')+'>임시저장</option><option value="review"'+(r.status==='review'?' selected':'')+'>검토중</option><option value="confirmed"'+(r.status==='confirmed'?' selected':'')+'>확정</option></select>';
  const manage=isDb?(window.tfmsEnergyCanAdminV4714?.()?'<div class="tfms-energy-row-actions"><button type="button" onclick="energyMonthlyDbEditV4714(\''+String(r.id)+'\')">수정</button><button type="button" class="danger" onclick="energyMonthlyDbDeleteV4714(\''+String(r.id)+'\')">삭제</button></div>':'<span class="tfms-energy-db-source-v4710">DB 저장</span>'):'<div class="tfms-energy-row-actions"><button type="button" onclick="energyMonthlyEditV4700('+Number(r.id)+')">수정</button><button type="button" class="danger" onclick="energyMonthlyDeleteV4700('+Number(r.id)+')">삭제</button></div>';
  const val=v=>v===null||v===undefined?'<span class="tfms-energy-null">미입력</span>':Number(v)===0?'<span class="tfms-energy-zero">0</span>':Number(v).toLocaleString('ko-KR');
  return '<tr data-energy-source="'+r.source+'"><td>'+esc(r.month)+'</td><td>'+esc(r.facility)+'</td><td>'+esc(typeLabel[r.type]||r.type)+'</td><td>'+val(r.usage)+'</td><td>'+esc(r.unit||'')+'</td><td>'+val(r.amount)+'</td><td>'+val(r.visitors)+'</td><td>'+status+'</td><td>'+esc(r.note||'')+'</td><td>'+manage+'</td></tr>'}).join('');
+ renderEnergyMonthlyPagerV4722(total,energyMonthlyPageV4722,pages,offset+1,Math.min(offset+pageRows.length,total));
 }
 function installMonthlyRender(){window.renderEnergyMonthlyRowsV4700=renderMonthly;ensureRefreshButton();}
 function comparable(type,metric,year,endMonth){
@@ -36745,6 +36766,37 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   }catch(e){}
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync,{once:true});else sync();
+})();
+</script>
+
+<style id="tfms-v4722-energy-monthly-pagination-css">
+/* v47.22 - Energy monthly list pagination. UX only. */
+#energy .tfms-energy-monthly-table-wrap-v4722{max-height:620px;overflow:auto;border-radius:10px}
+#energy .tfms-energy-monthly-table-wrap-v4722 .tfms-energy-monthly-table thead th{position:sticky;top:0;z-index:2;background:#f7fafc;box-shadow:0 1px 0 rgba(36,59,83,.10)}
+#energy .tfms-energy-monthly-pager-v4722{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:10px 2px 4px}
+#energy .tfms-energy-pager-summary-v4722{font-size:13px;color:#52667e;white-space:nowrap}
+#energy .tfms-energy-pager-summary-v4722 b{color:#173a63}
+#energy .tfms-energy-pager-controls-v4722{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+#energy .tfms-energy-pager-controls-v4722 button,#energy .tfms-energy-pager-controls-v4722 select{height:32px;border:1px solid #cbd8e6;border-radius:8px;background:#fff;color:#29445f;font-size:12.5px;font-weight:700;padding:0 9px}
+#energy .tfms-energy-pager-controls-v4722 button:not(:disabled):hover{border-color:#7ca7d5;background:#f4f8fc}
+#energy .tfms-energy-pager-controls-v4722 button:disabled{opacity:.42;cursor:default}
+#energy .tfms-energy-pager-page-v4722{min-width:58px;text-align:center;font-size:12.5px;color:#60758c}
+#energy .tfms-energy-pager-controls-v4722 label{display:flex;align-items:center;gap:5px;margin-left:5px;font-size:12.5px;color:#60758c;font-weight:700}
+#tfmsVersionModal .current-build::after{content:"현재 운영기준: v47.22 Energy Monthly Pagination Stable · 2026.10.29"!important}
+@media(max-width:760px){#energy .tfms-energy-monthly-table-wrap-v4722{max-height:560px}#energy .tfms-energy-monthly-pager-v4722{align-items:flex-start;flex-direction:column}}
+</style>
+<script id="tfms-v4722-version-authority">
+(function(){
+ 'use strict';
+ const BUILD='v47.22 Energy Monthly Pagination Stable',VER='47.22';
+ function apply(){
+  try{const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent=BUILD;document.title='TFMS '+BUILD;}catch(e){}
+  try{const cb=document.querySelector('#tfmsVersionModal .current-build');if(cb)cb.textContent='현재 버전: '+BUILD;}catch(e){}
+  try{const body=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');if(body&&!body.querySelector('[data-version="v47.22-energy-monthly-pagination"]')){const el=document.createElement('div');el.className='change-item';el.dataset.version='v47.22-energy-monthly-pagination';el.innerHTML='<strong>v47.22 · Energy Monthly Pagination Stable — 월별자료 목록 스크롤 개선</strong><ul><li>월별자료 검토목록을 기본 20건 단위 페이지 표시로 전환</li><li>처음·이전·다음·마지막 이동 및 20/50/100건 표시 선택 추가</li><li>표 영역 최대높이와 헤더 고정으로 페이지 전체의 과도한 세로 스크롤을 방지</li></ul>';body.insertBefore(el,body.firstChild);}}catch(e){}
+  try{const u=new URL(location.href);if(u.searchParams.get('v')!==VER){u.searchParams.set('v',VER);History.prototype.replaceState.call(history,history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();
+ window.addEventListener('load',apply,{once:true});
 })();
 </script>
 </body></html>
