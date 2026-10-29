@@ -36845,4 +36845,66 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  window.addEventListener('load',apply,{once:true});
 })();
 </script>
+
+
+<!-- ===== TFMS v47.25.1 Energy Delete Repair ===== -->
+<script id="tfms-v47251-energy-delete-repair-controller">
+(function(){
+'use strict';
+if(window.__tfmsEnergyDeleteRepairV47251Installed)return;
+window.__tfmsEnergyDeleteRepairV47251Installed=true;
+const BUILD='v47.25.1 Energy Delete Repair Stable',VER='47.25.1';
+const clean=v=>String(v==null?'':v).trim();
+function toast(msg){try{if(typeof window.showToast==='function')return window.showToast(msg)}catch(e){}try{alert(msg)}catch(e){}}
+function db(){try{return window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.supabaseClient||window.sb||null}catch(e){return null}}
+function profile(){try{return window.getTfmsCloudProfile?.()||window.cloudProfile||{}}catch(e){return window.cloudProfile||{}}}
+function role(){let r=clean(profile()?.role||window.tfmsRole||'user').toLowerCase();if(r==='관리자')r='admin';if(r==='조회전용')r='viewer';return r||'user'}
+function rowById(id){return (window.__tfmsEnergyDbRowsV4710||[]).find(r=>String(r.id)===String(id))||null}
+function energyLabel(t){return ({electricity:'전기',gas:'가스',water:'수도'}[t]||t||'-')}
+function errText(e){const parts=[e?.code,e?.message,e?.details,e?.hint].map(clean).filter(Boolean);return [...new Set(parts)].join(' / ')||clean(e)||'알 수 없는 오류'}
+async function verifyDeleted(c,id){const q=await c.from('energy_monthly_usage').select('id').eq('id',String(id)).maybeSingle();if(q.error&&q.error.code!=='PGRST116')throw q.error;return !q.data}
+window.energyMonthlyDbDeleteV4714=async function(id){
+ if(role()!=='admin'){toast('관리자만 DB 저장자료를 삭제할 수 있습니다.');return}
+ const row=rowById(id);if(!row){toast('삭제할 DB 자료를 찾지 못했습니다. DB 새로고침 후 다시 시도해주세요.');return}
+ const label=(row.facility||'-')+' / '+(row.month||'-')+' / '+energyLabel(row.type);
+ if(!confirm('DB에 저장된 에너지 월별자료를 영구 삭제합니다.\n\n'+label+'\n\n계속하시겠습니까?'))return;
+ const c=db();if(!c){toast('DB 연결 상태를 확인해주세요.');return}
+ let rpcErr=null,directErr=null;
+ try{
+   const rpc=await c.rpc('tfms_admin_delete_energy_monthly_usage',{p_id:String(id)});
+   if(!rpc.error){
+     const data=Array.isArray(rpc.data)?rpc.data[0]:rpc.data;
+     if(data&&data.ok===false&&data.reason==='not_found')throw new Error('삭제 대상 자료가 이미 없습니다. DB 새로고침 후 다시 확인해주세요.');
+     if(!(await verifyDeleted(c,id)))throw new Error('RPC 호출은 성공했지만 삭제 대상이 DB에 남아 있습니다.');
+     await window.loadEnergyMonthlyDataV4710?.({force:true,reason:'admin-delete-rpc-v47251'});toast('에너지 월별자료를 삭제했습니다.');return;
+   }
+   rpcErr=rpc.error;
+   const rpcMsg=errText(rpc.error);
+   const missing=/PGRST202|could not find the function|schema cache|function .* does not exist/i.test(rpcMsg);
+   if(!missing)throw rpc.error;
+   const direct=await c.from('energy_monthly_usage').delete().eq('id',String(id)).select('id');
+   if(direct.error){directErr=direct.error;throw direct.error}
+   if(!(direct.data||[]).length){if(!(await verifyDeleted(c,id)))throw new Error('직접 DELETE 요청이 0건 처리되었습니다. 관리자 DELETE RLS 정책 또는 권한이 적용되지 않았습니다.')}
+   await window.loadEnergyMonthlyDataV4710?.({force:true,reason:'admin-delete-direct-v47251'});toast('에너지 월별자료를 삭제했습니다.');return;
+ }catch(e){
+   console.error('[TFMS v47.25.1 energy delete repair]',{error:e,rpcErr,directErr});
+   let raw=errText(e),msg=raw;
+   if(/admin_required/i.test(raw))msg='서버에서 현재 계정을 관리자로 확인하지 못했습니다. profiles.role=admin, account_status=active 상태를 확인해주세요.';
+   else if(/PGRST202|could not find the function|schema cache|function .* does not exist/i.test(raw))msg='관리자 삭제 RPC가 DB에 없습니다. 「TFMS_v47.25.1_Energy_Delete_Repair.sql」을 Supabase SQL Editor에서 1회 실행해주세요.';
+   else if(/42501|permission denied|row-level security|RLS|0건 처리|DELETE RLS/i.test(raw))msg='관리자 DELETE 권한/RLS이 DB에 적용되지 않았습니다. 「TFMS_v47.25.1_Energy_Delete_Repair.sql」을 1회 실행해주세요.\n\n원본 오류: '+raw;
+   else msg='삭제 처리 중 오류가 발생했습니다.\n\n'+raw;
+   toast('DB 삭제 실패: '+msg);
+ }
+};
+function syncVersion(){
+ try{const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent=BUILD;document.title='TFMS '+BUILD;}catch(e){}
+ try{const cb=document.querySelector('#tfmsVersionModal .current-build');if(cb)cb.textContent='현재 버전: '+BUILD;}catch(e){}
+ try{const body=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');if(body&&!body.querySelector('[data-version="v47.25.1-energy-delete-repair"]')){const el=document.createElement('div');el.className='change-item';el.dataset.version='v47.25.1-energy-delete-repair';el.innerHTML='<strong>v47.25.1 · Energy Delete Repair Stable — 관리자 삭제 복구</strong><ul><li>RPC 삭제 후 실제 DB 삭제 여부를 재조회하여 성공 검증</li><li>RPC 미설치 시 기존 DELETE RLS 경로를 자동 시도하고 실패 원인을 구체적으로 표시</li><li>삭제 권한·RLS·RPC를 한 번에 복구하는 단일 SQL 패치 제공</li></ul>';body.insertBefore(el,body.firstChild);}}catch(e){}
+ try{const u=new URL(location.href);if(u.searchParams.get('v')!==VER){u.searchParams.set('v',VER);History.prototype.replaceState.call(history,history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',syncVersion,{once:true});else syncVersion();window.addEventListener('load',syncVersion,{once:true});
+})();
+</script>
+<!-- /TFMS v47.25.1 Energy Delete Repair -->
+
 </body></html>
