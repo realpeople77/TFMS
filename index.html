@@ -33934,7 +33934,7 @@ syncVersion();
 'use strict';
 if(window.__tfmsEnergyTrendTabsV4711Installed)return;
 window.__tfmsEnergyTrendTabsV4711Installed=true;
-const BUILD='v47.23 Energy Trend Scope Stable',VER='47.23';
+const BUILD='v47.24 Energy Bar Separation Fix Stable',VER='47.24';
 const $=id=>document.getElementById(id);
 const q=(s,r)=> (r||document).querySelector(s);
 const clean=v=>String(v??'').trim();
@@ -34000,8 +34000,8 @@ function amountSvg(p){
  const data=amountRows(p),months=data.months,series=data.out,vals=series.flatMap(s=>s.vals.filter(v=>v!==null));
  if(!vals.length)return chartSvgShell(legendHtml(p),'',{title:'표시할 공공요금 자료가 없습니다.',text:'DB에 저장된 월별 공공요금 자료를 먼저 등록해주세요.'});
  const W=720,H=200,left=50,right=18,top=10,bottom=38,innerW=W-left-right,innerH=H-top-bottom,max=Math.max(...vals,1)*1.15;const grid=[];for(let i=0;i<5;i++){const y=top+innerH*(i/4),value=max*(1-i/4);grid.push('<line x1="'+left+'" y1="'+y.toFixed(2)+'" x2="'+(W-right)+'" y2="'+y.toFixed(2)+'"></line><text x="'+(left-6)+'" y="'+(y+3).toFixed(2)+'" text-anchor="end">'+fmt(value>=1000?Math.round(value):value)+'</text>')}
- const groupW=innerW/months.length,barGap=Math.max(4,Math.min(7,groupW*.10)),barW=Math.min(22,Math.max(8,(groupW-barGap)*.33)),pairW=barW*2+barGap,colors=['#2f73da','#b2c7e0'];let bars='';
- months.forEach((m,idx)=>{const gx=left+groupW*idx+groupW/2;bars+='<text class="month-label" x="'+gx.toFixed(2)+'" y="'+(H-12)+'" text-anchor="middle">'+m+'월</text>';series.forEach((s,si)=>{const v=s.vals[idx];if(v===null)return;const h=(v/max)*innerH,x=gx-pairW/2+si*(barW+barGap),y=top+innerH-h;bars+='<rect class="bar" x="'+x.toFixed(2)+'" y="'+y.toFixed(2)+'" width="'+barW.toFixed(2)+'" height="'+h.toFixed(2)+'" rx="4" fill="'+colors[si]+'" data-tip-title="'+s.year+'년 '+m+'월" data-tip-value="'+fmt(v)+'원" data-tip-meta="총 공공요금"/>';
+ const groupW=innerW/months.length,barW=Math.min(20,Math.max(10,groupW*.24)),barOffset=Math.min(18,Math.max(12,groupW*.19)),colors=['#2f73da','#b2c7e0'];let bars='';
+ months.forEach((m,idx)=>{const gx=left+groupW*idx+groupW/2;bars+='<text class="month-label" x="'+gx.toFixed(2)+'" y="'+(H-12)+'" text-anchor="middle">'+m+'월</text>';series.forEach((s,si)=>{const v=s.vals[idx];if(v===null)return;const h=(v/max)*innerH,centerX=gx+(si===0?-barOffset:barOffset),x=centerX-barW/2,y=top+innerH-h;bars+='<rect class="bar" x="'+x.toFixed(2)+'" y="'+y.toFixed(2)+'" width="'+barW.toFixed(2)+'" height="'+h.toFixed(2)+'" rx="4" fill="'+colors[si]+'" data-tip-title="'+s.year+'년 '+m+'월" data-tip-value="'+fmt(v)+'원" data-tip-meta="총 공공요금"/>';
  bars+='<rect class="hit-bar" x="'+(x-1).toFixed(2)+'" y="'+top+'" width="'+(barW+2).toFixed(2)+'" height="'+innerH.toFixed(2)+'" data-tip-title="'+s.year+'년 '+m+'월" data-tip-value="'+fmt(v)+'원" data-tip-meta="총 공공요금" />';
  })});
  const svg='<g class="grid">'+grid.map(x=>x.replace('<text','<g class="axis"><text').replace('</text>','</text></g>')).join('')+'</g><g class="axis"></g><g>'+bars+'</g>';
@@ -36816,7 +36816,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 </style>
 
 <style id="tfms-v4723-energy-trend-scope-style">
-/* v47.23 - Energy trend scope / label / grouped-bar UX. */
+/* v47.24 - Energy trend scope / label / grouped-bar separation UX. */
 #energy .tfms-energy-chart-placeholder{overflow:visible!important}
 #energy .tfms-energy-trend-v4711{height:278px!important}
 #energy .tfms-energy-chart-canvas-v4711{padding:0 12px 30px!important;overflow:visible!important}
@@ -36827,7 +36827,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 #energy .tfms-energy-chart-panel .tfms-energy-panel-head{flex-wrap:wrap;row-gap:8px}
 #energy .tfms-energy-chart-panel .tfms-energy-mini-toggle{margin-left:0}
 #energy .tfms-energy-chart-svg-v4711 .bar{shape-rendering:geometricPrecision}
-#tfmsVersionModal .current-build::after{content:"현재 운영기준: v47.23 Energy Trend Scope Stable · 2026.10.29"!important}
+#tfmsVersionModal .current-build::after{content:"현재 운영기준: v47.24 Energy Bar Separation Fix Stable · 2026.10.29"!important}
 @media(max-width:900px){#energy .tfms-energy-trend-scope-v4723{order:3;width:100%;justify-content:flex-end}#energy .tfms-energy-trend-scope-v4723 select{max-width:240px;flex:0 1 190px}}
 @media(max-width:560px){#energy .tfms-energy-trend-v4711{height:292px!important}#energy .tfms-energy-trend-scope-v4723{justify-content:stretch}#energy .tfms-energy-trend-scope-v4723 select{flex:1;max-width:none}}
 </style>
@@ -36838,7 +36838,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  function apply(){
   try{const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent=BUILD;document.title='TFMS '+BUILD;}catch(e){}
   try{const cb=document.querySelector('#tfmsVersionModal .current-build');if(cb)cb.textContent='현재 버전: '+BUILD;}catch(e){}
-  try{const body=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');if(body&&!body.querySelector('[data-version="v47.23-energy-trend-scope"]')){const el=document.createElement('div');el.className='change-item';el.dataset.version='v47.23-energy-trend-scope';el.innerHTML='<strong>v47.23 · Energy Trend Scope Stable — 총괄/팀별 추이·차트 가독성 개선</strong><ul><li>월별 공공요금 추이에 전 시설 총괄 및 소관팀별 조회범위 선택 추가</li><li>그래프 하단 월 라벨 여백과 SVG 높이를 보정해 글자 잘림 방지</li><li>전년·당년 요금 막대를 완전 병렬 배치하여 막대 겹침 제거</li></ul>';body.insertBefore(el,body.firstChild);}}catch(e){}
+  try{const body=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');if(body&&!body.querySelector('[data-version="v47.24-energy-bar-separation"]')){const el=document.createElement('div');el.className='change-item';el.dataset.version='v47.23-energy-trend-scope';el.innerHTML='<strong>v47.24 · Energy Bar Separation Fix Stable — 요금 막대 완전 분리</strong><ul><li>전년·당년 요금 막대의 중심 좌표를 월 중심 기준 좌·우로 완전히 분리</li><li>두 막대 사이에 고정 시각 간격을 확보하여 겹침·붙어보임 현상 제거</li><li>기존 총괄/팀별 조회, 월 라벨 보정, 막대 애니메이션 유지</li></ul>';body.insertBefore(el,body.firstChild);}}catch(e){}
   try{const u=new URL(location.href);if(u.searchParams.get('v')!==VER){u.searchParams.set('v',VER);History.prototype.replaceState.call(history,history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();
