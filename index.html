@@ -33934,19 +33934,47 @@ syncVersion();
 'use strict';
 if(window.__tfmsEnergyTrendTabsV4711Installed)return;
 window.__tfmsEnergyTrendTabsV4711Installed=true;
-const BUILD='v47.20 Energy AI Analysis II Stable',VER='47.16';
+const BUILD='v47.23 Energy Trend Scope Stable',VER='47.23';
 const $=id=>document.getElementById(id);
 const q=(s,r)=> (r||document).querySelector(s);
 const clean=v=>String(v??'').trim();
 const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const TYPES=[['electricity','전기','kWh','#3d7be0'],['gas','가스','㎥','#df8a45'],['water','수도','㎥','#29a9b4']];
 let metric='amount';
+let trendDepartmentIdV4723='';
+const trendDepartmentNamesV4723=new Map();
+let trendDepartmentLoadingV4723=null;
 function rows(){return Array.isArray(window.__tfmsEnergyDbRowsV4710)?window.__tfmsEnergyDbRowsV4710:[]}
+function scopedRowsV4723(){const all=rows();return trendDepartmentIdV4723?all.filter(r=>clean(r.departmentId)===trendDepartmentIdV4723):all}
+async function loadTrendDepartmentsV4723(){
+ const ids=[...new Set(rows().map(r=>clean(r.departmentId)).filter(Boolean))];
+ if(!ids.length)return;
+ const missing=ids.filter(id=>!trendDepartmentNamesV4723.has(id));if(!missing.length)return;
+ if(trendDepartmentLoadingV4723)return trendDepartmentLoadingV4723;
+ trendDepartmentLoadingV4723=(async()=>{try{
+  const c=window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.supabaseClient||window.sb||null;if(!c)return;
+  for(let i=0;i<missing.length;i+=100){const res=await c.from('departments').select('id,name').in('id',missing.slice(i,i+100));if(res.error)throw res.error;(res.data||[]).forEach(d=>trendDepartmentNamesV4723.set(clean(d.id),clean(d.name)||'소관팀'));}
+ }catch(e){console.warn('TFMS v47.23 에너지 팀명 조회 실패',e)}finally{trendDepartmentLoadingV4723=null}})();
+ return trendDepartmentLoadingV4723;
+}
+function trendDepartmentOptionsV4723(){
+ const ids=[...new Set(rows().map(r=>clean(r.departmentId)).filter(Boolean))];
+ return ids.map((id,i)=>({id,name:trendDepartmentNamesV4723.get(id)||('소관팀 '+(i+1))})).sort((a,b)=>a.name.localeCompare(b.name,'ko'));
+}
+function trendScopeLabelV4723(){if(!trendDepartmentIdV4723)return '전 시설 총괄';const x=trendDepartmentOptionsV4723().find(d=>d.id===trendDepartmentIdV4723);return x?.name||'선택 팀'}
+function renderTrendScopeV4723(panel){
+ const head=q('.tfms-energy-panel-head',panel),toggle=q('.tfms-energy-mini-toggle',panel);if(!head||!toggle)return;
+ let box=q('.tfms-energy-trend-scope-v4723',head);if(!box){box=document.createElement('label');box.className='tfms-energy-trend-scope-v4723';head.insertBefore(box,toggle)}
+ const opts=trendDepartmentOptionsV4723();
+ if(trendDepartmentIdV4723&&!opts.some(x=>x.id===trendDepartmentIdV4723))trendDepartmentIdV4723='';
+ box.innerHTML='<span>조회범위</span><select id="tfmsEnergyTrendDepartmentV4723"><option value="">전 시설 총괄</option>'+opts.map(x=>'<option value="'+esc(x.id)+'"'+(x.id===trendDepartmentIdV4723?' selected':'')+'>'+esc(x.name)+'</option>').join('')+'</select>';
+ const sel=q('select',box);if(sel)sel.onchange=()=>{trendDepartmentIdV4723=clean(sel.value);renderTrend()};
+}
 function parts(v){const m=/^(\d{4})-(\d{2})$/.exec(String(v||''));return m?{year:Number(m[1]),month:Number(m[2])}:null}
 function period(){const sel=$('tfmsEnergyPeriodV4699');const m=/^(\d{4})\|(\d{1,2})$/.exec(clean(sel?.value));if(m)return {year:Number(m[1]),endMonth:Number(m[2])};const ps=rows().map(r=>parts(r.month)).filter(Boolean);if(!ps.length)return null;const y=Math.max(...ps.map(p=>p.year));return {year:y,endMonth:Math.max(...ps.filter(p=>p.year===y).map(p=>p.month))}}
 function fnum(v){const n=Number(v);return Number.isFinite(n)?n:null}
 function fmt(v,d=0){if(v===null||v===undefined||!Number.isFinite(Number(v)))return '-';return Number(v).toLocaleString('ko-KR',{minimumFractionDigits:d,maximumFractionDigits:d})}
-function monthRows(year,month,type){return rows().filter(r=>{const p=parts(r.month);return p&&p.year===year&&p.month===month&&(!type||r.type===type)})}
+function monthRows(year,month,type){return scopedRowsV4723().filter(r=>{const p=parts(r.month);return p&&p.year===year&&p.month===month&&(!type||r.type===type)})}
 function sumMetric(year,month,type,key){const vals=monthRows(year,month,type).map(r=>fnum(r[key])).filter(v=>v!==null);return vals.length?vals.reduce((a,b)=>a+b,0):null}
 function unitPrice(year,month,type){const valid=monthRows(year,month,type).filter(r=>fnum(r.usage)!==null&&fnum(r.amount)!==null&&Number(r.usage)>0);if(!valid.length)return null;const usage=valid.reduce((s,r)=>s+Number(r.usage),0),amount=valid.reduce((s,r)=>s+Number(r.amount),0);return usage>0?amount/usage:null}
 function buttons(){return ['usage','amount','unit'].map(m=>'<button type="button" data-energy-trend-metric-v4711="'+m+'" class="'+(metric===m?'active':'')+'">'+({usage:'사용량',amount:'요금',unit:'단가'}[m])+'</button>').join('')}
@@ -33967,14 +33995,14 @@ function legendHtml(p){
  }).join('');
 }
 function wrapChart(inner,note){return '<div class="tfms-energy-trend-v4711"><div class="tfms-energy-trend-shell-v4711">'+inner+'<div class="tfms-energy-chart-note-v4711">'+note+'</div></div></div>'}
-function chartSvgShell(legend,svg,empty){return '<div class="tfms-energy-trend-legend-v4711">'+legend+'</div><div class="tfms-energy-chart-canvas-v4711">'+(empty?'<div class="tfms-energy-chart-empty-v4711"><strong>'+empty.title+'</strong><span>'+empty.text+'</span></div>':'')+'<svg class="tfms-energy-chart-svg-v4711" viewBox="0 0 720 180" preserveAspectRatio="none">'+svg+'</svg><div class="tfms-energy-chart-tooltip-v4711"></div></div>'}
+function chartSvgShell(legend,svg,empty){return '<div class="tfms-energy-trend-legend-v4711">'+legend+'</div><div class="tfms-energy-chart-canvas-v4711">'+(empty?'<div class="tfms-energy-chart-empty-v4711"><strong>'+empty.title+'</strong><span>'+empty.text+'</span></div>':'')+'<svg class="tfms-energy-chart-svg-v4711" viewBox="0 0 720 200" preserveAspectRatio="none">'+svg+'</svg><div class="tfms-energy-chart-tooltip-v4711"></div></div>'}
 function amountSvg(p){
  const data=amountRows(p),months=data.months,series=data.out,vals=series.flatMap(s=>s.vals.filter(v=>v!==null));
  if(!vals.length)return chartSvgShell(legendHtml(p),'',{title:'표시할 공공요금 자료가 없습니다.',text:'DB에 저장된 월별 공공요금 자료를 먼저 등록해주세요.'});
- const W=720,H=180,left=46,right=12,top=10,bottom=26,innerW=W-left-right,innerH=H-top-bottom,max=Math.max(...vals,1)*1.15;const grid=[];for(let i=0;i<5;i++){const y=top+innerH*(i/4),value=max*(1-i/4);grid.push('<line x1="'+left+'" y1="'+y.toFixed(2)+'" x2="'+(W-right)+'" y2="'+y.toFixed(2)+'"></line><text x="'+(left-6)+'" y="'+(y+3).toFixed(2)+'" text-anchor="end">'+fmt(value>=1000?Math.round(value):value)+'</text>')}
- const groupW=innerW/months.length,barW=Math.min(24,groupW*.28),colors=['#2f73da','#b2c7e0'];let bars='';
- months.forEach((m,idx)=>{const gx=left+groupW*idx+groupW/2;bars+='<text class="month-label" x="'+gx.toFixed(2)+'" y="'+(H-7)+'" text-anchor="middle">'+m+'월</text>';series.forEach((s,si)=>{const v=s.vals[idx];if(v===null)return;const h=(v/max)*innerH,x=gx+(si===0?-barW*.75:barW*.05),y=top+innerH-h;bars+='<rect class="bar" x="'+x.toFixed(2)+'" y="'+y.toFixed(2)+'" width="'+barW.toFixed(2)+'" height="'+h.toFixed(2)+'" rx="4" fill="'+colors[si]+'" data-tip-title="'+s.year+'년 '+m+'월" data-tip-value="'+fmt(v)+'원" data-tip-meta="총 공공요금"/>';
- bars+='<rect class="hit-bar" x="'+(x-3).toFixed(2)+'" y="'+top+'" width="'+(barW+6).toFixed(2)+'" height="'+innerH.toFixed(2)+'" data-tip-title="'+s.year+'년 '+m+'월" data-tip-value="'+fmt(v)+'원" data-tip-meta="총 공공요금" />';
+ const W=720,H=200,left=50,right=18,top=10,bottom=38,innerW=W-left-right,innerH=H-top-bottom,max=Math.max(...vals,1)*1.15;const grid=[];for(let i=0;i<5;i++){const y=top+innerH*(i/4),value=max*(1-i/4);grid.push('<line x1="'+left+'" y1="'+y.toFixed(2)+'" x2="'+(W-right)+'" y2="'+y.toFixed(2)+'"></line><text x="'+(left-6)+'" y="'+(y+3).toFixed(2)+'" text-anchor="end">'+fmt(value>=1000?Math.round(value):value)+'</text>')}
+ const groupW=innerW/months.length,barGap=Math.max(4,Math.min(7,groupW*.10)),barW=Math.min(22,Math.max(8,(groupW-barGap)*.33)),pairW=barW*2+barGap,colors=['#2f73da','#b2c7e0'];let bars='';
+ months.forEach((m,idx)=>{const gx=left+groupW*idx+groupW/2;bars+='<text class="month-label" x="'+gx.toFixed(2)+'" y="'+(H-12)+'" text-anchor="middle">'+m+'월</text>';series.forEach((s,si)=>{const v=s.vals[idx];if(v===null)return;const h=(v/max)*innerH,x=gx-pairW/2+si*(barW+barGap),y=top+innerH-h;bars+='<rect class="bar" x="'+x.toFixed(2)+'" y="'+y.toFixed(2)+'" width="'+barW.toFixed(2)+'" height="'+h.toFixed(2)+'" rx="4" fill="'+colors[si]+'" data-tip-title="'+s.year+'년 '+m+'월" data-tip-value="'+fmt(v)+'원" data-tip-meta="총 공공요금"/>';
+ bars+='<rect class="hit-bar" x="'+(x-1).toFixed(2)+'" y="'+top+'" width="'+(barW+2).toFixed(2)+'" height="'+innerH.toFixed(2)+'" data-tip-title="'+s.year+'년 '+m+'월" data-tip-value="'+fmt(v)+'원" data-tip-meta="총 공공요금" />';
  })});
  const svg='<g class="grid">'+grid.map(x=>x.replace('<text','<g class="axis"><text').replace('</text>','</text></g>')).join('')+'</g><g class="axis"></g><g>'+bars+'</g>';
  return chartSvgShell(legendHtml(p),svg,'');
@@ -33983,11 +34011,11 @@ function linePath(points){return points.map((p,i)=>(i?'L':'M')+p.x.toFixed(2)+' 
 function typeSvg(p){
  const data=typeRows(p,metric),months=data.months,allVals=data.out.flatMap(s=>s.vals.filter(v=>v!==null));
  if(!allVals.length)return chartSvgShell(legendHtml(p),'',{title:'표시할 추이 자료가 없습니다.',text:'선택한 기간에 사용량 또는 단가 자료가 없습니다.'});
- const W=720,H=180,left=46,right=12,top=10,bottom=26,innerW=W-left-right,innerH=H-top-bottom,max=Math.max(...allVals,1)*1.15;let svg='<g class="grid">';
+ const W=720,H=200,left=50,right=18,top=10,bottom=38,innerW=W-left-right,innerH=H-top-bottom,max=Math.max(...allVals,1)*1.15;let svg='<g class="grid">';
  for(let i=0;i<5;i++){const y=top+innerH*(i/4),value=max*(1-i/4);svg+='<line x1="'+left+'" y1="'+y.toFixed(2)+'" x2="'+(W-right)+'" y2="'+y.toFixed(2)+'"></line><g class="axis"><text x="'+(left-6)+'" y="'+(y+3).toFixed(2)+'" text-anchor="end">'+fmt(value,metric==='unit'?1:0)+'</text></g>'}
  svg+='<g class="axis">';
  const xs=months.map((m,idx)=>left + innerW*((months.length===1?0:idx/(months.length-1))));
- xs.forEach((x,idx)=>{svg+='<text class="month-label" x="'+x.toFixed(2)+'" y="'+(H-7)+'" text-anchor="middle">'+months[idx]+'월</text>'});svg+='</g>';
+ xs.forEach((x,idx)=>{svg+='<text class="month-label" x="'+x.toFixed(2)+'" y="'+(H-12)+'" text-anchor="middle">'+months[idx]+'월</text>'});svg+='</g>';
  let defs='',seriesSvg='',seriesNo=0;
  data.out.forEach(s=>{
    const pts=s.vals.map((v,idx)=>v===null?null:{x:xs[idx],y:top+innerH-(v/max)*innerH,v:v,month:months[idx]}).filter(Boolean);if(!pts.length)return;
@@ -34030,7 +34058,8 @@ function animateChart(target){
 function renderTrend(){
  const root=$('tfmsEnergyStatsRoot'),panel=q('.tfms-energy-chart-panel',root);const p=period();if(!panel||!p)return;
  const h=q('.tfms-energy-panel-head h3',panel),sub=q('.tfms-energy-panel-head span',panel),toggle=q('.tfms-energy-mini-toggle',panel),target=q('.tfms-energy-chart-placeholder',panel);if(!target)return;
- if(h)h.textContent='월별 공공요금 추이';if(sub)sub.textContent=(p.year-1)+'년 / '+p.year+'년 비교';if(toggle)toggle.innerHTML=buttons();
+ renderTrendScopeV4723(panel);
+ if(h)h.textContent='월별 공공요금 추이';if(sub)sub.textContent=trendScopeLabelV4723()+' · '+(p.year-1)+'년 / '+p.year+'년 비교';if(toggle)toggle.innerHTML=buttons();
  target.innerHTML = wrapChart(metric==='amount'?amountSvg(p):typeSvg(p), noteText());
  const btns=toggle?Array.from(toggle.querySelectorAll('[data-energy-trend-metric-v4711]')):[];btns.forEach(b=>b.addEventListener('click',()=>{metric=b.dataset.energyTrendMetricV4711||'amount';renderTrend()}));
  animateChart(target);
@@ -34046,9 +34075,9 @@ function renderStatus(){
 function renderAll(){renderTrend();renderStatus()}
 window.switchEnergyTrendMetricV4711=function(m){if(['usage','amount','unit'].includes(m)){metric=m;renderTrend()}};
 const baseLoad=window.loadEnergyMonthlyDataV4710;
-if(typeof baseLoad==='function')window.loadEnergyMonthlyDataV4710=async function(){const v=await baseLoad.apply(this,arguments);setTimeout(renderAll,0);return v};
+if(typeof baseLoad==='function')window.loadEnergyMonthlyDataV4710=async function(){const v=await baseLoad.apply(this,arguments);await loadTrendDepartmentsV4723();setTimeout(renderAll,0);return v};
 function hookPeriod(){const sel=$('tfmsEnergyPeriodV4699');if(!sel||sel.dataset.v4711Hooked)return;sel.dataset.v4711Hooked='1';sel.addEventListener('change',()=>setTimeout(renderAll,0))}
-function boot(){hookPeriod();setTimeout(renderAll,30)}
+function boot(){hookPeriod();loadTrendDepartmentsV4723().finally(()=>setTimeout(renderAll,30))}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 function syncVersion(){try{const b=$('tfmsVersionBadge');if(b&&b.textContent!==BUILD)b.textContent=BUILD}catch(e){}try{if(document.title!=='TFMS '+BUILD)document.title='TFMS '+BUILD}catch(e){}try{const u=new URL(location.href);if(u.searchParams.get('v')!==VER){u.searchParams.set('v',VER);History.prototype.replaceState.call(history,history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}
 syncVersion();
@@ -36785,14 +36814,31 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 #tfmsVersionModal .current-build::after{content:"현재 운영기준: v47.22 Energy Monthly Pagination Stable · 2026.10.29"!important}
 @media(max-width:760px){#energy .tfms-energy-monthly-table-wrap-v4722{max-height:560px}#energy .tfms-energy-monthly-pager-v4722{align-items:flex-start;flex-direction:column}}
 </style>
-<script id="tfms-v4722-version-authority">
+
+<style id="tfms-v4723-energy-trend-scope-style">
+/* v47.23 - Energy trend scope / label / grouped-bar UX. */
+#energy .tfms-energy-chart-placeholder{overflow:visible!important}
+#energy .tfms-energy-trend-v4711{height:278px!important}
+#energy .tfms-energy-chart-canvas-v4711{padding:0 12px 30px!important;overflow:visible!important}
+#energy .tfms-energy-chart-svg-v4711{overflow:visible!important}
+#energy .tfms-energy-chart-svg-v4711 .axis .month-label{font-size:10.5px!important;font-weight:800!important}
+#energy .tfms-energy-trend-scope-v4723{display:flex;align-items:center;gap:7px;margin-left:auto;color:#60758c;font-size:12.5px;font-weight:800;white-space:nowrap}
+#energy .tfms-energy-trend-scope-v4723 select{height:34px;min-width:150px;max-width:210px;border:1px solid #cad8e6;border-radius:8px;background:#fff;color:#29445f;padding:0 28px 0 10px;font-size:12.5px;font-weight:800}
+#energy .tfms-energy-chart-panel .tfms-energy-panel-head{flex-wrap:wrap;row-gap:8px}
+#energy .tfms-energy-chart-panel .tfms-energy-mini-toggle{margin-left:0}
+#energy .tfms-energy-chart-svg-v4711 .bar{shape-rendering:geometricPrecision}
+#tfmsVersionModal .current-build::after{content:"현재 운영기준: v47.23 Energy Trend Scope Stable · 2026.10.29"!important}
+@media(max-width:900px){#energy .tfms-energy-trend-scope-v4723{order:3;width:100%;justify-content:flex-end}#energy .tfms-energy-trend-scope-v4723 select{max-width:240px;flex:0 1 190px}}
+@media(max-width:560px){#energy .tfms-energy-trend-v4711{height:292px!important}#energy .tfms-energy-trend-scope-v4723{justify-content:stretch}#energy .tfms-energy-trend-scope-v4723 select{flex:1;max-width:none}}
+</style>
+<script id="tfms-v4723-version-authority">
 (function(){
  'use strict';
- const BUILD='v47.22 Energy Monthly Pagination Stable',VER='47.22';
+ const BUILD='v47.23 Energy Trend Scope Stable',VER='47.23';
  function apply(){
   try{const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent=BUILD;document.title='TFMS '+BUILD;}catch(e){}
   try{const cb=document.querySelector('#tfmsVersionModal .current-build');if(cb)cb.textContent='현재 버전: '+BUILD;}catch(e){}
-  try{const body=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');if(body&&!body.querySelector('[data-version="v47.22-energy-monthly-pagination"]')){const el=document.createElement('div');el.className='change-item';el.dataset.version='v47.22-energy-monthly-pagination';el.innerHTML='<strong>v47.22 · Energy Monthly Pagination Stable — 월별자료 목록 스크롤 개선</strong><ul><li>월별자료 검토목록을 기본 20건 단위 페이지 표시로 전환</li><li>처음·이전·다음·마지막 이동 및 20/50/100건 표시 선택 추가</li><li>표 영역 최대높이와 헤더 고정으로 페이지 전체의 과도한 세로 스크롤을 방지</li></ul>';body.insertBefore(el,body.firstChild);}}catch(e){}
+  try{const body=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');if(body&&!body.querySelector('[data-version="v47.23-energy-trend-scope"]')){const el=document.createElement('div');el.className='change-item';el.dataset.version='v47.23-energy-trend-scope';el.innerHTML='<strong>v47.23 · Energy Trend Scope Stable — 총괄/팀별 추이·차트 가독성 개선</strong><ul><li>월별 공공요금 추이에 전 시설 총괄 및 소관팀별 조회범위 선택 추가</li><li>그래프 하단 월 라벨 여백과 SVG 높이를 보정해 글자 잘림 방지</li><li>전년·당년 요금 막대를 완전 병렬 배치하여 막대 겹침 제거</li></ul>';body.insertBefore(el,body.firstChild);}}catch(e){}
   try{const u=new URL(location.href);if(u.searchParams.get('v')!==VER){u.searchParams.set('v',VER);History.prototype.replaceState.call(history,history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();
