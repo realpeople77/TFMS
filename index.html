@@ -36182,19 +36182,128 @@ function linkedRecord(a,recs){const mk=marker(a.id);return recs.filter(r=>clean(
 function avg(arr,key){const v=arr.map(r=>num(r[key])).filter(x=>x!==null);return v.length?v.reduce((a,b)=>a+b,0)/v.length:null}
 function reduction(b,a){return b!==null&&a!==null&&b!==0?(b-a)/b*100:null}
 function actionEffect(a,rec){if(!rec)return null;const am=clean(rec.executed_on||rec.updated_at||rec.registered_on).slice(0,7),ai=midx(am);if(ai===null)return null;const same=rows().filter(r=>clean(r.facility)===clean(a.facility)&&r.type===a.type&&midx(r.month)!==null);const before=same.filter(r=>{const x=midx(r.month);return x>=ai-3&&x<=ai-1}),after=same.filter(r=>{const x=midx(r.month);return x>=ai+1&&x<=ai+3});const ur=reduction(avg(before,'usage'),avg(after,'usage')),ar=reduction(avg(before,'amount'),avg(after,'amount')),done=clean(rec.process_status)==='조치완료';if(!done)return {key:'progress',text:'조치 진행중',ur,ar};if(!after.length)return {key:'waiting',text:'후속자료 대기',ur,ar};const vals=[ur,ar].filter(v=>v!==null);if(vals.length&&Math.max(...vals)>=10)return {key:'saving',text:'절감 확인',ur,ar};if(vals.length&&Math.min(...vals)<=-10)return {key:'increase',text:'증가 지속',ur,ar};return {key:'neutral',text:'변화 미미',ur,ar}}
-function causeCandidates(type,rule){const common=['검침일·청구기간 차이 또는 입력자료 오류 확인'];if(type==='electricity'){if(rule==='unit_spike'||rule==='mixed')return ['계약전력·최대수요전력 또는 요금제 영향','기본요금·연료비조정액 등 청구항목 변동',...common];return ['냉난방기·펌프·송풍기 등 운전시간 증가','전열기기 또는 신규 설비 부하 증가','운영시간·이용객 증가에 따른 부하 변화',...common]}
- if(type==='gas'){if(rule==='unit_spike'||rule==='mixed')return ['가스 단가·요금조정 또는 검침기간 차이','기본요금·정산금 등 청구항목 변동',...common];return ['보일러·급탕 운전시간 및 설정온도 증가','스팀·급탕 배관 누설 또는 스팀트랩 이상','외기온 저하·샤워/급탕 부하 증가',...common]}
- if(type==='water'){if(rule==='unit_spike'||rule==='mixed')return ['상·하수도 요율구간 또는 정산분 영향','검침기간 차이 또는 누진구간 진입',...common];return ['샤워수전·양변기·배관의 미세 누수','수영장 보충수·역세척·청소용수 증가','이용객 또는 운영일수 증가',...common]}
- return common}
-function checks(type,rule){if(type==='electricity')return ['최근 운전시간·설정값 변경 여부 확인','펌프·공조·전열설비의 상시운전 여부 확인','전기요금 고지서의 최대수요·단가 항목 대조'];if(type==='gas')return ['보일러 운전시간·급탕 설정온도 확인','스팀배관·밸브·트랩 누설 및 응축수 상태 점검','가스계량기 검침값과 고지서 사용량 대조'];if(type==='water')return ['샤워실·화장실·기계실 누수 여부 확인','수영장 보충수·역세척 횟수와 사용량 대조','수도계량기 야간 무사용 시간대 흐름 확인'];return ['원자료와 고지서 대조','설비 운전조건 확인','현장 이상 유무 점검']}
-function facilityDiagnosis(fac,p,recs){const ms=['electricity','gas','water'].map(t=>metrics(fac,t,p)).filter(Boolean),ans=anomalies().filter(a=>clean(a.facility)===fac).sort((a,b)=>(sevRank[b.severity]-sevRank[a.severity])||b.month.localeCompare(a.month));let score=0;ans.forEach(a=>{score+=(a.severity==='warning'?4:a.severity==='caution'?2:1)+(a.action?.key==='none'?2:a.action?.key==='progress'?1:0)+(a.rule==='repeated'?1:0)});const linked=ans.map(a=>{const r=linkedRecord(a,recs);return r?{a,r,e:actionEffect(a,r)}:null}).filter(Boolean),latestEffect=linked.sort((x,y)=>String(y.r.updated_at||'').localeCompare(String(x.r.updated_at||'')))[0]?.e||null;if(latestEffect?.key==='increase')score+=3;if(latestEffect?.key==='saving')score=Math.max(0,score-1);if(!ans.length&&ms.some(m=>Math.max(m.momUsage??-999,m.yoyUsage??-999)>=15))score+=1;let level=score>=8?'urgent':score>=4?'check':score>=1?'observe':'normal',levelText=level==='urgent'?'즉시점검 권고':level==='check'?'확인 필요':level==='observe'?'관찰':'정상 범위';const top=ans[0]||null,primary=top?.type||ms.slice().sort((a,b)=>Math.max(b.momUsage??-999,b.yoyUsage??-999)-Math.max(a.momUsage??-999,a.yoyUsage??-999))[0]?.type||'electricity';const months=new Set(rows().filter(r=>clean(r.facility)===fac&&allowedBeforePeriod(r,p)).map(r=>r.month)).size,dataText=months>=12?'자료 충분':months>=6?'자료 보통':'자료 부족';let summary='선택기간에 설정 기준을 초과한 이상징후는 확인되지 않았습니다. 최신 월별 추이를 계속 관찰하는 것이 좋습니다.';if(top){summary=label[top.type]+' '+top.title+'이(가) 우선 확인 대상입니다. '+top.detail+'. ';summary+=top.action?.key==='none'?'아직 유지관리 조치가 연결되지 않았습니다.':top.action?.key==='done'?'연계 유지관리 조치는 완료 상태입니다.':'연계 유지관리 조치가 진행 중입니다.';if(latestEffect?.key==='saving')summary+=' 최근 조치 후 단순 전후 비교에서는 절감효과가 확인됩니다.';else if(latestEffect?.key==='increase')summary+=' 최근 조치 후에도 사용량 또는 요금 증가가 이어져 추가 원인점검이 필요합니다.';else if(latestEffect?.key==='waiting')summary+=' 조치효과 판단을 위해 다음 월 자료가 필요합니다.'}
- const evidence=[];ms.forEach(m=>{const vals=[];if(m.momUsage!==null)vals.push('전월 사용량 '+fmtPct(m.momUsage));if(m.yoyUsage!==null)vals.push('전년동월 '+fmtPct(m.yoyUsage));if(vals.length)evidence.push(label[m.type]+' '+m.latest.month+' · '+vals.join(' / '))});if(top)evidence.unshift(top.month+' · '+label[top.type]+' · '+top.title+' · '+top.comparison+' '+fmtPct(top.value));if(latestEffect)evidence.push('최근 조치효과 · '+latestEffect.text+(latestEffect.ur!==null?' · 사용량 '+fmtPct(-latestEffect.ur):''));
+function normFacilityName(v){return clean(v).replace(/[\s·ㆍ_.()\-]/g,'').toLowerCase()}
+const FACILITY_PROFILES_V4726=[
+ {aliases:['통리탄탄파크','탄탄파크'],team:'관광운영팀',kind:'관광시설',summary:'화장실 · 지하 물탱크 · 고압전기',f:{toilet:1,tank:1,highVoltage:1},unknown:[]},
+ {aliases:['오로라파크'],team:'관광운영팀',kind:'관광시설',summary:'남·여 화장실',f:{toilet:1},unknown:[]},
+ {aliases:['통리탄탄오로라파크','통리탄탄·오로라파크'],team:'관광운영팀',kind:'관광시설',summary:'화장실 · 탄탄파크 지하 물탱크 · 고압전기',f:{toilet:1,tank:1,highVoltage:1},unknown:[]},
+ {aliases:['고원자연휴양림','태백고원자연휴양림'],team:'관광운영팀',kind:'숙박·휴양시설',summary:'객실 34 · 화장실 · 식기세척장 · 물탱크·가압장',f:{guestrooms:34,toilet:1,dishwash:1,tank:1,booster:1},unknown:[]},
+ {aliases:['고원힐링캠핑장'],team:'관광운영팀',kind:'캠핑·숙박시설',summary:'카라반 12 · 공용샤워 · 화장실 · 식기세척장·매점',f:{caravans:12,shower:1,toilet:1,dishwash:1,shop:1,campground:1,guestBath:1},unknown:[]},
+ {aliases:['쇠바우골탄광문화장터','쇠바우골 탄광문화장터'],team:'관광운영팀',kind:'상가·장터',summary:'상가 10동(주방) · 화장실 2동',f:{shops:10,kitchen:1,toilet:1},unknown:[]},
+ {aliases:['태백국민체육센터','국민체육센터'],team:'체육운영팀',kind:'수영·체육시설',summary:'수영장 · 샤워실 · 급탕·보일러 · 여과·역세척·펌프',f:{pool:1,shower:1,toilet:1,boiler:1,hotWater:1,filter:1,pumps:1,hvac:1},unknown:[]},
+ {aliases:['태백공원묘원','공원묘원','공원묘원화장장','화장장'],team:'복지주택팀',kind:'묘원·화장시설',summary:'화장로 · 상가 주방 · 남·여 화장실',f:{cremator:1,kitchen:1,shop:1,toilet:1},unknown:['화장실 수량']},
+ {aliases:['근로자종합복지관'],team:'복지주택팀',kind:'복지시설',summary:'남·여 샤워실·화장실 · 스크린골프 · 가정용 보일러',f:{shower:1,toilet:1,screenGolf:1,boiler:1,hotWater:1,shop:1},unknown:[]},
+ {aliases:['타워빌','목련','목련아파트','육성2차','서학상가동','서학'],team:'복지주택팀',kind:'주택·상가',summary:'세대 수도 개별부담 · 공용분은 상가동 화장실 중심',f:{toilet:1,individualWater:1,shops:1},unknown:[]},
+ {aliases:['철암목욕탕'],team:'복지주택팀',kind:'목욕시설',summary:'목욕·샤워 · 화장실 · 1톤 미만 가스저장시설',f:{bathhouse:1,shower:1,toilet:1,gasStorage:1,hotWater:1},unknown:[]},
+ {aliases:['장성국민체육센터'],team:'안전시설운영팀',kind:'복합 체육시설',summary:'수영장 · 1층 샤워실 · 영화관·주방·보건지소 · 가스저장시설',f:{pool:1,shower:1,toilet:1,gasStorage:1,cinema:1,kitchen:1,clinic:1,hotWater:1,pumps:1,hvac:1},unknown:['2층 샤워실 유무']},
+ {aliases:['절골힐링캠핑장'],team:'안전시설운영팀',kind:'캠핑시설',summary:'관리동 화장실·개수대 · 샤워장 · 취사장 · 매점',f:{campground:1,toilet:1,washSink:1,shower:1,kitchen:1,shop:1},unknown:[]},
+ {aliases:['장성게스트하우스'],team:'안전시설운영팀',kind:'숙박시설',summary:'세탁실 · 남·여 화장실 · 공유주방',f:{laundry:1,toilet:1,sharedKitchen:1,kitchen:1,guestrooms:1},unknown:[]},
+ {aliases:['문화플랫폼'],team:'안전시설운영팀',kind:'문화시설',summary:'남·여 화장실 · 다용도실 개수대',f:{toilet:1,washSink:1},unknown:['수유실 개수대 유무']}
+].map(p=>({...p,_aliases:p.aliases.map(normFacilityName)}));
+function facilityProfile(fac){const n=normFacilityName(fac);return FACILITY_PROFILES_V4726.find(p=>p._aliases.includes(n))||null}
+function uniqueItems(a){return [...new Set(a.filter(Boolean))]}
+function causeCandidates(fac,type,rule){
+ const p=facilityProfile(fac),f=p?.f||{},common=['검침일·청구기간 차이 또는 입력자료 오류 확인'];
+ if(type==='electricity'){
+  if(rule==='unit_spike'||rule==='mixed')return uniqueItems(['계약전력·최대수요전력 또는 요금제 영향',f.highVoltage?'고압 수전설비의 최대수요전력·역률·변압기 부하 변화':null,'기본요금·연료비조정액 등 청구항목 변동',...common]);
+  const a=[];
+  if(f.highVoltage)a.push('고압 수전설비의 최대수요전력·역률·변압기 부하 증가');
+  if(f.pool)a.push('수영장 순환·여과·보충수 관련 펌프 운전시간 증가');
+  if(f.filter)a.push('여과·역세척 설비 운전시간 또는 펌프 부하 증가');
+  if(f.booster)a.push('물탱크 가압장·가압펌프 운전시간 증가');
+  if(f.guestrooms)a.push('객실 냉난방·전열기기 사용 증가');
+  if(f.caravans)a.push('카라반 냉난방·전열기기 사용 증가');
+  if(f.cinema)a.push('영화관 공조·상영설비 운전시간 증가');
+  if(f.screenGolf)a.push('스크린골프장 냉난방·시뮬레이터 사용 증가');
+  if(f.laundry)a.push('세탁·건조설비 운전 증가');
+  if(f.cremator)a.push('화장로 보조설비·송풍·배기설비 운전 증가');
+  if(f.bathhouse)a.push('목욕탕 순환·환기·급탕 보조설비 운전 증가');
+  if(f.shops||f.kitchen)a.push('상가·주방의 냉장·조리·환기설비 사용 증가');
+  if(f.hvac)a.push('냉난방·공조설비 운전시간 또는 설정조건 변화');
+  if(!a.length)a.push('조명·냉난방·기타 전기설비의 운전시간 증가');
+  return uniqueItems([...a,...common]);
+ }
+ if(type==='gas'){
+  if(rule==='unit_spike'||rule==='mixed')return uniqueItems(['가스 단가·요금조정 또는 검침기간 차이','기본요금·정산금 등 청구항목 변동',...common]);
+  const a=[];
+  if(f.cremator)a.push('화장로 가동건수·가동시간 또는 버너 운전조건 증가');
+  if(f.bathhouse)a.push('목욕탕 욕조·샤워 급탕 및 가열 부하 증가');
+  if(f.boiler)a.push('보일러 운전시간·급탕 설정온도 또는 난방부하 증가');
+  if(f.pool&&f.hotWater)a.push('수영장·샤워 급탕 및 수온 유지 부하 증가');
+  else if(f.shower&&f.hotWater)a.push('샤워·급탕 사용량 및 온수 설정조건 증가');
+  if(f.gasStorage)a.push('가스저장시설 사용량·공급계통 또는 계량값 변동');
+  if(!a.length)a.push('시설 프로필상 주요 가스사용 설비가 확인되지 않아 시설-계량기 연결 또는 원자료 확인이 우선 필요');
+  return uniqueItems([...a,...common]);
+ }
+ if(type==='water'){
+  if(rule==='unit_spike'||rule==='mixed')return uniqueItems(['상·하수도 요율구간 또는 정산분 영향','검침기간 차이 또는 누진구간 진입',...common]);
+  const a=[];
+  if(f.bathhouse)a.push('목욕탕 욕조 보충수·샤워 사용량 증가 또는 수전 누수');
+  else if(f.shower)a.push('샤워수전·급탕 혼합수전 누수 또는 이용량 증가');
+  if(f.pool)a.push('수영장 보충수·역세척·청소용수 증가');
+  if(f.toilet)a.push('화장실 양변기·소변기·세면수전의 미세 누수');
+  if(f.tank||f.booster)a.push('물탱크 수위조절·월류·가압장 배관 누수 또는 펌프 이상');
+  if(f.guestrooms)a.push('객실 세면·화장실 사용량 증가 또는 객실 배관 누수');
+  if(f.caravans)a.push('카라반 내부 샤워·양변기·급수배관 사용량 증가 또는 누수');
+  if(f.dishwash||f.washSink||f.sharedKitchen||f.kitchen)a.push('식기세척장·개수대·주방용수 사용량 증가 또는 수전 누수');
+  if(f.laundry)a.push('세탁실 세탁기 급수량 증가 또는 급수호스·밸브 누수');
+  if(f.individualWater)a.push('세대 개별사용량보다 상가동 화장실·공용배관·공용계량기 이상 여부 확인 필요');
+  if(!a.length)a.push('시설 내 화장실·청소용수·옥외배관의 누수 또는 검침값 이상');
+  return uniqueItems([...a,'이용객·객실가동·운영일수 변화',...common]);
+ }
+ return common;
+}
+function checks(fac,type,rule){
+ const p=facilityProfile(fac),f=p?.f||{};
+ if(type==='electricity'){
+  const a=[];
+  if(f.highVoltage)a.push('최대수요전력·역률·변압기 및 고압 수전설비 부하 확인');
+  if(f.pool||f.filter)a.push('수영장 순환·여과·역세척 펌프 운전시간과 교번상태 확인');
+  if(f.booster)a.push('가압펌프의 상시운전·빈번한 기동 여부 확인');
+  if(f.guestrooms||f.caravans)a.push('객실·카라반 냉난방 및 전열기기 사용시간 확인');
+  if(f.cinema)a.push('영화관 공조·상영설비 운영시간 확인');
+  if(f.screenGolf)a.push('스크린골프장 냉난방·시뮬레이터 운영시간 확인');
+  if(f.laundry)a.push('세탁·건조설비 운전횟수 및 대기전력 확인');
+  if(f.cremator)a.push('화장로 송풍·배기·보조설비 운전시간 확인');
+  a.push('전기요금 고지서의 사용량·최대수요·단가 항목 대조');
+  return uniqueItems(a);
+ }
+ if(type==='gas'){
+  const a=[];
+  if(f.cremator)a.push('화장로 가동건수·버너 운전시간·연소조건을 사용량과 대조');
+  if(f.bathhouse)a.push('목욕탕 급탕·욕조 가열시간과 설정온도 확인');
+  if(f.boiler)a.push('보일러 운전시간·급탕/난방 설정온도 및 반복가동 확인');
+  if(f.pool&&f.hotWater)a.push('수영장·샤워 급탕 및 수온 유지 운전조건 확인');
+  if(f.gasStorage)a.push('가스저장시설 잔량·충전내역·공급배관 및 계량값 확인');
+  if(!a.length)a.push('해당 시설의 실제 가스사용 설비와 계량기 연결관계부터 확인');
+  a.push('가스 고지서·검침값·청구기간을 원자료와 대조');
+  return uniqueItems(a);
+ }
+ if(type==='water'){
+  const a=[];
+  if(f.bathhouse)a.push('목욕탕 폐장 후 계량기 흐름과 욕조·샤워 급수밸브 누수 확인');
+  else if(f.shower)a.push('샤워장 수전·혼합밸브의 폐장 후 누수 여부 확인');
+  if(f.pool)a.push('수영장 보충수량·역세척 횟수·배수량을 운영일지와 대조');
+  if(f.toilet)a.push('양변기·소변기·세면수전의 지속급수·미세누수 확인');
+  if(f.tank||f.booster)a.push('물탱크 수위·월류관·가압장 배관과 펌프 기동상태 확인');
+  if(f.guestrooms)a.push('객실별 수전·양변기·급수배관 누수와 객실가동률 확인');
+  if(f.caravans)a.push('카라반 내부 샤워·양변기·급수배관 누수 여부 확인');
+  if(f.dishwash||f.washSink||f.sharedKitchen||f.kitchen)a.push('개수대·식기세척·주방수전 누수 및 사용시간 확인');
+  if(f.laundry)a.push('세탁기 급수호스·밸브 누수와 세탁횟수 확인');
+  if(f.individualWater)a.push('세대분이 아닌 상가동·공용부 계량기 범위와 공용배관 누수 확인');
+  a.push('야간·휴장시간 수도계량기 흐름 및 고지서 검침값 대조');
+  return uniqueItems(a);
+ }
+ return ['원자료와 고지서 대조','설비 운전조건 확인','현장 이상 유무 점검'];
+}
+function facilityDiagnosis(fac,p,recs){const profile=facilityProfile(fac),ms=['electricity','gas','water'].map(t=>metrics(fac,t,p)).filter(Boolean),ans=anomalies().filter(a=>clean(a.facility)===fac).sort((a,b)=>(sevRank[b.severity]-sevRank[a.severity])||b.month.localeCompare(a.month));let score=0;ans.forEach(a=>{score+=(a.severity==='warning'?4:a.severity==='caution'?2:1)+(a.action?.key==='none'?2:a.action?.key==='progress'?1:0)+(a.rule==='repeated'?1:0)});const linked=ans.map(a=>{const r=linkedRecord(a,recs);return r?{a,r,e:actionEffect(a,r)}:null}).filter(Boolean),latestEffect=linked.sort((x,y)=>String(y.r.updated_at||'').localeCompare(String(x.r.updated_at||'')))[0]?.e||null;if(latestEffect?.key==='increase')score+=3;if(latestEffect?.key==='saving')score=Math.max(0,score-1);if(!ans.length&&ms.some(m=>Math.max(m.momUsage??-999,m.yoyUsage??-999)>=15))score+=1;let level=score>=8?'urgent':score>=4?'check':score>=1?'observe':'normal',levelText=level==='urgent'?'즉시점검 권고':level==='check'?'확인 필요':level==='observe'?'관찰':'정상 범위';const top=ans[0]||null,primary=top?.type||ms.slice().sort((a,b)=>Math.max(b.momUsage??-999,b.yoyUsage??-999)-Math.max(a.momUsage??-999,a.yoyUsage??-999))[0]?.type||'electricity';const months=new Set(rows().filter(r=>clean(r.facility)===fac&&allowedBeforePeriod(r,p)).map(r=>r.month)).size,dataText=months>=12?'자료 충분':months>=6?'자료 보통':'자료 부족';let summary='선택기간에 설정 기준을 초과한 이상징후는 확인되지 않았습니다. 최신 월별 추이를 계속 관찰하는 것이 좋습니다.';if(top){summary=label[top.type]+' '+top.title+'이(가) 우선 확인 대상입니다. '+top.detail+'. ';summary+=top.action?.key==='none'?'아직 유지관리 조치가 연결되지 않았습니다.':top.action?.key==='done'?'연계 유지관리 조치는 완료 상태입니다.':'연계 유지관리 조치가 진행 중입니다.';if(latestEffect?.key==='saving')summary+=' 최근 조치 후 단순 전후 비교에서는 절감효과가 확인됩니다.';else if(latestEffect?.key==='increase')summary+=' 최근 조치 후에도 사용량 또는 요금 증가가 이어져 추가 원인점검이 필요합니다.';else if(latestEffect?.key==='waiting')summary+=' 조치효과 판단을 위해 다음 월 자료가 필요합니다.'}
+ const evidence=[];if(profile)evidence.push('시설특성 · '+profile.summary+(profile.unknown?.length?' · 확인필요: '+profile.unknown.join(', '):''));else evidence.push('시설특성 · 등록 프로필 없음(일반 규칙 적용)');ms.forEach(m=>{const vals=[];if(m.momUsage!==null)vals.push('전월 사용량 '+fmtPct(m.momUsage));if(m.yoyUsage!==null)vals.push('전년동월 '+fmtPct(m.yoyUsage));if(vals.length)evidence.push(label[m.type]+' '+m.latest.month+' · '+vals.join(' / '))});if(top)evidence.unshift(top.month+' · '+label[top.type]+' · '+top.title+' · '+top.comparison+' '+fmtPct(top.value));if(latestEffect)evidence.push('최근 조치효과 · '+latestEffect.text+(latestEffect.ur!==null?' · 사용량 '+fmtPct(-latestEffect.ur):''));
  let rec='월별자료를 지속 입력하고 다음 기간 추이를 관찰합니다.';if(top?.action?.key==='none')rec='현장 확인 후 원인이 의심되면 이상징후를 유지관리 등록과 연결하고 조치내용을 기록합니다.';else if(top?.action?.key==='progress')rec='기 등록된 유지관리 조치의 진행상태와 점검결과를 확인하고 완료 후 효과를 재평가합니다.';else if(top?.action?.key==='done'&&latestEffect?.key==='waiting')rec='다음 월 에너지 자료 입력 후 조치 전·후 효과를 다시 평가합니다.';else if(latestEffect?.key==='increase')rec='기존 조치 외 추가 원인점검을 시행하고 운전조건·누설·요금항목을 재확인합니다.';else if(latestEffect?.key==='saving')rec='절감효과가 확인된 조치내용을 동일·유사 설비의 관리기준으로 활용할 수 있습니다.';
- return {fac,score,level,levelText,top,primary,summary,evidence:evidence.slice(0,5),causes:causeCandidates(primary,top?.rule),checks:checks(primary,top?.rule),recommendation:rec,months,dataText,anomalyCount:ans.length,unhandled:ans.filter(a=>a.action?.key==='none'||a.action?.key==='progress').length,effect:latestEffect};}
+ return {fac,score,level,levelText,top,primary,summary,evidence:evidence.slice(0,6),causes:causeCandidates(fac,primary,top?.rule),checks:checks(fac,primary,top?.rule),recommendation:rec,months,dataText,anomalyCount:ans.length,unhandled:ans.filter(a=>a.action?.key==='none'||a.action?.key==='progress').length,effect:latestEffect,profile};}
 function populateFacility(){const sel=$('v4716AiFacility');if(!sel)return;const old=sel.value,facs=[...new Set(rows().map(r=>clean(r.facility)).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'ko'));sel.innerHTML='<option value="">전체 시설</option>'+facs.map(f=>'<option value="'+esc(f)+'">'+esc(f)+'</option>').join('');if(facs.includes(old))sel.value=old;if(!sel.dataset.bound){sel.dataset.bound='1';sel.addEventListener('change',()=>render(false))}}
 function listHtml(d){const top=d.top,actionBtn=top?'<button type="button" class="primary" data-v4716-anomaly="'+esc(top.id)+'">'+(top.action?.record?'유지관리 보기':'유지관리 등록')+'</button>':'';return '<article class="v4716-ai-card" data-level="'+d.level+'"><div class="v4716-ai-card-head"><div><h4>'+esc(d.fac)+'</h4><small>분석자료 '+d.months+'개월 · '+esc(d.dataText)+' · 이상징후 '+d.anomalyCount+'건</small></div><span class="v4716-ai-level '+d.level+'">'+esc(d.levelText)+'</span></div><div class="v4716-ai-card-body"><div><div class="v4716-ai-diagnosis"><b>종합 판단</b><p>'+esc(d.summary)+'</p><div class="v4716-ai-evidence">'+d.evidence.map(x=>'<span>'+esc(x)+'</span>').join('')+'</div></div><div class="v4716-ai-columns" style="margin-top:9px"><div class="v4716-ai-box"><h5>원인 후보</h5><ul>'+d.causes.slice(0,4).map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></div><div class="v4716-ai-box"><h5>우선 점검사항</h5><ul>'+d.checks.slice(0,4).map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></div></div></div><div class="v4716-ai-diagnosis"><b>권고 조치</b><p>'+esc(d.recommendation)+'</p>'+(d.effect?'<div class="v4716-ai-evidence"><span>조치효과 '+esc(d.effect.text)+'</span></div>':'')+'</div></div><div class="v4716-ai-card-foot"><span>※ 기온·이용객·운영일수 보정 전 참고진단입니다.</span><div class="actions"><button type="button" data-v4716-fac="'+esc(d.fac)+'">이 시설만 보기</button>'+actionBtn+'</div></div></article>'}
 function bindCardButtons(){qa('[data-v4716-fac]').forEach(b=>b.onclick=()=>{const sel=$('v4716AiFacility');if(sel){sel.value=b.getAttribute('data-v4716-fac')||'';render(false)}});qa('[data-v4716-anomaly]').forEach(b=>b.onclick=()=>{const id=b.getAttribute('data-v4716-anomaly');try{window.openEnergyAnomalyMaintenanceV4712?.(id)}catch(e){}})}
-async function render(force){const box=$('v4716AiWorkspace');if(!box||busy)return;busy=true;populateFacility();box.innerHTML='<div class="v4716-ai-empty"><strong>AI 보조진단을 계산하고 있습니다.</strong><span>에너지 패턴과 유지관리 조치이력을 함께 확인합니다.</span></div>';try{const p=period();if(!p||!rows().length){box.innerHTML='<div class="v4716-ai-empty"><strong>분석할 월별자료가 없습니다.</strong><span>월별자료를 등록하면 시설별 진단이 자동 생성됩니다.</span></div>';return}const recs=await fetchMaintenance(!!force),chosen=clean($('v4716AiFacility')?.value),facs=[...new Set(rows().map(r=>clean(r.facility)).filter(Boolean))].filter(f=>!chosen||f===chosen),ds=facs.map(f=>facilityDiagnosis(f,p,recs)).sort((a,b)=>b.score-a.score||b.anomalyCount-a.anomalyCount||a.fac.localeCompare(b.fac,'ko'));const urgent=ds.filter(d=>d.level==='urgent').length,check=ds.filter(d=>d.level==='check').length,unhandled=ds.reduce((n,d)=>n+d.unhandled,0);box.innerHTML='<div class="v4716-ai-summary"><div><span>분석대상시설</span><b>'+ds.length+'개</b></div><div><span>즉시점검 권고</span><b>'+urgent+'개</b></div><div><span>확인 필요</span><b>'+check+'개</b></div><div><span>미조치·진행중</span><b>'+unhandled+'건</b></div></div>'+(ds.length?'<div class="v4716-ai-list">'+ds.map(listHtml).join('')+'</div>':'<div class="v4716-ai-empty"><strong>선택한 시설의 분석자료가 없습니다.</strong></div>')+'<div class="v4716-ai-footer">분석 근거: DB 월별자료 + 전월/전년동월 증감 + v47.12 이상징후 + 유지관리 연계상태 + v47.15 조치 전후 효과방식. 현재 버전은 외부 생성형 AI를 호출하지 않으며, 원인 후보는 설비점검 우선순위를 정하기 위한 참고정보입니다.</div>';bindCardButtons()}catch(e){console.error('[TFMS v47.16 energy AI analysis]',e);box.innerHTML='<div class="v4716-ai-empty"><strong>분석 중 오류가 발생했습니다.</strong><span>'+esc(e?.message||e)+'</span></div>'}finally{busy=false}}
+async function render(force){const box=$('v4716AiWorkspace');if(!box||busy)return;busy=true;populateFacility();box.innerHTML='<div class="v4716-ai-empty"><strong>AI 보조진단을 계산하고 있습니다.</strong><span>에너지 패턴과 유지관리 조치이력을 함께 확인합니다.</span></div>';try{const p=period();if(!p||!rows().length){box.innerHTML='<div class="v4716-ai-empty"><strong>분석할 월별자료가 없습니다.</strong><span>월별자료를 등록하면 시설별 진단이 자동 생성됩니다.</span></div>';return}const recs=await fetchMaintenance(!!force),chosen=clean($('v4716AiFacility')?.value),facs=[...new Set(rows().map(r=>clean(r.facility)).filter(Boolean))].filter(f=>!chosen||f===chosen),ds=facs.map(f=>facilityDiagnosis(f,p,recs)).sort((a,b)=>b.score-a.score||b.anomalyCount-a.anomalyCount||a.fac.localeCompare(b.fac,'ko'));const urgent=ds.filter(d=>d.level==='urgent').length,check=ds.filter(d=>d.level==='check').length,unhandled=ds.reduce((n,d)=>n+d.unhandled,0);box.innerHTML='<div class="v4716-ai-summary"><div><span>분석대상시설</span><b>'+ds.length+'개</b></div><div><span>즉시점검 권고</span><b>'+urgent+'개</b></div><div><span>확인 필요</span><b>'+check+'개</b></div><div><span>미조치·진행중</span><b>'+unhandled+'건</b></div></div>'+(ds.length?'<div class="v4716-ai-list">'+ds.map(listHtml).join('')+'</div>':'<div class="v4716-ai-empty"><strong>선택한 시설의 분석자료가 없습니다.</strong></div>')+'<div class="v4716-ai-footer">분석 근거: DB 월별자료 + 전월/전년동월 증감 + 시설별 Intelligence Profile + 이상징후 + 유지관리 연계상태 + 조치 전후 효과. 현재 버전은 외부 생성형 AI를 호출하지 않으며, 시설에 실제 존재하는 설비·용도를 우선 반영해 원인 후보를 선별합니다.</div>';bindCardButtons()}catch(e){console.error('[TFMS v47.16 energy AI analysis]',e);box.innerHTML='<div class="v4716-ai-empty"><strong>분석 중 오류가 발생했습니다.</strong><span>'+esc(e?.message||e)+'</span></div>'}finally{busy=false}}
 window.renderEnergyAiAnalysisV4716=render;
 const prevLoad=window.loadEnergyMonthlyDataV4710;if(typeof prevLoad==='function'&&!prevLoad.__v4716Ai){const w=async function(){const v=await prevLoad.apply(this,arguments);await render(false);return v};w.__v4716Ai=true;window.loadEnergyMonthlyDataV4710=w}
 const ps=$('tfmsEnergyPeriodV4699');if(ps&&!ps.dataset.v4716Ai){ps.dataset.v4716Ai='1';ps.addEventListener('change',()=>render(false))}
@@ -36907,4 +37016,23 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 </script>
 <!-- /TFMS v47.25.1 Energy Delete Repair -->
 
+
+<!-- ===== TFMS v47.26 Facility Intelligence Profile ===== -->
+<style id="tfms-v4726-version-style">
+#tfmsVersionModal .current-build::after{content:"현재 운영기준: v47.26 Facility Intelligence Profile Stable · 2026.10.29"!important}
+</style>
+<script id="tfms-v4726-facility-intelligence-version-authority">
+(function(){
+'use strict';
+const BUILD='v47.26 Facility Intelligence Profile Stable',VER='47.26';
+function sync(){
+ try{const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent=BUILD;document.title='TFMS '+BUILD;}catch(e){}
+ try{const cb=document.querySelector('#tfmsVersionModal .current-build');if(cb)cb.textContent='현재 버전: '+BUILD;}catch(e){}
+ try{const body=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');if(body&&!body.querySelector('[data-version="v47.26-facility-intelligence-profile"]')){const el=document.createElement('div');el.className='change-item';el.dataset.version='v47.26-facility-intelligence-profile';el.innerHTML='<strong>v47.26 · Facility Intelligence Profile Stable — 시설별 에너지 진단 고도화</strong><ul><li>시설별 실제 설비·용도 프로필을 에너지 보조진단 원인 후보와 우선 점검사항에 반영</li><li>수영장·샤워실 등 존재하지 않는 설비 원인을 해당 시설에서 자동 제외</li><li>확인되지 않은 설비는 확인필요로 표시하고 확정 원인으로 사용하지 않음</li></ul>';body.insertBefore(el,body.firstChild);}}catch(e){}
+ try{const u=new URL(location.href);if(u.searchParams.get('v')!==VER){u.searchParams.set('v',VER);History.prototype.replaceState.call(history,history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync,{once:true});else sync();window.addEventListener('load',sync,{once:true});
+})();
+</script>
+<!-- /TFMS v47.26 Facility Intelligence Profile -->
 </body></html>
