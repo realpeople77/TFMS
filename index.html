@@ -13171,6 +13171,8 @@ Scope: dashboard maintenance aggregation/display scope only
 
 
 
+
+
 </body></html>`);
     win.document.close();
     setTimeout(()=>win.focus(),200);
@@ -22720,7 +22722,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 <script id="tfms-v4730-version-authority">
 (function(){
   'use strict';
-  const LABEL='v47.30 RC1 Role Regression Stable';
+  const LABEL='v47.30.1 Cycle Header Polish Stable';
   const PARAM='47.30';
   const TITLE='TFMS '+LABEL;
   const FIXED_BUILD=Object.freeze({version:'v47.30',channel:'RC1 Role Regression Stable',buildDate:'2026.11.04',title:'RC1 권한·기능 회귀점검 및 에너지 쓰기 UI 권한 정합성 보강'});
@@ -23687,7 +23689,10 @@ const oldFire=window.navToFireV420;if(typeof oldFire==='function'&&!oldFire.__v4
    ========================================================= */
 #cycle.v4571-cycle{--c71-blue:#1764d6;--c71-navy:#153b68;--c71-line:#dbe5f0;--c71-soft:#f7faff;--c71-good:#16865d;--c71-warn:#c87914;--c71-bad:#d84b4b}
 #cycle.v4571-cycle>.title-row{min-height:62px!important;margin-bottom:10px!important;align-items:flex-start!important}
-#cycle.v4571-cycle .v4571-role-badge{display:inline-flex;align-items:center;height:24px;padding:0 9px;margin-left:7px;border-radius:999px;background:#edf5ff;color:#1764d6;border:1px solid #c9def8;font-size:10.5px;font-weight:900;vertical-align:middle}
+#cycle.v4571-cycle .v4571-title-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px}
+#cycle.v4571-cycle .v4571-title-meta .breadcrumb{margin:0!important}
+#cycle.v4571-cycle .v4571-role-badge{display:inline-flex;align-items:center;justify-content:center;height:22px;padding:0 8px;border-radius:999px;background:#eef5ff;color:#2f6fcb;border:1px solid #d4e3fb;font-size:11px;font-weight:800;line-height:1;white-space:nowrap;vertical-align:middle;box-shadow:none}
+#cycle.v4571-cycle .title-row h1{display:block!important;margin-bottom:0!important}
 #cycle.v4571-cycle .v4571-title-actions{margin-left:auto;display:flex;align-items:center;justify-content:flex-end;gap:7px;flex-wrap:wrap}
 #cycle.v4571-user .v4571-title-actions{flex-wrap:nowrap!important;white-space:nowrap!important}
 #cycle.v4571-cycle .v4571-title-actions button{height:36px;padding:0 12px;border:1px solid #cbdbea;border-radius:9px;background:#fff;color:#315c86;font-size:11.5px;font-weight:850;cursor:pointer;white-space:nowrap}
@@ -23764,12 +23769,11 @@ function dueDate(t){const raw=String(t?.due||'');if(raw==='오늘')return todayI
 function daysFromToday(v){if(!v)return 999;const a=new Date(todayIso()+'T00:00:00'),b=new Date(v+'T00:00:00');return Math.round((b-a)/86400000)}
 function taskBucket(t){const done=isDone(t),dd=daysFromToday(dueDate(t));if(done)return 'done';if(dd<0)return 'late';if(dd<=0)return 'today';if(dd<=3)return 'urgent';return 'future'}
 /* Cleanup III: v4571 is the sole owner of cycle title action buttons. */
-function setupTitle(p,r){const h=q(':scope > .title-row h1',p);if(h&&!h.querySelector('.v4571-role-badge')){const b=document.createElement('span');b.className='v4571-role-badge';b.textContent=r==='admin'?'관리자 전용':r==='viewer'?'조회전용':'담당자용';h.appendChild(b)}
- const row=q(':scope > .title-row',p);let actions=$('v4571CycleTitleActions');if(!actions){actions=document.createElement('div');actions.id='v4571CycleTitleActions';actions.className='v4571-title-actions';row?.appendChild(actions)}
+function setupTitle(p,r){const row=q(':scope > .title-row',p);const box=q(':scope > .title-row .title-left > div',p)||q(':scope > .title-row .title-left',p);const h=q('h1',box||p);const bc=q('.breadcrumb',box||p);let meta=q('.v4571-title-meta',box||p);if(!meta){meta=document.createElement('div');meta.className='v4571-title-meta';if(bc)meta.appendChild(bc);(box||row||p)?.appendChild(meta)}else if(bc&&bc.parentElement!==meta){meta.insertAdjacentElement('afterbegin',bc)}let b=q('.v4571-role-badge',meta)||q('.v4571-role-badge',h||p)||q('.v4571-role-badge',box||p);if(!b){b=document.createElement('span');b.className='v4571-role-badge'}b.textContent=r==='admin'?'관리자 전용':r==='viewer'?'조회전용':'담당자용';if(meta&&b.parentElement!==meta)meta.appendChild(b);if(h)h.querySelectorAll('.v4571-role-badge').forEach(x=>{if(x!==b)x.remove()});let actions=$('v4571CycleTitleActions');if(!actions){actions=document.createElement('div');actions.id='v4571CycleTitleActions';actions.className='v4571-title-actions';row?.appendChild(actions)}
  if(r==='admin')actions.innerHTML='<button type="button" onclick="navToFireV420()">🧯 소방 월간점검</button><button type="button" onclick="navToFireQrV459()">▦ 소화기 QR</button><button type="button" onclick="v4573GenerateDueCycles()">▶ 생성 실행</button><button type="button" onclick="v4573TogglePreset()">⚙ 빠른 설정</button><button type="button" class="primary" onclick="v4571FocusCycleForm()">＋ 기준 추가</button>';
- else if(r==='viewer')actions.innerHTML='<button type="button" onclick="navTo(\'today\')">오늘 업무 확인</button><button type="button" onclick="navToFireV420()">소방 월간점검</button>';
- else actions.innerHTML='<button type="button" onclick="navToFireV420()">🧯 소방 월간점검</button><button type="button" onclick="navToFireQrV459()">▦ 소화기 QR</button><button type="button" class="primary" onclick="navTo(\'today\')">오늘의 업무 열기</button>';
- const bc=q(':scope > .title-row .breadcrumb',p);if(bc)bc.textContent=r==='user'?'홈 › 점검주기 관리 › 내 점검업무':'홈 › 점검주기 관리 › 점검기준 관리';}
+ else if(r==='viewer')actions.innerHTML='<button type="button" onclick="navTo(&quot;today&quot;)">오늘 업무 확인</button><button type="button" onclick="navToFireV420()">소방 월간점검</button>';
+ else actions.innerHTML='<button type="button" onclick="navToFireV420()">🧯 소방 월간점검</button><button type="button" onclick="navToFireQrV459()">▦ 소화기 QR</button><button type="button" class="primary" onclick="navTo(&quot;today&quot;)">오늘의 업무 열기</button>';
+ if(bc)bc.textContent=r==='user'?'홈 › 점검주기 관리 › 내 점검업무':'홈 › 점검주기 관리 › 점검기준 관리';}
 window.v4571FocusCycleForm=function(){const el=$('v459CycleForm');if(!el)return;el.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(()=>$('cycleFacility')?.focus(),260)};
 function setupAdmin(p,r){p.classList.toggle('v4571-admin',r==='admin');p.classList.toggle('v4571-viewer',r==='viewer');const k=qa('.v4565-kpi',p);const list=cycles(),today=todayIso();let due=0,late=0,off=0;list.forEach(c=>{const d=String(c.due||c.nextDue||'');if(d===today)due++;if(d&&d<today)late++;if(c.active==='미사용')off++});const vals=[[list.length,'전체 점검기준'],[due,'오늘 생성 예정'],[late,'미완료/경과'],[off,'미사용']];k.slice(0,4).forEach((el,i)=>{const s=q('span:not(.ico)',el),st=q('strong',el);if(s)s.textContent=vals[i][1];if(st)st.textContent=vals[i][0]+'건'});const preset=qa(':scope > .panel',p).find(x=>q('.v459-preset-grid',x));if(preset&&!preset.classList.contains('v4565-preset-collapsed'))preset.classList.add('v4565-preset-collapsed');}
 function ensureUserRoot(p){let root=$('v4571UserCycle');if(root)return root;root=document.createElement('div');root.id='v4571UserCycle';root.innerHTML=`<div class="v4571-user-kpis"><div class="v4571-user-kpi"><span class="ico">▣</span><span>오늘 할 점검</span><strong id="v4571TodayN">0건</strong></div><div class="v4571-user-kpi warn"><span class="ico">◷</span><span>기한 임박 (3일 이내)</span><strong id="v4571UrgentN">0건</strong></div><div class="v4571-user-kpi bad"><span class="ico">⌛</span><span>미완료</span><strong id="v4571PendingN">0건</strong></div><div class="v4571-user-kpi good"><span class="ico">✓</span><span>완료</span><strong id="v4571DoneN">0건</strong></div></div><div class="v4571-user-layout"><div><div class="v4571-user-panel"><div class="v4571-user-head"><h2>내 점검업무</h2><button type="button" onclick="v4571RefreshUserCycle()">↻ 새로고침</button></div><div class="v4571-user-tabs" id="v4571UserTabs"><button class="active" data-tab="today">오늘</button><button data-tab="urgent">기한임박</button><button data-tab="pending">미완료</button><button data-tab="done">완료</button></div><div class="v4571-user-table-wrap"><table class="v4571-user-table"><thead><tr><th>시설명</th><th>연계 설비</th><th>점검명</th><th>주기</th><th>기한</th><th>상태</th><th style="text-align:right">작업</th></tr></thead><tbody id="v4571UserBody"></tbody></table></div></div><div class="v4571-user-panel v4571-recent"><div class="v4571-user-head"><h2>최근 완료 내역</h2></div><table><thead><tr><th>완료시간</th><th>시설명</th><th>점검명</th><th>결과</th></tr></thead><tbody id="v4571RecentBody"></tbody></table></div></div><aside class="v4571-user-panel v4571-progress-card"><div class="v4571-progress-title">오늘의 진행률</div><div class="v4571-progress-ring" id="v4571ProgressRing"><strong id="v4571ProgressPct">0%</strong></div><div class="v4571-progress-bar"><i id="v4571ProgressBar"></i></div><div class="v4571-progress-meta"><span id="v4571ProgressText">0 / 0건 완료</span><span id="v4571ProgressRemain">남은 0건</span></div><div class="v4571-progress-list"><div><span>완료</span><b id="v4571ProgDone">0건</b></div><div><span>진행·예정</span><b id="v4571ProgWait">0건</b></div><div><span>기한 경과</span><b id="v4571ProgLate">0건</b></div></div><div class="v4571-tip"><strong>Tip</strong>점검 결과가 정상이면 <b>점검하기</b>에서 바로 완료할 수 있습니다. 이상이 있으면 특이사항 등록을 통해 유지관리 이력으로 연계하세요.</div></aside></div>`;q(':scope > .title-row',p)?.insertAdjacentElement('afterend',root);q('#v4571UserTabs',root)?.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;qa('button',e.currentTarget).forEach(x=>x.classList.toggle('active',x===b));root.dataset.tab=b.dataset.tab;renderUser();});return root;}
@@ -36454,4 +36458,87 @@ if(typeof baseSwitch==='function'&&!baseSwitch.__tfmsV4730){
 }
 document.addEventListener('focusin',e=>{if(e.target?.id==='tfmsEnergyFacilityV4700')scopeDirectFacility()});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();
-})();</script></body></html>
+})();</script><!-- ===== TFMS v47.31 Page Header Standardization ===== -->
+<style id="tfms-v4731-page-header-standard">
+/* Visual-only header standard. No page logic/data/permission changes. */
+#register>.title-row,#history>.title-row,#today>.title-row,#dailylog>.title-row,#qrCheck>.title-row,
+#stats>.title-row,#energy>.title-row,#excel>.title-row,#facility>.title-row,#equipment>.title-row,
+#cycle>.title-row,#deleteManage>.title-row,#accountAdmin>.title-row,#myPage>.title-row,
+#sampleData>.title-row,#finalTest>.title-row{
+  min-height:58px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:14px!important;
+  margin:0 0 14px!important;
+  padding:0!important;
+}
+#register>.title-row .title-left,#history>.title-row .title-left,#today>.title-row .title-left,#dailylog>.title-row .title-left,#qrCheck>.title-row .title-left,
+#stats>.title-row .title-left,#energy>.title-row .title-left,#excel>.title-row .title-left,#facility>.title-row .title-left,#equipment>.title-row .title-left,
+#cycle>.title-row .title-left,#deleteManage>.title-row .title-left,#accountAdmin>.title-row .title-left,#myPage>.title-row .title-left,
+#sampleData>.title-row .title-left,#finalTest>.title-row .title-left{
+  display:flex!important;align-items:center!important;gap:12px!important;min-width:0!important;flex:1 1 auto!important;
+}
+#register>.title-row .title-icon,#history>.title-row .title-icon,#today>.title-row .title-icon,#dailylog>.title-row .title-icon,#qrCheck>.title-row .title-icon,
+#stats>.title-row .title-icon,#energy>.title-row .title-icon,#excel>.title-row .title-icon,#facility>.title-row .title-icon,#equipment>.title-row .title-icon,
+#cycle>.title-row .title-icon,#deleteManage>.title-row .title-icon,#accountAdmin>.title-row .title-icon,#myPage>.title-row .title-icon,
+#sampleData>.title-row .title-icon,#finalTest>.title-row .title-icon{
+  flex:0 0 44px!important;width:44px!important;height:44px!important;border-radius:13px!important;display:grid!important;place-items:center!important;
+}
+#register>.title-row .title-left>div:last-child,#history>.title-row .title-left>div:last-child,#today>.title-row .title-left>div:last-child,#dailylog>.title-row .title-left>div:last-child,#qrCheck>.title-row .title-left>div:last-child,
+#stats>.title-row .title-left>div:last-child,#energy>.title-row .title-left>div:last-child,#excel>.title-row .title-left>div:last-child,#facility>.title-row .title-left>div:last-child,#equipment>.title-row .title-left>div:last-child,
+#cycle>.title-row .title-left>div:last-child,#deleteManage>.title-row .title-left>div:last-child,#accountAdmin>.title-row .title-left>div:last-child,#myPage>.title-row .title-left>div:last-child,
+#sampleData>.title-row .title-left>div:last-child,#finalTest>.title-row .title-left>div:last-child{min-width:0!important;}
+#register>.title-row h1,#history>.title-row h1,#today>.title-row h1,#dailylog>.title-row h1,#qrCheck>.title-row h1,
+#stats>.title-row h1,#energy>.title-row h1,#excel>.title-row h1,#facility>.title-row h1,#equipment>.title-row h1,
+#cycle>.title-row h1,#deleteManage>.title-row h1,#accountAdmin>.title-row h1,#myPage>.title-row h1,
+#sampleData>.title-row h1,#finalTest>.title-row h1{
+  margin:0!important;font-size:26px!important;line-height:1.12!important;font-weight:900!important;letter-spacing:-.35px!important;color:#173f69!important;
+}
+#register>.title-row .breadcrumb,#history>.title-row .breadcrumb,#today>.title-row .breadcrumb,#dailylog>.title-row .breadcrumb,#qrCheck>.title-row .breadcrumb,
+#stats>.title-row .breadcrumb,#energy>.title-row .breadcrumb,#excel>.title-row .breadcrumb,#facility>.title-row .breadcrumb,#equipment>.title-row .breadcrumb,
+#cycle>.title-row .breadcrumb,#deleteManage>.title-row .breadcrumb,#accountAdmin>.title-row .breadcrumb,#myPage>.title-row .breadcrumb,
+#sampleData>.title-row .breadcrumb,#finalTest>.title-row .breadcrumb{
+  margin-top:5px!important;font-size:12px!important;line-height:1.35!important;font-weight:600!important;color:#7a8ea3!important;
+}
+/* Page context/status labels use one compact visual grammar. */
+#stats>.title-row .tfms-stats-badge,#energy>.title-row .tfms-stats-badge{
+  display:inline-flex!important;align-items:center!important;min-height:30px!important;padding:0 11px!important;border:1px solid #d6e2ef!important;
+  border-radius:999px!important;background:#f7faff!important;color:#52708c!important;font-size:11.5px!important;font-weight:800!important;white-space:nowrap!important;
+}
+#cycle>.title-row .v4571-title-meta{display:flex!important;align-items:center!important;gap:8px!important;flex-wrap:wrap!important;margin-top:5px!important;}
+#cycle>.title-row .v4571-title-meta .breadcrumb{margin:0!important;}
+#cycle>.title-row .v4571-role-badge{height:21px!important;padding:0 8px!important;border-radius:999px!important;background:#eef5ff!important;color:#2f6fcb!important;border:1px solid #d4e3fb!important;font-size:10.5px!important;font-weight:800!important;line-height:1!important;}
+/* Right-side header actions align to the same baseline without changing actions. */
+#register>.title-row .v459-top-actions,#cycle>.title-row .v4571-title-actions,
+#stats>.title-row>.tfms-stats-badge,#energy>.title-row>.tfms-stats-badge{
+  flex:0 0 auto!important;margin-left:auto!important;
+}
+#register>.title-row .v459-top-actions,#cycle>.title-row .v4571-title-actions{display:flex!important;align-items:center!important;justify-content:flex-end!important;gap:7px!important;flex-wrap:wrap!important;}
+#register>.title-row button,#cycle>.title-row button{min-height:35px;}
+@media(max-width:980px){
+  #register>.title-row,#history>.title-row,#today>.title-row,#dailylog>.title-row,#qrCheck>.title-row,#stats>.title-row,#energy>.title-row,#excel>.title-row,#facility>.title-row,#equipment>.title-row,#cycle>.title-row,#deleteManage>.title-row,#accountAdmin>.title-row,#myPage>.title-row,#sampleData>.title-row,#finalTest>.title-row{align-items:flex-start!important;flex-wrap:wrap!important;}
+  #register>.title-row .v459-top-actions,#cycle>.title-row .v4571-title-actions,#stats>.title-row>.tfms-stats-badge,#energy>.title-row>.tfms-stats-badge{margin-left:56px!important;justify-content:flex-start!important;}
+}
+@media(max-width:620px){
+  #register>.title-row,#history>.title-row,#today>.title-row,#dailylog>.title-row,#qrCheck>.title-row,#stats>.title-row,#energy>.title-row,#excel>.title-row,#facility>.title-row,#equipment>.title-row,#cycle>.title-row,#deleteManage>.title-row,#accountAdmin>.title-row,#myPage>.title-row,#sampleData>.title-row,#finalTest>.title-row{display:block!important;}
+  #register>.title-row .title-left,#history>.title-row .title-left,#today>.title-row .title-left,#dailylog>.title-row .title-left,#qrCheck>.title-row .title-left,#stats>.title-row .title-left,#energy>.title-row .title-left,#excel>.title-row .title-left,#facility>.title-row .title-left,#equipment>.title-row .title-left,#cycle>.title-row .title-left,#deleteManage>.title-row .title-left,#accountAdmin>.title-row .title-left,#myPage>.title-row .title-left,#sampleData>.title-row .title-left,#finalTest>.title-row .title-left{display:flex!important;}
+  #register>.title-row h1,#history>.title-row h1,#today>.title-row h1,#dailylog>.title-row h1,#qrCheck>.title-row h1,#stats>.title-row h1,#energy>.title-row h1,#excel>.title-row h1,#facility>.title-row h1,#equipment>.title-row h1,#cycle>.title-row h1,#deleteManage>.title-row h1,#accountAdmin>.title-row h1,#myPage>.title-row h1,#sampleData>.title-row h1,#finalTest>.title-row h1{font-size:22px!important;}
+  #register>.title-row .v459-top-actions,#cycle>.title-row .v4571-title-actions,#stats>.title-row>.tfms-stats-badge,#energy>.title-row>.tfms-stats-badge{margin:8px 0 0 56px!important;}
+}
+</style>
+<script id="tfms-v4731-version-authority">
+(function(){
+'use strict';
+const BUILD='v47.31 Page Header Standardization Stable',VER='47.31';
+function sync(){
+ try{const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent=BUILD;document.title='TFMS '+BUILD;}catch(e){}
+ try{const cb=document.querySelector('#tfmsVersionModal .current-build');if(cb)cb.textContent='현재 버전: '+BUILD;}catch(e){}
+ try{const u=new URL(location.href);if(u.searchParams.get('v')!==VER){u.searchParams.set('v',VER);History.prototype.replaceState.call(history,history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync,{once:true});else sync();
+window.addEventListener('load',sync,{once:true});
+})();
+</script>
+<!-- /TFMS v47.31 Page Header Standardization -->
+</body></html>
