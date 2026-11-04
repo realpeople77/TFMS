@@ -37126,4 +37126,67 @@ window.addEventListener('load',sync,{once:true});
 </script>
 <!-- /TFMS v47.27 -->
 
+
+
+<!-- ===== TFMS v47.27.1 Energy Trend Layout Compact Fix ===== -->
+<style id="tfms-v47271-energy-trend-layout-compact-fix">
+/*
+  v47.27.1 — Monthly energy trend vertical rhythm correction.
+  Scope: chart/card spacing only. No data, chart coordinates, DB, filters or analytics changes.
+  Root cause: .tfms-energy-chart-placeholder remained 245px while a later patch forced
+  .tfms-energy-trend-v4711 to 278px + 30px bottom padding, causing the chart content to
+  visually overflow its layout box and leave an awkward lower band.
+*/
+#energy .tfms-energy-chart-placeholder{
+  height:245px!important;
+  overflow:hidden!important;
+}
+#energy .tfms-energy-trend-v4711{
+  height:245px!important;
+}
+#energy .tfms-energy-chart-canvas-v4711{
+  padding:0 12px 10px!important;
+  overflow:visible!important;
+}
+#energy .tfms-energy-chart-note-v4711{
+  padding:0 12px 4px!important;
+  line-height:1.35!important;
+}
+#energy .tfms-energy-chart-svg-v4711 .axis .month-label{
+  transform:translateY(-3px);
+}
+#energy .tfms-energy-bottom-grid{
+  margin-top:10px!important;
+}
+#tfmsVersionModal .current-build::after{
+  content:"현재 운영기준: v47.27.1 Energy Trend Layout Compact Fix Stable · 2026.11.04"!important;
+}
+@media(max-width:560px){
+  #energy .tfms-energy-chart-placeholder,
+  #energy .tfms-energy-trend-v4711{height:258px!important}
+  #energy .tfms-energy-chart-canvas-v4711{padding-bottom:12px!important}
+}
+</style>
+<script id="tfms-v47271-version-authority">
+(function(){
+'use strict';
+const BUILD='v47.27.1 Energy Trend Layout Compact Fix Stable',VER='47.27.1';
+function sync(){
+ try{const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent=BUILD;document.title='TFMS '+BUILD}catch(e){}
+ try{const cb=document.querySelector('#tfmsVersionModal .current-build');if(cb)cb.textContent='현재 버전: '+BUILD}catch(e){}
+ try{
+  const body=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');
+  if(body&&!body.querySelector('[data-version="v47.27.1-energy-trend-layout"]')){
+   const el=document.createElement('div');el.className='change-item';el.dataset.version='v47.27.1-energy-trend-layout';
+   el.innerHTML='<strong>v47.27.1 · Energy Trend Layout Compact Fix Stable — 월별 공공요금 추이 하단 여백 정리</strong><ul><li>차트 외곽 245px / 내부 278px 불일치를 245px로 통일</li><li>하단 패딩을 30px → 10px로 축소하고 월 라벨·단위문구 위치를 보정</li><li>그래프 데이터·막대 좌표·팀별 조회·애니메이션은 변경하지 않음</li></ul>';
+   body.insertBefore(el,body.firstChild);
+  }
+ }catch(e){}
+ try{const u=new URL(location.href);if(u.searchParams.get('v')!==VER){u.searchParams.set('v',VER);History.prototype.replaceState.call(history,history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync,{once:true});else sync();
+window.addEventListener('load',sync,{once:true});
+})();
+</script>
+<!-- /TFMS v47.27.1 -->
 </body></html>
