@@ -5977,6 +5977,16 @@ document.addEventListener('DOMContentLoaded',function(){
     const body=q('dashDailyBodyV322');
     if(!body)return;
     const list=dailyHistoryV322.slice(0,5);
+    const signature=list.length
+      ? list.map(r=>{
+          const parsed=parseContent(r);
+          return [r.id,r.work_date,r.facility?.name||'',parsed.workers||'',parsed.rows.length,r.has_issue?1:0,r.author_id||'',r.created_at||''].join('|');
+        }).join('||')
+      : 'empty';
+    /* Login/auth stabilization can request the same dashboard data several times.
+       Do not replace identical DOM: repeated replacement replays row animations and looks like flicker. */
+    if(body.dataset.tfmsDailyRenderKey===signature)return;
+    body.dataset.tfmsDailyRenderKey=signature;
     if(!list.length){
       body.innerHTML='<tr><td colspan="6"><div class="empty-state">저장된 업무일지가 없습니다.</div></td></tr>';
       return;
@@ -37189,4 +37199,36 @@ window.addEventListener('load',sync,{once:true});
 })();
 </script>
 <!-- /TFMS v47.27.1 -->
+
+<style id="tfms-v47272-dashboard-daily-flicker-fix">
+/* v47.27.2 — Recent daily-log flicker fix.
+   Dashboard stabilization may refresh data more than once after login;
+   the render-key above prevents identical DOM replacement. Keep this card
+   free of replayed row entrance animation even on a legitimate refresh. */
+#dashboard.page.active #dashDailyBodyV322 > tr{
+  animation:none!important;
+}
+</style>
+
+<script id="tfms-v47272-version-authority">
+(function(){
+  'use strict';
+  const BUILD='v47.27.2 Dashboard Daily Flicker Fix Stable',VER='47.27.2';
+  function apply(){
+    try{const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent=BUILD;document.title='TFMS '+BUILD}catch(e){}
+    try{const cb=document.querySelector('#tfmsVersionModal .current-build');if(cb)cb.textContent='현재 버전: '+BUILD}catch(e){}
+    try{
+      const body=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');
+      if(body&&!body.querySelector('[data-version="v47.27.2-dashboard-daily-flicker"]')){
+        const el=document.createElement('div');el.className='change-item';el.dataset.version='v47.27.2-dashboard-daily-flicker';
+        el.innerHTML='<strong>v47.27.2 · Dashboard Daily Flicker Fix Stable — 로그인 후 최근 업무일지 깜빡임 제거</strong><ul><li>동일한 업무일지 결과는 렌더키로 재렌더링하지 않도록 보정</li><li>로그인 안정화 재조회는 유지하되 최근 업무일지 DOM 교체와 행 애니메이션 반복을 차단</li><li>업무일지 DB·권한·저장/삭제·대시보드 다른 영역은 변경하지 않음</li></ul>';
+        body.insertBefore(el,body.firstChild);
+      }
+    }catch(e){}
+    try{const u=new URL(location.href);if(u.searchParams.get('v')!==VER){u.searchParams.set('v',VER);History.prototype.replaceState.call(history,history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();
+  window.addEventListener('load',apply,{once:true});
+})();
+</script>
 </body></html>
