@@ -35764,13 +35764,36 @@ function detect(){
 function stateCounts(list){const c={all:list.length,warning:0,caution:0,interest:0,none:0,progress:0,done:0};list.forEach(a=>{c[a.severity]++;c[a.action.key]++});return c}
 function fmtPct(v){return (Number(v)>=0?'▲ ':'▼ ')+Math.abs(Number(v)||0).toFixed(1)+'%'}
 function compareHtml(a,key){const v=a?.comparisons?.[key];if(v===null||v===undefined)return '<span class="v4712-compare-na">-</span>';if(typeof v==='number')return '<span class="v4712-compare-pct '+(v>=0?'up':'down')+'">'+esc(fmtPct(v))+'</span>';if(typeof v==='object'){const up=v.usage,ap=v.amount;let parts=[];if(up!==null&&up!==undefined)parts.push('사용량 '+fmtPct(up));if(ap!==null&&ap!==undefined)parts.push('요금 '+fmtPct(ap));return '<span class="v4712-compare-mixed">'+esc(parts.join(' / ')||'-')+'</span>'}return '<span class="v4712-compare-na">-</span>'}
+let anomalyViewModeV4727='facility';
+let anomalyFilterV4727='all';
+function groupAnomaliesV4727(list,mode){
+ const m=new Map();
+ list.forEach(a=>{const k=mode==='month'?a.month:a.facility;if(!m.has(k))m.set(k,[]);m.get(k).push(a)});
+ return [...m.entries()].sort((a,b)=>mode==='month'?b[0].localeCompare(a[0]):a[0].localeCompare(b[0],'ko'));
+}
+function groupSummaryV4727(items){
+ const c=stateCounts(items);return '전체 '+c.all+' · 경고 '+c.warning+' · 주의 '+c.caution+' · 미조치 '+c.none+' · 조치중 '+c.progress+' · 완료 '+c.done;
+}
+function anomalyRowsV4727(items,mode){
+ return items.map(a=>'<tr>'+(mode==='month'?'<td><b>'+esc(a.facility)+'</b>'+(a.sourceStatus==='review'?'<span class="v4712-anomaly-source-review">검토자료</span>':'')+'</td>':'<td>'+esc(a.month)+'</td>')+'<td>'+esc(label[a.type])+'</td><td class="metric">'+esc(a.title)+'</td><td>'+compareHtml(a,'prev')+'</td><td>'+compareHtml(a,'yoy')+'</td><td class="v4712-primary-compare" title="'+esc(a.detail)+'"><b>'+esc(a.comparison)+'</b><span>'+esc(fmtPct(a.value))+'</span></td><td><span class="v4712-sev '+a.severity+'">'+severityText(a.severity)+'</span></td><td><span class="v4712-action-state '+a.action.key+'">'+esc(a.action.text)+'</span></td><td><button type="button" class="v4712-energy-link-btn '+(a.action.key==='done'?'done':'')+'" onclick="openEnergyAnomalyMaintenanceV4712(\''+a.id+'\')">'+(a.action.record?'유지관리 보기':'유지관리 등록')+'</button></td></tr>').join('');
+}
 function renderAnomalyPanel(){
- const root=$('tfmsEnergyStatsRoot');if(!root)return;const panel=q('[data-energy-panel="anomaly"]',root);if(!panel)return;const list=detect(),c=stateCounts(list);
+ const root=$('tfmsEnergyStatsRoot');if(!root)return;const panel=q('[data-energy-panel="anomaly"]',root);if(!panel)return;const full=detect(),c=stateCounts(full);
  const host=q('.panel',panel);if(!host)return;let box=$('tfmsEnergyAnomalyWorkspaceV4712');if(!box){box=document.createElement('div');box.id='tfmsEnergyAnomalyWorkspaceV4712';const empty=q('.tfms-energy-empty.large',host);if(empty)empty.replaceWith(box);else host.appendChild(box)}
  const head=q('.tfms-energy-panel-head',host);if(head){const oldBtn=q('button',head);if(oldBtn){oldBtn.textContent='이상징후 새로고침';oldBtn.onclick=renderAll;oldBtn.className='btn light'}}
- if(!list.length){box.innerHTML='<div class="v4712-energy-empty"><strong>현재 기준에 해당하는 이상징후가 없습니다.</strong><span>월별자료가 추가되면 전월·전년 동월·단가·반복변동 기준으로 자동 분석합니다.</span></div>';return}
- box.innerHTML='<div class="v4712-energy-anomaly-toolbar"><div class="v4712-energy-anomaly-summary"><span>전체 <b>'+c.all+'</b></span><span>경고 <b>'+c.warning+'</b></span><span>주의 <b>'+c.caution+'</b></span><span>미조치 <b>'+c.none+'</b></span><span>조치중 <b>'+c.progress+'</b></span><span>완료 <b>'+c.done+'</b></span></div><div class="v4712-energy-anomaly-note">분석기준: 사용량 +25%↑ · 단가 +20%↑ · 사용량↓/요금↑ · 반복변동 ±25% 이상 · 전월/전년동월 동시표시</div></div><div class="v4712-energy-anomaly-table-wrap"><table class="v4712-energy-anomaly-table"><thead><tr><th>기준월</th><th>시설</th><th>에너지원</th><th>이상유형</th><th>전월 대비</th><th>전년동월 대비</th><th>주요 판정</th><th>심각도</th><th>처리상태</th><th>조치</th></tr></thead><tbody>'+list.map(a=>'<tr><td>'+esc(a.month)+'</td><td><b>'+esc(a.facility)+'</b>'+(a.sourceStatus==='review'?'<span class="v4712-anomaly-source-review">검토자료</span>':'')+'</td><td>'+esc(label[a.type])+'</td><td class="metric">'+esc(a.title)+'</td><td>'+compareHtml(a,'prev')+'</td><td>'+compareHtml(a,'yoy')+'</td><td class="v4712-primary-compare" title="'+esc(a.detail)+'"><b>'+esc(a.comparison)+'</b><span>'+esc(fmtPct(a.value))+'</span></td><td><span class="v4712-sev '+a.severity+'">'+severityText(a.severity)+'</span></td><td><span class="v4712-action-state '+a.action.key+'">'+esc(a.action.text)+'</span></td><td><button type="button" class="v4712-energy-link-btn '+(a.action.key==='done'?'done':'')+'" onclick="openEnergyAnomalyMaintenanceV4712(\''+a.id+'\')">'+(a.action.record?'유지관리 보기':'유지관리 등록')+'</button></td></tr>').join('')+'</tbody></table></div>';
+ if(!full.length){box.innerHTML='<div class="v4712-energy-empty"><strong>현재 기준에 해당하는 이상징후가 없습니다.</strong><span>월별자료가 추가되면 전월·전년 동월·단가·반복변동 기준으로 자동 분석합니다.</span></div>';return}
+ const mode=anomalyViewModeV4727;
+ const keys=[...new Set(full.map(a=>mode==='month'?a.month:a.facility))].sort((a,b)=>mode==='month'?b.localeCompare(a):a.localeCompare(b,'ko'));
+ if(anomalyFilterV4727!=='all'&&!keys.includes(anomalyFilterV4727))anomalyFilterV4727='all';
+ const list=anomalyFilterV4727==='all'?full:full.filter(a=>(mode==='month'?a.month:a.facility)===anomalyFilterV4727);
+ const groups=groupAnomaliesV4727(list,mode);
+ const filterLabel=mode==='month'?'전체 월':'전체 시설';
+ const opts='<option value="all">'+filterLabel+'</option>'+keys.map(k=>'<option value="'+esc(k)+'" '+(anomalyFilterV4727===k?'selected':'')+'>'+esc(k)+'</option>').join('');
+ const firstHead=mode==='month'?'시설':'기준월';
+ box.innerHTML='<div class="v4712-energy-anomaly-toolbar v4727-anomaly-toolbar"><div class="v4712-energy-anomaly-summary"><span>전체 <b>'+c.all+'</b></span><span>경고 <b>'+c.warning+'</b></span><span>주의 <b>'+c.caution+'</b></span><span>미조치 <b>'+c.none+'</b></span><span>조치중 <b>'+c.progress+'</b></span><span>완료 <b>'+c.done+'</b></span></div><div class="v4727-anomaly-controls"><div class="v4727-anomaly-switch"><button type="button" class="'+(mode==='facility'?'active':'')+'" onclick="setEnergyAnomalyViewV4727(\'facility\')">시설별 보기</button><button type="button" class="'+(mode==='month'?'active':'')+'" onclick="setEnergyAnomalyViewV4727(\'month\')">월별 보기</button></div><select onchange="setEnergyAnomalyFilterV4727(this.value)">'+opts+'</select></div></div><div class="v4712-energy-anomaly-note v4727-note">분석기준: 사용량 +25%↑ · 단가 +20%↑ · 사용량↓/요금↑ · 반복변동 ±25% 이상 · 전월/전년동월 동시표시</div><div class="v4727-anomaly-groups">'+groups.map((g,i)=>'<details class="v4727-anomaly-group" '+(i===0||groups.length===1?'open':'')+'><summary><span class="v4727-group-title">'+esc(g[0])+'</span><span class="v4727-group-meta">'+esc(groupSummaryV4727(g[1]))+'</span><span class="v4727-group-toggle">펼치기</span></summary><div class="v4712-energy-anomaly-table-wrap"><table class="v4712-energy-anomaly-table v4727-group-table"><thead><tr><th>'+firstHead+'</th><th>에너지원</th><th>이상유형</th><th>전월 대비</th><th>전년동월 대비</th><th>주요 판정</th><th>심각도</th><th>처리상태</th><th>조치</th></tr></thead><tbody>'+anomalyRowsV4727(g[1],mode)+'</tbody></table></div></details>').join('')+'</div>';
 }
+window.setEnergyAnomalyViewV4727=function(mode){if(mode!=='facility'&&mode!=='month')return;anomalyViewModeV4727=mode;anomalyFilterV4727='all';renderAnomalyPanel()};
+window.setEnergyAnomalyFilterV4727=function(value){anomalyFilterV4727=clean(value)||'all';renderAnomalyPanel()};
 function renderRecent(){
  const root=$('tfmsEnergyStatsRoot');if(!root)return;const grid=q('.tfms-energy-bottom-grid',root),panel=grid?.children?.[1];if(!panel)return;const list=(window.__tfmsEnergyAnomaliesV4712||detect()).slice(0,5);let old=q('.tfms-energy-empty',panel);let box=$('tfmsEnergyRecentAnomalyV4712');if(!box){box=document.createElement('div');box.id='tfmsEnergyRecentAnomalyV4712';if(old)old.replaceWith(box);else panel.appendChild(box)}
  box.innerHTML=list.length?'<div class="v4712-recent-list">'+list.map(a=>'<div class="v4712-recent-item"><span class="v4712-sev '+a.severity+'">'+severityText(a.severity)+'</span><div class="copy"><b>'+esc(a.facility)+' · '+esc(label[a.type])+' · '+esc(a.title)+'</b><small>'+esc(a.month)+' · '+esc(a.detail)+'</small></div><span class="state">'+esc(a.action.text)+'</span></div>').join('')+'</div>':'<div class="tfms-energy-empty"><strong>분석된 이상징후가 없습니다.</strong><span>현재 등록자료에서는 설정 기준을 초과한 항목이 없습니다.</span></div>';
@@ -37072,4 +37095,35 @@ window.addEventListener('load',sync,{once:true});
 })();
 </script>
 <!-- /TFMS v47.26.1 Facility Profile Correction -->
+
+<!-- ===== TFMS v47.27 Energy Anomaly Facility-Month Views ===== -->
+<style id="tfms-v4727-energy-anomaly-group-style">
+#energy .v4727-anomaly-toolbar{gap:12px;flex-wrap:wrap}
+#energy .v4727-anomaly-controls{margin-left:auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+#energy .v4727-anomaly-switch{display:inline-flex;padding:3px;border:1px solid #d8e3ed;border-radius:9px;background:#f4f7fa}
+#energy .v4727-anomaly-switch button{border:0;background:transparent;color:#64788d;border-radius:6px;padding:7px 11px;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap}
+#energy .v4727-anomaly-switch button.active{background:#fff;color:#1761a8;box-shadow:0 1px 4px rgba(34,72,109,.12)}
+#energy .v4727-anomaly-controls select{height:34px;min-width:170px;border:1px solid #cedae6;border-radius:8px;background:#fff;color:#334f69;padding:0 30px 0 10px;font-size:12px;font-weight:700}
+#energy .v4727-note{margin:8px 0 10px}
+#energy .v4727-anomaly-groups{display:grid;gap:9px}
+#energy .v4727-anomaly-group{border:1px solid #dfe8f1;border-radius:10px;background:#fff;overflow:hidden}
+#energy .v4727-anomaly-group>summary{list-style:none;display:grid;grid-template-columns:minmax(150px,.7fr) minmax(280px,1.5fr) auto;gap:12px;align-items:center;padding:12px 14px;background:#f8fafc;cursor:pointer;user-select:none}
+#energy .v4727-anomaly-group>summary::-webkit-details-marker{display:none}
+#energy .v4727-anomaly-group[open]>summary{background:#f2f8fe;border-bottom:1px solid #dfe8f1}
+#energy .v4727-group-title{font-size:13px;font-weight:900;color:#234b70}
+#energy .v4727-group-meta{font-size:12px;font-weight:600;color:#6b7f92;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#energy .v4727-group-toggle{font-size:11px;font-weight:800;color:#5d7892}
+#energy .v4727-anomaly-group[open] .v4727-group-toggle{font-size:0}
+#energy .v4727-anomaly-group[open] .v4727-group-toggle::after{content:'접기';font-size:11px}
+#energy .v4727-group-table{min-width:1080px}
+#energy .v4727-group-table th,#energy .v4727-group-table td{font-size:12px}
+#energy .v4727-group-table th{font-size:11.5px}
+@media(max-width:900px){#energy .v4727-anomaly-controls{width:100%;margin-left:0;justify-content:space-between}#energy .v4727-anomaly-group>summary{grid-template-columns:1fr auto}#energy .v4727-group-meta{grid-column:1/-1;grid-row:2}}
+</style>
+<style id="tfms-v4727-version-label-style">#tfmsVersionModal .current-build::after{content:"현재 운영기준: v47.27 Energy Anomaly Facility-Month Views Stable · 2026.11.02"!important}</style>
+<script id="tfms-v4727-version-authority">
+(function(){'use strict';const BUILD='v47.27 Energy Anomaly Facility-Month Views Stable',VER='47.27';function sync(){try{const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent=BUILD;document.title='TFMS '+BUILD}catch(e){}try{const cb=document.querySelector('#tfmsVersionModal .current-build');if(cb)cb.textContent='현재 버전: '+BUILD}catch(e){}try{const body=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');if(body&&!body.querySelector('[data-version="v47.27-energy-anomaly-views"]')){const el=document.createElement('div');el.className='change-item';el.dataset.version='v47.27-energy-anomaly-views';el.innerHTML='<strong>v47.27 · Energy Anomaly Facility-Month Views Stable — 이상징후 시설별·월별 그룹조회</strong><ul><li>이상징후·조치 목록을 시설별 보기와 월별 보기로 전환 가능</li><li>전체 시설/전체 월 선택필터와 접기·펼치기 그룹을 추가해 긴 목록의 탐색성 개선</li><li>기존 심각도·전월/전년동월 비교·유지관리 등록/보기 연계는 그대로 유지</li></ul>';body.insertBefore(el,body.firstChild)}}catch(e){}try{const u=new URL(location.href);if(u.searchParams.get('v')!==VER){u.searchParams.set('v',VER);History.prototype.replaceState.call(history,history.state,'',u.pathname+u.search+u.hash)}}catch(e){}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync,{once:true});else sync();window.addEventListener('load',sync,{once:true});})();
+</script>
+<!-- /TFMS v47.27 -->
+
 </body></html>
