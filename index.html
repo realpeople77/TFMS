@@ -1371,10 +1371,10 @@ nav.sidebar {
 <div class="v451-card v451-status-card">
 <div class="v451-card-head"><h2>우리 시설 현황</h2></div>
 <div class="v451-mini-stats">
-<div><span>전체 시설</span><strong id="sideFacilityCount">0개</strong></div>
-<div><span>점검예정</span><strong id="sideTodoCount">0건</strong></div>
-<div><span>미조치</span><strong id="sideOpenCount">0건</strong></div>
-<div><span>금월 등록</span><strong id="sideMonthCount">0건</strong></div>
+<div><span>전체 시설</span><strong id="dashSideFacilityCount">0개</strong></div>
+<div><span>점검예정</span><strong id="dashSideTodoCount">0건</strong></div>
+<div><span>미조치</span><strong id="dashSideOpenCount">0건</strong></div>
+<div><span>금월 등록</span><strong id="dashSideMonthCount">0건</strong></div>
 </div>
 </div>
 <div class="v451-card v451-daily-card">
@@ -2823,7 +2823,9 @@ function dashboardScopeV4707(){
   };
 }
 function setDashboardTextAllV4707(id,value){
-  document.querySelectorAll('[id="'+id+'"]').forEach(el=>{el.textContent=value});
+  const dashId={sideFacilityCount:'dashSideFacilityCount',sideTodoCount:'dashSideTodoCount',sideOpenCount:'dashSideOpenCount',sideMonthCount:'dashSideMonthCount'}[id];
+  const ids=dashId?[id,dashId]:[id];
+  ids.forEach(key=>{const el=document.getElementById(key);if(el)el.textContent=value});
 }
 function renderDashboardData(){
   const dashScope=dashboardScopeV4707();
@@ -12950,7 +12952,7 @@ Scope: dashboard maintenance aggregation/display scope only
 - Admin/viewer dashboard uses all maintenance_records, matching Statistics and Excel Download
 - Normal user dashboard remains limited to own department
 - Recent maintenance list and monthly/total budget use the same dashboard scope
-- Duplicate sideFacilityCount/sideTodoCount/sideOpenCount/sideMonthCount displays are synchronized without altering legacy IDs
+- Sidebar and dashboard facility-summary IDs are unique and synchronized by the dashboard helper
 - No DB schema, SQL, RLS, insert payload, statistics formula, energy feature, or 160ms navigation transition changed
 -->
 <!-- TFMS v47.15 Energy Operations IV Stable | removed 10 pure version-lock intervals only -->
@@ -22722,10 +22724,10 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 <script id="tfms-v4730-version-authority">
 (function(){
   'use strict';
-  const LABEL='v47.31.3 Presence Reconnect Fix Stable';
-  const PARAM='47.31.3';
+  const LABEL='v47.32 RC2 Final Audit Stable';
+  const PARAM='47.32';
   const TITLE='TFMS '+LABEL;
-  const FIXED_BUILD=Object.freeze({version:'v47.31.3',channel:'Presence Reconnect Fix Stable',buildDate:'2026.11.05',title:'Presence 장시간 로그인 재연결 안정화 및 관리자 접속자 상세패널 채널 단일화'});
+  const FIXED_BUILD=Object.freeze({version:'v47.32',channel:'RC2 Final Audit Stable',buildDate:'2026.11.05',title:'RC 최종 코드·권한·메뉴 연결 점검 및 안전한 중복코드 정리'});
   const nativeReplace=History.prototype.replaceState;
   if(!History.prototype.__tfmsV4729VersionNormalized){
     History.prototype.replaceState=function(state,title,url){
@@ -22739,7 +22741,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
   function apply(){
     normalizeUrl();
     const badge=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
-    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','47.31.3')}catch(e){}}
+    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','47.32')}catch(e){}}
     try{document.title=TITLE;Object.defineProperty(document,'title',{configurable:true,enumerable:true,get(){return TITLE},set(_){}})}catch(e){}
     try{const te=document.head&&document.head.querySelector('title');if(te)lockText(te,'textContent',TITLE)}catch(e){}
     try{Object.defineProperty(window,'TFMS_BUILD',{configurable:true,enumerable:true,get(){return FIXED_BUILD},set(_){}})}catch(e){try{window.TFMS_BUILD=FIXED_BUILD}catch(_){}}
@@ -22750,6 +22752,11 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
         const el=document.createElement('div');el.className='change-item';el.dataset.version='v47.30-rc1-role-regression';
         el.innerHTML='<strong>v47.30 · RC1 Role Regression Stable</strong><ul><li>관리자·일반담당자·조회전용 계정의 등록/조회/수정/삭제/엑셀업로드/시설범위 회귀점검</li><li>조회전용 에너지 입력·엑셀 저장 UI를 로그인 즉시 읽기전용으로 고정</li><li>일반담당자 에너지 직접입력 시설 선택을 소속팀 범위로 제한</li><li>신규 기능 없이 RC1 운영검증 기준본으로 고정</li></ul>';
         body.insertBefore(el,body.firstChild);
+      }
+      if(body&&!body.querySelector('[data-version="v47.32-rc2-final-audit"]')){
+        const rc=document.createElement('div');rc.className='change-item';rc.dataset.version='v47.32-rc2-final-audit';
+        rc.innerHTML='<strong>v47.32 · RC2 Final Audit Stable</strong><ul><li>주요 메뉴 page ID·역할별 노출·inline JavaScript 문법 최종 점검</li><li>죽은 구버전 상태 controller 제거 및 버전 authority 단일화</li><li>신규 기능 없이 Operational Stable 전 최종 RC 기준본으로 고정</li></ul>';
+        body.insertBefore(rc,body.firstChild);
       }
     }catch(e){}
   }
@@ -31390,67 +31397,6 @@ else init();
 </script>
 <!-- /TFMS v46.92 Equipment Click Prime Cleanup Stable -->
 <!-- TFMS v46.92 Equipment Click Prime Cleanup Stable -->
-<script id="tfms-v4666-status-immediate-controller">
-(function(){
-'use strict';
-if(window.__tfmsV4666StatusImmediateInstalled)return;
-window.__tfmsV4666StatusImmediateInstalled=true;
-
-const BUILD='v47.20 Energy AI Analysis II Stable',VER='47.16';
-const $=id=>document.getElementById(id);
-
-function runNow(){
-  try{
-    if(typeof cleanupExcelButtons==='function')cleanupExcelButtons();
-  }catch(e){}
-  try{
-    if(typeof decorateRows==='function')decorateRows();
-  }catch(e){}
-  try{
-    if(typeof populateStatusDropdown==='function')populateStatusDropdown();
-  }catch(e){}
-  try{
-    if(typeof applyVisualStatusFilter==='function')applyVisualStatusFilter();
-  }catch(e){}
-}
-
-/* v46.93: the remaining v46.66 prime fallback family is removed.
-   v46.90's final renderAssetList() hook owns post-render row/filter/status refresh.
-   The section activation MutationObserver remains removed.
-   Programmatic equipment entry calls renderAssetList(), and v46.90's final
-   renderAssetList() post-render hook refreshes row keys, filters and the v46.65
-   visual-status handoff. No click-entry prime fallback is required. */
-
-function syncVersion(){
-  try{
-    const b=$('tfmsVersionBadge');
-    if(b&&b.textContent!==BUILD)b.textContent=BUILD;
-  }catch(e){}
-  try{
-    if(document.title!=='TFMS '+BUILD)document.title='TFMS '+BUILD;
-  }catch(e){}
-  try{
-    const u=new URL(location.href);
-    if(u.searchParams.get('v')!==VER){
-      u.searchParams.set('v',VER);
-      History.prototype.replaceState.call(history,history.state,'',
-        u.pathname+u.search+u.hash);
-    }
-  }catch(e){}
-}
-
-function init(){
-  syncVersion();
-}
-if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded',init,{once:true});
-}else init();
-
-[200,600,1200,2500].forEach(ms=>setTimeout(()=>{
-  syncVersion();
-},ms));
-})();
-</script>
 <!-- /TFMS v46.92 Equipment Click Prime Cleanup Stable -->
 <!-- TFMS v46.92 Equipment Click Prime Cleanup Stable -->
 <style id="tfms-v4667-photo-cover-style">
@@ -36683,18 +36629,5 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   #cycle.v4571-cycle > .title-row .v4571-title-actions{margin-left:54px!important;}
 }
 </style>
-<script id="tfms-v4731-version-authority">
-(function(){
-'use strict';
-const BUILD='v47.31.3 Presence Reconnect Fix Stable',VER='47.31.3';
-function sync(){
- try{const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent=BUILD;document.title='TFMS '+BUILD;}catch(e){}
- try{const cb=document.querySelector('#tfmsVersionModal .current-build');if(cb)cb.textContent='현재 버전: '+BUILD;}catch(e){}
- try{const u=new URL(location.href);if(u.searchParams.get('v')!==VER){u.searchParams.set('v',VER);History.prototype.replaceState.call(history,history.state,'',u.pathname+u.search+u.hash)}}catch(e){}
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync,{once:true});else sync();
-window.addEventListener('load',sync,{once:true});
-})();
-</script>
-<!-- /TFMS v47.31 Page Header Standardization -->
+<!-- /TFMS v47.32 RC2 Final Audit Stable -->
 </body></html>
