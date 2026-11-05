@@ -22722,10 +22722,10 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 <script id="tfms-v4730-version-authority">
 (function(){
   'use strict';
-  const LABEL='v47.31.2 Cycle Header Layout Repair Stable';
-  const PARAM='47.31.2';
+  const LABEL='v47.31.3 Presence Reconnect Fix Stable';
+  const PARAM='47.31.3';
   const TITLE='TFMS '+LABEL;
-  const FIXED_BUILD=Object.freeze({version:'v47.31.2',channel:'Cycle Header Layout Repair Stable',buildDate:'2026.11.04',title:'RC1 권한·기능 회귀점검 및 에너지 쓰기 UI 권한 정합성 보강'});
+  const FIXED_BUILD=Object.freeze({version:'v47.31.3',channel:'Presence Reconnect Fix Stable',buildDate:'2026.11.05',title:'Presence 장시간 로그인 재연결 안정화 및 관리자 접속자 상세패널 채널 단일화'});
   const nativeReplace=History.prototype.replaceState;
   if(!History.prototype.__tfmsV4729VersionNormalized){
     History.prototype.replaceState=function(state,title,url){
@@ -22739,7 +22739,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
   function apply(){
     normalizeUrl();
     const badge=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
-    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','47.31.2')}catch(e){}}
+    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','47.31.3')}catch(e){}}
     try{document.title=TITLE;Object.defineProperty(document,'title',{configurable:true,enumerable:true,get(){return TITLE},set(_){}})}catch(e){}
     try{const te=document.head&&document.head.querySelector('title');if(te)lockText(te,'textContent',TITLE)}catch(e){}
     try{Object.defineProperty(window,'TFMS_BUILD',{configurable:true,enumerable:true,get(){return FIXED_BUILD},set(_){}})}catch(e){try{window.TFMS_BUILD=FIXED_BUILD}catch(_){}}
@@ -34378,6 +34378,8 @@ window.__tfmsV4712PresenceTest01Installed=true;
 const CHANNEL_NAME='tfms-online-presence-v1';
 const PILL_ID='tfmsPresencePillV4712';
 let sb=null,channel=null,activeUserId='',waitToken=0,currentCount=0;
+let presenceStatus='idle',reconnectAttempt=0,reconnectTimer=null;
+const bridgeListeners=new Set();
 
 function $(id){return document.getElementById(id)}
 function profile(){try{return window.getTfmsCloudProfile?.()||window.cloudProfile||null}catch(e){return window.cloudProfile||null}}
@@ -34411,15 +34413,28 @@ function setPill(mode,count){
   else if(mode==='error')t.textContent='접속 확인불가';
   else t.textContent='접속 확인중';
 }
-function flattenPresence(state){
-  const rows=[];Object.values(state||{}).forEach(v=>{if(Array.isArray(v))rows.push(...v)});return rows;
+function flattenPresence(state){const rows=[];Object.values(state||{}).forEach(v=>{if(Array.isArray(v))rows.push(...v)});return rows}
+function presenceKeys(){
+  if(!channel)return[];
+  try{return [...new Set(flattenPresence(channel.presenceState()).map(x=>String(x?.u||'')).filter(Boolean))]}catch(e){return[]}
 }
+function snapshot(){return {status:presenceStatus,keys:presenceKeys(),count:currentCount}}
+function publish(){const snap=snapshot();bridgeListeners.forEach(fn=>{try{fn(snap)}catch(e){}})}
+window.tfmsPresenceBridgeV47313={
+  snapshot,
+  subscribe(fn){
+    if(typeof fn!=='function')return()=>{};
+    bridgeListeners.add(fn);
+    try{queueMicrotask(()=>{if(bridgeListeners.has(fn))fn(snapshot())})}catch(e){}
+    return()=>bridgeListeners.delete(fn);
+  }
+};
 function syncCount(){
   if(!channel)return;
   try{
-    const users=new Set(flattenPresence(channel.presenceState()).map(x=>String(x?.u||'')).filter(Boolean));
-    currentCount=users.size;setPill('online',currentCount);
-  }catch(e){setPill('error',0)}
+    const users=new Set(presenceKeys());
+    currentCount=users.size;presenceStatus='online';setPill('online',currentCount);publish();
+  }catch(e){presenceStatus='error';setPill('error',0);publish()}
 }
 async function pseudonym(id){
   const raw='tfms-presence-v1:'+String(id||'');
@@ -34434,29 +34449,46 @@ async function pseudonym(id){
   return ('00000000'+(h1>>>0).toString(16)).slice(-8)+('00000000'+(h2>>>0).toString(16)).slice(-8);
 }
 function tabKey(){try{return crypto.randomUUID()}catch(e){return 'tab-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2)}}
+function clearReconnect(){if(reconnectTimer){clearTimeout(reconnectTimer);reconnectTimer=null}}
 async function stopPresence(){
-  waitToken++;activeUserId='';currentCount=0;
+  waitToken++;activeUserId='';currentCount=0;presenceStatus='idle';reconnectAttempt=0;clearReconnect();
   const c=channel;channel=null;
   if(c){try{await c.untrack()}catch(e){}try{await sb?.removeChannel?.(c)}catch(e){}}
   const pill=$(PILL_ID);if(pill)pill.classList.remove('tfms-presence-show');
+  publish();
 }
-async function startPresence(user){
+function scheduleReconnect(){
+  if(reconnectTimer||!sb||!activeUserId||document.hidden||reconnectAttempt>=3)return;
+  const delay=[1200,3000,6000][reconnectAttempt++]||6000;
+  reconnectTimer=setTimeout(async()=>{
+    reconnectTimer=null;
+    if(!sb||!activeUserId||document.hidden)return;
+    try{const {data}=await sb.auth.getSession();if(data?.session?.user)await startPresence(data.session.user,true)}catch(e){}
+  },delay);
+}
+async function startPresence(user,force=false){
   if(!user?.id||!sb)return;
-  if(channel&&activeUserId===String(user.id)){ensurePill();return}
-  if(channel)await stopPresence();
-  activeUserId=String(user.id);
+  const uid=String(user.id);
+  if(!force&&channel&&activeUserId===uid&&presenceStatus==='online'){ensurePill();return}
+  if(channel){const old=channel;channel=null;try{await old.untrack()}catch(e){}try{await sb?.removeChannel?.(old)}catch(e){}}
+  clearReconnect();
+  activeUserId=uid;
   const userKey=await pseudonym(user.id);
-  if(activeUserId!==String(user.id))return;
-  setPill('connecting',0);
+  if(activeUserId!==uid)return;
+  presenceStatus='connecting';setPill('connecting',0);publish();
   const ch=sb.channel(CHANNEL_NAME,{config:{presence:{key:tabKey()}}});
   channel=ch;
   ch.on('presence',{event:'sync'},syncCount);
   ch.subscribe(async status=>{
     if(channel!==ch)return;
     if(status==='SUBSCRIBED'){
-      try{await ch.track({u:userKey,p:1});syncCount()}catch(e){setPill('error',0)}
-    }else if(status==='CHANNEL_ERROR'||status==='TIMED_OUT'){setPill('error',0)}
-    else if(status==='CLOSED'){setPill('connecting',0)}
+      reconnectAttempt=0;clearReconnect();
+      try{await ch.track({u:userKey,p:1});syncCount()}catch(e){presenceStatus='error';setPill('error',0);publish();scheduleReconnect()}
+    }else if(status==='CHANNEL_ERROR'||status==='TIMED_OUT'){
+      presenceStatus='error';setPill('error',0);publish();scheduleReconnect();
+    }else if(status==='CLOSED'){
+      presenceStatus='connecting';setPill('connecting',0);publish();scheduleReconnect();
+    }
   });
 }
 function waitForProfile(user){
@@ -34487,10 +34519,10 @@ function init(){
   bindAuth();resumeFromSession();
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else queueMicrotask(init);
-window.addEventListener('focus',()=>{ensurePill();if(channel)syncCount()},{passive:true});
-document.addEventListener('visibilitychange',()=>{if(!document.hidden){ensurePill();if(channel)syncCount()}});
+window.addEventListener('focus',()=>{ensurePill();if(channel)syncCount();else resumeFromSession()},{passive:true});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){ensurePill();if(channel)syncCount();else resumeFromSession()}});
 window.addEventListener('pageshow',e=>{if(e.persisted)resumeFromSession()});
-window.addEventListener('pagehide',()=>{const c=channel;channel=null;activeUserId='';if(c){try{c.untrack()}catch(e){}try{sb?.removeChannel?.(c)}catch(e){}}});
+window.addEventListener('pagehide',()=>{clearReconnect();const c=channel;channel=null;activeUserId='';presenceStatus='idle';if(c){try{c.untrack()}catch(e){}try{sb?.removeChannel?.(c)}catch(e){}}publish()});
 })();
 </script>
 <!-- /TFMS v47.12 Presence Stable — Pseudonymous Online Count -->
@@ -34621,10 +34653,9 @@ window.addEventListener('pagehide',()=>{const c=channel;channel=null;activeUserI
 if(window.__tfmsV4712PresenceTest02Installed)return;
 window.__tfmsV4712PresenceTest02Installed=true;
 
-const CHANNEL_NAME='tfms-online-presence-v1';
 const PILL_ID='tfmsPresencePillV4712';
 const DRAWER_ID='tfmsPresenceDetailV4712';
-let sb=null,detailChannel=null,profileMap=new Map(),profilesReady=false,lastKeys=[];
+let sb=null,profileMap=new Map(),profilesReady=false,lastKeys=[],bridgeUnsub=null;
 
 function $(id){return document.getElementById(id)}
 function profile(){try{return window.getTfmsCloudProfile?.()||window.cloudProfile||null}catch(e){return window.cloudProfile||null}}
@@ -34632,8 +34663,9 @@ function role(){try{const p=profile()||{},s=JSON.parse(sessionStorage.getItem('t
 function isAdmin(){const r=role();return r==='admin'||r==='관리자'}
 function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 function initials(name){const s=String(name||'?').trim();return esc((s.slice(0,1)||'?').toUpperCase())}
-function flatten(state){const rows=[];Object.values(state||{}).forEach(v=>{if(Array.isArray(v))rows.push(...v)});return rows}
-function stateKeys(){if(!detailChannel)return[];try{return [...new Set(flatten(detailChannel.presenceState()).map(x=>String(x?.u||'')).filter(Boolean))]}catch(e){return[]}}
+function bridge(){return window.tfmsPresenceBridgeV47313||null}
+function snapshot(){try{return bridge()?.snapshot?.()||{status:'idle',keys:[],count:0}}catch(e){return{status:'error',keys:[],count:0}}}
+function stateKeys(){const s=snapshot();return Array.isArray(s.keys)?s.keys:[]}
 async function pseudonym(id){
   const raw='tfms-presence-v1:'+String(id||'');
   try{if(globalThis.crypto?.subtle&&globalThis.TextEncoder){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(raw));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('').slice(0,32)}}catch(e){}
@@ -34663,7 +34695,18 @@ async function loadProfiles(){
 async function myKey(){try{const u=window.getTfmsCloudUser?.()||window.cloudUser||null;return u?.id?await pseudonym(u.id):''}catch(e){return''}}
 async function render(){
   if(!$(DRAWER_ID)?.classList.contains('show'))return;
+  const snap=snapshot();
   lastKeys=stateKeys();
+  if(snap.status==='error'){
+    setSummary('접속자 상세정보 새로고침 대기');
+    setBody('<div class="tfms-presence-errorbox">접속자 상세정보를 새로고침하지 못했습니다.<br>접속 인원 집계 및 TFMS 업무 기능에는 영향이 없습니다.</div>');
+    return;
+  }
+  if(snap.status==='connecting'||snap.status==='idle'){
+    setSummary('접속 상태 재연결 중');
+    setBody('<div class="tfms-presence-empty">Realtime 접속 상태를 다시 연결하고 있습니다.</div>');
+    return;
+  }
   setSummary(`현재 접속 ${lastKeys.length}명`);
   if(!profilesReady){setBody('<div class="tfms-presence-empty">접속자 프로필을 확인하는 중입니다.</div>');return}
   const mine=await myKey();
@@ -34679,30 +34722,37 @@ async function render(){
   if(!html)html='<div class="tfms-presence-empty">현재 확인되는 접속자가 없습니다.</div>';
   setBody(html);
 }
-function watcherKey(){try{return 'admin-view-'+crypto.randomUUID()}catch(e){return 'admin-view-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2)}}
-async function startDetailChannel(){
-  if(detailChannel||!sb)return;
-  const ch=sb.channel(CHANNEL_NAME,{config:{presence:{key:watcherKey()}}});detailChannel=ch;
-  ch.on('presence',{event:'sync'},()=>{if(detailChannel===ch)render()});
-  ch.subscribe(status=>{
-    if(detailChannel!==ch)return;
-    if(status==='SUBSCRIBED'){render()}
-    else if(status==='CHANNEL_ERROR'||status==='TIMED_OUT'){setSummary('접속 상태 확인 불가');setBody('<div class="tfms-presence-errorbox">Realtime 접속자 상태를 불러오지 못했습니다. 패널을 닫았다가 다시 열어주세요.</div>')}
-  });
+function bindBridge(){
+  if(bridgeUnsub){try{bridgeUnsub()}catch(e){}bridgeUnsub=null}
+  const b=bridge();
+  if(!b?.subscribe)return false;
+  bridgeUnsub=b.subscribe(()=>{render()});
+  return true;
 }
-async function stopDetailChannel(){const ch=detailChannel;detailChannel=null;lastKeys=[];if(ch){try{await sb?.removeChannel?.(ch)}catch(e){}}}
 async function openDrawer(){
   if(!isAdmin())return;
   try{sb=window.getTfmsSupabaseClient?.()||window.tfmsSupabase||window.sb||null}catch(e){sb=null}
   const d=ensureDrawer();d.classList.add('show');setSummary('접속 상태 확인 중');setBody('<div class="tfms-presence-empty">접속자 정보를 불러오는 중입니다.</div>');
   if(!sb){setSummary('DB 연결 확인 필요');setBody('<div class="tfms-presence-errorbox">Supabase 연결 객체를 확인하지 못했습니다.</div>');return}
-  try{await Promise.all([loadProfiles(),startDetailChannel()]);await render()}catch(e){setSummary('프로필 조회 확인 필요');setBody(`<div class="tfms-presence-errorbox">접속자 프로필을 불러오지 못했습니다.<br>${esc(e?.message||e||'알 수 없는 오류')}</div>`)}
+  try{
+    bindBridge();
+    await loadProfiles();
+    await render();
+  }catch(e){
+    try{console.warn('[TFMS Presence detail]',e)}catch(_){}
+    setSummary('접속자 상세정보 확인 필요');
+    setBody('<div class="tfms-presence-errorbox">접속자 상세정보를 새로고침하지 못했습니다.<br>접속 인원 집계 및 TFMS 업무 기능에는 영향이 없습니다.</div>');
+  }
 }
-function closeDrawer(){const d=$(DRAWER_ID);if(d)d.classList.remove('show');stopDetailChannel();profileMap=new Map();profilesReady=false}
+function closeDrawer(){
+  const d=$(DRAWER_ID);if(d)d.classList.remove('show');
+  if(bridgeUnsub){try{bridgeUnsub()}catch(e){}bridgeUnsub=null}
+  lastKeys=[];profileMap=new Map();profilesReady=false;
+}
 function bindPill(){const p=$(PILL_ID);if(!p)return;p.title='현재 접속자 목록 보기 · 관리자 전용';p.setAttribute('role','button');p.setAttribute('tabindex','0');p.onclick=openDrawer;p.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openDrawer()}}}
 function init(){bindPill();document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$(DRAWER_ID)?.classList.contains('show'))closeDrawer()})}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else queueMicrotask(init);
-window.addEventListener('pagehide',()=>{stopDetailChannel()});
+window.addEventListener('pagehide',()=>{if(bridgeUnsub){try{bridgeUnsub()}catch(e){}bridgeUnsub=null}});
 })();
 </script>
 <!-- /TFMS v47.12 Presence Stable — Admin Online User List -->
@@ -36528,7 +36578,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 }
 </style>
 <style id="tfms-v47312-cycle-header-layout-repair">
-/* v47.31.2 — cycle header layout repair only. No business logic changes. */
+/* v47.31.3 — Presence reconnect stabilization. No DB/RLS/business data changes. */
 #cycle.v4571-cycle > .title-row{
   display:grid!important;
   grid-template-columns:minmax(360px,1fr) auto!important;
@@ -36636,7 +36686,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <script id="tfms-v4731-version-authority">
 (function(){
 'use strict';
-const BUILD='v47.31.2 Cycle Header Layout Repair Stable',VER='47.31.2';
+const BUILD='v47.31.3 Presence Reconnect Fix Stable',VER='47.31.3';
 function sync(){
  try{const b=document.getElementById('tfmsVersionBadge');if(b)b.textContent=BUILD;document.title='TFMS '+BUILD;}catch(e){}
  try{const cb=document.querySelector('#tfmsVersionModal .current-build');if(cb)cb.textContent='현재 버전: '+BUILD;}catch(e){}
