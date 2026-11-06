@@ -1249,13 +1249,13 @@ nav.sidebar {
 </div>
 <nav>
 <button class="nav active" data-roles="admin,user,viewer" onclick="showPage('dashboard',this)">대시보드</button>
-<button class="nav" data-roles="admin,user" onclick="showPage('today',this)">오늘의 업무</button>
+<button class="nav tfms-v481-internal-nav" data-roles="admin,user" onclick="showPage('today',this)" style="display:none" aria-hidden="true">오늘의 업무</button>
 <button class="nav" data-roles="admin,user" onclick="showPage('register',this)">유지관리 등록</button>
 <button class="nav" data-roles="admin,user,viewer" onclick="showPage('history',this)">유지관리 조회</button>
 <button class="nav" data-roles="admin,user" onclick="showPage('dailylog',this)">업무일지</button>
 <button class="nav" data-roles="admin,user" onclick="showPage('qrCheck',this)">QR점검</button>
 <button class="nav" data-roles="admin,user" onclick="window.__tfmsEquipmentFacilityScopeV4708='';showPage('equipment',this)">설비관리</button>
-<button class="nav" data-roles="admin,user" onclick="showPage('cycle',this)">점검주기 관리</button>
+<button class="nav" data-roles="admin" onclick="showPage('cycle',this)">점검주기 관리</button>
 <button class="nav" data-roles="admin,user,viewer" onclick="openEnergyPageV4713(this,'energy')">에너지·공과금</button>
 <button class="nav" data-roles="admin,viewer" onclick="showPage('stats',this)">통계현황</button>
 <button class="nav" data-roles="admin" onclick="showPage('deleteManage',this)">삭제·변경이력</button>
@@ -1328,7 +1328,7 @@ nav.sidebar {
 </div>
 <div class="side-card">
 <h3>업무 흐름</h3>
-<div class="flow"><span>점검주기</span><b>→</b><span>오늘의 업무</span><b>→</b><span>업무일지</span><b>→</b><span>이력등록</span><b>→</b><span>증빙자료</span></div>
+<div class="flow"><span>설비관리</span><b>→</b><span>유지관리</span><b>→</b><span>이력축적</span><b>→</b><span>LCC·에너지</span></div>
 </div>
 </aside>
 <main>
@@ -1344,8 +1344,8 @@ nav.sidebar {
 </div>
 </div>
 <div class="v451-kpi-grid">
-<button class="v451-kpi" onclick="navTo('today')"><span class="v451-kpi-icon blue">▣</span><span><b>오늘의 업무</b><strong id="dashTodo">0건</strong><small>점검 일정 확인</small></span></button>
-<button class="v451-kpi" onclick="navTo('today')"><span class="v451-kpi-icon mint">◷</span><span><b>진행중 업무</b><strong id="dashProgressV451">0건</strong><small>현재 처리 중</small></span></button>
+<button class="v451-kpi" onclick="navTo('today')"><span class="v451-kpi-icon blue">▣</span><span><b>오늘 점검</b><strong id="dashTodo">0건</strong><small>예정·기한 점검 확인</small></span></button>
+<button class="v451-kpi" onclick="navTo('today')"><span class="v451-kpi-icon mint">◷</span><span><b>진행중 점검</b><strong id="dashProgressV451">0건</strong><small>현재 처리 중</small></span></button>
 <button class="v451-kpi" onclick="navTo('history')"><span class="v451-kpi-icon green">✓</span><span><b>완료 업무</b><strong id="dashCompleteV451">0건</strong><small>전체 누적</small></span></button>
 <button class="v451-kpi" onclick="navTo('history')"><span class="v451-kpi-icon purple">▧</span><span><b>증빙자료 포함</b><strong id="dashEvidenceCount">0건</strong><small>사진·문서 확인</small></span></button>
 <button class="v451-kpi" onclick="navTo('excel')"><span class="v451-kpi-icon orange">₩</span><span><b>금월 집행금액</b><strong id="dashBudget">0천원</strong><small>이번 달 집행</small></span></button>
@@ -1361,7 +1361,7 @@ nav.sidebar {
 </div>
 </div>
 <div class="v451-card v451-today-card">
-<div class="v451-card-head"><h2><span class="v451-dot"></span>오늘 해야 하는 업무</h2><button onclick="navTo('today')">전체 보기 ›</button></div>
+<div class="v451-card-head"><h2><span class="v451-dot"></span>오늘 점검·예정업무</h2><button onclick="navTo('today')">상세 보기 ›</button></div>
 <div class="v451-table-wrap"><table class="v451-table"><thead><tr><th>시설명</th><th>업무명</th><th>주기</th><th>기한</th><th>상태</th></tr></thead><tbody id="dashTodayBody"></tbody></table></div>
 </div>
 <div class="v451-card v451-recent-card">
@@ -1384,10 +1384,10 @@ nav.sidebar {
 <div class="v451-card v451-workflow-card">
 <div class="v451-card-head"><h2>업무 흐름도</h2></div>
 <div class="v451-workflow">
-<button onclick="navTo('cycle')"><span>▦</span><b>점검주기</b></button><i>→</i>
-<button onclick="navTo('today')"><span>▣</span><b>오늘의 업무</b></button><i>→</i>
-<button onclick="navTo('dailylog')"><span>▤</span><b>업무일지</b></button><i>→</i>
-<button onclick="navTo('register')"><span>□</span><b>이력등록</b></button>
+<button onclick="navTo('equipment')"><span>⚙</span><b>설비관리</b></button><i>→</i>
+<button onclick="navTo('register')"><span>＋</span><b>유지관리 등록</b></button><i>→</i>
+<button onclick="navTo('history')"><span>⌕</span><b>이력조회</b></button><i>→</i>
+<button onclick="openEnergyPageV4713(null,'energy')"><span>⚡</span><b>LCC·에너지</b></button>
 </div>
 </div>
 </div>
@@ -1596,8 +1596,8 @@ nav.sidebar {
 <div class="title-row tfms-geo-head"><div class="title-left"><div class="title-icon v4618-header-icon"><svg aria-hidden="true" viewbox="0 0 24 24"><rect height="17" rx="2.5" width="16" x="4" y="4"></rect><path d="M8 2.5v4M16 2.5v4M4 9h16"></path><path d="m8.5 15 2 2 5-5"></path></svg></div><div><h1>오늘의 업무</h1><div class="breadcrumb">홈 › 오늘의 업무</div></div></div></div>
 <div class="panel"><div class="notice">
 <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
-<div><b>점검주기 관리</b>에 등록된 정기 업무가 자동으로 표시됩니다. 담당 시설의 정기점검 기준을 확인·등록한 뒤, 완료 처리하면 유지관리 등록 화면으로 연결할 수 있습니다.</div>
-<button class="btn primary" onclick="navTo('cycle')" type="button">📅 점검주기 관리 바로가기</button>
+<div><b>관리자가 설정한 정기점검</b>이 자동으로 표시됩니다. 현장 담당자는 오늘 필요한 점검을 확인·처리하고, 이상이 있으면 유지관리 이력으로 연계합니다.</div>
+<button class="btn light" onclick="navTo('dashboard')" type="button">← 대시보드로</button>
 </div>
 </div><table class="table" style="margin-top:16px"><thead><tr><th>시설명</th><th>연계 설비</th><th>업무명</th><th>주기</th><th>기한</th><th>상태</th><th>처리</th></tr></thead><tbody id="todayBody"></tbody></table></div>
 </section>
@@ -2373,7 +2373,7 @@ function renderTodayTasks(){
   const body=document.getElementById('todayBody');
   if(!body) return;
   const list=(currentUserDept==='전체') ? todayTasks : todayTasks.filter(t=>getFacilityDept(t.facility)===currentUserDept);
-  body.innerHTML = list.length ? list.map(t=>`<tr><td>${t.facility}</td><td>${t.task}</td><td>${t.cycle}</td><td>${t.due}</td><td><span class="status ${t.due==='오늘'?'wait':'info'}">${t.status}</span></td><td><button class="btn light" onclick="navTo('register'); showToast('오늘의 업무 항목을 유지관리 등록 화면으로 불러왔습니다.')">이력등록</button> <button class="small-btn blue" onclick="completeTodayTask(this)">완료</button></td></tr>`).join('') : '<tr><td colspan="7"><div class="empty-state"><div style="margin-bottom:12px">오늘의 업무가 없습니다.<br>점검주기를 등록하면 해당 날짜에 자동으로 표시됩니다.</div><button class="btn primary" type="button" onclick="navTo(\'cycle\')">📅 점검주기 등록하기</button></div></td></tr>';
+  body.innerHTML = list.length ? list.map(t=>`<tr><td>${t.facility}</td><td>${t.task}</td><td>${t.cycle}</td><td>${t.due}</td><td><span class="status ${t.due==='오늘'?'wait':'info'}">${t.status}</span></td><td><button class="btn light" onclick="navTo('register'); showToast('오늘의 업무 항목을 유지관리 등록 화면으로 불러왔습니다.')">이력등록</button> <button class="small-btn blue" onclick="completeTodayTask(this)">완료</button></td></tr>`).join('') : '<tr><td colspan="7"><div class="empty-state"><div style="margin-bottom:12px">오늘 예정된 점검업무가 없습니다.<br>정기점검 기준은 관리자 설정에서 관리합니다.</div><button class="btn light" type="button" onclick="navTo(\'dashboard\')">← 대시보드로</button></div></td></tr>';
 }
 function filterFacilityDept(dept, btn){
   facilityDeptFilter=dept;
@@ -22753,13 +22753,20 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
      Scope: daily facility scope + caption spacing, version stabilization retained.
      No application data, DB, page render, facility, daily log or maintenance logic changed.
      ========================================================= -->
+<style id="tfms-v481-maintenance-centric-navigation-style">
+/* v48.1 — maintenance-centric navigation reframe. Data/pages remain intact. */
+#appHeader nav .tfms-v481-internal-nav{display:none!important}
+#appHeader nav .tfms-v4606-admin .nav[onclick*="'cycle'"]{order:-10}
+#dashboard .v451-workflow button{min-width:0}
+@media(max-width:760px){#dashboard .v451-workflow{gap:6px!important}#dashboard .v451-workflow button b{font-size:11px}}
+</style>
 <script id="tfms-v480-version-authority">
 (function(){
   'use strict';
-  const LABEL='v48.0.2 LCC Classification & Auxiliary UX Stable';
-  const PARAM='48.0.2';
+  const LABEL='v48.1 Maintenance-Centric Navigation Stable';
+  const PARAM='48.1';
   const TITLE='TFMS '+LABEL;
-  const FIXED_BUILD=Object.freeze({version:'v48.0.2',channel:'LCC Classification & Auxiliary UX Stable',buildDate:'2026.11.06',title:'LCC 분류·등급 설명·설비 보조창 UX 안정화'});
+  const FIXED_BUILD=Object.freeze({version:'v48.1',channel:'Maintenance-Centric Navigation Stable',buildDate:'2026.11.06',title:'유지관리 중심 메뉴·업무흐름 재편'});
   const nativeReplace=History.prototype.replaceState;
   if(!History.prototype.__tfmsV4729VersionNormalized){
     History.prototype.replaceState=function(state,title,url){
@@ -22773,13 +22780,14 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
   function apply(){
     normalizeUrl();
     const badge=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
-    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.0.2')}catch(e){}}
+    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.1')}catch(e){}}
     try{document.title=TITLE;Object.defineProperty(document,'title',{configurable:true,enumerable:true,get(){return TITLE},set(_){}})}catch(e){}
     try{const te=document.head&&document.head.querySelector('title');if(te)lockText(te,'textContent',TITLE)}catch(e){}
     try{Object.defineProperty(window,'TFMS_BUILD',{configurable:true,enumerable:true,get(){return FIXED_BUILD},set(_){}})}catch(e){try{window.TFMS_BUILD=FIXED_BUILD}catch(_){}}
     try{const cb=document.querySelector('#tfmsVersionModal .current-build');if(cb)cb.textContent='현재 버전: '+LABEL}catch(e){}
     try{
       const body=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');
+      if(body&&!body.querySelector('[data-version="v48.1-maintenance-centric-navigation"]')){const v481=document.createElement('div');v481.className='change-item';v481.dataset.version='v48.1-maintenance-centric-navigation';v481.innerHTML='<strong>v48.1 · Maintenance-Centric Navigation Stable</strong><ul><li>오늘의 업무를 독립 사이드바 메뉴에서 제거하고 대시보드 상세 진입으로 전환</li><li>점검주기 관리를 관리자 도구로 이동하고 일반사용자에게는 점검기준 설정 진입을 제한</li><li>대시보드 업무 흐름을 설비관리 → 유지관리 등록 → 이력조회 → LCC·에너지 중심으로 재정의</li><li>today/cycle 페이지·데이터·자동생성 로직은 삭제하지 않고 그대로 보존</li><li>DB/RLS/스키마 변경 없음</li></ul>';body.insertBefore(v481,body.firstChild)}
       if(body&&!body.querySelector('[data-version="v48.0.2-lcc-classification-aux-ux"]')){const v4802=document.createElement('div');v4802.className='change-item';v4802.dataset.version='v48.0.2-lcc-classification-aux-ux';v4802.innerHTML='<strong>v48.0.2 · LCC Classification & Auxiliary UX Stable</strong><ul><li>설비명·분류·운전용도·모델 순으로 자동분류 우선순위 적용 및 HE/HX 설비코드 열교환기 보정</li><li>교체검토 점수의 연한 비중 조정 및 점수 구성·등급 기준 화면 표시</li><li>자동제안 버튼에 설비유형·제안연수 명시</li><li>설비 수정 드로어가 본문을 왼쪽으로 밀던 동작 제거 · 보조창 위치 안정화</li><li>DB/RLS/스키마 변경 없음</li></ul>';body.insertBefore(v4802,body.firstChild)}
       if(body&&!body.querySelector('[data-version="v48.0.1-lcc-selection-sync"]')){const fix=document.createElement('div');fix.className='change-item';fix.dataset.version='v48.0.1-lcc-selection-sync';fix.innerHTML='<strong>v48.0.1 · LCC Selection Sync Stable</strong><ul><li>설비 목록 전환 시 LCC Intelligence를 현재 선택 설비 기준으로 즉시 재계산</li><li>기존 설비관리 안정화 controller가 LCC 재렌더 연결을 덮어쓰던 문제 수정</li><li>온수가열기·급탕가열기를 온수기 계열 자동분류에 추가</li><li>DB/RLS/스키마 변경 없음</li></ul>';body.insertBefore(fix,body.firstChild)}
       if(body&&!body.querySelector('[data-version="v48.0-lcc-intelligence"]')){const v48=document.createElement('div');v48.className='change-item';v48.dataset.version='v48.0-lcc-intelligence';v48.innerHTML='<strong>v48.0 · LCC Intelligence</strong><ul><li>설비명·분류·상세제원 기반 기준 내용연수 자동매칭</li><li>설치일/설치연도 우선, 미입력 시 제조년도 추정으로 경과율·교체 검토 기준연도 자동산정</li><li>기존 유지관리비·상태·위험도·중요도를 결합한 교체 검토등급 및 데이터 신뢰도 표시</li><li>장비이력카드 엑셀의 설치날짜 DB 저장 누락 보완 · DB/RLS 스키마 변경 없음</li></ul>';body.insertBefore(v48,body.firstChild)}
@@ -25668,20 +25676,20 @@ function buildSidebar(){
  const nav=q('#appHeader nav');if(!nav||nav.classList.contains('tfms-v4606-sidebar'))return;
  const ids=['dashboard','today','register','history','stats','excel','dailylog','equipment','cycle','energy','deleteManage','myPage','accountAdmin'];
  const b={};ids.forEach(id=>{b[id]=btnFor(id);setIcon(b[id],id)});
- if(b.cycle)b.cycle.dataset.roles='admin,user';
+ if(b.cycle)b.cycle.dataset.roles='admin';
  nav.classList.add('tfms-v4606-sidebar');
  const frag=document.createDocumentFragment();
  const main=makeSection('tfms-v4606-main','업무');
  [b.dashboard,b.today].filter(Boolean).forEach(x=>main.appendChild(x));
- if(b.today)ensureBadge(b.today,'v4606TodayBadge');
+ if(b.today){b.today.classList.add('tfms-v481-internal-nav');b.today.style.display='none';b.today.setAttribute('aria-hidden','true');ensureBadge(b.today,'v4606TodayBadge')}
  const mg=makeGroup('v4606MaintenanceGroup','유지관리','🔧');
  [b.register,b.history].filter(Boolean).forEach(x=>mg.sub.appendChild(x));
  const mb=document.createElement('span');mb.className='tfms-v4606-custom-badge';mb.id='v4606MaintBadge';mg.t.appendChild(mb);
  main.appendChild(mg.g);
- [b.dailylog,b.equipment,b.cycle,b.energy].filter(Boolean).forEach(x=>main.appendChild(x));
+ [b.dailylog,b.equipment,b.energy].filter(Boolean).forEach(x=>main.appendChild(x));
  frag.appendChild(main);
  const admin=makeSection('tfms-v4606-admin','관리자 도구');
- [b.stats,b.deleteManage,b.accountAdmin,b.excel].filter(Boolean).forEach(x=>admin.appendChild(x));
+ [b.cycle,b.stats,b.deleteManage,b.accountAdmin,b.excel].filter(Boolean).forEach(x=>admin.appendChild(x));
  if(b.cycle)ensureBadge(b.cycle,'v4606CycleBadge');if(b.accountAdmin)ensureBadge(b.accountAdmin,'v4606AccountBadge');
  frag.appendChild(admin);
  const bottom=makeSection('tfms-v4606-bottom','');
@@ -25696,7 +25704,7 @@ function buildSidebar(){
  observeActive(mg.g,[b.register,b.history]);
  updateBadges();
 }
-function applyRoleSections(){const r=role();const admin=q('#appHeader nav .tfms-v4606-admin');if(admin)admin.style.display=(r==='admin'||r==='viewer')?'flex':'none';if(r==='viewer'){const reg=btnFor('register'),today=btnFor('today'),daily=btnFor('dailylog'),equip=btnFor('equipment'),cycle=btnFor('cycle'),del=btnFor('deleteManage'),acc=btnFor('accountAdmin');[reg,today,daily,equip,cycle,del,acc].forEach(x=>{if(x)x.style.display='none'})}}
+function applyRoleSections(){const r=role();const admin=q('#appHeader nav .tfms-v4606-admin');if(admin)admin.style.display=(r==='admin'||r==='viewer')?'flex':'none';const today=btnFor('today');if(today){today.style.display='none';today.setAttribute('aria-hidden','true')}const cycle=btnFor('cycle');if(cycle)cycle.style.display=r==='admin'?'':'none';if(r==='viewer'){const reg=btnFor('register'),daily=btnFor('dailylog'),equip=btnFor('equipment'),del=btnFor('deleteManage'),acc=btnFor('accountAdmin');[reg,daily,equip,del,acc].forEach(x=>{if(x)x.style.display='none'})}}
 function observeActive(group,buttons){const sync=()=>group.classList.toggle('active',buttons.some(b=>b?.classList.contains('active')));buttons.filter(Boolean).forEach(b=>new MutationObserver(sync).observe(b,{attributes:true,attributeFilter:['class']}));sync()}
 function bindTopAlert(){const user=q('#appHeader .user');if(!user||$('v4606TopAlert'))return;const bell=qa(':scope > span',user).find(s=>(s.textContent||'').trim()==='🔔');const btn=document.createElement('button');btn.type='button';btn.id='v4606TopAlert';btn.className='tfms-v4606-top-alert';btn.innerHTML='🔔<span class="tfms-v4606-top-badge" id="v4606TopBadge"></span>';btn.onclick=showAlerts;if(bell)bell.replaceWith(btn);else user.insertBefore(btn,$('topUserLabel')||user.firstChild)}
 function refresh(){lockVersion();buildSidebar();bindTopAlert();applyRoleSections();updateBadges()}
