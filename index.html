@@ -18869,7 +18869,7 @@ const LIB=[
  {id:'valve',label:'밸브류',years:15,min:10,max:20,source:'TFMS 내부검토값',conf:'낮음',rx:[/밸브|스팀.*트랩|steam.*trap|valve/i],note:'사용유체·압력·부식·패킹/시트 상태에 따라 편차가 큼'},
  {id:'piping',label:'배관류',years:30,min:15,max:50,source:'TFMS 내부검토값',conf:'낮음',rx:[/배관|배수관|급수관|온수관|스팀.*라인|steam.*line|pipe|piping/i],note:'재질·수질·부식환경·보온상태를 확인하여 기준값을 조정해야 함'},
  {id:'insulation',label:'보온·단열재',years:20,min:18,max:24,source:'ASHRAE/PNNL 참고',conf:'보통',rx:[/보온재|단열재|insulation/i]},
- {id:'water-heater',label:'온수기',years:12,min:10,max:15,source:'PNNL FEDS 참고',conf:'보통',rx:[/온수기|water.*heater/i]},
+ {id:'water-heater',label:'온수기',years:12,min:10,max:15,source:'PNNL FEDS 참고',conf:'보통',rx:[/온수기|온수.*가열기|급탕.*가열기|water.*heater/i]},
  {id:'tank',label:'탱크·저수조',years:20,min:15,max:30,source:'TFMS 내부검토값',conf:'낮음',rx:[/저수조|물탱크|저장.*탱크|tank/i],note:'재질·방식·수질·내부 코팅상태에 따라 상태기반 평가 필요'}
 ];
 window.TFMS_LCC_LIBRARY_V480=Object.freeze(LIB.map(x=>Object.freeze({...x})));
@@ -18943,7 +18943,7 @@ function renderIntel(c,a){
  <div class="tfms-v480-intel-note"><b>판단 안내</b><span>${esc(note)} 내용연수 경과만으로 자동 교체하지 않으며, 상태·고장빈도·보수비·중요도를 함께 판단합니다.</span>${canApply?`<button type="button" onclick="tfmsV480ApplySuggestedLife()">제안 ${c.life}년을 설비정보에 반영</button>`:''}</div>`;
 }
 function render(key){
- const box=ensureUI(),k=key||window.selectedAssetKey,a=(window.assetData||{})[k];if(!box||!a)return;const c=calc(k,a);
+ const box=ensureUI(),k=key||window.selectedAssetKey;let store={};try{store=(typeof assetData!=='undefined'&&assetData)||window.assetData||{}}catch(e){store=window.assetData||{}}const a=store[k];if(!box||!a)return;const c=calc(k,a);
  if($('lccRepair'))$('lccRepair').textContent=money(c.repair);if($('lccHistoryText'))$('lccHistoryText').textContent=c.historyCount?`유지관리 이력 ${c.historyCount}건 자동 합산`:'현재 연계된 유지관리 이력 없음';
  if($('lccReplace'))$('lccReplace').textContent=money(c.replace);if($('lccElapsed'))$('lccElapsed').textContent=c.elapsed?`${c.elapsed.toFixed(1)}년`:'-';
  if($('lccAgeText'))$('lccAgeText').textContent=c.life?`기준 ${c.life}년 · ${(c.ageRatio*100).toFixed(0)}% 경과 · ${c.lifeInfo.mode==='manual'?'직접입력':'자동제안'}`:'기준 내용연수 미매칭';
@@ -22754,10 +22754,10 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 <script id="tfms-v480-version-authority">
 (function(){
   'use strict';
-  const LABEL='v48.0 LCC Intelligence';
-  const PARAM='48.0';
+  const LABEL='v48.0.1 LCC Selection Sync Stable';
+  const PARAM='48.0.1';
   const TITLE='TFMS '+LABEL;
-  const FIXED_BUILD=Object.freeze({version:'v48.0',channel:'LCC Intelligence',buildDate:'2026.11.06',title:'설비 기준수명 자동매칭·교체검토 고도화'});
+  const FIXED_BUILD=Object.freeze({version:'v48.0.1',channel:'LCC Selection Sync Stable',buildDate:'2026.11.06',title:'설비 선택 전환 LCC Intelligence 동기화'});
   const nativeReplace=History.prototype.replaceState;
   if(!History.prototype.__tfmsV4729VersionNormalized){
     History.prototype.replaceState=function(state,title,url){
@@ -22771,13 +22771,14 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
   function apply(){
     normalizeUrl();
     const badge=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
-    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.0')}catch(e){}}
+    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.0.1')}catch(e){}}
     try{document.title=TITLE;Object.defineProperty(document,'title',{configurable:true,enumerable:true,get(){return TITLE},set(_){}})}catch(e){}
     try{const te=document.head&&document.head.querySelector('title');if(te)lockText(te,'textContent',TITLE)}catch(e){}
     try{Object.defineProperty(window,'TFMS_BUILD',{configurable:true,enumerable:true,get(){return FIXED_BUILD},set(_){}})}catch(e){try{window.TFMS_BUILD=FIXED_BUILD}catch(_){}}
     try{const cb=document.querySelector('#tfmsVersionModal .current-build');if(cb)cb.textContent='현재 버전: '+LABEL}catch(e){}
     try{
       const body=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');
+      if(body&&!body.querySelector('[data-version="v48.0.1-lcc-selection-sync"]')){const fix=document.createElement('div');fix.className='change-item';fix.dataset.version='v48.0.1-lcc-selection-sync';fix.innerHTML='<strong>v48.0.1 · LCC Selection Sync Stable</strong><ul><li>설비 목록 전환 시 LCC Intelligence를 현재 선택 설비 기준으로 즉시 재계산</li><li>기존 설비관리 안정화 controller가 LCC 재렌더 연결을 덮어쓰던 문제 수정</li><li>온수가열기·급탕가열기를 온수기 계열 자동분류에 추가</li><li>DB/RLS/스키마 변경 없음</li></ul>';body.insertBefore(fix,body.firstChild)}
       if(body&&!body.querySelector('[data-version="v48.0-lcc-intelligence"]')){const v48=document.createElement('div');v48.className='change-item';v48.dataset.version='v48.0-lcc-intelligence';v48.innerHTML='<strong>v48.0 · LCC Intelligence</strong><ul><li>설비명·분류·상세제원 기반 기준 내용연수 자동매칭</li><li>설치일/설치연도 우선, 미입력 시 제조년도 추정으로 경과율·교체 검토 기준연도 자동산정</li><li>기존 유지관리비·상태·위험도·중요도를 결합한 교체 검토등급 및 데이터 신뢰도 표시</li><li>장비이력카드 엑셀의 설치날짜 DB 저장 누락 보완 · DB/RLS 스키마 변경 없음</li></ul>';body.insertBefore(v48,body.firstChild)}
       if(body&&!body.querySelector('[data-version="v47.30-rc1-role-regression"]')){
         const el=document.createElement('div');el.className='change-item';el.dataset.version='v47.30-rc1-role-regression';
@@ -36694,4 +36695,66 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 @media(max-width:560px){#equipment .tfms-v480-intel-grid{grid-template-columns:1fr}#equipment .tfms-v480-intel-grid>div{border-right:0!important;border-bottom:1px solid #e7edf4!important}#equipment .tfms-v480-intel-grid>div:last-child{border-bottom:0!important}#equipment .tfms-v480-intel-head{align-items:flex-start}#equipment .tfms-v480-intel-head>div{display:block}#equipment .tfms-v480-intel-head>div span{display:block;margin-top:3px}}
 </style>
 
+
+<script id="tfms-v4801-lcc-selection-sync-controller">
+(function(){
+'use strict';
+if(window.__tfmsV4801LccSelectionSyncInstalled)return;
+window.__tfmsV4801LccSelectionSyncInstalled=true;
+let seq=0;
+function currentKey(explicit){
+  if(explicit!=null&&String(explicit).trim())return String(explicit).trim();
+  try{if(window.selectedAssetKey)return String(window.selectedAssetKey).trim()}catch(e){}
+  try{if(typeof selectedAssetKey!=='undefined'&&selectedAssetKey)return String(selectedAssetKey).trim()}catch(e){}
+  return '';
+}
+function refresh(explicit){
+  const token=++seq,key=currentKey(explicit);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    if(token!==seq)return;
+    const k=currentKey(key);
+    if(!k||typeof window.tfmsV480RenderLcc!=='function')return;
+    try{window.tfmsV480RenderLcc(k)}catch(e){console.warn('TFMS v48.0.1 LCC selection sync',e)}
+  }));
+}
+function bindList(){
+  const host=document.getElementById('tfmsV4431List')||document.getElementById('assetList');
+  if(!host||host.dataset.v4801LccBound==='1')return;
+  host.dataset.v4801LccBound='1';
+  host.addEventListener('click',e=>{
+    if(!e.target.closest('.tree-item,.uf-item'))return;
+    /* Existing selector runs first; refresh on the next frame using the now-current key. */
+    refresh();
+  });
+}
+const prevShow=window.showAsset;
+if(typeof prevShow==='function'&&!prevShow.__v4801lcc){
+  const wrapped=function(key){const out=prevShow.apply(this,arguments);refresh(key);return out};
+  wrapped.__v4801lcc=true;window.showAsset=wrapped;
+  try{showAsset=wrapped}catch(e){}
+}
+const prevStable=window.tfmsSelectAssetStable;
+if(typeof prevStable==='function'&&!prevStable.__v4801lcc){
+  const wrapped=function(key){const out=prevStable.apply(this,arguments);refresh(key);return out};
+  wrapped.__v4801lcc=true;window.tfmsSelectAssetStable=wrapped;
+}
+const prevTab=window.activateAssetTabV4431;
+if(typeof prevTab==='function'&&!prevTab.__v4801lcc){
+  const wrapped=function(tab){const out=prevTab.apply(this,arguments);if(tab==='lcc')refresh();return out};
+  wrapped.__v4801lcc=true;window.activateAssetTabV4431=wrapped;
+}
+const prevPage=window.showPage;
+if(typeof prevPage==='function'&&!prevPage.__v4801lcc){
+  const wrapped=function(id){const out=prevPage.apply(this,arguments);if(id==='equipment'){bindList();refresh()}return out};
+  wrapped.__v4801lcc=true;window.showPage=wrapped;
+}
+const prevNav=window.navTo;
+if(typeof prevNav==='function'&&!prevNav.__v4801lcc){
+  const wrapped=function(id){const out=prevNav.apply(this,arguments);if(id==='equipment'){bindList();refresh()}return out};
+  wrapped.__v4801lcc=true;window.navTo=wrapped;
+}
+function init(){bindList();refresh()}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();
+</script>
 </body></html>
