@@ -22721,13 +22721,13 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
      Scope: daily facility scope + caption spacing, version stabilization retained.
      No application data, DB, page render, facility, daily log or maintenance logic changed.
      ========================================================= -->
-<script id="tfms-v4730-version-authority">
+<script id="tfms-v4740-version-authority">
 (function(){
   'use strict';
-  const LABEL='v47.32 RC2 Final Audit Stable';
-  const PARAM='47.32';
+  const LABEL='v47.40 Operational Stable';
+  const PARAM='47.40';
   const TITLE='TFMS '+LABEL;
-  const FIXED_BUILD=Object.freeze({version:'v47.32',channel:'RC2 Final Audit Stable',buildDate:'2026.11.05',title:'RC 최종 코드·권한·메뉴 연결 점검 및 안전한 중복코드 정리'});
+  const FIXED_BUILD=Object.freeze({version:'v47.40',channel:'Operational Stable',buildDate:'2026.11.06',title:'RC2 검증 기준본 운영 안정버전 고정'});
   const nativeReplace=History.prototype.replaceState;
   if(!History.prototype.__tfmsV4729VersionNormalized){
     History.prototype.replaceState=function(state,title,url){
@@ -22741,7 +22741,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
   function apply(){
     normalizeUrl();
     const badge=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
-    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','47.32')}catch(e){}}
+    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','47.40')}catch(e){}}
     try{document.title=TITLE;Object.defineProperty(document,'title',{configurable:true,enumerable:true,get(){return TITLE},set(_){}})}catch(e){}
     try{const te=document.head&&document.head.querySelector('title');if(te)lockText(te,'textContent',TITLE)}catch(e){}
     try{Object.defineProperty(window,'TFMS_BUILD',{configurable:true,enumerable:true,get(){return FIXED_BUILD},set(_){}})}catch(e){try{window.TFMS_BUILD=FIXED_BUILD}catch(_){}}
@@ -22757,6 +22757,11 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
         const rc=document.createElement('div');rc.className='change-item';rc.dataset.version='v47.32-rc2-final-audit';
         rc.innerHTML='<strong>v47.32 · RC2 Final Audit Stable</strong><ul><li>주요 메뉴 page ID·역할별 노출·inline JavaScript 문법 최종 점검</li><li>죽은 구버전 상태 controller 제거 및 버전 authority 단일화</li><li>신규 기능 없이 Operational Stable 전 최종 RC 기준본으로 고정</li></ul>';
         body.insertBefore(rc,body.firstChild);
+      }
+      if(body&&!body.querySelector('[data-version="v47.40-operational-stable"]')){
+        const stable=document.createElement('div');stable.className='change-item';stable.dataset.version='v47.40-operational-stable';
+        stable.innerHTML='<strong>v47.40 · Operational Stable</strong><ul><li>v47.32 RC2 검증 기준본을 기능 변경 없이 운영 안정버전으로 승격</li><li>신규 기능 동결 · 이후 변경은 v47.40.x 버그픽스만 허용</li><li>롤백 기준: v47.32 RC2 Final Audit Stable</li></ul>';
+        body.insertBefore(stable,body.firstChild);
       }
     }catch(e){}
   }
@@ -36629,5 +36634,5 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   #cycle.v4571-cycle > .title-row .v4571-title-actions{margin-left:54px!important;}
 }
 </style>
-<!-- /TFMS v47.32 RC2 Final Audit Stable -->
+<!-- /TFMS v47.40 Operational Stable -->
 </body></html>
