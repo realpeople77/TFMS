@@ -1250,6 +1250,7 @@ nav.sidebar {
 <nav>
 <button class="nav active" data-roles="admin,user,viewer" onclick="showPage('dashboard',this)">대시보드</button>
 <button class="nav tfms-v481-internal-nav" data-roles="admin,user" onclick="showPage('today',this)" style="display:none" aria-hidden="true">오늘의 업무</button>
+<button class="nav" data-roles="admin,user,viewer" onclick="showPage('maintenanceHub',this)">유지관리 현황</button>
 <button class="nav" data-roles="admin,user" onclick="showPage('register',this)">유지관리 등록</button>
 <button class="nav" data-roles="admin,user,viewer" onclick="showPage('history',this)">유지관리 조회</button>
 <button class="nav" data-roles="admin,user" onclick="showPage('dailylog',this)">업무일지</button>
@@ -1393,6 +1394,23 @@ nav.sidebar {
 </div>
 <div aria-hidden="true" class="v451-hidden-metrics">
 <strong id="dashTotal">0건</strong><strong id="dashTodayRegistered">0건</strong><strong id="dashEvalCount">0건</strong><div id="deptSummary"></div>
+</div>
+</section>
+<section class="page tfms-v482-hub" id="maintenanceHub">
+<div class="title-row tfms-v482-hub-title"><div class="title-left"><div class="title-icon v4618-header-icon"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0-5 5L4 17a2 2 0 1 0 3 3l5.7-5.7a4 4 0 0 0 5-5l-2.4 2.4-3-3Z"></path><path d="M18 15v5M15.5 17.5h5"></path></svg></div><div><h1>유지관리 허브</h1><div class="breadcrumb">홈 › 유지관리 › 현황</div></div></div><div class="tfms-v482-head-actions"><button type="button" class="btn blue tfms-v482-write" onclick="navTo('register')">＋ 유지관리 등록</button><button type="button" class="btn light" onclick="navTo('history')">이력조회</button><button type="button" class="btn light" onclick="tfmsV482RefreshHub()">↻ 새로고침</button></div></div>
+<div class="tfms-v482-tabs"><button class="active" type="button" onclick="navTo('maintenanceHub')">현황</button><button class="tfms-v482-write" type="button" onclick="navTo('register')">등록</button><button type="button" onclick="navTo('history')">이력조회</button><button type="button" onclick="navTo('today')">정기점검</button></div>
+<div class="tfms-v482-kpis">
+<button type="button" onclick="tfmsV482ScrollTo('v482PendingPanel')"><span class="ico blue">🔧</span><span><small>진행 중 유지관리</small><strong id="v482PendingMaint">0건</strong><em>미완료·조치중 이력</em></span></button>
+<button type="button" onclick="navTo('today')"><span class="ico mint">✓</span><span><small>오늘 정기점검</small><strong id="v482TodayTasks">0건</strong><em>오늘 처리할 점검</em></span></button>
+<button type="button" onclick="navTo('today')"><span class="ico red">!</span><span><small>기한 경과</small><strong id="v482LateTasks">0건</strong><em>미완료 점검</em></span></button>
+<button type="button" onclick="tfmsV482ScrollTo('v482LccPanel')"><span class="ico orange">◷</span><span><small>교체검토 설비</small><strong id="v482LccCount">0건</strong><em>LCC 중점 이상</em></span></button>
+<button type="button" onclick="openEnergyPageV4713(null,'energy')"><span class="ico purple">⚡</span><span><small>에너지 이상징후</small><strong id="v482EnergyCount">0건</strong><em>미조치·조치중</em></span></button>
+</div>
+<div class="tfms-v482-hub-grid">
+<section class="tfms-v482-card wide" id="v482PendingPanel"><div class="tfms-v482-card-head"><div><h2>처리할 유지관리</h2><p>현재 진행 중이거나 조치가 필요한 유지관리 이력입니다.</p></div><button type="button" onclick="navTo('history')">전체 이력 ›</button></div><div class="tfms-v482-table-wrap"><table><thead><tr><th>일자</th><th>시설</th><th>설비</th><th>내용</th><th>상태</th><th>처리</th></tr></thead><tbody id="v482PendingBody"><tr><td colspan="6"><div class="tfms-v482-empty">표시할 유지관리 자료가 없습니다.</div></td></tr></tbody></table></div></section>
+<section class="tfms-v482-card" id="v482LccPanel"><div class="tfms-v482-card-head"><div><h2>LCC 교체검토</h2><p>중점검토 이상 설비를 우선 표시합니다.</p></div><button type="button" onclick="navTo('equipment')">설비관리 ›</button></div><div class="tfms-v482-list" id="v482LccList"><div class="tfms-v482-empty">교체검토 설비가 없습니다.</div></div></section>
+<section class="tfms-v482-card wide"><div class="tfms-v482-card-head"><div><h2>오늘 정기점검</h2><p>점검기준에서 자동 생성된 현장 점검업무입니다.</p></div><button type="button" onclick="navTo('today')">점검 처리 ›</button></div><div class="tfms-v482-table-wrap"><table><thead><tr><th>시설</th><th>설비</th><th>점검명</th><th>기한</th><th>상태</th><th>처리</th></tr></thead><tbody id="v482TaskBody"><tr><td colspan="6"><div class="tfms-v482-empty">오늘 예정된 정기점검이 없습니다.</div></td></tr></tbody></table></div></section>
+<section class="tfms-v482-card"><div class="tfms-v482-card-head"><div><h2>최근 완료 이력</h2><p>최근 조치완료된 유지관리입니다.</p></div><button type="button" onclick="navTo('history')">더보기 ›</button></div><div class="tfms-v482-list" id="v482RecentList"><div class="tfms-v482-empty">최근 완료 이력이 없습니다.</div></div></section>
 </div>
 </section>
 <section class="page" id="register">
@@ -22763,10 +22781,10 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 <script id="tfms-v480-version-authority">
 (function(){
   'use strict';
-  const LABEL='v48.1 Maintenance-Centric Navigation Stable';
-  const PARAM='48.1';
+  const LABEL='v48.2 Maintenance Hub Integration Stable';
+  const PARAM='48.2';
   const TITLE='TFMS '+LABEL;
-  const FIXED_BUILD=Object.freeze({version:'v48.1',channel:'Maintenance-Centric Navigation Stable',buildDate:'2026.11.06',title:'유지관리 중심 메뉴·업무흐름 재편'});
+  const FIXED_BUILD=Object.freeze({version:'v48.2',channel:'Maintenance Hub Integration Stable',buildDate:'2026.11.06',title:'유지관리 허브 통합 및 설비·점검·LCC 연계'});
   const nativeReplace=History.prototype.replaceState;
   if(!History.prototype.__tfmsV4729VersionNormalized){
     History.prototype.replaceState=function(state,title,url){
@@ -22780,13 +22798,14 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
   function apply(){
     normalizeUrl();
     const badge=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
-    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.1')}catch(e){}}
+    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2')}catch(e){}}
     try{document.title=TITLE;Object.defineProperty(document,'title',{configurable:true,enumerable:true,get(){return TITLE},set(_){}})}catch(e){}
     try{const te=document.head&&document.head.querySelector('title');if(te)lockText(te,'textContent',TITLE)}catch(e){}
     try{Object.defineProperty(window,'TFMS_BUILD',{configurable:true,enumerable:true,get(){return FIXED_BUILD},set(_){}})}catch(e){try{window.TFMS_BUILD=FIXED_BUILD}catch(_){}}
     try{const cb=document.querySelector('#tfmsVersionModal .current-build');if(cb)cb.textContent='현재 버전: '+LABEL}catch(e){}
     try{
       const body=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');
+      if(body&&!body.querySelector('[data-version="v48.2-maintenance-hub"]')){const v482=document.createElement('div');v482.className='change-item';v482.dataset.version='v48.2-maintenance-hub';v482.innerHTML='<strong>v48.2 · Maintenance Hub Integration Stable</strong><ul><li>유지관리 현황을 신규 허브 화면으로 통합하고 진행중 이력·정기점검·LCC·에너지 이상징후를 한 화면에서 요약</li><li>유지관리 등록·이력조회·정기점검을 허브에서 바로 진입하도록 업무흐름 재구성</li><li>LCC 중점검토 이상 설비와 최근 완료이력을 자동 집계</li><li>기존 today/cycle/register/history/equipment 데이터와 페이지는 그대로 보존</li><li>DB/RLS/스키마 변경 없음</li></ul>';body.insertBefore(v482,body.firstChild)}
       if(body&&!body.querySelector('[data-version="v48.1-maintenance-centric-navigation"]')){const v481=document.createElement('div');v481.className='change-item';v481.dataset.version='v48.1-maintenance-centric-navigation';v481.innerHTML='<strong>v48.1 · Maintenance-Centric Navigation Stable</strong><ul><li>오늘의 업무를 독립 사이드바 메뉴에서 제거하고 대시보드 상세 진입으로 전환</li><li>점검주기 관리를 관리자 도구로 이동하고 일반사용자에게는 점검기준 설정 진입을 제한</li><li>대시보드 업무 흐름을 설비관리 → 유지관리 등록 → 이력조회 → LCC·에너지 중심으로 재정의</li><li>today/cycle 페이지·데이터·자동생성 로직은 삭제하지 않고 그대로 보존</li><li>DB/RLS/스키마 변경 없음</li></ul>';body.insertBefore(v481,body.firstChild)}
       if(body&&!body.querySelector('[data-version="v48.0.2-lcc-classification-aux-ux"]')){const v4802=document.createElement('div');v4802.className='change-item';v4802.dataset.version='v48.0.2-lcc-classification-aux-ux';v4802.innerHTML='<strong>v48.0.2 · LCC Classification & Auxiliary UX Stable</strong><ul><li>설비명·분류·운전용도·모델 순으로 자동분류 우선순위 적용 및 HE/HX 설비코드 열교환기 보정</li><li>교체검토 점수의 연한 비중 조정 및 점수 구성·등급 기준 화면 표시</li><li>자동제안 버튼에 설비유형·제안연수 명시</li><li>설비 수정 드로어가 본문을 왼쪽으로 밀던 동작 제거 · 보조창 위치 안정화</li><li>DB/RLS/스키마 변경 없음</li></ul>';body.insertBefore(v4802,body.firstChild)}
       if(body&&!body.querySelector('[data-version="v48.0.1-lcc-selection-sync"]')){const fix=document.createElement('div');fix.className='change-item';fix.dataset.version='v48.0.1-lcc-selection-sync';fix.innerHTML='<strong>v48.0.1 · LCC Selection Sync Stable</strong><ul><li>설비 목록 전환 시 LCC Intelligence를 현재 선택 설비 기준으로 즉시 재계산</li><li>기존 설비관리 안정화 controller가 LCC 재렌더 연결을 덮어쓰던 문제 수정</li><li>온수가열기·급탕가열기를 온수기 계열 자동분류에 추가</li><li>DB/RLS/스키마 변경 없음</li></ul>';body.insertBefore(fix,body.firstChild)}
@@ -25656,7 +25675,7 @@ function dept(){try{return window.cloudProfile?.department?.name||window.tfmsUse
 function btnFor(id){return qa('#appHeader nav .nav').find(b=>(b.getAttribute('onclick')||'').includes(`'${id}'`)||(b.getAttribute('onclick')||'').includes(`\"${id}\"`))}
 function ensureBadge(btn,id){if(!btn)return null;let s=q('.tfms-v4606-menu-badge',btn);if(!s){s=document.createElement('span');s.className='tfms-v4606-menu-badge';s.id=id;btn.appendChild(s)}return s}
 function setBadge(el,n){if(!el)return;const v=Math.max(0,Number(n)||0);el.textContent=v>99?'99+':String(v);el.parentElement?.classList.toggle('has-badge',v>0)}
-function iconMap(id){return({dashboard:'⌂',today:'▣',register:'＋',history:'⌕',stats:'▥',excel:'⇩',dailylog:'▤',equipment:'⚙',cycle:'◷',energy:'⚡',deleteManage:'↶',myPage:'♙',accountAdmin:'♧'})[id]||'•'}
+function iconMap(id){return({dashboard:'⌂',today:'▣',maintenanceHub:'▦',register:'＋',history:'⌕',stats:'▥',excel:'⇩',dailylog:'▤',equipment:'⚙',cycle:'◷',energy:'⚡',deleteManage:'↶',myPage:'♙',accountAdmin:'♧'})[id]||'•'}
 function setIcon(btn,id){if(!btn)return;let ico=q('.tfms-nav-ico',btn);if(!ico){ico=document.createElement('span');ico.className='tfms-nav-ico';btn.prepend(ico)}ico.textContent=iconMap(id)}
 function makeSection(cls,label){const s=document.createElement('div');s.className='tfms-v4606-section '+cls;if(label){const l=document.createElement('div');l.className='tfms-v4606-section-label';l.textContent=label;s.appendChild(l)}return s}
 function makeGroup(id,label,ico){const g=document.createElement('div');g.className='tfms-v4606-group';g.id=id;const t=document.createElement('button');t.type='button';t.className='tfms-v4606-group-toggle';t.innerHTML=`<span class="ico">${ico}</span>${label}<span class="chev">›</span>`;const sub=document.createElement('div');sub.className='tfms-v4606-submenu';t.onclick=()=>g.classList.toggle('open');g.append(t,sub);return{g,t,sub}}
@@ -25674,7 +25693,7 @@ function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;',
 function updateBadges(){if(typeof window.tfmsV4631UpdateBadges==='function')return window.tfmsV4631UpdateBadges();const late=lateTasks().length,pending=pendingTasks().length,maint=unresolvedMaintenance(),acc=pendingAccounts();setBadge($('v4606TodayBadge'),pending);setBadge($('v4606MaintBadge'),maint);setBadge($('v4606CycleBadge'),late);setBadge($('v4606AccountBadge'),acc);const total=late+acc;const side=$('v4606AlertSideBadge');if(side){side.textContent=total>99?'99+':String(total);q('#v4606AlertSide')?.classList.toggle('has-badge',total>0)}const top=$('v4606TopBadge');if(top){top.textContent=total>99?'99+':String(total);q('#v4606TopAlert')?.classList.toggle('has-badge',total>0)}}
 function buildSidebar(){
  const nav=q('#appHeader nav');if(!nav||nav.classList.contains('tfms-v4606-sidebar'))return;
- const ids=['dashboard','today','register','history','stats','excel','dailylog','equipment','cycle','energy','deleteManage','myPage','accountAdmin'];
+ const ids=['dashboard','today','maintenanceHub','register','history','stats','excel','dailylog','equipment','cycle','energy','deleteManage','myPage','accountAdmin'];
  const b={};ids.forEach(id=>{b[id]=btnFor(id);setIcon(b[id],id)});
  if(b.cycle)b.cycle.dataset.roles='admin';
  nav.classList.add('tfms-v4606-sidebar');
@@ -25683,7 +25702,7 @@ function buildSidebar(){
  [b.dashboard,b.today].filter(Boolean).forEach(x=>main.appendChild(x));
  if(b.today){b.today.classList.add('tfms-v481-internal-nav');b.today.style.display='none';b.today.setAttribute('aria-hidden','true');ensureBadge(b.today,'v4606TodayBadge')}
  const mg=makeGroup('v4606MaintenanceGroup','유지관리','🔧');
- [b.register,b.history].filter(Boolean).forEach(x=>mg.sub.appendChild(x));
+ [b.maintenanceHub,b.register,b.history].filter(Boolean).forEach(x=>mg.sub.appendChild(x));
  const mb=document.createElement('span');mb.className='tfms-v4606-custom-badge';mb.id='v4606MaintBadge';mg.t.appendChild(mb);
  main.appendChild(mg.g);
  [b.dailylog,b.equipment,b.energy].filter(Boolean).forEach(x=>main.appendChild(x));
@@ -25701,7 +25720,7 @@ function buildSidebar(){
  mg.g.classList.add('open');
  // role-based section display
  applyRoleSections();
- observeActive(mg.g,[b.register,b.history]);
+ observeActive(mg.g,[b.maintenanceHub,b.register,b.history]);
  updateBadges();
 }
 function applyRoleSections(){const r=role();const admin=q('#appHeader nav .tfms-v4606-admin');if(admin)admin.style.display=(r==='admin'||r==='viewer')?'flex':'none';const today=btnFor('today');if(today){today.style.display='none';today.setAttribute('aria-hidden','true')}const cycle=btnFor('cycle');if(cycle)cycle.style.display=r==='admin'?'':'none';if(r==='viewer'){const reg=btnFor('register'),daily=btnFor('dailylog'),equip=btnFor('equipment'),del=btnFor('deleteManage'),acc=btnFor('accountAdmin');[reg,daily,equip,del,acc].forEach(x=>{if(x)x.style.display='none'})}}
@@ -36779,6 +36798,74 @@ if(typeof prevNav==='function'&&!prevNav.__v4801lcc){
 }
 function init(){bindList();refresh()}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();
+</script>
+
+<style id="tfms-v482-maintenance-hub-style">
+#maintenanceHub.tfms-v482-hub{--h-navy:#123b66;--h-blue:#1764d6;--h-line:#dbe6f0;--h-muted:#71849a}
+#maintenanceHub .tfms-v482-hub-title{margin-bottom:10px!important;align-items:center!important}
+#maintenanceHub .tfms-v482-head-actions{display:flex;gap:7px;align-items:center;justify-content:flex-end;flex-wrap:wrap}
+#maintenanceHub .tfms-v482-tabs{display:flex;gap:4px;padding:4px;background:#eef3f8;border:1px solid #dce6f0;border-radius:11px;width:max-content;max-width:100%;margin-bottom:12px}
+#maintenanceHub .tfms-v482-tabs button{height:34px;padding:0 16px;border:0;border-radius:8px;background:transparent;color:#60758b;font-size:12px;font-weight:850;cursor:pointer;white-space:nowrap}
+#maintenanceHub .tfms-v482-tabs button.active{background:#fff;color:#1764d6;box-shadow:0 2px 8px rgba(21,71,121,.08)}
+#maintenanceHub .tfms-v482-kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:12px}
+#maintenanceHub .tfms-v482-kpis>button{min-width:0;min-height:96px;border:1px solid var(--h-line);border-radius:14px;background:#fff;padding:13px 14px;display:flex;align-items:center;gap:11px;text-align:left;cursor:pointer;box-shadow:0 4px 16px rgba(24,67,110,.04);transition:transform .14s ease,border-color .14s ease,box-shadow .14s ease}
+#maintenanceHub .tfms-v482-kpis>button:hover{transform:translateY(-1px);border-color:#bfd3e7;box-shadow:0 7px 18px rgba(24,67,110,.07)}
+#maintenanceHub .tfms-v482-kpis .ico{width:42px;height:42px;flex:0 0 42px;border-radius:12px;display:grid;place-items:center;font-size:17px;background:#eef5ff}.tfms-v482-kpis .ico.mint{background:#eaf9f4}.tfms-v482-kpis .ico.red{background:#fff0f0}.tfms-v482-kpis .ico.orange{background:#fff5e8}.tfms-v482-kpis .ico.purple{background:#f3efff}
+#maintenanceHub .tfms-v482-kpis span:last-child{display:grid;min-width:0}#maintenanceHub .tfms-v482-kpis small{font-size:11px;color:#6f8398;font-weight:850}#maintenanceHub .tfms-v482-kpis strong{font-size:23px;color:var(--h-navy);line-height:1.1;margin:3px 0}#maintenanceHub .tfms-v482-kpis em{font-style:normal;font-size:10px;color:#91a0b1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#maintenanceHub .tfms-v482-hub-grid{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(300px,.75fr);gap:12px;align-items:start}
+#maintenanceHub .tfms-v482-card{background:#fff;border:1px solid var(--h-line);border-radius:14px;padding:14px;min-width:0;box-shadow:0 4px 16px rgba(24,67,110,.035)}
+#maintenanceHub .tfms-v482-card.wide{min-width:0}
+#maintenanceHub .tfms-v482-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px}#maintenanceHub .tfms-v482-card-head h2{margin:0 0 3px;font-size:15px;color:var(--h-navy)}#maintenanceHub .tfms-v482-card-head p{margin:0;font-size:10.5px;color:#7d8ea1}#maintenanceHub .tfms-v482-card-head button{border:0;background:transparent;color:#1764d6;font-size:11px;font-weight:850;cursor:pointer;white-space:nowrap}
+#maintenanceHub .tfms-v482-table-wrap{overflow:auto;border:1px solid #e3eaf2;border-radius:10px}#maintenanceHub table{width:100%;border-collapse:collapse;min-width:720px}#maintenanceHub th{padding:8px 9px;background:#f6f9fc;color:#587088;font-size:10.5px;text-align:left;white-space:nowrap}#maintenanceHub td{padding:9px;border-top:1px solid #e8eef4;color:#304a63;font-size:11px;vertical-align:middle}#maintenanceHub td b{color:#183f68}#maintenanceHub td small{display:block;margin-top:2px;color:#8193a6;font-size:9.5px}
+#maintenanceHub .tfms-v482-status{display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:999px;background:#eef5ff;color:#2d68a9;font-size:10px;font-weight:850;white-space:nowrap}#maintenanceHub .tfms-v482-status.danger{background:#fff0f0;color:#c13f3f}#maintenanceHub .tfms-v482-status.done{background:#eaf8f1;color:#248151}#maintenanceHub .tfms-v482-action{height:28px;padding:0 9px;border:1px solid #cbdbea;border-radius:7px;background:#fff;color:#315f89;font-size:10.5px;font-weight:850;cursor:pointer;white-space:nowrap}
+#maintenanceHub .tfms-v482-list{display:grid;gap:7px}#maintenanceHub .tfms-v482-list-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:9px 10px;border:1px solid #e4ebf2;border-radius:10px;background:#fbfdff;cursor:pointer}#maintenanceHub .tfms-v482-list-row:hover{border-color:#cbddec;background:#f7fbff}#maintenanceHub .tfms-v482-list-row b{display:block;color:#20496f;font-size:11.5px;margin-bottom:2px}#maintenanceHub .tfms-v482-list-row small{display:block;color:#7d90a3;font-size:9.5px;line-height:1.4}#maintenanceHub .tfms-v482-list-row strong{font-size:10.5px;color:#c56e19;white-space:nowrap}#maintenanceHub .tfms-v482-list-row strong.red{color:#c33e3e}#maintenanceHub .tfms-v482-empty{padding:28px 12px;text-align:center;color:#8394a6;font-size:11px}
+@media(max-width:1260px){#maintenanceHub .tfms-v482-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}#maintenanceHub .tfms-v482-hub-grid{grid-template-columns:1fr}}
+@media(max-width:760px){#maintenanceHub .tfms-v482-hub-title{align-items:flex-start!important;flex-direction:column!important}#maintenanceHub .tfms-v482-head-actions{width:100%;justify-content:flex-start}#maintenanceHub .tfms-v482-tabs{width:100%;overflow:auto}#maintenanceHub .tfms-v482-kpis{grid-template-columns:1fr 1fr}#maintenanceHub .tfms-v482-kpis>button{min-height:82px}#maintenanceHub .tfms-v482-card{padding:11px}}
+@media(max-width:520px){#maintenanceHub .tfms-v482-kpis{grid-template-columns:1fr}}
+</style>
+<script id="tfms-v482-maintenance-hub-controller">
+(function(){
+'use strict';
+if(window.__tfmsV482HubInstalled)return;window.__tfmsV482HubInstalled=true;
+const $=id=>document.getElementById(id),q=(s,r=document)=>r.querySelector(s),qa=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+function sess(){try{return JSON.parse(sessionStorage.getItem('tfmsSession')||'{}')}catch(e){return {}}}
+function role(){const r=String(window.cloudProfile?.role||window.tfmsRole||sess().role||'user').toLowerCase();if(r==='admin'||r==='관리자'||r.includes('팀 관리자'))return'admin';if(r==='viewer'||r.includes('조회'))return'viewer';return'user'}
+function dept(){return String(window.cloudProfile?.department?.name||window.tfmsUserDept||window.currentUserDept||sess().dept||'').trim()}
+function facilityDept(f){try{if(typeof window.getScopedFacilityDept==='function')return window.getScopedFacilityDept(f)||'';if(typeof window.getFacilityDeptStable==='function')return window.getFacilityDeptStable(f)||'';if(typeof window.getFacilityDept==='function')return window.getFacilityDept(f)||''}catch(e){}return''}
+function scopedFacility(f){const r=role(),d=dept();if(r==='admin'||r==='viewer'||!d||d==='전체')return true;const fd=facilityDept(String(f||''));return !fd||fd===d}
+function records(){return (Array.isArray(window.records)?window.records:[]).filter(x=>scopedFacility(x?.facility))}
+function tasks(){return (Array.isArray(window.todayTasks)?window.todayTasks:[]).filter(x=>scopedFacility(x?.facility))}
+function doneStatus(v){return /완료|조치완료|처리완료|종결/.test(String(v||''))}
+function taskDone(t){return doneStatus(t?.status)||t?.completed===true||t?.is_completed===true}
+function localToday(){const d=new Date();return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10)}
+function taskDate(t){const s=String(t?.task_date||t?.due||t?.date||'');return /^\d{4}-\d{2}-\d{2}/.test(s)?s.slice(0,10):(s==='오늘'?localToday():'')}
+function recDate(r){return String(r?.date||r?.implementation_date||r?.created_at||r?.registeredAt||'').slice(0,10)||'-'}
+function assetName(r){return String(r?.assetName||r?.asset_name||r?.asset||r?.equipment_name||'시설 공통').trim()||'시설 공통'}
+function detail(r){return String(r?.detail||r?.details||r?.content||r?.description||r?.maintenance_detail||'-').trim()||'-'}
+function status(r){return String(r?.status||r?.process_status||r?.processing_status||'진행중').trim()||'진행중'}
+function idOf(r){return String(r?.dbId||r?.id||'')}
+function pendingRecords(){return records().filter(r=>!doneStatus(status(r))).sort((a,b)=>recDate(b).localeCompare(recDate(a)))}
+function completedRecords(){return records().filter(r=>doneStatus(status(r))).sort((a,b)=>recDate(b).localeCompare(recDate(a)))}
+function todayTasks(){const td=localToday();return tasks().filter(t=>!taskDone(t)&&taskDate(t)===td)}
+function lateTasks(){const td=localToday();return tasks().filter(t=>{const d=taskDate(t);return !taskDone(t)&&d&&d<td})}
+function lccCandidates(){let store={};try{store=(typeof assetData!=='undefined'&&assetData)||window.assetData||{}}catch(e){store=window.assetData||{}};const out=[];Object.entries(store||{}).forEach(([key,a])=>{if(!a||!scopedFacility(a.facility))return;try{const c=window.tfmsCalculateLccV4425?.(key,a);if(c&&Number(c.score)>=30)out.push({key,a,c})}catch(e){}});return out.sort((x,y)=>(Number(y.c.score)||0)-(Number(x.c.score)||0))}
+function energyCount(){try{return (window.__tfmsEnergyAnomaliesV4712||[]).filter(a=>scopedFacility(a?.facility)&&a?.action?.key!=='done').length}catch(e){return 0}}
+function setText(id,v){const el=$(id);if(el)el.textContent=v}
+function rowStatusClass(v){return doneStatus(v)?'done':/지연|경과|미조치|긴급/.test(String(v))?'danger':''}
+window.tfmsV482OpenMaintenance=function(id){if(id&&typeof window.openMaintenanceDetailV370==='function'){try{return window.openMaintenanceDetailV370(id)}catch(e){}}window.navTo?.('history')}
+window.tfmsV482OpenAsset=function(key){window.navTo?.('equipment');setTimeout(()=>{try{window.showAsset?.(key)}catch(e){}},80)}
+window.tfmsV482ScrollTo=function(id){$(id)?.scrollIntoView({behavior:'smooth',block:'start'})}
+function renderPending(list){const body=$('v482PendingBody');if(!body)return;const rows=list.slice(0,7);body.innerHTML=rows.length?rows.map(r=>{const id=idOf(r),st=status(r);return `<tr><td>${esc(recDate(r))}</td><td><b>${esc(r.facility||'-')}</b></td><td>${esc(assetName(r))}</td><td><span title="${esc(detail(r))}">${esc(detail(r).slice(0,48))}${detail(r).length>48?'…':''}</span></td><td><span class="tfms-v482-status ${rowStatusClass(st)}">${esc(st)}</span></td><td><button type="button" class="tfms-v482-action" onclick="tfmsV482OpenMaintenance('${esc(id)}')">확인</button></td></tr>`}).join(''):'<tr><td colspan="6"><div class="tfms-v482-empty">현재 처리할 유지관리 이력이 없습니다.</div></td></tr>'}
+function renderTasks(list){const body=$('v482TaskBody');if(!body)return;const all=[...lateTasks(),...list].slice(0,7);body.innerHTML=all.length?all.map(t=>{const late=taskDate(t)&&taskDate(t)<localToday();return `<tr><td><b>${esc(t.facility||'-')}</b></td><td>${esc(t.assetName||'시설 공통')}</td><td>${esc(t.task||'-')}</td><td>${esc(taskDate(t)||t.due||'-')}</td><td><span class="tfms-v482-status ${late?'danger':''}">${late?'기한경과':esc(t.status||'예정')}</span></td><td><button type="button" class="tfms-v482-action" onclick="navTo('today')">점검하기</button></td></tr>`}).join(''):'<tr><td colspan="6"><div class="tfms-v482-empty">현재 처리할 정기점검이 없습니다.</div></td></tr>'}
+function renderLcc(list){const host=$('v482LccList');if(!host)return;const rows=list.slice(0,6);host.innerHTML=rows.length?rows.map(x=>{const c=x.c,a=x.a;const red=Number(c.score)>=75?'red':'';return `<div class="tfms-v482-list-row" onclick="tfmsV482OpenAsset('${esc(x.key)}')"><div><b>${esc(a.name||x.key)}</b><small>${esc(a.facility||'-')} · ${esc(c.lifeInfo?.label||'기준 확인')} · ${c.ageRatio?`${(c.ageRatio*100).toFixed(0)}% 경과`:'연한정보 보완'}</small></div><strong class="${red}">${esc(c.label)} · ${c.score}점</strong></div>`}).join(''):'<div class="tfms-v482-empty">현재 LCC 관찰 이상 설비가 없습니다.</div>'}
+function renderRecent(list){const host=$('v482RecentList');if(!host)return;const rows=list.slice(0,6);host.innerHTML=rows.length?rows.map(r=>`<div class="tfms-v482-list-row" onclick="tfmsV482OpenMaintenance('${esc(idOf(r))}')"><div><b>${esc(r.facility||'-')} · ${esc(assetName(r))}</b><small>${esc(recDate(r))} · ${esc(detail(r).slice(0,38))}${detail(r).length>38?'…':''}</small></div><strong>${esc(status(r))}</strong></div>`).join(''):'<div class="tfms-v482-empty">최근 완료된 유지관리 이력이 없습니다.</div>'}
+function render(){const page=$('maintenanceHub');if(!page)return;const pr=pendingRecords(),tt=todayTasks(),lt=lateTasks(),lc=lccCandidates(),cr=completedRecords();setText('v482PendingMaint',pr.length+'건');setText('v482TodayTasks',tt.length+'건');setText('v482LateTasks',lt.length+'건');setText('v482LccCount',lc.filter(x=>Number(x.c.score)>=50).length+'건');setText('v482EnergyCount',energyCount()+'건');renderPending(pr);renderTasks(tt);renderLcc(lc);renderRecent(cr);qa('.tfms-v482-write',page).forEach(x=>x.style.display=role()==='viewer'?'none':'')}
+window.tfmsV482RefreshHub=render;
+const oldShow=window.showPage;if(typeof oldShow==='function'&&!oldShow.__v482hub){const w=function(id){const r=oldShow.apply(this,arguments);if(id==='maintenanceHub')setTimeout(render,40);return r};w.__v482hub=true;window.showPage=w}
+const oldNav=window.navTo;if(typeof oldNav==='function'&&!oldNav.__v482hub){const w=function(id){const r=oldNav.apply(this,arguments);if(id==='maintenanceHub')setTimeout(render,40);return r};w.__v482hub=true;window.navTo=w}
+function init(){setTimeout(render,160)}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
 </script>
 </body></html>
