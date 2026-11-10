@@ -6,7 +6,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>TFMS v48.2.3 Daily Log Modal Layer Fix Stable</title>
+<title>TFMS v48.2.4 Equipment Registration Safety Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -7727,6 +7727,7 @@ document.addEventListener('DOMContentLoaded',function(){
     window.tfmsEditingAssetDbId=row.id;
     try{ renderAssetList(); showAsset(key); renderUserFlowNavigator?.(); renderQrAssetOptions?.(); }catch(e){console.warn(e)}
     showToast(existingId?'설비 수정내용을 Supabase DB에 저장했습니다.':'설비를 Supabase DB에 등록하고 재조회까지 확인했습니다.');
+    return {ok:true,id:row.id,mode:existingId?'edit':'new'};
   };
 
   window.deleteSelectedAsset=async function(){
@@ -8222,7 +8223,7 @@ document.addEventListener('DOMContentLoaded',function(){
           '새 설비를 등록하려는 경우 취소 후 「+ 신규설비」 버튼을 눌러 주세요.\n\n'+
           '기존 설비를 수정 저장하시겠습니까?'
         );
-        if(!ok)return;
+        if(!ok)return {ok:false,cancelled:true};
       }
       const r=await oldSaveAsset.apply(this,arguments);
       setTimeout(updateModeUI,100);
@@ -8417,6 +8418,8 @@ document.addEventListener('DOMContentLoaded',function(){
   if(typeof oldSave==='function'){
     window.saveAsset=async function(){
       const result=await oldSave.apply(this,arguments);
+      // 취소·검증 실패·DB 오류에서는 새로고침으로 작성중인 입력값을 덮지 않는다.
+      if(result?.ok!==true)return result;
       const preferredId=window.tfmsEditingAssetDbId||null;
       try{
         if(typeof window.reloadAssets3313==='function'){
@@ -19572,7 +19575,12 @@ document.readyState==='loading'?document.addEventListener('DOMContentLoaded',upd
  window.closeAssetRegisterV4431=function(){const m=$('tfmsV4431RegisterModal');m?.classList.remove('show');document.body.style.overflow=''};
  const oldShow=window.showAsset;if(typeof oldShow==='function')window.showAsset=function(){const r=oldShow.apply(this,arguments);setTimeout(refresh,30);return r};
  const oldRender=window.renderAssetList;if(typeof oldRender==='function')window.renderAssetList=function(){const r=oldRender.apply(this,arguments);setTimeout(()=>{populateFilters();filterList();refresh()},40);return r};
- const oldSave=window.saveAsset;if(typeof oldSave==='function')window.saveAsset=function(){const r=oldSave.apply(this,arguments);setTimeout(()=>{refresh();closeAssetRegisterV4431()},450);return r};
+ const oldSave=window.saveAsset;if(typeof oldSave==='function')window.saveAsset=async function(){
+   const r=await oldSave.apply(this,arguments);
+   // 저장 성공 확인 전에는 절대 모달을 닫지 않는다. v46.53 드로어는 사진 업로드까지 마친 뒤 닫는다.
+   if(r?.ok===true){refresh();const m=$('tfmsV4431RegisterModal');if(m?.dataset.v4653!=='1')window.closeAssetRegisterV4431?.()}
+   return r;
+ };
  const oldNav=window.navTo;if(typeof oldNav==='function')window.navTo=function(id){const r=oldNav.apply(this,arguments);if(id==='equipment')setTimeout(()=>{ensureShell();movePhotos();refresh()},140);return r};
  function brand(){const small=document.querySelector('#appHeader .logo-title small');if(small)small.textContent='태백시시설관리공단 시설관리시스템';const b=$('tfmsVersionBadge');if(b)b.textContent='v47.15 Energy Operations IV Stable';document.title='TFMS v47.15 Energy Operations IV Stable';window.TFMS_BUILD=Object.freeze({version:'v45.5',channel:'Enterprise Stable',buildDate:'2026.08.07',title:'Enterprise UX Stable Rebuild'});}
  function init(){brand();ensureShell();movePhotos();refresh();[400,1000,2200].forEach(ms=>setTimeout(()=>{brand();ensureShell();movePhotos();refresh()},ms))}
@@ -22814,10 +22822,10 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 <script id="tfms-v480-version-authority">
 (function(){
   'use strict';
-  const LABEL='v48.2.3 Daily Log Modal Layer Fix Stable';
-  const PARAM='48.2.3';
+  const LABEL='v48.2.4 Equipment Registration Safety Stable';
+  const PARAM='48.2.4';
   const TITLE='TFMS '+LABEL;
-  const FIXED_BUILD=Object.freeze({version:'v48.2.3',channel:'Daily Log Modal Layer Fix Stable',buildDate:'2026.11.10',title:'업무일지 상세 팝업 최상위 레이어 표시 안정화'});
+  const FIXED_BUILD=Object.freeze({version:'v48.2.4',channel:'Equipment Registration Safety Stable',buildDate:'2026.11.10',title:'설비 신규등록·수정 모드 분리 및 입력 유실 방지'});
   const nativeReplace=History.prototype.replaceState;
   if(!History.prototype.__tfmsV4729VersionNormalized){
     History.prototype.replaceState=function(state,title,url){
@@ -22831,7 +22839,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
   function apply(){
     normalizeUrl();
     const badge=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
-    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2.3')}catch(e){}}
+    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2.4')}catch(e){}}
     try{document.title=TITLE;Object.defineProperty(document,'title',{configurable:true,enumerable:true,get(){return TITLE},set(_){}})}catch(e){}
     try{const te=document.head&&document.head.querySelector('title');if(te)lockText(te,'textContent',TITLE)}catch(e){}
     try{Object.defineProperty(window,'TFMS_BUILD',{configurable:true,enumerable:true,get(){return FIXED_BUILD},set(_){}})}catch(e){try{window.TFMS_BUILD=FIXED_BUILD}catch(_){}}
@@ -29188,13 +29196,13 @@ async function saveDrawer(){
   mergeSpecsIntoRemarks();
   if(btn){btn.disabled=true;btn.textContent='저장 중...'}
   try{
-    const before=window.tfmsEditingAssetDbId||null;
-    await Promise.resolve(window.saveAsset?.());
-    const assetId=window.tfmsEditingAssetDbId||null;
-    if(!assetId){
+    const saved=await Promise.resolve(window.saveAsset?.());
+    if(saved?.ok!==true){
       loadSpecsFromRemarks();
       return;
     }
+    const assetId=saved.id||window.tfmsEditingAssetDbId||null;
+    if(!assetId){loadSpecsFromRemarks();return;}
     const n=await uploadQueuedPhotos(assetId);
     queuedPhotos=[];
     renderPhotoQueue();
@@ -29224,7 +29232,7 @@ function syncOpenMode(edit){
     title.innerHTML=`<span class="dot"></span>${edit?'설비 정보 수정':'신규 설비 등록'}${close}`;
   }
   if(!edit)resetDrawerExtras();
-  setTimeout(()=>loadSpecsFromRemarks(),80);
+  loadSpecsFromRemarks();
 }
 const oldOpen=window.openAssetRegisterV4431;
 window.openAssetRegisterV4431=function(edit){
@@ -36970,6 +36978,93 @@ const on=window.navTo;if(typeof on==='function'&&!on.__v4822daily){const w=funct
 const om=window.setDailyModeV459;if(typeof om==='function'&&!om.__v4822daily){const w=function(mode){const r=om.apply(this,arguments);if(mode==='general')setTimeout(bindGeneral,100);return r};w.__v4822daily=true;window.setDailyModeV459=w}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(upgrade,700),{once:true});else setTimeout(upgrade,700);
 document.addEventListener('keydown',e=>{if(e.key==='Escape')window.tfmsV4822CloseAllDailyLogs?.()});
+})();
+</script>
+<!-- TFMS v48.2.4 Equipment Registration Safety Stable: equipment drawer guard; no DB/RLS/schema changes -->
+<style id="tfms-v4824-asset-register-safe-style">
+#equipment #tfmsV4824RegisterHint{
+  font-size:11px;line-height:1.6;margin:8px 0 0;padding:9px 12px;
+  border:1px solid #c8e8d5;border-radius:8px;background:#f1fbf5;color:#166534;
+}
+#equipment #tfmsV4824RegisterHint.edit{
+  border-color:#fed7aa;background:#fff8ed;color:#9a3412;
+}
+</style>
+<script id="tfms-v4824-asset-register-safe-controller">
+(function(){
+'use strict';
+if(window.__tfmsV4824AssetSafeInstalled)return;
+window.__tfmsV4824AssetSafeInstalled=true;
+const $=id=>document.getElementById(id);
+const modal=()=>$('tfmsV4431RegisterModal');
+function showMode(){
+ const m=modal();if(!m)return;
+ const mode=m.dataset.tfmsRegMode==='edit'?'edit':'new';
+ const title=m.querySelector(':scope > .section-title');if(!title)return;
+ let el=$('tfmsV4824RegisterHint');
+ if(!el){el=document.createElement('div');el.id='tfmsV4824RegisterHint';title.insertAdjacentElement('afterend',el)}
+ const selected=mode==='edit'?(window.assetData||{})[m.dataset.tfmsRegAssetKey||'']:null;
+ el.className=mode==='edit'?'edit':'';
+ el.textContent=mode==='edit'
+  ?'기존 설비 수정 모드 · '+(selected?.name||'선택 설비')+' · 저장 시 이 설비의 정보가 변경됩니다.'
+  :'신규 설비 등록 모드 · 기존 목록에서 선택된 설비를 덮어쓰지 않고 별도 설비로 등록합니다.';
+ const btn=$('tfmsV4653DrawerSave');if(btn&&!btn.disabled)btn.textContent=mode==='edit'?'수정 내용 저장':'신규 설비 등록';
+}
+const oldOpen=window.openAssetRegisterV4431;
+if(typeof oldOpen==='function')window.openAssetRegisterV4431=function(edit){
+ const m=modal();const editing=!!edit;
+ const key=String(window.selectedAssetKey||'');
+ const asset=(window.assetData||{})[key];
+ // Mode is independent from background selection and retained throughout this drawer session.
+ if(m){m.dataset.tfmsRegMode=editing?'edit':'new';m.dataset.tfmsRegAssetKey=editing?key:'';
+  m.dataset.tfmsRegEditId=editing?String(asset?.dbId||''):''}
+ const r=oldOpen.apply(this,arguments);
+ if(!editing)window.tfmsEditingAssetDbId=null;
+ showMode();
+ return r;
+};
+const oldLoad=window.loadAssetForm;
+if(typeof oldLoad==='function')window.loadAssetForm=function(){
+ const m=modal();
+ // Background list refreshes must never overwrite unsaved form content.
+ if(m?.classList.contains('show'))return;
+ return oldLoad.apply(this,arguments);
+};
+const oldSave=window.saveAsset;
+if(typeof oldSave==='function')window.saveAsset=async function(){
+ const m=modal();
+ if(m?.classList.contains('show')){
+  if(m.dataset.tfmsRegMode==='new')window.tfmsEditingAssetDbId=null;
+  else if(m.dataset.tfmsRegMode==='edit'){
+    const id=m.dataset.tfmsRegEditId||'';
+    if(!id){window.showToast?.('수정할 설비를 확인할 수 없습니다. 창을 닫고 목록에서 설비를 다시 선택해 주세요.');return {ok:false,reason:'no-edit-target'}}
+    window.tfmsEditingAssetDbId=id;
+  }
+ }
+ const r=await oldSave.apply(this,arguments);
+ if(r?.ok===true&&m?.classList.contains('show')){
+  // A successful INSERT is now an UPDATE target if photo upload requires a retry.
+  m.dataset.tfmsRegMode='edit';m.dataset.tfmsRegEditId=String(r.id||'');
+  m.dataset.tfmsRegAssetKey=String(window.selectedAssetKey||'');
+  showMode();
+ }
+ return r;
+};
+const oldClose=window.closeAssetRegisterV4431;
+if(typeof oldClose==='function')window.closeAssetRegisterV4431=function(){
+ const r=oldClose.apply(this,arguments);
+ const m=modal();if(m){delete m.dataset.tfmsRegMode;delete m.dataset.tfmsRegEditId;delete m.dataset.tfmsRegAssetKey}
+ return r;
+};
+function releaseNote(){
+ try{const body=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');
+ if(body&&!body.querySelector('[data-version="v48.2.4-equipment-registration-safety"]')){
+  const el=document.createElement('div');el.className='change-item';el.dataset.version='v48.2.4-equipment-registration-safety';
+  el.innerHTML='<strong>v48.2.4 · Equipment Registration Safety Stable</strong><ul><li>설비 신규등록/기존수정 모드를 드로어 단위로 분리하여 기존 선택 설비 덮어쓰기 방지</li><li>저장 취소·필수값 누락·DB 오류 시 입력내용/추가 제원/사진 큐 유지</li><li>실제 DB 저장·재조회 성공 확인 후에만 화면 종료 및 목록 갱신</li><li>기존 LCC·사진·엑셀등록·설비조회·DB/RLS/스키마 변경 없음</li></ul>';
+  body.insertBefore(el,body.firstChild);
+ }}catch(e){console.warn('v48.2.4 release note',e)}
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',releaseNote,{once:true});else releaseNote();
 })();
 </script>
 </body></html>
