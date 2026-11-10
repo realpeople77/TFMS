@@ -6,7 +6,32 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>TFMS v48.2.5 Audit Selection Clarity Stable</title>
+<script id="tfms-v4826-refresh-boot-guard">
+(function(){
+  'use strict';
+  try{
+    const cached=JSON.parse(sessionStorage.getItem('tfmsSession')||'null');
+    if(cached&&typeof cached.accountId==='string'&&cached.accountId.trim())
+      document.documentElement.classList.add('tfms-v4826-restoring');
+  }catch(_e){}
+})();
+</script>
+<style id="tfms-v4826-refresh-boot-style">
+/* Prevent stale login form and half-populated dashboard from flashing on F5. */
+html.tfms-v4826-restoring #loginScreen,
+html.tfms-v4826-restoring #appHeader,
+html.tfms-v4826-restoring #appLayout,
+html.tfms-v4826-restoring #tfmsBrandFooter{visibility:hidden!important}
+#tfmsV4826BootMask{display:none;position:fixed;inset:0;z-index:200000;background:#f4f7fb;align-items:center;justify-content:center;flex-direction:column;gap:13px;color:#14365d;font-family:"Noto Sans KR","Malgun Gothic",Arial,sans-serif}
+html.tfms-v4826-restoring #tfmsV4826BootMask{display:flex}
+#tfmsV4826BootMask .tfms-v4826-spinner{width:32px;height:32px;border-radius:50%;border:3px solid #d7e5f3;border-top-color:#0d7f9d;animation:tfms-v4826-spin .8s linear infinite}
+#tfmsV4826BootMask strong{font-size:20px;letter-spacing:.2px}
+#tfmsV4826BootMask span{font-size:13px;color:#69809a}
+@keyframes tfms-v4826-spin{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){#tfmsV4826BootMask .tfms-v4826-spinner{animation:none}}
+</style>
+
+<title>TFMS v48.2.6 Refresh Boot Flicker Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -1237,6 +1262,7 @@ nav.sidebar {
 </style>
 </head>
 <body>
+<div id="tfmsV4826BootMask" role="status" aria-live="polite" aria-label="TFMS 데이터를 불러오는 중입니다"><div class="tfms-v4826-spinner" aria-hidden="true"></div><strong>TFMS</strong><span>시설관리 데이터를 불러오는 중입니다.</span></div>
 <header class="hidden" id="appHeader">
 <div class="top">
 <div aria-label="대시보드 홈으로 이동" class="logo" onclick="goHome()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goHome();}" role="button" tabindex="0">
@@ -4494,17 +4520,32 @@ loadDB(); refreshAllV30();
     showToast('비밀번호를 변경했습니다.');
   };
 
+  // v48.2.6: DOMContentLoaded + immediate timer both call init in legacy code.
+  // Share one promise so session restore / enterprise fetch cannot race and repaint twice.
+  let initPromiseV4826=null;
   async function init(){
-    sb=client();
-    if(!sb){badge('offline');return}
-    badge('online','DB 설정됨');
-    const {data}=await sb.auth.getSession();
-    if(data?.session?.user){
-      try{
-        cloudUser=data.session.user;cloudProfile=await loadProfile(cloudUser);
-        applyLoginUI(cloudProfile);await loadEnterpriseData();goHome(false);
-      }catch(e){console.warn(e)}
-    }
+    if(initPromiseV4826)return initPromiseV4826;
+    initPromiseV4826=(async()=>{
+      sb=client();
+      if(!sb){badge('offline');return}
+      badge('online','DB 설정됨');
+      const {data}=await sb.auth.getSession();
+      if(data?.session?.user){
+        try{
+          cloudUser=data.session.user;cloudProfile=await loadProfile(cloudUser);
+          applyLoginUI(cloudProfile);await loadEnterpriseData();goHome(false);
+        }catch(e){console.warn(e)}
+      }
+    })().finally(()=>{
+      // Display only after existing DB queries and synchronous dashboard renders settle.
+      // No new interval, timeout, or observer: release on the next paint.
+      const release=()=>requestAnimationFrame(()=>{
+        document.documentElement.classList.remove('tfms-v4826-restoring');
+      });
+      if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',release,{once:true});
+      else release();
+    });
+    return initPromiseV4826;
   }
   document.addEventListener('DOMContentLoaded',init);
   setTimeout(init,0);
@@ -22823,10 +22864,10 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 <script id="tfms-v480-version-authority">
 (function(){
   'use strict';
-  const LABEL='v48.2.5 Audit Selection Clarity Stable';
-  const PARAM='48.2.5';
+  const LABEL='v48.2.6 Refresh Boot Flicker Stable';
+  const PARAM='48.2.6';
   const TITLE='TFMS '+LABEL;
-  const FIXED_BUILD=Object.freeze({version:'v48.2.5',channel:'Audit Selection Clarity Stable',buildDate:'2026.11.10',title:'삭제·변경이력 선택 체크박스 식별성·일괄선택 상태 개선'});
+  const FIXED_BUILD=Object.freeze({version:'v48.2.6',channel:'Refresh Boot Flicker Stable',buildDate:'2026.11.10',title:'새로고침 시 로그인 화면 노출·초기 대시보드 데이터 깜빡임 개선'});
   const nativeReplace=History.prototype.replaceState;
   if(!History.prototype.__tfmsV4729VersionNormalized){
     History.prototype.replaceState=function(state,title,url){
@@ -22840,7 +22881,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
   function apply(){
     normalizeUrl();
     const badge=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
-    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2.5')}catch(e){}}
+    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2.6')}catch(e){}}
     try{document.title=TITLE;Object.defineProperty(document,'title',{configurable:true,enumerable:true,get(){return TITLE},set(_){}})}catch(e){}
     try{const te=document.head&&document.head.querySelector('title');if(te)lockText(te,'textContent',TITLE)}catch(e){}
     try{Object.defineProperty(window,'TFMS_BUILD',{configurable:true,enumerable:true,get(){return FIXED_BUILD},set(_){}})}catch(e){try{window.TFMS_BUILD=FIXED_BUILD}catch(_){}}
@@ -37117,6 +37158,24 @@ function install(){
  }}catch(e){console.warn('v48.2.5 history note',e)}
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
+})();
+</script>
+
+<!-- TFMS v48.2.6: refresh-only visual boot guard and single-flight auth init. No DB/RLS/schema changes. -->
+<script id="tfms-v4826-release-note">
+(function(){
+  'use strict';
+  function addNote(){
+    try{
+      const body=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');
+      if(body&&!body.querySelector('[data-version="v48.2.6-refresh-boot-flicker"]')){
+        const el=document.createElement('div');el.className='change-item';el.dataset.version='v48.2.6-refresh-boot-flicker';
+        el.innerHTML='<strong>v48.2.6 · Refresh Boot Flicker Stable</strong><ul><li>F5 새로고침 시 세션 복원 전에 로그인창이 순간적으로 노출되는 현상 차단</li><li>Supabase 데이터 로딩 중 대시보드 임시 0건·빈 목록 노출 방지</li><li>초기화 중복 호출 단일화로 로그인·DB 초기조회 중복 실행 방지</li><li>기존 DB/RLS, 페이지 전환, 입력·저장·삭제 함수 유지</li></ul>';
+        body.insertBefore(el,body.firstChild);
+      }
+    }catch(e){console.warn('v48.2.6 release note',e)}
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',addNote,{once:true});else addNote();
 })();
 </script>
 </body></html>
