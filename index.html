@@ -6,7 +6,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>TFMS v47.29 Energy Anomaly Refinement + Cleanup II Stable</title>
+<title>TFMS v48.2.3 Daily Log Modal Layer Fix Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -22814,10 +22814,10 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 <script id="tfms-v480-version-authority">
 (function(){
   'use strict';
-  const LABEL='v48.2.2 Daily Log History & Handover Stable';
-  const PARAM='48.2.2';
+  const LABEL='v48.2.3 Daily Log Modal Layer Fix Stable';
+  const PARAM='48.2.3';
   const TITLE='TFMS '+LABEL;
-  const FIXED_BUILD=Object.freeze({version:'v48.2.2',channel:'Daily Log History & Handover Stable',buildDate:'2026.11.10',title:'업무일지 전체조회 팝업 및 시설별 인계사항 노출 안정화'});
+  const FIXED_BUILD=Object.freeze({version:'v48.2.3',channel:'Daily Log Modal Layer Fix Stable',buildDate:'2026.11.10',title:'업무일지 상세 팝업 최상위 레이어 표시 안정화'});
   const nativeReplace=History.prototype.replaceState;
   if(!History.prototype.__tfmsV4729VersionNormalized){
     History.prototype.replaceState=function(state,title,url){
@@ -22831,7 +22831,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
   function apply(){
     normalizeUrl();
     const badge=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
-    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2.2')}catch(e){}}
+    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2.3')}catch(e){}}
     try{document.title=TITLE;Object.defineProperty(document,'title',{configurable:true,enumerable:true,get(){return TITLE},set(_){}})}catch(e){}
     try{const te=document.head&&document.head.querySelector('title');if(te)lockText(te,'textContent',TITLE)}catch(e){}
     try{Object.defineProperty(window,'TFMS_BUILD',{configurable:true,enumerable:true,get(){return FIXED_BUILD},set(_){}})}catch(e){try{window.TFMS_BUILD=FIXED_BUILD}catch(_){}}
@@ -36933,6 +36933,14 @@ function init(){setTimeout(render,160)}if(document.readyState==='loading')docume
 #tfmsV4822DailyHistoryModal .dh-empty{padding:36px 12px;text-align:center;color:#8595a7}
 @media(max-width:900px){#tfmsV4822DailyHistoryModal .dh-filter{grid-template-columns:1fr 1fr}#tfmsV4822DailyHistoryModal .dh-filter>div:last-child{grid-column:1/-1}#tfmsV4822DailyHistoryModal{padding:10px}}
 </style>
+<style id="tfms-v4823-daily-detail-layer-fix">
+/* v48.2.3 — detail windows must overlay the all-logs lookup (z-index:100260).
+   Preserve the list modal and its filters while viewing a detail. No JS/DB changes. */
+#tfmsV4649JournalModal.show,
+#dailyJournalPreviewModal.show{
+  z-index:100280!important;
+}
+</style>
 <script id="tfms-v4822-daily-history-handover-controller">
 (function(){
 'use strict';
@@ -36955,7 +36963,7 @@ let handoverSeq=0;
 window.tfmsV4822RefreshHandover=async function(){ensureHandoverCard();const token=++handoverSeq,fac=$('dailyFacility')?.value||'',date=$('dailyDate')?.value||new Date().toISOString().slice(0,10),body=$('tfmsV4822HandoverBody'),meta=$('tfmsV4822HandoverMeta');if(!body)return;if(!fac){body.className='tfms-v4822-handover-body empty';body.textContent='시설을 선택하면 최근 인계사항을 확인합니다.';return}body.className='tfms-v4822-handover-body empty';body.textContent='최근 인계사항을 확인하는 중입니다.';const id=await facilityId(fac);if(token!==handoverSeq)return;if(!id){body.textContent='시설 DB 정보를 확인하지 못했습니다.';return}const sb=client();if(!sb){body.textContent='DB 연결 정보를 확인하지 못했습니다.';return}try{const {data,error}=await sb.from('daily_logs').select('id,work_date,content,created_at').eq('facility_id',id).lte('work_date',date).order('work_date',{ascending:false}).order('created_at',{ascending:false}).limit(20);if(error)throw error;if(token!==handoverSeq)return;const found=(data||[]).map(parse).find(x=>x.general&&String(x.handover||'').trim());if(!found){body.className='tfms-v4822-handover-body empty';body.textContent='최근 등록된 인계사항이 없습니다.';if(meta)meta.textContent=`${fac} · 인계 없음`;return}body.className='tfms-v4822-handover-body';body.textContent=found.handover;if(meta)meta.textContent=`${found.raw.work_date||'-'} · ${found.workers||'근무자 미표기'}`}catch(e){console.error('TFMS v48.2.2 handover load',e);body.className='tfms-v4822-handover-body empty';body.textContent='인계사항을 불러오지 못했습니다. 권한 범위를 확인해 주세요.'}}
 function patchDashboardDetail(){const old=window.openDashboardDailyDetailV4649;if(typeof old!=='function'||old.__v4822)return;const wrapped=function(id){const r=old.apply(this,arguments);setTimeout(()=>{try{const x=(window.tfmsV4822DailyHistoryCache||[]).find(v=>String(v.raw?.id)===String(id));if(!x||!x.general)return;const modal=$('tfmsV4649JournalModal'),mb=modal?.querySelector('.tfms-v4649-modal-body');if(!mb)return;if(!mb.querySelector('.tfms-v4822-detail-extra')){const extra=document.createElement('div');extra.className='tfms-v4822-detail-extra';extra.innerHTML=`<div class="tfms-v4649-section-title">금일 종합사항</div><div class="tfms-v4649-issue">${esc(x.summary||'기록 없음')}</div><div class="tfms-v4649-section-title">익일 인계사항</div><div class="tfms-v4649-issue">${esc(x.handover||'인계사항 없음')}</div>`;mb.appendChild(extra)}}catch(e){}},60);return r};wrapped.__v4822=true;window.openDashboardDailyDetailV4649=wrapped}
 function bindGeneral(){ensureHandoverCard();const fac=$('dailyFacility'),date=$('dailyDate');if(fac&&fac.dataset.v4822Hand!=='1'){fac.dataset.v4822Hand='1';fac.addEventListener('change',window.tfmsV4822RefreshHandover)}if(date&&date.dataset.v4822Hand!=='1'){date.dataset.v4822Hand='1';date.addEventListener('change',window.tfmsV4822RefreshHandover)}window.tfmsV4822RefreshHandover()}
-function releaseNote(){try{const body=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');if(body&&!body.querySelector('[data-version="v48.2.2-daily-history-handover"]')){const el=document.createElement('div');el.className='change-item';el.dataset.version='v48.2.2-daily-history-handover';el.innerHTML='<strong>v48.2.2 · Daily Log History & Handover Stable</strong><ul><li>전체 업무일지 조회를 페이지 하단 스크롤 방식에서 중앙 팝업 조회로 변경</li><li>일반 업무일지의 최근 시설별 인계사항을 작성 화면에 자동 노출</li><li>일반/기계실/대기/일상근무 일지를 한 조회창에서 권한 범위 내 통합 조회</li><li>업무일지 상세에서 금일 종합사항·익일 인계사항 확인 가능</li><li>DB/RLS/스키마 변경 없음</li></ul>';body.insertBefore(el,body.firstChild)}}catch(e){}}
+function releaseNote(){try{const body=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');if(body&&!body.querySelector('[data-version="v48.2.2-daily-history-handover"]')){const el=document.createElement('div');el.className='change-item';el.dataset.version='v48.2.2-daily-history-handover';el.innerHTML='<strong>v48.2.2 · Daily Log History & Handover Stable</strong><ul><li>전체 업무일지 조회를 페이지 하단 스크롤 방식에서 중앙 팝업 조회로 변경</li><li>일반 업무일지의 최근 시설별 인계사항을 작성 화면에 자동 노출</li><li>일반/기계실/대기/일상근무 일지를 한 조회창에서 권한 범위 내 통합 조회</li><li>업무일지 상세에서 금일 종합사항·익일 인계사항 확인 가능</li><li>DB/RLS/스키마 변경 없음</li></ul>';body.insertBefore(el,body.firstChild)}if(body&&!body.querySelector('[data-version="v48.2.3-daily-modal-layer-fix"]')){const item=document.createElement('div');item.className='change-item';item.dataset.version='v48.2.3-daily-modal-layer-fix';item.innerHTML='<strong>v48.2.3 · Daily Log Modal Layer Fix Stable</strong><ul><li>전체 업무일지 조회 중 일반 업무일지 상세 팝업이 뒤로 가려지는 레이어 순서 보정</li><li>기계실·대기·일상근무일지 상세 미리보기 레이어 순서도 함께 보정</li><li>상세창을 닫아도 전체 조회창과 검색 조건 유지</li><li>기존 일지 데이터·권한·DB/RLS·이벤트 로직 변경 없음</li></ul>';body.insertBefore(item,body.firstChild)}}catch(e){}}
 function upgrade(){installTopButton();bindGeneral();patchDashboardDetail();releaseNote()}
 const os=window.showPage;if(typeof os==='function'&&!os.__v4822daily){const w=function(id){const r=os.apply(this,arguments);if(id==='dailylog')setTimeout(upgrade,220);return r};w.__v4822daily=true;window.showPage=w}
 const on=window.navTo;if(typeof on==='function'&&!on.__v4822daily){const w=function(id){const r=on.apply(this,arguments);if(id==='dailylog')setTimeout(upgrade,220);return r};w.__v4822daily=true;window.navTo=w}
