@@ -31,7 +31,7 @@ html.tfms-v4826-restoring #tfmsV4826BootMask{display:flex}
 @media(prefers-reduced-motion:reduce){#tfmsV4826BootMask .tfms-v4826-spinner{animation:none}}
 </style>
 
-<title>TFMS v48.2.6 Refresh Boot Flicker Stable</title>
+<title>TFMS v48.2.7 QR Field Inspection Link Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -22864,10 +22864,10 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 <script id="tfms-v480-version-authority">
 (function(){
   'use strict';
-  const LABEL='v48.2.6 Refresh Boot Flicker Stable';
-  const PARAM='48.2.6';
+  const LABEL='v48.2.7 QR Field Inspection Link Stable';
+  const PARAM='48.2.7';
   const TITLE='TFMS '+LABEL;
-  const FIXED_BUILD=Object.freeze({version:'v48.2.6',channel:'Refresh Boot Flicker Stable',buildDate:'2026.11.10',title:'새로고침 시 로그인 화면 노출·초기 대시보드 데이터 깜빡임 개선'});
+  const FIXED_BUILD=Object.freeze({version:'v48.2.7',channel:'QR Field Inspection Link Stable',buildDate:'2026.11.11',title:'설비 QR 라벨·모바일 직접진입·점검일 저장 및 유지관리 연결'});
   const nativeReplace=History.prototype.replaceState;
   if(!History.prototype.__tfmsV4729VersionNormalized){
     History.prototype.replaceState=function(state,title,url){
@@ -22881,7 +22881,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
   function apply(){
     normalizeUrl();
     const badge=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
-    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2.6')}catch(e){}}
+    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2.7')}catch(e){}}
     try{document.title=TITLE;Object.defineProperty(document,'title',{configurable:true,enumerable:true,get(){return TITLE},set(_){}})}catch(e){}
     try{const te=document.head&&document.head.querySelector('title');if(te)lockText(te,'textContent',TITLE)}catch(e){}
     try{Object.defineProperty(window,'TFMS_BUILD',{configurable:true,enumerable:true,get(){return FIXED_BUILD},set(_){}})}catch(e){try{window.TFMS_BUILD=FIXED_BUILD}catch(_){}}
@@ -37176,6 +37176,284 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     }catch(e){console.warn('v48.2.6 release note',e)}
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',addNote,{once:true});else addNote();
+})();
+</script>
+<!-- TFMS v48.2.7 QR Field Inspection Link Stable: additive field workflow; Supabase schema/RLS unchanged -->
+<style id="tfms-v4827-qr-field-style">
+/* Reveals the formerly prototype-only QR page for user/admin, without lifting role restrictions. */
+body.tfms-v4827-authorized #appHeader nav button.nav[onclick*="'qrCheck'"]:not(.role-hidden):not(.hidden-by-role){display:flex!important}
+#qrCheck>.panel,#qrCheck>.mobile-preview{display:none!important}
+#qrCheck .v4827-field-root{max-width:1300px;margin:0 auto}
+#qrCheck .v4827-top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:18px 20px;margin-bottom:14px;background:linear-gradient(115deg,#082e68,#0b6795);color:#fff;border-radius:14px}
+#qrCheck .v4827-top h2{margin:0 0 5px;font-size:20px;color:#fff}
+#qrCheck .v4827-top p{margin:0;color:#dceefb;font-size:12px;line-height:1.55}
+#qrCheck .v4827-status-chip{display:inline-flex;align-items:center;gap:6px;padding:8px 11px;border-radius:999px;background:#defbf2;color:#075e56;font-weight:850;font-size:12px}
+#qrCheck .v4827-grid{display:grid;grid-template-columns:minmax(0,1.18fr) minmax(290px,.82fr);gap:14px;align-items:start}
+#qrCheck .v4827-panel{background:#fff;border:1px solid #dbe6f1;border-radius:14px;padding:19px 20px;margin-bottom:14px;box-shadow:0 4px 12px rgba(13,46,87,.035)}
+#qrCheck .v4827-panel h3{font-size:16px;margin:0 0 14px;color:#163354}
+#qrCheck .v4827-fields{display:grid;grid-template-columns:1fr 1.7fr;gap:10px}
+#qrCheck .v4827-fields label{font-size:12px;color:#536981;margin:0 0 5px}
+#qrCheck .v4827-field{min-width:0}
+#qrCheck .v4827-field select{height:44px;width:100%;background:#fff;min-width:0}
+#qrCheck .v4827-spec{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}
+#qrCheck .v4827-spec>div{border-radius:10px;background:#f7fafe;padding:10px 12px;min-width:0}
+#qrCheck .v4827-spec small{display:block;font-size:11px;color:#728199;margin-bottom:4px}
+#qrCheck .v4827-spec strong{display:block;font-size:12px;color:#26425d;overflow-wrap:anywhere}
+#qrCheck .v4827-note{padding:11px 13px;background:#f2f8ff;border:1px solid #d1e3f4;color:#315475;border-radius:10px;font-size:12px;line-height:1.6;margin-bottom:14px}
+#qrCheck .v4827-controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+#qrCheck .v4827-controls button{border:1px solid #adc9e8;border-radius:9px;background:#edf6ff;color:#1256a5;padding:10px 14px;font-size:12px;font-weight:800;cursor:pointer;min-height:40px}
+#qrCheck .v4827-controls button.primary{background:#125ac2;color:white;border-color:#125ac2}
+#qrCheck .v4827-controls button.warn{background:#fff3e8;color:#9b4710;border-color:#e8c8a7}
+#qrCheck .v4827-controls button:disabled{opacity:.5;cursor:not-allowed}
+#qrCheck .v4827-qrbox{text-align:center;display:grid;justify-items:center;gap:10px}
+#qrCheck #tfmsV4827QrCanvas{width:180px;min-height:180px;display:grid;place-items:center;background:white;border:1px dashed #cedcea;border-radius:12px;overflow:hidden;padding:8px}
+#qrCheck #tfmsV4827QrCanvas canvas,#qrCheck #tfmsV4827QrCanvas img{max-width:100%;height:auto}
+#qrCheck .v4827-url{font-size:11px;line-height:1.5;color:#64748b;word-break:break-all;text-align:left;width:100%;padding:10px 12px;border-radius:8px;background:#f7fafe}
+#qrCheck .v4827-checks{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+#qrCheck .v4827-checks label{display:flex;gap:8px;align-items:center;margin:0;background:#f6f9fd;padding:10px;border-radius:9px;font-size:12px;font-weight:750;cursor:pointer}
+#qrCheck .v4827-checks input{width:17px;height:17px;margin:0;flex:0 0 17px}
+#qrCheck #tfmsV4827InspectNote{width:100%;margin-top:10px;min-height:75px;font-size:12px}
+#qrCheck .v4827-history-item{padding:10px 0;border-bottom:1px solid #edf1f6;font-size:12px;line-height:1.55}
+#qrCheck .v4827-history-item:last-child{border-bottom:0}
+#qrCheck .v4827-history-item b{font-size:12px;color:#244266}
+#qrCheck .v4827-history-item small{color:#64748b}
+#qrCheck .v4827-muted{font-size:12px;color:#65768c;line-height:1.6}
+#qrCheck .v4827-danger{color:#b42318!important}
+#qrCheck #tfmsV4827Result{height:44px}
+@media(max-width:1000px){#qrCheck .v4827-grid{grid-template-columns:1fr}}
+@media(max-width:650px){#qrCheck .v4827-top{padding:16px}#qrCheck .v4827-panel{padding:15px}#qrCheck .v4827-fields{grid-template-columns:1fr}#qrCheck .v4827-checks{grid-template-columns:1fr}#qrCheck .v4827-controls button{flex:1 1 45%}}
+</style>
+<script id="tfms-v4827-qr-field-controller">
+(function(){
+'use strict';
+if(window.__tfmsV4827Installed)return;
+window.__tfmsV4827Installed=true;
+const $=id=>document.getElementById(id);
+const q=(s,base=document)=>base.querySelector(s);
+const esc=v=>String(v??'').replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]));
+const toast=t=>{try{window.showToast?.(t)}catch(_){}}
+const db=()=>window.getTfmsSupabaseClient?.()||null;
+const user=()=>window.getTfmsCloudUser?.()||null;
+const role=()=>{try{return String(typeof tfmsRole!=='undefined'?tfmsRole:'').toLowerCase()}catch(_){return ''}};
+const dept=()=>{try{return String(typeof tfmsUserDept!=='undefined'?tfmsUserDept:typeof currentUserDept!=='undefined'?currentUserDept:'')}catch(_){return ''}};
+const assetMap=()=>window.assetData||{};
+const today=()=>{const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-')};
+const isEditor=()=>role()==='admin'||role()==='user';
+let lastHistorySeq=0, lastAssetId='', deepLinkProcessed=false, processing=false;
+const deepLinkId=new URLSearchParams(location.search).get('qr_asset')||'';
+function entries(){
+ const r=role(),team=dept();
+ if(!['admin','user'].includes(r))return [];
+ return Object.entries(assetMap()).filter(([,a])=>{
+  if(!a||!a.name)return false;
+  if(r==='admin')return true;
+  if(!team||team==='전체')return false;
+  try{return typeof getScopedFacilityDept==='function'&&String(getScopedFacilityDept(a.facility)||'')===team}catch(_){return false}
+ });
+}
+function chosen(){const key=$('qrAssetSelect')?.value||'';return [key,assetMap()[key]||null]}
+function actualAssetId(a){return String(a?.dbId||'').trim()}
+function baseUrl(){
+ if(location.protocol!=='https:'&&location.hostname!=='localhost'&&location.hostname!=='127.0.0.1')return '';
+ if(location.protocol!=='https:')return ''; // QR labels must point to a secure publicly accessible deployment.
+ const u=new URL(location.href);
+ u.search='';u.hash='';return u.href;
+}
+function urlFor(a){const base=baseUrl(),id=actualAssetId(a);if(!base||!id)return '';const u=new URL(base);u.searchParams.set('v','48.2.7');u.searchParams.set('qr_asset',id);return u.href}
+function labelText(a){return [a?.facility,a?.space||a?.location,a?.name,a?.qrId&&a.qrId!=='-'?a.qrId:''].filter(Boolean).join(' · ')}
+function checksFor(a){
+ const n=[a?.name,a?.category].join(' ');
+ if(/승강기|엘리베이터/.test(n))return ['출입문 외관·개폐 상태','운행 중 이상 소음·진동','층 표시·호출버튼 상태','안전표지·주변 장애물'];
+ if(/펌프|가압/.test(n))return ['외관 및 누수','운전 소음·진동','압력·유량 표시','밸브 및 주변 정리'];
+ if(/보일러|가열기|열교환/.test(n))return ['누수·외관 상태','표시 온도·압력','운전 상태·이상 소음','주변 안전상태'];
+ return ['외관 및 손상 상태','정상 작동 여부','이상 소음·누수 유무','안전표지·주변 정리'];
+}
+function ensureQRNav(){
+ const nav=q('#appHeader nav');if(!nav||Array.from(nav.querySelectorAll('button')).some(b=>(b.getAttribute('onclick')||'').includes('qrCheck')))return;
+ const equipment=Array.from(nav.querySelectorAll('button')).find(b=>(b.getAttribute('onclick')||'').includes('equipment'));
+ const b=document.createElement('button');b.id='tfmsV4827QrNav';b.className='nav';b.dataset.roles='admin,user';
+ b.setAttribute('onclick',"showPage('qrCheck',this)");
+ b.innerHTML='<span class="tfms-nav-ico">▦</span>설비 QR 점검';
+ if(equipment)equipment.insertAdjacentElement('afterend',b);else nav.appendChild(b);
+}
+function setMenuRole(){
+ const authorized=isEditor()&&!!user()?.id;
+ document.body?.classList.toggle('tfms-v4827-authorized',authorized);
+ if(authorized)ensureQRNav();
+}
+function build(){
+ setMenuRole();
+ const page=$('qrCheck'),title=q(':scope>.title-row',page||document);if(!page||!title)return;
+ if(!$('tfmsV4827FieldRoot')){
+  const root=document.createElement('div');root.id='tfmsV4827FieldRoot';root.className='v4827-field-root';
+  root.innerHTML=`
+  <div class="v4827-top"><div><h2>설비 QR 현장점검</h2><p>설비 QR을 스마트폰 기본 카메라로 열면 로그인 후 해당 설비와 유지관리 이력이 연결됩니다.</p></div><span class="v4827-status-chip">실제 설비 DB 연동</span></div>
+  <div class="v4827-grid">
+   <div>
+    <div class="v4827-panel"><h3>① 점검 대상 설비</h3><div class="v4827-fields"><div class="v4827-field"><label for="tfmsV4827Facility">시설 선택</label><select id="tfmsV4827Facility"><option value="">시설을 불러오는 중</option></select></div><div class="v4827-field"><label for="qrAssetSelect">설비 선택</label><div id="tfmsV4827PickerSlot"></div></div></div>
+    <div class="v4827-spec"><div><small>설비명 · 관리번호</small><strong id="tfmsV4827AssetName">-</strong></div><div><small>위치 · 공간</small><strong id="tfmsV4827AssetSpace">-</strong></div><div><small>최근 점검일</small><strong id="tfmsV4827Checked">-</strong></div><div><small>상태 · 점검주기</small><strong id="tfmsV4827Condition">-</strong></div></div>
+    <div class="v4827-controls"><button type="button" id="tfmsV4827OpenEquipment">설비카드 보기</button><button type="button" id="tfmsV4827GoRegister" class="warn">유지관리 등록</button></div></div>
+    <div class="v4827-panel"><h3>② 현장 확인 항목</h3><div class="v4827-note">현장 육안 및 통상적인 운전 상태 확인용입니다. 승강기·소방 등 법정검사나 전문점검을 대체하지 않습니다.</div>
+     <div id="tfmsV4827Checklist" class="v4827-checks"></div>
+     <label for="tfmsV4827Result" style="margin-top:14px">점검 결과</label><select id="tfmsV4827Result"><option value="정상">정상</option><option value="이상 발견">이상 발견</option><option value="긴급 조치 필요">긴급 조치 필요</option></select>
+     <label for="tfmsV4827InspectNote" style="margin-top:12px">이상사항 · 조치 메모</label><textarea id="tfmsV4827InspectNote" placeholder="이상이 있으면 증상과 위치 등을 기재하세요. 정상점검 메모는 업무일지에 작성해 주세요."></textarea>
+     <div class="v4827-controls"><button type="button" id="tfmsV4827SaveNormal" class="primary">정상 확인 · 최근점검일 갱신</button><button type="button" id="tfmsV4827SaveIssue" class="warn">이상사항 유지관리 등록으로 이동</button></div>
+     <p class="v4827-muted" style="margin:10px 0 0">정상 확인 시 설비 DB의 최근점검일만 변경합니다. 항목별 점검 이력은 별도 저장되지 않으며, 이상·사진·비용은 기존 유지관리 등록에서 기록합니다.</p>
+    </div>
+    <div class="v4827-panel"><h3>③ 최근 유지관리 이력</h3><div id="tfmsV4827History" class="v4827-muted">설비를 선택하면 DB 이력을 조회합니다.</div></div>
+   </div>
+   <div><div class="v4827-panel"><h3>QR 라벨 발행</h3><div class="v4827-qrbox"><div id="tfmsV4827QrCanvas">QR 생성 대기</div><strong id="tfmsV4827QrLabel" style="font-size:13px">-</strong><div id="tfmsV4827QrUrl" class="v4827-url">설비를 선택하세요.</div></div>
+    <div class="v4827-controls"><button type="button" id="tfmsV4827Print">QR 라벨 인쇄</button><button type="button" id="tfmsV4827Copy">링크 복사</button></div>
+    <p class="v4827-muted">QR은 현재 배포 중인 <b>HTTPS 주소</b>를 기준으로 생성됩니다. PC에 보관된 HTML 파일(file://)에서는 QR을 발행할 수 없습니다.</p>
+   </div></div>
+  </div>`;
+  title.insertAdjacentElement('afterend',root);
+  const sel=$('qrAssetSelect');if(sel){$('tfmsV4827PickerSlot').appendChild(sel);sel.style.width='100%';sel.style.height='44px';}
+  $('tfmsV4827Facility').addEventListener('change',()=>{refreshSelects('');draw()});
+  $('qrAssetSelect')?.addEventListener('change',draw);
+  $('tfmsV4827Result').addEventListener('change',updateActions);
+  $('tfmsV4827OpenEquipment').addEventListener('click',()=>{const [key,a]=chosen();if(!a)return toast('설비를 선택하세요.');try{window.selectedAssetKey=key;window.showAsset?.(key)}catch(_){}window.navTo?.('equipment')});
+  $('tfmsV4827GoRegister').addEventListener('click',()=>openMaintenance(false));
+  $('tfmsV4827SaveIssue').addEventListener('click',()=>openMaintenance(true));
+  $('tfmsV4827SaveNormal').addEventListener('click',saveNormal);
+  $('tfmsV4827Print').addEventListener('click',printLabel);
+  $('tfmsV4827Copy').addEventListener('click',copyLink);
+  }
+  refreshSelects();draw();
+}
+function refreshSelects(preferKey){
+ const all=entries(),facility=$('tfmsV4827Facility'),select=$('qrAssetSelect');if(!facility||!select)return;
+ const previousFacility=facility.value,fs=[...new Set(all.map(([,a])=>a.facility).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'ko'));
+ facility.replaceChildren(...fs.map(f=>new Option(f,f)));
+ if(previousFacility&&fs.includes(previousFacility))facility.value=previousFacility;
+ else if(all.length)facility.value=all.find(([k])=>k===preferKey)?.[1].facility||all[0][1].facility;
+ const visible=all.filter(([,a])=>a.facility===facility.value);
+ const previousKey=preferKey||select.value;
+ select.replaceChildren(...visible.map(([k,a])=>new Option((a.space||'')+' · '+a.name+(a.qrId&&a.qrId!=='-'?' · '+a.qrId:''),k)));
+ if(visible.some(([k])=>k===previousKey))select.value=previousKey;
+ if(!visible.length){select.add(new Option('점검 가능한 설비 없음',''));}
+}
+function draw(){
+ const [key,a]=chosen();if(!$('tfmsV4827FieldRoot'))return;
+ const set=(id,v)=>{const el=$(id);if(el)el.textContent=v||'-'};
+ set('tfmsV4827AssetName',a?[a.name,a.qrId&&a.qrId!=='-'?a.qrId:''].filter(Boolean).join(' · '):'설비 선택 필요');
+ set('tfmsV4827AssetSpace',a?[(a.facility||''),(a.space||a.location||'')].filter(Boolean).join(' · '):'-');
+ set('tfmsV4827Checked',a?.check||'-');set('tfmsV4827Condition',a?[(a.status||a.risk||'상태 미확인'),a.cycle||'수시'].join(' · '):'-');
+ const changed=actualAssetId(a)!==lastAssetId;
+ const list=$('tfmsV4827Checklist'); if(list&&changed){const c=checksFor(a);list.replaceChildren(...c.map((name,i)=>{
+  const label=document.createElement('label'),input=document.createElement('input');input.type='checkbox';input.dataset.qrCheck='1';
+  const span=document.createElement('span');span.textContent=name;label.append(input,span);return label;
+ }));}
+ if(changed){$('tfmsV4827Result').value='정상';$('tfmsV4827InspectNote').value='';}
+ updateActions();renderQr(a);if(lastAssetId!==actualAssetId(a)){lastAssetId=actualAssetId(a);loadHistory(a)}
+}
+function updateActions(){
+ const normal=$('tfmsV4827Result')?.value==='정상';
+ const save=$('tfmsV4827SaveNormal'),issue=$('tfmsV4827SaveIssue');
+ if(save)save.disabled=!normal||!isEditor()||processing||!actualAssetId(chosen()[1]);
+ if(issue)issue.disabled=normal||!isEditor()||processing;
+}
+function renderQr(a){
+ const root=$('tfmsV4827QrCanvas');if(!root)return;
+ const url=urlFor(a);$('tfmsV4827QrLabel').textContent=a?.name||'설비 선택 필요';
+ $('tfmsV4827QrUrl').textContent=url||(!actualAssetId(a)?'DB에 등록된 설비를 선택하세요.':'HTTPS 배포사이트에서 QR 라벨 생성 가능');
+ root.replaceChildren();
+ $('tfmsV4827Copy').disabled=!url;$('tfmsV4827Print').disabled=!url;
+ if(!url){root.textContent='QR 준비 대기';return}
+ if(typeof window.QRCode!=='function'){root.textContent='QR 생성 라이브러리 연결 실패';return}
+ try{new window.QRCode(root,{text:url,width:156,height:156,correctLevel:window.QRCode.CorrectLevel.M})}
+ catch(e){root.textContent='QR 생성 실패';console.warn('[TFMS QR]',e)}
+}
+async function loadHistory(a){
+ const node=$('tfmsV4827History'),c=db(),id=actualAssetId(a),seq=++lastHistorySeq;
+ if(!node)return;if(!id){node.textContent='저장된 설비 DB ID가 없어 이력을 불러올 수 없습니다.';return}
+ if(!c){node.textContent='Supabase 연결을 확인해 주세요.';return}
+ node.textContent='최근 이력을 조회하는 중입니다.';
+ try{
+  const {data,error}=await c.from('maintenance_records')
+  .select('id,registered_on,executed_on,process_status,maintenance_type,receipt_category,detail,amount')
+  .eq('asset_id',id).is('deleted_at',null).order('registered_on',{ascending:false}).limit(5);
+  if(error)throw error;if(seq!==lastHistorySeq)return;
+  if(!data?.length){node.textContent='이 설비에 연결된 유지관리 이력이 아직 없습니다.';return}
+  node.innerHTML=data.map(x=>`<div class="v4827-history-item"><b>${esc(x.executed_on||x.registered_on||'-')} · ${esc(x.maintenance_type||x.receipt_category||'유지관리')}</b><br>${esc(x.detail||'-')}<br><small>${esc(x.process_status||'-')}${Number(x.amount||0)?' · '+Number(x.amount).toLocaleString('ko-KR')+'원':''}</small></div>`).join('');
+ }catch(e){if(seq===lastHistorySeq){node.textContent='DB 이력 조회 실패: '+(e?.message||e);node.classList.add('v4827-danger')}}
+}
+async function saveNormal(){
+ const [key,a]=chosen();if(!a||!actualAssetId(a))return toast('DB에 등록된 설비를 선택하세요.');
+ if(!isEditor())return toast('점검 권한이 없는 계정입니다.');
+ if($('tfmsV4827Result').value!=='정상')return toast('이상사항은 유지관리 등록을 이용해 주세요.');
+ if(!Array.from(document.querySelectorAll('#tfmsV4827Checklist input')).every(x=>x.checked))return toast('점검 확인항목을 모두 체크해 주세요.');
+ if($('tfmsV4827InspectNote').value.trim())return toast('정상점검의 상세 메모는 업무일지에 기록해 주세요. 이 버튼은 최근점검일만 갱신합니다.');
+ if(processing)return;
+ const c=db();if(!c||!user()?.id)return toast('Supabase 로그인 상태를 확인해 주세요.');
+ if(!window.confirm(`${a.facility} · ${a.name}\n최근 점검일을 ${today()}로 갱신하시겠습니까?\n(개별 점검 항목 이력은 저장되지 않습니다.)`))return;
+ processing=true;updateActions();
+ try{
+  const {data,error}=await c.from('assets').update({last_inspected_on:today()}).eq('id',actualAssetId(a)).select('id,last_inspected_on');
+  if(error)throw error;
+  if(!data?.length)throw new Error('저장 대상이 없습니다. 설비 권한 또는 DB 정책을 확인해 주세요.');
+  a.check=today().replaceAll('-','.');setTimeout(()=>{try{window.renderAssetList?.()}catch(_){}},0);
+  $('tfmsV4827Checked').textContent=a.check;
+  document.querySelectorAll('#tfmsV4827Checklist input').forEach(x=>x.checked=false);
+  toast('설비 최근 점검일을 Supabase에 반영했습니다. 상세 점검기록은 업무일지를 이용해 주세요.');
+ }catch(e){console.error('[TFMS QR last inspected]',e);toast('점검일 저장 실패: '+(e?.message||e))}
+ finally{processing=false;updateActions()}
+}
+function openMaintenance(withIssue){
+ const [key,a]=chosen();if(!a)return toast('점검할 설비를 선택하세요.');if(!isEditor())return toast('등록 권한이 없습니다.');
+ const result=$('tfmsV4827Result')?.value||'정상',memo=$('tfmsV4827InspectNote')?.value.trim()||'';
+ if(withIssue&&result==='정상')return toast('점검결과를 이상 발견 또는 긴급 조치 필요로 변경해 주세요.');
+ if(withIssue&&!memo)return toast('이상 증상·위치 등을 입력해 주세요.');
+ window.navTo?.('register');
+ function fill(){
+  const facility=$('regFacility');if(facility){facility.value=a.facility||'';facility.dispatchEvent(new Event('change',{bubbles:true}))}
+  const text=$('regDetail');if(text)text.value=`[QR 현장점검] ${a.name} (${a.space||a.location||'-'}) · ${result}${memo?'\n'+memo:''}`;
+  const st=$('regStatus');if(st&&withIssue)st.value='진행중';
+  const link=$('regAssetLinkV4538');if(link){link.value=key;link.dispatchEvent(new Event('change',{bubbles:true}))}
+  toast('QR 점검 대상 설비와 점검내용을 불러왔습니다. 조치·사진·비용을 입력한 뒤 기존 유지관리 등록에서 저장하세요.');
+ }
+ // Existing register page populates its facility/asset selectors after navigation.
+ setTimeout(fill,260);
+}
+async function copyLink(){const url=urlFor(chosen()[1]);if(!url)return toast('HTTPS 배포 사이트에서 QR을 발행해 주세요.');
+ try{if(navigator.clipboard?.writeText)await navigator.clipboard.writeText(url);else{const ta=document.createElement('textarea');ta.value=url;document.body.appendChild(ta);ta.select();if(!document.execCommand('copy'))throw Error('복사 실패');ta.remove()};toast('설비 QR 링크를 복사했습니다.')}catch(e){toast('주소 자동 복사 실패: 화면의 링크를 직접 복사해 주세요.')}
+}
+function printLabel(){const [,a]=chosen(),url=urlFor(a);if(!url)return toast('HTTPS 배포 사이트에서 QR을 발행해 주세요.');
+ const qr=$('tfmsV4827QrCanvas'),canvas=q('canvas',qr),img=q('img',qr);
+ const src=img?.src||(canvas?.toDataURL?canvas.toDataURL('image/png'):'');
+ if(!src)return toast('QR 코드가 로드되지 않았습니다. 다시 선택해 주세요.');
+ const popup=window.open('','_blank','width=640,height=680');if(!popup)return toast('팝업 차단을 해제해 주세요.');
+ popup.document.write(`<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>TFMS 설비 QR 라벨</title><style>@page{size:A4;margin:18mm}body{font-family:"Malgun Gothic",sans-serif;margin:0;color:#163354}.label{border:2px solid #28518a;width:82mm;padding:12mm;text-align:center;box-sizing:border-box;border-radius:10px}.label h2{margin:0 0 10px;font-size:20px}.label img{width:52mm;height:52mm}.label b{display:block;font-size:15px;margin:7px 0}.label p{font-size:11px;line-height:1.4;overflow-wrap:anywhere}.label small{font-size:10px;color:#5e6b7c}</style></head><body><div class="label"><h2>TFMS 설비 점검</h2><img src="${src}"><b>${esc(a?.name)}</b><p>${esc(labelText(a))}</p><small>QR 촬영 → 로그인 → 설비 점검·이력 확인</small></div></body></html>`);
+ popup.document.close();popup.focus();
+}
+function showAssetQrAction(){
+ const host=q('#equipment .asset-mini-actions');if(!host||$('tfmsV4827EquipmentShortcut'))return;
+ const b=document.createElement('button');b.id='tfmsV4827EquipmentShortcut';b.type='button';b.textContent='▦ QR 라벨·현장점검';
+ b.addEventListener('click',()=>{
+  const key=window.selectedAssetKey||'';
+  window.navTo?.('qrCheck');build();const a=assetMap()[key];if(a){$('tfmsV4827Facility').value=a.facility;refreshSelects(key);draw()}
+ });host.appendChild(b);
+}
+function handleDeepLink(afterLoad){
+ if(!deepLinkId||deepLinkProcessed||!user()?.id)return;
+ const candidate=entries().find(([,a])=>actualAssetId(a)===deepLinkId);
+ if(!candidate){if(afterLoad&&!deepLinkProcessed){toast('QR 대상 설비를 찾지 못했습니다. 소속팀의 조회 권한과 설비 등록 여부를 확인해 주세요.')}return}
+ deepLinkProcessed=true;
+ window.navTo?.('qrCheck');build();$('tfmsV4827Facility').value=candidate[1].facility;refreshSelects(candidate[0]);draw();
+}
+// Keep old IDs, navigation entrypoints, and the separate fire-extinguisher QR flow intact.
+// Replace only the prototype QR renderer: old rendering repeatedly resets the selected asset and unsaved checklist.
+window.renderQrAssetOptions=function(){build();refreshSelects();draw()};
+window.renderQrAsset=function(){if(!$('tfmsV4827FieldRoot'))build();else draw()};
+const oldLoad=window.loadEnterpriseData;
+if(typeof oldLoad==='function')window.loadEnterpriseData=async function(){const result=await oldLoad.apply(this,arguments);setMenuRole();if($('tfmsV4827FieldRoot')){refreshSelects();draw()}showAssetQrAction();handleDeepLink(true);return result};
+// Authentication startup uses a private loadEnterpriseData() closure, so open QR links after goHome() too.
+const oldHome=window.goHome;
+if(typeof oldHome==='function')window.goHome=function(){const result=oldHome.apply(this,arguments);setMenuRole();if(deepLinkId&&!deepLinkProcessed)setTimeout(()=>handleDeepLink(true),230);return result};
+function bootstrap(){build();showAssetQrAction();handleDeepLink(false);try{const body=q('#tfmsVersionModal .tfms-history-latest-group');if(body&&!q('[data-version="v48.2.7-qr-field-inspection"]',body)){
+ const div=document.createElement('div');div.className='change-item';div.dataset.version='v48.2.7-qr-field-inspection';div.innerHTML='<strong>v48.2.7 · QR Field Inspection Link Stable</strong><ul><li>설비 DB ID 기반 QR 라벨·HTTPS 모바일 직접진입 신설</li><li>설비 점검항목·최근 유지관리 이력 DB 조회 및 정상 점검일 갱신 연결</li><li>이상 발생 시 유지관리 등록으로 설비·증상 전달, 가짜 사진첨부·로컬 QR 저장 UI는 비노출</li><li>기존 소화기 QR·설비관리·RLS/스키마 보존</li></ul>';body.insertBefore(div,body.firstChild)
+ }}catch(e){console.warn('v48.2.7 release',e)}}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bootstrap,{once:true});else bootstrap();
 })();
 </script>
 </body></html>
