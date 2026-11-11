@@ -31,7 +31,7 @@ html.tfms-v4826-restoring #tfmsV4826BootMask{display:flex}
 @media(prefers-reduced-motion:reduce){#tfmsV4826BootMask .tfms-v4826-spinner{animation:none}}
 </style>
 
-<title>TFMS v48.2.12 QR Layout & Fire Inventory Safety Stable</title>
+<title>TFMS v48.2.13 Unified QR Label & Menu Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -389,7 +389,7 @@ body{background:var(--tfms-bg)!important;color:var(--tfms-text)}
 /* application header */
 #appHeader{position:sticky;top:0;z-index:1000;background:var(--tfms-navy)!important;box-shadow:0 7px 24px rgba(4,34,75,.2)}
 #appHeader .top{height:80px!important;background:linear-gradient(90deg,#062b63,#073a77)!important;padding:0 24px!important;border:0!important}
-#appHeader .logo{min-width:0;gap:18px}.logo img{width:250px!important;max-height:54px!important;object-fit:contain;background:#fff;padding:9px 13px;border-radius:8px}.logo-title b{font-size:27px!important;color:#fff!important}.logo-title small{color:#bcd2eb!important}.logo-title:after{content:'v44.29 Recovery Stable';display:inline-block;margin-left:12px;padding:6px 11px;border:1px solid rgba(80,230,220,.45);border-radius:999px;color:#d6fffa;background:rgba(15,163,163,.17);font-size:12px;font-weight:800;vertical-align:middle}
+#appHeader .logo{min-width:0;gap:18px}.logo img{width:250px!important;max-height:54px!important;object-fit:contain;background:#fff;padding:9px 13px;border-radius:8px}.logo-title b{font-size:27px!important;color:#fff!important}.logo-title small{color:#bcd2eb!important}.logo-title:after{content:'v48.2.13 Unified QR Label & Menu Stable';display:inline-block;margin-left:12px;padding:6px 11px;border:1px solid rgba(80,230,220,.45);border-radius:999px;color:#d6fffa;background:rgba(15,163,163,.17);font-size:12px;font-weight:800;vertical-align:middle}
 #appHeader .user{color:#fff!important}.logout{background:#fff!important;color:#07366f!important}
 #appHeader nav{position:fixed!important;left:0;top:80px;bottom:0;width:245px;height:auto!important;display:flex!important;flex-direction:column;align-items:stretch!important;gap:4px!important;padding:18px 12px 100px!important;background:linear-gradient(180deg,#07366f 0%,#032653 100%)!important;overflow-y:auto!important;box-shadow:8px 0 28px rgba(4,37,80,.12);z-index:990}
 #appHeader .nav{position:relative;text-align:left!important;padding:13px 15px 13px 46px!important;border:0!important;border-radius:9px!important;color:#eaf3ff!important;font-size:14px!important;min-height:46px}.nav:hover,.nav.active{background:linear-gradient(90deg,#0f9ca8,#0c7ca5)!important;color:#fff!important;box-shadow:0 8px 18px rgba(12,132,156,.22)}.nav .tfms-nav-ico{position:absolute;left:15px;top:50%;transform:translateY(-50%);font-size:19px;width:22px;text-align:center}
@@ -2217,7 +2217,6 @@ nav.sidebar {
 <div class="v459-cycle-shortcuts">
 <button class="active" onclick="document.getElementById('v459CycleForm')?.scrollIntoView({behavior:'smooth',block:'start'})" type="button"><span>📅</span><b>일반 점검주기</b><small>설비·시설 반복점검 일정 관리</small></button>
 <button onclick="navToFireV420()" type="button"><span>🧯</span><b>소방 월간점검</b><small>업무 수행 기록표 작성·이력</small></button>
-<button onclick="navToFireQrV459()" type="button"><span>▦</span><b>소화기 QR 점검</b><small>소화기 QR 등록·현장점검</small></button>
 </div>
 <div class="panel v459-compact-panel">
 <div class="section-title"><span class="dot"></span>정기점검 빠른 설정</div>
@@ -22864,10 +22863,10 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 <script id="tfms-v480-version-authority">
 (function(){
   'use strict';
-  const LABEL='v48.2.12 QR Layout & Fire Inventory Safety Stable';
-  const PARAM='48.2.12';
+  const LABEL='v48.2.13 Unified QR Label & Menu Stable';
+  const PARAM='48.2.13';
   const TITLE='TFMS '+LABEL;
-  const FIXED_BUILD=Object.freeze({version:'v48.2.12',channel:'QR Layout & Fire Inventory Safety Stable',buildDate:'2026.11.11',title:'TFMS QR 현장점검 화면 정렬·소화기 등록해제 안전 개선'});
+  const FIXED_BUILD=Object.freeze({version:'v48.2.13',channel:'Unified QR Label & Menu Stable',buildDate:'2026.11.11',title:'QR 현장점검 소화기 개별 라벨 발행 및 점검주기관리 중복 메뉴 정리'});
   const nativeReplace=History.prototype.replaceState;
   if(!History.prototype.__tfmsV4729VersionNormalized){
     History.prototype.replaceState=function(state,title,url){
@@ -22881,7 +22880,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
   function apply(){
     normalizeUrl();
     const badge=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
-    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2.11')}catch(e){}}
+    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2.13')}catch(e){}}
     try{document.title=TITLE;Object.defineProperty(document,'title',{configurable:true,enumerable:true,get(){return TITLE},set(_){}})}catch(e){}
     try{const te=document.head&&document.head.querySelector('title');if(te)lockText(te,'textContent',TITLE)}catch(e){}
     try{Object.defineProperty(window,'TFMS_BUILD',{configurable:true,enumerable:true,get(){return FIXED_BUILD},set(_){}})}catch(e){try{window.TFMS_BUILD=FIXED_BUILD}catch(_){}}
@@ -23594,7 +23593,7 @@ window.v4565QrField=function(i,key,el){setRow(i,key,el.value)};
 function renderQrCards(){const root=$('v4565QrCards');if(!root)return;const list=Array.isArray(window.fireExtRowsV420)?window.fireExtRowsV420:[],kw=String($('v4565QrSearch')?.value||'').trim().toLowerCase(),filter=$('v4565QrFilter')?.value||'';const rows=list.map((r,i)=>({r,i})).filter(({r})=>(!kw||[r.code,r.location,r.type,r.note].join(' ').toLowerCase().includes(kw))&&(!filter||r.result===filter));root.innerHTML=rows.length?rows.map(({r,i})=>{const bad=r.result==='불량'||['pressure','pin','hose','body','placement'].some(k=>r[k]==='불량');const opt=(key,label)=>`<label>${label}<select onchange="v4565QrField(${i},'${key}',this)"><option ${r[key]==='양호'?'selected':''}>양호</option><option ${r[key]==='불량'?'selected':''}>불량</option><option ${r[key]==='해당없음'?'selected':''}>해당없음</option></select></label>`;return `<div class="v4565-qr-card ${bad?'is-bad':''}" data-i="${i}"><div class="v4565-qr-card-head"><div class="v4565-qr-card-title"><strong>${esc(r.code||`소화기 ${i+1}`)}</strong><small>${esc(r.location||'위치 미입력')} · ${esc(r.type||'분말')}</small></div><div class="v4565-qr-result"><button class="good ${r.result==='양호'?'active':''}" onclick="v4565QrSetResult(${i},'양호')">정상</button><button class="bad ${r.result==='불량'?'active':''}" onclick="v4565QrSetResult(${i},'불량')">이상</button></div><div class="v4565-qr-actions"><button onclick="showFireQrV420(${i})">QR</button><button onclick="v4565QrToggle(${i})">상세</button></div></div><div class="v4565-qr-detail">${opt('pressure','압력')}${opt('pin','안전핀·봉인')}${opt('hose','호스·노즐')}${opt('body','부식·변형')}${opt('placement','배치·표지')}<label class="v4565-qr-note">비고<input value="${esc(r.note||'')}" oninput="v4565QrField(${i},'note',this)"></label><label>관리번호<input value="${esc(r.code||'')}" oninput="v4565QrField(${i},'code',this)"></label><label>위치<input value="${esc(r.location||'')}" oninput="v4565QrField(${i},'location',this)"></label><label>종류<select onchange="v4565QrField(${i},'type',this)">${['분말','CO2','강화액','기타'].map(x=>`<option ${r.type===x?'selected':''}>${x}</option>`).join('')}</select></label><div></div><div></div><div style="display:flex;justify-content:flex-end"><button type="button" style="height:32px;border:1px solid #efb5b5;background:#fff;color:#c83f3f;border-radius:7px;padding:0 10px" onclick="v4565QrDelete(${i})" title="저장 전 항목은 화면에서 제거하고, 저장된 항목은 사용 중지 처리합니다.">제거·등록해제</button></div></div></div>`}).join(''):`<div class="empty-state">조건에 맞는 소화기가 없습니다.</div>`;syncQrSummary();}
 function buildQr(){const p=$('fireMonthly');if(!p)return;classifyFirePanels();const panel=q('.v4565-qr-panel',p);if(!panel||panel.dataset.v4565==='1')return;panel.dataset.v4565='1';const hero=document.createElement('div');hero.className='v4565-qr-hero';hero.innerHTML=`<div class="v4565-qr-title-row"><div><h2>소화기 QR점검</h2><p>소화기별 QR 등록·현장점검·상태 확인을 한 화면에서 처리합니다.</p></div><button type="button" onclick="navToFireV420()">← 소방 월간점검</button></div><div class="v4565-qr-filter"><input id="v4565QrFacility" placeholder="시설명"><input id="v4565QrSearch" placeholder="QR번호·위치·종류 검색"><select id="v4565QrFilter"><option value="">전체 상태</option><option>양호</option><option>불량</option></select></div><div class="v4565-qr-kpis"><div class="v4565-qr-kpi">현재 목록<b id="v4565QrTotal">0</b></div><div class="v4565-qr-kpi good">정상<b id="v4565QrGood">0</b></div><div class="v4565-qr-kpi bad">이상<b id="v4565QrBad">0</b></div><div class="v4565-qr-kpi">미결정<b id="v4565QrPending">0</b></div></div>`;panel.before(hero);const cards=document.createElement('div');cards.id='v4565QrCards';cards.className='v4565-qr-cards';panel.appendChild(cards);const bottom=document.createElement('div');bottom.className='v4565-qr-bottom';bottom.innerHTML=`<button type="button" onclick="addFireExtRowV420();setTimeout(renderQrCardsV4565,0)">＋ 소화기 추가</button><button type="button" onclick="saveFireExtInventoryV447();setTimeout(renderQrCardsV4565,50)">목록 저장</button><button type="button" class="primary" onclick="saveFireRecordV420()">월간점검 저장</button>`;panel.appendChild(bottom);const hint=document.createElement('p');hint.className='v48212-fire-delete-hint';hint.textContent='실수로 추가한 소화기는 해당 카드의 [상세 → 제거·등록해제]에서 처리하세요. 저장 전 항목은 화면에서 제거하고, 저장된 항목은 DB에서 사용 중지하고 과거 점검 이력은 보존합니다. QR 라벨은 소화기 목록을 DB에 저장한 후 사용하세요.';bottom.insertAdjacentElement('afterend',hint);const bulk=q('.fire-bulk-box',panel);if(bulk){const old=q(':scope > .section-title',bulk);if(old){const h=document.createElement('div');h.className='v4565-bulk-head';old.replaceWith(h);h.appendChild(old);const b=document.createElement('button');b.type='button';b.textContent='관리도구 접기';b.onclick=()=>{bulk.classList.toggle('v4565-collapsed');b.textContent=bulk.classList.contains('v4565-collapsed')?'관리도구 펼치기':'관리도구 접기'};h.appendChild(b);}}const fac=$('v4565QrFacility');if(fac){fac.value=$('fireFacility')?.value||'';fac.addEventListener('input',()=>{if($('fireFacility'))$('fireFacility').value=fac.value})}$('v4565QrSearch')?.addEventListener('input',renderQrCards);$('v4565QrFilter')?.addEventListener('change',renderQrCards);panel.addEventListener('click',e=>{const oc=e.target.closest('button')?.getAttribute('onclick')||'';if(/generateFireExtBulkV447|loadFireExtInventoryV447|clearFireExtRowsV447|addFireExtRowV420/.test(oc))setTimeout(renderQrCards,120)});renderQrCards();}
 window.renderQrCardsV4565=renderQrCards;
-function setFireMode(mode){const p=$('fireMonthly');if(!p)return;classifyFirePanels();buildQr();const qr=mode==='qr';p.classList.toggle('v4565-qr-mode',qr);const h=q('.title-row h1',p),bc=q('.title-row .breadcrumb',p);if(h)h.textContent=qr?'소화기 QR점검':'소방 월간점검';if(bc)bc.textContent=qr?'홈 › 점검주기 관리 › 소화기 QR점검':'홈 › 소방 월간점검 › 업무 수행 기록표';if(qr){const f=$('v4565QrFacility');if(f)f.value=$('fireFacility')?.value||'';renderQrCards();}fixFireProgress();}
+function setFireMode(mode){const p=$('fireMonthly');if(!p)return;classifyFirePanels();buildQr();const qr=mode==='qr';p.classList.toggle('v4565-qr-mode',qr);const h=q('.title-row h1',p),bc=q('.title-row .breadcrumb',p);if(h)h.textContent=qr?'소화기 QR점검':'소방 월간점검';if(bc)bc.textContent=qr?'홈 › QR 현장점검 › 소화기 목록·점검':'홈 › 소방 월간점검 › 업무 수행 기록표';if(qr){const f=$('v4565QrFacility');if(f)f.value=$('fireFacility')?.value||'';renderQrCards();}fixFireProgress();}
 const oldFire=window.navToFireV420;if(typeof oldFire==='function'&&!oldFire.__v4565){const w=function(){const r=oldFire.apply(this,arguments);setTimeout(()=>setFireMode('legal'),20);return r};w.__v4565=true;window.navToFireV420=w;}
 window.navToFireQrV459=function(){window.navToFireV420?.();setTimeout(()=>setFireMode('qr'),40)};
 function fireBind(){const p=$('fireMonthly');if(!p||p.dataset.v4565Bound==='1')return;p.dataset.v4565Bound='1';p.addEventListener('input',fixFireProgress);p.addEventListener('change',fixFireProgress);}
@@ -23928,9 +23927,9 @@ function daysFromToday(v){if(!v)return 999;const a=new Date(todayIso()+'T00:00:0
 function taskBucket(t){const done=isDone(t),dd=daysFromToday(dueDate(t));if(done)return 'done';if(dd<0)return 'late';if(dd<=0)return 'today';if(dd<=3)return 'urgent';return 'future'}
 /* Cleanup III: v4571 is the sole owner of cycle title action buttons. */
 function setupTitle(p,r){const row=q(':scope > .title-row',p);const left=q(':scope > .title-row .title-left',p)||row;const h=q('h1',left||p);const box=(h&&h.parentElement)||left||p;const bc=q('.breadcrumb',box)||q('.breadcrumb',left)||q(':scope > .breadcrumb',row||p);let meta=q('.v4571-title-meta',box)||q('.v4571-title-meta',left);if(!meta){meta=document.createElement('div');meta.className='v4571-title-meta';if(bc)meta.appendChild(bc);(box||row||p)?.appendChild(meta)}else if(bc&&bc.parentElement!==meta){meta.insertAdjacentElement('afterbegin',bc)}let b=q('.v4571-role-badge',meta)||q('.v4571-role-badge',box)||q('.v4571-role-badge',left);if(!b){b=document.createElement('span');b.className='v4571-role-badge'}b.textContent=r==='admin'?'관리자 전용':r==='viewer'?'조회전용':'담당자용';if(meta&&b.parentElement!==meta)meta.appendChild(b);if(h)h.querySelectorAll('.v4571-role-badge').forEach(x=>{if(x!==b)x.remove()});let actions=$('v4571CycleTitleActions');if(!actions){actions=document.createElement('div');actions.id='v4571CycleTitleActions';actions.className='v4571-title-actions';row?.appendChild(actions)}
- if(r==='admin')actions.innerHTML='<button type="button" onclick="navToFireV420()">🧯 소방 월간점검</button><button type="button" onclick="navToFireQrV459()">▦ 소화기 QR</button><button type="button" onclick="v4573GenerateDueCycles()">▶ 생성 실행</button><button type="button" onclick="v4573TogglePreset()">⚙ 빠른 설정</button><button type="button" class="primary" onclick="v4571FocusCycleForm()">＋ 기준 추가</button>';
+ if(r==='admin')actions.innerHTML='<button type="button" onclick="navToFireV420()">🧯 소방 월간점검</button><button type="button" onclick="v4573GenerateDueCycles()">▶ 생성 실행</button><button type="button" onclick="v4573TogglePreset()">⚙ 빠른 설정</button><button type="button" class="primary" onclick="v4571FocusCycleForm()">＋ 기준 추가</button>';
  else if(r==='viewer')actions.innerHTML='<button type="button" onclick="navTo(&quot;today&quot;)">오늘 업무 확인</button><button type="button" onclick="navToFireV420()">소방 월간점검</button>';
- else actions.innerHTML='<button type="button" onclick="navToFireV420()">🧯 소방 월간점검</button><button type="button" onclick="navToFireQrV459()">▦ 소화기 QR</button><button type="button" class="primary" onclick="navTo(&quot;today&quot;)">오늘의 업무 열기</button>';
+ else actions.innerHTML='<button type="button" onclick="navToFireV420()">🧯 소방 월간점검</button><button type="button" class="primary" onclick="navTo(&quot;today&quot;)">오늘의 업무 열기</button>';
  if(bc)bc.textContent=r==='user'?'홈 › 점검주기 관리 › 내 점검업무':'홈 › 점검주기 관리 › 점검기준 관리';}
 window.v4571FocusCycleForm=function(){const el=$('v459CycleForm');if(!el)return;el.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(()=>$('cycleFacility')?.focus(),260)};
 function setupAdmin(p,r){p.classList.toggle('v4571-admin',r==='admin');p.classList.toggle('v4571-viewer',r==='viewer');const k=qa('.v4565-kpi',p);const list=cycles(),today=todayIso();let due=0,late=0,off=0;list.forEach(c=>{const d=String(c.due||c.nextDue||'');if(d===today)due++;if(d&&d<today)late++;if(c.active==='미사용')off++});const vals=[[list.length,'전체 점검기준'],[due,'오늘 생성 예정'],[late,'미완료/경과'],[off,'미사용']];k.slice(0,4).forEach((el,i)=>{const s=q('span:not(.ico)',el),st=q('strong',el);if(s)s.textContent=vals[i][1];if(st)st.textContent=vals[i][0]+'건'});const preset=qa(':scope > .panel',p).find(x=>q('.v459-preset-grid',x));if(preset&&!preset.classList.contains('v4565-preset-collapsed'))preset.classList.add('v4565-preset-collapsed');}
@@ -37259,7 +37258,7 @@ function baseUrl(){
  const u=new URL(location.href);
  u.search='';u.hash='';return u.href;
 }
-function urlFor(a){const base=baseUrl(),id=actualAssetId(a);if(!base||!id)return '';const u=new URL(base);u.searchParams.set('v','48.2.12');u.searchParams.set('qr_asset',id);return u.href}
+function urlFor(a){const base=baseUrl(),id=actualAssetId(a);if(!base||!id)return '';const u=new URL(base);u.searchParams.set('v','48.2.13');u.searchParams.set('qr_asset',id);return u.href}
 function labelText(a){return [a?.facility,a?.space||a?.location,a?.name,a?.qrId&&a.qrId!=='-'?a.qrId:''].filter(Boolean).join(' · ')}
 function checksFor(a){
  const n=[a?.name,a?.category].join(' ');
@@ -37289,6 +37288,7 @@ function build(){
   root.innerHTML=`
   <div class="v4827-top"><div><h2>QR 현장점검</h2><p>카메라 하나로 일반 설비와 소화기 QR을 구분하여 해당 점검 화면으로 연결합니다.</p></div><span class="v4827-status-chip">설비·소화기 통합 스캔</span></div>
    <div class="v48212-qr-guide"><div><strong>📷 통합 QR 스캔</strong><span>일반 설비·소화기 모두 같은 카메라로 스캔</span></div><div><strong>⚙️ 일반 설비</strong><span>아래 설비 목록에서 점검·유지관리 기록</span></div><div><strong>🧯 소화기</strong><span>소화기 관리대장·점검카드로 자동 이동</span></div></div>
+  <div class="v48213-label-jumps" role="group" aria-label="QR 라벨 발행 대상"><span>QR 라벨 발행</span><button type="button" id="tfmsV48213JumpEquipment">⚙️ 일반 설비</button><button type="button" id="tfmsV48213JumpFire">🧯 소화기</button></div>
   <div class="v4827-grid">
    <div>
     <div class="v4827-panel"><h3>① 일반 설비 점검 대상</h3><div class="v4827-fields"><div class="v4827-field"><label for="tfmsV4827Facility">시설 선택</label><select id="tfmsV4827Facility"><option value="">시설을 불러오는 중</option></select></div><div class="v4827-field"><label for="qrAssetSelect">설비 선택</label><div id="tfmsV4827PickerSlot"></div></div></div>
@@ -37303,10 +37303,23 @@ function build(){
     </div>
     <div class="v4827-panel"><h3>③ 최근 유지관리 이력</h3><div id="tfmsV4827History" class="v4827-muted">설비를 선택하면 DB 이력을 조회합니다.</div></div>
    </div>
-   <div><div class="v4827-panel"><h3>QR 라벨 발행</h3><div class="v4827-qrbox"><div id="tfmsV4827QrCanvas">QR 생성 대기</div><strong id="tfmsV4827QrLabel" style="font-size:13px">-</strong><div id="tfmsV4827QrUrl" class="v4827-url">설비를 선택하세요.</div></div>
+   <div><div class="v4827-panel" id="tfmsV48213AssetLabelPanel"><h3>⚙️ 일반 설비 QR 라벨 발행</h3><div class="v4827-qrbox"><div id="tfmsV4827QrCanvas">QR 생성 대기</div><strong id="tfmsV4827QrLabel" style="font-size:13px">-</strong><div id="tfmsV4827QrUrl" class="v4827-url">설비를 선택하세요.</div></div>
     <div class="v4827-controls"><button type="button" id="tfmsV4827Print">QR 라벨 인쇄</button><button type="button" id="tfmsV4827Copy">링크 복사</button></div>
     <p class="v4827-muted">QR은 현재 배포 중인 <b>HTTPS 주소</b>를 기준으로 생성됩니다. PC에 보관된 HTML 파일(file://)에서는 QR을 발행할 수 없습니다.</p>
-   </div></div>
+   </div>
+   <div class="v4827-panel v48213-fire-label-panel" id="tfmsV48213FirePanel">
+    <h3>🧯 소화기 QR 라벨 발행</h3>
+    <p class="v4827-muted">DB에 저장된 소화기를 선택해 개별 QR 라벨을 발행합니다. 일반 설비와는 별도 관리번호를 사용합니다.</p>
+    <div class="v4827-fields v48213-fire-fields">
+     <div class="v4827-field"><label for="tfmsV48213FireFacility">시설 선택</label><select id="tfmsV48213FireFacility"><option value="">시설을 불러오는 중</option></select></div>
+     <div class="v4827-field"><label for="tfmsV48213FireSelect">소화기 선택</label><select id="tfmsV48213FireSelect" disabled><option value="">먼저 시설을 선택하세요</option></select></div>
+    </div>
+    <div class="v4827-controls"><button type="button" id="tfmsV48213FireRefresh">등록 소화기 불러오기</button><button type="button" id="tfmsV48213FireManage">소화기 등록·관리</button></div>
+    <div class="v4827-qrbox v48213-fire-preview"><div id="tfmsV48213FireQr">소화기 선택 대기</div><strong id="tfmsV48213FireTitle">-</strong><div id="tfmsV48213FireInfo" class="v4827-muted">소화기 관리대장에 저장된 번호만 발행할 수 있습니다.</div><div id="tfmsV48213FireUrl" class="v4827-url">시설과 소화기를 선택하세요.</div></div>
+    <div class="v4827-controls"><button type="button" id="tfmsV48213FirePrint" disabled>소화기 QR 라벨 인쇄</button><button type="button" id="tfmsV48213FireCopy" disabled>링크 복사</button></div>
+    <p class="v4827-muted">발행한 QR은 통합 QR 카메라로 스캔합니다. 시설·관리번호 변경 시 라벨을 다시 발행하세요.</p>
+   </div>
+   </div>
   </div>`;
   title.insertAdjacentElement('afterend',root);
   const sel=$('qrAssetSelect');if(sel){$('tfmsV4827PickerSlot').appendChild(sel);sel.style.width='100%';sel.style.height='44px';}
@@ -37948,6 +37961,144 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  function add(){const host=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');if(!host||host.querySelector('[data-version="v48.2.12-qr-inventory-safety"]'))return;
  const div=document.createElement('div');div.className='change-item';div.dataset.version='v48.2.12-qr-inventory-safety';
  div.innerHTML='<strong>v48.2.12 · QR Layout &amp; Fire Inventory Safety Stable</strong><ul><li>설비·소화기 공통 카메라와 각 점검 기능 구분 표시</li><li>QR 화면을 다른 메뉴와 동일한 왼쪽 정렬·가변 폭으로 통일</li><li>소화기 저장 전 화면 제거 / 저장 후 is_active 사용중지 처리 (점검 이력 보존)</li><li>DB/RLS 스키마·메뉴 이벤트·새 타이머/옵저버 추가 없음</li></ul>';
+ host.insertBefore(div,host.firstChild)}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add,{once:true});else add();
+})();
+</script>
+<!-- TFMS v48.2.13: QR field inspection inventory-only fire labels + cycle navigation deduplication. -->
+<style id="tfms-v48213-fire-label-style">
+#qrCheck .v48213-label-jumps{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 12px;padding:10px 13px;background:#fff;border:1px solid #d7e3f1;border-radius:11px}
+#qrCheck .v48213-label-jumps span{font-size:12px;font-weight:800;color:#426183;margin-right:5px}
+#qrCheck .v48213-label-jumps button{border:1px solid #c1d6ea;border-radius:8px;background:#f2f7fd;color:#174b87;font-size:12px;font-weight:800;padding:9px 12px;cursor:pointer}
+#qrCheck .v48213-fire-label-panel{border-color:#e1e5ed}
+#qrCheck .v48213-fire-fields{grid-template-columns:minmax(0,1fr) minmax(0,1.35fr)}
+#qrCheck .v48213-fire-preview{border-top:1px solid #edf1f6;margin-top:15px;padding-top:14px}
+#qrCheck #tfmsV48213FireQr{width:180px;min-height:180px;display:grid;place-items:center;padding:8px;border:1px dashed #cddbea;border-radius:12px;overflow:hidden;color:#65768c;font-size:12px;text-align:center}
+#qrCheck #tfmsV48213FireQr canvas,#qrCheck #tfmsV48213FireQr img{max-width:100%;height:auto}
+#qrCheck #tfmsV48213FireTitle{font-size:13px;color:#1f4266}
+#qrCheck #tfmsV48213FireInfo{text-align:center}
+#qrCheck .v48213-fire-label-panel .v4827-muted{margin:7px 0 10px}
+#qrCheck .v48213-fire-label-panel .v4827-controls{margin-top:11px}
+@media(max-width:650px){#qrCheck .v48213-fire-fields{grid-template-columns:1fr}}
+</style>
+<script id="tfms-v48213-fire-label-controller">
+(function(){
+'use strict';
+if(window.__tfmsV48213FireLabelInstalled)return;
+window.__tfmsV48213FireLabelInstalled=true;
+const $=id=>document.getElementById(id);
+const notify=s=>{if(typeof window.showToast==='function')window.showToast(s);else window.alert(s)};
+const role=()=>{try{return String(typeof tfmsRole!=='undefined'?tfmsRole:'').toLowerCase()}catch(_){return ''}};
+const dept=()=>{try{return String(typeof tfmsUserDept!=='undefined'?tfmsUserDept:typeof currentUserDept!=='undefined'?currentUserDept:'')}catch(_){return ''}};
+const authorized=()=>['admin','user'].includes(role())&&!!window.getTfmsCloudUser?.()?.id;
+let facilityId=null,rows=[],loading=false,seq=0,currentQrUrl='';
+function listFacilities(){
+ const r=role(),d=dept();if(!authorized())return [];
+ let masters=[];
+ try{if(typeof getFacilityMasterSource==='function')masters=getFacilityMasterSource()||[]}catch(_){}
+ const fromMaster=masters.filter(f=>f?.name&&(r==='admin'||(d&&d!=='전체'&&String(f.dept||'')===d))).map(f=>String(f.name));
+ const fromAssets=Object.values(window.assetData||{}).filter(a=>a?.facility&&(r==='admin'||(d&&d!=='전체'&&typeof getScopedFacilityDept==='function'&&String(getScopedFacilityDept(a.facility))===d))).map(a=>String(a.facility));
+ return [...new Set([...fromMaster,...fromAssets])].sort((a,b)=>a.localeCompare(b,'ko'));
+}
+function baseUrl(){
+ if(location.protocol!=='https:')return '';
+ const u=new URL(location.href);u.search='';u.hash='';return u;
+}
+function getRow(){return rows.find(x=>String(x.id)===String($('tfmsV48213FireSelect')?.value||''))||null}
+function resetQr(message){
+ currentQrUrl='';const qr=$('tfmsV48213FireQr'),title=$('tfmsV48213FireTitle'),info=$('tfmsV48213FireInfo'),link=$('tfmsV48213FireUrl');
+ if(qr){qr.replaceChildren();qr.textContent=message||'소화기 선택 대기'}
+ if(title)title.textContent='-';if(info)info.textContent='소화기 관리대장에서 저장된 번호만 발행할 수 있습니다.';
+ if(link)link.textContent=message||'시설과 소화기를 선택하세요.';
+ for(const id of ['tfmsV48213FirePrint','tfmsV48213FireCopy']){const el=$(id);if(el)el.disabled=true}
+}
+function renderQr(){
+ const row=getRow(),facility=$('tfmsV48213FireFacility')?.value||'';if(!row||!facilityId||!facility){resetQr('소화기를 선택하세요.');return}
+ const base=baseUrl();if(!base){resetQr('QR 발행은 GitHub Pages 등 HTTPS 사이트에서만 가능합니다.');return}
+ if(typeof window.QRCode!=='function'){resetQr('QR 생성 라이브러리를 불러오지 못했습니다.');return}
+ const code=String(row.extinguisher_code||'').trim();if(!code){resetQr('소화기 관리번호가 없습니다.');return}
+ base.searchParams.set('v','48.2.13');base.searchParams.set('fire','1');base.searchParams.set('facility',facility);base.searchParams.set('ext',code);
+ const url=base.href,el=$('tfmsV48213FireQr');if(!el)return;
+ el.replaceChildren();
+ try{
+  new window.QRCode(el,{text:url,width:156,height:156,correctLevel:window.QRCode.CorrectLevel?.M});
+  currentQrUrl=url;
+  $('tfmsV48213FireTitle').textContent=code;
+  $('tfmsV48213FireInfo').textContent=[facility,row.location_detail||row.zone_name||'위치 미입력',row.extinguisher_type||'소화기'].join(' · ');
+  $('tfmsV48213FireUrl').textContent=url;
+  $('tfmsV48213FirePrint').disabled=false;$('tfmsV48213FireCopy').disabled=false;
+ }catch(e){console.error('[TFMS fire QR label]',e);resetQr('소화기 QR 생성에 실패했습니다.')}
+}
+function refreshFacilitySelect(){
+ const select=$('tfmsV48213FireFacility');if(!select)return;
+ const previously=select.value,options=listFacilities();
+ select.replaceChildren(new Option('시설을 선택하세요',''),...options.map(f=>new Option(f,f)));
+ if(options.includes(previously))select.value=previously;
+ else{
+  const equipmentFacility=$('tfmsV4827Facility')?.value||'';
+  if(options.includes(equipmentFacility))select.value=equipmentFacility;
+ }
+}
+async function loadFire(){
+ const fs=$('tfmsV48213FireFacility'),picker=$('tfmsV48213FireSelect');if(!fs||!picker)return;
+ const facility=fs.value;rows=[];facilityId=null;resetQr('소화기 목록 불러오기 대기');
+ picker.disabled=true;picker.replaceChildren(new Option('조회 대기',''));
+ if(!authorized()){resetQr('로그인이 필요합니다.');return}
+ if(!facility||!listFacilities().includes(facility)){resetQr('조회 가능한 시설을 선택하세요.');return}
+ const client=window.getTfmsSupabaseClient?.();if(!client){resetQr('Supabase 연결을 확인해 주세요.');return}
+ loading=true;const run=++seq;picker.replaceChildren(new Option('목록을 조회하는 중',''));
+ try{
+  const {data:fac,error:fe}=await client.from('facilities').select('id,name').eq('name',facility).maybeSingle();
+  if(fe)throw fe;if(!fac?.id)throw new Error('해당 시설의 DB 정보를 찾지 못했습니다.');
+  const {data,error}=await client.from('fire_extinguishers').select('id,extinguisher_code,location_detail,zone_name,extinguisher_type,is_active').eq('facility_id',fac.id).eq('is_active',true).order('extinguisher_code',{ascending:true});
+  if(error)throw error;if(run!==seq||fs.value!==facility)return;
+  facilityId=fac.id;rows=(data||[]).filter(x=>x.id&&x.extinguisher_code);
+  if(!rows.length){picker.replaceChildren(new Option('저장된 소화기 없음',''));resetQr('해당 시설에 등록된 소화기가 없습니다.');return}
+  picker.disabled=false;picker.replaceChildren(new Option('소화기를 선택하세요',''),...rows.map(x=>new Option(String(x.extinguisher_code)+' · '+String(x.location_detail||x.zone_name||'위치 미입력'),String(x.id))));
+  resetQr('목록 '+rows.length+'대 조회 완료 · 소화기를 선택하세요.');
+ }catch(e){console.error('[TFMS fire QR inventory read]',e);picker.replaceChildren(new Option('조회 실패',''));resetQr('DB 조회 실패: '+(e?.message||e))}
+ finally{if(run===seq)loading=false}
+}
+function escapeHtml(value){return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function printSelected(){
+ const row=getRow();if(!row||!currentQrUrl)return notify('저장된 소화기를 선택한 후 QR을 생성하세요.');
+ const canvas=$('tfmsV48213FireQr')?.querySelector('canvas'),img=$('tfmsV48213FireQr')?.querySelector('img');
+ const src=img?.src||(canvas?.toDataURL?canvas.toDataURL('image/png'):'');if(!src)return notify('QR 이미지를 아직 생성하지 못했습니다.');
+ const popup=window.open('','_blank','width=640,height=720');if(!popup)return notify('팝업 차단을 해제해 주세요.');
+ const fac=$('tfmsV48213FireFacility').value,code=row.extinguisher_code,locationText=row.location_detail||row.zone_name||'위치 미입력';
+ popup.document.write(`<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>TFMS 소화기 QR 라벨</title><style>@page{size:A4;margin:18mm}*{box-sizing:border-box}body{font-family:"Malgun Gothic",sans-serif;color:#173556}.label{width:82mm;border:2px solid #b84b33;border-radius:10px;padding:9mm;text-align:center}.label h2{font-size:20px;margin:0 0 9px}.label img{width:52mm;height:52mm}.label b{display:block;font-size:18px;margin:8px 0}.label p{font-size:12px;line-height:1.6;overflow-wrap:anywhere}.label small{font-size:10px;color:#637389}</style></head><body><div class="label"><h2>🧯 TFMS 소화기 점검</h2><img src="${src}"><b>${escapeHtml(code)}</b><p>${escapeHtml(fac)}<br>${escapeHtml(locationText)}<br>${escapeHtml(row.extinguisher_type||'소화기')}</p><small>QR 스캔 → 로그인 → 소화기 현장점검</small></div></body></html>`);
+ popup.document.close();popup.focus();
+}
+async function copyLink(){
+ if(!currentQrUrl)return notify('소화기를 선택하여 QR을 먼저 생성하세요.');
+ try{await navigator.clipboard.writeText(currentQrUrl);notify('소화기 QR 주소를 복사했습니다.')}catch(_){notify('링크 복사 실패: 화면에 표시된 주소를 직접 복사해 주세요.')}
+}
+function attach(){
+ const fs=$('tfmsV48213FireFacility'),picker=$('tfmsV48213FireSelect');if(!fs||!picker||fs.dataset.boundV48213==='1')return;
+ fs.dataset.boundV48213='1';
+ fs.addEventListener('change',loadFire);
+ picker.addEventListener('change',renderQr);
+ $('tfmsV48213FireRefresh')?.addEventListener('click',loadFire);
+ $('tfmsV48213FireManage')?.addEventListener('click',()=>window.navToFireQrV459?.());
+ $('tfmsV48213FirePrint')?.addEventListener('click',printSelected);
+ $('tfmsV48213FireCopy')?.addEventListener('click',copyLink);
+ $('tfmsV48213JumpEquipment')?.addEventListener('click',()=>document.getElementById('tfmsV48213AssetLabelPanel')?.scrollIntoView({behavior:'smooth',block:'center'}));
+ $('tfmsV48213JumpFire')?.addEventListener('click',()=>document.getElementById('tfmsV48213FirePanel')?.scrollIntoView({behavior:'smooth',block:'center'}));
+ fs.addEventListener('focus',refreshFacilitySelect);
+ refreshFacilitySelect();resetQr('시설을 선택한 뒤 등록 소화기를 불러오세요.');
+}
+function init(){attach();}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+// Existing showPage wrapper chain is not altered: refresh only after QR page becomes active.
+const nav=document.querySelector('#appHeader nav');
+if(nav)nav.addEventListener('click',e=>{const b=e.target.closest('button');if(b&&(b.getAttribute('onclick')||'').includes('qrCheck')){attach();refreshFacilitySelect();} });
+})();
+</script>
+<script id="tfms-v48213-release-note">
+(function(){
+ function add(){const host=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');if(!host||host.querySelector('[data-version="v48.2.13-unified-qr-label-menu"]'))return;
+ const div=document.createElement('div');div.className='change-item';div.dataset.version='v48.2.13-unified-qr-label-menu';
+ div.innerHTML='<strong>v48.2.13 · Unified QR Label &amp; Menu Stable</strong><ul><li>점검주기 관리의 중복 소화기 QR 진입 버튼 제거 · 소방 월간점검 유지</li><li>QR 현장점검에 DB 등록 소화기 개별 QR 라벨 생성·인쇄·링크복사 추가</li><li>미저장/비활성 소화기는 발행 대상 제외, 기존 QR 스캔·관리대장·점검이력 보존</li><li>Supabase DB/RLS 변경 없음, Timer/Observer 신규 추가 없음</li></ul>';
  host.insertBefore(div,host.firstChild)}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add,{once:true});else add();
 })();
