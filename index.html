@@ -31,7 +31,7 @@ html.tfms-v4826-restoring #tfmsV4826BootMask{display:flex}
 @media(prefers-reduced-motion:reduce){#tfmsV4826BootMask .tfms-v4826-spinner{animation:none}}
 </style>
 
-<title>TFMS v48.2.9 Mobile QR Navigation Stable</title>
+<title>TFMS v48.2.10 Mobile Menu Icon Consistency Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -22864,10 +22864,10 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 <script id="tfms-v480-version-authority">
 (function(){
   'use strict';
-  const LABEL='v48.2.9 Mobile QR Navigation Stable';
-  const PARAM='48.2.9';
+  const LABEL='v48.2.10 Mobile Menu Icon Consistency Stable';
+  const PARAM='48.2.10';
   const TITLE='TFMS '+LABEL;
-  const FIXED_BUILD=Object.freeze({version:'v48.2.9',channel:'Mobile QR Navigation Stable',buildDate:'2026.11.11',title:'TFMS 모바일 QR점검 메뉴 복구·접이식 내비게이션 안정화'});
+  const FIXED_BUILD=Object.freeze({version:'v48.2.10',channel:'Mobile Menu Icon Consistency Stable',buildDate:'2026.11.11',title:'TFMS 모바일 메뉴 아이콘 표시·정렬 일관성 개선'});
   const nativeReplace=History.prototype.replaceState;
   if(!History.prototype.__tfmsV4729VersionNormalized){
     History.prototype.replaceState=function(state,title,url){
@@ -25761,7 +25761,7 @@ function dept(){try{return window.cloudProfile?.department?.name||window.tfmsUse
 function btnFor(id){return qa('#appHeader nav .nav').find(b=>(b.getAttribute('onclick')||'').includes(`'${id}'`)||(b.getAttribute('onclick')||'').includes(`\"${id}\"`))}
 function ensureBadge(btn,id){if(!btn)return null;let s=q('.tfms-v4606-menu-badge',btn);if(!s){s=document.createElement('span');s.className='tfms-v4606-menu-badge';s.id=id;btn.appendChild(s)}return s}
 function setBadge(el,n){if(!el)return;const v=Math.max(0,Number(n)||0);el.textContent=v>99?'99+':String(v);el.parentElement?.classList.toggle('has-badge',v>0)}
-function iconMap(id){return({dashboard:'⌂',today:'▣',maintenanceHub:'▦',register:'＋',history:'⌕',stats:'▥',excel:'⇩',dailylog:'▤',qrCheck:'▦',equipment:'⚙',cycle:'◷',energy:'⚡',deleteManage:'↶',myPage:'♙',accountAdmin:'♧'})[id]||'•'}
+function iconMap(id){return({dashboard:'⌂',today:'▣',maintenanceHub:'▦',register:'＋',history:'⌕',stats:'▥',excel:'⇩',dailylog:'📋',qrCheck:'📷',equipment:'⚙️',cycle:'◷',energy:'⚡',deleteManage:'↶',myPage:'♙',accountAdmin:'♧'})[id]||'•'}
 function setIcon(btn,id){if(!btn)return;let ico=q('.tfms-nav-ico',btn);if(!ico){ico=document.createElement('span');ico.className='tfms-nav-ico';btn.prepend(ico)}ico.textContent=iconMap(id)}
 function makeSection(cls,label){const s=document.createElement('div');s.className='tfms-v4606-section '+cls;if(label){const l=document.createElement('div');l.className='tfms-v4606-section-label';l.textContent=label;s.appendChild(l)}return s}
 function makeGroup(id,label,ico){const g=document.createElement('div');g.className='tfms-v4606-group';g.id=id;const t=document.createElement('button');t.type='button';t.className='tfms-v4606-group-toggle';t.innerHTML=`<span class="ico">${ico}</span>${label}<span class="chev">›</span>`;const sub=document.createElement('div');sub.className='tfms-v4606-submenu';t.onclick=()=>g.classList.toggle('open');g.append(t,sub);return{g,t,sub}}
@@ -37259,7 +37259,7 @@ function baseUrl(){
  const u=new URL(location.href);
  u.search='';u.hash='';return u.href;
 }
-function urlFor(a){const base=baseUrl(),id=actualAssetId(a);if(!base||!id)return '';const u=new URL(base);u.searchParams.set('v','48.2.9');u.searchParams.set('qr_asset',id);return u.href}
+function urlFor(a){const base=baseUrl(),id=actualAssetId(a);if(!base||!id)return '';const u=new URL(base);u.searchParams.set('v','48.2.10');u.searchParams.set('qr_asset',id);return u.href}
 function labelText(a){return [a?.facility,a?.space||a?.location,a?.name,a?.qrId&&a.qrId!=='-'?a.qrId:''].filter(Boolean).join(' · ')}
 function checksFor(a){
  const n=[a?.name,a?.category].join(' ');
@@ -37273,7 +37273,7 @@ function ensureQRNav(){
  const equipment=Array.from(nav.querySelectorAll('button')).find(b=>(b.getAttribute('onclick')||'').includes('equipment'));
  const b=document.createElement('button');b.id='tfmsV4827QrNav';b.className='nav';b.dataset.roles='admin,user';
  b.setAttribute('onclick',"showPage('qrCheck',this)");
- b.innerHTML='<span class="tfms-nav-ico">▦</span>설비 QR 점검';
+ b.innerHTML='<span class="tfms-nav-ico">📷</span>설비 QR 점검';
  if(equipment)equipment.insertAdjacentElement('afterend',b);else nav.appendChild(b);
 }
 function setMenuRole(){
@@ -37719,4 +37719,46 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',release,{once:true});else release();
 })();
 </script>
+
+<!-- v48.2.10 Mobile Menu Icon Consistency: CSS-only icon visibility/alignment; preserve menu and QR handlers. -->
+<style id="tfms-v48210-mobile-menu-icon-style">
+@media (max-width:760px){
+  /* v44 mobile layout hid ordinary icons; the group icon was separately rendered. */
+  #appHeader nav.tfms-v4606-sidebar .nav .tfms-nav-ico{
+    display:inline-flex!important;
+    visibility:visible!important;
+    align-items:center!important;
+    justify-content:center!important;
+    position:absolute!important;
+    top:50%!important;
+    left:15px!important;
+    width:22px!important;
+    height:24px!important;
+    font-size:18px!important;
+    line-height:1!important;
+    transform:translateY(-50%)!important;
+    white-space:nowrap!important;
+    pointer-events:none;
+  }
+  #appHeader nav.tfms-v4606-sidebar .tfms-v4606-group-toggle .ico{
+    display:inline-flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    top:50%!important;
+    left:15px!important;
+    width:22px!important;
+    height:24px!important;
+    font-size:18px!important;
+    line-height:1!important;
+    transform:translateY(-50%)!important;
+    pointer-events:none;
+  }
+  /* Nested options retain their existing indentation and the same icon/text rhythm. */
+  #appHeader nav.tfms-v4606-sidebar .tfms-v4606-submenu .nav .tfms-nav-ico{
+    left:12px!important;
+    width:22px!important;
+    font-size:17px!important;
+  }
+}
+</style>
 </body></html>
