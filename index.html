@@ -31,7 +31,7 @@ html.tfms-v4826-restoring #tfmsV4826BootMask{display:flex}
 @media(prefers-reduced-motion:reduce){#tfmsV4826BootMask .tfms-v4826-spinner{animation:none}}
 </style>
 
-<title>TFMS v48.2.8 In-App QR Camera Scan Stable</title>
+<title>TFMS v48.2.9 Mobile QR Navigation Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -22864,10 +22864,10 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 <script id="tfms-v480-version-authority">
 (function(){
   'use strict';
-  const LABEL='v48.2.8 In-App QR Camera Scan Stable';
-  const PARAM='48.2.8';
+  const LABEL='v48.2.9 Mobile QR Navigation Stable';
+  const PARAM='48.2.9';
   const TITLE='TFMS '+LABEL;
-  const FIXED_BUILD=Object.freeze({version:'v48.2.8',channel:'In-App QR Camera Scan Stable',buildDate:'2026.11.11',title:'TFMS 로그인 내 QR 카메라 스캔·설비 즉시 선택'});
+  const FIXED_BUILD=Object.freeze({version:'v48.2.9',channel:'Mobile QR Navigation Stable',buildDate:'2026.11.11',title:'TFMS 모바일 QR점검 메뉴 복구·접이식 내비게이션 안정화'});
   const nativeReplace=History.prototype.replaceState;
   if(!History.prototype.__tfmsV4729VersionNormalized){
     History.prototype.replaceState=function(state,title,url){
@@ -25761,7 +25761,7 @@ function dept(){try{return window.cloudProfile?.department?.name||window.tfmsUse
 function btnFor(id){return qa('#appHeader nav .nav').find(b=>(b.getAttribute('onclick')||'').includes(`'${id}'`)||(b.getAttribute('onclick')||'').includes(`\"${id}\"`))}
 function ensureBadge(btn,id){if(!btn)return null;let s=q('.tfms-v4606-menu-badge',btn);if(!s){s=document.createElement('span');s.className='tfms-v4606-menu-badge';s.id=id;btn.appendChild(s)}return s}
 function setBadge(el,n){if(!el)return;const v=Math.max(0,Number(n)||0);el.textContent=v>99?'99+':String(v);el.parentElement?.classList.toggle('has-badge',v>0)}
-function iconMap(id){return({dashboard:'⌂',today:'▣',maintenanceHub:'▦',register:'＋',history:'⌕',stats:'▥',excel:'⇩',dailylog:'▤',equipment:'⚙',cycle:'◷',energy:'⚡',deleteManage:'↶',myPage:'♙',accountAdmin:'♧'})[id]||'•'}
+function iconMap(id){return({dashboard:'⌂',today:'▣',maintenanceHub:'▦',register:'＋',history:'⌕',stats:'▥',excel:'⇩',dailylog:'▤',qrCheck:'▦',equipment:'⚙',cycle:'◷',energy:'⚡',deleteManage:'↶',myPage:'♙',accountAdmin:'♧'})[id]||'•'}
 function setIcon(btn,id){if(!btn)return;let ico=q('.tfms-nav-ico',btn);if(!ico){ico=document.createElement('span');ico.className='tfms-nav-ico';btn.prepend(ico)}ico.textContent=iconMap(id)}
 function makeSection(cls,label){const s=document.createElement('div');s.className='tfms-v4606-section '+cls;if(label){const l=document.createElement('div');l.className='tfms-v4606-section-label';l.textContent=label;s.appendChild(l)}return s}
 function makeGroup(id,label,ico){const g=document.createElement('div');g.className='tfms-v4606-group';g.id=id;const t=document.createElement('button');t.type='button';t.className='tfms-v4606-group-toggle';t.innerHTML=`<span class="ico">${ico}</span>${label}<span class="chev">›</span>`;const sub=document.createElement('div');sub.className='tfms-v4606-submenu';t.onclick=()=>g.classList.toggle('open');g.append(t,sub);return{g,t,sub}}
@@ -25779,7 +25779,7 @@ function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;',
 function updateBadges(){if(typeof window.tfmsV4631UpdateBadges==='function')return window.tfmsV4631UpdateBadges();const late=lateTasks().length,pending=pendingTasks().length,maint=unresolvedMaintenance(),acc=pendingAccounts();setBadge($('v4606TodayBadge'),pending);setBadge($('v4606MaintBadge'),maint);setBadge($('v4606CycleBadge'),late);setBadge($('v4606AccountBadge'),acc);const total=late+acc;const side=$('v4606AlertSideBadge');if(side){side.textContent=total>99?'99+':String(total);q('#v4606AlertSide')?.classList.toggle('has-badge',total>0)}const top=$('v4606TopBadge');if(top){top.textContent=total>99?'99+':String(total);q('#v4606TopAlert')?.classList.toggle('has-badge',total>0)}}
 function buildSidebar(){
  const nav=q('#appHeader nav');if(!nav||nav.classList.contains('tfms-v4606-sidebar'))return;
- const ids=['dashboard','today','maintenanceHub','register','history','stats','excel','dailylog','equipment','cycle','energy','deleteManage','myPage','accountAdmin'];
+ const ids=['dashboard','today','maintenanceHub','register','history','stats','excel','dailylog','qrCheck','equipment','cycle','energy','deleteManage','myPage','accountAdmin'];
  const b={};ids.forEach(id=>{b[id]=btnFor(id);setIcon(b[id],id)});
  if(b.cycle)b.cycle.dataset.roles='admin';
  nav.classList.add('tfms-v4606-sidebar');
@@ -25791,7 +25791,7 @@ function buildSidebar(){
  [b.maintenanceHub,b.register,b.history].filter(Boolean).forEach(x=>mg.sub.appendChild(x));
  const mb=document.createElement('span');mb.className='tfms-v4606-custom-badge';mb.id='v4606MaintBadge';mg.t.appendChild(mb);
  main.appendChild(mg.g);
- [b.dailylog,b.equipment,b.energy].filter(Boolean).forEach(x=>main.appendChild(x));
+ [b.dailylog,b.qrCheck,b.equipment,b.energy].filter(Boolean).forEach(x=>main.appendChild(x));
  frag.appendChild(main);
  const admin=makeSection('tfms-v4606-admin','관리자 도구');
  [b.cycle,b.stats,b.deleteManage,b.accountAdmin,b.excel].filter(Boolean).forEach(x=>admin.appendChild(x));
@@ -37259,7 +37259,7 @@ function baseUrl(){
  const u=new URL(location.href);
  u.search='';u.hash='';return u.href;
 }
-function urlFor(a){const base=baseUrl(),id=actualAssetId(a);if(!base||!id)return '';const u=new URL(base);u.searchParams.set('v','48.2.8');u.searchParams.set('qr_asset',id);return u.href}
+function urlFor(a){const base=baseUrl(),id=actualAssetId(a);if(!base||!id)return '';const u=new URL(base);u.searchParams.set('v','48.2.9');u.searchParams.set('qr_asset',id);return u.href}
 function labelText(a){return [a?.facility,a?.space||a?.location,a?.name,a?.qrId&&a.qrId!=='-'?a.qrId:''].filter(Boolean).join(' · ')}
 function checksFor(a){
  const n=[a?.name,a?.category].join(' ');
@@ -37663,6 +37663,60 @@ function install(){ensureUi();
  }
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
+})();
+</script>
+
+<!-- v48.2.9 Mobile QR Navigation: restore sidebar QR entry and mobile group accessibility, preserve all existing handlers -->
+<style id="tfms-v4829-mobile-qr-nav-style">
+@media(max-width:760px){
+  /* Header owns a stacking context at z-index:1000. The backdrop is on body at
+     z-index:2200; raise the header while open so the DRAWER receives touch taps. */
+  body.tfms-mobile-nav-open #appHeader{z-index:2300!important}
+  /* Legacy v46.06 hid group toggles and forced submenu into a clipped horizontal row.
+     Keep the v46.37 drawer, but restore usable vertical touch navigation. */
+  #appHeader nav.tfms-v4606-sidebar .tfms-v4606-section-label{
+    display:block!important;
+    padding:10px 13px 6px!important;
+  }
+  #appHeader nav.tfms-v4606-sidebar .tfms-v4606-group-toggle{
+    display:flex!important;
+    align-items:center!important;
+    text-align:left!important;
+    width:100%!important;
+    min-height:48px!important;
+    padding:11px 38px 11px 46px!important;
+  }
+  #appHeader nav.tfms-v4606-sidebar .tfms-v4606-submenu{
+    display:none!important;
+    flex-direction:column!important;
+    width:100%!important;
+    padding:2px 0 3px 12px!important;
+    gap:3px!important;
+  }
+  #appHeader nav.tfms-v4606-sidebar .tfms-v4606-group.open>.tfms-v4606-submenu{
+    display:flex!important;
+  }
+  #appHeader nav.tfms-v4606-sidebar .tfms-v4606-submenu .nav{
+    min-width:0!important;
+    min-height:44px!important;
+    width:100%!important;
+  }
+  #appHeader nav.tfms-v4606-sidebar .nav[onclick*="'qrCheck'"]{
+    min-height:48px!important;
+  }
+}
+</style>
+<script id="tfms-v4829-mobile-qr-release">
+(function(){
+ 'use strict';
+ function release(){
+  const area=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');
+  if(!area||area.querySelector('[data-version="v48.2.9-mobile-qr-nav"]'))return;
+  const row=document.createElement('div');row.className='change-item';row.dataset.version='v48.2.9-mobile-qr-nav';
+  row.innerHTML='<strong>v48.2.9 · Mobile QR Navigation Stable</strong><ul><li>사이드바 구성 시 QR점검 메뉴가 누락되던 문제 수정 (관리자·일반사용자만 노출)</li><li>모바일 유지관리 하위메뉴 펼치기 및 세로 목록 복구</li><li>기존 카메라 QR 스캔 및 설비 이력·DB/RLS 저장 로직 보존</li></ul>';
+  area.insertBefore(row,area.firstChild);
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',release,{once:true});else release();
 })();
 </script>
 </body></html>
