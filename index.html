@@ -31,7 +31,7 @@ html.tfms-v4826-restoring #tfmsV4826BootMask{display:flex}
 @media(prefers-reduced-motion:reduce){#tfmsV4826BootMask .tfms-v4826-spinner{animation:none}}
 </style>
 
-<title>TFMS v48.2.7 QR Field Inspection Link Stable</title>
+<title>TFMS v48.2.8 In-App QR Camera Scan Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -22864,10 +22864,10 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 <script id="tfms-v480-version-authority">
 (function(){
   'use strict';
-  const LABEL='v48.2.7 QR Field Inspection Link Stable';
-  const PARAM='48.2.7';
+  const LABEL='v48.2.8 In-App QR Camera Scan Stable';
+  const PARAM='48.2.8';
   const TITLE='TFMS '+LABEL;
-  const FIXED_BUILD=Object.freeze({version:'v48.2.7',channel:'QR Field Inspection Link Stable',buildDate:'2026.11.11',title:'설비 QR 라벨·모바일 직접진입·점검일 저장 및 유지관리 연결'});
+  const FIXED_BUILD=Object.freeze({version:'v48.2.8',channel:'In-App QR Camera Scan Stable',buildDate:'2026.11.11',title:'TFMS 로그인 내 QR 카메라 스캔·설비 즉시 선택'});
   const nativeReplace=History.prototype.replaceState;
   if(!History.prototype.__tfmsV4729VersionNormalized){
     History.prototype.replaceState=function(state,title,url){
@@ -22881,7 +22881,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
   function apply(){
     normalizeUrl();
     const badge=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
-    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2.7')}catch(e){}}
+    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2.8')}catch(e){}}
     try{document.title=TITLE;Object.defineProperty(document,'title',{configurable:true,enumerable:true,get(){return TITLE},set(_){}})}catch(e){}
     try{const te=document.head&&document.head.querySelector('title');if(te)lockText(te,'textContent',TITLE)}catch(e){}
     try{Object.defineProperty(window,'TFMS_BUILD',{configurable:true,enumerable:true,get(){return FIXED_BUILD},set(_){}})}catch(e){try{window.TFMS_BUILD=FIXED_BUILD}catch(_){}}
@@ -37259,7 +37259,7 @@ function baseUrl(){
  const u=new URL(location.href);
  u.search='';u.hash='';return u.href;
 }
-function urlFor(a){const base=baseUrl(),id=actualAssetId(a);if(!base||!id)return '';const u=new URL(base);u.searchParams.set('v','48.2.7');u.searchParams.set('qr_asset',id);return u.href}
+function urlFor(a){const base=baseUrl(),id=actualAssetId(a);if(!base||!id)return '';const u=new URL(base);u.searchParams.set('v','48.2.8');u.searchParams.set('qr_asset',id);return u.href}
 function labelText(a){return [a?.facility,a?.space||a?.location,a?.name,a?.qrId&&a.qrId!=='-'?a.qrId:''].filter(Boolean).join(' · ')}
 function checksFor(a){
  const n=[a?.name,a?.category].join(' ');
@@ -37454,6 +37454,215 @@ function bootstrap(){build();showAssetQrAction();handleDeepLink(false);try{const
  const div=document.createElement('div');div.className='change-item';div.dataset.version='v48.2.7-qr-field-inspection';div.innerHTML='<strong>v48.2.7 · QR Field Inspection Link Stable</strong><ul><li>설비 DB ID 기반 QR 라벨·HTTPS 모바일 직접진입 신설</li><li>설비 점검항목·최근 유지관리 이력 DB 조회 및 정상 점검일 갱신 연결</li><li>이상 발생 시 유지관리 등록으로 설비·증상 전달, 가짜 사진첨부·로컬 QR 저장 UI는 비노출</li><li>기존 소화기 QR·설비관리·RLS/스키마 보존</li></ul>';body.insertBefore(div,body.firstChild)
  }}catch(e){console.warn('v48.2.7 release',e)}}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bootstrap,{once:true});else bootstrap();
+})();
+</script>
+\
+<!-- TFMS v48.2.8 In-App QR Camera Scan Stable: only QR in-app scanning, no DB/RLS changes -->
+<style id="tfms-v4828-qr-camera-style">
+#qrCheck .v4828-scan-heading{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px}
+#qrCheck .v4828-scan-heading h3{margin:0}
+#tfmsV4828OpenScan{border:1px solid #1560b8;background:#0b58b0;color:#fff;font-size:13px;font-weight:850;border-radius:9px;padding:11px 15px;cursor:pointer;min-height:43px}
+#tfmsV4828OpenScan:focus-visible,#tfmsV4828ScanClose:focus-visible{outline:3px solid #9dc6ff;outline-offset:3px}
+#tfmsV4828ScanOverlay{display:none;position:fixed;inset:0;z-index:400000;background:rgba(9,22,43,.84);align-items:center;justify-content:center;padding:14px}
+#tfmsV4828ScanOverlay.v4828-open{display:flex}
+#tfmsV4828ScanDialog{width:min(530px,100%);max-height:calc(100dvh - 28px);overflow:auto;background:#fff;color:#17304e;border-radius:18px;padding:18px;box-shadow:0 22px 70px rgba(0,0,0,.32)}
+#tfmsV4828ScanDialog .v4828-scan-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+#tfmsV4828ScanDialog .v4828-scan-head h2{font-size:18px;margin:0;color:#153557}
+#tfmsV4828ScanClose{border:1px solid #d2dfe9;border-radius:9px;background:#f7fbff;color:#233c58;font-weight:800;padding:9px 13px;cursor:pointer}
+#tfmsV4828ScanStage{position:relative;overflow:hidden;background:#091827;border-radius:13px;aspect-ratio:4/3;display:grid;place-items:center}
+#tfmsV4828ScanVideo{width:100%;height:100%;object-fit:cover;display:block;transform:scaleX(1);background:#091827}
+#tfmsV4828ScanStage::after{content:'';pointer-events:none;position:absolute;inset:19% 19%;border:3px solid #58f0be;border-radius:14px;box-shadow:0 0 0 100vmax rgba(0,0,0,.10)}
+#tfmsV4828ScanStatus{font-size:13px;color:#46617f;line-height:1.55;margin:13px 2px;min-height:40px;white-space:pre-line}
+#tfmsV4828ScanStatus.v4828-error{color:#b42318}
+#tfmsV4828ScanDialog .v4828-alternative{padding:12px;border-radius:10px;background:#f2f7ff;border:1px solid #d5e4f4;font-size:12px;color:#3e5d80;line-height:1.55}
+#tfmsV4828ScanDialog .v4828-alternative label{font-size:12px;font-weight:800;color:#1055ab;cursor:pointer;margin:8px 0 0;display:inline-block;text-decoration:underline}
+#tfmsV4828ScanFile{display:none}
+@media(max-width:520px){#tfmsV4828ScanDialog{padding:13px}#tfmsV4828ScanStage{aspect-ratio:3/4}}
+</style>
+<script id="tfms-v4828-qr-camera-controller">
+(function(){
+'use strict';
+if(window.__tfmsV4828ScannerInstalled)return;
+window.__tfmsV4828ScannerInstalled=true;
+const $=id=>document.getElementById(id);
+const DECODER_URL='https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js';
+let decoderPromise=null,stream=null,frame=0,session=0,scanning=false,decoder=null,detector=null,lastTick=0;
+let previousFocus=null,previousOverflow='',lastRejected='',lastRejectedAt=0;
+const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d',{willReadFrequently:true});
+const getRole=()=>{try{return String(typeof tfmsRole!=='undefined'?tfmsRole:'').toLowerCase()}catch(_){return ''}};
+const getDept=()=>{try{return String(typeof tfmsUserDept!=='undefined'?tfmsUserDept:typeof currentUserDept!=='undefined'?currentUserDept:'')}catch(_){return ''}};
+const isAuthorized=()=>!!window.getTfmsCloudUser?.()?.id&&['user','admin'].includes(getRole());
+function status(message,isError=false){const el=$('tfmsV4828ScanStatus');if(el){el.textContent=message;el.classList.toggle('v4828-error',isError)}}
+function ensureUi(){
+ const root=$('tfmsV4827FieldRoot');if(!root)return;
+ if(!$('tfmsV4828OpenScan')){
+  const heading=root.querySelector('.v4827-grid>div:first-child .v4827-panel:first-child h3');
+  if(heading){const bar=document.createElement('div');bar.className='v4828-scan-heading';heading.parentNode.insertBefore(bar,heading);bar.appendChild(heading);
+   const btn=document.createElement('button');btn.id='tfmsV4828OpenScan';btn.type='button';btn.textContent='📷 카메라로 QR 스캔';btn.addEventListener('click',openScanner);bar.appendChild(btn);}
+ }
+ if(!$('tfmsV4828ScanOverlay')){
+  const overlay=document.createElement('div');overlay.id='tfmsV4828ScanOverlay';overlay.innerHTML=`
+  <div id="tfmsV4828ScanDialog" role="dialog" aria-modal="true" aria-labelledby="tfmsV4828ScanTitle">
+   <div class="v4828-scan-head"><h2 id="tfmsV4828ScanTitle">설비 QR 스캔</h2><button id="tfmsV4828ScanClose" type="button">카메라 닫기 ✕</button></div>
+   <div id="tfmsV4828ScanStage"><video id="tfmsV4828ScanVideo" autoplay muted playsinline></video></div>
+   <p id="tfmsV4828ScanStatus" role="status">카메라 준비 중입니다.</p>
+   <div class="v4828-alternative">TFMS에서 발행한 설비 QR을 사각형 안에 맞춰주세요. 인식되면 해당 설비의 점검항목과 이력을 바로 표시합니다.
+    <label for="tfmsV4828ScanFile">카메라가 안 되면 QR 사진으로 불러오기</label>
+    <input id="tfmsV4828ScanFile" type="file" accept="image/*" capture="environment" />
+   </div>
+  </div>`;
+  document.body.appendChild(overlay);
+  $('tfmsV4828ScanClose').addEventListener('click',closeScanner);
+  overlay.addEventListener('click',e=>{if(e.target===overlay)closeScanner()});
+  $('tfmsV4828ScanFile').addEventListener('change',handleFile);
+ }
+}
+function stopMedia(){
+ scanning=false;session++;if(frame){cancelAnimationFrame(frame);frame=0}
+ const tracks=stream?.getTracks?.()||[];tracks.forEach(t=>{try{t.stop()}catch(_){}});
+ stream=null;const video=$('tfmsV4828ScanVideo');if(video){try{video.pause()}catch(_){}video.srcObject=null}
+ detector=null;lastTick=0;
+}
+function closeScanner(){stopMedia();const overlay=$('tfmsV4828ScanOverlay');overlay?.classList.remove('v4828-open');document.body.style.overflow=previousOverflow;
+ if(previousFocus&&typeof previousFocus.focus==='function')previousFocus.focus();previousFocus=null;}
+function scanAssetId(raw){
+ const text=String(raw||'').trim();if(!text)return null;
+ try{
+  const u=new URL(text,location.href);
+  if(u.origin!==location.origin||u.pathname!==location.pathname)return null;
+  const id=u.searchParams.get('qr_asset');if(!id||id.length>160)return null;
+  return id;
+ }catch(_){return null}
+}
+function showScannedAsset(id){
+ if(!isAuthorized()){status('로그인이 만료되었습니다. 다시 로그인해 주세요.',true);return false}
+ const assets=window.assetData||{},match=Object.entries(assets).find(([,a])=>String(a?.dbId||'')===id);
+ if(!match){status('해당 설비가 조회되지 않습니다. 설비 DB 등록 여부와 소속 시설 권한을 확인해 주세요.',true);return false}
+ const [key,a]=match;
+ if(getRole()!=='admin'){
+  const dept=getDept();let assigned='';try{assigned=typeof getScopedFacilityDept==='function'?String(getScopedFacilityDept(a.facility)||''):''}catch(_){assigned=''}
+  if(!dept||dept==='전체'||dept!==assigned){status('이 계정에서는 해당 시설의 설비를 조회할 수 없습니다.',true);return false}
+ }
+ closeScanner();
+ window.navTo?.('qrCheck');ensureUi();
+ const facility=$('tfmsV4827Facility'),select=$('qrAssetSelect');if(!facility||!select){status('QR 점검 메뉴를 불러오지 못했습니다.',true);return false}
+ facility.value=a.facility||'';facility.dispatchEvent(new Event('change',{bubbles:true}));
+ select.value=key;
+ if(select.value!==key){status('선택한 설비가 현재 계정의 QR 점검 목록에 없습니다.',true);return false}
+ select.dispatchEvent(new Event('change',{bubbles:true}));
+ window.showToast?.('QR 스캔 완료 · '+(a.name||'설비')+' 점검 화면으로 이동했습니다.');
+ return true;
+}
+function receive(raw){
+ const id=scanAssetId(raw);
+ if(id&&showScannedAsset(id))return true;
+ const now=Date.now();if(raw!==lastRejected||now-lastRejectedAt>2200){
+  if(!id)status('TFMS 설비 QR이 아닙니다. 현재 사이트에서 발행한 설비 QR 라벨을 스캔해 주세요.',true);
+  lastRejected=raw;lastRejectedAt=now;
+ }
+ return false;
+}
+function loadJsQr(){
+ if(typeof window.jsQR==='function')return Promise.resolve(window.jsQR);
+ if(decoderPromise)return decoderPromise;
+ decoderPromise=new Promise((resolve,reject)=>{
+  const script=document.createElement('script');script.src=DECODER_URL;script.async=true;
+  script.onload=()=>typeof window.jsQR==='function'?resolve(window.jsQR):reject(new Error('QR 디코더를 불러오지 못했습니다.'));
+  script.onerror=()=>reject(new Error('QR 인식 라이브러리 연결 실패 (인터넷 연결 확인)'));
+  document.head.appendChild(script);
+ }).catch(e=>{decoderPromise=null;throw e});
+ return decoderPromise;
+}
+async function makeDetector(){
+ try{
+  if(typeof BarcodeDetector==='function'){
+   if(typeof BarcodeDetector.getSupportedFormats==='function'){
+    const formats=await BarcodeDetector.getSupportedFormats();if(!formats.includes('qr_code'))throw Error('미지원');
+   }
+   return new BarcodeDetector({formats:['qr_code']});
+  }
+ }catch(_){/* Safari and other browsers can use jsQR */}
+ return null;
+}
+async function openScanner(){
+ ensureUi();if(!isAuthorized()){window.showToast?.('QR점검은 로그인 후 이용할 수 있습니다.');return}
+ if(!window.isSecureContext||!navigator.mediaDevices?.getUserMedia){window.showToast?.('카메라 이용에는 HTTPS 배포 주소와 브라우저 카메라 권한이 필요합니다.');return}
+ stopMedia();previousFocus=document.activeElement;previousOverflow=document.body.style.overflow;
+ $('tfmsV4828ScanOverlay').classList.add('v4828-open');document.body.style.overflow='hidden';$('tfmsV4828ScanClose')?.focus();
+ status('카메라 사용 권한을 허용해 주세요.');const id=session;
+ try{
+  const media=await navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{ideal:'environment'},width:{ideal:1280},height:{ideal:720}}});
+  if(id!==session){media.getTracks().forEach(t=>t.stop());return}
+  stream=media;const video=$('tfmsV4828ScanVideo');video.srcObject=media;await video.play();if(id!==session)return;
+  scanning=true;status('TFMS 설비 QR을 카메라 중앙에 맞춰 주세요.');
+  detector=await makeDetector();if(id!==session)return;
+  if(!detector){
+   try{decoder=await loadJsQr()}catch(e){status('QR 인식 준비 실패: '+e.message+'\n기본 카메라로 라벨을 열거나 QR 사진을 선택해 주세요.',true);return}
+  }
+  if(id===session)frame=requestAnimationFrame(scanFrame);
+ }catch(e){
+  if(id!==session)return;
+  const m=e?.name==='NotAllowedError'?'카메라 권한이 거부되었습니다. 브라우저 설정에서 허용해 주세요.':
+          e?.name==='NotFoundError'?'사용할 카메라를 찾을 수 없습니다.':
+          '카메라 시작 실패: '+(e?.message||e);
+  status(m+'\n사진으로 불러오기 기능도 이용할 수 있습니다.',true);
+ }
+}
+async function scanFrame(t){
+ if(!scanning||!stream)return;
+ if(t-lastTick<125){frame=requestAnimationFrame(scanFrame);return}lastTick=t;
+ const video=$('tfmsV4828ScanVideo');let result='';const id=session;
+ try{
+  if(video?.readyState>=2&&video.videoWidth>0){
+   if(detector){const found=await detector.detect(video);result=found?.[0]?.rawValue||''}
+   else if(decoder&&ctx){const w=Math.min(700,video.videoWidth),h=Math.max(1,Math.round(w*video.videoHeight/video.videoWidth));
+    if(canvas.width!==w)canvas.width=w;if(canvas.height!==h)canvas.height=h;
+    ctx.drawImage(video,0,0,w,h);const pixels=ctx.getImageData(0,0,w,h);
+    result=decoder(pixels.data,w,h,{inversionAttempts:'dontInvert'})?.data||'';}
+  }
+ }catch(e){if(id===session)console.warn('[TFMS QR camera decode]',e)}
+ if(id!==session||!scanning)return;
+ if(result&&receive(result))return;
+ frame=requestAnimationFrame(scanFrame);
+}
+async function handleFile(e){
+ const file=e.target.files?.[0];e.target.value='';if(!file)return;
+ const id=session;
+ try{
+  const decode=await loadJsQr();if(id!==session)return;
+  const obj=URL.createObjectURL(file),img=new Image();
+  try{
+   await new Promise((resolve,reject)=>{img.onload=resolve;img.onerror=()=>reject(new Error('이미지 파일을 열 수 없습니다.'));img.src=obj});
+   if(id!==session)return;
+   const scale=Math.min(1,1400/Math.max(img.naturalWidth,img.naturalHeight));
+   const w=Math.max(1,Math.round(img.naturalWidth*scale)),h=Math.max(1,Math.round(img.naturalHeight*scale));
+   canvas.width=w;canvas.height=h;ctx.drawImage(img,0,0,w,h);
+   const data=ctx.getImageData(0,0,w,h),code=decode(data.data,w,h,{inversionAttempts:'attemptBoth'});
+   if(!code?.data)status('사진에서 QR을 찾지 못했습니다. QR이 선명하게 보이도록 다시 촬영해 주세요.',true);
+   else receive(code.data);
+  }finally{URL.revokeObjectURL(obj)}
+ }catch(err){if(id===session)status('사진 인식 실패: '+(err?.message||err),true)}
+}
+function install(){ensureUi();
+ const oldOptions=window.renderQrAssetOptions;
+ if(typeof oldOptions==='function'&&!oldOptions.__v4828Scanner){
+  const wrapped=function(){const out=oldOptions.apply(this,arguments);ensureUi();return out};wrapped.__v4828Scanner=true;window.renderQrAssetOptions=wrapped;
+ }
+ const oldAsset=window.renderQrAsset;
+ if(typeof oldAsset==='function'&&!oldAsset.__v4828Scanner){
+  const wrapped=function(){const out=oldAsset.apply(this,arguments);ensureUi();return out};wrapped.__v4828Scanner=true;window.renderQrAsset=wrapped;
+ }
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('tfmsV4828ScanOverlay')?.classList.contains('v4828-open'))closeScanner()});
+ document.addEventListener('visibilitychange',()=>{if(document.hidden&&$('tfmsV4828ScanOverlay')?.classList.contains('v4828-open'))closeScanner()});
+ window.addEventListener('pagehide',stopMedia);
+ const area=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');
+ if(area&&!area.querySelector('[data-version="v48.2.8-inapp-camera"]')){
+  const row=document.createElement('div');row.className='change-item';row.dataset.version='v48.2.8-inapp-camera';
+  row.innerHTML='<strong>v48.2.8 · In-App QR Camera Scan Stable</strong><ul><li>로그인 후 QR 점검 화면에서 카메라 스캔을 열어 설비점검 화면 즉시 연결</li><li>기존 qr_asset QR 라벨 호환, 타 사이트 QR 및 시설 권한 범위 외 설비 차단</li><li>카메라 닫기·화면 비활성화 시 영상 스트림 즉시 종료, QR 사진 대체 입력</li><li>기존 DB/RLS·설비관리·유지관리 저장 구조 변경 없음</li></ul>';
+  area.insertBefore(row,area.firstChild);
+ }
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
 })();
 </script>
 </body></html>
