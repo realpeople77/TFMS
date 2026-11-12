@@ -31,7 +31,7 @@ html.tfms-v4826-restoring #tfmsV4826BootMask{display:flex}
 @media(prefers-reduced-motion:reduce){#tfmsV4826BootMask .tfms-v4826-spinner{animation:none}}
 </style>
 
-<title>TFMS v48.2.16 Excel Facility Team Scope Stable</title>
+<title>TFMS v48.2.17 Audit Row Selection Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -14011,6 +14011,8 @@ ${getPrintCssV401()}
 
   function setupDeleteAuditPageV402(){
     const section=$('deleteManage');
+    // v48.2.17: legacy 6-column audit renderer must not replace current selectable table.
+    if(section?.querySelector('.v4577-audit-table'))return;
     if(!section||section.dataset.v402)return;
     section.dataset.v402='1';
 
@@ -14043,6 +14045,8 @@ ${getPrintCssV401()}
 
   window.loadDeleteAuditV402=async function(){
     const body=$('deleteBody');
+    // The v45.78 audit renderer exclusively owns the current selectable table.
+    if(body?.closest('.v4577-audit-table'))return;
     if(!body)return;
     const sb=client();
     if(!sb)return;
@@ -14499,6 +14503,7 @@ ${getPrintCssV401()}
 
   window.loadDeleteAuditV411=async function(){
     const body=$('deleteBody');
+    if(body?.closest('.v4577-audit-table'))return;
     if(!body)return;
 
     const sb=client();
@@ -14590,6 +14595,7 @@ ${getPrintCssV401()}
 
   function upgradeAuditTableV411(){
     const section=$('deleteManage');
+    if(section?.querySelector('.v4577-audit-table'))return;
     if(!section)return;
 
     const table=section.querySelector('table');
@@ -18205,14 +18211,17 @@ window.hardDeleteMaintenanceAuditV443=async function(id,title){
  try{const sb=window.client?.();if(!sb)throw new Error('DB 연결 정보를 확인하지 못했습니다.');const {data,error}=await sb.from('maintenance_records').delete().eq('id',id).select('id');if(error)throw error;if(!data?.length)throw new Error('삭제 권한이 없거나 이미 삭제된 자료입니다.');toast('테스트 유지관리 삭제이력을 정리했습니다.');await window.loadDeleteAuditV443();}catch(e){toast('테스트 이력 삭제 실패: '+(e?.message||e));}
 };
 window.loadDeleteAuditV443=async function(){
- const body=$('deleteBody'),sb=window.client?.();if(!body||!sb)return;
+ const body=$('deleteBody'),sb=window.client?.();
+ // v48.2.17: do not overwrite the 11-column audit table with old 7-column rows.
+ if(body?.closest('.v4577-audit-table')){return window.loadAuditV48217?.() || window.renderAuditV4578?.();}
+ if(!body||!sb)return;
  try{const [m,a]=await Promise.all([sb.from('maintenance_records').select('id,deleted_at,detail,process_status,facility:facilities(name)').not('deleted_at','is',null).order('deleted_at',{ascending:false}).limit(100),sb.from('tfms_audit_logs').select('id,action_type,target_type,target_title,facility_name,actor_name,action_detail,created_at').order('created_at',{ascending:false}).limit(100)]);const rows=[];
  if(!m.error)(m.data||[]).forEach(r=>rows.push({source:'maintenance',id:r.id,time:r.deleted_at,type:'유지관리',facility:r.facility?.name||'-',detail:r.detail||'-',user:'관리자/작성자',result:r.process_status||'삭제'}));
  if(!a.error)(a.data||[]).forEach(r=>rows.push({source:'audit',id:r.id,time:r.created_at,type:r.target_type==='daily_log'?'업무일지':'기타',facility:r.facility_name||'-',detail:r.target_title||r.action_detail||'-',user:r.actor_name||'-',result:r.action_type==='delete'?'삭제완료':r.action_type}));rows.sort((x,y)=>String(y.time||'').localeCompare(String(x.time||'')));const admin=window.context?.().admin;
  body.innerHTML=rows.length?rows.map(r=>`<tr><td>${esc(r.time?new Date(r.time).toLocaleString('ko-KR'):'-')}</td><td>${esc(r.type)}</td><td>${esc(r.facility)}</td><td>${esc(r.detail)}</td><td>${esc(r.user)}</td><td>${esc(r.result)}</td><td>${admin?(r.source==='audit'?`<button class="small-btn red" onclick="deleteAuditLogV411('${esc(r.id)}','${esc(r.detail)}')">이력삭제</button>`:`<button class="small-btn red" onclick="hardDeleteMaintenanceAuditV443('${esc(r.id)}','${esc(r.detail)}')">테스트삭제</button>`):'-'}</td></tr>`).join(''):'<tr><td colspan="7"><div class="empty-state">삭제·변경 처리이력이 없습니다.</div></td></tr>';
  }catch(e){body.innerHTML=`<tr><td colspan="7"><div class="empty-state">${esc(e?.message||e)}</div></td></tr>`;}
 };
-function setupAuditV443(){const sec=$('deleteManage');if(!sec)return;const th=sec.querySelector('thead tr');if(th&&!/관리/.test(th.textContent))th.insertAdjacentHTML('beforeend','<th>관리</th>');setTimeout(window.loadDeleteAuditV443,50)}
+function setupAuditV443(){const sec=$('deleteManage');if(sec?.querySelector('.v4577-audit-table'))return;if(!sec)return;const th=sec.querySelector('thead tr');if(th&&!/관리/.test(th.textContent))th.insertAdjacentHTML('beforeend','<th>관리</th>');setTimeout(window.loadDeleteAuditV443,50)}
 
 const oldShow=window.showPage;if(typeof oldShow==='function')window.showPage=function(id,btn){const r=oldShow.apply(this,arguments);if(id==='equipment')setTimeout(setupEquipmentTabsV443,20);if(id==='cycle')setTimeout(normalizeFireCycleV443,20);if(id==='deleteManage')setTimeout(setupAuditV443,80);if(id==='stats')setTimeout(()=>{window.renderStatsCharts?.();renderStatusChartV443()},40);return r};
 const oldNav=window.navTo;if(typeof oldNav==='function')window.navTo=function(id){const r=oldNav.apply(this,arguments);if(id==='equipment')setTimeout(setupEquipmentTabsV443,20);if(id==='cycle')setTimeout(normalizeFireCycleV443,20);if(id==='deleteManage')setTimeout(setupAuditV443,80);return r};
@@ -22881,10 +22890,10 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 <script id="tfms-v480-version-authority">
 (function(){
   'use strict';
-  const LABEL='v48.2.16 Excel Facility Team Scope Stable';
-  const PARAM='48.2.16';
+  const LABEL='v48.2.17 Audit Row Selection Stable';
+  const PARAM='48.2.17';
   const TITLE='TFMS '+LABEL;
-  const FIXED_BUILD=Object.freeze({version:'v48.2.16',channel:'Excel Facility Team Scope Stable',buildDate:'2026.11.12',title:'일반담당자 엑셀 시설선택 소속팀 기준정보 제한'});
+  const FIXED_BUILD=Object.freeze({version:'v48.2.17',channel:'Audit Row Selection Stable',buildDate:'2026.11.12',title:'삭제·변경이력 개별 선택 체크박스 복원 및 구 렌더러 충돌 차단'});
   const nativeReplace=History.prototype.replaceState;
   if(!History.prototype.__tfmsV4729VersionNormalized){
     History.prototype.replaceState=function(state,title,url){
@@ -22898,7 +22907,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
   function apply(){
     normalizeUrl();
     const badge=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
-    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2.16')}catch(e){}}
+    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2.17')}catch(e){}}
     try{document.title=TITLE;Object.defineProperty(document,'title',{configurable:true,enumerable:true,get(){return TITLE},set(_){}})}catch(e){}
     try{const te=document.head&&document.head.querySelector('title');if(te)lockText(te,'textContent',TITLE)}catch(e){}
     try{Object.defineProperty(window,'TFMS_BUILD',{configurable:true,enumerable:true,get(){return FIXED_BUILD},set(_){}})}catch(e){try{window.TFMS_BUILD=FIXED_BUILD}catch(_){}}
@@ -24487,7 +24496,8 @@ function renderAudit(){
  if($('auditTotalV4577'))$('auditTotalV4577').textContent=`총 ${list.length}건`;
  if($('auditPageInfoV4577'))$('auditPageInfoV4577').textContent=`총 ${list.length}건 중 ${list.length?st+1:0}-${Math.min(st+size,list.length)}행 표시`;
  const renderKey=JSON.stringify([auditPage,size,pages,isAdmin,rows.map(r=>[r.source,String(r.id),r.kind,r.target,r.facility,r.title,r.change,r.actor,r.time,r.note])]);
- if(body.dataset.tfmsAuditRenderKey!==renderKey||body.querySelector('.v4578-loading-note')){
+ const invalidRows=rows.length>0 && (body.querySelectorAll('tr').length!==rows.length || [...body.querySelectorAll('tr')].some(tr=>tr.cells.length!==11||!tr.querySelector('td.v4825-audit-select-cell input.audit-select-v4577')));
+ if(body.dataset.tfmsAuditRenderKey!==renderKey||body.querySelector('.v4578-loading-note')||invalidRows){
    const all=$('auditSelectAllV4577');if(all)all.checked=false;
    body.innerHTML=!rows.length
      ?'<tr><td colspan="11"><div class="empty-state">조건에 맞는 삭제·변경 이력이 없습니다.</div></td></tr>'
@@ -24508,7 +24518,7 @@ function renderAudit(){
  }
 }
 async function loadAudit(){const body=$('deleteBody'),c=client();if(!body)return;if(!c){body.innerHTML='<tr><td colspan="11"><div class="empty-state">DB 연결 정보를 확인하지 못했습니다.</div></td></tr>';return}body.innerHTML='<tr><td colspan="11"><div class="v4578-loading-note">삭제·변경이력을 불러오는 중입니다.</div></td></tr>';try{const [m,a]=await Promise.all([c.from('maintenance_records').select('id,deleted_at,detail,process_status,facility:facilities(name)').not('deleted_at','is',null).order('deleted_at',{ascending:false}).limit(500),c.from('tfms_audit_logs').select('id,action_type,target_type,target_id,target_title,facility_name,actor_name,action_detail,created_at').order('created_at',{ascending:false}).limit(500)]);const rows=[];if(!m.error)(m.data||[]).forEach(x=>rows.push(auditMap({source:'maintenance',id:x.id,deleted_at:x.deleted_at,detail:x.detail,facility:x.facility?.name||'-',process_status:x.process_status})));if(!a.error)(a.data||[]).forEach(x=>rows.push(auditMap({source:'audit',...x})));audit=rows.sort((x,y)=>String(y.time).localeCompare(String(x.time)));fillAuditFacilities();auditPage=1;renderAudit()}catch(e){console.error('v45.78 audit load',e);body.innerHTML=`<tr><td colspan="11"><div class="empty-state" style="color:#b91c1c">${esc(e?.message||e)}</div></td></tr>`}}
-window.renderAuditV4577=renderAudit;window.renderAuditV4578=renderAudit;window.setAuditPageV4578=p=>{auditPage=Math.max(1,Number(p)||1);renderAudit()};window.toggleAuditAllV4577=v=>{document.querySelectorAll('#deleteBody .audit-select-v4577').forEach(x=>x.checked=!!v);window.tfmsV4825SyncAuditSelection?.()};
+window.loadAuditV48217=loadAudit;window.renderAuditV4577=renderAudit;window.renderAuditV4578=renderAudit;window.setAuditPageV4578=p=>{auditPage=Math.max(1,Number(p)||1);renderAudit()};window.toggleAuditAllV4577=v=>{document.querySelectorAll('#deleteBody .audit-select-v4577').forEach(x=>x.checked=!!v);window.tfmsV4825SyncAuditSelection?.()};
 window.deleteSelectedAuditV4577=async function(){if(!admin())return toast('관리자만 사용할 수 있습니다.');const chosen=[...document.querySelectorAll('#deleteBody .audit-select-v4577:checked')].map(x=>({source:x.dataset.source,id:x.dataset.id}));if(!chosen.length)return toast('삭제할 이력을 선택하세요.');if(!confirm(`선택한 이력 ${chosen.length}건을 완전 삭제하시겠습니까?\n이 작업은 복구할 수 없습니다.`))return;for(const k of chosen){const r=audit.find(x=>x.source===k.source&&String(x.id)===String(k.id));if(r&&typeof window.deleteAuditRowV4577==='function')await window.deleteAuditRowV4577(r)}await loadAudit()};
 window.resetAuditV4577=function(){['auditTypeV4577','auditTargetV4577','auditFacilityV4577'].forEach(id=>{const e=$(id);if(e)e.selectedIndex=0});['auditStartV4577','auditEndV4577','auditActorV4577','auditKeywordV4577'].forEach(id=>{const e=$(id);if(e)e.value=''});auditPage=1;renderAudit()};
 try{window.renderDeleteRequests=function(){if($('deleteManage')?.classList.contains('active'))return renderAudit()};renderDeleteRequests=window.renderDeleteRequests}catch(e){}
@@ -37276,7 +37286,7 @@ function baseUrl(){
  const u=new URL(location.href);
  u.search='';u.hash='';return u.href;
 }
-function urlFor(a){const base=baseUrl(),id=actualAssetId(a);if(!base||!id)return '';const u=new URL(base);u.searchParams.set('v','48.2.16');u.searchParams.set('qr_asset',id);return u.href}
+function urlFor(a){const base=baseUrl(),id=actualAssetId(a);if(!base||!id)return '';const u=new URL(base);u.searchParams.set('v','48.2.17');u.searchParams.set('qr_asset',id);return u.href}
 function labelText(a){return [a?.facility,a?.space||a?.location,a?.name,a?.qrId&&a.qrId!=='-'?a.qrId:''].filter(Boolean).join(' · ')}
 function checksFor(a){
  const n=[a?.name,a?.category].join(' ');
@@ -38036,7 +38046,7 @@ function renderQr(){
  const base=baseUrl();if(!base){resetQr('QR 발행은 GitHub Pages 등 HTTPS 사이트에서만 가능합니다.');return}
  if(typeof window.QRCode!=='function'){resetQr('QR 생성 라이브러리를 불러오지 못했습니다.');return}
  const code=String(row.extinguisher_code||'').trim();if(!code){resetQr('소화기 관리번호가 없습니다.');return}
- base.searchParams.set('v','48.2.16');base.searchParams.set('fire','1');base.searchParams.set('facility',facility);base.searchParams.set('ext',code);
+ base.searchParams.set('v','48.2.17');base.searchParams.set('fire','1');base.searchParams.set('facility',facility);base.searchParams.set('ext',code);
  const url=base.href,el=$('tfmsV48213FireQr');if(!el)return;
  el.replaceChildren();
  try{
@@ -38335,6 +38345,20 @@ if(nav)nav.addEventListener('click',e=>{const b=e.target.closest('button');if(b&
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',releaseNote,{once:true});
  else releaseNote();
+})();
+</script>
+<!-- TFMS v48.2.17: audit row selection repair; retained legacy renderers leave modern audit table alone. -->
+<script id="tfms-v48217-audit-selection-release-note">
+(function(){
+ 'use strict';
+ function add(){
+   const host=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');
+   if(!host||host.querySelector('[data-version="v48.2.17-audit-row-selection"]'))return;
+   const entry=document.createElement('div');entry.className='change-item';entry.dataset.version='v48.2.17-audit-row-selection';
+   entry.innerHTML='<strong>v48.2.17 · Audit Row Selection Stable</strong><ul><li>과거 6·7열 이력조회 코드가 최신 11열 표를 덮어써 행별 체크박스가 사라지는 문제 차단</li><li>건별 선택, 현재 페이지 전체선택, 선택 건수 및 선택삭제 기능 연계 유지</li><li>과거 조회 응답이 지연 도착하는 경우에도 행 구조를 확인해 최신 표 자동 복구</li><li>DB/RLS/삭제 권한/메뉴/Timer/Observer 변경 없음</li></ul>';
+   host.insertBefore(entry,host.firstChild);
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add,{once:true});else add();
 })();
 </script>
 </body></html>
