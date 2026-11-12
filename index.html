@@ -31,7 +31,7 @@ html.tfms-v4826-restoring #tfmsV4826BootMask{display:flex}
 @media(prefers-reduced-motion:reduce){#tfmsV4826BootMask .tfms-v4826-spinner{animation:none}}
 </style>
 
-<title>TFMS v48.2.17 Audit Row Selection Stable</title>
+<title>TFMS v48.2.18 Audit Single Delete Instant Refresh Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -1624,7 +1624,7 @@ nav.sidebar {
 <button class="btn blue" onclick="renderAuditV4577()" type="button">⌕ 조회</button><button class="btn light" onclick="resetAuditV4577()" type="button">↻ 초기화</button>
 </div>
 <div class="v4577-audit-quick"><strong>빠른 조회</strong><button data-v4577-audit-range="today" type="button">오늘</button><button data-v4577-audit-range="yesterday" type="button">어제</button><button data-v4577-audit-range="7" type="button">최근 7일</button><button data-v4577-audit-range="30" type="button">최근 30일</button><button data-v4577-audit-range="month" type="button">이번 달</button><span id="auditTotalV4577">총 0건</span></div>
-<div class="v4825-audit-selection-guide" id="auditSelectionGuideV4825"><span><b>이력 선택 방법</b> · 아래 목록의 <strong>맨 왼쪽 「선택」</strong>을 체크한 뒤 위쪽 <b>선택 삭제</b>를 누르세요. 표 머리글의 체크박스는 <b>현재 페이지 전체 선택</b>입니다.</span><strong id="auditSelectionCountV4825" aria-live="polite">0건 선택</strong></div>
+<div class="v4825-audit-selection-guide" id="auditSelectionGuideV4825"><span><b>건별 이력 관리</b> · 삭제할 이력 오른쪽의 <strong>「이력 삭제」</strong> 버튼을 누르세요. 확인 후 목록과 총건수가 즉시 갱신됩니다.</span><strong id="auditSelectionCountV4825" aria-live="polite">0건 선택</strong></div>
 <div class="v4577-table-scroll"><table class="table v4577-audit-table"><thead><tr><th class="v4825-audit-select-col"><label class="v4825-select-header" for="auditSelectAllV4577">선택</label><input id="auditSelectAllV4577" aria-label="현재 페이지 전체 선택" title="현재 페이지 전체 선택" onchange="toggleAuditAllV4577(this.checked)" type="checkbox"/></th><th>순번</th><th>이력 종류</th><th>대상 구분</th><th>대상 시설</th><th>업무/항목명</th><th>변경 내용</th><th>처리자</th><th>일시</th><th>비고</th><th>관리</th></tr></thead><tbody id="deleteBody"><tr><td colspan="11"><div class="empty-state">삭제·변경이력을 불러오는 중입니다.</div></td></tr></tbody></table></div>
 <div class="v4577-pager"><div><label>페이지당 <select id="auditPageSizeV4577" onchange="renderAuditV4577()"><option>10</option><option>20</option><option>50</option></select></label><span id="auditPageInfoV4577">총 0건</span></div><div class="v4577-page-buttons" id="auditPaginationV4577"></div></div>
 </div>
@@ -1632,7 +1632,7 @@ nav.sidebar {
 <div class="v4577-guide"><strong>이력 종류 구분</strong><span>삭제 : 빨간색 배지 · 변경 : 파란색 배지</span><small>행에서 대상·처리자·변경내용을 바로 확인합니다.</small></div>
 <div class="v4577-guide"><strong>관리자 개별 삭제</strong><span>각 이력의 ‘이력 삭제’로 해당 이력만 완전 삭제</span><small>확인창을 한 번 더 거쳐 실수를 방지합니다.</small></div>
 <div class="v4577-guide blue"><strong>테스트 데이터 전체 정리</strong><span>테스트 단계의 삭제·변경 이력을 한 번에 정리</span><small>운영 전환 후에는 전체 정리 기능을 숨기는 것을 권장합니다.</small></div>
-<div class="v4577-guide"><strong>선택 삭제</strong><span>여러 건을 체크한 뒤 ‘선택 삭제’로 일괄 정리</span><small>테스트 데이터 정리에 유용합니다.</small></div>
+<div class="v4577-guide"><strong>삭제 후 자동 반영</strong><span>건별 이력 삭제 시 F5 없이 해당 행과 집계 갱신</span><small>DB 삭제가 확인된 경우에만 완료 메시지를 표시합니다.</small></div>
 </div>
 <div class="v4577-operation-note">ⓘ 운영 전환 시 권장 설정 : 테스트 이력 전체 정리 → 운영 데이터 이력만 보존 → 감사·평가 자료로 활용</div>
 <div class="v4577-confirm-overlay" id="auditDeleteModalV4577" onclick="if(event.target===this)closeAuditDeleteV4577()"><div class="v4577-confirm-card"><div class="v4577-confirm-title">❗ 이력 완전 삭제 확인</div><p>선택한 이력을 완전히 삭제합니다.</p><div class="v4577-confirm-info" id="auditDeleteInfoV4577"></div><strong class="v4577-danger-text">삭제된 이력은 복구할 수 없습니다.</strong><p>계속하시겠습니까?</p><div class="v4577-confirm-actions"><button class="btn light" onclick="closeAuditDeleteV4577()" type="button">취소</button><button class="btn red" id="auditDeleteConfirmBtnV4577" type="button">완전 삭제</button></div></div></div>
@@ -22890,10 +22890,10 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 <script id="tfms-v480-version-authority">
 (function(){
   'use strict';
-  const LABEL='v48.2.17 Audit Row Selection Stable';
-  const PARAM='48.2.17';
+  const LABEL='v48.2.18 Audit Single Delete Instant Refresh Stable';
+  const PARAM='48.2.18';
   const TITLE='TFMS '+LABEL;
-  const FIXED_BUILD=Object.freeze({version:'v48.2.17',channel:'Audit Row Selection Stable',buildDate:'2026.11.12',title:'삭제·변경이력 개별 선택 체크박스 복원 및 구 렌더러 충돌 차단'});
+  const FIXED_BUILD=Object.freeze({version:'v48.2.18',channel:'Audit Single Delete Instant Refresh Stable',buildDate:'2026.11.12',title:'삭제·변경이력 건별삭제 단순화 및 삭제 직후 화면 갱신 보완'});
   const nativeReplace=History.prototype.replaceState;
   if(!History.prototype.__tfmsV4729VersionNormalized){
     History.prototype.replaceState=function(state,title,url){
@@ -22907,7 +22907,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
   function apply(){
     normalizeUrl();
     const badge=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
-    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2.17')}catch(e){}}
+    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2.18')}catch(e){}}
     try{document.title=TITLE;Object.defineProperty(document,'title',{configurable:true,enumerable:true,get(){return TITLE},set(_){}})}catch(e){}
     try{const te=document.head&&document.head.querySelector('title');if(te)lockText(te,'textContent',TITLE)}catch(e){}
     try{Object.defineProperty(window,'TFMS_BUILD',{configurable:true,enumerable:true,get(){return FIXED_BUILD},set(_){}})}catch(e){try{window.TFMS_BUILD=FIXED_BUILD}catch(_){}}
@@ -24436,11 +24436,40 @@ window.renderAuditV4577=function(){const body=$('deleteBody');if(!body)return;co
 window.setAuditPageV4577=function(p){auditPage=Math.max(1,Number(p)||1);renderAuditV4577()};window.toggleAuditAllV4577=function(v){document.querySelectorAll('.audit-select-v4577').forEach(x=>x.checked=v)};
 window.resetAuditV4577=function(){['auditTypeV4577','auditTargetV4577','auditFacilityV4577'].forEach(id=>{const e=$(id);if(e)e.selectedIndex=0});['auditStartV4577','auditEndV4577','auditActorV4577','auditKeywordV4577'].forEach(id=>{const e=$(id);if(e)e.value=''});auditPage=1;renderAuditV4577()};
 function setAuditRange(kind,btn){document.querySelectorAll('[data-v4577-audit-range]').forEach(b=>b.classList.remove('active'));btn.classList.add('active');let a=new Date(),b=new Date();if(kind==='yesterday'){a=localDate(-1);b=localDate(-1)}else if(kind==='7')a=localDate(-6);else if(kind==='30')a=localDate(-29);else if(kind==='month')a=new Date(new Date().getFullYear(),new Date().getMonth(),1);$('auditStartV4577').value=iso(a);$('auditEndV4577').value=iso(b);auditPage=1;renderAuditV4577()}
-window.openAuditDeleteV4577=function(source,id){if(!admin()){toast('관리자만 이력을 삭제할 수 있습니다.');return}const r=auditCache.find(x=>x.source===source&&String(x.id)===String(id));if(!r)return;pendingDelete=r;$('auditDeleteInfoV4577').innerHTML=`<div><b>이력 종류</b><span>${r.kind==='delete'?'삭제':'변경'} · ${esc(r.target)}</span></div><div><b>대상 시설</b><span>${esc(r.facility)}</span></div><div><b>업무명</b><span>${esc(r.title)}</span></div><div><b>변경 일시</b><span>${esc(r.time?new Date(r.time).toLocaleString('ko-KR'):'-')}</span></div><div><b>처리자</b><span>${esc(r.actor)}</span></div>`;$('auditDeleteConfirmBtnV4577').onclick=()=>deleteAuditRowV4577(r);$('auditDeleteModalV4577').classList.add('show')};window.closeAuditDeleteV4577=function(){pendingDelete=null;$('auditDeleteModalV4577')?.classList.remove('show')};
+window.openAuditDeleteV4577=function(source,id){if(!admin()){toast('관리자만 이력을 삭제할 수 있습니다.');return}const r=window.tfmsV48218FindAuditRow?.(source,id)||auditCache.find(x=>x.source===source&&String(x.id)===String(id));if(!r)return toast('삭제 대상을 찾지 못했습니다. 목록을 다시 조회해 주세요.');pendingDelete=r;$('auditDeleteInfoV4577').innerHTML=`<div><b>이력 종류</b><span>${r.kind==='delete'?'삭제':'변경'} · ${esc(r.target)}</span></div><div><b>대상 시설</b><span>${esc(r.facility)}</span></div><div><b>업무명</b><span>${esc(r.title)}</span></div><div><b>변경 일시</b><span>${esc(r.time?new Date(r.time).toLocaleString('ko-KR'):'-')}</span></div><div><b>처리자</b><span>${esc(r.actor)}</span></div>`;$('auditDeleteConfirmBtnV4577').onclick=()=>deleteAuditRowV4577(r);$('auditDeleteModalV4577').classList.add('show')};window.closeAuditDeleteV4577=function(){pendingDelete=null;$('auditDeleteModalV4577')?.classList.remove('show')};
 async function removeMaintenanceFiles(id){const c=db();if(!c)return;for(const kind of ['photos','docs']){const base=`maintenance/${id}/${kind}`;const l=await c.storage.from(BUCKET).list(base,{limit:100});if(!l.error&&l.data?.length){const paths=l.data.filter(x=>x?.name&&x.name!=='.emptyFolderPlaceholder').map(x=>`${base}/${x.name}`);if(paths.length)await c.storage.from(BUCKET).remove(paths)}}}
-window.deleteAuditRowV4577=async function(r){const c=db();if(!c||!admin())return;try{if(r.source==='maintenance'){await removeMaintenanceFiles(r.id);const x=await c.from('maintenance_records').delete().eq('id',r.id);if(x.error)throw x.error}else{const x=await c.from('tfms_audit_logs').delete().eq('id',r.id);if(x.error)throw x.error}closeAuditDeleteV4577();toast('선택한 이력을 완전 삭제했습니다.');await loadAuditV4577()}catch(e){console.error(e);toast('이력 삭제 실패: '+(e?.message||e))}};
+window.deleteAuditRowV4577=async function(r){
+ const c=db();
+ if(!c||!admin())return toast('관리자 권한 또는 DB 연결을 확인해 주세요.');
+ if(!r||!['maintenance','audit'].includes(r.source)||!r.id)return toast('삭제 대상을 확인할 수 없습니다.');
+ const confirmBtn=$('auditDeleteConfirmBtnV4577');
+ if(confirmBtn?.disabled)return;
+ if(confirmBtn){confirmBtn.disabled=true;confirmBtn.textContent='삭제 중…';}
+ try{
+  const table=r.source==='maintenance'?'maintenance_records':'tfms_audit_logs';
+  // Require returned PK: a successful HTTP response alone does not prove RLS allowed deletion.
+  const result=await c.from(table).delete().eq('id',r.id).select('id');
+  if(result.error)throw result.error;
+  if(!Array.isArray(result.data)||!result.data.some(x=>String(x.id)===String(r.id)))
+   throw new Error('DB에서 삭제 완료가 확인되지 않았습니다. 권한 또는 해당 이력의 존재 여부를 확인해 주세요.');
+  window.closeAuditDeleteV4577?.();
+  // Update the modern audit table/cache immediately; do not reload the obsolete v45.77 cache.
+  window.tfmsV48218RemoveAuditRow?.(r.source,r.id);
+  toast('이력이 삭제되었습니다. 목록에 바로 반영했습니다.');
+  if(r.source==='maintenance'){
+   try{await removeMaintenanceFiles(r.id)}catch(storageError){
+    console.warn('TFMS maintenance evidence cleanup needs review:',storageError);
+    toast('이력은 삭제됐지만 첨부파일 정리 상태를 확인해 주세요.');
+   }
+  }
+  // Silent authoritative re-fetch preserves period/facility filters and current page.
+  if(typeof window.loadAuditV48217==='function')await window.loadAuditV48217(true);
+  return true;
+ }catch(e){console.error('TFMS audit single deletion failed',e);toast('이력 삭제 실패: '+(e?.message||e));return false;}
+ finally{if(confirmBtn){confirmBtn.disabled=false;confirmBtn.textContent='완전 삭제';}}
+};
 window.deleteSelectedAuditV4577=async function(){if(!admin())return toast('관리자만 사용할 수 있습니다.');const keys=[...document.querySelectorAll('.audit-select-v4577:checked')].map(x=>x.dataset.key);if(!keys.length)return toast('삭제할 이력을 선택하세요.');if(!confirm(`선택한 이력 ${keys.length}건을 완전 삭제하시겠습니까?`))return;for(const key of keys){const [source,id]=key.split(':');const r=auditCache.find(x=>x.source===source&&String(x.id)===id);if(r)await deleteAuditRowV4577(r)}await loadAuditV4577()};
-window.clearTestAuditV4577=async function(){if(!admin())return toast('관리자만 사용할 수 있습니다.');if(!confirm('테스트 단계의 삭제·변경 이력을 전체 정리하시겠습니까?\n이 작업은 복구할 수 없습니다.'))return;const list=auditCache.slice();for(const r of list){try{if(r.source==='maintenance'){await removeMaintenanceFiles(r.id);await db().from('maintenance_records').delete().eq('id',r.id)}else await db().from('tfms_audit_logs').delete().eq('id',r.id)}catch(e){console.warn(e)}}toast('테스트 이력을 전체 정리했습니다.');await loadAuditV4577()};
+window.clearTestAuditV4577=async function(){if(!admin())return toast('관리자만 사용할 수 있습니다.');if(!confirm('테스트 단계의 삭제·변경 이력을 전체 정리하시겠습니까?\n이 작업은 복구할 수 없습니다.'))return;const list=auditCache.slice();for(const r of list){try{if(r.source==='maintenance'){await removeMaintenanceFiles(r.id);await db().from('maintenance_records').delete().eq('id',r.id)}else await db().from('tfms_audit_logs').delete().eq('id',r.id)}catch(e){console.warn(e)}}toast('테스트 이력을 전체 정리했습니다.');await loadAuditV4577();await window.loadAuditV48217?.(true)};
 /* today admin override delete - test cleanup */
 async function deleteTodayTaskV4577(id){if(!admin())return toast('관리자만 오늘의 업무를 직권삭제할 수 있습니다.');const t=(window.todayTasks||[]).find(x=>String(x.dbId||x._flowId||'')===String(id));if(!t)return toast('삭제할 업무를 찾지 못했습니다.');const reason=prompt('직권삭제 사유를 입력하세요.\n예: 중복 생성, 테스트 데이터, 잘못 등록');if(!reason?.trim())return;if(!confirm(`${t.facility||''} · ${t.task||''}\n이 오늘의 업무를 완전 삭제하시겠습니까?`))return;try{const c=db();if(t.dbId&&c){try{await c.from('tfms_audit_logs').insert({action_type:'delete',target_type:'today_task',target_id:t.dbId,target_title:t.task||'',facility_name:t.facility||'',actor_name:(window.cloudProfile?.name||window.cloudUser?.email||'관리자'),action_detail:'관리자 직권삭제 · '+reason.trim()})}catch(e){console.warn('audit insert',e)}const d=await c.from('today_tasks').delete().eq('id',t.dbId);if(d.error)throw d.error;if(typeof window.loadTodayTasksV4550==='function')await window.loadTodayTasksV4550();else if(typeof window.fetchTodayTasks==='function')await window.fetchTodayTasks();window.todayTasks=(window.todayTasks||[]).filter(x=>String(x.dbId||x._flowId||'')!==String(id));try{localStorage.setItem('tfms_today_tasks_v3261',JSON.stringify(window.todayTasks))}catch(e){}window.renderTodayTasks?.()}else{window.todayTasks=(window.todayTasks||[]).filter(x=>String(x.dbId||x._flowId||'')!==String(id));try{localStorage.setItem('tfms_today_tasks_v3261',JSON.stringify(window.todayTasks))}catch(e){}window.renderTodayTasks?.()}toast('오늘의 업무를 관리자 직권으로 삭제했습니다.')}catch(e){console.error(e);toast('업무 삭제 실패: '+(e?.message||e))}}
 window.deleteTodayTaskV4577=deleteTodayTaskV4577;
@@ -24483,7 +24512,7 @@ function renderHistory(){const body=$('historyBody');if(!body)return;const list=
 async function loadHistory(){const body=$('historyBody'),c=client();if(!body)return;if(!c){body.innerHTML='<tr><td colspan="7"><div class="empty-state">DB 연결 정보를 확인하지 못했습니다.</div></td></tr>';return}body.innerHTML='<tr><td colspan="7"><div class="v4578-loading-note">유지관리 이력을 불러오는 중입니다.</div></td></tr>';try{const {data,error}=await c.from('maintenance_records').select('*, department:departments(id,name), facility:facilities(id,name)').is('deleted_at',null).order('created_at',{ascending:false});if(error)throw error;hist=(data||[]).map(r=>({id:r.id,ownerId:r.registered_by||'',registered_on:r.registered_on||'',date:String(r.registered_on||r.created_at||'').slice(0,10),facility:r.facility?.name||'',field:r.field_category||'기타',detail:r.detail||r.action_detail||'',status:r.process_status||'진행중',assetId:r.asset_id||'',evidence:Number(r.evidence_count||0),eval:Array.isArray(r.evaluation_tags)?r.evaluation_tags:[],subfield:''}));hist.forEach(x=>x.subfield=subfield(x));fillHistoryFacilities();renderHistory()}catch(e){console.error('v45.78 history load',e);body.innerHTML=`<tr><td colspan="7"><div class="empty-state" style="color:#b91c1c">조회 실패: ${esc(e?.message||e)}</div></td></tr>`}}
 window.renderHistoryV4578=renderHistory;window.renderHistoryV4577=renderHistory;window.renderHistory=renderHistory;window.renderHistoryV318=renderHistory;window.renderMaintenanceHistoryV361=renderHistory;window.resetHistoryV4577=function(){resetHistoryFilters();const all=document.querySelector('[data-v4577-fav="all"]');if(all)all.classList.add('active');renderHistory()};
 
-let audit=[],auditPage=1;
+let audit=[],auditPage=1,auditLoadSeq=0;
 function auditMap(x){const src=x.source||'audit',act=String(x.action_type||'').toLowerCase(),kind=src==='maintenance'||/delete|삭제/.test(act)?'delete':'change';let target=String(x.target_type||'기타');const map={today_task:'오늘의 업무',maintenance:'유지관리',maintenance_record:'유지관리',equipment:'설비',asset:'설비',dailylog:'업무일지',daily_log:'업무일지'};target=map[target]||target||'기타';return {source:src,id:x.id,kind,target,facility:x.facility_name||x.facility||'-',title:x.target_title||x.detail||'-',change:x.action_detail||(kind==='delete'?'관리자 완전삭제':'변경'),actor:x.actor_name||'관리자',time:x.created_at||x.deleted_at||'',note:x.note||x.process_status||'-'}}
 function fillAuditFacilities(){const s=$('auditFacilityV4577');if(!s)return;const old=s.value;const names=[...new Set(audit.map(x=>x.facility).filter(x=>x&&x!=='-'))].sort();s.innerHTML='<option value="all">전체</option>'+names.map(n=>`<option>${esc(n)}</option>`).join('');if([...s.options].some(o=>o.value===old))s.value=old}
 function auditFiltered(){let a=audit.slice();const s=$('auditStartV4577')?.value||'',e=$('auditEndV4577')?.value||'',k=$('auditTypeV4577')?.value||'all',t=$('auditTargetV4577')?.value||'all',f=$('auditFacilityV4577')?.value||'all',actor=String($('auditActorV4577')?.value||'').trim().toLowerCase(),q=String($('auditKeywordV4577')?.value||'').trim().toLowerCase();if(s)a=a.filter(x=>String(x.time).slice(0,10)>=s);if(e)a=a.filter(x=>String(x.time).slice(0,10)<=e);if(k!=='all')a=a.filter(x=>x.kind===k);if(t!=='all')a=a.filter(x=>x.target===t);if(f!=='all')a=a.filter(x=>x.facility===f);if(actor)a=a.filter(x=>String(x.actor).toLowerCase().includes(actor));if(q)a=a.filter(x=>`${x.title} ${x.change} ${x.note}`.toLowerCase().includes(q));return a}
@@ -24517,8 +24546,36 @@ function renderAudit(){
    }
  }
 }
-async function loadAudit(){const body=$('deleteBody'),c=client();if(!body)return;if(!c){body.innerHTML='<tr><td colspan="11"><div class="empty-state">DB 연결 정보를 확인하지 못했습니다.</div></td></tr>';return}body.innerHTML='<tr><td colspan="11"><div class="v4578-loading-note">삭제·변경이력을 불러오는 중입니다.</div></td></tr>';try{const [m,a]=await Promise.all([c.from('maintenance_records').select('id,deleted_at,detail,process_status,facility:facilities(name)').not('deleted_at','is',null).order('deleted_at',{ascending:false}).limit(500),c.from('tfms_audit_logs').select('id,action_type,target_type,target_id,target_title,facility_name,actor_name,action_detail,created_at').order('created_at',{ascending:false}).limit(500)]);const rows=[];if(!m.error)(m.data||[]).forEach(x=>rows.push(auditMap({source:'maintenance',id:x.id,deleted_at:x.deleted_at,detail:x.detail,facility:x.facility?.name||'-',process_status:x.process_status})));if(!a.error)(a.data||[]).forEach(x=>rows.push(auditMap({source:'audit',...x})));audit=rows.sort((x,y)=>String(y.time).localeCompare(String(x.time)));fillAuditFacilities();auditPage=1;renderAudit()}catch(e){console.error('v45.78 audit load',e);body.innerHTML=`<tr><td colspan="11"><div class="empty-state" style="color:#b91c1c">${esc(e?.message||e)}</div></td></tr>`}}
-window.loadAuditV48217=loadAudit;window.renderAuditV4577=renderAudit;window.renderAuditV4578=renderAudit;window.setAuditPageV4578=p=>{auditPage=Math.max(1,Number(p)||1);renderAudit()};window.toggleAuditAllV4577=v=>{document.querySelectorAll('#deleteBody .audit-select-v4577').forEach(x=>x.checked=!!v);window.tfmsV4825SyncAuditSelection?.()};
+async function loadAudit(silent=false){
+ const body=$('deleteBody'),c=client(),seq=++auditLoadSeq;
+ if(!body)return false;
+ if(!c){if(!silent)body.innerHTML='<tr><td colspan="11"><div class="empty-state">DB 연결 정보를 확인하지 못했습니다.</div></td></tr>';return false;}
+ if(!silent)body.innerHTML='<tr><td colspan="11"><div class="v4578-loading-note">삭제·변경이력을 불러오는 중입니다.</div></td></tr>';
+ try{
+  const [m,a]=await Promise.all([
+   c.from('maintenance_records').select('id,deleted_at,detail,process_status,facility:facilities(name)').not('deleted_at','is',null).order('deleted_at',{ascending:false}).limit(500),
+   c.from('tfms_audit_logs').select('id,action_type,target_type,target_id,target_title,facility_name,actor_name,action_detail,created_at').order('created_at',{ascending:false}).limit(500)
+  ]);
+  if(seq!==auditLoadSeq)return false;
+  // Preserve the previous partial-load behavior on initial open; do not overwrite a
+  // verified, post-delete cache if a silent refresh encounters a query failure.
+  if(silent&&(m.error||a.error))throw (m.error||a.error);
+  const rows=[];
+  (!m.error?m.data||[]:[]).forEach(x=>rows.push(auditMap({source:'maintenance',id:x.id,deleted_at:x.deleted_at,detail:x.detail,facility:x.facility?.name||'-',process_status:x.process_status})));
+  (!a.error?a.data||[]:[]).forEach(x=>rows.push(auditMap({source:'audit',...x})));
+  audit=rows.sort((x,y)=>String(y.time).localeCompare(String(x.time)));
+  fillAuditFacilities();
+  if(!silent)auditPage=1;
+  renderAudit();
+  return true;
+ }catch(e){
+  if(seq!==auditLoadSeq)return false;
+  console.error('TFMS audit load',e);
+  if(!silent)body.innerHTML=`<tr><td colspan="11"><div class="empty-state" style="color:#b91c1c">${esc(e?.message||e)}</div></td></tr>`;
+  return false;
+ }
+}
+window.loadAuditV48217=loadAudit;window.tfmsV48218FindAuditRow=(source,id)=>audit.find(x=>x.source===source&&String(x.id)===String(id));window.tfmsV48218RemoveAuditRow=(source,id)=>{auditLoadSeq++;audit=audit.filter(x=>!(x.source===source&&String(x.id)===String(id)));renderAudit();};window.renderAuditV4577=renderAudit;window.renderAuditV4578=renderAudit;window.setAuditPageV4578=p=>{auditPage=Math.max(1,Number(p)||1);renderAudit()};window.toggleAuditAllV4577=v=>{document.querySelectorAll('#deleteBody .audit-select-v4577').forEach(x=>x.checked=!!v);window.tfmsV4825SyncAuditSelection?.()};
 window.deleteSelectedAuditV4577=async function(){if(!admin())return toast('관리자만 사용할 수 있습니다.');const chosen=[...document.querySelectorAll('#deleteBody .audit-select-v4577:checked')].map(x=>({source:x.dataset.source,id:x.dataset.id}));if(!chosen.length)return toast('삭제할 이력을 선택하세요.');if(!confirm(`선택한 이력 ${chosen.length}건을 완전 삭제하시겠습니까?\n이 작업은 복구할 수 없습니다.`))return;for(const k of chosen){const r=audit.find(x=>x.source===k.source&&String(x.id)===String(k.id));if(r&&typeof window.deleteAuditRowV4577==='function')await window.deleteAuditRowV4577(r)}await loadAudit()};
 window.resetAuditV4577=function(){['auditTypeV4577','auditTargetV4577','auditFacilityV4577'].forEach(id=>{const e=$(id);if(e)e.selectedIndex=0});['auditStartV4577','auditEndV4577','auditActorV4577','auditKeywordV4577'].forEach(id=>{const e=$(id);if(e)e.value=''});auditPage=1;renderAudit()};
 try{window.renderDeleteRequests=function(){if($('deleteManage')?.classList.contains('active'))return renderAudit()};renderDeleteRequests=window.renderDeleteRequests}catch(e){}
@@ -37286,7 +37343,7 @@ function baseUrl(){
  const u=new URL(location.href);
  u.search='';u.hash='';return u.href;
 }
-function urlFor(a){const base=baseUrl(),id=actualAssetId(a);if(!base||!id)return '';const u=new URL(base);u.searchParams.set('v','48.2.17');u.searchParams.set('qr_asset',id);return u.href}
+function urlFor(a){const base=baseUrl(),id=actualAssetId(a);if(!base||!id)return '';const u=new URL(base);u.searchParams.set('v','48.2.18');u.searchParams.set('qr_asset',id);return u.href}
 function labelText(a){return [a?.facility,a?.space||a?.location,a?.name,a?.qrId&&a.qrId!=='-'?a.qrId:''].filter(Boolean).join(' · ')}
 function checksFor(a){
  const n=[a?.name,a?.category].join(' ');
@@ -38046,7 +38103,7 @@ function renderQr(){
  const base=baseUrl();if(!base){resetQr('QR 발행은 GitHub Pages 등 HTTPS 사이트에서만 가능합니다.');return}
  if(typeof window.QRCode!=='function'){resetQr('QR 생성 라이브러리를 불러오지 못했습니다.');return}
  const code=String(row.extinguisher_code||'').trim();if(!code){resetQr('소화기 관리번호가 없습니다.');return}
- base.searchParams.set('v','48.2.17');base.searchParams.set('fire','1');base.searchParams.set('facility',facility);base.searchParams.set('ext',code);
+ base.searchParams.set('v','48.2.18');base.searchParams.set('fire','1');base.searchParams.set('facility',facility);base.searchParams.set('ext',code);
  const url=base.href,el=$('tfmsV48213FireQr');if(!el)return;
  el.replaceChildren();
  try{
@@ -38359,6 +38416,31 @@ if(nav)nav.addEventListener('click',e=>{const b=e.target.closest('button');if(b&
    host.insertBefore(entry,host.firstChild);
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add,{once:true});else add();
+})();
+</script>
+
+<!-- TFMS v48.2.18: scope limited to audit list controls and instant DB-confirmed refresh. -->
+<style id="tfms-v48218-audit-single-delete-style">
+#deleteManage #auditSelectedDeleteV4577,
+#deleteManage #auditSelectionCountV4825,
+#deleteManage .v4577-audit-table th.v4825-audit-select-col,
+#deleteManage .v4577-audit-table td.v4825-audit-select-cell{display:none!important}
+#deleteManage .v4577-test-clean>div:nth-child(2){grid-template-columns:minmax(0,1fr)!important}
+#deleteManage .v4577-audit-table{min-width:1320px}
+#deleteManage .audit-row-delete:disabled{opacity:.55;cursor:wait}
+</style>
+<script id="tfms-v48218-audit-release-note">
+(function(){
+ 'use strict';
+ function note(){
+  const host=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');
+  if(!host||host.querySelector('[data-version="v48.2.18-audit-single-delete"]'))return;
+  const item=document.createElement('div');item.className='change-item';
+  item.dataset.version='v48.2.18-audit-single-delete';
+  item.innerHTML='<strong>v48.2.18 · Audit Single Delete Instant Refresh Stable</strong><ul><li>건별 이력 삭제 버튼만 노출하고 중복 체크박스·선택삭제 컨트롤 숨김</li><li>관리자 DB 삭제 반환행 확인 후 즉시 최신 이력 캐시·총건수 갱신</li><li>구 렌더러 갱신과 새 렌더러의 불일치 수정 · 조용한 재조회 및 지연 응답 차단</li><li>삭제 실패 시 완료 메시지 차단 · 기존 RLS/DB/점검주기/타 메뉴 변경 없음</li></ul>';
+  host.insertBefore(item,host.firstChild);
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',note,{once:true});else note();
 })();
 </script>
 </body></html>
