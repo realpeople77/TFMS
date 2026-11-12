@@ -31,7 +31,7 @@ html.tfms-v4826-restoring #tfmsV4826BootMask{display:flex}
 @media(prefers-reduced-motion:reduce){#tfmsV4826BootMask .tfms-v4826-spinner{animation:none}}
 </style>
 
-<title>TFMS v48.2.15 Excel Menu Team Access Stable</title>
+<title>TFMS v48.2.16 Excel Facility Team Scope Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -7385,6 +7385,10 @@ document.addEventListener('DOMContentLoaded',function(){
   }
 
   function refreshExportFacilities(){
+    if(typeof window.tfmsV48216SyncExportFacility==='function'){
+      window.tfmsV48216SyncExportFacility();
+      return;
+    }
     const el=document.getElementById('exportFacility');
     if(!el) return;
     const old=el.value;
@@ -9998,7 +10002,9 @@ document.addEventListener('DOMContentLoaded',function(){
     const year=document.getElementById('exportYear');
     const list=exportSource();
 
-    if(fac){
+    if(fac && typeof window.tfmsV48216SyncExportFacility==='function'){
+      window.tfmsV48216SyncExportFacility();
+    }else if(fac){
       const old=fac.value;
       const names=[...new Set(list.map(r=>r.facility).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'ko'));
       fac.innerHTML='<option value="전체 시설">전체 시설</option>'+names.map(n=>`<option value="${String(n).replaceAll('"','&quot;')}">${n}</option>`).join('');
@@ -15752,6 +15758,10 @@ document.addEventListener('DOMContentLoaded',()=>setTimeout(initialize,250));
   }
 
   function scopeExportFacilityDropdown(){
+    if(typeof window.tfmsV48216SyncExportFacility==='function'){
+      window.tfmsV48216SyncExportFacility();
+      return;
+    }
     const select=$('exportFacility');
     if(!select)return;
 
@@ -18767,6 +18777,7 @@ document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{enhanceTodayAc
   window.renderExportPreview=async function(){
     try{
       if(typeof window.loadExportRecordsV371==='function')await window.loadExportRecordsV371();
+      window.tfmsV48216SyncExportFacility?.();
       render();
     }catch(e){console.error('TFMS v44.16 export preview error',e);if(typeof previous==='function')return previous.apply(this,arguments)}
   };
@@ -22870,10 +22881,10 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 <script id="tfms-v480-version-authority">
 (function(){
   'use strict';
-  const LABEL='v48.2.15 Excel Menu Team Access Stable';
-  const PARAM='48.2.15';
+  const LABEL='v48.2.16 Excel Facility Team Scope Stable';
+  const PARAM='48.2.16';
   const TITLE='TFMS '+LABEL;
-  const FIXED_BUILD=Object.freeze({version:'v48.2.15',channel:'Excel Menu Team Access Stable',buildDate:'2026.11.12',title:'일반담당자 소속팀 엑셀 다운로드 메뉴 접근성 개선'});
+  const FIXED_BUILD=Object.freeze({version:'v48.2.16',channel:'Excel Facility Team Scope Stable',buildDate:'2026.11.12',title:'일반담당자 엑셀 시설선택 소속팀 기준정보 제한'});
   const nativeReplace=History.prototype.replaceState;
   if(!History.prototype.__tfmsV4729VersionNormalized){
     History.prototype.replaceState=function(state,title,url){
@@ -22887,7 +22898,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
   function apply(){
     normalizeUrl();
     const badge=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
-    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2.15')}catch(e){}}
+    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2.16')}catch(e){}}
     try{document.title=TITLE;Object.defineProperty(document,'title',{configurable:true,enumerable:true,get(){return TITLE},set(_){}})}catch(e){}
     try{const te=document.head&&document.head.querySelector('title');if(te)lockText(te,'textContent',TITLE)}catch(e){}
     try{Object.defineProperty(window,'TFMS_BUILD',{configurable:true,enumerable:true,get(){return FIXED_BUILD},set(_){}})}catch(e){try{window.TFMS_BUILD=FIXED_BUILD}catch(_){}}
@@ -37265,7 +37276,7 @@ function baseUrl(){
  const u=new URL(location.href);
  u.search='';u.hash='';return u.href;
 }
-function urlFor(a){const base=baseUrl(),id=actualAssetId(a);if(!base||!id)return '';const u=new URL(base);u.searchParams.set('v','48.2.15');u.searchParams.set('qr_asset',id);return u.href}
+function urlFor(a){const base=baseUrl(),id=actualAssetId(a);if(!base||!id)return '';const u=new URL(base);u.searchParams.set('v','48.2.16');u.searchParams.set('qr_asset',id);return u.href}
 function labelText(a){return [a?.facility,a?.space||a?.location,a?.name,a?.qrId&&a.qrId!=='-'?a.qrId:''].filter(Boolean).join(' · ')}
 function checksFor(a){
  const n=[a?.name,a?.category].join(' ');
@@ -38025,7 +38036,7 @@ function renderQr(){
  const base=baseUrl();if(!base){resetQr('QR 발행은 GitHub Pages 등 HTTPS 사이트에서만 가능합니다.');return}
  if(typeof window.QRCode!=='function'){resetQr('QR 생성 라이브러리를 불러오지 못했습니다.');return}
  const code=String(row.extinguisher_code||'').trim();if(!code){resetQr('소화기 관리번호가 없습니다.');return}
- base.searchParams.set('v','48.2.15');base.searchParams.set('fire','1');base.searchParams.set('facility',facility);base.searchParams.set('ext',code);
+ base.searchParams.set('v','48.2.16');base.searchParams.set('fire','1');base.searchParams.set('facility',facility);base.searchParams.set('ext',code);
  const url=base.href,el=$('tfmsV48213FireQr');if(!el)return;
  el.replaceChildren();
  try{
@@ -38241,6 +38252,89 @@ if(nav)nav.addEventListener('click',e=>{const b=e.target.closest('button');if(b&
   host.insertBefore(div,host.firstChild);
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add,{once:true});else add();
+})();
+</script>
+
+<!-- TFMS v48.2.16: Excel dropdown options use facility master scoped by logged-in team. -->
+<script id="tfms-v48216-excel-facility-scope-controller">
+(function(){
+ 'use strict';
+ const pick=id=>document.getElementById(id);
+ const normalize=v=>String(v||'').replace(/\s+/g,'').replace(/[·ㆍ]/g,'').toLowerCase();
+ function loginContext(){
+   let session={};
+   try{session=JSON.parse(sessionStorage.getItem('tfmsSession')||'{}')}catch(_){ }
+   let profile={};
+   try{profile=window.getTfmsCloudProfile?.()||window.cloudProfile||{}}catch(_){profile=window.cloudProfile||{}}
+   let sessionRole='';
+   try{sessionRole=typeof tfmsRole!=='undefined'?tfmsRole:''}catch(_){ }
+   let localDept='';
+   try{localDept=typeof tfmsUserDept!=='undefined'?tfmsUserDept:''}catch(_){ }
+   const role=String(profile.role||window.tfmsRole||sessionRole||session.role||'').trim().toLowerCase();
+   const dept=String(profile.department?.name||profile.department_name||profile.dept||session.dept||session.department||localDept||'').trim();
+   return {role,dept,whole:role==='admin'||role==='관리자'||role==='viewer'||role==='조회전용'};
+ }
+ function masterFacilities(){
+   try{if(typeof facilityMasterStable!=='undefined'&&Array.isArray(facilityMasterStable))return facilityMasterStable}catch(_){ }
+   if(Array.isArray(window.facilityMasterStable))return window.facilityMasterStable;
+   try{if(typeof facilityMaster!=='undefined'&&Array.isArray(facilityMaster))return facilityMaster}catch(_){ }
+   return [];
+ }
+ function scopedFacilityNames(ctx){
+   let rows=masterFacilities();
+   // A master facility is shown even when no maintenance record exists yet.
+   let names=rows.filter(f=>ctx.whole || (!!ctx.dept&&normalize(f.dept||f.department?.name||f.department_name)===normalize(ctx.dept)))
+                 .map(f=>String(f.name||'').trim()).filter(Boolean);
+   // Fallback only if the facility master has not populated at all.
+   if(!rows.length){
+     try{
+       const group=(typeof facilities!=='undefined'&&facilities)||{};
+       if(ctx.whole) names.push(...Object.values(group).flat());
+       else if(ctx.dept) names.push(...(group[ctx.dept]||[]));
+     }catch(_){ }
+   }
+   if(ctx.whole){
+     // Keep previous admin/viewer all-facility behavior, including legacy names.
+     try{
+       const records=Array.isArray(window.records)?window.records:[];
+       names.push(...records.map(r=>r.facility).filter(Boolean));
+     }catch(_){ }
+   }
+   return [...new Set(names.map(v=>String(v).trim()).filter(Boolean))]
+           .sort((a,b)=>a.localeCompare(b,'ko'));
+ }
+ function syncExportFacility(){
+   const el=pick('exportFacility');
+   if(!el)return false;
+   const ctx=loginContext();
+   const names=scopedFacilityNames(ctx);
+   const allLabel=ctx.whole?'전체 시설':'소속팀 전체 시설';
+   const expected=['전체 시설',...names];
+   const existing=[...el.options].map(o=>o.value);
+   const needsUpdate=existing.length!==expected.length
+      || expected.some((v,i)=>v!==existing[i])
+      || (el.options[0]?.textContent!==allLabel);
+   const before=el.value;
+   if(needsUpdate){
+     el.replaceChildren(new Option(allLabel,'전체 시설'),...names.map(n=>new Option(n,n)));
+   }
+   const chosen=names.includes(before)?before:'전체 시설';
+   if(el.value!==chosen)el.value=chosen;
+   return true;
+ }
+ window.tfmsV48216SyncExportFacility=syncExportFacility;
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',syncExportFacility,{once:true});
+ else syncExportFacility();
+ function releaseNote(){
+   const host=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');
+   if(!host||host.querySelector('[data-version="v48.2.16-excel-team-facilities"]'))return;
+   const item=document.createElement('div');item.className='change-item';
+   item.dataset.version='v48.2.16-excel-team-facilities';
+   item.innerHTML='<strong>v48.2.16 · Excel Facility Team Scope Stable</strong><ul><li>일반담당자 엑셀 시설 목록을 로그인한 소속팀 시설 마스터 기준으로 제한</li><li>등록된 유지관리 이력이 없는 소속팀 시설도 선택 가능</li><li>관리자·조회전용 전체 시설 목록 유지 · 기존 조회·다운로드 RLS 및 서버 요청 로직 변경 없음</li><li>기존 선택이 권한 범위를 벗어나면 소속팀 전체 시설로 초기화 · Timer/Observer 추가 없음</li></ul>';
+   host.insertBefore(item,host.firstChild);
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',releaseNote,{once:true});
+ else releaseNote();
 })();
 </script>
 </body></html>
