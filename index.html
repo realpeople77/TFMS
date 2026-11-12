@@ -31,7 +31,7 @@ html.tfms-v4826-restoring #tfmsV4826BootMask{display:flex}
 @media(prefers-reduced-motion:reduce){#tfmsV4826BootMask .tfms-v4826-spinner{animation:none}}
 </style>
 
-<title>TFMS v48.2.14 QR Navigation & Facility Select Stable</title>
+<title>TFMS v48.2.15 Excel Menu Team Access Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -1287,7 +1287,7 @@ nav.sidebar {
 <button class="nav" data-roles="admin,viewer" onclick="showPage('stats',this)">통계현황</button>
 <button class="nav" data-roles="admin" onclick="showPage('deleteManage',this)">삭제·변경이력</button>
 <button class="nav" data-roles="admin" onclick="showPage('accountAdmin',this)">계정승인</button>
-<button class="nav" data-roles="admin,viewer" onclick="showPage('excel',this)">엑셀 다운로드</button>
+<button class="nav" data-roles="admin,user,viewer" onclick="showPage('excel',this)">엑셀 다운로드</button>
 <button class="nav" data-roles="admin,user,viewer" onclick="showPage('myPage',this)">내 정보</button>
 <button class="nav dev-nav" data-roles="admin" onclick="showPage('sampleData',this)">예시자료</button>
 <button class="nav dev-nav" data-roles="admin" onclick="showPage('finalTest',this)">실전 테스트</button>
@@ -22870,10 +22870,10 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 <script id="tfms-v480-version-authority">
 (function(){
   'use strict';
-  const LABEL='v48.2.14 QR Navigation & Facility Select Stable';
-  const PARAM='48.2.14';
+  const LABEL='v48.2.15 Excel Menu Team Access Stable';
+  const PARAM='48.2.15';
   const TITLE='TFMS '+LABEL;
-  const FIXED_BUILD=Object.freeze({version:'v48.2.14',channel:'QR Navigation & Facility Select Stable',buildDate:'2026.11.12',title:'QR 불필요 뒤로가기 중복 방지 및 소화기 시설명 선택형 관리'});
+  const FIXED_BUILD=Object.freeze({version:'v48.2.15',channel:'Excel Menu Team Access Stable',buildDate:'2026.11.12',title:'일반담당자 소속팀 엑셀 다운로드 메뉴 접근성 개선'});
   const nativeReplace=History.prototype.replaceState;
   if(!History.prototype.__tfmsV4729VersionNormalized){
     History.prototype.replaceState=function(state,title,url){
@@ -22887,7 +22887,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
   function apply(){
     normalizeUrl();
     const badge=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
-    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2.14')}catch(e){}}
+    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2.15')}catch(e){}}
     try{document.title=TITLE;Object.defineProperty(document,'title',{configurable:true,enumerable:true,get(){return TITLE},set(_){}})}catch(e){}
     try{const te=document.head&&document.head.querySelector('title');if(te)lockText(te,'textContent',TITLE)}catch(e){}
     try{Object.defineProperty(window,'TFMS_BUILD',{configurable:true,enumerable:true,get(){return FIXED_BUILD},set(_){}})}catch(e){try{window.TFMS_BUILD=FIXED_BUILD}catch(_){}}
@@ -25797,10 +25797,10 @@ function buildSidebar(){
  [b.maintenanceHub,b.register,b.history].filter(Boolean).forEach(x=>mg.sub.appendChild(x));
  const mb=document.createElement('span');mb.className='tfms-v4606-custom-badge';mb.id='v4606MaintBadge';mg.t.appendChild(mb);
  main.appendChild(mg.g);
- [b.dailylog,b.qrCheck,b.equipment,b.energy].filter(Boolean).forEach(x=>main.appendChild(x));
+ [b.dailylog,b.qrCheck,b.equipment,b.energy,b.excel].filter(Boolean).forEach(x=>main.appendChild(x));
  frag.appendChild(main);
  const admin=makeSection('tfms-v4606-admin','관리자 도구');
- [b.cycle,b.stats,b.deleteManage,b.accountAdmin,b.excel].filter(Boolean).forEach(x=>admin.appendChild(x));
+ [b.cycle,b.stats,b.deleteManage,b.accountAdmin].filter(Boolean).forEach(x=>admin.appendChild(x));
  if(b.cycle)ensureBadge(b.cycle,'v4606CycleBadge');if(b.accountAdmin)ensureBadge(b.accountAdmin,'v4606AccountBadge');
  frag.appendChild(admin);
  const bottom=makeSection('tfms-v4606-bottom','');
@@ -37265,7 +37265,7 @@ function baseUrl(){
  const u=new URL(location.href);
  u.search='';u.hash='';return u.href;
 }
-function urlFor(a){const base=baseUrl(),id=actualAssetId(a);if(!base||!id)return '';const u=new URL(base);u.searchParams.set('v','48.2.14');u.searchParams.set('qr_asset',id);return u.href}
+function urlFor(a){const base=baseUrl(),id=actualAssetId(a);if(!base||!id)return '';const u=new URL(base);u.searchParams.set('v','48.2.15');u.searchParams.set('qr_asset',id);return u.href}
 function labelText(a){return [a?.facility,a?.space||a?.location,a?.name,a?.qrId&&a.qrId!=='-'?a.qrId:''].filter(Boolean).join(' · ')}
 function checksFor(a){
  const n=[a?.name,a?.category].join(' ');
@@ -38025,7 +38025,7 @@ function renderQr(){
  const base=baseUrl();if(!base){resetQr('QR 발행은 GitHub Pages 등 HTTPS 사이트에서만 가능합니다.');return}
  if(typeof window.QRCode!=='function'){resetQr('QR 생성 라이브러리를 불러오지 못했습니다.');return}
  const code=String(row.extinguisher_code||'').trim();if(!code){resetQr('소화기 관리번호가 없습니다.');return}
- base.searchParams.set('v','48.2.14');base.searchParams.set('fire','1');base.searchParams.set('facility',facility);base.searchParams.set('ext',code);
+ base.searchParams.set('v','48.2.15');base.searchParams.set('fire','1');base.searchParams.set('facility',facility);base.searchParams.set('ext',code);
  const url=base.href,el=$('tfmsV48213FireQr');if(!el)return;
  el.replaceChildren();
  try{
@@ -38223,6 +38223,21 @@ if(nav)nav.addEventListener('click',e=>{const b=e.target.closest('button');if(b&
  function add(){const host=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');if(!host||host.querySelector('[data-version="v48.2.14-qr-facility-select"]'))return;
   const div=document.createElement('div');div.className='change-item';div.dataset.version='v48.2.14-qr-facility-select';
   div.innerHTML='<strong>v48.2.14 · QR Navigation &amp; Facility Select Stable</strong><ul><li>QR 라벨 내부 요소를 별도 소화기 화면으로 오인해 「점검주기 관리」 버튼이 중복 생성되던 공통 뒤로가기 검사 범위 수정</li><li>소화기 등록·관리와 소방 월간점검의 시설명을 권한 범위 내 시설 마스터 드롭다운으로 통일</li><li>QR 라벨에서 관리 화면 진입 시 선택 시설 연동 · 다른 시설로 변경 시 작성 중인 목록 확인 · 저장 목록 불러오기 전 입력 보존 확인 · 소화기 관리번호 중복 저장 방지</li><li>Supabase DB/RLS 변경 없음, 별도 timer/observer 추가 없음</li></ul>';
+  host.insertBefore(div,host.firstChild);
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add,{once:true});else add();
+})();
+</script>
+
+<!-- TFMS v48.2.15: user-visible Excel export entry; existing team-scoped export unchanged. -->
+<script id="tfms-v48215-release-note">
+(function(){
+ 'use strict';
+ function add(){
+  const host=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');
+  if(!host || host.querySelector('[data-version="v48.2.15-excel-team-menu"]'))return;
+  const div=document.createElement('div');div.className='change-item';div.dataset.version='v48.2.15-excel-team-menu';
+  div.innerHTML='<strong>v48.2.15 · Excel Menu Team Access Stable</strong><ul><li>일반담당자에게 엑셀 다운로드 메뉴 노출</li><li>관리자 도구에서 공통 업무 메뉴로 이동</li><li>기존 소속부서 기준 자료 조회·다운로드 필터 및 Supabase 정책 변경 없음</li></ul>';
   host.insertBefore(div,host.firstChild);
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add,{once:true});else add();
