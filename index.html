@@ -31,7 +31,7 @@ html.tfms-v4826-restoring #tfmsV4826BootMask{display:flex}
 @media(prefers-reduced-motion:reduce){#tfmsV4826BootMask .tfms-v4826-spinner{animation:none}}
 </style>
 
-<title>TFMS v48.2.23 Notifications Role Boot Stable</title>
+<title>TFMS v48.2.24 Role Navigation Access Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -22943,10 +22943,10 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 <script id="tfms-v480-version-authority">
 (function(){
   'use strict';
-  const LABEL='v48.2.23 Notifications Role Boot Stable';
-  const PARAM='48.2.23';
+  const LABEL='v48.2.24 Role Navigation Access Stable';
+  const PARAM='48.2.24';
   const TITLE='TFMS '+LABEL;
-  const FIXED_BUILD=Object.freeze({version:'v48.2.23',channel:'Notifications Role Boot Stable',buildDate:'2026.11.17',title:'알림센터 소속팀 시설·건수·날짜 보정 및 구버전 초기화 오류 4건 해소'});
+  const FIXED_BUILD=Object.freeze({version:'v48.2.24',channel:'Role Navigation Access Stable',buildDate:'2026.11.17',title:'계정별 메뉴 이동권한·비로그인 접근 차단 및 경로 일관성 보정'});
   const nativeReplace=History.prototype.replaceState;
   if(!History.prototype.__tfmsV4729VersionNormalized){
     History.prototype.replaceState=function(state,title,url){
@@ -22960,7 +22960,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
   function apply(){
     normalizeUrl();
     const badge=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
-    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2.23')}catch(e){}}
+    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2.24')}catch(e){}}
     try{document.title=TITLE;Object.defineProperty(document,'title',{configurable:true,enumerable:true,get(){return TITLE},set(_){}})}catch(e){}
     try{const te=document.head&&document.head.querySelector('title');if(te)lockText(te,'textContent',TITLE)}catch(e){}
     try{Object.defineProperty(window,'TFMS_BUILD',{configurable:true,enumerable:true,get(){return FIXED_BUILD},set(_){}})}catch(e){try{window.TFMS_BUILD=FIXED_BUILD}catch(_){}}
@@ -38746,6 +38746,94 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  host.prepend(el);
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add,{once:true});else add();
+})();
+</script>
+
+<!-- v48.2.24 - page transition permission gate; DB/RLS and existing navigation functions unchanged. -->
+<script id="tfms-v48224-role-navigation-gate">
+(function(){
+ 'use strict';
+ if(window.__tfmsV48224NavGateInstalled)return;
+ window.__tfmsV48224NavGateInstalled=true;
+ const ACCESS=Object.freeze({
+  dashboard:'admin,user,viewer', maintenanceHub:'admin,user,viewer',
+  register:'admin,user',history:'admin,user,viewer',
+  today:'admin,user',dailylog:'admin,user',qrCheck:'admin,user',
+  equipment:'admin,user',cycle:'admin',energy:'admin,user,viewer',
+  stats:'admin,viewer',deleteManage:'admin',accountAdmin:'admin',
+  excel:'admin,user,viewer',myPage:'admin,user,viewer',
+  facility:'admin',sampleData:'admin',finalTest:'admin'
+ });
+ const normalize=v=>{
+  let r=String(v??'').trim().toLowerCase();
+  return ({'관리자':'admin','일반담당자':'user','조회전용':'viewer'})[r]||r;
+ };
+ function context(){
+  let u=null,p=null;
+  try{u=window.getTfmsCloudUser?.()||null;p=window.getTfmsCloudProfile?.()||null}catch(_){}
+  // Do not grant rights from stale sessionStorage, HTML demo defaults or window.tfmsRole.
+  const authenticated=!!(u?.id&&p?.id&&String(u.id)===String(p.id)&&
+    p.account_status==='active'&&document.getElementById('loginScreen')?.classList.contains('hidden'));
+  const role=authenticated?normalize(p.role):'';
+  return {authenticated,role,profile:p};
+ }
+ function canOpen(id){
+  const allowed=ACCESS[String(id??'').trim()];
+  const c=context();
+  return !!(allowed&&c.authenticated&&allowed.split(',').includes(c.role));
+ }
+ function deny(){
+  try{window.showToast?.('현재 계정에서 이용할 수 없는 메뉴입니다.')}catch(e){console.warn('TFMS 접근 안내',e)}
+ }
+ window.tfmsV48224MayOpenPage=canOpen;
+ const previousShow=window.showPage;
+ if(typeof previousShow==='function'){
+  window.showPage=function(id,btn){
+   if(!canOpen(id)){deny();return false}
+   return previousShow.apply(this,arguments);
+  };
+  window.showPage.__tfmsV48224Gate=true;
+ }
+ const previousNav=window.navTo;
+ if(typeof previousNav==='function'){
+  window.navTo=function(id){
+   if(!canOpen(id)){deny();return false}
+   return previousNav.apply(this,arguments);
+  };
+  window.navTo.__tfmsV48224Gate=true;
+ }
+ // Reapply only existing nav role classes, including buttons moved into grouped sidebar.
+ function syncNav(){
+  const c=context();
+  document.querySelectorAll('#appHeader nav button.nav').forEach(btn=>{
+   const inline=btn.getAttribute('onclick')||'';
+   const matched=inline.match(/(?:showPage|navTo)\s*\(\s*['"]([a-zA-Z][\w]*)['"]/);
+   const id=matched?.[1]|| (inline.includes('openEnergyPageV4713')?'energy':'');
+   if(!id||!ACCESS[id])return;
+   const ok=c.authenticated&&ACCESS[id].split(',').includes(c.role);
+   btn.classList.toggle('role-hidden',!ok);
+   // Preserve existing legacy 'today' internal menu hiding. No CSS/display override.
+   if(!ok)btn.setAttribute('aria-hidden','true');
+   else if(!btn.classList.contains('tfms-v481-internal-nav'))btn.removeAttribute('aria-hidden');
+  });
+ }
+ const prevApply=window.applyMenuByRoleStable;
+ if(typeof prevApply==='function')window.applyMenuByRoleStable=function(){
+  const r=prevApply.apply(this,arguments);syncNav();return r;
+ };
+ // No interval, observer or repeat initialization. Login UI calls applyMenuByRoleStable.
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',syncNav,{once:true});
+ else syncNav();
+})();
+</script>
+<script id="tfms-v48224-release-note">
+(function(){'use strict';function add(){
+ const host=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');
+ if(!host||host.querySelector('[data-version="v48.2.24-role-nav-access"]'))return;
+ const el=document.createElement('div');el.className='change-item';el.dataset.version='v48.2.24-role-nav-access';
+ el.innerHTML='<strong>v48.2.24 · Role Navigation Access Stable</strong><ul><li>로그인·승인 상태를 확인한 뒤 관리자/일반담당자/조회전용 페이지 이동을 허용</li><li>일반담당자의 계정승인·삭제이력·점검주기·통계현황 우회 진입 차단</li><li>조회전용의 등록·QR점검·업무일지 편집 화면 이동 제한</li><li>그룹 메뉴로 이동한 버튼에도 역할별 숨김 상태를 다시 적용</li><li>기존 페이지·Supabase DB/RLS·타이머·Observer 및 저장 로직 보존</li></ul>';
+ host.prepend(el);
+ }if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add,{once:true});else add();
 })();
 </script>
 </body></html>
