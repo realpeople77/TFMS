@@ -31,7 +31,7 @@ html.tfms-v4826-restoring #tfmsV4826BootMask{display:flex}
 @media(prefers-reduced-motion:reduce){#tfmsV4826BootMask .tfms-v4826-spinner{animation:none}}
 </style>
 
-<title>TFMS v48.2.21 Statistics Energy Reconciliation Stable</title>
+<title>TFMS v48.2.22 Energy AI Evidence Profile Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -22951,10 +22951,10 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 <script id="tfms-v480-version-authority">
 (function(){
   'use strict';
-  const LABEL='v48.2.21 Statistics Energy Reconciliation Stable';
-  const PARAM='48.2.21';
+  const LABEL='v48.2.22 Energy AI Evidence Profile Stable';
+  const PARAM='48.2.22';
   const TITLE='TFMS '+LABEL;
-  const FIXED_BUILD=Object.freeze({version:'v48.2.21',channel:'Statistics Energy Reconciliation Stable',buildDate:'2026.11.17',title:'유지관리 통계 및 에너지 전년대비·월별그래프 데이터 정합성 개선'});
+  const FIXED_BUILD=Object.freeze({version:'v48.2.22',channel:'Energy AI Evidence Profile Stable',buildDate:'2026.11.17',title:'에너지 시설별 보조진단의 기간·근거·자료부족·조치전후 비교 검증'});
   const nativeReplace=History.prototype.replaceState;
   if(!History.prototype.__tfmsV4729VersionNormalized){
     History.prototype.replaceState=function(state,title,url){
@@ -22968,7 +22968,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
   function apply(){
     normalizeUrl();
     const badge=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
-    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2.21')}catch(e){}}
+    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2.22')}catch(e){}}
     try{document.title=TITLE;Object.defineProperty(document,'title',{configurable:true,enumerable:true,get(){return TITLE},set(_){}})}catch(e){}
     try{const te=document.head&&document.head.querySelector('title');if(te)lockText(te,'textContent',TITLE)}catch(e){}
     try{Object.defineProperty(window,'TFMS_BUILD',{configurable:true,enumerable:true,get(){return FIXED_BUILD},set(_){}})}catch(e){try{window.TFMS_BUILD=FIXED_BUILD}catch(_){}}
@@ -35725,7 +35725,24 @@ async function fetchMaintenance(force){if(!force&&maintCache&&Date.now()-maintFe
 function linkedRecord(a,recs){const mk=marker(a.id);return recs.filter(r=>clean(r.detail).includes(mk)).sort((x,y)=>String(y.updated_at||y.executed_on||y.registered_on||'').localeCompare(String(x.updated_at||x.executed_on||x.registered_on||'')))[0]||null}
 function avg(arr,key){const v=arr.map(r=>num(r[key])).filter(x=>x!==null);return v.length?v.reduce((a,b)=>a+b,0)/v.length:null}
 function reduction(b,a){return b!==null&&a!==null&&b!==0?(b-a)/b*100:null}
-function actionEffect(a,rec){if(!rec)return null;const am=clean(rec.executed_on||rec.updated_at||rec.registered_on).slice(0,7),ai=midx(am);if(ai===null)return null;const same=rows().filter(r=>clean(r.facility)===clean(a.facility)&&r.type===a.type&&midx(r.month)!==null);const before=same.filter(r=>{const x=midx(r.month);return x>=ai-3&&x<=ai-1}),after=same.filter(r=>{const x=midx(r.month);return x>=ai+1&&x<=ai+3});const ur=reduction(avg(before,'usage'),avg(after,'usage')),ar=reduction(avg(before,'amount'),avg(after,'amount')),done=clean(rec.process_status)==='조치완료';if(!done)return {key:'progress',text:'조치 진행중',ur,ar};if(!after.length)return {key:'waiting',text:'후속자료 대기',ur,ar};const vals=[ur,ar].filter(v=>v!==null);if(vals.length&&Math.max(...vals)>=10)return {key:'saving',text:'절감 확인',ur,ar};if(vals.length&&Math.min(...vals)<=-10)return {key:'increase',text:'증가 지속',ur,ar};return {key:'neutral',text:'변화 미미',ur,ar}}
+function actionEffect(a,rec){
+ if(!rec)return null;
+ const am=clean(rec.executed_on||rec.updated_at||rec.registered_on).slice(0,7),ai=midx(am);
+ if(ai===null)return null;
+ const same=rows().filter(r=>clean(r.facility)===clean(a.facility)&&r.type===a.type&&midx(r.month)!==null);
+ const before=same.filter(r=>{const x=midx(r.month);return x>=ai-3&&x<=ai-1});
+ const after=same.filter(r=>{const x=midx(r.month);return x>=ai+1&&x<=ai+3});
+ const ur=reduction(avg(before,'usage'),avg(after,'usage'));
+ const ar=reduction(avg(before,'amount'),avg(after,'amount'));
+ const done=['조치완료','완료'].includes(clean(rec.process_status));
+ if(!done)return {key:'progress',text:'조치 진행중',ur,ar};
+ // At least two months on each side and both metrics are required for any directional finding.
+ if(before.length<2||after.length<2||ur===null||ar===null)return {key:'waiting',text:'전후 비교자료 부족',ur,ar};
+ if(ur>=10&&ar>=10)return {key:'saving',text:'전후 평균 감소(원인 미확정)',ur,ar};
+ if((ur>=10&&ar<=-10)||(ur<=-10&&ar>=10))return {key:'mixed',text:'사용량·요금 변동방향 상이',ur,ar};
+ if(ur<=-10||ar<=-10)return {key:'increase',text:'사용량·요금 증가 확인',ur,ar};
+ return {key:'neutral',text:'10% 이상 변화 미탐지',ur,ar};
+}
 function normFacilityName(v){return clean(v).replace(/[\s·ㆍ_.()\-]/g,'').toLowerCase()}
 const FACILITY_PROFILES_V4726=[
  {aliases:['통리탄탄파크','탄탄파크'],team:'관광운영팀',kind:'관광시설',summary:'화장실 · 지하 물탱크 · 고압전기',f:{toilet:1,tank:1,highVoltage:1},unknown:[]},
@@ -35751,8 +35768,9 @@ function facilityProfile(fac){const n=normFacilityName(fac);const live=window.__
 function uniqueItems(a){return [...new Set(a.filter(Boolean))]}
 function causeCandidates(fac,type,rule){
  const p=facilityProfile(fac),f=p?.f||{},common=['검침일·청구기간 차이 또는 입력자료 오류 확인'];
+ if(!p)return ['시설 프로필 미등록: 실제 설비·용도 확인 후 원인 후보 판단','계량기 연결관계·검침기간·고지서 원자료 확인'];
  if(type==='electricity'){
-  if(rule==='unit_spike'||rule==='mixed')return uniqueItems(['계약전력·최대수요전력 또는 요금제 영향',f.highVoltage?'고압 수전설비의 최대수요전력·역률·변압기 부하 변화':null,'기본요금·연료비조정액 등 청구항목 변동',...common]);
+  if(rule==='unit_spike')return uniqueItems(['계약전력·최대수요전력 또는 요금제 영향',f.highVoltage?'고압 수전설비의 최대수요전력·역률·변압기 부하 변화':null,'기본요금·연료비조정액 등 청구항목 변동',...common]);
   const a=[];
   if(f.highVoltage)a.push('고압 수전설비의 최대수요전력·역률·변압기 부하 증가');
   if(f.pool)a.push('수영장 순환·여과·보충수 관련 펌프 운전시간 증가');
@@ -35767,11 +35785,12 @@ function causeCandidates(fac,type,rule){
   if(f.bathhouse)a.push('목욕탕 순환·환기·급탕 보조설비 운전 증가');
   if(f.shops||f.kitchen)a.push('상가·주방의 냉장·조리·환기설비 사용 증가');
   if(f.hvac)a.push('냉난방·공조설비 운전시간 또는 설정조건 변화');
-  if(!a.length)a.push('조명·냉난방·기타 전기설비의 운전시간 증가');
+  if(!a.length)a.push('조명·냉난방·기타 전기설비의 운전시간 변화 가능성');
+  if(rule==='mixed')a.push('사용량과 요금단가가 함께 증가했는지 요금고지서 대조');
   return uniqueItems([...a,...common]);
  }
  if(type==='gas'){
-  if(rule==='unit_spike'||rule==='mixed')return uniqueItems(['가스 단가·요금조정 또는 검침기간 차이','기본요금·정산금 등 청구항목 변동',...common]);
+  if(rule==='unit_spike')return uniqueItems(['가스 단가·요금조정 또는 검침기간 차이','기본요금·정산금 등 청구항목 변동',...common]);
   const a=[];
   if(f.cremator)a.push('화장로 가동건수·가동시간 또는 버너 운전조건 증가');
   if(f.bathhouse)a.push('목욕탕 욕조·샤워 급탕 및 가열 부하 증가');
@@ -35780,10 +35799,11 @@ function causeCandidates(fac,type,rule){
   else if(f.shower&&f.hotWater)a.push('샤워·급탕 사용량 및 온수 설정조건 증가');
   if(f.gasStorage)a.push('가스저장시설 사용량·공급계통 또는 계량값 변동');
   if(!a.length)a.push('시설 프로필상 주요 가스사용 설비가 확인되지 않아 시설-계량기 연결 또는 원자료 확인이 우선 필요');
+  if(rule==='mixed')a.push('가스 사용량과 요금단가·정산금 변동을 각각 확인');
   return uniqueItems([...a,...common]);
  }
  if(type==='water'){
-  if(rule==='unit_spike'||rule==='mixed')return uniqueItems(['상·하수도 요율구간 또는 정산분 영향','검침기간 차이 또는 누진구간 진입',...common]);
+  if(rule==='unit_spike')return uniqueItems(['상·하수도 요율구간 또는 정산분 영향','검침기간 차이 또는 누진구간 진입',...common]);
   const a=[];
   if(f.bathhouse)a.push('목욕탕 욕조 보충수·샤워 사용량 증가 또는 수전 누수');
   else if(f.shower)a.push('샤워수전·급탕 혼합수전 누수 또는 이용량 증가');
@@ -35806,13 +35826,15 @@ function causeCandidates(fac,type,rule){
   else if(f.cremator)a.push('화장건수·상가 이용량 변화');
   else if(f.shops||f.sharedKitchen||f.washSink)a.push('상가·공용공간 이용량 변화');
   else if(f.toilet)a.push('시설 이용객 변화');
-  if(!a.length)a.push('시설 내 화장실·청소용수·옥외배관의 누수 또는 검침값 이상');
+  if(!a.length)a.push('용수 사용구간·검침값 및 급수배관 상태 확인 필요');
+  if(rule==='mixed')a.push('수도 사용량과 상·하수도 요금구간 변동을 각각 확인');
   return uniqueItems([...a,...common]);
  }
  return common;
 }
 function checks(fac,type,rule){
  const p=facilityProfile(fac),f=p?.f||{};
+ if(!p)return ['시설에 실제 존재하는 주요 설비·계량기부터 확인','검침일·청구기간·고지서 값을 등록자료와 대조'];
  if(type==='electricity'){
   const a=[];
   if(f.highVoltage)a.push('최대수요전력·역률·변압기 및 고압 수전설비 부하 확인');
@@ -35861,10 +35883,53 @@ function checks(fac,type,rule){
 window.getFacilityEnergyProfileV4729=facilityProfile;
 window.getEnergyCauseCandidatesV4729=causeCandidates;
 window.getEnergyPriorityChecksV4729=checks;
-function facilityDiagnosis(fac,p,recs){const profile=facilityProfile(fac),ms=['electricity','gas','water'].map(t=>metrics(fac,t,p)).filter(Boolean),ans=anomalies().filter(a=>clean(a.facility)===fac).sort((a,b)=>(sevRank[b.severity]-sevRank[a.severity])||b.month.localeCompare(a.month));let score=0;ans.forEach(a=>{score+=(a.severity==='warning'?4:a.severity==='caution'?2:1)+(a.action?.key==='none'?2:a.action?.key==='progress'?1:0)+(a.rule==='repeated'?1:0)});const linked=ans.map(a=>{const r=linkedRecord(a,recs);return r?{a,r,e:actionEffect(a,r)}:null}).filter(Boolean),latestEffect=linked.sort((x,y)=>String(y.r.updated_at||'').localeCompare(String(x.r.updated_at||'')))[0]?.e||null;if(latestEffect?.key==='increase')score+=3;if(latestEffect?.key==='saving')score=Math.max(0,score-1);if(!ans.length&&ms.some(m=>Math.max(m.momUsage??-999,m.yoyUsage??-999)>=15))score+=1;let level=score>=8?'urgent':score>=4?'check':score>=1?'observe':'normal',levelText=level==='urgent'?'즉시점검 권고':level==='check'?'확인 필요':level==='observe'?'관찰':'정상 범위';const top=ans[0]||null,primary=top?.type||ms.slice().sort((a,b)=>Math.max(b.momUsage??-999,b.yoyUsage??-999)-Math.max(a.momUsage??-999,a.yoyUsage??-999))[0]?.type||'electricity';const months=new Set(rows().filter(r=>clean(r.facility)===fac&&allowedBeforePeriod(r,p)).map(r=>r.month)).size,dataText=months>=12?'자료 충분':months>=6?'자료 보통':'자료 부족';let summary='선택기간에 설정 기준을 초과한 이상징후는 확인되지 않았습니다. 최신 월별 추이를 계속 관찰하는 것이 좋습니다.';if(top){summary=label[top.type]+' '+top.title+'이(가) 우선 확인 대상입니다. '+top.detail+'. ';summary+=top.action?.key==='none'?'아직 유지관리 조치가 연결되지 않았습니다.':top.action?.key==='done'?'연계 유지관리 조치는 완료 상태입니다.':'연계 유지관리 조치가 진행 중입니다.';if(latestEffect?.key==='saving')summary+=' 최근 조치 후 단순 전후 비교에서는 절감효과가 확인됩니다.';else if(latestEffect?.key==='increase')summary+=' 최근 조치 후에도 사용량 또는 요금 증가가 이어져 추가 원인점검이 필요합니다.';else if(latestEffect?.key==='waiting')summary+=' 조치효과 판단을 위해 다음 월 자료가 필요합니다.'}
- const evidence=[];if(profile)evidence.push('시설특성 · '+profile.summary+(profile.unknown?.length?' · 확인필요: '+profile.unknown.join(', '):''));else evidence.push('시설특성 · 등록 프로필 없음(일반 규칙 적용)');ms.forEach(m=>{const vals=[];if(m.momUsage!==null)vals.push('전월 사용량 '+fmtPct(m.momUsage));if(m.yoyUsage!==null)vals.push('전년동월 '+fmtPct(m.yoyUsage));if(vals.length)evidence.push(label[m.type]+' '+m.latest.month+' · '+vals.join(' / '))});if(top)evidence.unshift(top.month+' · '+label[top.type]+' · '+top.title+' · '+top.comparison+' '+fmtPct(top.value));if(latestEffect)evidence.push('최근 조치효과 · '+latestEffect.text+(latestEffect.ur!==null?' · 사용량 '+fmtPct(-latestEffect.ur):''));
- let rec='월별자료를 지속 입력하고 다음 기간 추이를 관찰합니다.';if(top?.action?.key==='none')rec='현장 확인 후 원인이 의심되면 이상징후를 유지관리 등록과 연결하고 조치내용을 기록합니다.';else if(top?.action?.key==='progress')rec='기 등록된 유지관리 조치의 진행상태와 점검결과를 확인하고 완료 후 효과를 재평가합니다.';else if(top?.action?.key==='done'&&latestEffect?.key==='waiting')rec='다음 월 에너지 자료 입력 후 조치 전·후 효과를 다시 평가합니다.';else if(latestEffect?.key==='increase')rec='기존 조치 외 추가 원인점검을 시행하고 운전조건·누설·요금항목을 재확인합니다.';else if(latestEffect?.key==='saving')rec='절감효과가 확인된 조치내용을 동일·유사 설비의 관리기준으로 활용할 수 있습니다.';
- return {fac,score,level,levelText,top,primary,summary,evidence:evidence.slice(0,6),causes:causeCandidates(fac,primary,top?.rule),checks:checks(fac,primary,top?.rule),recommendation:rec,months,dataText,anomalyCount:ans.length,unhandled:ans.filter(a=>a.action?.key==='none'||a.action?.key==='progress').length,effect:latestEffect,profile};}
+function facilityDiagnosis(fac,p,recs){
+ const profile=facilityProfile(fac),end=p.year*12+p.endMonth-1;
+ const scoped=rows().filter(r=>clean(r.facility)===fac&&allowedBeforePeriod(r,p));
+ const thisYear=scoped.filter(r=>parts(r.month)?.year===p.year);
+ const months=new Set(thisYear.map(r=>r.month)).size;
+ const ms=['electricity','gas','water'].map(t=>metrics(fac,t,p)).filter(Boolean);
+ // Only the selected calendar year through the selected month should affect risk.
+ const ans=anomalies().filter(a=>clean(a.facility)===fac&&midx(a.month)!==null&&midx(a.month)<=end&&parts(a.month)?.year===p.year)
+     .sort((a,b)=>(sevRank[b.severity]-sevRank[a.severity])||b.month.localeCompare(a.month));
+ let score=0;
+ ans.forEach(a=>{score+=(a.severity==='warning'?4:a.severity==='caution'?2:1)+(a.action?.key==='none'?2:a.action?.key==='progress'?1:0)+(a.rule==='repeated'?1:0)});
+ const linked=ans.map(a=>{const r=linkedRecord(a,recs);return r?{a,r,e:actionEffect(a,r)}:null}).filter(Boolean);
+ const latestEffect=linked.sort((x,y)=>String(y.r.updated_at||'').localeCompare(String(x.r.updated_at||'')))[0]?.e||null;
+ if(latestEffect?.key==='increase')score+=3;
+ if(latestEffect?.key==='saving')score=Math.max(0,score-1);
+ if(!ans.length&&ms.some(m=>Math.max(m.momUsage??-999,m.yoyUsage??-999)>=15))score+=1;
+ const limited=months<3;
+ const level=score>=8?'urgent':score>=4?'check':score>=1?'observe':limited?'observe':'normal';
+ const levelText=score>=8?'즉시점검 권고':score>=4?'확인 필요':score>=1?'관찰':limited?'자료 부족':'특이징후 미탐지';
+ const top=ans[0]||null,primary=top?.type||null;
+ const dataText=months>=6?'당해연도 자료 보통 이상':months>=3?'당해연도 자료 제한적':'당해연도 비교자료 부족';
+ let summary=limited?'선택한 연도의 월별자료가 3개월 미만으로 정상 여부를 판단하기 어렵습니다. 입력 누락·검침자료를 먼저 확인하세요.':'선택 기간의 설정 기준을 초과한 이상징후가 탐지되지 않았습니다. 이상이 없음을 확정하는 결과는 아닙니다.';
+ if(top){
+  summary=label[top.type]+' '+top.title+'이(가) 우선 확인 대상입니다. '+top.detail+'. '; 
+  summary+=top.action?.key==='none'?'아직 유지관리 조치가 연결되지 않았습니다.':top.action?.key==='done'?'연계 유지관리 조치가 완료로 표시되어 있습니다.':'연계 유지관리 조치의 진행상태를 확인해야 합니다.';
+  if(latestEffect?.key==='saving')summary+=' 조치 전후 평균은 감소했으나, 조치 때문인지는 기온·이용량 등을 함께 확인해야 합니다.';
+  else if(latestEffect?.key==='increase')summary+=' 조치 이후에도 사용량 또는 요금 증가가 관찰되어 추가 점검이 필요합니다.';
+  else if(latestEffect?.key==='mixed')summary+=' 조치 전후 사용량과 요금의 변동 방향이 달라 단가·운영조건 검토가 필요합니다.';
+  else if(latestEffect?.key==='waiting')summary+=' 조치효과 판단을 위한 전후 비교자료가 아직 부족합니다.';
+ }
+ const evidence=[];
+ if(profile)evidence.push('시설특성 · '+profile.summary+(profile.unknown?.length?' · 확인필요: '+profile.unknown.join(', '):''));
+ else evidence.push('시설특성 · 프로필 미등록(설비 관련 원인 추정 보류)');
+ evidence.push('당해연도 입력 '+months+'개월');
+ ms.forEach(m=>{const vals=[];if(m.momUsage!==null)vals.push('전월 사용량 '+fmtPct(m.momUsage));if(m.yoyUsage!==null)vals.push('전년동월 '+fmtPct(m.yoyUsage));if(vals.length)evidence.push(label[m.type]+' '+m.latest.month+' · '+vals.join(' / '))});
+ if(top)evidence.unshift(top.month+' · '+label[top.type]+' · '+top.title+' · '+top.comparison+' '+fmtPct(top.value));
+ if(latestEffect)evidence.push('전후 단순비교 · '+latestEffect.text);
+ let recommendation='당해연도 월별자료를 지속 입력하고 요금고지서와 검침값을 대조합니다.';
+ if(top?.action?.key==='none')recommendation='현장 확인 후 원인이 의심되면 이상징후를 유지관리 등록과 연결하고 조치내용을 기록합니다.';
+ else if(top?.action?.key==='progress')recommendation='기 등록된 유지관리 조치의 진행상태와 점검결과를 확인하고 완료 후 효과를 재평가합니다.';
+ else if(top?.action?.key==='done'&&latestEffect?.key==='waiting')recommendation='조치 전후 각각 2개월 이상 자료가 확보되면 다시 비교합니다.';
+ else if(latestEffect?.key==='increase'||latestEffect?.key==='mixed')recommendation='추가 원인점검과 함께 운전조건·검침자료·요금항목을 확인합니다.';
+ else if(latestEffect?.key==='saving')recommendation='전후 평균 감소가 계절·이용량의 영향인지 확인한 뒤 조치 효과 여부를 평가합니다.';
+ const causes=top?causeCandidates(fac,primary,top.rule):['현재 기간에 원인을 특정할 이상징후 근거가 없습니다.'];
+ const checkList=top?checks(fac,primary,top.rule):limited?['최소 3개월 이상의 고지서·사용량 자료 확보','시설별 에너지원·계량기 연결관계 확인']:['최근 검침자료·계량기 범위 확인','이용량·계절 변동과 월별 사용 추이 점검'];
+ return {fac,score,level,levelText,top,primary,summary,evidence:evidence.slice(0,6),causes,checks:checkList,recommendation,months,dataText,anomalyCount:ans.length,unhandled:ans.filter(a=>a.action?.key==='none'||a.action?.key==='progress').length,effect:latestEffect,profile};
+}
 function populateFacility(){const sel=$('v4716AiFacility');if(!sel)return;const old=sel.value,facs=[...new Set(rows().map(r=>clean(r.facility)).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'ko'));sel.innerHTML='<option value="">전체 시설</option>'+facs.map(f=>'<option value="'+esc(f)+'">'+esc(f)+'</option>').join('');if(facs.includes(old))sel.value=old;if(!sel.dataset.bound){sel.dataset.bound='1';sel.addEventListener('change',()=>render(false))}}
 function listHtml(d){const top=d.top,actionBtn=top?'<button type="button" class="primary" data-v4716-anomaly="'+esc(top.id)+'">'+(top.action?.record?'유지관리 보기':'유지관리 등록')+'</button>':'';return '<article class="v4716-ai-card" data-level="'+d.level+'"><div class="v4716-ai-card-head"><div><h4>'+esc(d.fac)+'</h4><small>분석자료 '+d.months+'개월 · '+esc(d.dataText)+' · 이상징후 '+d.anomalyCount+'건</small></div><span class="v4716-ai-level '+d.level+'">'+esc(d.levelText)+'</span></div><div class="v4716-ai-card-body"><div><div class="v4716-ai-diagnosis"><b>종합 판단</b><p>'+esc(d.summary)+'</p><div class="v4716-ai-evidence">'+d.evidence.map(x=>'<span>'+esc(x)+'</span>').join('')+'</div></div><div class="v4716-ai-columns" style="margin-top:9px"><div class="v4716-ai-box"><h5>원인 후보</h5><ul>'+d.causes.slice(0,4).map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></div><div class="v4716-ai-box"><h5>우선 점검사항</h5><ul>'+d.checks.slice(0,4).map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></div></div></div><div class="v4716-ai-diagnosis"><b>권고 조치</b><p>'+esc(d.recommendation)+'</p>'+(d.effect?'<div class="v4716-ai-evidence"><span>조치효과 '+esc(d.effect.text)+'</span></div>':'')+'</div></div><div class="v4716-ai-card-foot"><span>※ 기온·이용량 등 외부요인 보정 전 참고진단입니다.</span><div class="actions"><button type="button" data-v4716-fac="'+esc(d.fac)+'">이 시설만 보기</button>'+actionBtn+'</div></div></article>'}
 function bindCardButtons(){qa('[data-v4716-fac]').forEach(b=>b.onclick=()=>{const sel=$('v4716AiFacility');if(sel){sel.value=b.getAttribute('data-v4716-fac')||'';render(false)}});qa('[data-v4716-anomaly]').forEach(b=>b.onclick=()=>{const id=b.getAttribute('data-v4716-anomaly');try{window.openEnergyAnomalyMaintenanceV4712?.(id)}catch(e){}})}
@@ -36377,7 +36442,26 @@ function pctText(v){return v===null?'비교자료 없음':(v>=0?'▲ ':'▼ ')+M
 function facilitySelected(){return clean($('v4716AiFacility')?.value)}
 function periodRows(p,year,fac){return rows().filter(r=>{const x=parts(r.month);return x&&x.year===year&&x.month<=p.endMonth&&(!fac||clean(r.facility)===fac)})}
 function amountSum(arr){return arr.reduce((s,r)=>s+num(r.amount),0)}
-function facilityCostRows(p){const facs=[...new Set(rows().map(r=>clean(r.facility)).filter(Boolean))];return facs.map(f=>{const cur=amountSum(periodRows(p,p.year,f)),prev=amountSum(periodRows(p,p.year-1,f));return {facility:f,cur,prev,delta:pct(cur,prev)}}).filter(x=>x.cur>0||x.prev>0)}
+function matchedCostDelta(p,fac){
+ const collect=year=>{
+  const map=new Map();
+  periodRows(p,year,fac).forEach(r=>{
+   if(r.amount===null||r.amount===undefined||r.amount==='')return;
+   const n=Number(String(r.amount).replace(/,/g,''));if(!Number.isFinite(n))return;
+   const key=clean(r.facility)+'|'+r.type+'|'+clean(r.month).slice(5,7);
+   map.set(key,(map.get(key)||0)+n);
+  });
+  return map;
+ };
+ const cur=collect(p.year),prev=collect(p.year-1),keys=[...cur.keys()].filter(k=>prev.has(k));
+ if(!keys.length)return {delta:null,pairs:0};
+ const ca=keys.reduce((n,k)=>n+cur.get(k),0),pa=keys.reduce((n,k)=>n+prev.get(k),0);
+ return {delta:pct(ca,pa),pairs:keys.length,current:ca,previous:pa};
+}
+function facilityCostRows(p){
+ const facs=[...new Set(rows().map(r=>clean(r.facility)).filter(Boolean))];
+ return facs.map(f=>{const matched=matchedCostDelta(p,f);return {facility:f,cur:matched.current||0,prev:matched.previous||0,delta:matched.delta,pairs:matched.pairs}}).filter(x=>x.pairs>0);
+}
 function periodAnomalies(p,fac){return anomalies().filter(a=>{const x=parts(a.month);return x&&x.year===p.year&&x.month<=p.endMonth&&(!fac||clean(a.facility)===fac)})}
 function issueScore(a){return (sevRank[a.severity]||0)*100+(a.action?.key==='none'?30:a.action?.key==='progress'?15:0)+Math.min(50,Math.abs(num(a.value)))}
 function issueTop(list){return list.slice().sort((a,b)=>issueScore(b)-issueScore(a)||String(b.month).localeCompare(String(a.month))).slice(0,5)}
@@ -36391,25 +36475,25 @@ function ensureShell(){
 function rankingHtml(items,kind){if(!items.length)return '<div class="v4720-ai-empty">비교 가능한 시설이 없습니다.</div>';return '<ol>'+items.slice(0,5).map(x=>'<li>'+esc(x.facility)+' <span class="'+kind+'">'+pctText(x.delta)+'</span></li>').join('')+'</ol>'}
 function typeSummary(cur,prev){return ['electricity','gas','water'].map(t=>{const ca=amountSum(cur.filter(r=>r.type===t)),pa=amountSum(prev.filter(r=>r.type===t));return label[t]+' '+money(ca)+(pa>0?' ('+pctText(pct(ca,pa))+')':'')}).join(' · ')}
 function reportText(p,fac,cur,prev,ans,costRows){
- const curAmt=amountSum(cur),prevAmt=amountSum(prev),delta=pct(curAmt,prevAmt),unhandled=ans.filter(a=>a.action?.key==='none'||a.action?.key==='progress').length,warning=ans.filter(a=>a.severity==='warning').length;
+ const curAmt=amountSum(cur),prevAmt=amountSum(prev),delta=matchedCostDelta(p,fac).delta,unhandled=ans.filter(a=>a.action?.key==='none'||a.action?.key==='progress').length,warning=ans.filter(a=>a.severity==='warning').length;
  const best=costRows.filter(x=>x.delta!==null&&x.delta<=-5).sort((a,b)=>a.delta-b.delta)[0];
  const worst=costRows.filter(x=>x.delta!==null&&x.delta>=5).sort((a,b)=>b.delta-a.delta)[0];
  const subject=fac?fac:'공단 소관시설';
  const periodLabel=p.year+'년 1~'+p.endMonth+'월';
- let s=periodLabel+' '+subject+' 에너지·공과금 자료를 분석한 결과, 공공요금은 '+money(curAmt)+(delta===null?'이며 전년 동기 비교자료는 충분하지 않습니다.':'으로 전년 동기 대비 '+pctText(delta)+' 변동했습니다.')+' ';
+ let s=periodLabel+' '+subject+' 에너지·공과금 자료를 분석한 결과, 공공요금 합계는 '+money(curAmt)+'이며, '+(delta===null?'동일 시설·에너지원·월의 전년 동기 비교자료가 없습니다.':'비교 가능한 동일 시설·에너지원·월 자료의 요금 증감률은 '+pctText(delta)+'입니다.')+' ';
  s+='동 기간 자동탐지 이상징후는 '+ans.length+'건이며, 이 중 경고 수준 '+warning+'건, 미조치·진행중 '+unhandled+'건입니다. ';
- if(!fac&&best)s+='절감 우수시설은 '+best.facility+'('+pctText(best.delta)+')이며, ';
+ if(!fac&&best)s+='전년 동기 요금 감소폭이 큰 시설은 '+best.facility+'('+pctText(best.delta)+')이며, ';
  if(!fac&&worst)s+='공공요금 증가폭이 큰 시설은 '+worst.facility+'('+pctText(worst.delta)+')로 우선 원인확인이 필요합니다. ';
  if(ans.length){const top=issueTop(ans)[0];s+='주요 확인사항은 '+top.facility+'의 '+label[top.type]+' '+top.title+'이며, 현장 운전조건·검침자료·설비 이상 여부를 우선 점검하는 것이 적절합니다.'}else{s+='현재 설정 기준을 초과한 주요 이상징후는 확인되지 않았으며 월별 추이를 지속 관리할 필요가 있습니다.'}
  return s;
 }
 function render(){
  const box=ensureShell();if(!box)return;const p=period(),fac=facilitySelected();if(!p||!rows().length){box.innerHTML='<div class="v4720-ai-empty">월별자료가 등록되면 AI 월간 요약이 자동 생성됩니다.</div>';return}
- const cur=periodRows(p,p.year,fac),prev=periodRows(p,p.year-1,fac),curAmt=amountSum(cur),prevAmt=amountSum(prev),delta=pct(curAmt,prevAmt),ans=periodAnomalies(p,fac),top=issueTop(ans),costRows=facilityCostRows(p),unhandled=ans.filter(a=>a.action?.key==='none'||a.action?.key==='progress').length;
+ const cur=periodRows(p,p.year,fac),prev=periodRows(p,p.year-1,fac),curAmt=amountSum(cur),prevAmt=amountSum(prev),delta=matchedCostDelta(p,fac).delta,ans=periodAnomalies(p,fac),top=issueTop(ans),costRows=facilityCostRows(p),unhandled=ans.filter(a=>a.action?.key==='none'||a.action?.key==='progress').length;
  const best=costRows.filter(x=>x.delta!==null&&x.delta<=-5).sort((a,b)=>a.delta-b.delta),worst=costRows.filter(x=>x.delta!==null&&x.delta>=5).sort((a,b)=>b.delta-a.delta),report=reportText(p,fac,cur,prev,ans,costRows);
  const issueHtml=top.length?top.map((a,i)=>'<div class="v4720-issue"><span class="rank">'+(i+1)+'</span><div><b>'+esc(a.facility)+' · '+esc(label[a.type]||a.type)+' · '+esc(a.title||'이상징후')+'</b><small>'+esc(a.month)+' · '+esc(a.comparison||'비교')+' '+pctText(num(a.value))+' · '+(a.action?.key==='done'?'조치완료':a.action?.key==='progress'?'진행중':'미조치')+'</small></div><span class="v4720-severity '+esc(a.severity||'interest')+'">'+(a.severity==='warning'?'경고':a.severity==='caution'?'주의':'관심')+'</span></div>').join(''):'<div class="v4720-ai-empty">선택기간의 주요 이상징후가 없습니다.</div>';
  box.innerHTML='<div class="v4720-ai-exec-head"><div><h3>AI 월간 종합요약 · 2차</h3><p>'+(fac?esc(fac)+' 단일시설':'현재 조회권한 범위 전체시설')+'의 비용추이·이상징후·조치상태를 위원회 관점으로 요약합니다.</p></div><span class="v4720-ai-exec-tag">'+p.year+'년 1~'+p.endMonth+'월</span></div>'+
- '<div class="v4720-ai-kpis"><div><span>누적 공공요금</span><b>'+money(curAmt)+'</b><small>전년동기 '+pctText(delta)+'</small></div><div><span>이상징후</span><b>'+ans.length+'건</b><small>경고 '+ans.filter(a=>a.severity==='warning').length+' · 주의 '+ans.filter(a=>a.severity==='caution').length+'</small></div><div><span>미조치·진행중</span><b>'+unhandled+'건</b><small>유지관리 연계 확인 필요</small></div><div><span>에너지원별 요금</span><b>'+new Set(cur.map(r=>r.type)).size+'종</b><small>'+esc(typeSummary(cur,prev))+'</small></div></div>'+
+ '<div class="v4720-ai-kpis"><div><span>누적 공공요금</span><b>'+money(curAmt)+'</b><small>전년동기(동일시설·월) '+pctText(delta)+'</small></div><div><span>이상징후</span><b>'+ans.length+'건</b><small>경고 '+ans.filter(a=>a.severity==='warning').length+' · 주의 '+ans.filter(a=>a.severity==='caution').length+'</small></div><div><span>미조치·진행중</span><b>'+unhandled+'건</b><small>유지관리 연계 확인 필요</small></div><div><span>에너지원별 요금</span><b>'+new Set(cur.map(r=>r.type)).size+'종</b><small>'+esc(typeSummary(cur,prev))+'</small></div></div>'+
  '<div class="v4720-ai-grid"><div class="v4720-ai-box"><div class="v4720-ai-box-head"><h4>주요 이슈 TOP 5</h4><span>심각도·미조치·증감폭 종합</span></div><div class="v4720-issue-list">'+issueHtml+'</div></div><div class="v4720-ai-box"><div class="v4720-ai-box-head"><h4>시설별 비용 변화</h4><span>전년 동기 대비</span></div><div class="v4720-rank-grid"><div class="v4720-rank-card"><h5>절감 우수시설</h5>'+rankingHtml(best,'good')+'</div><div class="v4720-rank-card"><h5>증가 확인시설</h5>'+rankingHtml(worst,'bad')+'</div></div></div></div>'+
  '<div class="v4720-ai-report"><div class="v4720-ai-report-head"><h4>에너지절약추진위원회 보고용 분석문구</h4><button type="button" id="v4720CopyReport">문구 복사</button></div><div class="v4720-ai-report-text" id="v4720ReportText">'+esc(report)+'</div></div>';
  const copy=$('v4720CopyReport');if(copy)copy.onclick=async()=>{const txt=$('v4720ReportText')?.textContent||'';try{await navigator.clipboard.writeText(txt);if(typeof window.showToast==='function')window.showToast('위원회 보고용 분석문구를 복사했습니다.');else copy.textContent='복사완료'}catch(e){try{window.prompt('아래 문구를 복사해주세요.',txt)}catch(_){}}};
@@ -38632,5 +38716,18 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 (function(){'use strict';function add(){const host=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');if(!host||host.querySelector('[data-version="v48.2.21-stats-energy-integrity"]'))return;
  const item=document.createElement('div');item.className='change-item';item.dataset.version='v48.2.21-stats-energy-integrity';item.innerHTML='<strong>v48.2.21 · Statistics Energy Reconciliation Stable</strong><ul><li>유지관리 통계의 현재월·전월 날짜 표기를 통일하고 완료 상태·금액 합산을 안정화</li><li>에너지 전년대비 비교에서 동일 시설·월 자료를 1:1 매칭해 다수 시설 덮어쓰기·비교대상 불일치 방지</li><li>에너지 추이 그래프에서 미입력은 0과 구별하고 누락월의 선 그래프 연결 차단</li><li>초기 에너지 요약의 하드코딩 예시 증감률 제거 · DB/RLS/입력·삭제 로직 변경 없음</li></ul>';host.insertBefore(item,host.firstChild)}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add,{once:true});else add()})();
+</script>
+
+<!-- v48.2.22: read-only energy AI evidence and profile safeguards; no DB, RLS or API change. -->
+<script id="tfms-v48222-energy-ai-evidence-release-note">
+(function(){'use strict';function add(){
+ const host=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');
+ if(!host||host.querySelector('[data-version="v48.2.22-energy-ai-evidence"]'))return;
+ const el=document.createElement('div');el.className='change-item';el.dataset.version='v48.2.22-energy-ai-evidence';
+ el.innerHTML='<strong>v48.2.22 · Energy AI Evidence Profile Stable</strong><ul><li>선택기간 이후 이상징후와 과거연도 이상징후가 현재 위험도에 섞이지 않도록 제한</li><li>당해연도 월별자료 3개월 미만이면 정상 판정 대신 자료 부족으로 표시</li><li>시설 프로필 미등록 시 수영장·샤워장 등의 임의 원인 후보를 제시하지 않도록 보정</li><li>사용량과 단가가 함께 변하는 복합 이상징후는 양쪽 원인을 확인하도록 안내</li><li>조치효과는 전후 2개월 이상, 사용량·요금 동시 감소 시에만 단순비교로 표시</li><li>AI 월간 보고의 전년대비 요금 증감률·시설 순위는 동일 시설·에너지원·월 비교자료로 계산</li><li>기존 DB·RLS 및 외부 AI 호출 없음</li></ul>';
+ host.insertBefore(el,host.firstChild);
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add,{once:true});else add();
+})();
 </script>
 </body></html>
