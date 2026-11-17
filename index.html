@@ -31,7 +31,7 @@ html.tfms-v4826-restoring #tfmsV4826BootMask{display:flex}
 @media(prefers-reduced-motion:reduce){#tfmsV4826BootMask .tfms-v4826-spinner{animation:none}}
 </style>
 
-<title>TFMS v48.2.18 Audit Single Delete Instant Refresh Stable</title>
+<title>TFMS v48.2.19 Equipment Data Safety Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -19482,16 +19482,51 @@ window.deleteSelectedAsset=async function(){
   if(!confirm('「'+asset.name+'」 설비를 삭제하시겠습니까?\n연결된 설비 사진도 함께 삭제되며 복구할 수 없습니다.'))return;
   const reason=prompt('삭제 사유를 입력하세요.');if(!reason?.trim())return;
   try{
-    const photos=await c.from('asset_photos').select('id,storage_path').eq('asset_id',asset.dbId);
+    // v48.2.19: 설비와 연결된 유지관리 이력의 보존을 우선한다.
+    const linked=await c.from('maintenance_records').select('id')
+      .eq('asset_id',asset.dbId).is('deleted_at',null).limit(1);
+    if(linked.error)throw new Error('연계 유지관리 이력 확인 실패: '+(linked.error.message||linked.error));
+    if(linked.data?.length){
+      toast('유지관리 이력이 연결된 설비는 즉시삭제할 수 없습니다. 이력 보존을 위해 시설관리자에게 확인해 주세요.');
+      return;
+    }
+    // 먼저 사진 메타데이터를 읽어 두고, 설비 DELETE가 실패하면 복구를 시도한다.
+    // 실제 Storage 사진 파일은 DB 설비 삭제가 확인된 후에만 제거한다.
+    const photos=await c.from('asset_photos').select('*').eq('asset_id',asset.dbId);
     if(photos.error)throw photos.error;
-    const paths=(photos.data||[]).map(x=>x.storage_path).filter(Boolean);
-    if((photos.data||[]).length){const pd=await c.from('asset_photos').delete().eq('asset_id',asset.dbId);if(pd.error)throw pd.error}
-    if(paths.length){const rm=await c.storage.from(BUCKET).remove(paths);if(rm.error)console.warn('사진 파일 일부 삭제 실패',rm.error)}
+    const photoRows=photos.data||[];
+    const paths=photoRows.map(x=>x.storage_path).filter(Boolean);
+    if(photoRows.length){
+      const pd=await c.from('asset_photos').delete().eq('asset_id',asset.dbId).select('id');
+      if(pd.error)throw pd.error;
+      if((pd.data||[]).length!==photoRows.length){
+        const ids=new Set((pd.data||[]).map(x=>String(x.id)));
+        const removedRows=photoRows.filter(x=>ids.has(String(x.id)));
+        if(removedRows.length){
+          const recovery=await c.from('asset_photos').insert(removedRows);
+          if(recovery.error)throw new Error('사진 일부 삭제 후 복원 실패: '+(recovery.error.message||recovery.error));
+        }
+        throw new Error('사진 DB 삭제 결과가 일치하지 않아 설비 삭제를 중단했습니다.');
+      }
+    }
     const del=await c.from('assets').delete().eq('id',asset.dbId).select('id');
-    if(del.error)throw del.error;
+    if(del.error || !(del.data||[]).some(x=>String(x.id)===String(asset.dbId))){
+      let recovery='';
+      if(photoRows.length){
+        const restore=await c.from('asset_photos').insert(photoRows);
+        recovery=restore.error?' 사진 이력 복원 실패: '+(restore.error.message||restore.error):' 사진 이력 복원 완료.';
+      }
+      throw new Error((del.error?.message||'설비 DB 삭제가 확인되지 않았습니다.')+recovery);
+    }
+    if(paths.length){
+      try{
+        const rm=await c.storage.from(BUCKET).remove(paths);
+        if(rm.error)console.warn('TFMS 설비 삭제 후 Storage 정리 필요',rm.error);
+      }catch(storageErr){console.warn('TFMS 설비 삭제 후 Storage 정리 필요',storageErr)}
+    }
     await refreshAfterDelete(data,key);
-    toast('설비와 연결 사진을 Supabase에서 삭제했습니다.');
-  }catch(e){console.error('TFMS v44.30 asset delete',e);toast('설비 삭제 실패: '+(e?.message||e))}
+    toast('설비 삭제를 DB에서 확인했습니다.');
+  }catch(e){console.error('TFMS v48.2.19 asset delete',e);toast('설비 삭제 실패: '+(e?.message||e))}
 };
 const oldShow=window.showPage;
 if(typeof oldShow==='function')window.showPage=function(id,btn){const r=oldShow.apply(this,arguments);if(id==='equipment')setTimeout(updateLabel,60);return r};
@@ -19901,7 +19936,7 @@ async function loadPhotos(){
  hist.innerHTML=enriched.length?enriched.map(x=>`<div class="tfms-eq-photo-item">${x.url?`<img src="${esc(x.url)}" alt="설비 이력사진" onclick="openEquipmentPhotoViewerV4430(this.src)">`:''}<div class="tfms-eq-photo-meta"><strong>${esc(x.photo_kind||'사진')} · ${esc(x.photo_date||'')}</strong><span>${esc(x.caption||'설명 없음')}</span><span>${esc(x.file_name||'')}</span></div><button class="tfms-eq-photo-delete" type="button" onclick="deleteEquipmentPhotoV4433('${esc(x.id)}')">삭제</button></div>`).join(''):'<div class="tfms-eq-photo-empty">'+esc(name)+'에 등록된 사진이 없습니다.</div>';
 }
 window.refreshEquipmentPhotosV4430=loadPhotos;
-window.deleteEquipmentPhotoV4433=async function(id){if(!confirm('이 사진을 삭제하시겠습니까?'))return;const row=photoRows.find(x=>String(x.id)===String(id)),c=sb();if(!row||!c)return;const d=await c.from('asset_photos').delete().eq('id',id);if(d.error){window.showToast?.('사진정보 삭제 실패: '+d.error.message);return}if(row.storage_path)await c.storage.from('tfms-equipment-photos').remove([row.storage_path]);await loadPhotos();window.showToast?.('사진을 삭제했습니다.')};
+window.deleteEquipmentPhotoV4433=async function(id){if(!confirm('이 사진을 삭제하시겠습니까?'))return;const row=photoRows.find(x=>String(x.id)===String(id)),c=sb();if(!row||!c)return;const d=await c.from('asset_photos').delete().eq('id',id).select('id');if(d.error||!(d.data||[]).some(x=>String(x.id)===String(id))){window.showToast?.('사진정보 삭제 실패: '+(d.error?.message||'삭제 권한 또는 DB 결과를 확인해 주세요.'));return}if(row.storage_path){try{const rem=await c.storage.from('tfms-equipment-photos').remove([row.storage_path]);if(rem.error)console.warn('TFMS photo Storage cleanup',rem.error)}catch(e){console.warn('TFMS photo Storage cleanup',e)}}await loadPhotos();window.showToast?.('사진을 DB에서 삭제했습니다.')};
 
 function photoTabActive(){return !!document.querySelector('#equipment .tfms-v4431-tabbar button[data-tab="photos"].active')}
 function resetPhotosForSelection(){
@@ -22890,10 +22925,10 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 <script id="tfms-v480-version-authority">
 (function(){
   'use strict';
-  const LABEL='v48.2.18 Audit Single Delete Instant Refresh Stable';
-  const PARAM='48.2.18';
+  const LABEL='v48.2.19 Equipment Data Safety Stable';
+  const PARAM='48.2.19';
   const TITLE='TFMS '+LABEL;
-  const FIXED_BUILD=Object.freeze({version:'v48.2.18',channel:'Audit Single Delete Instant Refresh Stable',buildDate:'2026.11.12',title:'삭제·변경이력 건별삭제 단순화 및 삭제 직후 화면 갱신 보완'});
+  const FIXED_BUILD=Object.freeze({version:'v48.2.19',channel:'Equipment Data Safety Stable',buildDate:'2026.11.17',title:'설비 사진 재시도 중복 방지 및 삭제 이력 보호'});
   const nativeReplace=History.prototype.replaceState;
   if(!History.prototype.__tfmsV4729VersionNormalized){
     History.prototype.replaceState=function(state,title,url){
@@ -22907,7 +22942,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
   function apply(){
     normalizeUrl();
     const badge=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
-    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2.18')}catch(e){}}
+    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2.19')}catch(e){}}
     try{document.title=TITLE;Object.defineProperty(document,'title',{configurable:true,enumerable:true,get(){return TITLE},set(_){}})}catch(e){}
     try{const te=document.head&&document.head.querySelector('title');if(te)lockText(te,'textContent',TITLE)}catch(e){}
     try{Object.defineProperty(window,'TFMS_BUILD',{configurable:true,enumerable:true,get(){return FIXED_BUILD},set(_){}})}catch(e){try{window.TFMS_BUILD=FIXED_BUILD}catch(_){}}
@@ -29112,6 +29147,7 @@ const BUILD='v47.20 Energy AI Analysis II Stable';
 const VER='47.16';
 const $=id=>document.getElementById(id);
 let queuedPhotos=[];
+let savedPhotoCountForDrawer=0;
 let photoUrls=[];
 
 const groups={
@@ -29283,6 +29319,7 @@ function prepareDrawer(){
 }
 
 function resetDrawerExtras(){
+  savedPhotoCountForDrawer=0;
   queuedPhotos=[];
   renderPhotoQueue();
   const list=$('tfmsV4653SpecList');if(list)list.innerHTML='';
@@ -29294,28 +29331,33 @@ async function uploadQueuedPhotos(assetId){
   if(!c)throw new Error('Supabase 연결을 확인할 수 없습니다.');
   const bucket='tfms-equipment-photos';
   let count=0;
-  for(let i=0;i<queuedPhotos.length;i++){
-    const f=queuedPhotos[i];
+  // v48.2.19: 처리 완료 파일은 대기열에서 즉시 제거한다.
+  // 2번째 사진에서 실패하더라도 재시도 시 1번째 사진이 중복 저장되지 않는다.
+  while(queuedPhotos.length){
+    const f=queuedPhotos[0];
     const safe=String(f.name||'photo').replace(/[^\w.가-힣-]/g,'_');
-    const path=`${assetId}/manual_${Date.now()}_${i}_${safe}`;
+    const path=`${assetId}/manual_${Date.now()}_${count}_${safe}`;
     const up=await c.storage.from(bucket).upload(path,f,{
       cacheControl:'3600',upsert:false,contentType:f.type||'image/jpeg'
     });
-    if(up.error)throw up.error;
+    if(up.error)throw new Error(`사진 업로드 실패 (${f.name}): ${up.error.message||up.error}`);
     const ins=await c.from('asset_photos').insert({
       asset_id:assetId,
       storage_path:path,
       file_name:f.name,
       mime_type:f.type||null,
-      photo_kind:i===0?'대표':'기타',
+      photo_kind:savedPhotoCountForDrawer===0?'대표':'기타',
       photo_date:new Date().toISOString().slice(0,10),
       caption:'설비 수동등록 첨부사진'
     });
     if(ins.error){
-      try{await c.storage.from(bucket).remove([path])}catch(e){}
-      throw ins.error;
+      try{await c.storage.from(bucket).remove([path])}catch(e){console.warn('TFMS photo rollback',e)}
+      throw new Error(`사진 이력 저장 실패 (${f.name}): ${ins.error.message||ins.error}`);
     }
+    queuedPhotos.shift();
+    savedPhotoCountForDrawer++;
     count++;
+    renderPhotoQueue();
   }
   return count;
 }
@@ -29323,14 +29365,16 @@ async function saveDrawer(){
   const btn=$('tfmsV4653DrawerSave');if(btn?.disabled)return;
   mergeSpecsIntoRemarks();
   if(btn){btn.disabled=true;btn.textContent='저장 중...'}
+  let assetDbSaved=false;
   try{
     const saved=await Promise.resolve(window.saveAsset?.());
     if(saved?.ok!==true){
       loadSpecsFromRemarks();
       return;
     }
+    assetDbSaved=true;
     const assetId=saved.id||window.tfmsEditingAssetDbId||null;
-    if(!assetId){loadSpecsFromRemarks();return;}
+    if(!assetId){loadSpecsFromRemarks();window.showToast?.('설비 DB 저장 후 ID 확인에 실패했습니다. 등록 목록을 확인해 주세요.');return;}
     const n=await uploadQueuedPhotos(assetId);
     queuedPhotos=[];
     renderPhotoQueue();
@@ -29341,17 +29385,19 @@ async function saveDrawer(){
     setTimeout(()=>window.closeAssetRegisterV4431?.(),120);
   }catch(e){
     console.error('TFMS v46.53 drawer save',e);
-    window.showToast?.('설비 저장 중 오류: '+(e?.message||e));
-    /* keep structured specs visible after a failed save */
+    window.showToast?.((assetDbSaved?'설비정보는 DB에 저장됐지만 사진 저장 중 오류가 발생했습니다. 남은 사진만 재시도해 주세요: ':'설비 저장 중 오류: ')+(e?.message||e));
+    /* keep structured specs and only non-saved photos visible after failure */
     loadSpecsFromRemarks();
   }finally{
-    if(btn){btn.disabled=false;btn.textContent='저장'}
+    if(btn){btn.disabled=false;btn.textContent=$('tfmsV4431RegisterModal')?.dataset.tfmsRegMode==='edit'?'수정 내용 저장':'신규 설비 등록'}
   }
 }
 window.saveAssetDrawerV4653=saveDrawer;
 
 function syncOpenMode(edit){
   prepareDrawer();
+  // A new modal session must not inherit photo files selected for a different asset.
+  resetDrawerExtras();
   document.body.classList.add('tfms-v4653-drawer-open');
   const title=$('tfmsV4431RegisterModal')?.querySelector(':scope > .section-title');
   if(title){
@@ -29359,7 +29405,6 @@ function syncOpenMode(edit){
       '<button type="button" class="tfms-v4431-modal-close" onclick="closeAssetRegisterV4431()">×</button>';
     title.innerHTML=`<span class="dot"></span>${edit?'설비 정보 수정':'신규 설비 등록'}${close}`;
   }
-  if(!edit)resetDrawerExtras();
   loadSpecsFromRemarks();
 }
 const oldOpen=window.openAssetRegisterV4431;
@@ -38438,6 +38483,22 @@ if(nav)nav.addEventListener('click',e=>{const b=e.target.closest('button');if(b&
   const item=document.createElement('div');item.className='change-item';
   item.dataset.version='v48.2.18-audit-single-delete';
   item.innerHTML='<strong>v48.2.18 · Audit Single Delete Instant Refresh Stable</strong><ul><li>건별 이력 삭제 버튼만 노출하고 중복 체크박스·선택삭제 컨트롤 숨김</li><li>관리자 DB 삭제 반환행 확인 후 즉시 최신 이력 캐시·총건수 갱신</li><li>구 렌더러 갱신과 새 렌더러의 불일치 수정 · 조용한 재조회 및 지연 응답 차단</li><li>삭제 실패 시 완료 메시지 차단 · 기존 RLS/DB/점검주기/타 메뉴 변경 없음</li></ul>';
+  host.insertBefore(item,host.firstChild);
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',note,{once:true});else note();
+})();
+</script>
+
+<!-- TFMS v48.2.19: equipment data-safety corrections only; no DB/RLS/schema changes. -->
+<script id="tfms-v48219-equipment-safety-release-note">
+(function(){
+ 'use strict';
+ function note(){
+  const host=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');
+  if(!host||host.querySelector('[data-version="v48.2.19-equipment-data-safety"]'))return;
+  const item=document.createElement('div');item.className='change-item';
+  item.dataset.version='v48.2.19-equipment-data-safety';
+  item.innerHTML='<strong>v48.2.19 · Equipment Data Safety Stable</strong><ul><li>설비 사진 부분 저장 실패 후 재시도 시 이미 저장된 사진 중복 업로드 방지</li><li>설비 저장 성공·사진 실패를 구분해 안내하고 남은 첨부사진/입력값 보존</li><li>유지관리 이력이 연결된 설비의 삭제 차단 및 사진 파일 삭제 순서 보완</li><li>사진·설비 삭제 성공 여부를 Supabase 반환행으로 확인</li><li>DB/RLS/스키마·메뉴·LCC 산식 변경 없음</li></ul>';
   host.insertBefore(item,host.firstChild);
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',note,{once:true});else note();
