@@ -31,7 +31,7 @@ html.tfms-v4826-restoring #tfmsV4826BootMask{display:flex}
 @media(prefers-reduced-motion:reduce){#tfmsV4826BootMask .tfms-v4826-spinner{animation:none}}
 </style>
 
-<title>TFMS v48.2.24 Role Navigation Access Stable</title>
+<title>TFMS v48.2.25 Role Shortcut Regression Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -22943,10 +22943,10 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 <script id="tfms-v480-version-authority">
 (function(){
   'use strict';
-  const LABEL='v48.2.24 Role Navigation Access Stable';
-  const PARAM='48.2.24';
+  const LABEL='v48.2.25 Role Shortcut Regression Stable';
+  const PARAM='48.2.25';
   const TITLE='TFMS '+LABEL;
-  const FIXED_BUILD=Object.freeze({version:'v48.2.24',channel:'Role Navigation Access Stable',buildDate:'2026.11.17',title:'계정별 메뉴 이동권한·비로그인 접근 차단 및 경로 일관성 보정'});
+  const FIXED_BUILD=Object.freeze({version:'v48.2.25',channel:'Role Shortcut Regression Stable',buildDate:'2026.11.17',title:'비인가 에너지 바로가기 조회 차단 및 계정별 메뉴 회귀검증'});
   const nativeReplace=History.prototype.replaceState;
   if(!History.prototype.__tfmsV4729VersionNormalized){
     History.prototype.replaceState=function(state,title,url){
@@ -22960,7 +22960,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
   function apply(){
     normalizeUrl();
     const badge=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
-    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2.24')}catch(e){}}
+    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2.25')}catch(e){}}
     try{document.title=TITLE;Object.defineProperty(document,'title',{configurable:true,enumerable:true,get(){return TITLE},set(_){}})}catch(e){}
     try{const te=document.head&&document.head.querySelector('title');if(te)lockText(te,'textContent',TITLE)}catch(e){}
     try{Object.defineProperty(window,'TFMS_BUILD',{configurable:true,enumerable:true,get(){return FIXED_BUILD},set(_){}})}catch(e){try{window.TFMS_BUILD=FIXED_BUILD}catch(_){}}
@@ -38834,6 +38834,40 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  el.innerHTML='<strong>v48.2.24 · Role Navigation Access Stable</strong><ul><li>로그인·승인 상태를 확인한 뒤 관리자/일반담당자/조회전용 페이지 이동을 허용</li><li>일반담당자의 계정승인·삭제이력·점검주기·통계현황 우회 진입 차단</li><li>조회전용의 등록·QR점검·업무일지 편집 화면 이동 제한</li><li>그룹 메뉴로 이동한 버튼에도 역할별 숨김 상태를 다시 적용</li><li>기존 페이지·Supabase DB/RLS·타이머·Observer 및 저장 로직 보존</li></ul>';
  host.prepend(el);
  }if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add,{once:true});else add();
+})();
+</script>
+
+<!-- v48.2.25: Guard secondary energy shortcut before page navigation or remote data fetch.
+     The v48.2.24 page gate returns false on denied navigation, but older shortcuts
+     may continue to load energy data regardless of that denial. No DB/RLS change. -->
+<script id="tfms-v48225-energy-shortcut-gate">
+(function(){
+ 'use strict';
+ if(window.__tfmsV48225EnergyShortcutGateInstalled)return;
+ const previous=window.openEnergyPageV4713;
+ if(typeof previous!=='function')return;
+ window.__tfmsV48225EnergyShortcutGateInstalled=true;
+ window.openEnergyPageV4713=function(){
+  const permitted=typeof window.tfmsV48224MayOpenPage==='function'
+    && window.tfmsV48224MayOpenPage('energy')===true;
+  if(!permitted){
+   try{window.showToast?.('현재 계정에서 이용할 수 없는 메뉴입니다.')}catch(_){ }
+   return false;
+  }
+  return previous.apply(this,arguments);
+ };
+})();
+</script>
+<script id="tfms-v48225-release-note">
+(function(){'use strict';function add(){
+ const host=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');
+ if(!host||host.querySelector('[data-version="v48.2.25-role-shortcut-regression"]'))return;
+ const el=document.createElement('div');el.className='change-item';
+ el.dataset.version='v48.2.25-role-shortcut-regression';
+ el.innerHTML='<strong>v48.2.25 · Role Shortcut Regression Stable</strong><ul><li>비로그인·사용중지 계정이 에너지 바로가기를 호출해도 데이터 로딩이 뒤따르지 않도록 보완</li><li>로그인한 허용 계정은 기존 에너지 메뉴와 조회 기능 유지</li><li>관리자·일반담당자·조회전용의 페이지 접근·메뉴 가시성 회귀검사</li><li>Supabase DB·RLS·기존 저장 로직과 타이머·Observer 변경 없음</li></ul>';
+ host.prepend(el);
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add,{once:true});else add();
 })();
 </script>
 </body></html>
