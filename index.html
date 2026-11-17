@@ -31,7 +31,7 @@ html.tfms-v4826-restoring #tfmsV4826BootMask{display:flex}
 @media(prefers-reduced-motion:reduce){#tfmsV4826BootMask .tfms-v4826-spinner{animation:none}}
 </style>
 
-<title>TFMS v48.2.22 Energy AI Evidence Profile Stable</title>
+<title>TFMS v48.2.23 Notifications Role Boot Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -9660,9 +9660,7 @@ document.addEventListener('DOMContentLoaded',function(){
           <li>등록 당시 작성한 기본정보·조치내용·예산·증빙·등록정보 확인</li>
           <li>버전 문구를 단일 빌드정보 기준으로 자동 반영</li>
         </ul>`;
-      const anchor=body.querySelector('.change-item');
-      if(anchor)body.insertBefore(item,anchor);
-      else body.appendChild(item);
+      body.prepend(item);
     }
     document.title=document.title.replace(/v\d+(?:\.\d+)*/i,b.version);
   }
@@ -9852,9 +9850,7 @@ document.addEventListener('DOMContentLoaded',function(){
           <li>엑셀 다운로드 시 상세 작성항목 공란 문제 수정</li>
           <li>내보내기 메뉴 진입 시 Supabase 최신 전체자료 자동 조회</li>
         </ul>`;
-      const first=body.querySelector('.change-item');
-      if(first)body.insertBefore(item,first);
-      else body.appendChild(item);
+      body.prepend(item);
     }
   }
 
@@ -10327,9 +10323,7 @@ document.addEventListener('DOMContentLoaded',function(){
           <li>개인 사용자는 본인이 작성한 이력만 수정 가능</li>
           <li>수정 저장 후 조회·통계·엑셀자료 즉시 갱신</li>
         </ul>`;
-      const first=body.querySelector('.change-item');
-      if(first)body.insertBefore(item,first);
-      else body.appendChild(item);
+      body.prepend(item);
     }
   }
 
@@ -10854,9 +10848,7 @@ document.addEventListener('DOMContentLoaded',function(){
           <li>유지관리 건별 발견·검토·임시조치·최종조치 이력 누적</li>
           <li>기존 내용 정정용 수정과 신규 진행기록용 조치 추가 분리</li>
         </ul>`;
-      const first=body.querySelector('.change-item');
-      if(first)body.insertBefore(item,first);
-      else body.appendChild(item);
+      body.prepend(item);
     }
   }
 
@@ -22951,10 +22943,10 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 <script id="tfms-v480-version-authority">
 (function(){
   'use strict';
-  const LABEL='v48.2.22 Energy AI Evidence Profile Stable';
-  const PARAM='48.2.22';
+  const LABEL='v48.2.23 Notifications Role Boot Stable';
+  const PARAM='48.2.23';
   const TITLE='TFMS '+LABEL;
-  const FIXED_BUILD=Object.freeze({version:'v48.2.22',channel:'Energy AI Evidence Profile Stable',buildDate:'2026.11.17',title:'에너지 시설별 보조진단의 기간·근거·자료부족·조치전후 비교 검증'});
+  const FIXED_BUILD=Object.freeze({version:'v48.2.23',channel:'Notifications Role Boot Stable',buildDate:'2026.11.17',title:'알림센터 소속팀 시설·건수·날짜 보정 및 구버전 초기화 오류 4건 해소'});
   const nativeReplace=History.prototype.replaceState;
   if(!History.prototype.__tfmsV4729VersionNormalized){
     History.prototype.replaceState=function(state,title,url){
@@ -22968,7 +22960,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
   function apply(){
     normalizeUrl();
     const badge=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
-    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2.22')}catch(e){}}
+    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2.23')}catch(e){}}
     try{document.title=TITLE;Object.defineProperty(document,'title',{configurable:true,enumerable:true,get(){return TITLE},set(_){}})}catch(e){}
     try{const te=document.head&&document.head.querySelector('title');if(te)lockText(te,'textContent',TITLE)}catch(e){}
     try{Object.defineProperty(window,'TFMS_BUILD',{configurable:true,enumerable:true,get(){return FIXED_BUILD},set(_){}})}catch(e){try{window.TFMS_BUILD=FIXED_BUILD}catch(_){}}
@@ -27029,11 +27021,24 @@ function role(){const s=sess(),p=prof();return clean(p.role||window.tfmsRole||s.
 function admin(){const r=role();return r==='admin'||r==='관리자'||r.includes('관리자')}
 function viewer(){const r=role();return r==='viewer'||r==='뷰어'||r.includes('조회전용')}
 function dept(){const s=sess(),p=prof();return clean(p.department?.name||p.department_name||p.dept||window.tfmsUserDept||window.currentUserDept||s.dept||s.department||'')}
-function allowed(){if(admin()||viewer())return null;return new Set(FAC[norm(dept())]||[])}
+function allowed(){
+ if(admin()||viewer())return null;
+ const d=norm(dept());
+ if(!d||d==='전체')return new Set();
+ // Use the current facility master instead of obsolete hardcoded departmental mappings.
+ try{
+  const master=(typeof getFacilityMasterSource==='function')?getFacilityMasterSource():null;
+  if(Array.isArray(master)&&master.length){
+   return new Set(master.filter(f=>norm(f?.dept||f?.department?.name||f?.department_name)===d)
+       .map(f=>clean(f?.name)).filter(Boolean));
+  }
+ }catch(e){console.warn('TFMS 알림 시설 마스터 확인 실패',e)}
+ return new Set(FAC[d]||[]); // legacy-only fallback before facility master is available
+}
 function facilityOf(x){return clean(typeof x?.facility==='object'?(x.facility?.name||''):x?.facility)}
 function scoped(list){const a=allowed();return a===null?list:list.filter(x=>a.has(facilityOf(x)))}
 function iso(v){const s=clean(v);if(/^\d{4}-\d{2}-\d{2}/.test(s))return s.slice(0,10);if(/^\d{4}\.\d{2}\.\d{2}/.test(s))return s.slice(0,10).replaceAll('.','-');return''}
-function today(){return new Date().toISOString().slice(0,10)}
+function today(){const d=new Date();return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10)}
 function doneTask(t){return t?.completed===true||t?.is_completed===true||/완료/.test(clean(t?.status))}
 function taskDate(t){return iso(t?.due||t?.task_date||t?.date)}
 function taskTitle(t){return clean(t?.task||t?.title||t?.work||'업무')}
@@ -27047,7 +27052,7 @@ function maintDetail(r){return clean(r?.detail||r?.actionDetail||r?.content||r?.
 function cycleList(){try{return Array.isArray(window.cycleTasks)?window.cycleTasks:((typeof cycleTasks!=='undefined'&&Array.isArray(cycleTasks))?cycleTasks:[])}catch(e){return[]}}
 function cycleLate(){if(!admin())return[];const td=today();return cycleList().filter(c=>clean(c?.active||'사용')!=='미사용'&&iso(c?.due||c?.nextDue)&&iso(c?.due||c?.nextDue)<td)}
 function accountPending(){if(!admin())return 0;const body=$('accountRequestBody');if(!body)return 0;return qa('tr',body).filter(tr=>!tr.querySelector('.empty-state')).length}
-function counts(){const late=lateTasks(),pending=pendingTasks(),maint=maintList(),cycle=cycleLate(),acc=accountPending();return{late,pending,maint,cycle,acc,total:late.length+maint.length+cycle.length+acc}}
+function counts(){const late=lateTasks(),pending=pendingTasks(),maint=maintList(),cycle=cycleLate(),acc=accountPending();return{late,pending,maint,cycle,acc,total:pending.length+maint.length+cycle.length+acc}}
 function badge(id,n){const el=$(id);if(!el)return;const v=Math.max(0,Number(n)||0);el.textContent=v>99?'99+':String(v);const host=el.parentElement;host?.classList.toggle('has-badge',v>0)}
 function updateBadges(){const c=counts();badge('v4606TodayBadge',c.pending.length);badge('v4606MaintBadge',c.maint.length);badge('v4606CycleBadge',c.cycle.length);badge('v4606AccountBadge',c.acc);badge('v4606AlertSideBadge',c.total);badge('v4606TopBadge',c.total);return c}
 function ensureDrawer(){
@@ -38726,6 +38731,19 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  const el=document.createElement('div');el.className='change-item';el.dataset.version='v48.2.22-energy-ai-evidence';
  el.innerHTML='<strong>v48.2.22 · Energy AI Evidence Profile Stable</strong><ul><li>선택기간 이후 이상징후와 과거연도 이상징후가 현재 위험도에 섞이지 않도록 제한</li><li>당해연도 월별자료 3개월 미만이면 정상 판정 대신 자료 부족으로 표시</li><li>시설 프로필 미등록 시 수영장·샤워장 등의 임의 원인 후보를 제시하지 않도록 보정</li><li>사용량과 단가가 함께 변하는 복합 이상징후는 양쪽 원인을 확인하도록 안내</li><li>조치효과는 전후 2개월 이상, 사용량·요금 동시 감소 시에만 단순비교로 표시</li><li>AI 월간 보고의 전년대비 요금 증감률·시설 순위는 동일 시설·에너지원·월 비교자료로 계산</li><li>기존 DB·RLS 및 외부 AI 호출 없음</li></ul>';
  host.insertBefore(el,host.firstChild);
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add,{once:true});else add();
+})();
+</script>
+
+<!-- v48.2.23: notification scope/counts/local date and four legacy release-history insertion guards. No Supabase DB/RLS changes. -->
+<script id="tfms-v48223-release-note">
+(function(){'use strict';function add(){
+ const host=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');
+ if(!host||host.querySelector('[data-version="v48.2.23-notifications-role-boot"]'))return;
+ const el=document.createElement('div');el.className='change-item';el.dataset.version='v48.2.23-notifications-role-boot';
+ el.innerHTML='<strong>v48.2.23 · Notifications Role Boot Stable</strong><ul><li>업데이트 이력 초기화에서 발생하던 insertBefore 오류 4건 수정</li><li>알림센터 일반담당자 시설 범위를 현행 시설 마스터 기준으로 보정</li><li>알림 배지에 일반 미완료 업무도 포함하고 연체업무 중복 계산은 방지</li><li>알림의 오늘 날짜를 사용자 현지 시간 기준으로 계산</li><li>기존 권한·메뉴 전환·DB·RLS·타이머·Observer 변경 없음</li></ul>';
+ host.prepend(el);
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add,{once:true});else add();
 })();
