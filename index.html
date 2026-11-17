@@ -31,7 +31,7 @@ html.tfms-v4826-restoring #tfmsV4826BootMask{display:flex}
 @media(prefers-reduced-motion:reduce){#tfmsV4826BootMask .tfms-v4826-spinner{animation:none}}
 </style>
 
-<title>TFMS v48.2.20 Maintenance Hub LCC Data Integrity Stable</title>
+<title>TFMS v48.2.21 Statistics Energy Reconciliation Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -1859,18 +1859,18 @@ nav.sidebar {
 <div class="tfms-energy-kpis">
 <article class="tfms-energy-card electricity">
 <div class="tfms-energy-card-title"><span class="tfms-energy-ico">⚡</span><div><strong>전기</strong><small>kWh / 원</small></div></div>
-<dl><div><dt>사용량</dt><dd class="down">▼ 15.2%</dd></div><div><dt>요금</dt><dd class="down">▼ 11.1%</dd></div><div><dt>단가</dt><dd class="up">▲ 4.8%</dd></div></dl>
-<p>2025년 동기 대비</p>
+<dl><div><dt>사용량</dt><dd class="na-v4710">—</dd></div><div><dt>요금</dt><dd class="na-v4710">—</dd></div><div><dt>단가</dt><dd class="na-v4710">—</dd></div></dl>
+<p>DB 조회 후 전년 동기 비교</p>
 </article>
 <article class="tfms-energy-card gas">
 <div class="tfms-energy-card-title"><span class="tfms-energy-ico">♨</span><div><strong>가스</strong><small>㎥ / 원</small></div></div>
-<dl><div><dt>사용량</dt><dd class="down">▼ 14.3%</dd></div><div><dt>요금</dt><dd class="down">▼ 14.4%</dd></div><div><dt>단가</dt><dd class="down">▼ 0.1%</dd></div></dl>
-<p>2025년 동기 대비</p>
+<dl><div><dt>사용량</dt><dd class="na-v4710">—</dd></div><div><dt>요금</dt><dd class="na-v4710">—</dd></div><div><dt>단가</dt><dd class="na-v4710">—</dd></div></dl>
+<p>DB 조회 후 전년 동기 비교</p>
 </article>
 <article class="tfms-energy-card water">
 <div class="tfms-energy-card-title"><span class="tfms-energy-ico">💧</span><div><strong>수도</strong><small>㎥ / 원</small></div></div>
-<dl><div><dt>사용량</dt><dd class="down">▼ 19.5%</dd></div><div><dt>요금</dt><dd class="down">▼ 11.1%</dd></div><div><dt>단가</dt><dd class="up">▲ 10.4%</dd></div></dl>
-<p>2025년 동기 대비</p>
+<dl><div><dt>사용량</dt><dd class="na-v4710">—</dd></div><div><dt>요금</dt><dd class="na-v4710">—</dd></div><div><dt>단가</dt><dd class="na-v4710">—</dd></div></dl>
+<p>DB 조회 후 전년 동기 비교</p>
 </article>
 </div>
 <div class="tfms-energy-summary-grid">
@@ -2327,29 +2327,38 @@ function setDelta(id, current, prev, suffix){
   el.className='delta '+(diff>0?'up':diff<0?'down':'same');
   el.textContent = diff===0 ? '전월 동일' : `${diff>0?'▲':'▼'} ${Math.abs(diff).toLocaleString('ko-KR')}${suffix||''}`;
 }
+/* v48.2.21: dashboard and stats KPIs use the same DB-backed maintenance snapshot. */
 function renderCompareStats(src){
-  const curM=monthKey(0), prevM=monthKey(-1);
-  const cur=src.filter(r=>String(r.date).slice(0,7)===curM);
-  const prev=src.filter(r=>String(r.date).slice(0,7)===prevM);
-  const curBudget=cur.reduce((s,r)=>s+(r.amount||0),0);
-  const prevBudget=prev.reduce((s,r)=>s+(r.amount||0),0);
-  const curOpen=cur.filter(r=>r.status!=='조치완료').length;
-  const prevOpen=prev.filter(r=>r.status!=='조치완료').length;
-  const curEval=cur.filter(r=>String(r.eval).includes('경영평가')||String(r.eval).includes('안전관리')||String(r.eval).includes('예방정비')).length;
-  const prevEval=prev.filter(r=>String(r.eval).includes('경영평가')||String(r.eval).includes('안전관리')||String(r.eval).includes('예방정비')).length;
-  const a=document.getElementById('cmpCount'); if(a) a.textContent=cur.length+'건';
-  const b=document.getElementById('cmpBudget'); if(b) b.textContent=curBudget.toLocaleString('ko-KR')+'원';
-  const c=document.getElementById('cmpOpen'); if(c) c.textContent=curOpen+'건';
-  const d=document.getElementById('cmpEval'); if(d) d.textContent=curEval+'건';
-  const totalCount=document.getElementById('cmpTotalCount');
-  if(totalCount) totalCount.textContent=src.length+'건';
-  const totalBudget=src.reduce((sum,r)=>sum+(Number(r.amount)||0),0);
-  const totalBudgetEl=document.getElementById('cmpTotalBudget');
-  if(totalBudgetEl) totalBudgetEl.textContent=totalBudget.toLocaleString('ko-KR')+'원';
-  setDelta('cmpCountDelta', cur.length, prev.length, '건');
-  setDelta('cmpBudgetDelta', curBudget, prevBudget, '원');
-  setDelta('cmpOpenDelta', curOpen, prevOpen, '건');
-  setDelta('cmpEvalDelta', curEval, prevEval, '건');
+  const monthOf=r=>{
+    const raw=String(r?.rawDate||r?.date||r?.created_at||'').trim();
+    const m=/^(\d{4})[-./](\d{1,2})(?=[-./T\s]|$)/.exec(raw);
+    return m?m[1]+'.'+m[2].padStart(2,'0'):'';
+  };
+  const amountOf=r=>{
+    const value=r?.amount;
+    if(value===null||value===undefined||value==='')return 0;
+    const n=Number(typeof value==='string'?value.replace(/,/g,''):value);
+    return Number.isFinite(n)?n:0;
+  };
+  const isComplete=r=>/^(조치완료|완료)$/.test(String(r?.status||'').trim());
+  const isEval=r=>{
+    const tags=Array.isArray(r?.evalTags)?r.evalTags.join(','):String(r?.eval||'');
+    return /경영평가|안전관리|예방정비/.test(tags);
+  };
+  const curM=monthKey(0),prevM=monthKey(-1);
+  const cur=src.filter(r=>monthOf(r)===curM),prev=src.filter(r=>monthOf(r)===prevM);
+  const sum=list=>list.reduce((total,r)=>total+amountOf(r),0);
+  const curBudget=sum(cur),prevBudget=sum(prev),totalBudget=sum(src);
+  const curOpen=cur.filter(r=>!isComplete(r)).length,prevOpen=prev.filter(r=>!isComplete(r)).length;
+  const curEval=cur.filter(isEval).length,prevEval=prev.filter(isEval).length;
+  const put=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value};
+  put('cmpCount',cur.length+'건');put('cmpBudget',curBudget.toLocaleString('ko-KR')+'원');
+  put('cmpOpen',curOpen+'건');put('cmpEval',curEval+'건');
+  put('cmpTotalCount',src.length+'건');put('cmpTotalBudget',totalBudget.toLocaleString('ko-KR')+'원');
+  setDelta('cmpCountDelta',cur.length,prev.length,'건');
+  setDelta('cmpBudgetDelta',curBudget,prevBudget,'원');
+  setDelta('cmpOpenDelta',curOpen,prevOpen,'건');
+  setDelta('cmpEvalDelta',curEval,prevEval,'건');
 }
 
 function renderBars(elId, data, keyName, valueName){
@@ -22942,10 +22951,10 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 <script id="tfms-v480-version-authority">
 (function(){
   'use strict';
-  const LABEL='v48.2.20 Maintenance Hub LCC Data Integrity Stable';
-  const PARAM='48.2.20';
+  const LABEL='v48.2.21 Statistics Energy Reconciliation Stable';
+  const PARAM='48.2.21';
   const TITLE='TFMS '+LABEL;
-  const FIXED_BUILD=Object.freeze({version:'v48.2.20',channel:'Maintenance Hub LCC Data Integrity Stable',buildDate:'2026.11.17',title:'유지관리 허브 DB 재조회·설비ID 기반 LCC 이력 합산 정합성 보완'});
+  const FIXED_BUILD=Object.freeze({version:'v48.2.21',channel:'Statistics Energy Reconciliation Stable',buildDate:'2026.11.17',title:'유지관리 통계 및 에너지 전년대비·월별그래프 데이터 정합성 개선'});
   const nativeReplace=History.prototype.replaceState;
   if(!History.prototype.__tfmsV4729VersionNormalized){
     History.prototype.replaceState=function(state,title,url){
@@ -22959,7 +22968,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
   function apply(){
     normalizeUrl();
     const badge=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
-    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2.20')}catch(e){}}
+    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2.21')}catch(e){}}
     try{document.title=TITLE;Object.defineProperty(document,'title',{configurable:true,enumerable:true,get(){return TITLE},set(_){}})}catch(e){}
     try{const te=document.head&&document.head.querySelector('title');if(te)lockText(te,'textContent',TITLE)}catch(e){}
     try{Object.defineProperty(window,'TFMS_BUILD',{configurable:true,enumerable:true,get(){return FIXED_BUILD},set(_){}})}catch(e){try{window.TFMS_BUILD=FIXED_BUILD}catch(_){}}
@@ -33320,15 +33329,35 @@ function renderMonthly(){
  renderEnergyMonthlyPagerV4722(total,energyMonthlyPageV4722,pages,offset+1,Math.min(offset+pageRows.length,total));
 }
 function installMonthlyRender(){window.renderEnergyMonthlyRowsV4700=renderMonthly;ensureRefreshButton();}
+/* v48.2.21: only matching facility-month records are comparable across years;
+   a missing amount is not a real zero, and no single facility may overwrite another. */
 function comparable(type,metric,year,endMonth){
- const by=(yr)=>{const m=new Map();dbRows().filter(r=>r.type===type).forEach(r=>{const p=ymParts(r.month);if(!p||p.year!==yr||p.month>endMonth)return;let v=null;if(metric==='unit'){if(r.usage!==null&&r.amount!==null&&Number(r.usage)>0)v=Number(r.amount)/Number(r.usage)}else v=num(r[metric]);if(v!==null)m.set(p.month,v)});return m};
- const cur=by(year),prev=by(year-1),months=[];for(let m=1;m<=endMonth;m++)if(cur.has(m)&&prev.has(m))months.push(m);if(!months.length)return null;
+ const years=[year,year-1],byYear=new Map(years.map(y=>[y,new Map()]));
+ dbRows().filter(r=>r.type===type).forEach(r=>{
+   const p=ymParts(r.month);
+   if(!p||!byYear.has(p.year)||p.month<1||p.month>endMonth)return;
+   const facility=String(r.facilityId||r.facility||'').trim();if(!facility)return;
+   const k=facility+'|'+p.month;const map=byYear.get(p.year);
+   const x=map.get(k)||{month:p.month,value:0,usage:0,amount:0,valid:false};
+   if(metric==='unit'){
+     const u=num(r.usage),a=num(r.amount);
+     if(u!==null&&a!==null&&u>0){x.usage+=u;x.amount+=a;x.valid=true;}
+   }else{
+     const v=num(r[metric]);if(v!==null){x.value+=v;x.valid=true;}
+   }
+   map.set(k,x);
+ });
+ const cur=byYear.get(year),prev=byYear.get(year-1),keys=[...cur.keys()].filter(k=>{
+   const a=cur.get(k),b=prev.get(k);return a?.valid&&b?.valid;
+ });
+ if(!keys.length)return null;
+ const months=[...new Set(keys.map(k=>cur.get(k).month))].sort((a,b)=>a-b);
  if(metric==='unit'){
    let ca=0,cu=0,pa=0,pu=0;
-   dbRows().filter(r=>r.type===type).forEach(r=>{const p=ymParts(r.month);if(!p||!months.includes(p.month)||![year,year-1].includes(p.year)||r.amount===null||r.usage===null||Number(r.usage)<=0)return;if(p.year===year){ca+=Number(r.amount);cu+=Number(r.usage)}else{pa+=Number(r.amount);pu+=Number(r.usage)}});
-   if(!cu||!pu)return null;return {current:ca/cu,previous:pa/pu,months};
+   keys.forEach(k=>{const a=cur.get(k),b=prev.get(k);ca+=a.amount;cu+=a.usage;pa+=b.amount;pu+=b.usage;});
+   return cu>0&&pu>0?{current:ca/cu,previous:pa/pu,months,pairs:keys.length}:null;
  }
- return {current:months.reduce((s,m)=>s+Number(cur.get(m)||0),0),previous:months.reduce((s,m)=>s+Number(prev.get(m)||0),0),months};
+ return {current:keys.reduce((s,k)=>s+cur.get(k).value,0),previous:keys.reduce((s,k)=>s+prev.get(k).value,0),months,pairs:keys.length};
 }
 function deltaInfo(comp){if(!comp||!Number.isFinite(comp.previous)||comp.previous===0)return {html:'-',cls:'na-v4710'};const pct=(comp.current-comp.previous)/comp.previous*100;if(Math.abs(pct)<.05)return {html:'± 0.0%',cls:''};const up=pct>0;return {html:(up?'▲ ':'▼ ')+Math.abs(pct).toFixed(1)+'%',cls:up?'up':'down'};}
 function periodInfo(){
@@ -33343,7 +33372,7 @@ function buildPeriodOptions(){
  sel.innerHTML=opts.map(o=>'<option value="'+o.v+'">'+o.t+'</option>').join('');if(opts.some(o=>o.v===old))sel.value=old;else sel.value=opts[0].v;sel.onchange=()=>renderSummary();return periodInfo();
 }
 function updateCards(period){
- const root=energyRoot();if(!root||!period)return;[['electricity','.electricity'],['gas','.gas'],['water','.water']].forEach(([type,selector])=>{const card=q('.tfms-energy-card'+selector,root);if(!card)return;const dds=qa('dd',card),metrics=['usage','amount','unit'];metrics.forEach((metric,i)=>{const info=deltaInfo(comparable(type,metric,period.year,period.endMonth));if(dds[i]){dds[i].className=info.cls;dds[i].textContent=info.html}});const matched=comparable(type,'amount',period.year,period.endMonth);const p=q('p',card);if(p)p.innerHTML=(period.year-1)+'년 동기 대비'+(matched?'<br><span class="tfms-energy-match-v4710">비교 '+matched.months.length+'개월</span>':' · 비교자료 없음')});
+ const root=energyRoot();if(!root||!period)return;[['electricity','.electricity'],['gas','.gas'],['water','.water']].forEach(([type,selector])=>{const card=q('.tfms-energy-card'+selector,root);if(!card)return;const dds=qa('dd',card),metrics=['usage','amount','unit'];metrics.forEach((metric,i)=>{const info=deltaInfo(comparable(type,metric,period.year,period.endMonth));if(dds[i]){dds[i].className=info.cls;dds[i].textContent=info.html}});const matched=comparable(type,'amount',period.year,period.endMonth);const p=q('p',card);if(p)p.innerHTML=(period.year-1)+'년 동일 시설·월 대비'+(matched?'<br><span class="tfms-energy-match-v4710">비교 '+matched.pairs+'개 시설·월 ('+matched.months.length+'개월)</span>':' · 비교 가능한 자료 없음')});
 }
 function monthlyAmount(year,month){return dbRows().filter(r=>{const p=ymParts(r.month);return p&&p.year===year&&p.month===month&&r.amount!==null}).reduce((s,r)=>s+Number(r.amount||0),0)}
 function hasMonthlyAmount(year,month){return dbRows().some(r=>{const p=ymParts(r.month);return p&&p.year===year&&p.month===month&&r.amount!==null})}
@@ -33358,7 +33387,7 @@ function renderFacilitySummary(period){
  box.innerHTML='<div style="overflow:auto"><table class="tfms-energy-summary-table-v4710"><thead><tr><th>시설</th><th>전기요금</th><th>수도요금</th><th>가스요금</th><th>합계</th><th>상태</th></tr></thead><tbody>'+arr.map(([name,x])=>'<tr><td>'+esc(name)+'</td><td>'+fmt(x.electricity)+'</td><td>'+fmt(x.water)+'</td><td>'+fmt(x.gas)+'</td><td><strong>'+fmt(x.total)+'</strong></td><td>'+(x.review?'<span class="tfms-energy-facility-status-v4710">검토 '+x.review+'건</span>':'정상')+'</td></tr>').join('')+'</tbody></table></div>';
 }
 function renderStatus(period){const grid=q('.tfms-energy-status-grid',energyRoot());if(!grid||!period)return;const cur=dbRows().filter(r=>{const p=ymParts(r.month);return p&&p.year===period.year&&p.month<=period.endMonth});const review=cur.filter(r=>r.status==='review').length,confirmed=cur.filter(r=>r.status==='confirmed').length;const items=grid.children;if(items[2]){const st=q('strong',items[2]),sm=q('small',items[2]);if(st)st.textContent=review+'건';if(sm)sm.textContent='검토 상태 자료'}if(items[1]){const sp=q('span',items[1]);if(sp)sp.innerHTML='확정자료<strong>'+confirmed+'건</strong><small>DB 확정 월별자료</small>'}}
-function renderSummary(){const period=periodInfo();if(!period){setLoadHint('※ DB에 저장된 에너지·공과금 월별자료가 없습니다. 월별자료에서 표준 엑셀을 등록해주세요.');return}setLoadHint('※ <b>DB 저장자료 실시간 집계</b> · '+period.year+'년 1~'+period.endMonth+'월을 '+(period.year-1)+'년 같은 기간과 비교합니다. 증감률은 양쪽 연도에 실제 값이 있는 동일 월만 비교합니다.');updateCards(period);renderTrend(period);renderFacilitySummary(period);renderStatus(period)}
+function renderSummary(){const period=periodInfo();if(!period){setLoadHint('※ DB에 저장된 에너지·공과금 월별자료가 없습니다. 월별자료에서 표준 엑셀을 등록해주세요.');return}setLoadHint('※ <b>DB 저장자료 기준</b> · '+period.year+'년 1~'+period.endMonth+'월의 등록자료를 표시합니다. 상단 증감률은 전년의 <b>동일 시설·월</b>에 유효한 값이 있는 건만 비교하며, 그래프 범위 선택은 그래프에만 적용됩니다.');updateCards(period);renderTrend(period);renderFacilitySummary(period);renderStatus(period)}
 window.loadEnergyMonthlyDataV4710=async function(opts){
  opts=opts||{};if(loading)return;if(!opts.force&&Date.now()-lastLoaded<30000&&dbRows().length){installMonthlyRender();renderMonthly();renderSummary();return}
  const c=db();if(!c){setLoadHint('DB 연결 상태를 확인해주세요.','error');return}loading=true;const rb=$('tfmsEnergyDbRefreshV4710');if(rb){rb.disabled=true;rb.textContent='불러오는 중...'}
@@ -33455,7 +33484,7 @@ function renderTrendScopeV4723(panel){
 }
 function parts(v){const m=/^(\d{4})-(\d{2})$/.exec(String(v||''));return m?{year:Number(m[1]),month:Number(m[2])}:null}
 function period(){const sel=$('tfmsEnergyPeriodV4699');const m=/^(\d{4})\|(\d{1,2})$/.exec(clean(sel?.value));if(m)return {year:Number(m[1]),endMonth:Number(m[2])};const ps=rows().map(r=>parts(r.month)).filter(Boolean);if(!ps.length)return null;const y=Math.max(...ps.map(p=>p.year));return {year:y,endMonth:Math.max(...ps.filter(p=>p.year===y).map(p=>p.month))}}
-function fnum(v){const n=Number(v);return Number.isFinite(n)?n:null}
+function fnum(v){if(v===null||v===undefined||v==='')return null;const n=Number(v);return Number.isFinite(n)?n:null}
 function fmt(v,d=0){if(v===null||v===undefined||!Number.isFinite(Number(v)))return '-';return Number(v).toLocaleString('ko-KR',{minimumFractionDigits:d,maximumFractionDigits:d})}
 function monthRows(year,month,type){return scopedRowsV4723().filter(r=>{const p=parts(r.month);return p&&p.year===year&&p.month===month&&(!type||r.type===type)})}
 function sumMetric(year,month,type,key){const vals=monthRows(year,month,type).map(r=>fnum(r[key])).filter(v=>v!==null);return vals.length?vals.reduce((a,b)=>a+b,0):null}
@@ -33501,11 +33530,12 @@ function typeSvg(p){
  xs.forEach((x,idx)=>{svg+='<text class="month-label" x="'+x.toFixed(2)+'" y="'+(H-12)+'" text-anchor="middle">'+months[idx]+'월</text>'});svg+='</g>';
  let defs='',seriesSvg='',seriesNo=0;
  data.out.forEach(s=>{
-   const pts=s.vals.map((v,idx)=>v===null?null:{x:xs[idx],y:top+innerH-(v/max)*innerH,v:v,month:months[idx]}).filter(Boolean);if(!pts.length)return;
+   const pts=s.vals.map((v,idx)=>v===null?null:{x:xs[idx],y:top+innerH-(v/max)*innerH,v:v,month:months[idx]});if(!pts.some(Boolean))return;
+   const path=pts.map((pt,idx)=>pt?((idx===0||!pts[idx-1])?'M':'L')+pt.x.toFixed(2)+' '+pt.y.toFixed(2):'').join(' ');
    const clipId='tfmsEnergyRevealV4713_'+metric+'_'+(seriesNo++);
    defs+='<clipPath id="'+clipId+'"><rect class="line-reveal-clip-v4713" x="'+left+'" y="0" width="0" height="'+H+'" data-full-width="'+innerW+'"></rect></clipPath>';
-   seriesSvg+='<g class="line-series-v4713" clip-path="url(#'+clipId+')"><path class="line-path '+(s.prev?'prev':'')+'" stroke="'+s.color+'" d="'+linePath(pts)+'"></path>';
-   pts.forEach(pt=>{seriesSvg+='<circle class="line-point '+(s.prev?'prev':'')+'" cx="'+pt.x.toFixed(2)+'" cy="'+pt.y.toFixed(2)+'" r="'+(s.prev?3:3.8)+'" fill="'+s.color+'" data-tip-title="'+s.year+'년 '+s.label+' · '+pt.month+'월" data-tip-value="'+fmt(pt.v,metric==='unit'?1:0)+' '+(metric==='usage'?s.unit:('원/'+s.unit))+'" data-tip-meta="'+(metric==='usage'?'사용량':'단가')+'" />';
+   seriesSvg+='<g class="line-series-v4713" clip-path="url(#'+clipId+')"><path class="line-path '+(s.prev?'prev':'')+'" stroke="'+s.color+'" d="'+path+'"></path>';
+   pts.filter(Boolean).forEach(pt=>{seriesSvg+='<circle class="line-point '+(s.prev?'prev':'')+'" cx="'+pt.x.toFixed(2)+'" cy="'+pt.y.toFixed(2)+'" r="'+(s.prev?3:3.8)+'" fill="'+s.color+'" data-tip-title="'+s.year+'년 '+s.label+' · '+pt.month+'월" data-tip-value="'+fmt(pt.v,metric==='unit'?1:0)+' '+(metric==='usage'?s.unit:('원/'+s.unit))+'" data-tip-meta="'+(metric==='usage'?'사용량':'단가')+'" />';
     seriesSvg+='<circle class="hit-point" cx="'+pt.x.toFixed(2)+'" cy="'+pt.y.toFixed(2)+'" r="10" data-tip-title="'+s.year+'년 '+s.label+' · '+pt.month+'월" data-tip-value="'+fmt(pt.v,metric==='unit'?1:0)+' '+(metric==='usage'?s.unit:('원/'+s.unit))+'" data-tip-meta="'+(metric==='usage'?'사용량':'단가')+'" />';
    });
    seriesSvg+='</g>';
@@ -38595,5 +38625,12 @@ if(nav)nav.addEventListener('click',e=>{const b=e.target.closest('button');if(b&
 (function(){function apply(){const host=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');if(!host||host.querySelector('[data-version="v48.2.20-hub-lcc-integrity"]'))return;
 const div=document.createElement('div');div.className='change-item';div.dataset.version='v48.2.20-hub-lcc-integrity';div.innerHTML='<strong>v48.2.20 · Maintenance Hub LCC Data Integrity Stable</strong><ul><li>유지관리 허브 새로고침 시 유지관리·오늘점검 DB 목록 재조회 및 소속팀 범위 확인 · 상세조회 권한목록 선로딩</li><li>허브의 LCC 교체검토 건수·목록 기준을 모두 50점 이상으로 통일</li><li>LCC 보수비를 설비 DB ID(asset_id) 일치 기준으로 합산해 유사 설비명 중복계상 차단</li><li>에너지 분석 미실행 시 이상징후를 0건 대신 미집계로 구분</li><li>기존 DB/RLS/스키마/메뉴/정기점검 저장 기능 변경 없음</li></ul>';host.insertBefore(div,host.firstChild)}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply()})();
+</script>
+
+<!-- v48.2.21: statistics / energy reconciliation; data presentation only; DB and RLS unchanged. -->
+<script id="tfms-v48221-stats-energy-release-note">
+(function(){'use strict';function add(){const host=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');if(!host||host.querySelector('[data-version="v48.2.21-stats-energy-integrity"]'))return;
+ const item=document.createElement('div');item.className='change-item';item.dataset.version='v48.2.21-stats-energy-integrity';item.innerHTML='<strong>v48.2.21 · Statistics Energy Reconciliation Stable</strong><ul><li>유지관리 통계의 현재월·전월 날짜 표기를 통일하고 완료 상태·금액 합산을 안정화</li><li>에너지 전년대비 비교에서 동일 시설·월 자료를 1:1 매칭해 다수 시설 덮어쓰기·비교대상 불일치 방지</li><li>에너지 추이 그래프에서 미입력은 0과 구별하고 누락월의 선 그래프 연결 차단</li><li>초기 에너지 요약의 하드코딩 예시 증감률 제거 · DB/RLS/입력·삭제 로직 변경 없음</li></ul>';host.insertBefore(item,host.firstChild)}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add,{once:true});else add()})();
 </script>
 </body></html>
