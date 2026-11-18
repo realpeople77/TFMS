@@ -31,7 +31,7 @@ html.tfms-v4826-restoring #tfmsV4826BootMask{display:flex}
 @media(prefers-reduced-motion:reduce){#tfmsV4826BootMask .tfms-v4826-spinner{animation:none}}
 </style>
 
-<title>TFMS v48.2.25 Role Shortcut Regression Stable</title>
+<title>TFMS v48.2.26 Role QR Routing Audit Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -22943,10 +22943,10 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 <script id="tfms-v480-version-authority">
 (function(){
   'use strict';
-  const LABEL='v48.2.25 Role Shortcut Regression Stable';
-  const PARAM='48.2.25';
+  const LABEL='v48.2.26 Role QR Routing Audit Stable';
+  const PARAM='48.2.26';
   const TITLE='TFMS '+LABEL;
-  const FIXED_BUILD=Object.freeze({version:'v48.2.25',channel:'Role Shortcut Regression Stable',buildDate:'2026.11.17',title:'비인가 에너지 바로가기 조회 차단 및 계정별 메뉴 회귀검증'});
+  const FIXED_BUILD=Object.freeze({version:'v48.2.26',channel:'Role QR Routing Audit Stable',buildDate:'2026.11.18',title:'QR 경로 정규화·발행버전·소화기 직접진입 권한 검사'});
   const nativeReplace=History.prototype.replaceState;
   if(!History.prototype.__tfmsV4729VersionNormalized){
     History.prototype.replaceState=function(state,title,url){
@@ -22960,7 +22960,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
   function apply(){
     normalizeUrl();
     const badge=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
-    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2.25')}catch(e){}}
+    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2.26')}catch(e){}}
     try{document.title=TITLE;Object.defineProperty(document,'title',{configurable:true,enumerable:true,get(){return TITLE},set(_){}})}catch(e){}
     try{const te=document.head&&document.head.querySelector('title');if(te)lockText(te,'textContent',TITLE)}catch(e){}
     try{Object.defineProperty(window,'TFMS_BUILD',{configurable:true,enumerable:true,get(){return FIXED_BUILD},set(_){}})}catch(e){try{window.TFMS_BUILD=FIXED_BUILD}catch(_){}}
@@ -37572,7 +37572,7 @@ const role=()=>{try{return String(typeof tfmsRole!=='undefined'?tfmsRole:'').toL
 const dept=()=>{try{return String(typeof tfmsUserDept!=='undefined'?tfmsUserDept:typeof currentUserDept!=='undefined'?currentUserDept:'')}catch(_){return ''}};
 const assetMap=()=>window.assetData||{};
 const today=()=>{const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-')};
-const isEditor=()=>role()==='admin'||role()==='user';
+const isEditor=()=>['admin','user'].includes(role())&&window.tfmsV48224MayOpenPage?.('qrCheck')===true;
 let lastHistorySeq=0, lastAssetId='', deepLinkProcessed=false, processing=false;
 const deepLinkId=new URLSearchParams(location.search).get('qr_asset')||'';
 function entries(){
@@ -37593,7 +37593,7 @@ function baseUrl(){
  const u=new URL(location.href);
  u.search='';u.hash='';return u.href;
 }
-function urlFor(a){const base=baseUrl(),id=actualAssetId(a);if(!base||!id)return '';const u=new URL(base);u.searchParams.set('v','48.2.18');u.searchParams.set('qr_asset',id);return u.href}
+function urlFor(a){const base=baseUrl(),id=actualAssetId(a);if(!base||!id)return '';const u=new URL(base);u.searchParams.set('v','48.2.26');u.searchParams.set('qr_asset',id);return u.href}
 function labelText(a){return [a?.facility,a?.space||a?.location,a?.name,a?.qrId&&a.qrId!=='-'?a.qrId:''].filter(Boolean).join(' · ')}
 function checksFor(a){
  const n=[a?.name,a?.category].join(' ');
@@ -37840,7 +37840,7 @@ let previousFocus=null,previousOverflow='',lastRejected='',lastRejectedAt=0,fire
 const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d',{willReadFrequently:true});
 const getRole=()=>{try{return String(typeof tfmsRole!=='undefined'?tfmsRole:'').toLowerCase()}catch(_){return ''}};
 const getDept=()=>{try{return String(typeof tfmsUserDept!=='undefined'?tfmsUserDept:typeof currentUserDept!=='undefined'?currentUserDept:'')}catch(_){return ''}};
-const isAuthorized=()=>!!window.getTfmsCloudUser?.()?.id&&['user','admin'].includes(getRole());
+const isAuthorized=()=>!!window.getTfmsCloudUser?.()?.id&&['user','admin'].includes(getRole())&&window.tfmsV48224MayOpenPage?.('qrCheck')===true;
 function status(message,isError=false){const el=$('tfmsV4828ScanStatus');if(el){el.textContent=message;el.classList.toggle('v4828-error',isError)}}
 function ensureUi(){
  const root=$('tfmsV4827FieldRoot');if(!root)return;
@@ -37875,11 +37875,15 @@ function stopMedia(){
 }
 function closeScanner(){stopMedia();const overlay=$('tfmsV4828ScanOverlay');overlay?.classList.remove('v4828-open');document.body.style.overflow=previousOverflow;
  if(previousFocus&&typeof previousFocus.focus==='function')previousFocus.focus();previousFocus=null;}
+function sameTFMSDocument(url){
+ const canonical=path=>String(path||'').replace(/\/index\.html$/i,'/');
+ return url.origin===location.origin&&canonical(url.pathname)===canonical(location.pathname);
+}
 function scanAssetId(raw){
  const text=String(raw||'').trim();if(!text)return null;
  try{
   const u=new URL(text,location.href);
-  if(u.origin!==location.origin||u.pathname!==location.pathname)return null;
+  if(!sameTFMSDocument(u))return null;
   const id=u.searchParams.get('qr_asset');if(!id||id.length>160)return null;
   return id;
  }catch(_){return null}
@@ -37889,7 +37893,7 @@ function scanFireTarget(raw){
   try{
    const u=new URL(text,location.href);
    // Reject other deployment origins: Netlify QR codes must be reissued for GitHub Pages.
-   if(u.origin!==location.origin||u.pathname!==location.pathname||u.searchParams.get('fire')!=='1')return null;
+   if(!sameTFMSDocument(u)||u.searchParams.get('fire')!=='1')return null;
    const facility=(u.searchParams.get('facility')||'').trim(),ext=(u.searchParams.get('ext')||'').trim();
    if(!facility||!ext||facility.length>160||ext.length>160)return null;
    return {facility,ext};
@@ -38326,7 +38330,7 @@ const $=id=>document.getElementById(id);
 const notify=s=>{if(typeof window.showToast==='function')window.showToast(s);else window.alert(s)};
 const role=()=>{try{return String(typeof tfmsRole!=='undefined'?tfmsRole:'').toLowerCase()}catch(_){return ''}};
 const dept=()=>{try{return String(typeof tfmsUserDept!=='undefined'?tfmsUserDept:typeof currentUserDept!=='undefined'?currentUserDept:'')}catch(_){return ''}};
-const authorized=()=>['admin','user'].includes(role())&&!!window.getTfmsCloudUser?.()?.id;
+const authorized=()=>['admin','user'].includes(role())&&!!window.getTfmsCloudUser?.()?.id&&window.tfmsV48224MayOpenPage?.('qrCheck')===true;
 let facilityId=null,rows=[],loading=false,seq=0,currentQrUrl='';
 function listFacilities(){
  const r=role(),d=dept();if(!authorized())return [];
@@ -38353,7 +38357,7 @@ function renderQr(){
  const base=baseUrl();if(!base){resetQr('QR 발행은 GitHub Pages 등 HTTPS 사이트에서만 가능합니다.');return}
  if(typeof window.QRCode!=='function'){resetQr('QR 생성 라이브러리를 불러오지 못했습니다.');return}
  const code=String(row.extinguisher_code||'').trim();if(!code){resetQr('소화기 관리번호가 없습니다.');return}
- base.searchParams.set('v','48.2.18');base.searchParams.set('fire','1');base.searchParams.set('facility',facility);base.searchParams.set('ext',code);
+ base.searchParams.set('v','48.2.26');base.searchParams.set('fire','1');base.searchParams.set('facility',facility);base.searchParams.set('ext',code);
  const url=base.href,el=$('tfmsV48213FireQr');if(!el)return;
  el.replaceChildren();
  try{
@@ -38868,6 +38872,43 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  host.prepend(el);
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add,{once:true});else add();
+})();
+</script>
+
+<!-- v48.2.26: active-account gate on legacy fire page direct navigation.
+     No changes to fire data writes, Supabase schema or RLS. -->
+<script id="tfms-v48226-fire-direct-navigation-guard">
+(function(){
+ 'use strict';
+ if(window.__tfmsV48226FireGateInstalled)return;
+ window.__tfmsV48226FireGateInstalled=true;
+ const allow=()=>window.tfmsV48224MayOpenPage?.('qrCheck')===true;
+ function wrap(name){
+  const original=window[name];
+  if(typeof original!=='function'||original.__tfmsV48226Guard)return;
+  const guarded=function(){
+   if(!allow()){
+    try{window.showToast?.('소화기 점검은 승인된 관리자·일반담당자 계정에서만 이용할 수 있습니다.')}catch(_){ }
+    return false;
+   }
+   return original.apply(this,arguments);
+  };
+  guarded.__tfmsV48226Guard=true;
+  window[name]=guarded;
+ }
+ wrap('navToFireV420');
+ wrap('navToFireQrV459');
+})();
+</script>
+<script id="tfms-v48226-release-note">
+(function(){'use strict';function add(){
+ const host=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');
+ if(!host||host.querySelector('[data-version="v48.2.26-role-qr-audit"]'))return;
+ const el=document.createElement('div');el.className='change-item';
+ el.dataset.version='v48.2.26-role-qr-audit';
+ el.innerHTML='<strong>v48.2.26 · Role QR Routing Audit Stable</strong><ul><li>동일 GitHub Pages 배포의 기본 경로와 index.html 경로 간 QR 스캔 호환</li><li>설비·소화기 QR 라벨의 발행 버전을 v48.2.26으로 통일 (기존 라벨 호환 유지)</li><li>QR 카메라·라벨·기존 소화기 직접진입의 승인계정 권한 확인 보완</li><li>Supabase DB·RLS·업무 저장·기존 메뉴·Timer·Observer 변경 없음</li></ul>';
+ host.prepend(el);
+ }if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add,{once:true});else add();
 })();
 </script>
 </body></html>
