@@ -31,7 +31,7 @@ html.tfms-v4826-restoring #tfmsV4826BootMask{display:flex}
 @media(prefers-reduced-motion:reduce){#tfmsV4826BootMask .tfms-v4826-spinner{animation:none}}
 </style>
 
-<title>TFMS v48.2.26 Role QR Routing Audit Stable</title>
+<title>TFMS v48.2.27 Hub Role Session Regression Stable</title>
 <style>
 :root {
   --blue:#0b4fb3; --deep:#083f91; --light:#eef6ff; --line:#d9e2ef; --text:#172033;
@@ -22943,10 +22943,10 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
 <script id="tfms-v480-version-authority">
 (function(){
   'use strict';
-  const LABEL='v48.2.26 Role QR Routing Audit Stable';
-  const PARAM='48.2.26';
+  const LABEL='v48.2.27 Hub Role Session Regression Stable';
+  const PARAM='48.2.27';
   const TITLE='TFMS '+LABEL;
-  const FIXED_BUILD=Object.freeze({version:'v48.2.26',channel:'Role QR Routing Audit Stable',buildDate:'2026.11.18',title:'QR 경로 정규화·발행버전·소화기 직접진입 권한 검사'});
+  const FIXED_BUILD=Object.freeze({version:'v48.2.27',channel:'Hub Role Session Regression Stable',buildDate:'2026.11.18',title:'허브 상세 권한·계정 전환·비동기 집계 경합 보완'});
   const nativeReplace=History.prototype.replaceState;
   if(!History.prototype.__tfmsV4729VersionNormalized){
     History.prototype.replaceState=function(state,title,url){
@@ -22960,7 +22960,7 @@ body:has(#loginScreen:not(.hidden)) #loginScreen .tfms-login-brand{min-height:ca
   function apply(){
     normalizeUrl();
     const badge=document.getElementById('tfmsVersionBadge')||document.querySelector('.v32-classic-note');
-    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2.26')}catch(e){}}
+    if(badge){lockText(badge,'textContent',LABEL);try{badge.setAttribute('data-tfms-version-lock','48.2.27')}catch(e){}}
     try{document.title=TITLE;Object.defineProperty(document,'title',{configurable:true,enumerable:true,get(){return TITLE},set(_){}})}catch(e){}
     try{const te=document.head&&document.head.querySelector('title');if(te)lockText(te,'textContent',TITLE)}catch(e){}
     try{Object.defineProperty(window,'TFMS_BUILD',{configurable:true,enumerable:true,get(){return FIXED_BUILD},set(_){}})}catch(e){try{window.TFMS_BUILD=FIXED_BUILD}catch(_){}}
@@ -37192,7 +37192,7 @@ function identity(){return [uid(),role(),norm(dept())].join('|')}
 function master(){try{if(typeof facilityMasterStable!=='undefined'&&Array.isArray(facilityMasterStable))return facilityMasterStable}catch(e){}return Array.isArray(window.facilityMasterStable)?window.facilityMasterStable:[]}
 function facilityDept(f){const row=master().find(a=>clean(a?.name)===clean(f));if(row)return clean(row.dept||row.department?.name||'');try{return clean(window.getScopedFacilityDept?.(f)||window.getFacilityDeptStable?.(f)||window.getFacilityDept?.(f)||'')}catch(e){return ''}}
 function scopedFacility(f){if(role()==='admin'||role()==='viewer')return true;const d=norm(dept());return !!(d&&d!=='전체'&&clean(f)&&norm(facilityDept(f))===d)}
-let hubRecords=null,hubTasks=null,loadedIdentity='',loadingPromise=null,requestId=0;
+let hubRecords=null,hubTasks=null,loadedIdentity='',loadingPromise=null,loadingIdentity='',requestId=0;
 function records(){return (hubRecords===null?(Array.isArray(window.records)?window.records:[]):hubRecords).filter(r=>scopedFacility(r?.facility))}
 function tasks(){return (hubTasks===null?(Array.isArray(window.todayTasks)?window.todayTasks:[]):hubTasks).filter(t=>scopedFacility(t?.facility))}
 function doneStatus(v){const st=clean(v).replace(/\s+/g,'');return !/미완료|미조치|완료예정|완료대기/.test(st)&&/완료|종결/.test(st)}
@@ -37217,21 +37217,38 @@ function lccCandidates(){let store={};try{store=(typeof assetData!=='undefined'&
 function energyCount(){const list=window.__tfmsEnergyAnomaliesV4712;if(!Array.isArray(list))return null;return list.filter(a=>scopedFacility(a?.facility)&&a?.action?.key!=='done').length}
 function setText(id,v){const el=$(id);if(el)el.textContent=v}
 function rowStatusClass(v){return doneStatus(v)?'done':/지연|경과|미조치|긴급/.test(clean(v))?'danger':''}
+// v48.2.27: shortcut permission is checked before ANY detail read or delayed open.
+const mayOpen=id=>window.tfmsV48224MayOpenPage?.(id)===true;
+const showScopeDenied=()=>{try{window.showToast?.('이 계정에서 조회할 수 없거나 목록에 없는 자료입니다.')}catch(_){}};
 window.tfmsV482OpenMaintenance=async function(id){
- if(!id){window.navTo?.('history');return}
+ if(!mayOpen('history')){showScopeDenied();return false}
+ if(!id)return window.navTo?.('history');
+ const visible=()=>records().some(r=>idOf(r)===String(id));
+ if(!visible()){showScopeDenied();return false}
  try{
-  // 일반담당자 상세조회는 기존 유지관리 이력의 허용 ID 목록이 먼저 준비되어야 한다.
+  // 비동기 이력 로딩 전·후 모두 권한과 현재 표시 범위를 다시 확인한다.
   if(typeof window.loadHistoryV4610==='function')await window.loadHistoryV4610();
+  if(!mayOpen('history')||!visible()){showScopeDenied();return false}
   if(typeof window.openMaintenanceDetailV370==='function')return window.openMaintenanceDetailV370(id);
  }catch(e){console.warn('TFMS hub detail open',e)}
- window.navTo?.('history');
-}
-window.tfmsV482OpenAsset=function(key){window.navTo?.('equipment');setTimeout(()=>{try{window.showAsset?.(key)}catch(e){}},80)}
+ return window.navTo?.('history');
+};
+window.tfmsV482OpenAsset=function(key){
+ const getAsset=()=>{try{return (typeof assetData!=='undefined'&&assetData||window.assetData||{})[key]}catch(_){return null}};
+ const valid=()=>{const a=getAsset();return !!(mayOpen('equipment')&&a?.dbId&&scopedFacility(a?.facility))};
+ if(!valid()){showScopeDenied();return false}
+ const navigated=window.navTo?.('equipment');
+ if(navigated===false||!$('equipment')?.classList.contains('active'))return false;
+ setTimeout(()=>{
+  if(valid()&&$('equipment')?.classList.contains('active'))try{window.showAsset?.(key)}catch(e){console.warn('TFMS hub asset open',e)}
+ },80);
+ return true;
+};
 window.tfmsV482ScrollTo=function(id){$(id)?.scrollIntoView({behavior:'smooth',block:'start'})}
-function renderPending(list){const el=$('v482PendingBody');if(!el)return;const rows=list.slice(0,7);el.innerHTML=rows.length?rows.map(r=>{const id=idOf(r),st=status(r),d=detail(r);return `<tr><td>${esc(recDate(r))}</td><td><b>${esc(r.facility||'-')}</b></td><td>${esc(assetName(r))}</td><td><span title="${esc(d)}">${esc(d.slice(0,48))}${d.length>48?'…':''}</span></td><td><span class="tfms-v482-status ${rowStatusClass(st)}">${esc(st)}</span></td><td><button type="button" class="tfms-v482-action" onclick="tfmsV482OpenMaintenance('${esc(id)}')">확인</button></td></tr>`}).join(''):'<tr><td colspan="6"><div class="tfms-v482-empty">현재 처리할 유지관리 이력이 없습니다.</div></td></tr>'}
+function renderPending(list){const el=$('v482PendingBody');if(!el)return;const rows=list.slice(0,7);el.innerHTML=rows.length?rows.map(r=>{const id=idOf(r),st=status(r),d=detail(r);return `<tr><td>${esc(recDate(r))}</td><td><b>${esc(r.facility||'-')}</b></td><td>${esc(assetName(r))}</td><td><span title="${esc(d)}">${esc(d.slice(0,48))}${d.length>48?'…':''}</span></td><td><span class="tfms-v482-status ${rowStatusClass(st)}">${esc(st)}</span></td><td><button type="button" class="tfms-v482-action" onclick="tfmsV482OpenMaintenance(${esc(JSON.stringify(String(id)))})">확인</button></td></tr>`}).join(''):'<tr><td colspan="6"><div class="tfms-v482-empty">현재 처리할 유지관리 이력이 없습니다.</div></td></tr>'}
 function renderTasks(list){const el=$('v482TaskBody');if(!el)return;const all=[...lateTasks(),...list].slice(0,7);el.innerHTML=all.length?all.map(t=>{const late=taskDate(t)&&taskDate(t)<localToday();return `<tr><td><b>${esc(t.facility||'-')}</b></td><td>${esc(t.assetName||'시설 공통')}</td><td>${esc(t.task||'-')}</td><td>${esc(taskDate(t)||t.due||'-')}</td><td><span class="tfms-v482-status ${late?'danger':''}">${late?'기한경과':esc(t.status||'예정')}</span></td><td><button type="button" class="tfms-v482-action" onclick="navTo('today')">점검하기</button></td></tr>`}).join(''):'<tr><td colspan="6"><div class="tfms-v482-empty">현재 처리할 정기점검이 없습니다.</div></td></tr>'}
-function renderLcc(list){const el=$('v482LccList');if(!el)return;const rows=list.slice(0,6);el.innerHTML=rows.length?rows.map(x=>{const c=x.c,a=x.a;const red=Number(c.score)>=75?'red':'';return `<div class="tfms-v482-list-row" onclick="tfmsV482OpenAsset('${esc(x.key)}')"><div><b>${esc(a.name||x.key)}</b><small>${esc(a.facility||'-')} · ${esc(c.lifeInfo?.label||'기준 확인')} · ${c.ageRatio?`${(c.ageRatio*100).toFixed(0)}% 경과`:'연한정보 보완'}</small></div><strong class="${red}">${esc(c.label)} · ${esc(c.score)}점</strong></div>`}).join(''):'<div class="tfms-v482-empty">현재 중점검토 이상 설비가 없습니다.</div>'}
-function renderRecent(list){const el=$('v482RecentList');if(!el)return;const rows=list.slice(0,6);el.innerHTML=rows.length?rows.map(r=>{const d=detail(r);return `<div class="tfms-v482-list-row" onclick="tfmsV482OpenMaintenance('${esc(idOf(r))}')"><div><b>${esc(r.facility||'-')} · ${esc(assetName(r))}</b><small>${esc(recDate(r))} · ${esc(d.slice(0,38))}${d.length>38?'…':''}</small></div><strong>${esc(status(r))}</strong></div>`}).join(''):'<div class="tfms-v482-empty">최근 완료된 유지관리 이력이 없습니다.</div>'}
+function renderLcc(list){const el=$('v482LccList');if(!el)return;const rows=list.slice(0,6);el.innerHTML=rows.length?rows.map(x=>{const c=x.c,a=x.a;const red=Number(c.score)>=75?'red':'';return `<div class="tfms-v482-list-row" onclick="tfmsV482OpenAsset(${esc(JSON.stringify(String(x.key)))})"><div><b>${esc(a.name||x.key)}</b><small>${esc(a.facility||'-')} · ${esc(c.lifeInfo?.label||'기준 확인')} · ${c.ageRatio?`${(c.ageRatio*100).toFixed(0)}% 경과`:'연한정보 보완'}</small></div><strong class="${red}">${esc(c.label)} · ${esc(c.score)}점</strong></div>`}).join(''):'<div class="tfms-v482-empty">현재 중점검토 이상 설비가 없습니다.</div>'}
+function renderRecent(list){const el=$('v482RecentList');if(!el)return;const rows=list.slice(0,6);el.innerHTML=rows.length?rows.map(r=>{const d=detail(r);return `<div class="tfms-v482-list-row" onclick="tfmsV482OpenMaintenance(${esc(JSON.stringify(String(idOf(r))))})"><div><b>${esc(r.facility||'-')} · ${esc(assetName(r))}</b><small>${esc(recDate(r))} · ${esc(d.slice(0,38))}${d.length>38?'…':''}</small></div><strong>${esc(status(r))}</strong></div>`}).join(''):'<div class="tfms-v482-empty">최근 완료된 유지관리 이력이 없습니다.</div>'}
 function render(){if(!$('maintenanceHub'))return;const pr=pendingRecords(),tt=todayTasks(),lt=lateTasks(),lc=lccCandidates(),cr=completedRecords();setText('v482PendingMaint',pr.length+'건');setText('v482TodayTasks',tt.length+'건');setText('v482LateTasks',lt.length+'건');setText('v482LccCount',lc.length+'건');const ec=energyCount();setText('v482EnergyCount',ec===null?'미집계':ec+'건');renderPending(pr);renderTasks(tt);renderLcc(lc);renderRecent(cr);qa('.tfms-v482-write',$('maintenanceHub')).forEach(x=>x.style.display=role()==='viewer'?'none':'')}
 function placeholder(message){['v482PendingMaint','v482TodayTasks','v482LateTasks','v482LccCount'].forEach(k=>setText(k,'—'));setText('v482EnergyCount','—');const txt=esc(message);
  for(const id of ['v482PendingBody','v482TaskBody']){const el=$(id);if(el)el.innerHTML=`<tr><td colspan="6"><div class="tfms-v482-empty">${txt}</div></td></tr>`}
@@ -37255,8 +37272,14 @@ async function fetchAll(c,table,cols,orderCol){const result=[];const pageSize=50
  throw new Error('20,000건을 초과하여 전체 집계를 중단했습니다. 기간별 서버 조회를 검토해 주세요.');
 }
 async function load(force=false){const current=identity();
+ // 직접 함수 호출·로그아웃 직후에도 자료를 재조회하지 않는다.
+ if(!mayOpen('maintenanceHub')){
+  ++requestId;hubRecords=null;hubTasks=null;loadedIdentity='';window.__tfmsV4820LccRecords=null;
+  placeholder('로그인·계정 승인 상태를 확인해 주세요.');return false;
+ }
  if(loadedIdentity!==current){hubRecords=null;hubTasks=null;loadedIdentity='';window.__tfmsV4820LccRecords=null}
- if(loadingPromise)return loadingPromise;
+ // 이전 계정의 비동기 요청이 남아 있어도 새 계정의 조회를 가로막지 않는다.
+ if(loadingPromise&&loadingIdentity===current)return loadingPromise;
  if(!force&&hubRecords!==null&&hubTasks!==null&&loadedIdentity===current){render();return true}
  const c=client();if(!c||!uid()){placeholder('로그인 및 DB 연결을 확인해 주세요.');return false}
  const token=++requestId;placeholder('Supabase에서 유지관리·정기점검을 조회하는 중입니다.');
@@ -37275,13 +37298,15 @@ async function load(force=false){const current=identity();
   if($('equipment')?.classList.contains('active'))try{window.tfmsV480RenderLcc?.(window.selectedAssetKey)}catch(e){console.warn(e)}
   return true;
   }catch(e){if(current===identity())placeholder('집계 조회 실패: '+(e?.message||e));console.warn('TFMS v48.2.20 hub fetch',e);return false}
- })();loadingPromise=job;try{return await job}finally{if(loadingPromise===job)loadingPromise=null}
+ })();loadingPromise=job;loadingIdentity=current;try{return await job}finally{if(loadingPromise===job){loadingPromise=null;loadingIdentity=''}}
 }
 window.tfmsV482RefreshHub=()=>load(true);
 window.tfmsV4820LoadHubData=load;
 function hook(name){const original=window[name];if(typeof original!=='function'||original.__v482hub)return;
  const wrapper=function(id){const result=original.apply(this,arguments);
-  if(id==='maintenanceHub'||id==='equipment')Promise.resolve().then(()=>load(true));
+  // v48.2.27: 거부된 메뉴 이동에서는 후속 데이터 요청을 만들지 않는다.
+  if(result!==false&&(id==='maintenanceHub'||id==='equipment')&&mayOpen(id)&&$(id)?.classList.contains('active'))
+   Promise.resolve().then(()=>{if(mayOpen(id)&&$(id)?.classList.contains('active'))load(true)});
   return result};wrapper.__v482hub=true;window[name]=wrapper}
 hook('showPage');hook('navTo');
 function init(){if($('maintenanceHub')?.classList.contains('active'))load(true);else placeholder('메뉴를 열면 최신 자료를 조회합니다.')}
@@ -37593,7 +37618,7 @@ function baseUrl(){
  const u=new URL(location.href);
  u.search='';u.hash='';return u.href;
 }
-function urlFor(a){const base=baseUrl(),id=actualAssetId(a);if(!base||!id)return '';const u=new URL(base);u.searchParams.set('v','48.2.26');u.searchParams.set('qr_asset',id);return u.href}
+function urlFor(a){const base=baseUrl(),id=actualAssetId(a);if(!base||!id)return '';const u=new URL(base);u.searchParams.set('v','48.2.27');u.searchParams.set('qr_asset',id);return u.href}
 function labelText(a){return [a?.facility,a?.space||a?.location,a?.name,a?.qrId&&a.qrId!=='-'?a.qrId:''].filter(Boolean).join(' · ')}
 function checksFor(a){
  const n=[a?.name,a?.category].join(' ');
@@ -38357,7 +38382,7 @@ function renderQr(){
  const base=baseUrl();if(!base){resetQr('QR 발행은 GitHub Pages 등 HTTPS 사이트에서만 가능합니다.');return}
  if(typeof window.QRCode!=='function'){resetQr('QR 생성 라이브러리를 불러오지 못했습니다.');return}
  const code=String(row.extinguisher_code||'').trim();if(!code){resetQr('소화기 관리번호가 없습니다.');return}
- base.searchParams.set('v','48.2.26');base.searchParams.set('fire','1');base.searchParams.set('facility',facility);base.searchParams.set('ext',code);
+ base.searchParams.set('v','48.2.27');base.searchParams.set('fire','1');base.searchParams.set('facility',facility);base.searchParams.set('ext',code);
  const url=base.href,el=$('tfmsV48213FireQr');if(!el)return;
  el.replaceChildren();
  try{
@@ -38907,6 +38932,17 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  const el=document.createElement('div');el.className='change-item';
  el.dataset.version='v48.2.26-role-qr-audit';
  el.innerHTML='<strong>v48.2.26 · Role QR Routing Audit Stable</strong><ul><li>동일 GitHub Pages 배포의 기본 경로와 index.html 경로 간 QR 스캔 호환</li><li>설비·소화기 QR 라벨의 발행 버전을 v48.2.26으로 통일 (기존 라벨 호환 유지)</li><li>QR 카메라·라벨·기존 소화기 직접진입의 승인계정 권한 확인 보완</li><li>Supabase DB·RLS·업무 저장·기존 메뉴·Timer·Observer 변경 없음</li></ul>';
+ host.prepend(el);
+ }if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add,{once:true});else add();
+})();
+</script>
+
+<script id="tfms-v48227-release-note">
+(function(){'use strict';function add(){
+ const host=document.querySelector('#tfmsVersionModal .tfms-history-latest-group');
+ if(!host||host.querySelector('[data-version="v48.2.27-hub-session-regression"]'))return;
+ const el=document.createElement('div');el.className='change-item';el.dataset.version='v48.2.27-hub-session-regression';
+ el.innerHTML='<strong>v48.2.27 · Hub Role Session Regression Stable</strong><ul><li>유지관리 허브에서 권한 없는 상세 조회·설비 열기와 후속 조회 차단</li><li>로그아웃·사용자 전환 도중 이전 계정의 허브 조회 결과가 남거나 신규 조회를 가로막는 문제 보완</li><li>설비명·이력 ID의 특수문자가 상세보기 연결을 깨뜨리지 않도록 처리</li><li>기존 DB/RLS, 메뉴 ID, 저장 기능과 정기 타이머·Observer 변경 없음</li></ul>';
  host.prepend(el);
  }if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add,{once:true});else add();
 })();
